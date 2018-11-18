@@ -1,0 +1,40 @@
+# https://editorconfig.org/
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+tab_width = 8
+trim_trailing_whitespace = true
+
+[*.{cs,csproj,md,xml}]
+indent_style = space
+continuation_indent_size = 4
+
+[*.{cs,md,xml}]
+max_line_length = 80
+
+[*.{cs,md}]
+indent_size = 4
+
+[*.{csproj,xml}]
+indent_size = 2
+quote_type = double
+
+[*.cs]
+curly_bracket_next_line = true
+spaces_around_operators = true
+indent_brace_style = Allman
+dotnet_naming_rule.public_members_must_be_capitalized.symbols = public_symbols
+dotnet_naming_symbols.public_symbols.applicable_kinds = property,method,field,event,delegate
+dotnet_naming_symbols.public_symbols.applicable_accessibilities = public
+dotnet_naming_rule.public_members_must_be_capitalized.style = first_word_upper_case_style
+dotnet_naming_style.first_word_upper_case_style.capitalization = first_word_upper
+dotnet_naming_rule.public_members_must_be_capitalized.severity = warning
+
+[*.csproj]
+quote_type = double
+
+[*.sln]
+indent_style = tab
