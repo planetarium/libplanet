@@ -26,9 +26,7 @@ namespace Libplanet
 
         public override string ToString()
         {
-            return BitConverter.ToString(ToByteArray())
-                .Replace("-", "")
-                .ToLower();
+            return ByteUtil.Hex(ToByteArray());
         }
     }
 }
