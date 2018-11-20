@@ -12,10 +12,11 @@ namespace Libplanet.Tests
         [ClassData(typeof(HashcashTestData))]
         public void AnswerHasLeadingZeroBits(byte[] challenge, int bits)
         {
-            Hashcash.Stamp stamp = nonce => challenge.Concat(nonce).ToArray();
+            Hashcash.Stamp stamp =
+                nonce => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(stamp, bits);
             var digest = Hashcash.HashAlgorithm(stamp(answer));
-            Assert.True(HasLeadingZeros(digest, bits));
+            Assert.True(digest.HasLeadingZeroBits(bits));
         }
 
         [Fact]
@@ -34,13 +35,9 @@ namespace Libplanet.Tests
             Assert.False(HasLeadingZeros(new byte[1] {0x00}, 9));
         }
 
-        bool HasLeadingZeros(byte[] digest, int bits)
+        bool HasLeadingZeros(byte[] bytes, int bits)
         {
-            var dstring = BitConverter.ToString(digest);
-            Console.WriteLine(
-                $"Expect leading {bits} zero bits in the {dstring} ");
-
-            return Hashcash.HasLeadingZeroBits(digest, bits);
+            return new HashDigest(bytes).HasLeadingZeroBits(bits);
         }
     }
 

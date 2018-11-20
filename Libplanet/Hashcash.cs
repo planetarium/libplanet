@@ -1,48 +1,101 @@
+using System;
 using System.Security.Cryptography;
 
-public static class Hashcash
+namespace Libplanet
 {
-    public delegate byte[] Stamp(byte[] nonce);
-    public static byte[] Answer(Stamp stamp, int difficulty)
+    public struct Nonce
     {
-        int counter = 1;
-        while (true)
+        private readonly byte[] _nonce;
+
+        public Nonce(byte[] nonce)
         {
-            var nonce = System.BitConverter.GetBytes(counter);
-            var digest = HashAlgorithm(stamp(nonce));
-            if (HasLeadingZeroBits(digest, difficulty))
+            if (nonce == null)
             {
-                return nonce;
+                throw new NullReferenceException("nonce must not be null");
             }
-            counter++;
+            _nonce = nonce;
+        }
+
+        public byte[] ToByteArray()
+        {
+            return _nonce;
+        }
+
+        public override string ToString()
+        {
+            return ByteUtil.Hex(ToByteArray());
         }
     }
 
-    public static byte[] HashAlgorithm(byte[] bytes)
+    public struct HashDigest
     {
-        using (SHA256 hashAlgo = SHA256.Create())
+        private readonly byte[] _hashDigest;
+
+        public HashDigest(byte[] hashDigest)
         {
-            return hashAlgo.ComputeHash(bytes);
+            if (hashDigest == null)
+            {
+                throw new NullReferenceException("HashDigest must not be null");
+            }
+            _hashDigest = hashDigest;
+        }
+
+        public bool HasLeadingZeroBits(int bits)
+        {
+            var leadingBytes = bits / 8;
+            var trailingBits = bits % 8;
+
+            if (_hashDigest.Length < (bits / 8) + 1) return false;
+
+            for (int i = 0; i < leadingBytes; i++)
+            {
+                if (_hashDigest[i] != 0) return false;
+            }
+
+            if (trailingBits != 0)
+            {
+                var mask = 0xff << (8 - trailingBits) & 0xff;
+                return (_hashDigest[leadingBytes] & mask) == 0;
+            }
+            return true;
+        }
+
+        public byte[] ToByteArray()
+        {
+            return _hashDigest;
+        }
+
+        public override string ToString()
+        {
+            return ByteUtil.Hex(ToByteArray());
         }
     }
 
-    public static bool HasLeadingZeroBits(byte[] digest, int bits)
+    public static class Hashcash
     {
-        var leadingBytes = bits / 8;
-        var trailingBits = bits % 8;
-
-        if (digest.Length < (bits / 8) + 1) return false;
-
-        for (int i = 0; i < leadingBytes; i++)
+        public delegate byte[] Stamp(Nonce nonce);
+        public static Nonce Answer(Stamp stamp, int difficulty)
         {
-            if (digest[i] != 0) return false;
+            int counter = 1;
+            while (true)
+            {
+                var nonce = new Nonce(System.BitConverter.GetBytes(counter));
+                var digest = HashAlgorithm(stamp(nonce));
+                if (digest.HasLeadingZeroBits(difficulty))
+                {
+                    return nonce;
+                }
+                counter++;
+            }
         }
 
-        if (trailingBits != 0)
+        public static HashDigest HashAlgorithm(byte[] bytes)
         {
-            var mask = 0xff << (8 - trailingBits) & 0xff;
-            return (digest[leadingBytes] & mask) == 0;
+            using (SHA256 hashAlgo = SHA256.Create())
+            {
+                return new HashDigest(hashAlgo.ComputeHash(bytes));
+            }
         }
-        return true;
+
     }
 }
