@@ -15,7 +15,7 @@ namespace Libplanet.Tests
             Hashcash.Stamp stamp =
                 nonce => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(stamp, bits);
-            var digest = Hashcash.HashAlgorithm(stamp(answer));
+            var digest = Hashcash.Hash(stamp(answer));
             Assert.True(digest.HasLeadingZeroBits(bits));
         }
 
