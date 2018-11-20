@@ -29,10 +29,7 @@ namespace Libplanet
             return _address;
         }
 
-        public override string ToString()
-        {
-            return ByteUtil.Hex(ToByteArray());
-        }
+        public override string ToString() => $"0x{ByteUtil.Hex(ToByteArray())}";
 
         public static Address FromPublicKey(PublicKey key)
         {

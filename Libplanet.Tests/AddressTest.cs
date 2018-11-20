@@ -48,7 +48,7 @@ namespace Libplanet.Tests
                 }
             );
             Assert.Equal(
-                "45a22187e2d8850bb357886958bc3e8560929ccc",
+                "0x45a22187e2d8850bb357886958bc3e8560929ccc",
                 address.ToString()
             );
         }
