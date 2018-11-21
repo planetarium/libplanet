@@ -27,7 +27,7 @@ namespace Libplanet
         }
     }
 
-    public struct HashDigest
+    public struct HashDigest : IEquatable<HashDigest>
     {
         private readonly byte[] _hashDigest;
 
