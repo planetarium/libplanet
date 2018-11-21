@@ -14,7 +14,7 @@ using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
-    public class PrivateKey
+    public class PrivateKey : IEquatable<PrivateKey>
     {
         private readonly ECPrivateKeyParameters keyParam;
 
@@ -154,6 +154,35 @@ namespace Libplanet.Crypto
             hash.DoFinal(result, 0);
 
             return result;
+        }
+
+        public bool Equals(PrivateKey other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            return ReferenceEquals(this, other) ||
+                   Equals(keyParam, other.keyParam);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((PrivateKey) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (keyParam != null ? keyParam.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(PrivateKey k1, PrivateKey k2)
+        {
+            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
+        }
+
+        public static bool operator !=(PrivateKey k1, PrivateKey k2)
+        {
+            return !(k1 == k2);
         }
     }
 }
