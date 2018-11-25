@@ -6,8 +6,6 @@
     <Rule Id="SA1652" Action="None" />
     <!-- Allow field name to begin with an underscore. -->
     <Rule Id="SA1309" Action="None" />
-    <!-- Allow statement to be in single line. -->
-    <Rule Id="SA1501" Action="None" />
     <!-- Allow an expression not to declare parenthese. -->
     <Rule Id="SA1407" Action="None" />
     <!--Allow to call an instance member of the local class or a base class is

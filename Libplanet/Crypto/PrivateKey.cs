@@ -127,15 +127,27 @@ namespace Libplanet.Crypto
 
         public bool Equals(PrivateKey other)
         {
-            if (ReferenceEquals(null, other)) { return false; }
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
             return ReferenceEquals(this, other) ||
                    Equals(keyParam, other.keyParam);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) { return false; }
-            if (ReferenceEquals(this, obj)) { return true; }
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
             return obj.GetType() == GetType() && Equals((PrivateKey)obj);
         }
 
