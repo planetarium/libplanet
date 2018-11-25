@@ -79,7 +79,7 @@ namespace Libplanet.Crypto
 
         public override int GetHashCode()
         {
-            return (KeyParam != null ? KeyParam.GetHashCode() : 0);
+            return KeyParam != null ? KeyParam.GetHashCode() : 0;
         }
     }
 }

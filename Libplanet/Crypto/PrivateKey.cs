@@ -141,7 +141,7 @@ namespace Libplanet.Crypto
 
         public override int GetHashCode()
         {
-            return (keyParam != null ? keyParam.GetHashCode() : 0);
+            return keyParam != null ? keyParam.GetHashCode() : 0;
         }
 
         internal static ECDomainParameters GetECParameters()
