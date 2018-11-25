@@ -40,8 +40,7 @@ namespace Libplanet.Crypto
 
             var cipher = new GcmBlockCipher(new AesEngine());
             var parameters = new AeadParameters(
-                new KeyParameter(_key),
-                MacBitSize, nonce, nonSecret);
+                new KeyParameter(_key), MacBitSize, nonce, nonSecret);
             cipher.Init(true, parameters);
 
             var cipherText = new byte[cipher.GetOutputSize(message.Length)];
@@ -80,7 +79,9 @@ namespace Libplanet.Crypto
                 var cipher = new GcmBlockCipher(new AesEngine());
                 var parameters = new AeadParameters(
                     new KeyParameter(_key),
-                    MacBitSize, nonce, nonSecretPayload);
+                    MacBitSize,
+                    nonce,
+                    nonSecretPayload);
                 cipher.Init(false, parameters);
 
                 byte[] cipherText =
@@ -91,8 +92,8 @@ namespace Libplanet.Crypto
 
                 try
                 {
-                    int len = cipher.ProcessBytes(cipherText, 0,
-                        cipherText.Length, plainText, 0);
+                    int len = cipher.ProcessBytes(
+                        cipherText, 0, cipherText.Length, plainText, 0);
                     cipher.DoFinal(plainText, len);
                     return plainText;
                 }

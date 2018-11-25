@@ -29,7 +29,8 @@ namespace Libplanet.Crypto
             var ecParams = PrivateKey.GetECParameters();
             var keyParam = new ECPublicKeyParameters(
                 "ECDSA",
-                ecParams.Curve.DecodePoint(bs), ecParams);
+                ecParams.Curve.DecodePoint(bs),
+                ecParams);
 
             return new PublicKey(keyParam);
         }
@@ -39,7 +40,9 @@ namespace Libplanet.Crypto
             return KeyParam.Q.GetEncoded(compress);
         }
 
-        public bool Verify(byte[] payload, byte[] signature,
+        public bool Verify(
+            byte[] payload,
+            byte[] signature,
             string algorithm = "SHA256withECDSA")
         {
             ISigner verifier = SignerUtilities.GetSigner(algorithm);

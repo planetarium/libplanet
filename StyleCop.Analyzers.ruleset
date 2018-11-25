@@ -14,7 +14,6 @@
     not prefixed with 'this.'. -->
     <Rule Id="SA1101" Action="None" />
     <!---->
-    <Rule Id="SA1117" Action="None" />
     <Rule Id="SA1119" Action="None" />
     <Rule Id="SA1111" Action="None" />
     <Rule Id="SA1401" Action="None" />
