@@ -50,8 +50,7 @@ namespace Libplanet.Crypto
         {
             ECDomainParameters ecParams = GetECParameters();
             var keyParam = new ECPrivateKeyParameters(
-                "ECDSA", new BigInteger(1, bs), ecParams
-            );
+                "ECDSA", new BigInteger(1, bs), ecParams);
 
             return new PrivateKey(keyParam);
         }
