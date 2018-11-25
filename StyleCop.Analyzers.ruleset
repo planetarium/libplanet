@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for Libplanet" Description="Code analysis rules for Libplanet.csproj." ToolsVersion="10.0">
+ <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+   <Rule Id="SA1633" Action="None" />
+   <Rule Id="SA1652" Action="None" />
+   <Rule Id="SA1309" Action="None" />
+ </Rules>
+</RuleSet>
