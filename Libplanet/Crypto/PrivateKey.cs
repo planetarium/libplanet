@@ -104,7 +104,7 @@ namespace Libplanet.Crypto
             BigInteger y = p.AffineYCoord.ToBigInteger();
 
             byte[] xbuf = x.ToByteArrayUnsigned();
-            var ybuf = new byte[] {(byte) (y.TestBit(0) ? 0x03 : 0x02)};
+            var ybuf = new byte[] { (byte) (y.TestBit(0) ? 0x03 : 0x02) };
 
             var hash = new Sha256Digest();
             var result = new byte[hash.GetDigestSize()];
