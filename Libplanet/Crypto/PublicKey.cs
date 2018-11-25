@@ -7,11 +7,19 @@ namespace Libplanet.Crypto
 {
     public class PublicKey : IEquatable<PublicKey>
     {
-        internal readonly ECPublicKeyParameters KeyParam;
+        private readonly ECPublicKeyParameters _keyParam;
 
         internal PublicKey(ECPublicKeyParameters keyParam)
         {
-            KeyParam = keyParam;
+            _keyParam = keyParam;
+        }
+
+        internal ECPublicKeyParameters KeyParam
+        {
+            get
+            {
+                return _keyParam;
+            }
         }
 
         public static bool operator ==(PublicKey k1, PublicKey k2)
