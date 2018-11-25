@@ -23,6 +23,29 @@ namespace Libplanet.Crypto
             this.keyParam = keyParam;
         }
 
+        public PublicKey PublicKey
+        {
+            get
+            {
+                ECDomainParameters ecParams = GetECParameters();
+                ECPoint q = ecParams.G.Multiply(this.keyParam.D);
+                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
+                return new PublicKey(kp);
+            }
+        }
+
+        public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
+
+        public static bool operator ==(PrivateKey k1, PrivateKey k2)
+        {
+            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
+        }
+
+        public static bool operator !=(PrivateKey k1, PrivateKey k2)
+        {
+            return !(k1 == k2);
+        }
+
         public static PrivateKey FromBytes(byte[] bs)
         {
             ECDomainParameters ecParams = GetECParameters();
@@ -45,19 +68,6 @@ namespace Libplanet.Crypto
             return new PrivateKey(
                 gen.GenerateKeyPair().Private as ECPrivateKeyParameters);
         }
-
-        public PublicKey PublicKey
-        {
-            get
-            {
-                ECDomainParameters ecParams = GetECParameters();
-                ECPoint q = ecParams.G.Multiply(this.keyParam.D);
-                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
-                return new PublicKey(kp);
-            }
-        }
-
-        public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
 
         public byte[] Sign(byte[] payload)
         {
@@ -133,16 +143,6 @@ namespace Libplanet.Crypto
         public override int GetHashCode()
         {
             return (keyParam != null ? keyParam.GetHashCode() : 0);
-        }
-
-        public static bool operator ==(PrivateKey k1, PrivateKey k2)
-        {
-            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
-        }
-
-        public static bool operator !=(PrivateKey k1, PrivateKey k2)
-        {
-            return !(k1 == k2);
         }
 
         internal static ECDomainParameters GetECParameters()

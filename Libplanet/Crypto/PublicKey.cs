@@ -14,6 +14,16 @@ namespace Libplanet.Crypto
             KeyParam = keyParam;
         }
 
+        public static bool operator ==(PublicKey k1, PublicKey k2)
+        {
+            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
+        }
+
+        public static bool operator !=(PublicKey k1, PublicKey k2)
+        {
+            return !(k1 == k2);
+        }
+
         public static PublicKey FromBytes(byte[] bs)
         {
             var ecParams = PrivateKey.GetECParameters();
@@ -67,16 +77,6 @@ namespace Libplanet.Crypto
         public override int GetHashCode()
         {
             return (KeyParam != null ? KeyParam.GetHashCode() : 0);
-        }
-
-        public static bool operator ==(PublicKey k1, PublicKey k2)
-        {
-            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
-        }
-
-        public static bool operator !=(PublicKey k1, PublicKey k2)
-        {
-            return !(k1 == k2);
         }
     }
 }

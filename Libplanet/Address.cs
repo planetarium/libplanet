@@ -24,6 +24,16 @@ namespace Libplanet
             _address = address;
         }
 
+        public static bool operator ==(Address a1, Address a2)
+        {
+            return a1.Equals(a2);
+        }
+
+        public static bool operator !=(Address a1, Address a2)
+        {
+            return !(a1 == a2);
+        }
+
         public static Address FromPublicKey(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
@@ -58,16 +68,6 @@ namespace Libplanet
             return _address.Aggregate(
                 0,
                 (current, t) => unchecked(current * 21 + t));
-        }
-
-        public static bool operator ==(Address a1, Address a2)
-        {
-            return a1.Equals(a2);
-        }
-
-        public static bool operator !=(Address a1, Address a2)
-        {
-            return !(a1 == a2);
         }
     }
 }
