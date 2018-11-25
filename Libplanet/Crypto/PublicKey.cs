@@ -17,7 +17,8 @@ namespace Libplanet.Crypto
         public static PublicKey FromBytes(byte[] bs)
         {
             var ecParams = PrivateKey.GetECParameters();
-            var keyParam = new ECPublicKeyParameters("ECDSA",
+            var keyParam = new ECPublicKeyParameters(
+                "ECDSA",
                 ecParams.Curve.DecodePoint(bs), ecParams);
 
             return new PublicKey(keyParam);
@@ -44,7 +45,8 @@ namespace Libplanet.Crypto
             byte[] aesKey = disposablePrivateKey.ECDH(this);
             var aes = new Aesgcm(aesKey);
 
-            return aes.Encrypt(payload,
+            return aes.Encrypt(
+                payload,
                 disposablePrivateKey.PublicKey.Format(true));
         }
 

@@ -55,7 +55,8 @@ namespace Libplanet
 
         public override int GetHashCode()
         {
-            return _address.Aggregate(0,
+            return _address.Aggregate(
+                0,
                 (current, t) => unchecked(current * 21 + t));
         }
 

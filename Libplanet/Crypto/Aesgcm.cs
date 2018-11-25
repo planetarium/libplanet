@@ -39,7 +39,8 @@ namespace Libplanet.Crypto
             nonSecret = nonSecret ?? new byte[] { };
 
             var cipher = new GcmBlockCipher(new AesEngine());
-            var parameters = new AeadParameters(new KeyParameter(_key),
+            var parameters = new AeadParameters(
+                new KeyParameter(_key),
                 MacBitSize, nonce, nonSecret);
             cipher.Init(true, parameters);
 
@@ -65,7 +66,8 @@ namespace Libplanet.Crypto
         {
             if (encrypted == null || encrypted.Length == 0)
             {
-                throw new ArgumentException("Encrypted Message Required!",
+                throw new ArgumentException(
+                    "Encrypted Message Required!",
                     nameof(encrypted));
             }
 
@@ -76,7 +78,8 @@ namespace Libplanet.Crypto
                 byte[] nonce = cipherReader.ReadBytes(NonceBitSize / 8);
 
                 var cipher = new GcmBlockCipher(new AesEngine());
-                var parameters = new AeadParameters(new KeyParameter(_key),
+                var parameters = new AeadParameters(
+                    new KeyParameter(_key),
                     MacBitSize, nonce, nonSecretPayload);
                 cipher.Init(false, parameters);
 
