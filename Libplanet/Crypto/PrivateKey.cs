@@ -137,7 +137,7 @@ namespace Libplanet.Crypto
         {
             if (ReferenceEquals(null, obj)) { return false; }
             if (ReferenceEquals(this, obj)) { return true; }
-            return obj.GetType() == GetType() && Equals((PrivateKey) obj);
+            return obj.GetType() == GetType() && Equals((PrivateKey)obj);
         }
 
         public override int GetHashCode()
