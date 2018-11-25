@@ -99,9 +99,9 @@ namespace Libplanet.Crypto
 
         public byte[] ECDH(PublicKey publicKey)
         {
-            ECPoint P = CalculatePoint(publicKey.KeyParam);
-            BigInteger x = P.AffineXCoord.ToBigInteger();
-            BigInteger y = P.AffineYCoord.ToBigInteger();
+            ECPoint p = CalculatePoint(publicKey.KeyParam);
+            BigInteger x = p.AffineXCoord.ToBigInteger();
+            BigInteger y = p.AffineYCoord.ToBigInteger();
 
             byte[] xbuf = x.ToByteArrayUnsigned();
             var ybuf = new byte[] {(byte) (y.TestBit(0) ? 0x03 : 0x02)};
@@ -167,8 +167,8 @@ namespace Libplanet.Crypto
 
             BigInteger d = keyParam.D;
 
-            ECPoint Q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
-            if (Q.IsInfinity)
+            ECPoint q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
+            if (q.IsInfinity)
             {
                 throw new InvalidOperationException(
                     "Infinity is not a valid public key for ECDH");
@@ -178,17 +178,17 @@ namespace Libplanet.Crypto
             if (!h.Equals(BigInteger.One))
             {
                 d = dp.H.ModInverse(dp.N).Multiply(d).Mod(dp.N);
-                Q = ECAlgorithms.ReferenceMultiply(Q, h);
+                q = ECAlgorithms.ReferenceMultiply(q, h);
             }
 
-            ECPoint P = Q.Multiply(d).Normalize();
-            if (P.IsInfinity)
+            ECPoint p = q.Multiply(d).Normalize();
+            if (p.IsInfinity)
             {
                 throw new InvalidOperationException(
                     "Infinity is not a valid agreement value for ECDH");
             }
 
-            return P;
+            return p;
         }
     }
 }
