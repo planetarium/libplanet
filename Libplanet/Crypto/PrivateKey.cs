@@ -112,15 +112,19 @@ namespace Libplanet.Crypto
         {
             ECDomainParameters dp = keyParam.Parameters;
             if (!dp.Equals(pubKeyParams.Parameters))
+            {
                 throw new InvalidOperationException(
                     "ECDH public key has wrong domain parameters");
+            }
 
             BigInteger d = keyParam.D;
 
             ECPoint Q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
             if (Q.IsInfinity)
+            {
                 throw new InvalidOperationException(
                     "Infinity is not a valid public key for ECDH");
+            }
 
             BigInteger h = dp.H;
             if (!h.Equals(BigInteger.One))
@@ -131,8 +135,10 @@ namespace Libplanet.Crypto
 
             ECPoint P = Q.Multiply(d).Normalize();
             if (P.IsInfinity)
+            {
                 throw new InvalidOperationException(
                     "Infinity is not a valid agreement value for ECDH");
+            }
 
             return P;
         }
