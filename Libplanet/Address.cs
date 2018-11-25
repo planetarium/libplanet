@@ -24,13 +24,6 @@ namespace Libplanet
             _address = address;
         }
 
-        public byte[] ToByteArray()
-        {
-            return _address;
-        }
-
-        public override string ToString() => $"0x{ByteUtil.Hex(ToByteArray())}";
-
         public static Address FromPublicKey(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
@@ -41,6 +34,13 @@ namespace Libplanet
 
             return new Address(output.Skip(output.Length - 20).ToArray());
         }
+
+        public byte[] ToByteArray()
+        {
+            return _address;
+        }
+
+        public override string ToString() => $"0x{ByteUtil.Hex(ToByteArray())}";
 
         public bool Equals(Address other)
         {
