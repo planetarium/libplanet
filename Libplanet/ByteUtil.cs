@@ -17,7 +17,9 @@ namespace Libplanet
 
         public static string Hex(byte[] bytes)
         {
-            return BitConverter.ToString(bytes).Replace("-", string.Empty).ToLower();
+            string s = BitConverter.ToString(bytes);
+
+            return s.Replace("-", string.Empty).ToLower();
         }
     }
 }

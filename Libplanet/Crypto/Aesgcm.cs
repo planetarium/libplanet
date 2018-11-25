@@ -73,7 +73,8 @@ namespace Libplanet.Crypto
             using (var cipherStream = new MemoryStream(encrypted))
             using (var cipherReader = new BinaryReader(cipherStream))
             {
-                byte[] nonSecretPayload = cipherReader.ReadBytes(nonSecretLength);
+                byte[] nonSecretPayload = cipherReader.ReadBytes(
+                    nonSecretLength);
                 byte[] nonce = cipherReader.ReadBytes(NonceBitSize / 8);
 
                 var cipher = new GcmBlockCipher(new AesEngine());
