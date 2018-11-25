@@ -38,7 +38,8 @@ namespace Libplanet.Crypto
             var keyParam = new ECPublicKeyParameters(
                 "ECDSA",
                 ecParams.Curve.DecodePoint(bs),
-                ecParams);
+                ecParams
+            );
 
             return new PublicKey(keyParam);
         }
@@ -68,7 +69,8 @@ namespace Libplanet.Crypto
 
             return aes.Encrypt(
                 payload,
-                disposablePrivateKey.PublicKey.Format(true));
+                disposablePrivateKey.PublicKey.Format(true)
+            );
         }
 
         public bool Equals(PublicKey other)

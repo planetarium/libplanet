@@ -65,7 +65,8 @@ namespace Libplanet.Crypto
             gen.Init(keyGenParam);
 
             return new PrivateKey(
-                gen.GenerateKeyPair().Private as ECPrivateKeyParameters);
+                gen.GenerateKeyPair().Private as ECPrivateKeyParameters
+            );
         }
 
         public byte[] Sign(byte[] payload)
@@ -173,7 +174,8 @@ namespace Libplanet.Crypto
             if (!dp.Equals(pubKeyParams.Parameters))
             {
                 throw new InvalidOperationException(
-                    "ECDH public key has wrong domain parameters");
+                    "ECDH public key has wrong domain parameters"
+                );
             }
 
             BigInteger d = keyParam.D;
@@ -182,7 +184,8 @@ namespace Libplanet.Crypto
             if (q.IsInfinity)
             {
                 throw new InvalidOperationException(
-                    "Infinity is not a valid public key for ECDH");
+                    "Infinity is not a valid public key for ECDH"
+                );
             }
 
             BigInteger h = dp.H;
@@ -196,7 +199,8 @@ namespace Libplanet.Crypto
             if (p.IsInfinity)
             {
                 throw new InvalidOperationException(
-                    "Infinity is not a valid agreement value for ECDH");
+                    "Infinity is not a valid agreement value for ECDH"
+                );
             }
 
             return p;

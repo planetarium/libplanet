@@ -11,5 +11,8 @@
     <!--Allow to call an instance member of the local class or a base class is
     not prefixed with 'this.'. -->
     <Rule Id="SA1101" Action="None" />
+    <!--Allow closing parenthesis to be placed in new line. -->
+    <Rule Id="SA1009" Action="None" />
+    <Rule Id="SA1111" Action="None" />
   </Rules>
 </RuleSet>
