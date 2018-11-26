@@ -23,23 +23,34 @@ namespace Libplanet.Crypto
             this.keyParam = keyParam;
         }
 
-        internal static ECDomainParameters GetECParameters()
+        public PublicKey PublicKey
         {
-            return GetECParameters("secp256k1");
+            get
+            {
+                ECDomainParameters ecParams = GetECParameters();
+                ECPoint q = ecParams.G.Multiply(this.keyParam.D);
+                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
+                return new PublicKey(kp);
+            }
         }
 
-        private static ECDomainParameters GetECParameters(string name)
+        public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
+
+        public static bool operator ==(PrivateKey k1, PrivateKey k2)
         {
-            X9ECParameters ps = SecNamedCurves.GetByName(name);
-            return new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
+            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
+        }
+
+        public static bool operator !=(PrivateKey k1, PrivateKey k2)
+        {
+            return !(k1 == k2);
         }
 
         public static PrivateKey FromBytes(byte[] bs)
         {
             ECDomainParameters ecParams = GetECParameters();
             var keyParam = new ECPrivateKeyParameters(
-                "ECDSA", new BigInteger(1, bs), ecParams
-            );
+                "ECDSA", new BigInteger(1, bs), ecParams);
 
             return new PrivateKey(keyParam);
         }
@@ -54,21 +65,9 @@ namespace Libplanet.Crypto
             gen.Init(keyGenParam);
 
             return new PrivateKey(
-                gen.GenerateKeyPair().Private as ECPrivateKeyParameters);
+                gen.GenerateKeyPair().Private as ECPrivateKeyParameters
+            );
         }
-
-        public PublicKey PublicKey
-        {
-            get
-            {
-                ECDomainParameters ecParams = GetECParameters();
-                ECPoint q = ecParams.G.Multiply(this.keyParam.D);
-                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
-                return new PublicKey(kp);
-            }
-        }
-
-        public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
 
         public byte[] Sign(byte[] payload)
         {
@@ -108,43 +107,14 @@ namespace Libplanet.Crypto
             return aes.Decrypt(payload, 33);
         }
 
-        private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
-        {
-            ECDomainParameters dp = keyParam.Parameters;
-            if (!dp.Equals(pubKeyParams.Parameters))
-                throw new InvalidOperationException(
-                    "ECDH public key has wrong domain parameters");
-
-            BigInteger d = keyParam.D;
-
-            ECPoint Q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
-            if (Q.IsInfinity)
-                throw new InvalidOperationException(
-                    "Infinity is not a valid public key for ECDH");
-
-            BigInteger h = dp.H;
-            if (!h.Equals(BigInteger.One))
-            {
-                d = dp.H.ModInverse(dp.N).Multiply(d).Mod(dp.N);
-                Q = ECAlgorithms.ReferenceMultiply(Q, h);
-            }
-
-            ECPoint P = Q.Multiply(d).Normalize();
-            if (P.IsInfinity)
-                throw new InvalidOperationException(
-                    "Infinity is not a valid agreement value for ECDH");
-
-            return P;
-        }
-
         public byte[] ECDH(PublicKey publicKey)
         {
-            ECPoint P = CalculatePoint(publicKey.KeyParam);
-            BigInteger x = P.AffineXCoord.ToBigInteger();
-            BigInteger y = P.AffineYCoord.ToBigInteger();
+            ECPoint p = CalculatePoint(publicKey.KeyParam);
+            BigInteger x = p.AffineXCoord.ToBigInteger();
+            BigInteger y = p.AffineYCoord.ToBigInteger();
 
             byte[] xbuf = x.ToByteArrayUnsigned();
-            var ybuf = new byte[] {(byte) (y.TestBit(0) ? 0x03 : 0x02)};
+            var ybuf = new byte[] { (byte)(y.TestBit(0) ? 0x03 : 0x02) };
 
             var hash = new Sha256Digest();
             var result = new byte[hash.GetDigestSize()];
@@ -158,31 +128,82 @@ namespace Libplanet.Crypto
 
         public bool Equals(PrivateKey other)
         {
-            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
             return ReferenceEquals(this, other) ||
                    Equals(keyParam, other.keyParam);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PrivateKey) obj);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() && Equals((PrivateKey)obj);
         }
 
         public override int GetHashCode()
         {
-            return (keyParam != null ? keyParam.GetHashCode() : 0);
+            return keyParam != null ? keyParam.GetHashCode() : 0;
         }
 
-        public static bool operator ==(PrivateKey k1, PrivateKey k2)
+        internal static ECDomainParameters GetECParameters()
         {
-            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
+            return GetECParameters("secp256k1");
         }
 
-        public static bool operator !=(PrivateKey k1, PrivateKey k2)
+        private static ECDomainParameters GetECParameters(string name)
         {
-            return !(k1 == k2);
+            X9ECParameters ps = SecNamedCurves.GetByName(name);
+            return new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
+        }
+
+        private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
+        {
+            ECDomainParameters dp = keyParam.Parameters;
+            if (!dp.Equals(pubKeyParams.Parameters))
+            {
+                throw new InvalidOperationException(
+                    "ECDH public key has wrong domain parameters"
+                );
+            }
+
+            BigInteger d = keyParam.D;
+
+            ECPoint q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
+            if (q.IsInfinity)
+            {
+                throw new InvalidOperationException(
+                    "Infinity is not a valid public key for ECDH"
+                );
+            }
+
+            BigInteger h = dp.H;
+            if (!h.Equals(BigInteger.One))
+            {
+                d = dp.H.ModInverse(dp.N).Multiply(d).Mod(dp.N);
+                q = ECAlgorithms.ReferenceMultiply(q, h);
+            }
+
+            ECPoint p = q.Multiply(d).Normalize();
+            if (p.IsInfinity)
+            {
+                throw new InvalidOperationException(
+                    "Infinity is not a valid agreement value for ECDH"
+                );
+            }
+
+            return p;
         }
     }
 }

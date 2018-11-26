@@ -24,12 +24,15 @@ namespace Libplanet
             _address = address;
         }
 
-        public byte[] ToByteArray()
+        public static bool operator ==(Address a1, Address a2)
         {
-            return _address;
+            return a1.Equals(a2);
         }
 
-        public override string ToString() => $"0x{ByteUtil.Hex(ToByteArray())}";
+        public static bool operator !=(Address a1, Address a2)
+        {
+            return !(a1 == a2);
+        }
 
         public static Address FromPublicKey(PublicKey key)
         {
@@ -42,6 +45,16 @@ namespace Libplanet
             return new Address(output.Skip(output.Length - 20).ToArray());
         }
 
+        public byte[] ToByteArray()
+        {
+            return _address;
+        }
+
+        public override string ToString()
+        {
+            return $"0x{ByteUtil.Hex(ToByteArray())}";
+        }
+
         public bool Equals(Address other)
         {
             return _address.SequenceEqual(other._address);
@@ -49,24 +62,19 @@ namespace Libplanet
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
             return obj is Address other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return _address.Aggregate(0,
+            return _address.Aggregate(
+                0,
                 (current, t) => unchecked(current * 21 + t));
-        }
-
-        public static bool operator ==(Address a1, Address a2)
-        {
-            return a1.Equals(a2);
-        }
-
-        public static bool operator !=(Address a1, Address a2)
-        {
-            return !(a1 == a2);
         }
     }
 }
