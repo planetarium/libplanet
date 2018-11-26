@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 
 namespace Libplanet
@@ -13,12 +14,14 @@ namespace Libplanet
             {
                 throw new NullReferenceException("nonce must not be null");
             }
+
             _nonce = nonce;
         }
 
+        [Pure]
         public byte[] ToByteArray()
         {
-            return _nonce;
+            return (byte[]) _nonce.Clone();
         }
 
         public override string ToString()
@@ -37,6 +40,7 @@ namespace Libplanet
             {
                 throw new NullReferenceException("HashDigest must not be null");
             }
+
             _hashDigest = hashDigest;
         }
 
@@ -57,12 +61,14 @@ namespace Libplanet
                 var mask = 0xff << (8 - trailingBits) & 0xff;
                 return (_hashDigest[leadingBytes] & mask) == 0;
             }
+
             return true;
         }
 
+        [Pure]
         public byte[] ToByteArray()
         {
-            return _hashDigest;
+            return (byte[]) _hashDigest.Clone();
         }
 
         public override bool Equals(object obj)
@@ -71,7 +77,8 @@ namespace Libplanet
             {
                 return false;
             }
-            return base.Equals (obj);
+
+            return base.Equals(obj);
         }
 
         public bool Equals(HashDigest obj)
@@ -82,15 +89,16 @@ namespace Libplanet
             {
                 if (objBytes[i] != _hashDigest[i]) return false;
             }
+
             return true;
         }
 
-        public static bool operator==(HashDigest o1, HashDigest o2)
+        public static bool operator ==(HashDigest o1, HashDigest o2)
         {
             return o1.Equals(o2);
         }
 
-        public static bool operator!=(HashDigest o1, HashDigest o2)
+        public static bool operator !=(HashDigest o1, HashDigest o2)
         {
             return !o1.Equals(o2);
         }
@@ -109,17 +117,19 @@ namespace Libplanet
     public static class Hashcash
     {
         public delegate byte[] Stamp(Nonce nonce);
+
         public static Nonce Answer(Stamp stamp, int difficulty)
         {
             int counter = 1;
             while (true)
             {
-                var nonce = new Nonce(System.BitConverter.GetBytes(counter));
+                var nonce = new Nonce(BitConverter.GetBytes(counter));
                 var digest = Hash(stamp(nonce));
                 if (digest.HasLeadingZeroBits(difficulty))
                 {
                     return nonce;
                 }
+
                 counter++;
             }
         }

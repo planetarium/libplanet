@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Libplanet.Tx
@@ -33,9 +34,10 @@ namespace Libplanet.Tx
             return !(id1 == id2);
         }
 
+        [Pure]
         public byte[] ToByteArray()
         {
-            return _bytes;
+            return (byte[])_bytes.Clone();
         }
 
         public override string ToString()
