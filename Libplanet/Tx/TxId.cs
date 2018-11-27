@@ -62,10 +62,7 @@ namespace Libplanet.Tx
 
         public override int GetHashCode()
         {
-            return _bytes.Aggregate(
-                0,
-                (current, t) => unchecked(current * (RequiredLength + 1) + t)
-            );
+            return ByteUtil.CalculateHashCode(_bytes);
         }
     }
 }

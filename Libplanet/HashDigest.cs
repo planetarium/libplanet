@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 
 namespace Libplanet
@@ -91,7 +91,7 @@ namespace Libplanet
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return ByteUtil.CalculateHashCode(_hashDigest);
         }
 
         public override string ToString()
