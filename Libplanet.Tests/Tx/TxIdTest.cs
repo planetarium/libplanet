@@ -18,9 +18,8 @@ namespace Libplanet.Tests.Tx
             for (int size = 0; size < 36; size++)
             {
                 if (size == 32) continue;
-                var random = new Random();
-                var bytes = new byte[size];
-                random.NextBytes(bytes);
+
+                byte[] bytes = TestUtils.GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() => new TxId(bytes));
             }
         }
@@ -28,10 +27,9 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ToByteArray()
         {
-            var random = new Random();
-            var bytes = new byte[32];
-            random.NextBytes(bytes);
+            var bytes = TestUtils.GetRandomBytes(32);
             var txId = new TxId(bytes);
+
             Assert.Equal(bytes, txId.ToByteArray());
         }
 

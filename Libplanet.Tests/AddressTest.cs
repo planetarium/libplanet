@@ -18,9 +18,7 @@ namespace Libplanet.Tests
             for (int size = 0; size < 25; size++)
             {
                 if (size == 20) continue;
-                var random = new Random();
-                var addressBytes = new byte[size];
-                random.NextBytes(addressBytes);
+                byte[] addressBytes = TestUtils.GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() =>
                     new Address(addressBytes)
                 );
@@ -30,9 +28,7 @@ namespace Libplanet.Tests
         [Fact]
         public void ToByteArray()
         {
-            var random = new Random();
-            var addressBytes = new byte[20];
-            random.NextBytes(addressBytes);
+            byte[] addressBytes = TestUtils.GetRandomBytes(20);
             var address = new Address(addressBytes);
             Assert.Equal(addressBytes, address.ToByteArray());
         }
