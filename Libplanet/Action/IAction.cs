@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Libplanet.Action
 {
     public interface IAction
     {
-        IDictionary<string, object> PlainValue { get; }
+        IImmutableDictionary<string, object> PlainValue { get; }
 
-        void LoadPlainValue(IDictionary<string, object> plainValue);
+        void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
     }
 }

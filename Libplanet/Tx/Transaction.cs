@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -203,7 +204,9 @@ namespace Libplanet.Tx
         {
             var typeStr = Encoding.UTF8.GetString((byte[])arg["type_id"]);
             var action = (T)Activator.CreateInstance(Types[typeStr]);
-            action.LoadPlainValue((IDictionary<string, object>)arg["values"]);
+            action.LoadPlainValue(
+                ((IDictionary<string, object>)arg["values"]).ToImmutableDictionary()
+            );
             return action;
         }
     }

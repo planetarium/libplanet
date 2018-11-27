@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using Libplanet.Action;
@@ -11,24 +12,24 @@ namespace Libplanet.Tests.Tx
 {
     internal abstract class Action : IAction
     {
-        public abstract IDictionary<string, object> PlainValue { get; }
+        public abstract IImmutableDictionary<string, object> PlainValue { get; }
 
         public abstract void LoadPlainValue(
-            IDictionary<string, object> plainValue);
+            IImmutableDictionary<string, object> plainValue);
     }
 
     [ActionType("attack")]
     internal class Attack : Action
     {
-        public override IDictionary<string, object> PlainValue =>
+        public override IImmutableDictionary<string, object> PlainValue =>
             new Dictionary<string, object>()
             {
                 {"weapon", Weapon},
                 {"target", Target},
-            };
+            }.ToImmutableDictionary();
 
         public override void LoadPlainValue(
-            IDictionary<string, object> plainValue)
+            IImmutableDictionary<string, object> plainValue)
         {
             Weapon = Encoding.UTF8.GetString((byte[]) plainValue["weapon"]);
             Target = Encoding.UTF8.GetString((byte[]) plainValue["target"]);
@@ -43,15 +44,15 @@ namespace Libplanet.Tests.Tx
     {
         public int ZoneId { get; set; }
 
-        public override IDictionary<string, object> PlainValue =>
+        public override IImmutableDictionary<string, object> PlainValue =>
             new Dictionary<string, object>()
             {
                 {"zone_id", ZoneId},
-            };
+            }.ToImmutableDictionary();
 
 
         public override void LoadPlainValue(
-            IDictionary<string, object> plainValue)
+            IImmutableDictionary<string, object> plainValue)
         {
             ZoneId = Convert.ToInt32(plainValue["zone_id"]);
         }
