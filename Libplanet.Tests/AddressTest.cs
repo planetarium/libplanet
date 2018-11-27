@@ -84,21 +84,21 @@ namespace Libplanet.Tests
         [Fact]
         public void Equals_()
         {
-            var address1 = new Address(
+            var sameAddress1 = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 }
             );
-            var address2 = new Address(
+            var sameAddress2 = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 }
             );
-            var address3 = new Address(
+            var differentAddress = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -106,14 +106,14 @@ namespace Libplanet.Tests
                 }
             );
 
-            Assert.Equal(address1, address2);
-            Assert.NotEqual(address2, address3);
+            Assert.Equal(sameAddress1, sameAddress2);
+            Assert.NotEqual(sameAddress2, differentAddress);
 
-            Assert.True(address1 == address2);
-            Assert.False(address2 == address3);
+            Assert.True(sameAddress1 == sameAddress2);
+            Assert.False(sameAddress2 == differentAddress);
 
-            Assert.False(address1 != address2);
-            Assert.True(address2 != address3);
+            Assert.False(sameAddress1 != sameAddress2);
+            Assert.True(sameAddress2 != differentAddress);
         }
     }
 }

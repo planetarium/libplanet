@@ -72,7 +72,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void Equals_()
         {
-            var txId1 = new TxId(
+            var sameTxId1 = new TxId(
                 new byte[]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -81,7 +81,7 @@ namespace Libplanet.Tests.Tx
                     0x9c, 0xcc,
                 }
             );
-            var txId2 = new TxId(
+            var sameTxId2 = new TxId(
                 new byte[]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -90,7 +90,7 @@ namespace Libplanet.Tests.Tx
                     0x9c, 0xcc,
                 }
             );
-            var txId3 = new TxId(
+            var differentTxId = new TxId(
                 new byte[]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -100,14 +100,14 @@ namespace Libplanet.Tests.Tx
                 }
             );
 
-            Assert.Equal(txId1, txId2);
-            Assert.NotEqual(txId2, txId3);
+            Assert.Equal(sameTxId1, sameTxId2);
+            Assert.NotEqual(sameTxId2, differentTxId);
 
-            Assert.True(txId1 == txId2);
-            Assert.False(txId2 == txId3);
+            Assert.True(sameTxId1 == sameTxId2);
+            Assert.False(sameTxId2 == differentTxId);
 
-            Assert.False(txId1 != txId2);
-            Assert.True(txId2 != txId3);
+            Assert.False(sameTxId1 != sameTxId2);
+            Assert.True(sameTxId2 != differentTxId);
         }
     }
 }
