@@ -67,7 +67,7 @@ namespace Libplanet
                 return false;
             }
 
-            return base.Equals(obj);
+            return Equals((HashDigest)obj);
         }
 
         public bool Equals(HashDigest obj)
