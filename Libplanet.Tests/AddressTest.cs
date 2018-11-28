@@ -18,9 +18,7 @@ namespace Libplanet.Tests
             for (int size = 0; size < 25; size++)
             {
                 if (size == 20) continue;
-                var random = new Random();
-                var addressBytes = new byte[size];
-                random.NextBytes(addressBytes);
+                byte[] addressBytes = TestUtils.GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() =>
                     new Address(addressBytes)
                 );
@@ -30,11 +28,24 @@ namespace Libplanet.Tests
         [Fact]
         public void ToByteArray()
         {
-            var random = new Random();
-            var addressBytes = new byte[20];
-            random.NextBytes(addressBytes);
+            byte[] addressBytes = TestUtils.GetRandomBytes(20);
             var address = new Address(addressBytes);
             Assert.Equal(addressBytes, address.ToByteArray());
+        }
+
+        [Fact]
+        public void ToByteArrayShouldNotExposeContents()
+        {
+            var address = new Address(
+                new byte[20]
+                {
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+                }
+            );
+            address.ToByteArray()[0] = 0x00;
+
+            Assert.Equal(0x45, address.ToByteArray()[0]);
         }
 
         [Fact]
@@ -69,21 +80,21 @@ namespace Libplanet.Tests
         [Fact]
         public void Equals_()
         {
-            var address1 = new Address(
+            var sameAddress1 = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 }
             );
-            var address2 = new Address(
+            var sameAddress2 = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 }
             );
-            var address3 = new Address(
+            var differentAddress = new Address(
                 new byte[20]
                 {
                     0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -91,14 +102,14 @@ namespace Libplanet.Tests
                 }
             );
 
-            Assert.Equal(address1, address2);
-            Assert.NotEqual(address2, address3);
+            Assert.Equal(sameAddress1, sameAddress2);
+            Assert.NotEqual(sameAddress2, differentAddress);
 
-            Assert.True(address1 == address2);
-            Assert.False(address2 == address3);
+            Assert.True(sameAddress1 == sameAddress2);
+            Assert.False(sameAddress2 == differentAddress);
 
-            Assert.False(address1 != address2);
-            Assert.True(address2 != address3);
+            Assert.False(sameAddress1 != sameAddress2);
+            Assert.True(sameAddress2 != differentAddress);
         }
     }
 }

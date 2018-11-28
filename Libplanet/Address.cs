@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Libplanet.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
@@ -45,9 +46,10 @@ namespace Libplanet
             return new Address(output.Skip(output.Length - 20).ToArray());
         }
 
+        [Pure]
         public byte[] ToByteArray()
         {
-            return _address;
+            return (byte[])_address.Clone();
         }
 
         public override string ToString()
@@ -72,9 +74,7 @@ namespace Libplanet
 
         public override int GetHashCode()
         {
-            return _address.Aggregate(
-                0,
-                (current, t) => unchecked(current * 21 + t));
+            return ByteUtil.CalculateHashCode(_address);
         }
     }
 }

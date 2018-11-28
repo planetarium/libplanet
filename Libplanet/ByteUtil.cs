@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Libplanet
 {
@@ -20,6 +21,14 @@ namespace Libplanet
             string s = BitConverter.ToString(bytes);
 
             return s.Replace("-", string.Empty).ToLower();
+        }
+
+        public static int CalculateHashCode(byte[] bytes)
+        {
+            return bytes.Aggregate(
+                0,
+                (current, t) => unchecked(current * (bytes.Length + 1) + t)
+            );
         }
     }
 }

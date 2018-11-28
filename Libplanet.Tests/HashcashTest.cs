@@ -49,9 +49,7 @@ namespace Libplanet.Tests
             {
                 for (int i = 0; i < 2; i++)
                 {
-                    var random = new Random();
-                    var challenge = new byte[40];
-                    random.NextBytes(challenge);
+                    var challenge = TestUtils.GetRandomBytes(40);
                     yield return new object[] { challenge, bits };
                 }
             }
