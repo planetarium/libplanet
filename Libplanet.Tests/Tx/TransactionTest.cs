@@ -272,5 +272,54 @@ namespace Libplanet.Tests.Tx
 
             Assert.Throws<InvalidTxPublicKeyException>(() => { tx.Validate(); });
         }
+
+        [Fact]
+        public void CanConvertToRaw()
+        {
+            PrivateKey privateKey = PrivateKey.FromBytes(
+                ByteUtil.ParseHex(
+                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
+                )
+            );
+            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var timestamp = new DateTime(2018, 11, 21);
+            Transaction<Action> tx = Transaction<Action>.Make(
+                privateKey,
+                recipient,
+                new List<Action>(),
+                timestamp
+            );
+
+            var exepctedWithoutSign = new RawTransaction(
+                sender: ByteUtil.ParseHex("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc"),
+                recipient: ByteUtil.ParseHex("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc"),
+                publicKey: ByteUtil.ParseHex("0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f732808711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296"),
+                timestamp: "2018-11-21T00:00:00.000000Z",
+                actions: new List<IDictionary<string, object>>()
+            );
+
+            Assert.Equal(exepctedWithoutSign, tx.ToRawTransaction(false));
+
+            var exepctedWithSign = exepctedWithoutSign.AddSignature(
+                ByteUtil.ParseHex("3045022100d3009449764f77e5e3de701451f16e6555f0ab7d1fcb1533f1c8977a1af099100220254b158567b4b285d2a31bf3a922596ec8deeffc32e4f2d5e5982f4030478f4d")
+            );
+            Assert.Equal(exepctedWithSign, tx.ToRawTransaction(true));
+        }
+
+        [Fact]
+        public void CanConvertFromRawTransaction()
+        {
+            RawTransaction rawTx = new RawTransaction(
+                sender: ByteUtil.ParseHex("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc"),
+                recipient: ByteUtil.ParseHex("c2a86014073d662a4a9bfcf9cb54263dfa4f5cbc"),
+                publicKey: ByteUtil.ParseHex("0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f732808711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296"),
+                timestamp: "2018-11-21T00:00:00.000000Z",
+                actions: new List<IDictionary<string, object>>(),
+                signature: ByteUtil.ParseHex("3045022100d3009449764f77e5e3de701451f16e6555f0ab7d1fcb1533f1c8977a1af099100220254b158567b4b285d2a31bf3a922596ec8deeffc32e4f2d5e5982f4030478f4d")
+            );
+
+            var tx = new Transaction<Action>(rawTx);
+            tx.Validate();
+        }
     }
 }
