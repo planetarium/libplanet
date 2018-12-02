@@ -99,4 +99,12 @@ namespace Libplanet
             return ByteUtil.Hex(ToByteArray());
         }
     }
+
+    public static class HashDigestExtension
+    {
+        public static HashDigest ToHashDigest(this string str)
+        {
+            return new HashDigest(ByteUtil.ParseHex(str));
+        }
+    }
 }
