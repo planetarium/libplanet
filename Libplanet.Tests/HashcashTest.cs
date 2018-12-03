@@ -12,8 +12,7 @@ namespace Libplanet.Tests
         [ClassData(typeof(HashcashTestData))]
         public void AnswerHasLeadingZeroBits(byte[] challenge, int bits)
         {
-            Hashcash.Stamp stamp =
-                nonce => challenge.Concat(nonce.ToByteArray()).ToArray();
+            byte[] stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(stamp, bits);
             var digest = Hashcash.Hash(stamp(answer));
             Assert.True(digest.HasLeadingZeroBits(bits));
