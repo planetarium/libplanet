@@ -9,37 +9,6 @@ using Xunit;
 
 namespace Libplanet.Tests.Serialization.Bencode
 {
-    [Serializable]
-    internal class Person : ISerializable
-    {
-        public string Name { get; internal set; }
-        public int Age { get; internal set; }
-        public List<string> Names { get; internal set; }
-
-        public Person()
-        {
-        }
-
-        protected Person(SerializationInfo info, StreamingContext context)
-        {
-            Name = info.GetString("Name");
-            Age = (int) info.GetInt64("Age");
-            Names =
-                ((List<object>) info.GetValue("Names", typeof(List<object>)))
-                .OfType<byte[]>()
-                .Select(bs => Encoding.UTF8.GetString(bs))
-                .ToList();
-        }
-
-        public void GetObjectData(SerializationInfo info,
-            StreamingContext context)
-        {
-            info.AddValue("Name", Name);
-            info.AddValue("Age", Age);
-            info.AddValue("Names", Names);
-        }
-    }
-
     public class BencodeFormatterTest
     {
         [Fact]
@@ -74,13 +43,48 @@ namespace Libplanet.Tests.Serialization.Bencode
             var formatter = new BencodeFormatter<Person>();
             using (var stream = new MemoryStream(serialized))
             {
-                var person = (Person) formatter.Deserialize(stream);
+                var person = (Person)formatter.Deserialize(stream);
                 Assert.Equal(30, person.Age);
                 Assert.Equal("Swen Mun", person.Name);
                 Assert.Equal(
-                    new List<string> {"Swen Mun", "문성원", "ムンソンワン"},
+                    new List<string> { "Swen Mun", "문성원", "ムンソンワン" },
                     person.Names);
             }
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single class
+    [Serializable]
+    internal class Person : ISerializable
+    {
+        public Person()
+        {
+        }
+
+        protected Person(SerializationInfo info, StreamingContext context)
+        {
+            Name = info.GetString("Name");
+            Age = (int)info.GetInt64("Age");
+            Names =
+                ((List<object>)info.GetValue("Names", typeof(List<object>)))
+                .OfType<byte[]>()
+                .Select(bs => Encoding.UTF8.GetString(bs))
+                .ToList();
+        }
+
+        public string Name { get; internal set; }
+
+        public int Age { get; internal set; }
+
+        public List<string> Names { get; internal set; }
+
+        public void GetObjectData(
+            SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Name", Name);
+            info.AddValue("Age", Age);
+            info.AddValue("Names", Names);
+        }
+    }
+#pragma warning restore SA1402 // File may only contain a single class
 }

@@ -17,7 +17,11 @@ namespace Libplanet.Tests
         {
             for (int size = 0; size < 25; size++)
             {
-                if (size == 20) continue;
+                if (size == 20)
+                {
+                    continue;
+                }
+
                 byte[] addressBytes = TestUtils.GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() =>
                     new Address(addressBytes)

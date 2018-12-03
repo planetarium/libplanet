@@ -8,46 +8,8 @@ using Xunit;
 
 namespace Libplanet.Tests.Blocks
 {
-    internal class Action : IAction
-    {
-        public IImmutableDictionary<string, object> PlainValue => throw new NotImplementedException();
-
-        public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     public class BlockTest
     {
-        private Block<Action> MineGenesis()
-        {
-            var rewardBenificiary = new Address(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")
-            );
-            var timestamp = new DateTime(2018, 11, 29);
-            return Block<Action>.Mine(
-                index: 0,
-                difficulty: 0,
-                rewardBeneficiary: rewardBenificiary,
-                previousHash: null,
-                timestamp: timestamp,
-                transactions: new List<Transaction<Action>>()
-            );
-        }
-
-        private Block<Action> MineNext(Block<Action> previousBlock)
-        {
-            return Block<Action>.Mine(
-                index: 1,
-                difficulty: 1,
-                rewardBeneficiary: previousBlock.RewardBeneficiary.Value,
-                previousHash: previousBlock.Hash,
-                timestamp: previousBlock.Timestamp.AddDays(1),
-                transactions: new List<Transaction<Action>>()
-            );
-        }
-
         [Fact]
         public void CanMine()
         {
@@ -56,9 +18,9 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(0, genesis.Difficulty);
             Assert.Null(genesis.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 29), genesis.Timestamp);
-            Assert.Equal(new Address(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")
-            ), genesis.RewardBeneficiary);
+            Assert.Equal(
+                new Address(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")),
+                genesis.RewardBeneficiary);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), genesis.Nonce);
             Assert.Equal(
                 new HashDigest(
@@ -75,9 +37,9 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(1, next.Difficulty);
             Assert.Equal(genesis.Hash, next.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 30), next.Timestamp);
-            Assert.Equal(new Address(
-                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")
-            ), next.RewardBeneficiary);
+            Assert.Equal(
+                new Address(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")),
+                next.RewardBeneficiary);
         }
 
         [Fact]
@@ -111,7 +73,7 @@ namespace Libplanet.Tests.Blocks
             var invalidBlock = new Block<Action>(
                 index: next.Index,
                 difficulty: next.Difficulty,
-                nonce: new Nonce(new byte[] {0x00}),
+                nonce: new Nonce(new byte[] { 0x00 }),
                 rewardBeneficiary: next.RewardBeneficiary,
                 previousHash: next.PreviousHash,
                 timestamp: next.Timestamp,
@@ -257,5 +219,45 @@ namespace Libplanet.Tests.Blocks
             Assert.False(sameBlock1 != sameBlock2);
             Assert.True(sameBlock2 != differentBlock);
         }
+
+        private Block<Action> MineGenesis()
+        {
+            var rewardBenificiary = new Address(
+                ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")
+            );
+            var timestamp = new DateTime(2018, 11, 29);
+            return Block<Action>.Mine(
+                index: 0,
+                difficulty: 0,
+                rewardBeneficiary: rewardBenificiary,
+                previousHash: null,
+                timestamp: timestamp,
+                transactions: new List<Transaction<Action>>()
+            );
+        }
+
+        private Block<Action> MineNext(Block<Action> previousBlock)
+        {
+            return Block<Action>.Mine(
+                index: 1,
+                difficulty: 1,
+                rewardBeneficiary: previousBlock.RewardBeneficiary.Value,
+                previousHash: previousBlock.Hash,
+                timestamp: previousBlock.Timestamp.AddDays(1),
+                transactions: new List<Transaction<Action>>()
+            );
+        }
     }
+
+#pragma warning disable SA1402 // File may only contain a single class
+    internal class Action : IAction
+    {
+        public IImmutableDictionary<string, object> PlainValue => throw new NotImplementedException();
+
+        public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+        {
+            throw new NotImplementedException();
+        }
+    }
+#pragma warning restore SA1402 // File may only contain a single class
 }

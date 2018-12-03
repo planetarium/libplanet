@@ -3,11 +3,6 @@ using Xunit;
 
 namespace Libplanet.Tests.Action
 {
-    [ActionType("test_action")]
-    internal class TestAction
-    {
-    }
-
     public class ActionTypeAttributeTest
     {
         [Fact]
@@ -19,4 +14,11 @@ namespace Libplanet.Tests.Action
             );
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single class
+    [ActionType("test_action")]
+    internal class TestAction
+    {
+    }
+#pragma warning restore SA1402 // File may only contain a single class
 }

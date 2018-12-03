@@ -29,7 +29,6 @@ namespace Libplanet.Tests.Crypto
             Assert.Equal(bs, prvKey.Decrypt(encrypted));
         }
 
-
         [Fact]
         public void EqualsTest()
         {
