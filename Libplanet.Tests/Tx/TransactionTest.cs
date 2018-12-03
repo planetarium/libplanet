@@ -10,54 +10,6 @@ using Xunit;
 
 namespace Libplanet.Tests.Tx
 {
-    internal abstract class Action : IAction
-    {
-        public abstract IImmutableDictionary<string, object> PlainValue { get; }
-
-        public abstract void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue);
-    }
-
-    [ActionType("attack")]
-    internal class Attack : Action
-    {
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
-            {
-                {"weapon", Weapon},
-                {"target", Target},
-            }.ToImmutableDictionary();
-
-        public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
-        {
-            Weapon = Encoding.UTF8.GetString((byte[]) plainValue["weapon"]);
-            Target = Encoding.UTF8.GetString((byte[]) plainValue["target"]);
-        }
-
-        public string Weapon { get; set; }
-        public string Target { get; set; }
-    }
-
-    [ActionType("sleep")]
-    internal class Sleep : Action
-    {
-        public int ZoneId { get; set; }
-
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
-            {
-                {"zone_id", ZoneId},
-            }.ToImmutableDictionary();
-
-
-        public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
-        {
-            ZoneId = Convert.ToInt32(plainValue["zone_id"]);
-        }
-    }
-
     public class TransactionTest
     {
         [Fact]
@@ -130,14 +82,17 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
+            var actions = new List<Action>
+            {
+                new Attack { Weapon = "wand", Target = "orc" },
+                new Sleep { ZoneId = 10 }
+            };
+
             Transaction<Action> tx = Transaction<Action>.Make(
                 privateKey,
                 recipient,
-                new List<Action>
-                {
-                    new Attack {Weapon = "wand", Target = "orc"},
-                    new Sleep {ZoneId = 10}
-                }, timestamp
+                actions,
+                timestamp
             );
 
             byte[] expected = ByteUtil.ParseHex(
@@ -214,8 +169,8 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(
                 new Dictionary<string, object>()
                 {
-                    {"weapon", "wand"},
-                    {"target", "orc"}
+                    { "weapon", "wand" },
+                    { "target", "orc" }
                 },
                 tx.Actions[0].PlainValue
             );
@@ -223,7 +178,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(
                 new Dictionary<string, object>()
                 {
-                    {"zone_id", 10}
+                    { "zone_id", 10 }
                 },
                 tx.Actions[1].PlainValue
             );
@@ -322,4 +277,54 @@ namespace Libplanet.Tests.Tx
             tx.Validate();
         }
     }
+
+#pragma warning disable SA1402 // File may only contain a single class
+    internal abstract class Action : IAction
+    {
+        public abstract IImmutableDictionary<string, object> PlainValue { get; }
+
+        public abstract void LoadPlainValue(
+            IImmutableDictionary<string, object> plainValue);
+    }
+
+    [ActionType("attack")]
+    internal class Attack : Action
+    {
+        public override IImmutableDictionary<string, object> PlainValue =>
+            new Dictionary<string, object>()
+            {
+                { "weapon", Weapon },
+                { "target", Target },
+            }.ToImmutableDictionary();
+
+        public string Weapon { get; set; }
+
+        public string Target { get; set; }
+
+        public override void LoadPlainValue(
+            IImmutableDictionary<string, object> plainValue)
+        {
+            Weapon = Encoding.UTF8.GetString((byte[])plainValue["weapon"]);
+            Target = Encoding.UTF8.GetString((byte[])plainValue["target"]);
+        }
+    }
+
+    [ActionType("sleep")]
+    internal class Sleep : Action
+    {
+        public int ZoneId { get; set; }
+
+        public override IImmutableDictionary<string, object> PlainValue =>
+            new Dictionary<string, object>()
+            {
+                { "zone_id", ZoneId },
+            }.ToImmutableDictionary();
+
+        public override void LoadPlainValue(
+            IImmutableDictionary<string, object> plainValue)
+        {
+            ZoneId = Convert.ToInt32(plainValue["zone_id"]);
+        }
+    }
+#pragma warning restore SA1402 // File may only contain a single class
 }

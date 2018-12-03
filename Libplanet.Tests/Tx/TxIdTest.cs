@@ -17,7 +17,10 @@ namespace Libplanet.Tests.Tx
         {
             for (int size = 0; size < 36; size++)
             {
-                if (size == 32) continue;
+                if (size == 32)
+                {
+                    continue;
+                }
 
                 byte[] bytes = TestUtils.GetRandomBytes(size);
                 Assert.Throws<ArgumentException>(() => new TxId(bytes));

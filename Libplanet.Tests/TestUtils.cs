@@ -2,7 +2,7 @@ using System;
 
 namespace Libplanet.Tests
 {
-    class TestUtils
+    internal class TestUtils
     {
         internal static byte[] GetRandomBytes(int size)
         {
