@@ -27,6 +27,11 @@ namespace Libplanet
             return !o1.Equals(o2);
         }
 
+        public static HashDigest FromString(string s)
+        {
+            return new HashDigest(ByteUtil.ParseHex(s));
+        }
+
         public bool HasLeadingZeroBits(int bits)
         {
             var leadingBytes = bits / 8;
@@ -97,6 +102,14 @@ namespace Libplanet
         public override string ToString()
         {
             return ByteUtil.Hex(ToByteArray());
+        }
+    }
+
+    public static class HashDigestExtension
+    {
+        public static HashDigest ToHashDigest(this string str)
+        {
+            return HashDigest.FromString(str);
         }
     }
 }
