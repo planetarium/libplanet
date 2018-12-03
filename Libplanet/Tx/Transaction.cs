@@ -33,31 +33,26 @@ namespace Libplanet.Tx
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
-        // ReSharper disable once UnusedMember.Local
-        private Transaction(SerializationInfo info, StreamingContext context)
+        public Transaction(RawTransaction rawTx)
         {
-            Sender =
-                new Address((byte[])info.GetValue("sender", typeof(byte[])));
-            PublicKey =
-                PublicKey.FromBytes(
-                    (byte[])info.GetValue("public_key", typeof(byte[])));
-            Recipient =
-                new Address(
-                    (byte[])info.GetValue("recipient", typeof(byte[])));
+            Sender = new Address(rawTx.Sender);
+            PublicKey = PublicKey.FromBytes(rawTx.PublicKey);
+            Recipient = new Address(rawTx.Recipient);
             Timestamp = DateTime.ParseExact(
-                info.GetString("timestamp"),
+                rawTx.Timestamp,
                 TimestampFormat,
                 CultureInfo.InvariantCulture
             ).ToUniversalTime();
-            Signature = (byte[])info.GetValue("signature", typeof(byte[]));
-
-            Actions =
-                ((IEnumerable)info.GetValue(
-                    "actions",
-                    typeof(IEnumerable)))
-                .OfType<IDictionary<string, object>>()
+            Signature = rawTx.Signature;
+            Actions = rawTx.Actions
                 .Select(ToAction)
                 .ToList();
+        }
+
+        // ReSharper disable once UnusedMember.Local
+        private Transaction(SerializationInfo info, StreamingContext context)
+            : this(new RawTransaction(info, context))
+        {
         }
 
         private Transaction(
@@ -82,7 +77,7 @@ namespace Libplanet.Tx
             {
                 using (var hasher = SHA256.Create())
                 {
-                    byte[] payload = Bencoded(true);
+                    byte[] payload = Bencode(true);
                     return new TxId(hasher.ComputeHash(payload));
                 }
             }
@@ -120,11 +115,11 @@ namespace Libplanet.Tx
                 recipient,
                 timestamp,
                 actions,
-                privateKey.Sign(tx.Bencoded(false))
+                privateKey.Sign(tx.Bencode(false))
             );
         }
 
-        public byte[] Bencoded(bool sign)
+        public byte[] Bencode(bool sign)
         {
             var serializer = new BencodeFormatter<Transaction<T>>
             {
@@ -142,7 +137,7 @@ namespace Libplanet.Tx
 
         public void Validate()
         {
-            if (!PublicKey.Verify(Bencoded(false), Signature))
+            if (!PublicKey.Verify(Bencode(false), Signature))
             {
                 throw new InvalidTxSignatureException(
                     $"the signature ({ByteUtil.Hex(Signature)}) is failed to verify."
@@ -161,23 +156,11 @@ namespace Libplanet.Tx
             SerializationInfo info,
             StreamingContext context)
         {
-            info.AddValue("sender", Sender.ToByteArray());
-            info.AddValue("public_key", PublicKey.Format(false));
-            info.AddValue("recipient", Recipient.ToByteArray());
-            info.AddValue("actions", Actions.Select(
-                a => new Dictionary<string, object>
-                {
-                    { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
-                    { "values", a.PlainValue }
-                })
-            );
-
-            info.AddValue("timestamp", Timestamp.ToString(TimestampFormat));
-            if (context.Context is TransactionSerializationContext txContext &&
-                txContext.IncludeSignature)
-            {
-                info.AddValue("signature", Signature);
-            }
+            bool includeSignature =
+                context.Context is TransactionSerializationContext txContext &&
+                txContext.IncludeSignature;
+            RawTransaction rawTx = ToRawTransaction(includeSignature);
+            rawTx.GetObjectData(info, context);
         }
 
         public bool Equals(Transaction<T> other)
@@ -198,6 +181,28 @@ namespace Libplanet.Tx
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+
+        public RawTransaction ToRawTransaction(bool includeSign)
+        {
+            var rawTx = new RawTransaction(
+                sender: Sender.ToByteArray(),
+                recipient: Recipient.ToByteArray(),
+                publicKey: PublicKey.Format(false),
+                timestamp: Timestamp.ToString(TimestampFormat),
+                actions: Actions.Select(a => new Dictionary<string, object>
+                {
+                    { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
+                    { "values", a.PlainValue }
+                })
+            );
+
+            if (includeSign)
+            {
+                rawTx = rawTx.AddSignature(Signature);
+            }
+
+            return rawTx;
         }
 
         private static T ToAction(IDictionary<string, object> arg)
