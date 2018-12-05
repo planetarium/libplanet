@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Runtime.Serialization;
+using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
 {
@@ -35,6 +36,20 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Transactions = transactions;
             Hash = hash;
+        }
+
+        private RawBlock(SerializationInfo info, StreamingContext context)
+            : this(
+                  index: info.GetInt32("index"),
+                  timestamp: info.GetString("timestamp"),
+                  nonce: info.GetValue<byte[]>("nonce"),
+                  rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
+                  difficulty: info.GetInt32("difficulty"),
+                  previousHash: info.GetValueOrDefault<byte[]>("previous_hash", null),
+                  transactions: info.GetValue<IEnumerable>("transactions"),
+                  hash: info.GetValue<byte[]>("hash")
+            )
+        {
         }
 
         public int Index { get; }
