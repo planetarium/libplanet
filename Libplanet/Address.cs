@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Libplanet.Crypto;
@@ -6,9 +7,13 @@ using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
 {
-    public struct Address : IEquatable<Address>
+    #pragma warning disable CS0282
+    [Uno.GeneratedEquality]
+    public partial struct Address
+    #pragma warning restore CS0282
     {
-        private readonly byte[] _address;
+        [Uno.EqualityKey]
+        public readonly ImmutableArray<byte> ByteArray;
 
         public Address(byte[] address)
         {
@@ -22,17 +27,15 @@ namespace Libplanet
                 throw new ArgumentException("address must be 20 bytes");
             }
 
-            _address = address;
-        }
+            ByteArray = address.ToImmutableArray();
 
-        public static bool operator ==(Address a1, Address a2)
-        {
-            return a1.Equals(a2);
-        }
-
-        public static bool operator !=(Address a1, Address a2)
-        {
-            return !(a1 == a2);
+            #pragma warning disable CS0103
+            /* Suppress CS0171.
+            See also https://github.com/nventive/Uno.CodeGen/pull/91
+            */
+            _computedHashCode = null;
+            _computedKeyHashCode = null;
+            #pragma warning restore CS0103
         }
 
         public static Address FromPublicKey(PublicKey key)
@@ -47,34 +50,11 @@ namespace Libplanet
         }
 
         [Pure]
-        public byte[] ToByteArray()
-        {
-            return (byte[])_address.Clone();
-        }
+        public byte[] ToByteArray() => ByteArray.ToArray();
 
         public override string ToString()
         {
             return $"0x{ByteUtil.Hex(ToByteArray())}";
-        }
-
-        public bool Equals(Address other)
-        {
-            return _address.SequenceEqual(other._address);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            return obj is Address other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return ByteUtil.CalculateHashCode(_address);
         }
     }
 }
