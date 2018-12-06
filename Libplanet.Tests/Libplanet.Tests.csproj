@@ -4,6 +4,7 @@
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <PropertyGroup>

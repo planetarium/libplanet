@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <PropertyGroup>
