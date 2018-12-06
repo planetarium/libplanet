@@ -283,8 +283,18 @@ namespace Libplanet.Tests.Tx
     {
         public abstract IImmutableDictionary<string, object> PlainValue { get; }
 
+        public AddressStateMap Execute(Address sender, Address recipient, AddressStateMap requestedStates)
+        {
+            throw new NotImplementedException();
+        }
+
         public abstract void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue);
+
+        public ISet<Address> RequestStates(Address sender, Address recipient)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [ActionType("attack")]
