@@ -69,10 +69,10 @@ namespace Libplanet
         }
 
         [Pure]
-        public bool HasLeadingZeroBits(int bits)
+        public bool HasLeadingZeroBits(uint bits)
         {
-            var leadingBytes = bits / 8;
-            var trailingBits = bits % 8;
+            uint leadingBytes = bits / 8;
+            int trailingBits = (int)bits % 8;
 
             if (ByteArray.Length < (bits / 8) + 1)
             {
@@ -90,7 +90,7 @@ namespace Libplanet
             if (trailingBits != 0)
             {
                 var mask = 0xff << (8 - trailingBits) & 0xff;
-                return (ByteArray[leadingBytes] & mask) == 0;
+                return (ByteArray[(int)leadingBytes] & mask) == 0;
             }
 
             return true;

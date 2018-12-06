@@ -185,13 +185,13 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void CanStoreIndex()
         {
-            Assert.Equal(0, _fx.Store.CountIndex());
+            Assert.Equal(0u, _fx.Store.CountIndex());
             Assert.Empty(_fx.Store.IterateIndex());
             Assert.Null(_fx.Store.IndexBlockHash(0));
             Assert.Null(_fx.Store.IndexBlockHash(-1));
 
             Assert.Equal(0, _fx.Store.AppendIndex(_fx.Hash1));
-            Assert.Equal(1, _fx.Store.CountIndex());
+            Assert.Equal(1u, _fx.Store.CountIndex());
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {
@@ -202,7 +202,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(_fx.Hash1, _fx.Store.IndexBlockHash(-1));
 
             Assert.Equal(1, _fx.Store.AppendIndex(_fx.Hash2));
-            Assert.Equal(2, _fx.Store.CountIndex());
+            Assert.Equal(2u, _fx.Store.CountIndex());
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {

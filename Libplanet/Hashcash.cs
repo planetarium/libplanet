@@ -7,7 +7,7 @@ namespace Libplanet
     {
         public delegate byte[] Stamp(Nonce nonce);
 
-        public static Nonce Answer(Stamp stamp, int difficulty)
+        public static Nonce Answer(Stamp stamp, uint difficulty)
         {
             int counter = 1;
             while (true)

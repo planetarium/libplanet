@@ -7,11 +7,11 @@ namespace Libplanet.Blocks
     public struct RawBlock : ISerializable
     {
         public RawBlock(
-            int index,
+            ulong index,
             string timestamp,
             byte[] nonce,
             byte[] rewardBenificiary,
-            int difficulty,
+            uint difficulty,
             byte[] previousHash,
             IEnumerable transactions)
             : this(index, timestamp, nonce, rewardBenificiary, difficulty, previousHash, transactions, null)
@@ -19,11 +19,11 @@ namespace Libplanet.Blocks
         }
 
         public RawBlock(
-            int index,
+            ulong index,
             string timestamp,
             byte[] nonce,
             byte[] rewardBenificiary,
-            int difficulty,
+            uint difficulty,
             byte[] previousHash,
             IEnumerable transactions,
             byte[] hash)
@@ -40,11 +40,11 @@ namespace Libplanet.Blocks
 
         private RawBlock(SerializationInfo info, StreamingContext context)
             : this(
-                  index: info.GetInt32("index"),
+                  index: info.GetUInt64("index"),
                   timestamp: info.GetString("timestamp"),
                   nonce: info.GetValue<byte[]>("nonce"),
                   rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
-                  difficulty: info.GetInt32("difficulty"),
+                  difficulty: info.GetUInt32("difficulty"),
                   previousHash: info.GetValueOrDefault<byte[]>("previous_hash", null),
                   transactions: info.GetValue<IEnumerable>("transactions"),
                   hash: info.GetValue<byte[]>("hash")
@@ -52,7 +52,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public int Index { get; }
+        public ulong Index { get; }
 
         public string Timestamp { get; }
 
@@ -60,7 +60,7 @@ namespace Libplanet.Blocks
 
         public byte[] RewardBeneficiary { get; }
 
-        public int Difficulty { get; }
+        public uint Difficulty { get; }
 
         public byte[] PreviousHash { get; }
 

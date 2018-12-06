@@ -14,8 +14,8 @@ namespace Libplanet.Blocks
     public struct Block<T> : ISerializable
         where T : IAction
     {
-        public readonly int Index;
-        public readonly int Difficulty;
+        public readonly ulong Index;
+        public readonly uint Difficulty;
         public readonly Nonce Nonce;
         public readonly Address? RewardBeneficiary;
         public readonly HashDigest<SHA256>? PreviousHash;
@@ -24,8 +24,8 @@ namespace Libplanet.Blocks
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         public Block(
-            int index,
-            int difficulty,
+            ulong index,
+            uint difficulty,
             Nonce nonce,
             Address? rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
@@ -61,8 +61,8 @@ namespace Libplanet.Blocks
         }
 
         public static Block<T> Mine(
-            int index,
-            int difficulty,
+            ulong index,
+            uint difficulty,
             Address rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
             DateTime timestamp,

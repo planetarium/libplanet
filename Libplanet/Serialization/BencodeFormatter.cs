@@ -105,6 +105,10 @@ namespace Libplanet.Serialization
                     return new BString(s);
                 case long l:
                     return new BNumber(l);
+                case uint ui:
+                    return new BNumber(ui);
+                case ulong ul:
+                    return new BNumber(checked((long)ul));
                 case int i:
                     return new BNumber(i);
                 case byte[] bytes:

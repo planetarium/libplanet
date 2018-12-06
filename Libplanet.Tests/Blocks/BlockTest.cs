@@ -18,8 +18,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanMine()
         {
-            Assert.Equal(0, _fx.Genesis.Index);
-            Assert.Equal(0, _fx.Genesis.Difficulty);
+            Assert.Equal(0u, _fx.Genesis.Index);
+            Assert.Equal(0u, _fx.Genesis.Difficulty);
             Assert.Null(_fx.Genesis.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 29), _fx.Genesis.Timestamp);
             Assert.Equal(
@@ -37,8 +37,8 @@ namespace Libplanet.Tests.Blocks
 
             Block<Action> next = TestUtils.MineNext(_fx.Genesis);
 
-            Assert.Equal(1, _fx.Next.Index);
-            Assert.Equal(1, _fx.Next.Difficulty);
+            Assert.Equal(1u, _fx.Next.Index);
+            Assert.Equal(1u, _fx.Next.Difficulty);
             Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 30), _fx.Next.Timestamp);
             Assert.Equal(
@@ -80,22 +80,6 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockNonceException>(() => { invalidBlock.Validate(); });
-        }
-
-        [Fact]
-        public void CanDetectInvalidIndex()
-        {
-            var invalidBlock = new Block<Action>(
-                index: -1,
-                difficulty: 1,
-                nonce: new Nonce(new byte[] { 0x00 }),
-                rewardBeneficiary: null,
-                previousHash: null,
-                timestamp: new DateTime(2018, 11, 29),
-                transactions: new List<Transaction<Action>>()
-            );
-
-            Assert.Throws<InvalidBlockIndexException>(() => { invalidBlock.Validate(); });
         }
 
         [Fact]
@@ -156,8 +140,8 @@ namespace Libplanet.Tests.Blocks
         public void CanConvertToRaw()
         {
             RawBlock rawGenesis = _fx.Genesis.ToRawBlock(true, true);
-            Assert.Equal(0, rawGenesis.Index);
-            Assert.Equal(0, rawGenesis.Difficulty);
+            Assert.Equal(0u, rawGenesis.Index);
+            Assert.Equal(0u, rawGenesis.Difficulty);
             Assert.Null(rawGenesis.PreviousHash);
             Assert.Equal("2018-11-29T00:00:00.000000Z", rawGenesis.Timestamp);
             Assert.Equal(
@@ -175,8 +159,8 @@ namespace Libplanet.Tests.Blocks
 
             RawBlock rawNext = _fx.Next.ToRawBlock(false, false);
 
-            Assert.Equal(1, rawNext.Index);
-            Assert.Equal(1, rawNext.Difficulty);
+            Assert.Equal(1u, rawNext.Index);
+            Assert.Equal(1u, rawNext.Difficulty);
             Assert.Equal(rawGenesis.Hash, rawNext.PreviousHash);
             Assert.Equal("2018-11-30T00:00:00.000000Z", rawNext.Timestamp);
             Assert.Equal(

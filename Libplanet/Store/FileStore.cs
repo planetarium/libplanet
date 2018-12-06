@@ -134,13 +134,13 @@ namespace Libplanet.Store
             }
         }
 
-        public override long CountIndex()
+        public override ulong CountIndex()
         {
             var indexFile = new FileInfo(_indexPath);
             if (indexFile.Exists)
             {
-                var indexSize = indexFile.Length;
-                if (indexSize % HashDigest<SHA256>.Size != 0)
+                var indexSize = (ulong)indexFile.Length;
+                if (indexSize % (ulong)HashDigest<SHA256>.Size != 0)
                 {
                     throw new FileLoadException(
                         $"Index size {indexSize} should be a multiple " +
@@ -148,7 +148,7 @@ namespace Libplanet.Store
                     );
                 }
 
-                return indexSize / HashDigest<SHA256>.Size;
+                return indexSize / (ulong)HashDigest<SHA256>.Size;
             }
 
             return 0;
@@ -251,7 +251,7 @@ namespace Libplanet.Store
         {
             if (index < 0)
             {
-                index += CountIndex();
+                index += (long)CountIndex();
 
                 if (index < 0)
                 {
@@ -267,7 +267,7 @@ namespace Libplanet.Store
             using (Stream stream = IndexFileStream())
             {
                 var blockHash = new byte[HashDigest<SHA256>.Size];
-                stream.Seek(HashDigest<SHA256>.Size * index, SeekOrigin.Begin);
+                stream.Seek(HashDigest<SHA256>.Size * (int)index, SeekOrigin.Begin);
                 var bytesRead = stream.Read(blockHash, 0, HashDigest<SHA256>.Size);
                 Trace.Assert(bytesRead == HashDigest<SHA256>.Size);
 
