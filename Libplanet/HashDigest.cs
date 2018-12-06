@@ -31,6 +31,7 @@ namespace Libplanet
             #pragma warning restore CS0103
         }
 
+        [Pure]
         public static HashDigest FromString(string s)
         {
             return new HashDigest(ByteUtil.ParseHex(s));
@@ -67,6 +68,7 @@ namespace Libplanet
         [Pure]
         public byte[] ToByteArray() => ByteArray.ToArray();
 
+        [Pure]
         public override string ToString()
         {
             return ByteUtil.Hex(ToByteArray());

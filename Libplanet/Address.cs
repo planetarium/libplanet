@@ -38,6 +38,7 @@ namespace Libplanet
             #pragma warning restore CS0103
         }
 
+        [Pure]
         public static Address FromPublicKey(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
@@ -52,6 +53,7 @@ namespace Libplanet
         [Pure]
         public byte[] ToByteArray() => ByteArray.ToArray();
 
+        [Pure]
         public override string ToString()
         {
             return $"0x{ByteUtil.Hex(ToByteArray())}";

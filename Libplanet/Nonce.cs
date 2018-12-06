@@ -34,6 +34,7 @@ namespace Libplanet
         [Pure]
         public byte[] ToByteArray() => ByteArray.ToArray();
 
+        [Pure]
         public override string ToString()
         {
             return ByteUtil.Hex(ToByteArray());
