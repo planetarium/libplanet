@@ -12,12 +12,17 @@ steps:
   displayName: 'Restore'
   inputs:
     command: 'restore'
-- task: DotNetCoreCLI@2
+- task: VSBuild@1
   displayName: 'Build'
   inputs:
-    command: 'build'
-- task: DotNetCoreCLI@2
+    solution: '**/*.sln'
+    vsVersion: latest
+    platform: 'any cpu'
+    configuration: release
+    logProjectEvents: true
+- task: VSTest@2
   displayName: 'Test'
   inputs:
-    command: 'test'
-    projects: 'Libplanet.Tests'
+    vsVersion: latest
+    platform: 'any cpu'
+    configuration: release
