@@ -23,11 +23,11 @@ namespace Libplanet
             }
         }
 
-        public static HashDigest Hash(byte[] bytes)
+        public static HashDigest<SHA256> Hash(byte[] bytes)
         {
             using (SHA256 hashAlgo = SHA256.Create())
             {
-                return new HashDigest(hashAlgo.ComputeHash(bytes));
+                return new HashDigest<SHA256>(hashAlgo.ComputeHash(bytes));
             }
         }
     }

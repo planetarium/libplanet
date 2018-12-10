@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -23,7 +24,7 @@ namespace Libplanet.Tests.Blocks
                 genesis.RewardBeneficiary);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), genesis.Nonce);
             Assert.Equal(
-                new HashDigest(
+                new HashDigest<SHA256>(
                     ByteUtil.ParseHex(
                         "b23717ecdf0b9c83bcc92f5675f827c1ee6808887bf1ce14f0322318174e1007"
                     )
@@ -139,7 +140,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: genesis.Difficulty,
                 nonce: genesis.Nonce,
                 rewardBeneficiary: genesis.RewardBeneficiary,
-                previousHash: new HashDigest(TestUtils.GetRandomBytes(32)), // invalid
+                previousHash: new HashDigest<SHA256>(TestUtils.GetRandomBytes(32)), // invalid
                 timestamp: genesis.Timestamp,
                 transactions: genesis.Transactions
             );
