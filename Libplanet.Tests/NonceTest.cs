@@ -12,6 +12,13 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void DefaultConstructor()
+        {
+            Nonce defaultValue = default;
+            Assert.Equal(new Nonce(new byte[0]), defaultValue);
+        }
+
+        [Fact]
         public void ToByteArray()
         {
             byte[] nonceBytes = TestUtils.GetRandomBytes(5);

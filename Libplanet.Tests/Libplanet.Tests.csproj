@@ -5,6 +5,7 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsTestProject>true</IsTestProject>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>

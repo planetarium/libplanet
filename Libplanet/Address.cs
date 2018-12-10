@@ -12,8 +12,7 @@ namespace Libplanet
     public partial struct Address
     #pragma warning restore CS0282
     {
-        [Uno.EqualityKey]
-        public readonly ImmutableArray<byte> ByteArray;
+        private ImmutableArray<byte> _byteArray;
 
         public Address(byte[] address)
         {
@@ -27,7 +26,7 @@ namespace Libplanet
                 throw new ArgumentException("address must be 20 bytes");
             }
 
-            ByteArray = address.ToImmutableArray();
+            _byteArray = address.ToImmutableArray();
 
             #pragma warning disable CS0103
             /* Suppress CS0171.
@@ -36,6 +35,20 @@ namespace Libplanet
             _computedHashCode = null;
             _computedKeyHashCode = null;
             #pragma warning restore CS0103
+        }
+
+        [Uno.EqualityKey]
+        public ImmutableArray<byte> ByteArray
+        {
+            get
+            {
+                if (_byteArray.IsDefault)
+                {
+                    _byteArray = new byte[20].ToImmutableArray();
+                }
+
+                return _byteArray;
+            }
         }
 
         [Pure]

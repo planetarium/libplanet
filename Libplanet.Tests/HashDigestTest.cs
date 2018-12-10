@@ -8,6 +8,16 @@ namespace Libplanet.Tests
     public class HashDigestTest
     {
         [Fact]
+        public void DefaultConstructor()
+        {
+            HashDigest<SHA1> sha1Default = default;
+            Assert.Equal(new HashDigest<SHA1>(new byte[20]), sha1Default);
+
+            HashDigest<SHA256> sha256Default = default;
+            Assert.Equal(new HashDigest<SHA256>(new byte[32]), sha256Default);
+        }
+
+        [Fact]
         public void ToHashDigestWorks()
         {
             var b =
