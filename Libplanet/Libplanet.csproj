@@ -3,6 +3,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>false</IsTestProject>
+    <UnoSourceGeneratorUseGenerationHost>true</UnoSourceGeneratorUseGenerationHost>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,11 +14,30 @@
   <ItemGroup>
     <PackageReference Include="BencodeNET" Version="2.2.24" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+    <PackageReference Include="CommonServiceLocator" Version="1.3.0">
+      <!-- Note that this is actually not necessarily a direct dependency,
+      but an indirect dependency of Uno.Core.  This item purposes to merely
+      ignore NU1701 warnings during restoring Uno.CodeGen package.
+      See also:
+      https://github.com/nventive/Uno/blob/master/doc/articles/faq.md#warning-package-unouisourcegenerationtasks-was-restored-using-netframeworkversion461
+      -->
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="Uno.SourceGenerationTasks" Version="1.29.0-dev.195">
+      <!-- Note that this is actually not necessarily a direct dependency,
+      but an indirect dependency of Uno.CodeGen.  This item purposes to merely
+      ignore NU1701 warnings during restoring Uno.CodeGen package.
+      See also:
+      https://github.com/nventive/Uno/blob/master/doc/articles/faq.md#warning-package-unouisourcegenerationtasks-was-restored-using-netframeworkversion461
+      -->
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="Uno.CodeGen" Version="1.30.0-dev.102" />
+    <PackageReference Include="Uno.Core" Version="1.25.0" />
   </ItemGroup>
 
   <ItemGroup>

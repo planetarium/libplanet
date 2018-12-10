@@ -1,12 +1,17 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Libplanet
 {
-    public struct Nonce : IEquatable<Nonce>
+    #pragma warning disable CS0282
+    [Uno.GeneratedEquality]
+    public partial struct Nonce : IEquatable<Nonce>
+    #pragma warning restore CS0282
     {
-        private readonly byte[] _nonce;
+        [Uno.EqualityKey]
+        public readonly ImmutableArray<byte> ByteArray;
 
         public Nonce(byte[] nonce)
         {
@@ -15,48 +20,24 @@ namespace Libplanet
                 throw new NullReferenceException("nonce must not be null");
             }
 
-            _nonce = nonce;
-        }
+            ByteArray = nonce.ToImmutableArray();
 
-        public static bool operator ==(Nonce n1, Nonce n2)
-        {
-            return n1.Equals(n2);
-        }
-
-        public static bool operator !=(Nonce n1, Nonce n2)
-        {
-            return !(n1 == n2);
+            #pragma warning disable CS0103
+            /* Suppress CS0171.
+            See also https://github.com/nventive/Uno.CodeGen/pull/91
+            */
+            _computedHashCode = null;
+            _computedKeyHashCode = null;
+            #pragma warning restore CS0103
         }
 
         [Pure]
-        public byte[] ToByteArray()
-        {
-            return (byte[])_nonce.Clone();
-        }
+        public byte[] ToByteArray() => ByteArray.ToArray();
 
+        [Pure]
         public override string ToString()
         {
             return ByteUtil.Hex(ToByteArray());
-        }
-
-        public bool Equals(Nonce other)
-        {
-            return _nonce.SequenceEqual(other._nonce);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            return obj is Nonce other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return ByteUtil.CalculateHashCode(_nonce);
         }
     }
 }
