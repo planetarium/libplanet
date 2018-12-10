@@ -2,22 +2,40 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Libplanet
 {
     #pragma warning disable CS0282
     [Uno.GeneratedEquality]
-    public partial struct HashDigest
+    public partial struct HashDigest<T>
+        where T : HashAlgorithm
     #pragma warning restore CS0282
     {
+        public static readonly int Size;
+
         [Uno.EqualityKey]
         public readonly ImmutableArray<byte> ByteArray;
+
+        static HashDigest()
+        {
+            var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(null, new object[0]);
+            Size = thunk.HashSize / 8;
+        }
 
         public HashDigest(byte[] hashDigest)
         {
             if (hashDigest == null)
             {
                 throw new NullReferenceException("HashDigest must not be null");
+            }
+
+            if (hashDigest.Length != Size)
+            {
+                throw new ArgumentException(
+                    $"HashDigest<{typeof(T).Name}> must be {Size} bytes, " +
+                    $"but {hashDigest.Length} was given"
+                );
             }
 
             ByteArray = hashDigest.ToImmutableArray();
@@ -32,9 +50,9 @@ namespace Libplanet
         }
 
         [Pure]
-        public static HashDigest FromString(string s)
+        public static HashDigest<T> FromString(string s)
         {
-            return new HashDigest(ByteUtil.ParseHex(s));
+            return new HashDigest<T>(ByteUtil.ParseHex(s));
         }
 
         [Pure]
@@ -77,9 +95,10 @@ namespace Libplanet
 
     public static class HashDigestExtension
     {
-        public static HashDigest ToHashDigest(this string str)
+        public static HashDigest<A> ToHashDigest<A>(this string str)
+            where A : HashAlgorithm
         {
-            return HashDigest.FromString(str);
+            return HashDigest<A>.FromString(str);
         }
     }
 }

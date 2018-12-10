@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -32,12 +33,25 @@ namespace Libplanet.Tests
             Assert.True(HasLeadingZeros(new byte[2] { 0x00, 0x7f }, 9));
             Assert.False(HasLeadingZeros(new byte[2] { 0x00, 0x7f }, 10));
             Assert.True(HasLeadingZeros(new byte[2] { 0x00, 0x20 }, 10));
-            Assert.False(HasLeadingZeros(new byte[1] { 0x00 }, 9));
         }
 
         private bool HasLeadingZeros(byte[] bytes, int bits)
         {
-            return new HashDigest(bytes).HasLeadingZeroBits(bits);
+            byte[] digest;
+            if (bytes.Length < HashDigest<SHA256>.Size)
+            {
+                digest = new byte[HashDigest<SHA256>.Size];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    digest[i] = bytes[i];
+                }
+            }
+            else
+            {
+                digest = bytes;
+            }
+
+            return new HashDigest<SHA256>(digest).HasLeadingZeroBits(bits);
         }
     }
 

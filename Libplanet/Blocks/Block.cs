@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -17,7 +18,7 @@ namespace Libplanet.Blocks
         public readonly int Difficulty;
         public readonly Nonce Nonce;
         public readonly Address? RewardBeneficiary;
-        public readonly HashDigest? PreviousHash;
+        public readonly HashDigest<SHA256>? PreviousHash;
         public readonly DateTime Timestamp;
         public readonly IEnumerable<Transaction<T>> Transactions;
 
@@ -28,7 +29,7 @@ namespace Libplanet.Blocks
             int difficulty,
             Nonce nonce,
             Address? rewardBeneficiary,
-            HashDigest? previousHash,
+            HashDigest<SHA256>? previousHash,
             DateTime timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
@@ -41,7 +42,7 @@ namespace Libplanet.Blocks
             Transactions = transactions;
         }
 
-        public HashDigest Hash
+        public HashDigest<SHA256> Hash
         {
             get
             {
@@ -64,7 +65,7 @@ namespace Libplanet.Blocks
             int index,
             int difficulty,
             Address rewardBeneficiary,
-            HashDigest? previousHash,
+            HashDigest<SHA256>? previousHash,
             DateTime timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
