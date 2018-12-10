@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Store
     {
         public FileStoreFixture()
         {
-            string postfix = ByteUtil.Hex(TestUtils.GetRandomBytes(20));
+            string postfix = Guid.NewGuid().ToString();
             Path = System.IO.Path.Combine(
                 System.IO.Path.GetTempPath(), $"filestore_test_{postfix}");
             Store = new FileStore(Path);
