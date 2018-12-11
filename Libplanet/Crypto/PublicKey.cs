@@ -5,7 +5,7 @@ using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
-    public struct PublicKey : IEquatable<PublicKey>
+    public class PublicKey : IEquatable<PublicKey>
     {
         private readonly ECPublicKeyParameters _keyParam;
 
@@ -24,7 +24,7 @@ namespace Libplanet.Crypto
 
         public static bool operator ==(PublicKey k1, PublicKey k2)
         {
-            return k1.Equals(k2);
+            return k1?.Equals(k2) ?? ReferenceEquals(null, k2);
         }
 
         public static bool operator !=(PublicKey k1, PublicKey k2)
