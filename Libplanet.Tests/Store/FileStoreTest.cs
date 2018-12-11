@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Tests.Common;
 using Libplanet.Tx;
 using Xunit;
 
@@ -88,7 +89,7 @@ namespace Libplanet.Tests.Store
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-               _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
+                _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
             Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));
             Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block3.Hash));
 
@@ -103,7 +104,7 @@ namespace Libplanet.Tests.Store
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-               _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
+                _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
             Assert.Equal(
                 _fx.Block2,
                 _fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));

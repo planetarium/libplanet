@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
 
@@ -35,7 +34,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<Action> next = TestUtils.MineNext(_fx.Genesis);
+            Block<BaseAction> next = TestUtils.MineNext(_fx.Genesis);
 
             Assert.Equal(1u, _fx.Next.Index);
             Assert.Equal(1u, _fx.Next.Difficulty);
@@ -59,8 +58,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanValidate()
         {
-            Block<Action> genesis = TestUtils.MineGenesis<Action>();
-            Block<Action> next = TestUtils.MineNext(genesis);
+            Block<BaseAction> genesis = TestUtils.MineGenesis<BaseAction>();
+            Block<BaseAction> next = TestUtils.MineNext(genesis);
 
             _fx.Genesis.Validate();
             _fx.Next.Validate();
@@ -69,7 +68,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanDetectInvalidNonce()
         {
-            var invalidBlock = new Block<Action>(
+            var invalidBlock = new Block<BaseAction>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: new Nonce(new byte[] { 0x00 }),
@@ -85,7 +84,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanDetectInvalidDifficulty()
         {
-            var invalidGenesis = new Block<Action>(
+            var invalidGenesis = new Block<BaseAction>(
                 index: _fx.Genesis.Index,
                 difficulty: 1, // invalid
                 nonce: _fx.Genesis.Nonce,
@@ -96,7 +95,7 @@ namespace Libplanet.Tests.Blocks
             );
             Assert.Throws<InvalidBlockDifficultyException>(() => { invalidGenesis.Validate(); });
 
-            var invalidNext = new Block<Action>(
+            var invalidNext = new Block<BaseAction>(
                 index: _fx.Next.Index,
                 difficulty: 0, // invalid
                 nonce: _fx.Next.Nonce,
@@ -111,7 +110,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanDetectInvalidPreviousHash()
         {
-            var invalidGenesis = new Block<Action>(
+            var invalidGenesis = new Block<BaseAction>(
                 index: _fx.Genesis.Index,
                 difficulty: _fx.Genesis.Difficulty,
                 nonce: _fx.Genesis.Nonce,
@@ -123,7 +122,7 @@ namespace Libplanet.Tests.Blocks
 
             Assert.Throws<InvalidBlockPreviousHashException>(() => { invalidGenesis.Validate(); });
 
-            var invalidNext = new Block<Action>(
+            var invalidNext = new Block<BaseAction>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: _fx.Next.Nonce,
@@ -172,8 +171,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanCompareToOtherBlock()
         {
-            Block<Action> sameBlock1 = _fx.Genesis;
-            var sameBlock2 = new Block<Action>(
+            Block<BaseAction> sameBlock1 = _fx.Genesis;
+            var sameBlock2 = new Block<BaseAction>(
                 index: sameBlock1.Index,
                 difficulty: sameBlock1.Difficulty,
                 nonce: sameBlock1.Nonce,
@@ -182,7 +181,7 @@ namespace Libplanet.Tests.Blocks
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions
             );
-            Block<Action> differentBlock = _fx.Next;
+            Block<BaseAction> differentBlock = _fx.Next;
 
             Assert.Equal(sameBlock1, sameBlock2);
             Assert.NotEqual(sameBlock2, differentBlock);
@@ -194,26 +193,4 @@ namespace Libplanet.Tests.Blocks
             Assert.True(sameBlock2 != differentBlock);
         }
     }
-
-#pragma warning disable SA1402 // File may only contain a single class
-    internal class Action : IAction
-    {
-        public IImmutableDictionary<string, object> PlainValue => throw new NotImplementedException();
-
-        public AddressStateMap Execute(Address sender, Address recipient, AddressStateMap requestedStates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ISet<Address> RequestStates(Address sender, Address recipient)
-        {
-            throw new NotImplementedException();
-        }
-    }
-#pragma warning restore SA1402 // File may only contain a single class
 }

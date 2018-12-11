@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Common;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
