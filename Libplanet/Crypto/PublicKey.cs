@@ -11,6 +11,11 @@ namespace Libplanet.Crypto
         [Uno.EqualityKey]
         private readonly ECPublicKeyParameters _keyParam;
 
+        public PublicKey(byte[] bs)
+            : this(GetECPublicKeyParameters(bs))
+        {
+        }
+
         internal PublicKey(ECPublicKeyParameters keyParam)
         {
             _keyParam = keyParam;
@@ -22,18 +27,6 @@ namespace Libplanet.Crypto
             {
                 return _keyParam;
             }
-        }
-
-        public static PublicKey FromBytes(byte[] bs)
-        {
-            var ecParams = PrivateKey.GetECParameters();
-            var keyParam = new ECPublicKeyParameters(
-                "ECDSA",
-                ecParams.Curve.DecodePoint(bs),
-                ecParams
-            );
-
-            return new PublicKey(keyParam);
         }
 
         public byte[] Format(bool compress)
@@ -62,6 +55,16 @@ namespace Libplanet.Crypto
             return aes.Encrypt(
                 payload,
                 disposablePrivateKey.PublicKey.Format(true)
+            );
+        }
+
+        private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
+        {
+            var ecParams = PrivateKey.GetECParameters();
+            return new ECPublicKeyParameters(
+                "ECDSA",
+                ecParams.Curve.DecodePoint(bs),
+                ecParams
             );
         }
     }

@@ -20,6 +20,17 @@ namespace Libplanet.Crypto
         [Uno.EqualityKey]
         private readonly ECPrivateKeyParameters keyParam;
 
+        public PrivateKey(byte[] bs)
+            : this(
+                new ECPrivateKeyParameters(
+                    "ECDSA",
+                    new BigInteger(1, bs),
+                    GetECParameters()
+                )
+            )
+        {
+        }
+
         private PrivateKey(ECPrivateKeyParameters keyParam)
         {
             this.keyParam = keyParam;
@@ -37,15 +48,6 @@ namespace Libplanet.Crypto
         }
 
         public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
-
-        public static PrivateKey FromBytes(byte[] bs)
-        {
-            ECDomainParameters ecParams = GetECParameters();
-            var keyParam = new ECPrivateKeyParameters(
-                "ECDSA", new BigInteger(1, bs), ecParams);
-
-            return new PrivateKey(keyParam);
-        }
 
         public static PrivateKey Generate()
         {
@@ -92,7 +94,7 @@ namespace Libplanet.Crypto
 
         public byte[] Decrypt(byte[] payload)
         {
-            PublicKey pubKey = PublicKey.FromBytes(payload.Take(33).ToArray());
+            PublicKey pubKey = new PublicKey(payload.Take(33).ToArray());
             byte[] aesKey = ECDH(pubKey);
             var aes = new Aesgcm(aesKey);
 

@@ -78,7 +78,7 @@ namespace Libplanet.Tests
         [Fact]
         public void FromPublicKey()
         {
-            PublicKey key = PublicKey.FromBytes(ByteUtil.ParseHex(
+            PublicKey key = new PublicKey(ByteUtil.ParseHex(
                 "03438b935389a7ebf838b3ae4125bd28506aa2dd457f20afc843729d3e7d60d728"));
             Assert.Equal(
                 new Address(
