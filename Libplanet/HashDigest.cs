@@ -14,8 +14,7 @@ namespace Libplanet
     {
         public static readonly int Size;
 
-        [Uno.EqualityKey]
-        public readonly ImmutableArray<byte> ByteArray;
+        private ImmutableArray<byte> _byteArray;
 
         static HashDigest()
         {
@@ -38,7 +37,7 @@ namespace Libplanet
                 );
             }
 
-            ByteArray = hashDigest.ToImmutableArray();
+            _byteArray = hashDigest.ToImmutableArray();
 
             #pragma warning disable CS0103
             /* Suppress CS0171.
@@ -47,6 +46,20 @@ namespace Libplanet
             _computedHashCode = null;
             _computedKeyHashCode = null;
             #pragma warning restore CS0103
+        }
+
+        [Uno.EqualityKey]
+        public ImmutableArray<byte> ByteArray
+        {
+            get
+            {
+                if (_byteArray.IsDefault)
+                {
+                    _byteArray = new byte[Size].ToImmutableArray();
+                }
+
+                return _byteArray;
+            }
         }
 
         [Pure]

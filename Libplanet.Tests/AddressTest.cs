@@ -13,6 +13,13 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void DefaultConstructor()
+        {
+            Address defaultValue = default;
+            Assert.Equal(new Address(new byte[20]), defaultValue);
+        }
+
+        [Fact]
         public void AddressMustBe20Bytes()
         {
             for (int size = 0; size < 25; size++)
