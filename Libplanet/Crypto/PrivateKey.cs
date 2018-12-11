@@ -14,9 +14,22 @@ using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
-    public struct PrivateKey : IEquatable<PrivateKey>
+    [Uno.GeneratedEquality]
+    public partial class PrivateKey
     {
+        [Uno.EqualityKey]
         private readonly ECPrivateKeyParameters keyParam;
+
+        public PrivateKey(byte[] bs)
+            : this(
+                new ECPrivateKeyParameters(
+                    "ECDSA",
+                    new BigInteger(1, bs),
+                    GetECParameters()
+                )
+            )
+        {
+        }
 
         private PrivateKey(ECPrivateKeyParameters keyParam)
         {
@@ -35,25 +48,6 @@ namespace Libplanet.Crypto
         }
 
         public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
-
-        public static bool operator ==(PrivateKey k1, PrivateKey k2)
-        {
-            return k1.Equals(k2);
-        }
-
-        public static bool operator !=(PrivateKey k1, PrivateKey k2)
-        {
-            return !(k1 == k2);
-        }
-
-        public static PrivateKey FromBytes(byte[] bs)
-        {
-            ECDomainParameters ecParams = GetECParameters();
-            var keyParam = new ECPrivateKeyParameters(
-                "ECDSA", new BigInteger(1, bs), ecParams);
-
-            return new PrivateKey(keyParam);
-        }
 
         public static PrivateKey Generate()
         {
@@ -100,7 +94,7 @@ namespace Libplanet.Crypto
 
         public byte[] Decrypt(byte[] payload)
         {
-            PublicKey pubKey = PublicKey.FromBytes(payload.Take(33).ToArray());
+            PublicKey pubKey = new PublicKey(payload.Take(33).ToArray());
             byte[] aesKey = ECDH(pubKey);
             var aes = new Aesgcm(aesKey);
 
@@ -124,37 +118,6 @@ namespace Libplanet.Crypto
             hash.DoFinal(result, 0);
 
             return result;
-        }
-
-        public bool Equals(PrivateKey other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            return ReferenceEquals(this, other) ||
-                   Equals(keyParam, other.keyParam);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return obj.GetType() == GetType() && Equals((PrivateKey)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return keyParam != null ? keyParam.GetHashCode() : 0;
         }
 
         internal static ECDomainParameters GetECParameters()

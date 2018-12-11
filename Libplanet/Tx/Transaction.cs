@@ -36,7 +36,7 @@ namespace Libplanet.Tx
         public Transaction(RawTransaction rawTx)
         {
             Sender = new Address(rawTx.Sender);
-            PublicKey = PublicKey.FromBytes(rawTx.PublicKey);
+            PublicKey = new PublicKey(rawTx.PublicKey);
             Recipient = new Address(rawTx.Recipient);
             Timestamp = DateTime.ParseExact(
                 rawTx.Timestamp,
