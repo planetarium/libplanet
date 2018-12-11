@@ -59,30 +59,39 @@ namespace Libplanet.Serialization
 
         public void Serialize(Stream serializationStream, object graph)
         {
-            if (!(graph is ISerializable))
+            if (graph is ISerializable serializable)
             {
-                throw new SerializationException(
-                    "This serializer can serialize only ISerializable."
-                );
+                ToBDictionary(serializable).EncodeTo(serializationStream);
             }
-
-            var serializable = (ISerializable)graph;
-            var serializationInfo = new SerializationInfo(
-                typeof(T), new FormatterConverter()
-            );
-            serializable.GetObjectData(serializationInfo, Context);
-
-            var bo = new BDictionary();
-
-            foreach (SerializationEntry entry in serializationInfo)
+            else
             {
-                bo[entry.Name] = ToBObject(entry.Value);
+                throw new SerializationException("This serializer can serialize only ISerializable.");
             }
-
-            bo.EncodeTo(serializationStream);
         }
 
-        private static IBObject ToBObject(object o)
+        private static object FromBObject(IBObject o)
+        {
+            switch (o)
+            {
+                case BString s:
+                    return s.Value.ToArray();
+                case BNumber number:
+                    return number.Value;
+                case BList l:
+                    return l.Select(FromBObject).ToList();
+                case BDictionary d:
+                    return d.ToDictionary(
+                        e => e.Key.ToString(),
+                        e => FromBObject(e.Value)
+                    );
+                default:
+                    throw new SerializationException(
+                        $"Can't convert {o} to plain object."
+                    );
+            }
+        }
+
+        private IBObject ToBObject(object o)
         {
             if (o == null)
             {
@@ -112,6 +121,8 @@ namespace Libplanet.Serialization
                     return new BList(
                         e.Cast<object>().Select(ToBObject)
                     );
+                case ISerializable i:
+                    return ToBDictionary(i);
             }
 
             throw new SerializationException(
@@ -119,26 +130,26 @@ namespace Libplanet.Serialization
             );
         }
 
-        private static object FromBObject(IBObject o)
+        private BDictionary ToBDictionary(ISerializable serializable)
         {
-            switch (o)
+            var converter = new FormatterConverter();
+            var serializationInfo = new SerializationInfo(typeof(T), converter);
+            serializable.GetObjectData(serializationInfo, Context);
+
+            var bo = new BDictionary();
+            foreach (SerializationEntry entry in serializationInfo)
             {
-                case BString s:
-                    return s.Value.ToArray();
-                case BNumber number:
-                    return number.Value;
-                case BList l:
-                    return l.Select(FromBObject).ToList();
-                case BDictionary d:
-                    return d.ToDictionary(
-                        e => e.Key.ToString(),
-                        e => FromBObject(e.Value)
-                    );
-                default:
-                    throw new SerializationException(
-                        $"Can't convert {o} to plain object."
-                    );
+                if (entry.Value is ISerializable serializableValue)
+                {
+                    bo[entry.Name] = ToBDictionary(serializableValue);
+                }
+                else
+                {
+                    bo[entry.Name] = ToBObject(entry.Value);
+                }
             }
+
+            return bo;
         }
     }
 }
