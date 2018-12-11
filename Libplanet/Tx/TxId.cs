@@ -6,7 +6,7 @@ namespace Libplanet.Tx
 {
     public struct TxId : IEquatable<TxId>
     {
-        private const int RequiredLength = 32;
+        public const int RequiredLength = 32;
         private readonly byte[] _bytes;
 
         public TxId(byte[] bytes)

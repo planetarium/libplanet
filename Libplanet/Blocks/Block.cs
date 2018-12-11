@@ -21,8 +21,7 @@ namespace Libplanet.Blocks
         public readonly HashDigest<SHA256>? PreviousHash;
         public readonly DateTime Timestamp;
         public readonly IEnumerable<Transaction<T>> Transactions;
-
-        private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+        internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         public Block(
             int index,
