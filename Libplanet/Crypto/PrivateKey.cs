@@ -17,7 +17,6 @@ namespace Libplanet.Crypto
     [Uno.GeneratedEquality]
     public partial class PrivateKey
     {
-        [Uno.EqualityKey]
         private readonly ECPrivateKeyParameters keyParam;
 
         public PrivateKey(byte[] bs)
@@ -36,6 +35,7 @@ namespace Libplanet.Crypto
             this.keyParam = keyParam;
         }
 
+        [Uno.EqualityIgnore]
         public PublicKey PublicKey
         {
             get
@@ -47,6 +47,7 @@ namespace Libplanet.Crypto
             }
         }
 
+        [Uno.EqualityKey]
         public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
 
         public static PrivateKey Generate()
