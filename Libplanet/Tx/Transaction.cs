@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -15,16 +14,9 @@ using Libplanet.Serialization;
 
 namespace Libplanet.Tx
 {
-    public struct Transaction<T> : ISerializable, IEquatable<Transaction<T>>
+    public class Transaction<T> : ISerializable, IEquatable<Transaction<T>>
         where T : IAction
     {
-        public readonly Address Sender;
-        public readonly Address Recipient;
-        public readonly byte[] Signature;
-        public readonly IList<T> Actions;
-        public readonly DateTime Timestamp;
-        public readonly PublicKey PublicKey;
-
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         private static readonly IDictionary<string, Type> Types = typeof(T)
@@ -82,6 +74,18 @@ namespace Libplanet.Tx
                 }
             }
         }
+
+        public Address Sender { get; }
+
+        public Address Recipient { get; }
+
+        public byte[] Signature { get; }
+
+        public IList<T> Actions { get; }
+
+        public DateTime Timestamp { get; }
+
+        public PublicKey PublicKey { get; }
 
         public static Transaction<T> FromBencoded(byte[] bytes)
         {
@@ -214,10 +218,10 @@ namespace Libplanet.Tx
             );
             return action;
         }
-    }
 
-    internal struct TransactionSerializationContext
-    {
-        internal bool IncludeSignature { get; set; }
+        private struct TransactionSerializationContext
+        {
+            internal bool IncludeSignature { get; set; }
+        }
     }
 }

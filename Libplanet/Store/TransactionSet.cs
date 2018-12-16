@@ -41,9 +41,9 @@ namespace Libplanet.Store
         {
             get
             {
-                Transaction<T>? tx = Store.GetTransaction<T>(key);
+                Transaction<T> tx = Store.GetTransaction<T>(key);
 
-                if (!tx.HasValue)
+                if (tx == null)
                 {
                     throw new KeyNotFoundException();
                 }
@@ -51,7 +51,7 @@ namespace Libplanet.Store
                 Trace.Assert(tx?.Id == key);
                 tx?.Validate();
 
-                return tx.Value;
+                return tx;
             }
 
             set

@@ -231,7 +231,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override Transaction<T>? GetTransaction<T>(TxId txid)
+        public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             var txFile = new FileInfo(GetTransactionPath(txid));
             if (!txFile.Exists)
@@ -481,8 +481,7 @@ namespace Libplanet.Store
             return transactions
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(new TxId(bytes)))
-                .Where(tx => tx.HasValue)
-                .Select(tx => tx.Value);
+                .Where(tx => tx != null);
         }
     }
 }

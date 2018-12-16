@@ -30,7 +30,7 @@ namespace Libplanet.Store
 
         IEnumerable<TxId> IterateTransactionIds();
 
-        Transaction<T>? GetTransaction<T>(TxId txid)
+        Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
         void PutTransaction<T>(Transaction<T> tx)

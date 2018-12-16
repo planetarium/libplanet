@@ -31,7 +31,7 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<TxId> IterateTransactionIds();
 
-        public abstract Transaction<T>? GetTransaction<T>(TxId txid)
+        public abstract Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
         public abstract void PutTransaction<T>(Transaction<T> tx)
