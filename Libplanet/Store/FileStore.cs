@@ -200,7 +200,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override Block<T>? GetBlock<T>(HashDigest<SHA256> blockHash)
+        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
         {
             var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (!blockFile.Exists)

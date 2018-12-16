@@ -42,15 +42,15 @@ namespace Libplanet.Store
         {
             get
             {
-                Block<T>? block = Store.GetBlock<T>(key);
-                if (!block.HasValue)
+                Block<T> block = Store.GetBlock<T>(key);
+                if (block == null)
                 {
                     throw new KeyNotFoundException();
                 }
 
-                Trace.Assert(block?.Hash == key);
-                block?.Validate();
-                return block.Value;
+                Trace.Assert(block.Hash == key);
+                block.Validate();
+                return block;
             }
 
             set

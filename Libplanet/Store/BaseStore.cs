@@ -41,7 +41,7 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        public abstract Block<T>? GetBlock<T>(HashDigest<SHA256> blockHash)
+        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
         public abstract void PutBlock<T>(Block<T> block)

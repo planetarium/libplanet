@@ -11,16 +11,10 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blocks
 {
-    public struct Block<T> : ISerializable
+    [Uno.GeneratedEquality]
+    public partial class Block<T> : ISerializable
         where T : IAction
     {
-        public readonly ulong Index;
-        public readonly uint Difficulty;
-        public readonly Nonce Nonce;
-        public readonly Address? RewardBeneficiary;
-        public readonly HashDigest<SHA256>? PreviousHash;
-        public readonly DateTime Timestamp;
-        public readonly IEnumerable<Transaction<T>> Transactions;
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         public Block(
@@ -41,6 +35,7 @@ namespace Libplanet.Blocks
             Transactions = transactions;
         }
 
+        [Uno.EqualityKey]
         public HashDigest<SHA256> Hash
         {
             get
@@ -50,15 +45,26 @@ namespace Libplanet.Blocks
             }
         }
 
-        public static bool operator ==(Block<T> block1, Block<T> block2)
-        {
-            return block1.Equals(block2);
-        }
+        [Uno.EqualityIgnore]
+        public ulong Index { get; }
 
-        public static bool operator !=(Block<T> block1, Block<T> block2)
-        {
-            return !(block1 == block2);
-        }
+        [Uno.EqualityIgnore]
+        public uint Difficulty { get; }
+
+        [Uno.EqualityIgnore]
+        public Nonce Nonce { get; }
+
+        [Uno.EqualityIgnore]
+        public Address? RewardBeneficiary { get; }
+
+        [Uno.EqualityIgnore]
+        public HashDigest<SHA256>? PreviousHash { get; }
+
+        [Uno.EqualityIgnore]
+        public DateTime Timestamp { get; }
+
+        [Uno.EqualityIgnore]
+        public IEnumerable<Transaction<T>> Transactions { get; }
 
         public static Block<T> Mine(
             ulong index,
@@ -195,37 +201,17 @@ namespace Libplanet.Blocks
             return rawBlock;
         }
 
-        public bool Equals(Block<T> other)
+        private struct BlockSerializationContext
         {
-            return Hash.Equals(other.Hash);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
+            public BlockSerializationContext(bool hash, bool transactionData)
             {
-                return false;
+                IncludeHash = hash;
+                IncludeTransactionData = transactionData;
             }
 
-            return obj is Block<T> other && Equals(other);
+            internal bool IncludeHash { get; }
+
+            internal bool IncludeTransactionData { get; }
         }
-
-        public override int GetHashCode()
-        {
-            return Hash.GetHashCode();
-        }
-    }
-
-    internal struct BlockSerializationContext
-    {
-        public BlockSerializationContext(bool hash, bool transactionData)
-        {
-            IncludeHash = hash;
-            IncludeTransactionData = transactionData;
-        }
-
-        internal bool IncludeHash { get; }
-
-        internal bool IncludeTransactionData { get; }
     }
 }
