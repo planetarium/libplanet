@@ -8,7 +8,7 @@ namespace Libplanet.Store
 {
     public interface IStore
     {
-        long CountIndex();
+        ulong CountIndex();
 
         IEnumerable<HashDigest<SHA256>> IterateIndex();
 

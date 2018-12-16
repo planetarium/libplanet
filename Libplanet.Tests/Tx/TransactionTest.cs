@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
-using Libplanet.Action;
 using Libplanet.Crypto;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
 
@@ -21,10 +19,10 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
-            Transaction<Action> tx = Transaction<Action>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
-                new List<Action>(),
+                new List<BaseAction>(),
                 timestamp
             );
 
@@ -59,10 +57,10 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
-            Transaction<Action> tx = Transaction<Action>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
-                new List<Action>(),
+                new List<BaseAction>(),
                 timestamp
             );
             byte[] expected = ByteUtil.ParseHex(
@@ -82,13 +80,13 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
-            var actions = new List<Action>
+            var actions = new List<BaseAction>
             {
                 new Attack { Weapon = "wand", Target = "orc" },
                 new Sleep { ZoneId = 10 }
             };
 
-            Transaction<Action> tx = Transaction<Action>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
                 actions,
@@ -113,7 +111,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             ).PublicKey;
-            Transaction<Action> tx = Transaction<Action>.FromBencoded(bytes);
+            Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(Address.FromPublicKey(publicKey), tx.Recipient);
@@ -143,7 +141,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             ).PublicKey;
-            Transaction<Action> tx = Transaction<Action>.FromBencoded(bytes);
+            Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(Address.FromPublicKey(publicKey), tx.Recipient);
@@ -194,10 +192,10 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
-            Transaction<Action> tx = Transaction<Action>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
-                new List<Action>(),
+                new List<BaseAction>(),
                 timestamp
             );
 
@@ -207,7 +205,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CanDetectBadSignature()
         {
-            Transaction<Action> tx = Transaction<Action>.FromBencoded(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(
                 ByteUtil.ParseHex(
                     "64373a616374696f6e736c6531303a7075626c69635f6b657936353a0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f732808711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296393a726563697069656e7432303ac2a86014073d662a4a9bfcf9cb54263dfa4f5cbc363a73656e64657232303ac2a86014073d662a4a9bfcf9cb54263dfa4f5cbc393a7369676e617475726537313a3045022100d3009449764f77e5e3de701451f16e6555f0ab7d1fcb1533f1c8977b1af099100220254b158567b4b285d2a31bf3a922596ec8deeffc32e4f2d5e5982f4030478f4d393a74696d657374616d7032373a323031382d31312d32315430303a30303a30302e3030303030305a65"
                 )
@@ -219,7 +217,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CanDetectAddressMismatch()
         {
-            Transaction<Action> tx = Transaction<Action>.FromBencoded(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(
                 ByteUtil.ParseHex(
                     "64373a616374696f6e736c6531303a7075626c69635f6b657936353a0446115b0131baccf94a5856ede871295f6f3d352e6847cda9c03e89fe09f732808711ec97af6e341f110a326da1bdb81f5ae3badf76a90b22c8c491aed3aaa296393a726563697069656e7432303ac2a86014073d662a4a9bfcf9cb54263dfa4f5cbc363a73656e64657232303a45a22187e2d8850bb357886958bc3e8560929c01393a7369676e617475726537313a304502210091d1af6ecff9ecf8c96024135f19d4692cfcdaa60524dd93dc99eb636b7fc229022023714e9f7ccbecb48fd989741a3bee9f92db9e3dff3f6236ffe87a43510d0cb6393a74696d657374616d7032373a323031382d31312d32315430303a30303a30302e3030303030305a65"
                 )
@@ -238,10 +236,10 @@ namespace Libplanet.Tests.Tx
             );
             var recipient = Address.FromPublicKey(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
-            Transaction<Action> tx = Transaction<Action>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
-                new List<Action>(),
+                new List<BaseAction>(),
                 timestamp
             );
 
@@ -273,58 +271,8 @@ namespace Libplanet.Tests.Tx
                 signature: ByteUtil.ParseHex("3045022100d3009449764f77e5e3de701451f16e6555f0ab7d1fcb1533f1c8977a1af099100220254b158567b4b285d2a31bf3a922596ec8deeffc32e4f2d5e5982f4030478f4d")
             );
 
-            var tx = new Transaction<Action>(rawTx);
+            var tx = new Transaction<BaseAction>(rawTx);
             tx.Validate();
         }
     }
-
-#pragma warning disable SA1402 // File may only contain a single class
-    internal abstract class Action : IAction
-    {
-        public abstract IImmutableDictionary<string, object> PlainValue { get; }
-
-        public abstract void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue);
-    }
-
-    [ActionType("attack")]
-    internal class Attack : Action
-    {
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
-            {
-                { "weapon", Weapon },
-                { "target", Target },
-            }.ToImmutableDictionary();
-
-        public string Weapon { get; set; }
-
-        public string Target { get; set; }
-
-        public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
-        {
-            Weapon = Encoding.UTF8.GetString((byte[])plainValue["weapon"]);
-            Target = Encoding.UTF8.GetString((byte[])plainValue["target"]);
-        }
-    }
-
-    [ActionType("sleep")]
-    internal class Sleep : Action
-    {
-        public int ZoneId { get; set; }
-
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
-            {
-                { "zone_id", ZoneId },
-            }.ToImmutableDictionary();
-
-        public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
-        {
-            ZoneId = Convert.ToInt32(plainValue["zone_id"]);
-        }
-    }
-#pragma warning restore SA1402 // File may only contain a single class
 }

@@ -8,5 +8,9 @@ namespace Libplanet.Action
         IImmutableDictionary<string, object> PlainValue { get; }
 
         void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
+
+        ISet<Address> RequestStates(Address from, Address to);
+
+        AddressStateMap Execute(Address from, Address to, AddressStateMap states);
     }
 }

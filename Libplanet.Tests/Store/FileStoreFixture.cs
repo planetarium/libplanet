@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
@@ -13,7 +14,7 @@ namespace Libplanet.Tests.Store
     {
         public FileStoreFixture()
         {
-            string postfix = ByteUtil.Hex(TestUtils.GetRandomBytes(20));
+            string postfix = Guid.NewGuid().ToString();
             Path = System.IO.Path.Combine(
                 System.IO.Path.GetTempPath(), $"filestore_test_{postfix}");
             Store = new FileStore(Path);
@@ -70,7 +71,7 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            Block1 = TestUtils.MineGenesis<DummyAction>();
+            Block1 = TestUtils.MineGenesis<BaseAction>();
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
 
@@ -98,15 +99,15 @@ namespace Libplanet.Tests.Store
 
         public HashDigest<SHA256> Hash3 { get; }
 
-        public Block<DummyAction> Block1 { get; }
+        public Block<BaseAction> Block1 { get; }
 
-        public Block<DummyAction> Block2 { get; }
+        public Block<BaseAction> Block2 { get; }
 
-        public Block<DummyAction> Block3 { get; }
+        public Block<BaseAction> Block3 { get; }
 
-        public Transaction<DummyAction> Transaction1 { get; }
+        public Transaction<BaseAction> Transaction1 { get; }
 
-        public Transaction<DummyAction> Transaction2 { get; }
+        public Transaction<BaseAction> Transaction2 { get; }
 
         public void Dispose()
         {
@@ -116,15 +117,15 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        private Transaction<DummyAction> MakeTransaction()
+        private Transaction<BaseAction> MakeTransaction()
         {
             PrivateKey privateKey = PrivateKey.Generate();
             Address recipient = privateKey.PublicKey.ToAddress();
             var timestamp = new DateTime(2018, 11, 21);
-            return Transaction<DummyAction>.Make(
+            return Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
-                new List<DummyAction>(),
+                new List<BaseAction>(),
                 timestamp
             );
         }

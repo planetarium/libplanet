@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
 
@@ -73,9 +74,9 @@ namespace Libplanet.Tests.Store
         public void CanStoreBlock()
         {
             Assert.Empty(_fx.Store.IterateBlockHashes());
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block3.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
             Assert.False(_fx.Store.DeleteBlock(_fx.Block1.Hash));
 
             _fx.Store.PutBlock(_fx.Block1);
@@ -88,9 +89,9 @@ namespace Libplanet.Tests.Store
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-               _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
 
             _fx.Store.PutBlock(_fx.Block2);
             Assert.Equal(2, _fx.Store.CountBlocks());
@@ -103,11 +104,11 @@ namespace Libplanet.Tests.Store
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-               _fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
             Assert.Equal(
                 _fx.Block2,
-                _fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
 
             Assert.True(_fx.Store.DeleteBlock(_fx.Block1.Hash));
             Assert.Equal(1, _fx.Store.CountBlocks());
@@ -117,11 +118,11 @@ namespace Libplanet.Tests.Store
                     _fx.Block2.Hash
                 },
                 _fx.Store.IterateBlockHashes().ToHashSet());
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block1.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
             Assert.Equal(
                 _fx.Block2,
-                _fx.Store.GetBlock<DummyAction>(_fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<DummyAction>(_fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
         }
 
         [Fact]
@@ -129,8 +130,8 @@ namespace Libplanet.Tests.Store
         {
             Assert.Equal(0, _fx.Store.CountTransactions());
             Assert.Empty(_fx.Store.IterateTransactionIds());
-            Assert.Null(_fx.Store.GetTransaction<DummyAction>(_fx.Transaction1.Id));
-            Assert.Null(_fx.Store.GetTransaction<DummyAction>(_fx.Transaction2.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
             Assert.False(_fx.Store.DeleteTransaction(_fx.Transaction1.Id));
 
             _fx.Store.PutTransaction(_fx.Transaction1);
@@ -144,9 +145,9 @@ namespace Libplanet.Tests.Store
             );
             Assert.Equal(
                 _fx.Transaction1,
-                _fx.Store.GetTransaction<DummyAction>(_fx.Transaction1.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id)
             );
-            Assert.Null(_fx.Store.GetTransaction<DummyAction>(_fx.Transaction2.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
 
             _fx.Store.PutTransaction(_fx.Transaction2);
             Assert.Equal(2, _fx.Store.CountTransactions());
@@ -160,11 +161,11 @@ namespace Libplanet.Tests.Store
             );
             Assert.Equal(
                 _fx.Transaction1,
-                _fx.Store.GetTransaction<DummyAction>(_fx.Transaction1.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id)
             );
             Assert.Equal(
                 _fx.Transaction2,
-                _fx.Store.GetTransaction<DummyAction>(_fx.Transaction2.Id));
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
 
             Assert.True(_fx.Store.DeleteTransaction(_fx.Transaction1.Id));
             Assert.Equal(1, _fx.Store.CountTransactions());
@@ -175,23 +176,23 @@ namespace Libplanet.Tests.Store
                 },
                 _fx.Store.IterateTransactionIds()
             );
-            Assert.Null(_fx.Store.GetTransaction<DummyAction>(_fx.Transaction1.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id));
             Assert.Equal(
                 _fx.Transaction2,
-                _fx.Store.GetTransaction<DummyAction>(_fx.Transaction2.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id)
             );
         }
 
         [Fact]
         public void CanStoreIndex()
         {
-            Assert.Equal(0, _fx.Store.CountIndex());
+            Assert.Equal(0u, _fx.Store.CountIndex());
             Assert.Empty(_fx.Store.IterateIndex());
             Assert.Null(_fx.Store.IndexBlockHash(0));
             Assert.Null(_fx.Store.IndexBlockHash(-1));
 
             Assert.Equal(0, _fx.Store.AppendIndex(_fx.Hash1));
-            Assert.Equal(1, _fx.Store.CountIndex());
+            Assert.Equal(1u, _fx.Store.CountIndex());
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {
@@ -202,7 +203,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(_fx.Hash1, _fx.Store.IndexBlockHash(-1));
 
             Assert.Equal(1, _fx.Store.AppendIndex(_fx.Hash2));
-            Assert.Equal(2, _fx.Store.CountIndex());
+            Assert.Equal(2u, _fx.Store.CountIndex());
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {

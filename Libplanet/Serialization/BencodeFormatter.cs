@@ -59,64 +59,14 @@ namespace Libplanet.Serialization
 
         public void Serialize(Stream serializationStream, object graph)
         {
-            if (!(graph is ISerializable))
+            if (graph is ISerializable serializable)
             {
-                throw new SerializationException(
-                    "This serializer can serialize only ISerializable."
-                );
+                ToBDictionary(serializable).EncodeTo(serializationStream);
             }
-
-            var serializable = (ISerializable)graph;
-            var serializationInfo = new SerializationInfo(
-                typeof(T), new FormatterConverter()
-            );
-            serializable.GetObjectData(serializationInfo, Context);
-
-            var bo = new BDictionary();
-
-            foreach (SerializationEntry entry in serializationInfo)
+            else
             {
-                bo[entry.Name] = ToBObject(entry.Value);
+                throw new SerializationException("This serializer can serialize only ISerializable.");
             }
-
-            bo.EncodeTo(serializationStream);
-        }
-
-        private static IBObject ToBObject(object o)
-        {
-            if (o == null)
-            {
-                throw new SerializationException(
-                    "Can't convert null to IBObject.");
-            }
-
-            switch (o)
-            {
-                case string s:
-                    return new BString(s);
-                case long l:
-                    return new BNumber(l);
-                case int i:
-                    return new BNumber(i);
-                case byte[] bytes:
-                    return new BString(bytes);
-                case IDictionary d:
-                    var rv = new BDictionary();
-                    foreach (var k in d.Keys)
-                    {
-                        rv[new BString(k.ToString())] = ToBObject(d[k]);
-                    }
-
-                    return rv;
-                case IEnumerable e:
-                    return new BList(
-                        e.Cast<object>().Select(ToBObject)
-                    );
-            }
-
-            throw new SerializationException(
-                $"Can't convert {o} to IBObject."
-            );
         }
 
         private static object FromBObject(IBObject o)
@@ -139,6 +89,71 @@ namespace Libplanet.Serialization
                         $"Can't convert {o} to plain object."
                     );
             }
+        }
+
+        private IBObject ToBObject(object o)
+        {
+            if (o == null)
+            {
+                throw new SerializationException(
+                    "Can't convert null to IBObject.");
+            }
+
+            switch (o)
+            {
+                case string s:
+                    return new BString(s);
+                case long l:
+                    return new BNumber(l);
+                case uint ui:
+                    return new BNumber(ui);
+                case ulong ul:
+                    return new BNumber(checked((long)ul));
+                case int i:
+                    return new BNumber(i);
+                case byte[] bytes:
+                    return new BString(bytes);
+                case IDictionary d:
+                    var rv = new BDictionary();
+                    foreach (var k in d.Keys)
+                    {
+                        rv[new BString(k.ToString())] = ToBObject(d[k]);
+                    }
+
+                    return rv;
+                case IEnumerable e:
+                    return new BList(
+                        e.Cast<object>().Select(ToBObject)
+                    );
+                case ISerializable i:
+                    return ToBDictionary(i);
+            }
+
+            throw new SerializationException(
+                $"Can't convert {o} to IBObject."
+            );
+        }
+
+        private BDictionary ToBDictionary(ISerializable serializable)
+        {
+            var converter = new FormatterConverter();
+            var serializationInfo = new SerializationInfo(typeof(T), converter);
+            serializable.GetObjectData(serializationInfo, Context);
+
+            var bo = new BDictionary();
+            foreach (SerializationEntry entry in serializationInfo)
+            {
+                if (entry.Value is ISerializable serializableValue)
+                {
+                    bo[entry.Name] = ToBDictionary(serializableValue);
+                }
+                else
+                {
+                    bo[entry.Name] = ToBObject(entry.Value);
+                }
+            }
+
+            return bo;
         }
     }
 }

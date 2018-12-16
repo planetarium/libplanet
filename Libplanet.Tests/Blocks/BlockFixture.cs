@@ -1,4 +1,5 @@
 using Libplanet.Blocks;
+using Libplanet.Tests.Common.Action;
 
 namespace Libplanet.Tests.Blocks
 {
@@ -6,12 +7,12 @@ namespace Libplanet.Tests.Blocks
     {
         public BlockFixture()
         {
-            Genesis = TestUtils.MineGenesis<Action>();
+            Genesis = TestUtils.MineGenesis<BaseAction>();
             Next = TestUtils.MineNext(Genesis);
         }
 
-        internal Block<Action> Genesis { get; }
+        internal Block<BaseAction> Genesis { get; }
 
-        internal Block<Action> Next { get; }
+        internal Block<BaseAction> Next { get; }
     }
 }
