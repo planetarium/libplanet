@@ -8,7 +8,6 @@ namespace Libplanet.Crypto
     [Uno.GeneratedEquality]
     public partial class PublicKey
     {
-        [Uno.EqualityKey]
         private readonly ECPublicKeyParameters _keyParam;
 
         public PublicKey(byte[] bs)
@@ -21,6 +20,7 @@ namespace Libplanet.Crypto
             _keyParam = keyParam;
         }
 
+        [Uno.EqualityKey]
         internal ECPublicKeyParameters KeyParam
         {
             get
