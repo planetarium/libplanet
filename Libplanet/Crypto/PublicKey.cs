@@ -1,4 +1,3 @@
-using System;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
@@ -8,8 +7,6 @@ namespace Libplanet.Crypto
     [Uno.GeneratedEquality]
     public partial class PublicKey
     {
-        private readonly ECPublicKeyParameters _keyParam;
-
         public PublicKey(byte[] bs)
             : this(GetECPublicKeyParameters(bs))
         {
@@ -17,17 +14,11 @@ namespace Libplanet.Crypto
 
         internal PublicKey(ECPublicKeyParameters keyParam)
         {
-            _keyParam = keyParam;
+            KeyParam = keyParam;
         }
 
         [Uno.EqualityKey]
-        internal ECPublicKeyParameters KeyParam
-        {
-            get
-            {
-                return _keyParam;
-            }
-        }
+        internal ECPublicKeyParameters KeyParam { get; }
 
         public byte[] Format(bool compress)
         {
