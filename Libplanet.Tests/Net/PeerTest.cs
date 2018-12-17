@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Serialization;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -63,6 +66,24 @@ namespace Libplanet.Tests.Net
                 },
                 peer.AddUrl(new Uri("ipc:///tmp/planet")).Urls
             );
+        }
+
+        [Fact]
+        public void CanBeSerialized()
+        {
+            var peer = new Peer(
+                _samplePublicKey,
+                _sampleUrls.ToImmutableList()
+            );
+            var formatter = new BinaryFormatter();
+            using (var stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, peer);
+                byte[] serialized = stream.ToArray();
+                stream.Seek(0, SeekOrigin.Begin);
+                Peer deserialized = (Peer)formatter.Deserialize(stream);
+                Assert.Equal(peer, deserialized);
+            }
         }
     }
 }

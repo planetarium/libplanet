@@ -1,13 +1,19 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
 using Libplanet.Crypto;
+using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {
+    [Serializable]
     [Uno.GeneratedEquality]
-    public partial class Peer
+    public partial class Peer : ISerializable
     {
         public Peer(PublicKey publicKey, IImmutableList<Uri> urls)
         {
@@ -29,6 +35,14 @@ namespace Libplanet.Net
         {
         }
 
+        protected Peer(SerializationInfo info, StreamingContext context)
+        {
+            PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
+            Urls = info.GetValue<List<string>>("urls")
+                .Select(s => new Uri(s))
+                .ToImmutableArray();
+        }
+
         [Uno.EqualityKey]
         [Pure]
         public PublicKey PublicKey { get; }
@@ -42,5 +56,11 @@ namespace Libplanet.Net
 
         [Pure]
         public Peer AddUrl(Uri url) => new Peer(PublicKey, Urls.Add(url));
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("public_key", PublicKey.Format(true));
+            info.AddValue("urls", Urls.Select(u => u.ToString()).ToList());
+        }
     }
 }
