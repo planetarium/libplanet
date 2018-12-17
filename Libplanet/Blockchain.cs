@@ -63,7 +63,7 @@ namespace Libplanet
             foreach (var(i, exp) in indexedDifficulties)
             {
                 Trace.Assert(exp.Block != null);
-                Block<T> block = exp.Block.Value;
+                Block<T> block = exp.Block;
 
                 if (i != block.Index)
                 {
@@ -219,7 +219,7 @@ namespace Libplanet
         {
             DateTime? prevTimestamp = null;
             DateTime? prevPrevTimestamp = null;
-            IEnumerable<Block<T>?> blocks_ = blocks.Cast<Block<T>?>();
+            IEnumerable<Block<T>> blocks_ = blocks.Cast<Block<T>>();
 
             if (yieldNext)
             {
@@ -236,7 +236,7 @@ namespace Libplanet
             uint difficulty = 1;
             prevTimestamp = blocks_.FirstOrDefault()?.Timestamp;
 
-            foreach (Block<T>? block in blocks_.Skip(1))
+            foreach (Block<T> block in blocks_.Skip(1))
             {
                 bool needMore =
                     prevPrevTimestamp != null &&
@@ -254,7 +254,7 @@ namespace Libplanet
                 if (block != null)
                 {
                     prevPrevTimestamp = prevTimestamp;
-                    prevTimestamp = block.Value.Timestamp;
+                    prevTimestamp = block.Timestamp;
                 }
             }
         }
@@ -287,7 +287,7 @@ namespace Libplanet
 
         private struct DifficultyExpectation
         {
-            internal Block<T>? Block;
+            internal Block<T> Block;
 
             internal uint Difficulty;
         }

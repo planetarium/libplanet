@@ -30,17 +30,17 @@ namespace Libplanet.Store
 
         IEnumerable<TxId> IterateTransactionIds();
 
-        Transaction<T>? GetTransaction<T>(TxId txid)
+        Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
         void PutTransaction<T>(Transaction<T> tx)
             where T : IAction;
 
-         bool DeleteTransaction(TxId txid);
+        bool DeleteTransaction(TxId txid);
 
         IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        Block<T>? GetBlock<T>(HashDigest<SHA256> blockHash)
+        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
         void PutBlock<T>(Block<T> block)

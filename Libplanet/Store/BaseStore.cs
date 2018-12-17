@@ -31,7 +31,7 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<TxId> IterateTransactionIds();
 
-        public abstract Transaction<T>? GetTransaction<T>(TxId txid)
+        public abstract Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
         public abstract void PutTransaction<T>(Transaction<T> tx)
@@ -41,7 +41,7 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        public abstract Block<T>? GetBlock<T>(HashDigest<SHA256> blockHash)
+        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
         public abstract void PutBlock<T>(Block<T> block)
