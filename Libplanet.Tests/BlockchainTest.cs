@@ -124,5 +124,22 @@ namespace Libplanet.Tests
             _blockchain.Append(_fx.Block1);
             Assert.Contains(_fx.Block1, _blockchain);
         }
+
+        [Fact]
+        public void CanStoreAddresses()
+        {
+            Assert.Empty(_blockchain.Addresses);
+            var txs = new HashSet<Transaction<BaseAction>>()
+            {
+                _fx.Transaction1,
+                _fx.Transaction2
+            };
+            _blockchain.StageTransactions(txs);
+            _blockchain.MineBlock(_fx.Address1);
+
+            Assert.NotEmpty(_blockchain.Addresses);
+            Assert.Contains(_fx.Transaction1, _blockchain.Addresses[_fx.Transaction1.Recipient]);
+            Assert.DoesNotContain(_fx.Transaction2, _blockchain.Addresses[_fx.Transaction1.Recipient]);
+        }
     }
 }
