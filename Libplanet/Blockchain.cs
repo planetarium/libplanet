@@ -208,6 +208,7 @@ namespace Libplanet
                 transactions: Store.IterateStagedTransactionIds()
                 .Select(txId => Store.GetTransaction<T>(txId))
                 .OfType<Transaction<T>>()
+                .ToList()
             );
             Append(block);
 
