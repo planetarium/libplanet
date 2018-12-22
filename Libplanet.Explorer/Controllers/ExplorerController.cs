@@ -140,5 +140,60 @@ namespace Libplanet.Explorer.Controllers
 
             return Ok(model);
         }
+
+        [HttpGet("/address/{addressId}/")]
+        public IActionResult getAddress(string addressId)
+        {
+            Address address;
+            IEnumerable<Transaction<T>> txs;
+            Blockchain<T> chain = GetBlockchain();
+
+            try
+            {
+                address = new Address(ByteUtil.ParseHex(addressId));
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest(new Dictionary<string, string>
+                {
+                    {
+                        "message",
+                        $"\"{addressId}\" is not a proper address."
+                    }
+                });
+            }
+
+            AddressStateMap state = chain.GetStates(
+                new HashSet<Address> {address});
+
+            try
+            {
+                txs = chain.Addresses[address];
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new Dictionary<string, string>
+                {
+                    { "message", $"Address(\"{addressId}\") is not found" }
+                });
+            }
+            var model = new AddressViewModel
+            {
+                Tx = (
+                    txs.OrderByDescending(tx => tx.Timestamp)
+                    .Select(
+                        tx => new Dictionary<string, string>
+                        {
+                            { "id", tx.Id.ToString() },
+                            {
+                                "timestamp",
+                                tx.Timestamp.ToString(TimestampFormat)
+                            }
+                        })).ToList(),
+                State = state
+            };
+
+            return Ok(model);
+        }
     }
 }
