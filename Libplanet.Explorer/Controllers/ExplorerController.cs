@@ -4,8 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.ViewModels;
-using Libplanet.Store;
 using Libplanet.Tx;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +14,18 @@ namespace Libplanet.Explorer.Controllers
     [GenericControllerNameConvention]
     public class ExplorerController<T> : Controller where T : IAction
     {
+        private readonly IBlockchainStore Store;
+
         public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
+        public ExplorerController(IBlockchainStore store)
+        {
+            Store = store;
+        }
 
         public Blockchain<T> GetBlockchain()
         {
-            var chain = new Blockchain<T>(new FileStore("./data"));
+            var chain = new Blockchain<T>(Store.Store);
 
             return chain;
         }
