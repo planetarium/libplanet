@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet", "Libplanet\Libp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Tests", "Libplanet.Tests\Libplanet.Tests.csproj", "{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Explorer", "Libplanet.Explorer\Libplanet.Explorer.csproj", "{B6129EC7-7F14-42D7-B04B-543A6035B53A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
