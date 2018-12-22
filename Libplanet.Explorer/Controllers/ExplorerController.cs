@@ -85,5 +85,60 @@ namespace Libplanet.Explorer.Controllers
             };
             return Ok(model);
         }
+
+        [HttpGet("/tx/{txIdString}/")]
+        public IActionResult getTransaction(string txIdString)
+        {
+            Transaction<T> tx;
+            TxId txId;
+            Blockchain<T> chain = GetBlockchain();
+
+            try
+            {
+                txId = new TxId(ByteUtil.ParseHex(txIdString));
+            }
+            catch (ArgumentException)
+            {
+                return BadRequest(new Dictionary<string, string>
+                    {
+                        {
+                            "message",
+                            $"\"{txIdString}\" is not a proper transaction id."
+                        }
+                    });
+            }
+
+            try
+            {
+                tx = chain.Transactions[txId];
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new Dictionary<string, string>
+                {
+                    { "message", $"Transaction(\"{txIdString}\") is not found" }
+                });
+            }
+
+            var model = new TransactionViewModel
+            {
+                Id = tx.Id.ToString(),
+                Signature = tx.Signature,
+                Timestamp = tx.Timestamp,
+                Sender = tx.Sender.Hex(),
+                Recipient = tx.Recipient.Hex(),
+                Actions = tx.Actions
+                    .Select(act => new Dictionary<string, object>
+                    {
+                        {
+                            "type_id",
+                            ActionTypeAttribute.ValueOf(act.GetType())
+                        },
+
+                    }).ToList()
+            };
+
+            return Ok(model);
+        }
     }
 }
