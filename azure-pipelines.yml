@@ -19,9 +19,10 @@ jobs:
     displayName: 'Restore'
     inputs:
       command: 'restore'
-  - script: 'msbuild $(solution) /t:Build /p:Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true'
+  - script: 'msbuild /r /t:Build /p:Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true'
     displayName: 'Build'
-  - script: "msbuild /r /t:'Build,XunitTest' Libplanet.Tests"
+  # FIXME: Does it have to build again?
+  - script: "msbuild /r /t:'Build,XunitTest' /p:'Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true' Libplanet.Tests"
     displayName: 'Test'
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
@@ -43,7 +44,6 @@ jobs:
     displayName: 'Restore'
     inputs:
       command: 'restore'
-      -- task: VSBuild@1
   - task: VSBuild@1
     displayName: 'Build'
     inputs:
