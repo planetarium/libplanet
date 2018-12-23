@@ -24,17 +24,17 @@ steps:
 - task: VSBuild@1
   displayName: 'Build'
   inputs:
-    solution: '**/*.sln'
+    solution: $(solution)
     vsVersion: latest
-    platform: 'any cpu'
-    configuration: release
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
     logProjectEvents: true
 - task: VSTest@2
   displayName: 'Test'
   inputs:
     vsVersion: latest
-    platform: 'any cpu'
-    configuration: release
+    platform: $(buildPlatform)
+    configuration: $(buildConfiguration)
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
