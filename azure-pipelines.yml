@@ -21,7 +21,7 @@ jobs:
       command: 'restore'
   - script: 'msbuild $(solution) /t:Build /p:Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true'
     displayName: 'Build'
-  - script: "msbuild /t:'XunitTest' Libplanet.Tests"
+  - script: "msbuild /r /t:'Build,XunitTest' Libplanet.Tests"
     displayName: 'Test'
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
