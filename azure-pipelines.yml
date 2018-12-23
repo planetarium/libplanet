@@ -26,3 +26,14 @@ steps:
     vsVersion: latest
     platform: 'any cpu'
     configuration: release
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    contents: |
+      $(Build.Repository.LocalPath)\Libplanet\bin\**\?(*.exe|*.dll)
+      $(Build.Repository.LocalPath)\README.md
+    targetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: artifact_$(Build.BuildId)_$(Build.BuildNumber)
