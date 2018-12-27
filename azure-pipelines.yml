@@ -25,16 +25,16 @@ jobs:
   - script: "msbuild /r /t:'Build,XunitTest' /p:'Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true' Libplanet.Tests"
     displayName: 'Test'
   - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    displayName: 'Copy Files'
     inputs:
       contents: |
-        $(Build.Repository.LocalPath)\Libplanet\bin\**\?(*.exe|*.dll)
-        $(Build.Repository.LocalPath)\README.md
+        $(Build.Repository.LocalPath)/Libplanet/bin/**/*.dll
+        $(Build.Repository.LocalPath)/README.md
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
-      artifactName: artifact_$(Build.BuildId)_$(Build.BuildNumber)
+      artifactName: $(Build.BuildId)_$(Build.BuildNumber)_$(imageName)
 - job: 'Window'
   pool:
     vmImage: 'VS2017-Win2016'
@@ -68,4 +68,4 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
-      artifactName: artifact_$(Build.BuildId)_$(Build.BuildNumber)
+      artifactName: $(Build.BuildId)_$(Build.BuildNumber)
