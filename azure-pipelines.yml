@@ -1,39 +1,71 @@
-pool:
-  vmImage: 'VS2017-Win2016'
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@0
-- task: DotNetCoreCLI@2
-  displayName: 'Restore'
-  inputs:
-    command: 'restore'
-- task: VSBuild@1
-  displayName: 'Build'
-  inputs:
-    solution: '**/*.sln'
-    vsVersion: latest
-    platform: 'any cpu'
-    configuration: release
-    logProjectEvents: true
-- task: VSTest@2
-  displayName: 'Test'
-  inputs:
-    vsVersion: latest
-    platform: 'any cpu'
-    configuration: release
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    contents: |
-      $(Build.Repository.LocalPath)\Libplanet\bin\**\?(*.exe|*.dll)
-      $(Build.Repository.LocalPath)\README.md
-    targetFolder: $(Build.ArtifactStagingDirectory)
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: $(Build.ArtifactStagingDirectory)
-    artifactName: artifact_$(Build.BuildId)_$(Build.BuildNumber)
+jobs:
+- job: 'LinuxOrMac'
+  strategy:
+    matrix:
+      linux:
+        imageName: 'ubuntu-16.04'
+      mac:
+        imageName: 'macos-10.13'
+  pool:
+    vmImage: $(imageName)
+  steps:
+  - task: NuGetToolInstaller@0
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+  - script: 'msbuild /r /t:Build /p:Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true'
+    displayName: 'Build'
+  # FIXME: Does it have to build again?
+  - script: "msbuild /r /t:'Build,XunitTest' /p:'Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true' Libplanet.Tests"
+    displayName: 'Test'
+  - task: CopyFiles@2
+    displayName: 'Copy Files'
+    inputs:
+      contents: |
+        $(Build.Repository.LocalPath)/Libplanet/bin/**/*.dll
+        $(Build.Repository.LocalPath)/README.md
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: $(Build.BuildId)_$(Build.BuildNumber)_$(imageName)
+- job: 'Window'
+  pool:
+    vmImage: 'VS2017-Win2016'
+  steps:
+  - task: NuGetToolInstaller@0
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+  - task: VSBuild@1
+    displayName: 'Build'
+    inputs:
+      solution: $(solution)
+      vsVersion: latest
+      platform: $(buildPlatform)
+      configuration: $(buildConfiguration)
+      logProjectEvents: true
+  - task: VSTest@2
+    displayName: 'Test'
+    inputs:
+      vsVersion: latest
+      platform: $(buildPlatform)
+      configuration: $(buildConfiguration)
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      contents: |
+        $(Build.Repository.LocalPath)\Libplanet\bin\**\?(*.exe|*.dll)
+        $(Build.Repository.LocalPath)\README.md
+      targetFolder: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: $(Build.ArtifactStagingDirectory)
+      artifactName: $(Build.BuildId)_$(Build.BuildNumber)
