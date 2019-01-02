@@ -14,5 +14,7 @@
     <!--Allow closing parenthesis to be placed in new line. -->
     <Rule Id="SA1009" Action="None" />
     <Rule Id="SA1111" Action="None" />
+    <!-- TODO: Documentation -->
+    <Rule Id="SA1600" Action="None" />
   </Rules>
 </RuleSet>
