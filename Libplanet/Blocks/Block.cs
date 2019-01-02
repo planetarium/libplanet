@@ -74,7 +74,7 @@ namespace Libplanet.Blocks
             DateTime timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
-            Block<T> makeBlock(Nonce n) => new Block<T>(
+            Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
                 n,
@@ -84,10 +84,10 @@ namespace Libplanet.Blocks
                 transactions
             );
             Nonce nonce = Hashcash.Answer(
-                n => makeBlock(n).Bencode(false, true),
+                n => MakeBlock(n).Bencode(false, true),
                 difficulty
             );
-            return makeBlock(nonce);
+            return MakeBlock(nonce);
         }
 
         public byte[] Bencode(bool hash, bool transactionData)
@@ -97,7 +97,7 @@ namespace Libplanet.Blocks
                 Context = new StreamingContext(
                     StreamingContextStates.All,
                     new BlockSerializationContext(hash, transactionData)
-                )
+                ),
             };
             using (var stream = new MemoryStream())
             {

@@ -41,7 +41,7 @@ namespace Libplanet.Tests.Store
                 {
                     _fx.Block1.Hash,
                     _fx.Block2.Hash,
-                    _fx.Block3.Hash
+                    _fx.Block3.Hash,
                 },
                 _set.Keys.ToHashSet());
 
@@ -50,7 +50,7 @@ namespace Libplanet.Tests.Store
                 {
                     _fx.Block1,
                     _fx.Block2,
-                    _fx.Block3
+                    _fx.Block3,
                 },
                 _set.Values.ToHashSet());
         }

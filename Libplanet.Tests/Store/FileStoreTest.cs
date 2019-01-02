@@ -84,7 +84,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
                 {
-                    _fx.Block1.Hash
+                    _fx.Block1.Hash,
                 },
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Store
                 new HashSet<HashDigest<SHA256>>
                 {
                     _fx.Block1.Hash,
-                    _fx.Block2.Hash
+                    _fx.Block2.Hash,
                 },
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
@@ -115,7 +115,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
                 {
-                    _fx.Block2.Hash
+                    _fx.Block2.Hash,
                 },
                 _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<TxId>
                 {
-                    _fx.Transaction1.Id
+                    _fx.Transaction1.Id,
                 },
                 _fx.Store.IterateTransactionIds()
             );
@@ -155,7 +155,7 @@ namespace Libplanet.Tests.Store
                 new HashSet<TxId>
                 {
                     _fx.Transaction1.Id,
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 },
                 _fx.Store.IterateTransactionIds().ToHashSet()
             );
@@ -172,7 +172,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new HashSet<TxId>
                 {
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 },
                 _fx.Store.IterateTransactionIds()
             );
@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {
-                    _fx.Hash1
+                    _fx.Hash1,
                 },
                 _fx.Store.IterateIndex());
             Assert.Equal(_fx.Hash1, _fx.Store.IndexBlockHash(0));
@@ -208,7 +208,7 @@ namespace Libplanet.Tests.Store
                 new List<HashDigest<SHA256>>()
                 {
                     _fx.Hash1,
-                    _fx.Hash2
+                    _fx.Hash2,
                 },
                 _fx.Store.IterateIndex());
             Assert.Equal(_fx.Hash1, _fx.Store.IndexBlockHash(0));
@@ -228,25 +228,25 @@ namespace Libplanet.Tests.Store
                 new HashSet<TxId>()
                 {
                     _fx.Transaction1.Id,
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 });
             Assert.Equal(
                 new HashSet<TxId>()
                 {
                     _fx.Transaction1.Id,
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 },
                 _fx.Store.IterateStagedTransactionIds().ToHashSet());
 
             _fx.Store.UnstageTransactionIds(
                 new HashSet<TxId>
                 {
-                    _fx.Transaction1.Id
+                    _fx.Transaction1.Id,
                 });
             Assert.Equal(
                 new HashSet<TxId>()
                 {
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 },
                 _fx.Store.IterateStagedTransactionIds().ToHashSet());
         }
@@ -310,12 +310,12 @@ namespace Libplanet.Tests.Store
                 {
                     [_fx.Address1] = new Dictionary<string, int>()
                     {
-                        { "a", 1 }
+                        { "a", 1 },
                     },
                     [_fx.Address2] = new Dictionary<string, int>()
                     {
-                        { "b", 2 }
-                    }
+                        { "b", 2 },
+                    },
                 }.ToImmutableDictionary()
             );
             _fx.Store.SetBlockStates(_fx.Hash1, states);

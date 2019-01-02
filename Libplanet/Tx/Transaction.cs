@@ -130,7 +130,7 @@ namespace Libplanet.Tx
                 Context = new StreamingContext(
                     StreamingContextStates.All,
                     new TransactionSerializationContext { IncludeSignature = sign }
-                )
+                ),
             };
             using (var stream = new MemoryStream())
             {
@@ -197,7 +197,7 @@ namespace Libplanet.Tx
                 actions: Actions.Select(a => new Dictionary<string, object>
                 {
                     { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
-                    { "values", a.PlainValue }
+                    { "values", a.PlainValue },
                 })
             );
 

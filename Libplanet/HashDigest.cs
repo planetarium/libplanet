@@ -108,10 +108,10 @@ namespace Libplanet
 
     public static class HashDigestExtension
     {
-        public static HashDigest<A> ToHashDigest<A>(this string str)
-            where A : HashAlgorithm
+        public static HashDigest<T> ToHashDigest<T>(this string str)
+            where T : HashAlgorithm
         {
-            return HashDigest<A>.FromString(str);
+            return HashDigest<T>.FromString(str);
         }
     }
 }

@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Tx
             var actions = new List<BaseAction>
             {
                 new Attack { Weapon = "wand", Target = "orc" },
-                new Sleep { ZoneId = 10 }
+                new Sleep { ZoneId = 10 },
             };
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
@@ -168,7 +168,7 @@ namespace Libplanet.Tests.Tx
                 new Dictionary<string, object>()
                 {
                     { "weapon", "wand" },
-                    { "target", "orc" }
+                    { "target", "orc" },
                 },
                 tx.Actions[0].PlainValue
             );
@@ -176,7 +176,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(
                 new Dictionary<string, object>()
                 {
-                    { "zone_id", 10 }
+                    { "zone_id", 10 },
                 },
                 tx.Actions[1].PlainValue
             );

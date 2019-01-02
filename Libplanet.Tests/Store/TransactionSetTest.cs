@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Store
                 new HashSet<TxId>()
                 {
                     _fx.Transaction1.Id,
-                    _fx.Transaction2.Id
+                    _fx.Transaction2.Id,
                 },
                 _set.Keys.ToHashSet());
 

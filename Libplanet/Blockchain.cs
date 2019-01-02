@@ -60,7 +60,7 @@ namespace Libplanet
                 ExpectDifficulties(blocks)
                 .Select((exp, i) => { return ((ulong)i, exp); });
 
-            foreach (var(i, exp) in indexedDifficulties)
+            foreach (var (i, exp) in indexedDifficulties)
             {
                 Trace.Assert(exp.Block != null);
                 Block<T> block = exp.Block;
@@ -231,7 +231,7 @@ namespace Libplanet
             yield return new DifficultyExpectation
             {
                 Difficulty = 0,
-                Block = blocks_.First()
+                Block = blocks_.First(),
             };
 
             uint difficulty = 1;
@@ -249,7 +249,7 @@ namespace Libplanet
                 yield return new DifficultyExpectation
                 {
                     Difficulty = difficulty,
-                    Block = block
+                    Block = block,
                 };
 
                 if (block != null)

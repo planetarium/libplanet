@@ -20,8 +20,10 @@ namespace Libplanet.Tests.Serialization.Bencode
                 Age = 30,
                 Names = new List<string>
                 {
-                    "Swen Mun", "문성원", "ムンソンワン"
-                }
+                    "Swen Mun",
+                    "문성원",
+                    "ムンソンワン",
+                },
             };
             var formatter = new BencodeFormatter<Person>();
             using (var stream = new MemoryStream())
