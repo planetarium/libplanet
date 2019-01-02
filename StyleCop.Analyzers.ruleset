@@ -17,5 +17,6 @@
     <!-- TODO: Documentation -->
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA0001" Action="None" />
   </Rules>
 </RuleSet>
