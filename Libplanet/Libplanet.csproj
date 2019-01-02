@@ -22,7 +22,7 @@
       https://github.com/nventive/Uno/blob/master/doc/articles/faq.md#warning-package-unouisourcegenerationtasks-was-restored-using-netframeworkversion461
       -->
       <NoWarn>NU1701</NoWarn>
-    </PackageReference>    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2">
+    </PackageReference>    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
