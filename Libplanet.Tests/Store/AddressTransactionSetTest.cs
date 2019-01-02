@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Store
             {
                 _set[_fx.Address1] = new List<Transaction<BaseAction>>()
                 {
-                    _fx.Transaction1
+                    _fx.Transaction1,
                 };
             });
         }
@@ -65,7 +65,7 @@ namespace Libplanet.Tests.Store
                 new HashSet<Address>()
                 {
                     _fx.Transaction1.Recipient,
-                    _fx.Transaction2.Recipient
+                    _fx.Transaction2.Recipient,
                 },
                 _set.Keys.ToHashSet());
         }

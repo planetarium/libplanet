@@ -67,7 +67,7 @@ namespace Libplanet.Tests
             var txs = new HashSet<Transaction<BaseAction>>()
             {
                 _fx.Transaction1,
-                _fx.Transaction2
+                _fx.Transaction2,
             };
             _blockchain.StageTransactions(txs);
             Assert.Equal(
@@ -95,7 +95,7 @@ namespace Libplanet.Tests
                 {
                     Weapon = "staff",
                     Target = "goblin",
-                }
+                },
             };
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 PrivateKey.Generate(),
@@ -132,7 +132,7 @@ namespace Libplanet.Tests
             var txs = new HashSet<Transaction<BaseAction>>()
             {
                 _fx.Transaction1,
-                _fx.Transaction2
+                _fx.Transaction2,
             };
             _blockchain.StageTransactions(txs);
             _blockchain.MineBlock(_fx.Address1);

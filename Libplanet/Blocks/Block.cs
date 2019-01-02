@@ -97,7 +97,7 @@ namespace Libplanet.Blocks
                 Context = new StreamingContext(
                     StreamingContextStates.All,
                     new BlockSerializationContext(hash, transactionData)
-                )
+                ),
             };
             using (var stream = new MemoryStream())
             {

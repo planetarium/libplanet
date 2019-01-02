@@ -52,7 +52,7 @@ namespace Libplanet.Serialization
                 new object[]
                 {
                     serializationInfo,
-                    Context
+                    Context,
                 }
             );
         }

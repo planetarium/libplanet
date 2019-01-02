@@ -231,7 +231,7 @@ namespace Libplanet
             yield return new DifficultyExpectation
             {
                 Difficulty = 0,
-                Block = blocks_.First()
+                Block = blocks_.First(),
             };
 
             uint difficulty = 1;
@@ -249,7 +249,7 @@ namespace Libplanet
                 yield return new DifficultyExpectation
                 {
                     Difficulty = difficulty,
-                    Block = block
+                    Block = block,
                 };
 
                 if (block != null)
