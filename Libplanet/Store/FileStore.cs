@@ -210,7 +210,7 @@ namespace Libplanet.Store
 
             using (Stream stream = blockFile.OpenRead())
             {
-                BencodexFormatter<RawBlock> formatter = new BencodexFormatter<RawBlock>();
+                var formatter = new BencodexFormatter<RawBlock>();
                 RawBlock rawBlock = (RawBlock)formatter.Deserialize(stream);
                 HashDigest<SHA256>? previousHash = (rawBlock.PreviousHash != null) ?
                     new HashDigest<SHA256>?(new HashDigest<SHA256>(rawBlock.PreviousHash)) :
@@ -241,8 +241,7 @@ namespace Libplanet.Store
 
             using (Stream stream = txFile.OpenRead())
             {
-                BencodexFormatter<Transaction<T>> formatter =
-                    new BencodexFormatter<Transaction<T>>();
+                var formatter = new BencodexFormatter<Transaction<T>>();
                 return (Transaction<T>)formatter.Deserialize(stream);
             }
         }
