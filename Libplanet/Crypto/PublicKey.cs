@@ -1,3 +1,4 @@
+using System;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
@@ -30,6 +31,16 @@ namespace Libplanet.Crypto
             byte[] signature,
             string algorithm = "SHA256withECDSA")
         {
+            if (payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            if (signature == null)
+            {
+                throw new ArgumentNullException(nameof(signature));
+            }
+
             ISigner verifier = SignerUtilities.GetSigner(algorithm);
             verifier.Init(false, KeyParam);
             verifier.BlockUpdate(payload, 0, payload.Length);

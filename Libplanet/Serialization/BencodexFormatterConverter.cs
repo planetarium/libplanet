@@ -1,10 +1,12 @@
 using System;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text;
+using Libplanet.Tx;
 
 namespace Libplanet.Serialization
 {
-    internal class BencodeFormatterConverter : IFormatterConverter
+    internal class BencodexFormatterConverter : IFormatterConverter
     {
         private readonly IFormatterConverter _impl = new FormatterConverter();
 
@@ -20,7 +22,7 @@ namespace Libplanet.Serialization
 
         public bool ToBoolean(object value)
         {
-            return _impl.ToBoolean(value);
+            return (bool)value;
         }
 
         public byte ToByte(object value)
@@ -50,17 +52,17 @@ namespace Libplanet.Serialization
 
         public short ToInt16(object value)
         {
-            return _impl.ToInt16(value);
+            return (short)(BigInteger)value;
         }
 
         public int ToInt32(object value)
         {
-            return _impl.ToInt32(value);
+            return (int)(BigInteger)value;
         }
 
         public long ToInt64(object value)
         {
-            return _impl.ToInt64(value);
+            return (long)(BigInteger)value;
         }
 
         public sbyte ToSByte(object value)
@@ -80,22 +82,22 @@ namespace Libplanet.Serialization
                 return Encoding.UTF8.GetString(bytes);
             }
 
-            return _impl.ToString();
+            return (string)o;
         }
 
         public ushort ToUInt16(object value)
         {
-            return _impl.ToUInt16(value);
+            return (ushort)(BigInteger)value;
         }
 
         public uint ToUInt32(object value)
         {
-            return _impl.ToUInt32(value);
+            return (uint)(BigInteger)value;
         }
 
         public ulong ToUInt64(object value)
         {
-            return _impl.ToUInt64(value);
+            return (ulong)(BigInteger)value;
         }
     }
 }

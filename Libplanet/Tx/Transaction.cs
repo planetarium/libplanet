@@ -89,7 +89,7 @@ namespace Libplanet.Tx
 
         public static Transaction<T> FromBencoded(byte[] bytes)
         {
-            var serializer = new BencodeFormatter<Transaction<T>>();
+            var serializer = new BencodexFormatter<Transaction<T>>();
             using (var stream = new MemoryStream(bytes))
             {
                 return (Transaction<T>)serializer.Deserialize(stream);
@@ -125,7 +125,7 @@ namespace Libplanet.Tx
 
         public byte[] Bencode(bool sign)
         {
-            var serializer = new BencodeFormatter<Transaction<T>>
+            var serializer = new BencodexFormatter<Transaction<T>>
             {
                 Context = new StreamingContext(
                     StreamingContextStates.All,
@@ -141,6 +141,16 @@ namespace Libplanet.Tx
 
         public void Validate()
         {
+            if (Signature == null)
+            {
+                // TODO: Should Transaction.Signature field nullable?
+                // The current implementation allows it to be null,
+                // but it is unsure what state does null represent.
+                throw new InvalidTxSignatureException(
+                    "the signature is empty"
+                );
+            }
+
             if (!PublicKey.Verify(Bencode(false), Signature))
             {
                 throw new InvalidTxSignatureException(
@@ -211,7 +221,7 @@ namespace Libplanet.Tx
 
         private static T ToAction(IDictionary<string, object> arg)
         {
-            var typeStr = Encoding.UTF8.GetString((byte[])arg["type_id"]);
+            var typeStr = (string)arg["type_id"];
             var action = (T)Activator.CreateInstance(Types[typeStr]);
             action.LoadPlainValue(
                 ((IDictionary<string, object>)arg["values"]).ToImmutableDictionary()

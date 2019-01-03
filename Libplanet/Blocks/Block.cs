@@ -92,7 +92,7 @@ namespace Libplanet.Blocks
 
         public byte[] Bencode(bool hash, bool transactionData)
         {
-            var serializer = new BencodeFormatter<Block<T>>
+            var serializer = new BencodexFormatter<Block<T>>
             {
                 Context = new StreamingContext(
                     StreamingContextStates.All,

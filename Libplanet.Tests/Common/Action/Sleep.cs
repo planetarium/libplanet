@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Numerics;
 using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
@@ -24,7 +25,7 @@ namespace Libplanet.Tests.Common.Action
         public override void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue)
         {
-            ZoneId = Convert.ToInt32(plainValue["zone_id"]);
+            ZoneId = (int)(BigInteger)plainValue["zone_id"];
         }
     }
 }

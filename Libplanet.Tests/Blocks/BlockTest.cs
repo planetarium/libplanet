@@ -5,6 +5,7 @@ using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
+using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
 {
@@ -25,16 +26,20 @@ namespace Libplanet.Tests.Blocks
                 new Address(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")),
                 _fx.Genesis.RewardBeneficiary);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
-            Assert.Equal(
+            AssertBytesEqual(
                 new HashDigest<SHA256>(
-                    ByteUtil.ParseHex(
-                        "b23717ecdf0b9c83bcc92f5675f827c1ee6808887bf1ce14f0322318174e1007"
-                    )
+                    new byte[]
+                    {
+                        0x16, 0xaf, 0x10, 0xab, 0xe2, 0x03, 0xe1, 0x2c, 0x35,
+                        0x20, 0x52, 0xd3, 0x6c, 0x75, 0xed, 0xef, 0xbf, 0x26,
+                        0x8b, 0xd3, 0xe6, 0x8e, 0xf0, 0x6b, 0x81, 0x93, 0xa0,
+                        0xb6, 0x73, 0x78, 0xe1, 0x9f,
+                    }
                 ),
                 _fx.Genesis.Hash
             );
 
-            Block<BaseAction> next = TestUtils.MineNext(_fx.Genesis);
+            Block<BaseAction> next = MineNext(_fx.Genesis);
 
             Assert.Equal(1u, _fx.Next.Index);
             Assert.Equal(1u, _fx.Next.Difficulty);
@@ -48,18 +53,37 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanBencode()
         {
-            byte[] expected = ByteUtil.ParseHex(
-                "6431303a646966666963756c7479693065343a6861736833323ab23717ecdf0b9c83bcc92f5675f827c1ee6808887bf1ce14f0322318174e1007353a696e646578693065353a6e6f6e6365343a0100000031383a7265776172645f62656e656669636961727932303a21744f4f08db23e044178dafb8273aeb5ebe6644393a74696d657374616d7032373a323031382d31312d32395430303a30303a30302e3030303030305a31323a7472616e73616374696f6e736c6565"
-            );
+            byte[] expected = new byte[185]
+            {
+                0x64, 0x31, 0x30, 0x3a, 0x64, 0x69, 0x66, 0x66, 0x69, 0x63,
+                0x75, 0x6c, 0x74, 0x79, 0x69, 0x30, 0x65, 0x34, 0x3a, 0x68,
+                0x61, 0x73, 0x68, 0x33, 0x32, 0x3a, 0x16, 0xaf, 0x10, 0xab,
+                0xe2, 0x03, 0xe1, 0x2c, 0x35, 0x20, 0x52, 0xd3, 0x6c, 0x75,
+                0xed, 0xef, 0xbf, 0x26, 0x8b, 0xd3, 0xe6, 0x8e, 0xf0, 0x6b,
+                0x81, 0x93, 0xa0, 0xb6, 0x73, 0x78, 0xe1, 0x9f, 0x35, 0x3a,
+                0x69, 0x6e, 0x64, 0x65, 0x78, 0x69, 0x30, 0x65, 0x35, 0x3a,
+                0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x34, 0x3a, 0x01, 0x00, 0x00,
+                0x00, 0x31, 0x38, 0x3a, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64,
+                0x5f, 0x62, 0x65, 0x6e, 0x65, 0x66, 0x69, 0x63, 0x69, 0x61,
+                0x72, 0x79, 0x32, 0x30, 0x3a, 0x21, 0x74, 0x4f, 0x4f, 0x08,
+                0xdb, 0x23, 0xe0, 0x44, 0x17, 0x8d, 0xaf, 0xb8, 0x27, 0x3a,
+                0xeb, 0x5e, 0xbe, 0x66, 0x44, 0x39, 0x3a, 0x74, 0x69, 0x6d,
+                0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x75, 0x32, 0x37, 0x3a,
+                0x32, 0x30, 0x31, 0x38, 0x2d, 0x31, 0x31, 0x2d, 0x32, 0x39,
+                0x54, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x2e,
+                0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x5a, 0x31, 0x32, 0x3a,
+                0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f,
+                0x6e, 0x73, 0x6c, 0x65, 0x65,
+            };
 
-            Assert.Equal(expected, _fx.Genesis.Bencode(true, true));
+            AssertBytesEqual(expected, _fx.Genesis.Bencode(true, true));
         }
 
         [Fact]
         public void CanValidate()
         {
-            Block<BaseAction> genesis = TestUtils.MineGenesis<BaseAction>();
-            Block<BaseAction> next = TestUtils.MineNext(genesis);
+            Block<BaseAction> genesis = MineGenesis<BaseAction>();
+            Block<BaseAction> next = MineNext(genesis);
 
             _fx.Genesis.Validate();
             _fx.Next.Validate();
@@ -115,7 +139,7 @@ namespace Libplanet.Tests.Blocks
                 difficulty: _fx.Genesis.Difficulty,
                 nonce: _fx.Genesis.Nonce,
                 rewardBeneficiary: _fx.Genesis.RewardBeneficiary,
-                previousHash: new HashDigest<SHA256>(TestUtils.GetRandomBytes(32)), // invalid
+                previousHash: new HashDigest<SHA256>(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
                 transactions: _fx.Genesis.Transactions
             );
@@ -151,8 +175,14 @@ namespace Libplanet.Tests.Blocks
                 new byte[] { 0x01, 0x00, 0x00, 0x00 },
                 rawGenesis.Nonce
             );
-            Assert.Equal(
-                ByteUtil.ParseHex("b23717ecdf0b9c83bcc92f5675f827c1ee6808887bf1ce14f0322318174e1007"),
+            AssertBytesEqual(
+                new byte[32]
+                {
+                    0x16, 0xaf, 0x10, 0xab, 0xe2, 0x03, 0xe1, 0x2c, 0x35, 0x20,
+                    0x52, 0xd3, 0x6c, 0x75, 0xed, 0xef, 0xbf, 0x26, 0x8b, 0xd3,
+                    0xe6, 0x8e, 0xf0, 0x6b, 0x81, 0x93, 0xa0, 0xb6, 0x73, 0x78,
+                    0xe1, 0x9f,
+                },
                 rawGenesis.Hash
             );
 
