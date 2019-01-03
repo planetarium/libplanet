@@ -26,19 +26,19 @@ namespace Libplanet.Tx
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
         public Transaction(RawTransaction rawTx)
+            : this(
+                new Address(rawTx.Sender),
+                new PublicKey(rawTx.PublicKey),
+                new Address(rawTx.Recipient),
+                DateTime.ParseExact(
+                    rawTx.Timestamp,
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture
+                ).ToUniversalTime(),
+                rawTx.Actions.Select(ToAction).ToList(),
+                rawTx.Signature
+            )
         {
-            Sender = new Address(rawTx.Sender);
-            PublicKey = new PublicKey(rawTx.PublicKey);
-            Recipient = new Address(rawTx.Recipient);
-            Timestamp = DateTime.ParseExact(
-                rawTx.Timestamp,
-                TimestampFormat,
-                CultureInfo.InvariantCulture
-            ).ToUniversalTime();
-            Signature = rawTx.Signature;
-            Actions = rawTx.Actions
-                .Select(ToAction)
-                .ToList();
         }
 
         // ReSharper disable once UnusedMember.Local
