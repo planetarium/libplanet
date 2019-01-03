@@ -23,8 +23,8 @@ namespace Libplanet.Tests.Common.Action
         public override void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue)
         {
-            Weapon = Encoding.UTF8.GetString((byte[])plainValue["weapon"]);
-            Target = Encoding.UTF8.GetString((byte[])plainValue["target"]);
+            Weapon = (string)plainValue["weapon"];
+            Target = (string)plainValue["target"];
         }
 
         public override AddressStateMap Execute(Address from, Address to, AddressStateMap states)
