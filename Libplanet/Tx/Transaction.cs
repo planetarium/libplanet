@@ -26,19 +26,19 @@ namespace Libplanet.Tx
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
         public Transaction(RawTransaction rawTx)
+            : this(
+                new Address(rawTx.Sender),
+                new PublicKey(rawTx.PublicKey),
+                new Address(rawTx.Recipient),
+                DateTime.ParseExact(
+                    rawTx.Timestamp,
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture
+                ).ToUniversalTime(),
+                rawTx.Actions.Select(ToAction).ToList(),
+                rawTx.Signature
+            )
         {
-            Sender = new Address(rawTx.Sender);
-            PublicKey = new PublicKey(rawTx.PublicKey);
-            Recipient = new Address(rawTx.Recipient);
-            Timestamp = DateTime.ParseExact(
-                rawTx.Timestamp,
-                TimestampFormat,
-                CultureInfo.InvariantCulture
-            ).ToUniversalTime();
-            Signature = rawTx.Signature;
-            Actions = rawTx.Actions
-                .Select(ToAction)
-                .ToList();
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -57,10 +57,13 @@ namespace Libplanet.Tx
         {
             Sender = sender;
             Recipient = recipient;
-            Signature = signature;
+            Signature = signature ??
+                throw new ArgumentNullException(nameof(signature));
             Timestamp = timestamp;
-            Actions = actions;
-            PublicKey = publicKey;
+            Actions = actions ??
+                throw new ArgumentNullException(nameof(actions));
+            PublicKey = publicKey ??
+                throw new ArgumentNullException(nameof(publicKey));
         }
 
         public TxId Id
@@ -111,7 +114,7 @@ namespace Libplanet.Tx
                 recipient,
                 timestamp,
                 actions,
-                null
+                new byte[0]
             );
             return new Transaction<T>(
                 sender,
@@ -141,16 +144,6 @@ namespace Libplanet.Tx
 
         public void Validate()
         {
-            if (Signature == null)
-            {
-                // TODO: Should Transaction.Signature field nullable?
-                // The current implementation allows it to be null,
-                // but it is unsure what state does null represent.
-                throw new InvalidTxSignatureException(
-                    "the signature is empty"
-                );
-            }
-
             if (!PublicKey.Verify(Bencode(false), Signature))
             {
                 throw new InvalidTxSignatureException(
