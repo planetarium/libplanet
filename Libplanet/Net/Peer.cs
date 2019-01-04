@@ -62,5 +62,12 @@ namespace Libplanet.Net
             info.AddValue("public_key", PublicKey.Format(true));
             info.AddValue("urls", Urls.Select(u => u.ToString()).ToList());
         }
+
+        public override string ToString()
+        {
+            return string.Join(
+                ",",
+                new[] { Address.ToString() }.Concat(Urls.Select(u => u.ToString())));
+        }
     }
 }
