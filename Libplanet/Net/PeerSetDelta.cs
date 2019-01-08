@@ -61,5 +61,12 @@ namespace Libplanet.Net
             info.AddValue("removed_peers", RemovedPeers?.ToArray());
             info.AddValue("existing_peers", ExistingPeers?.ToArray());
         }
+
+        public override string ToString()
+        {
+            return $"[Sender: {Sender}, " +
+                $"+: {AddedPeers.Count}, " +
+                $"-: {RemovedPeers.Count}]";
+        }
     }
 }
