@@ -30,6 +30,12 @@
           "toc.yml",
           "*.md"
         ]
+      },
+      {
+        "src": "..",
+        "files": [
+          "CHANGES.md"
+        ]
       }
     ],
     "resource": [

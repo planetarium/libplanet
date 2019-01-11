@@ -1,5 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <PackageId>Libplanet</PackageId>
+    <Title>Libplanet</Title>
+    <Summary>A .NET library for creating blockchain games.</Summary>
+    <!-- FIXME: The above summary should be rewritten. -->
+    <Version>0.1.0-dev</Version>
+    <PackageProjectUrl>https://github.com/planetarium/libplanet.net</PackageProjectUrl>
+    <Authors>Hong Minhee</Authors>
+    <Company>Planetarium</Company>
+    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageReleaseNotes>https://github.com/planetarium/libplanet.net/blob/master/CHANGES.md</PackageReleaseNotes>
+    <PackageTags>multiplayer online game;game;blockchain</PackageTags>
+    <RepositoryUrl>git://github.com/planetarium/libplanet.net.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RootNamespace>Libplanet</RootNamespace>
+    <AssemblyName>Libplanet</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetFramework>netstandard2.0</TargetFramework>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -10,6 +27,12 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
+    <None Include="..\README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Bencodex" Version="0.1.0" />

@@ -3,3 +3,5 @@
 - name: API Reference
   href: api/
   homepage: api/Libplanet.yml
+- name: Changelog
+  href: ../CHANGES.md
