@@ -25,7 +25,7 @@ namespace Libplanet.Net
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly NetMQQueue<PeerSetDelta> _deltas;
-        private readonly IDictionary<Uri, DealerSocket> _dealers;
+        private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly Uri _listenUrl;
         private readonly int _dialTimeout;
@@ -55,7 +55,7 @@ namespace Libplanet.Net
             DeltaDistributed = new AsyncManualResetEvent();
             DeltaReceived = new AsyncManualResetEvent();
 
-            _dealers = new Dictionary<Uri, DealerSocket>();
+            _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
             _deltas = new NetMQQueue<PeerSetDelta>();
 
@@ -533,7 +533,7 @@ namespace Libplanet.Net
                     _logger.Debug($"Trying to close dealers associated {peer}.");
                     if (_contextInitialized)
                     {
-                        CloseDealers(peer.Urls.ToImmutableHashSet());
+                        CloseDealer(peer);
                     }
 
                     if (existingPeers.TryGetValue(peer.PublicKey, out Peer[] remains))
@@ -544,7 +544,7 @@ namespace Libplanet.Net
 
                             if (_contextInitialized)
                             {
-                                CloseDealers(key.Urls.ToImmutableHashSet());
+                                CloseDealer(key);
                             }
                         }
                     }
@@ -554,56 +554,54 @@ namespace Libplanet.Net
             }
         }
 
-        private void CloseDealers(IEnumerable<Uri> urls)
+        private void CloseDealer(Peer peer)
         {
             CheckEntered();
-
-            foreach (Uri url in urls)
+            if (_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
             {
-                if (_dealers.TryGetValue(url, out DealerSocket sock))
-                {
-                    sock.Dispose();
-                    _dealers.Remove(url);
-                }
+                dealer.Dispose();
+                _dealers.Remove(peer.Address);
             }
         }
 
-        private async Task<DealerSocket> DialAsync(Uri address)
+        private async Task<DealerSocket> DialAsync(Uri address, DealerSocket dealer)
         {
             CheckEntered();
 
-            if (!_dealers.TryGetValue(address, out DealerSocket dialer))
-            {
-                dialer = new DealerSocket(address.ToString());
-            }
+            dealer.Connect(address.ToString());
 
             _logger.Debug($"Trying to Ping to [{address}]...");
-            await dialer.SendFrameAsync(new[] { (byte)MessageType.Ping });
+            await dealer.SendFrameAsync(new[] { (byte)MessageType.Ping });
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
-            await dialer.ReceiveMultipartMessageAsync(_dialTimeout);
+            await dealer.ReceiveMultipartMessageAsync(_dialTimeout);
 
             _logger.Debug($"Pong received.");
 
-            return dialer;
+            return dealer;
         }
 
         private async Task<Peer> DialPeerAsync(Peer peer)
         {
             Peer original = peer;
-            DealerSocket dealer = null;
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+            {
+                dealer = new DealerSocket();
+                dealer.Options.Identity = _privateKey.PublicKey.ToAddress().ToByteArray();
+            }
 
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
             {
                 try
                 {
                     _logger.Debug($"Trying to DialAsync({url})...");
-                    dealer = await DialAsync(url);
+                    await DialAsync(url, dealer);
                     _logger.Debug($"DialAsync({url}) is complete.");
                 }
                 catch (IOException e)
                 {
                     _logger.Error(e, $"IOException occured in DialAsync({url}).");
+                    dealer.Disconnect(url.ToString());
                     continue;
                 }
 
@@ -612,7 +610,7 @@ namespace Libplanet.Net
                     peer = new Peer(peer.PublicKey, peer.Urls.Skip(i));
                 }
 
-                _dealers[url] = dealer;
+                _dealers[peer.Address] = dealer;
                 break;
             }
 
