@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -161,6 +162,26 @@ namespace Libplanet.Tests.Net
 
             Assert.NotEqual(a, b);
             Assert.True(a.KeyEquals(b));
+        }
+
+        [Fact]
+        public async Task CanBeCancelled()
+        {
+            Swarm swarm = _swarms[0];
+            var cts = new CancellationTokenSource();
+
+            try
+            {
+                await swarm.InitContextAsync();
+                var at = Task.Run(async () => await swarm.RunAsync(250, cts.Token));
+
+                cts.Cancel();
+                await Assert.ThrowsAsync<TaskCanceledException>(async () => await at);
+            }
+            finally
+            {
+                await swarm.DisposeAsync();
+            }
         }
 
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTime? lastReceived = null)
