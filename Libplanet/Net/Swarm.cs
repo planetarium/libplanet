@@ -302,85 +302,6 @@ namespace Libplanet.Net
                 ProcessDeltaAsync(cancellationToken));
         }
 
-        public async Task ReceiveMessageAsync(CancellationToken cancellationToken)
-        {
-            CheckEntered();
-
-            while (true)
-            {
-                NetMQMessage message = await
-                    _router.ReceiveMultipartMessageAsync(cancellationToken);
-                _logger.Debug($"Message received.[f-count: {message.FrameCount}]");
-                byte[] addr = message[0].ToByteArray();
-                var type = (MessageType)message[1].Buffer[0];
-
-                switch (type)
-                {
-                    case MessageType.Ping:
-                        _logger.Debug($"Ping received.");
-                        NetMQMessage reply = CreateMessage(MessageType.Pong, addr);
-                        await _router.SendMultipartMessageAsync(reply, cancellationToken);
-                        break;
-
-                    case MessageType.PeerSetDelta:
-                        byte[] payload = message[2].ToByteArray();
-                        var (publicKey, msg) = VerifyMessage(payload);
-                        using (var stream = new MemoryStream(msg))
-                        {
-                            var formatter = new BinaryFormatter();
-                            _deltas.Enqueue((PeerSetDelta)formatter.Deserialize(stream));
-                        }
-
-                        break;
-                    default:
-                        _logger.Warning($"Can't recognize message type[{type}]. ignored.");
-                        break;
-                }
-            }
-        }
-
-        public async Task ProcessDeltaAsync(CancellationToken cancellationToken)
-        {
-            while (true)
-            {
-                PeerSetDelta delta;
-                while (!_deltas.TryDequeue(out delta, TimeSpan.FromMilliseconds(100)))
-                {
-                    await Task.Delay(100, cancellationToken);
-                }
-
-                Peer sender = delta.Sender;
-                PublicKey senderKey = sender.PublicKey;
-
-                if (!_peers.ContainsKey(sender) && _peers.Keys.All(p => senderKey != p.PublicKey))
-                {
-                    delta = new PeerSetDelta(
-                        delta.Sender,
-                        delta.Timestamp,
-                        delta.AddedPeers.Add(sender),
-                        delta.RemovedPeers,
-                        delta.ExistingPeers
-                    );
-                }
-
-                _logger.Debug($"Received the delta[{delta}].");
-
-                using (await _receiveMutex.LockAsync(cancellationToken))
-                {
-                    DeltaReceived.Reset();
-                    _logger.Debug($"Trying to apply the delta[{delta}]...");
-                    await ApplyDelta(delta, cancellationToken);
-
-                    LastReceived = delta.Timestamp;
-                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
-
-                    DeltaReceived.Set();
-                }
-
-                _logger.Debug($"The delta[{delta}] has been applied.");
-            }
-        }
-
         private static (PublicKey publicKey, byte[] bytes) VerifyMessage(byte[] bytes)
         {
             var formatter = new BinaryFormatter();
@@ -453,6 +374,85 @@ namespace Libplanet.Net
 
                     yield return kv.Key;
                 }
+            }
+        }
+
+        private async Task ReceiveMessageAsync(CancellationToken cancellationToken)
+        {
+            CheckEntered();
+
+            while (true)
+            {
+                NetMQMessage message = await
+                    _router.ReceiveMultipartMessageAsync(cancellationToken);
+                _logger.Debug($"Message received.[f-count: {message.FrameCount}]");
+                byte[] addr = message[0].ToByteArray();
+                var type = (MessageType)message[1].Buffer[0];
+
+                switch (type)
+                {
+                    case MessageType.Ping:
+                        _logger.Debug($"Ping received.");
+                        NetMQMessage reply = CreateMessage(MessageType.Pong, addr);
+                        await _router.SendMultipartMessageAsync(reply, cancellationToken);
+                        break;
+
+                    case MessageType.PeerSetDelta:
+                        byte[] payload = message[2].ToByteArray();
+                        var (publicKey, msg) = VerifyMessage(payload);
+                        using (var stream = new MemoryStream(msg))
+                        {
+                            var formatter = new BinaryFormatter();
+                            _deltas.Enqueue((PeerSetDelta)formatter.Deserialize(stream));
+                        }
+
+                        break;
+                    default:
+                        _logger.Warning($"Can't recognize message type[{type}]. ignored.");
+                        break;
+                }
+            }
+        }
+
+        private async Task ProcessDeltaAsync(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                PeerSetDelta delta;
+                while (!_deltas.TryDequeue(out delta, TimeSpan.FromMilliseconds(100)))
+                {
+                    await Task.Delay(100, cancellationToken);
+                }
+
+                Peer sender = delta.Sender;
+                PublicKey senderKey = sender.PublicKey;
+
+                if (!_peers.ContainsKey(sender) && _peers.Keys.All(p => senderKey != p.PublicKey))
+                {
+                    delta = new PeerSetDelta(
+                        delta.Sender,
+                        delta.Timestamp,
+                        delta.AddedPeers.Add(sender),
+                        delta.RemovedPeers,
+                        delta.ExistingPeers
+                    );
+                }
+
+                _logger.Debug($"Received the delta[{delta}].");
+
+                using (await _receiveMutex.LockAsync(cancellationToken))
+                {
+                    DeltaReceived.Reset();
+                    _logger.Debug($"Trying to apply the delta[{delta}]...");
+                    await ApplyDelta(delta, cancellationToken);
+
+                    LastReceived = delta.Timestamp;
+                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+
+                    DeltaReceived.Set();
+                }
+
+                _logger.Debug($"The delta[{delta}] has been applied.");
             }
         }
 
