@@ -4,6 +4,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
+
 - job: 'LinuxOrMac'
   strategy:
     matrix:
@@ -35,7 +36,8 @@ jobs:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: $(Build.BuildId)_$(Build.BuildNumber)_$(imageName)
-- job: 'Window'
+
+- job: 'Windows'
   pool:
     vmImage: 'VS2017-Win2016'
   steps:

@@ -86,7 +86,7 @@ namespace Libplanet.Store
 
         public string GetAddressPath(Address address)
         {
-            var addrHex = address.Hex();
+            var addrHex = address.ToHex();
             return Path.Combine(
                 _addressesPath,
                 addrHex.Substring(0, 4),

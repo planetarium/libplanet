@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Crypto
             var bs = ByteUtil.ParseHex(
                 "98669850728c6c410bf42c45fe7c49232d14cfb55b784d8135ae404c7c243fc7");
             var key = new PrivateKey(bs);
-            Assert.Equal(bs, key.Bytes);
+            Assert.Equal(bs, key.ByteArray);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Libplanet.Tests.Crypto
 
             var expected = ByteUtil.ParseHex(
                 "5935d0476af9df2998efb60383adf2ff23bc928322cfbb738fca88e49d557d7e");
-            var actual = prvKey.ECDH(pubKey);
+            var actual = prvKey.ExchangeKey(pubKey);
 
             Assert.Equal(expected, actual);
         }

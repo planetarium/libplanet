@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using Org.BouncyCastle.Asn1;
@@ -14,16 +15,63 @@ using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
+    /// <summary>
+    /// A secret part of a key pair involved in
+    /// <a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
+    /// signature algorithm on which the Libplanet is based.  It can be used to
+    /// create signatures, which can be verified with the corresponding
+    /// <see cref="Libplanet.Crypto.PublicKey"/>, as well as to decrypt
+    /// messages which were encrypted with the corresponding
+    /// <see cref="Libplanet.Crypto.PublicKey"/>.
+    /// <para>Note that it uses <a href="https://en.bitcoin.it/wiki/Secp256k1"
+    /// >secp256k1</a> as the parameters of the elliptic curve, which is same to
+    /// <a href="https://bitcoin.org/">Bitcoin</a> and
+    /// <a href="https://www.ethereum.org/">Ethereum</a>.
+    /// It means private keys generated for Bitcoin/Ethereum can be used by
+    /// Libplanet-backed games/apps too.</para>
+    /// </summary>
+    /// <remarks>
+    /// These (and any derived representations, e.g., <see cref="ByteArray"/>)
+    /// must be kept secret, if they are exposed, an attacker will be able to
+    /// forge signatures.
+    /// <para>Every <see cref="PrivateKey"/> object is immutable.</para>
+    /// </remarks>
+    /// <seealso cref="Libplanet.Crypto.PublicKey"/>
     [Uno.GeneratedEquality]
     public partial class PrivateKey
     {
         private readonly ECPrivateKeyParameters keyParam;
 
-        public PrivateKey(byte[] bs)
+        /// <summary>
+        /// Generates a new unique <see cref="PrivateKey"/> instance.
+        /// It can be analogous to creating a new account in a degree.
+        /// </summary>
+        public PrivateKey()
+            : this(
+                GenerateKeyParam()
+            )
+        {
+        }
+
+        /// <summary>
+        /// Creates a <see cref="PrivateKey"/> instance from the given
+        /// <see cref="byte"/> array (i.e., <paramref name="privateKey"/>),
+        /// which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
+        /// ECDSA</a> private key.
+        /// </summary>
+        /// <param name="privateKey">A valid <see cref="byte"/> array that
+        /// encodes an ECDSA private key.
+        /// </param>
+        /// <remarks>A valid <see cref="byte"/> array for
+        /// a <see cref="PrivateKey"/> can be encoded using
+        /// <see cref="ByteArray"/> property.
+        /// </remarks>
+        /// <seealso cref="ByteArray"/>
+        public PrivateKey(byte[] privateKey)
             : this(
                 new ECPrivateKeyParameters(
                     "ECDSA",
-                    new BigInteger(1, bs),
+                    new BigInteger(1, privateKey),
                     GetECParameters()
                 )
             )
@@ -35,6 +83,11 @@ namespace Libplanet.Crypto
             this.keyParam = keyParam;
         }
 
+        /// <summary>
+        /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
+        /// this private key.
+        /// </summary>
+        [Pure]
         [Uno.EqualityIgnore]
         public PublicKey PublicKey
         {
@@ -47,28 +100,63 @@ namespace Libplanet.Crypto
             }
         }
 
+        /// <summary>
+        /// A <see cref="byte"/> array encoding of this private key.
+        /// </summary>
+        /// <remarks>
+        /// An encoded <see cref="byte"/> array representation can recover
+        /// a <see cref="PrivateKey"/> object again using its constructor
+        /// (i.e., <see cref="PrivateKey(byte[])"/>.
+        /// <para>As like <see cref="PrivateKey"/> instances, this also must be
+        /// kept secret.  In practice, this must not be sent over the network,
+        /// and securely stored in the file system.  For the most part, modern
+        /// operating systems, mobile ones in particular, provide their own API
+        /// to store password and private keys in the secure manner, which
+        /// means they encrypt things to store using
+        /// <a href="https://en.wikipedia.org/wiki/Hardware_security_module">HSM
+        /// </a> if possible.</para>
+        /// </remarks>
+        /// <seealso cref="PrivateKey(byte[])"/>
+        [Pure]
         [Uno.EqualityKey]
-        public byte[] Bytes => keyParam.D.ToByteArrayUnsigned();
+        public byte[] ByteArray => keyParam.D.ToByteArrayUnsigned();
 
-        public static PrivateKey Generate()
-        {
-            var gen = new ECKeyPairGenerator();
-            var secureRandom = new SecureRandom();
-            ECDomainParameters ecParams = GetECParameters();
-            var keyGenParam =
-                new ECKeyGenerationParameters(ecParams, secureRandom);
-            gen.Init(keyGenParam);
-
-            return new PrivateKey(
-                gen.GenerateKeyPair().Private as ECPrivateKeyParameters
-            );
-        }
-
-        public byte[] Sign(byte[] payload)
+        /// <summary>
+        /// Creates a signature from the given <paramref name="message"/>.
+        /// <para>
+        /// A created signature can be verified by the corresponding
+        /// <see cref="PublicKey"/>.
+        /// </para>
+        /// <para>
+        /// Signatures can be created by only the <see cref="PrivateKey"/>
+        /// which corresponds a <see cref="PublicKey"/> to verify these
+        /// signatures.
+        /// </para>
+        /// <para>
+        /// To sum up, a signature is used to guarantee:
+        /// </para>
+        /// <list type="bullet">
+        /// <item><description>that the <paramref name="message"/> was created
+        /// by someone possessing the corresponding <see cref="PrivateKey"/>,
+        /// </description></item>
+        /// <item><description>that the possessor cannot deny having sent the
+        /// <paramref name="message"/>, and</description></item>
+        /// <item><description>that the <paramref name="message"/> was not
+        /// forged in the middle of transit.</description></item>
+        /// </list>
+        /// </summary>
+        /// <param name="message">A message to sign in <see cref="byte"/> array
+        /// representation.</param>
+        /// <returns>A signature that verifies the <paramref name="message"/>.
+        /// It can be verified using
+        /// <see cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
+        /// method.</returns>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.Verify(byte[], byte[])"/>
+        public byte[] Sign(byte[] message)
         {
             var h = new Sha256Digest();
             var hashed = new byte[h.GetDigestSize()];
-            h.BlockUpdate(payload, 0, payload.Length);
+            h.BlockUpdate(message, 0, message.Length);
             h.DoFinal(hashed, 0);
             h.Reset();
 
@@ -93,16 +181,58 @@ namespace Libplanet.Crypto
             return bos.ToArray();
         }
 
-        public byte[] Decrypt(byte[] payload)
+        /// <summary>
+        /// Converts a <paramref name="ciphertext"/> which was encrypted with
+        /// the corresponding <see cref="PublicKey"/> to the plain message.
+        /// </summary>
+        /// <param name="ciphertext">The encrypted data.</param>
+        /// <returns>The plain data the <paramref name="ciphertext"/> encrypted.
+        /// It returns <c>null</c> if the <paramref name="ciphertext"/> is
+        /// invalid (this behavior will be eventually changed in the future to
+        /// throw an exception instead).</returns>
+        /// <remarks>
+        /// Although the parameter name <paramref name="ciphertext"/> has the
+        /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/>
+        /// and a returned message are a <see cref="byte"/> string,
+        /// not a Unicode <see cref="string"/>.
+        /// </remarks>
+        /// <seealso cref="Libplanet.Crypto.PublicKey.Encrypt(byte[])"/>
+        [Pure]
+        public byte[] Decrypt(byte[] ciphertext)
         {
-            PublicKey pubKey = new PublicKey(payload.Take(33).ToArray());
-            byte[] aesKey = ECDH(pubKey);
+            PublicKey pubKey = new PublicKey(ciphertext.Take(33).ToArray());
+            byte[] aesKey = ExchangeKey(pubKey);
             var aes = new Aesgcm(aesKey);
 
-            return aes.Decrypt(payload, 33);
+            // FIXME: This merely returns null when the given ciphertext is
+            // invalid (which means it is not encrypted with the corresponding
+            // public key for the most part).  This should become to throw
+            // an appropriate exception instead and also reflected to docs
+            // comment (to add <exception> tag) as well.
+            return aes.Decrypt(ciphertext, 33);
         }
 
-        public byte[] ECDH(PublicKey publicKey)
+        /// <summary>
+        /// Securely exchange an <a
+        /// href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard"
+        /// >AES</a> key with a peer's <see cref="PublicKey"/>.
+        /// Two parties can agree on a (new, unique, and typically temporal)
+        /// key without revealing to any eavesdropping party what key has been
+        /// agreed upon.
+        /// <para>Technically it is <a href="https://en.wikipedia.org/wiki/ECDH"
+        /// >ECDH</a>, a <a
+        /// href="https://en.wikipedia.org/wiki/DH_key_exchange"
+        /// >Diffie&#x2013;Hellman key exchange</a> of elliptic-curve version.
+        /// </para>
+        /// </summary>
+        /// <param name="publicKey">The <see cref="PublicKey"/> possessed by
+        /// a peer to whom exchange a private key with.</param>
+        /// <returns>An <a
+        /// href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard"
+        /// >AES</a> key in <see cref="byte"/> array representation.
+        /// Note that it is not an elliptic-curve private key.</returns>
+        [Pure]
+        public byte[] ExchangeKey(PublicKey publicKey)
         {
             ECPoint p = CalculatePoint(publicKey.KeyParam);
             BigInteger x = p.AffineXCoord.ToBigInteger();
@@ -130,6 +260,18 @@ namespace Libplanet.Crypto
         {
             X9ECParameters ps = SecNamedCurves.GetByName(name);
             return new ECDomainParameters(ps.Curve, ps.G, ps.N, ps.H);
+        }
+
+        private static ECPrivateKeyParameters GenerateKeyParam()
+        {
+            var gen = new ECKeyPairGenerator();
+            var secureRandom = new SecureRandom();
+            ECDomainParameters ecParams = GetECParameters();
+            var keyGenParam =
+                new ECKeyGenerationParameters(ecParams, secureRandom);
+            gen.Init(keyGenParam);
+
+            return gen.GenerateKeyPair().Private as ECPrivateKeyParameters;
         }
 
         private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)

@@ -52,7 +52,7 @@ namespace Libplanet.Net
         public IImmutableList<Uri> Urls { get; }
 
         [Pure]
-        public Address Address => Address.FromPublicKey(PublicKey);
+        public Address Address => new Address(PublicKey);
 
         [Pure]
         public Peer AddUrl(Uri url) => new Peer(PublicKey, Urls.Add(url));

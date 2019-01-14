@@ -110,7 +110,7 @@ namespace Libplanet.Action
         {
             foreach (var kv in this)
             {
-                info.AddValue(kv.Key.Hex(), kv.Value);
+                info.AddValue(kv.Key.ToHex(), kv.Value);
             }
         }
     }
