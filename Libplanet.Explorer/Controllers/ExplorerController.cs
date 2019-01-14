@@ -80,7 +80,7 @@ namespace Libplanet.Explorer.Controllers
                 Difficulty = block.Difficulty,
                 Nonce = block.Nonce.ToString(),
                 PreviousHash = block.PreviousHash.ToString(),
-                RewardBeneficiary = block.RewardBeneficiary?.Hex(),
+                RewardBeneficiary = block.RewardBeneficiary?.ToHex(),
                 Timestamp = block.Timestamp.ToString(TimestampFormat),
                 TxIds = (block.Transactions
                     .OrderByDescending(tx => tx.Timestamp)
@@ -132,8 +132,8 @@ namespace Libplanet.Explorer.Controllers
                 Id = tx.Id.ToString(),
                 Signature = tx.Signature,
                 Timestamp = tx.Timestamp,
-                Sender = tx.Sender.Hex(),
-                Recipient = tx.Recipient.Hex(),
+                Sender = tx.Sender.ToHex(),
+                Recipient = tx.Recipient.ToHex(),
                 Actions = tx.Actions
                     .Select(act => new Dictionary<string, object>
                     {
