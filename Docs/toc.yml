@@ -1,5 +1,7 @@
 #- name: Articles
 #  href: articles/
+- name: Design
+  href: articles/design.md
 - name: API Reference
   href: api/
   homepage: api/Libplanet.yml
