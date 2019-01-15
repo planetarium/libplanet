@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Crypto;
 using NetMQ;
 using NetMQ.Sockets;
@@ -284,21 +285,25 @@ namespace Libplanet.Net
             return GetEnumerator();
         }
 
-        public async Task RunAsync(int distributeInterval)
+        public async Task RunAsync<T>(
+            Blockchain<T> blockchain, int distributeInterval)
+            where T : IAction
         {
-            await RunAsync(distributeInterval, CancellationToken.None);
+            await RunAsync(blockchain, distributeInterval, CancellationToken.None);
         }
 
-        public async Task RunAsync(
+        public async Task RunAsync<T>(
+            Blockchain<T> blockchain,
             int distributeInterval,
             CancellationToken cancellationToken)
+            where T : IAction
         {
             CheckEntered();
 
             await Task.WhenAll(
                 RepeatDeltaDistributionAsync(
                     distributeInterval, cancellationToken),
-                ReceiveMessageAsync(cancellationToken),
+                ReceiveMessageAsync(blockchain, cancellationToken),
                 ProcessDeltaAsync(cancellationToken));
         }
 
@@ -377,7 +382,9 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ReceiveMessageAsync(CancellationToken cancellationToken)
+        private async Task ReceiveMessageAsync<T>(
+            Blockchain<T> blockchain, CancellationToken cancellationToken)
+            where T : IAction
         {
             CheckEntered();
 
