@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -162,6 +163,29 @@ namespace Libplanet.Tests
             Assert.NotEmpty(_blockchain.Addresses);
             Assert.Contains(_fx.Transaction1, _blockchain.Addresses[_fx.Transaction1.Recipient]);
             Assert.DoesNotContain(_fx.Transaction2, _blockchain.Addresses[_fx.Transaction1.Recipient]);
+        }
+
+        [Fact]
+        public void CanFindNextHashes()
+        {
+            _blockchain.Append(_fx.Block1);
+            var block0 = _fx.Block1;
+            var block1 = _blockchain.MineBlock(_fx.Address1);
+            var block2 = _blockchain.MineBlock(_fx.Address1);
+            var block3 = _blockchain.MineBlock(_fx.Address1);
+
+            Assert.Equal(
+                new[] { block1.Hash, block2.Hash, block3.Hash, },
+                _blockchain.FindNextHashes(new[] { block0.Hash }));
+            Assert.Equal(
+                new[] { block2.Hash, block3.Hash },
+                _blockchain.FindNextHashes(new[] { block1.Hash, block0.Hash }));
+            Assert.Equal(
+                new[] { block1.Hash, block2.Hash },
+                _blockchain.FindNextHashes(new[] { block0.Hash }, block2.Hash));
+            Assert.Equal(
+                new[] { block1.Hash, block2.Hash },
+                _blockchain.FindNextHashes(new[] { block0.Hash }, count: 2));
         }
     }
 }

@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 
+[assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet
 {
     public class Blockchain<T> : IEnumerable<Block<T>>
@@ -213,6 +215,49 @@ namespace Libplanet
             Append(block);
 
             return block;
+        }
+
+        internal HashDigest<SHA256> FindBranchPoint(
+            IEnumerable<HashDigest<SHA256>> locator)
+        {
+            // Assume locator is sorted descending by height.
+            foreach (HashDigest<SHA256> hash in locator)
+            {
+                if (Blocks.ContainsKey(hash))
+                {
+                    return Blocks[hash].Hash;
+                }
+            }
+
+            return this[0].Hash;
+        }
+
+        internal IEnumerable<HashDigest<SHA256>> FindNextHashes(
+            IEnumerable<HashDigest<SHA256>> locator,
+            HashDigest<SHA256>? stop = null,
+            int count = 500)
+        {
+            HashDigest<SHA256>? Next(HashDigest<SHA256> hash)
+            {
+                long nextIndex = (long)Blocks[hash].Index + 1;
+                return Store.IndexBlockHash(nextIndex);
+            }
+
+            HashDigest<SHA256>? tip = Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? currentHash = Next(FindBranchPoint(locator));
+
+            while (currentHash != null && count > 0)
+            {
+                yield return currentHash.Value;
+
+                if (currentHash == stop || currentHash == tip)
+                {
+                    break;
+                }
+
+                currentHash = Next(currentHash.Value);
+                count--;
+            }
         }
 
         private static IEnumerable<DifficultyExpectation> ExpectDifficulties(
