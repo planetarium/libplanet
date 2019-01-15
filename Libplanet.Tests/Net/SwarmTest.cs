@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
@@ -212,6 +214,53 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await swarm.DisposeAsync();
+            }
+        }
+
+        [Fact]
+        public async Task CanGetBlock()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+
+            Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis); // chainA and chainB shares genesis block.
+
+            Block<BaseAction> block1 = chainA.MineBlock(_fx1.Address1);
+            Block<BaseAction> block2 = chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync());
+                var at = Task.Run(
+                    async () => await swarmA.RunAsync(chainA, 250));
+                var bt = Task.Run(
+                    async () => await swarmB.RunAsync(chainB, 250));
+
+                await Assert.ThrowsAsync<PeerNotFoundException>(
+                    async () => await swarmB.GetBlocksAsync(
+                        swarmA.AsPeer, new[] { genesis.Hash }));
+
+                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer });
+
+                IEnumerable<HashDigest<SHA256>> inventories =
+                    await swarmB.GetBlocksAsync(
+                        swarmA.AsPeer, new[] { genesis.Hash });
+
+                Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories);
+
+                // TODO Test swarmB.GetData(swarmA.AsPeer, invetories);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync());
             }
         }
 

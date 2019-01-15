@@ -5,10 +5,13 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Serialization;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
@@ -74,6 +77,8 @@ namespace Libplanet.Net
             Ping = 0x01,
             Pong = 0x02,
             PeerSetDelta = 0x03,
+            GetBlocks = 0x4,
+            Inv = 0x5,
         }
 
         public int Count => _peers.Count;
@@ -307,6 +312,44 @@ namespace Libplanet.Net
                 ProcessDeltaAsync(cancellationToken));
         }
 
+        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
+            Peer peer, IEnumerable<HashDigest<SHA256>> hashes)
+        {
+            return await GetBlocksAsync(
+                peer, hashes, CancellationToken.None);
+        }
+
+        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
+            Peer peer,
+            IEnumerable<HashDigest<SHA256>> hashes,
+            CancellationToken cancellation)
+        {
+            CheckEntered();
+
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            {
+                throw new PeerNotFoundException(
+                    $"The peer[{peer.Address}] could not be found.");
+            }
+
+            NetMQMessage request = CreateMessage(MessageType.GetBlocks);
+            request.Append(hashes.Count());
+
+            foreach (HashDigest<SHA256> hash in hashes)
+            {
+                request.Append(hash.ToByteArray());
+            }
+
+            await sock.SendMultipartMessageAsync(request, cancellation);
+
+            NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
+
+            return response
+                .Skip(2)
+                .Select(f => new HashDigest<SHA256>(f.ToByteArray()))
+                .ToList();
+        }
+
         private static (PublicKey publicKey, byte[] bytes) VerifyMessage(byte[] bytes)
         {
             var formatter = new BinaryFormatter();
@@ -414,6 +457,29 @@ namespace Libplanet.Net
                         }
 
                         break;
+
+                    case MessageType.GetBlocks:
+                        int requestedHashCount = message[2].ConvertToInt32();
+                        List<HashDigest<SHA256>> locator = message
+                            .Skip(3).Take(requestedHashCount)
+                            .Select(f => new HashDigest<SHA256>(f.ToByteArray()))
+                            .ToList();
+                        HashDigest<SHA256> stop = new HashDigest<SHA256>(
+                            message.Skip(2 + requestedHashCount).First().ToByteArray());
+                        IEnumerable<HashDigest<SHA256>> inventories = blockchain
+                            .FindNextHashes(locator, stop, 500);
+
+                        NetMQMessage inv = CreateMessage(MessageType.Inv, addr);
+                        inv.Append(inventories.Count());
+
+                        foreach (var hash in inventories)
+                        {
+                            inv.Append(hash.ToByteArray());
+                        }
+
+                        await _router.SendMultipartMessageAsync(inv);
+                        break;
+
                     default:
                         _logger.Warning($"Can't recognize message type[{type}]. ignored.");
                         break;
