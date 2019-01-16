@@ -474,9 +474,10 @@ namespace Libplanet.Net
                         int requestedHashCount = message[2].ConvertToInt32();
                         var locator = new BlockLocator(
                             message.Skip(3).Take(requestedHashCount)
-                            .Select(f => new HashDigest<SHA256>(f.ToByteArray())));
-                        HashDigest<SHA256> stop = new HashDigest<SHA256>(
-                            message.Skip(2 + requestedHashCount).First().ToByteArray());
+                            .Select(f => f.ConvertToHashDigest<SHA256>()));
+                        HashDigest<SHA256> stop = message
+                            .Skip(2 + requestedHashCount).First()
+                            .ConvertToHashDigest<SHA256>();
                         IEnumerable<HashDigest<SHA256>> inventories = blockchain
                             .FindNextHashes(locator, stop, 500);
 
