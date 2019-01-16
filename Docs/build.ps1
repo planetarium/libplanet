@@ -56,9 +56,11 @@ if (Get-Command mono -errorAction SilentlyContinue) {
   $unix = [System.PlatformId]::Unix;
   $macos = [System.PlatformId]::MacOSX;
   if (@($unix, $macos).Contains($platform)) {
-    Write-Error "Failed to find the command: mono"
-    Write-Error "You need to install Mono on your system."
-    Write-Error "See also: https://www.mono-project.com/"
+    Write-Error @"
+Failed to find the command: mono
+You need to install Mono on your system.
+See also: https://www.mono-project.com/
+"@
     exit 127
   } else {
     docfx/docfx.exe docfx.json @args
