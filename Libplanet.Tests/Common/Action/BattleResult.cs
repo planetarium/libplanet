@@ -12,8 +12,8 @@ namespace Libplanet.Tests.Common.Action
             Targets = new HashSet<string>();
         }
 
-        public HashSet<string> UsedWeapons { get; }
+        public HashSet<string> UsedWeapons { get; internal set; }
 
-        public HashSet<string> Targets { get; }
+        public HashSet<string> Targets { get; internal set; }
     }
 }

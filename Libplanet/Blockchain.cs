@@ -145,7 +145,7 @@ namespace Libplanet
             var states = new AddressStateMap();
             while (offset != null)
             {
-                states = (AddressStateMap)states.AddRange(
+                states = (AddressStateMap)states.SetItems(
                     Store.GetBlockStates(offset.Value)
                     .Where(
                         kv => addresses.Contains(kv.Key) &&
@@ -269,17 +269,19 @@ namespace Libplanet
             {
                 foreach (T action in tx.Actions)
                 {
-                    ISet<Address> request = action
-                        .RequestStates(tx.Sender, tx.Recipient);
-                    states = (AddressStateMap)states
-                        .AddRange(GetStates(request.Except(states.Keys)));
-                    var requestedStates = new AddressStateMap(
-                        request.ToImmutableDictionary(
-                            addr => addr,
-                            a => states.GetValueOrDefault(a, null)));
-                    AddressStateMap stateChanges = action
-                        .Execute(tx.Sender, tx.Recipient, requestedStates);
-                    states = (AddressStateMap)states.AddRange(stateChanges);
+                    IEnumerable<Address> requestedAddresses =
+                        action.RequestStates(tx.Sender, tx.Recipient);
+                    AddressStateMap requested = GetStates(
+                        requestedAddresses.Except(states.Keys),
+                        prevHash);
+                    states = (AddressStateMap)requested.SetItems(states);
+                    var prevState = new AddressStateMap(
+                        requestedAddresses
+                        .Where(states.ContainsKey)
+                        .ToImmutableDictionary(a => a, a => states[a]));
+                    AddressStateMap changes =
+                        action.Execute(tx.Sender, tx.Recipient, prevState);
+                    states = (AddressStateMap)states.SetItems(changes);
                 }
             }
 
