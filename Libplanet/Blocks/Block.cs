@@ -211,7 +211,7 @@ namespace Libplanet.Blocks
             rawBlock.GetObjectData(info, context);
         }
 
-        public RawBlock ToRawBlock(bool includeHash, bool includeTransactionData)
+        internal RawBlock ToRawBlock(bool includeHash, bool includeTransactionData)
         {
             IEnumerable transactions =
                 Transactions.Select(

@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
 
+[assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
 {
-    public struct RawTransaction : ISerializable, IEquatable<RawTransaction>
+    internal struct RawTransaction : ISerializable, IEquatable<RawTransaction>
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(

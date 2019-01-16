@@ -357,12 +357,46 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<InvalidTxPublicKeyException>(() => { tx.Validate(); });
         }
 
+        [Fact]
+        public void CanConvertToRaw()
+        {
+            PrivateKey privateKey = new PrivateKey(
+                ByteUtil.ParseHex(
+                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
+                )
+            );
+            var recipient = new Address(privateKey.PublicKey);
+            var timestamp = new DateTime(2018, 11, 21);
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                privateKey,
+                recipient,
+                new List<BaseAction>(),
+                timestamp
+            );
+
+            Assert.Equal(
+                GetExpectedRawTransaction(false),
+                tx.ToRawTransaction(false)
+            );
+            Assert.Equal(
+                GetExpectedRawTransaction(true),
+                tx.ToRawTransaction(true)
+            );
+        }
+
+        [Fact]
+        public void CanConvertFromRawTransaction()
+        {
+            RawTransaction rawTx = GetExpectedRawTransaction(true);
+            var tx = new Transaction<BaseAction>(rawTx);
+            tx.Validate();
+        }
+
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",
             "SA1118",
-            Justification = "Long array literals should be multiline."
-        )]
-        public RawTransaction GetExpectedRawTransaction(bool includeSingature)
+            Justification = "Long array literals should be multiline.")]
+        internal RawTransaction GetExpectedRawTransaction(bool includeSingature)
         {
             var tx = new RawTransaction(
                 sender: new byte[]
@@ -405,41 +439,6 @@ namespace Libplanet.Tests.Tx
                 0x3d,
             };
             return tx.AddSignature(signature);
-        }
-
-        [Fact]
-        public void CanConvertToRaw()
-        {
-            PrivateKey privateKey = new PrivateKey(
-                ByteUtil.ParseHex(
-                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
-                )
-            );
-            var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
-                privateKey,
-                recipient,
-                new List<BaseAction>(),
-                timestamp
-            );
-
-            Assert.Equal(
-                GetExpectedRawTransaction(false),
-                tx.ToRawTransaction(false)
-            );
-            Assert.Equal(
-                GetExpectedRawTransaction(true),
-                tx.ToRawTransaction(true)
-            );
-        }
-
-        [Fact]
-        public void CanConvertFromRawTransaction()
-        {
-            RawTransaction rawTx = GetExpectedRawTransaction(true);
-            var tx = new Transaction<BaseAction>(rawTx);
-            tx.Validate();
         }
     }
 }

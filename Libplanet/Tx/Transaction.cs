@@ -25,7 +25,7 @@ namespace Libplanet.Tx
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
-        public Transaction(RawTransaction rawTx)
+        internal Transaction(RawTransaction rawTx)
             : this(
                 new Address(rawTx.Sender),
                 new PublicKey(rawTx.PublicKey),
@@ -190,7 +190,7 @@ namespace Libplanet.Tx
             return Id.GetHashCode();
         }
 
-        public RawTransaction ToRawTransaction(bool includeSign)
+        internal RawTransaction ToRawTransaction(bool includeSign)
         {
             var rawTx = new RawTransaction(
                 sender: Sender.ToByteArray(),
