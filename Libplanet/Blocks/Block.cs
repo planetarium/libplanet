@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -33,6 +34,32 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions;
+        }
+
+        protected Block(SerializationInfo info, StreamingContext context)
+            : this(new RawBlock(info, context))
+        {
+        }
+
+        private Block(RawBlock rawBlock)
+        {
+            Index = rawBlock.Index;
+            Difficulty = rawBlock.Difficulty;
+            Nonce = new Nonce(rawBlock.Nonce);
+            RewardBeneficiary = (rawBlock.RewardBeneficiary != null)
+                ? new Address(rawBlock.RewardBeneficiary)
+                : default(Address?);
+            PreviousHash = (rawBlock.PreviousHash != null)
+                ? new HashDigest<SHA256>(rawBlock.PreviousHash)
+                : default(HashDigest<SHA256>?);
+            Timestamp = DateTime.ParseExact(
+                rawBlock.Timestamp,
+                TimestampFormat,
+                CultureInfo.InvariantCulture).ToUniversalTime();
+            Transactions = rawBlock.Transactions
+                .Cast<Dictionary<string, object>>()
+                .Select(d => new Transaction<T>(new RawTransaction(d)))
+                .ToList();
         }
 
         [Uno.EqualityKey]
@@ -88,6 +115,15 @@ namespace Libplanet.Blocks
                 difficulty
             );
             return MakeBlock(nonce);
+        }
+
+        public static Block<T> FromBencoded(byte[] encoded)
+        {
+            var serializer = new BencodexFormatter<Block<T>>();
+            using (var stream = new MemoryStream(encoded))
+            {
+                return (Block<T>)serializer.Deserialize(stream);
+            }
         }
 
         public byte[] Bencode(bool hash, bool transactionData)

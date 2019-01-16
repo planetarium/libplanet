@@ -36,6 +36,25 @@ namespace Libplanet.Tx
             Signature = signature;
         }
 
+        public RawTransaction(Dictionary<string, object> dict)
+        {
+            Sender = (byte[])dict["sender"];
+            Recipient = (byte[])dict["recipient"];
+            PublicKey = (byte[])dict["public_key"];
+            Timestamp = (string)dict["timestamp"];
+            Actions = ((IEnumerable)dict["actions"])
+                .Cast<Dictionary<string, object>>()
+                .ToList();
+            if (dict.TryGetValue("signature", out object signature))
+            {
+                Signature = (byte[])signature;
+            }
+            else
+            {
+                Signature = null;
+            }
+        }
+
         public byte[] Sender { get; }
 
         public byte[] PublicKey { get; }
