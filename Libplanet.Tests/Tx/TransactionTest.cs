@@ -12,6 +12,13 @@ namespace Libplanet.Tests.Tx
 {
     public class TransactionTest
     {
+        private readonly TxFixture _fx;
+
+        public TransactionTest()
+        {
+            _fx = new TxFixture();
+        }
+
         [Fact]
         public void CanMake()
         {
@@ -66,19 +73,6 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CanSerialize()
         {
-            PrivateKey privateKey = new PrivateKey(
-                ByteUtil.ParseHex(
-                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
-                )
-            );
-            var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
-                privateKey,
-                recipient,
-                new List<BaseAction>(),
-                timestamp
-            );
             var expected = new byte[]
             {
                 0x64, 0x37, 0x3a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73,
@@ -112,32 +106,12 @@ namespace Libplanet.Tests.Tx
                 0x30, 0x30, 0x30, 0x30, 0x5a, 0x65,
             };
 
-            AssertBytesEqual(expected, tx.Bencode(true));
+            AssertBytesEqual(expected, _fx.Tx.Bencode(true));
         }
 
         [Fact]
         public void CanSerializeWithActions()
         {
-            PrivateKey privateKey = new PrivateKey(
-                ByteUtil.ParseHex(
-                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
-                )
-            );
-            var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
-            var actions = new List<BaseAction>
-            {
-                new Attack { Weapon = "wand", Target = "orc" },
-                new Sleep { ZoneId = 10 },
-            };
-
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
-                privateKey,
-                recipient,
-                actions,
-                timestamp
-            );
-
             var expected = new byte[]
             {
                 0x64, 0x37, 0x3a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73,
@@ -182,7 +156,7 @@ namespace Libplanet.Tests.Tx
                 0x30, 0x5a, 0x65,
             };
 
-            AssertBytesEqual(expected, tx.Bencode(true));
+            AssertBytesEqual(expected, _fx.TxWithActions.Bencode(true));
         }
 
         [Fact]
