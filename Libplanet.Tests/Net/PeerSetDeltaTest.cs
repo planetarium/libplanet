@@ -15,20 +15,20 @@ namespace Libplanet.Tests.Net
         {
             var peerSetDelta = new PeerSetDelta(
                 new Peer(
-                    PrivateKey.Generate().PublicKey,
+                    new PrivateKey().PublicKey,
                     new[] { new Uri("inproc://a") }
                 ),
                 DateTime.UtcNow,
                 new[]
                 {
                     new Peer(
-                        PrivateKey.Generate().PublicKey,
+                        new PrivateKey().PublicKey,
                         new[] { new Uri("inproc://added") }),
                 }.ToImmutableHashSet(),
                 new[]
                 {
                     new Peer(
-                        PrivateKey.Generate().PublicKey,
+                        new PrivateKey().PublicKey,
                         new[] { new Uri("inproc://removed") }),
                 }.ToImmutableHashSet(),
                 null

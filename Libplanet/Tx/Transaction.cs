@@ -106,7 +106,7 @@ namespace Libplanet.Tx
             DateTime timestamp)
         {
             PublicKey publicKey = privateKey.PublicKey;
-            Address sender = Address.FromPublicKey(publicKey);
+            var sender = new Address(publicKey);
 
             var tx = new Transaction<T>(
                 sender,
@@ -151,7 +151,7 @@ namespace Libplanet.Tx
                 );
             }
 
-            if (!Address.FromPublicKey(PublicKey).Equals(Sender))
+            if (!new Address(PublicKey).Equals(Sender))
             {
                 throw new InvalidTxPublicKeyException(
                     $"the public key ({ByteUtil.Hex(PublicKey.Format(true))} is not matched to the address ({Sender})."

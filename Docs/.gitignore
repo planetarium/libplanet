@@ -1,0 +1,12 @@
+*.nuget
+_site/
+api/.gitignore
+docfx/
+docfx.zip
+sqlitepclraw.core/
+sqlitepclraw.core.1.1.12.nuget
+/**/bin/
+/**/DROP/
+/**/packages/
+/**/obj/
+/**/TEMP/

@@ -9,7 +9,9 @@ namespace Libplanet.Tests
         [Fact]
         public void ConstructorDoesNotTakeNullValue()
         {
-            Assert.Throws<NullReferenceException>(() => new Address(null));
+            Assert.Throws<NullReferenceException>(
+                () => new Address((byte[])null)
+            );
         }
 
         [Fact]
@@ -17,6 +19,31 @@ namespace Libplanet.Tests
         {
             Address defaultValue = default;
             Assert.Equal(new Address(new byte[20]), defaultValue);
+        }
+
+        [Fact]
+        public void DerivingConstructor()
+        {
+            var key = new PublicKey(
+                new byte[]
+                {
+                    0x03, 0x43, 0x8b, 0x93, 0x53, 0x89, 0xa7, 0xeb, 0xf8,
+                    0x38, 0xb3, 0xae, 0x41, 0x25, 0xbd, 0x28, 0x50, 0x6a,
+                    0xa2, 0xdd, 0x45, 0x7f, 0x20, 0xaf, 0xc8, 0x43, 0x72,
+                    0x9d, 0x3e, 0x7d, 0x60, 0xd7, 0x28,
+                }
+            );
+            Assert.Equal(
+                new Address(
+                    new byte[]
+                    {
+                        0xd4, 0x1f, 0xad, 0xf6, 0x1b, 0xad, 0xf5, 0xbe,
+                        0x2d, 0xe6, 0x0e, 0x9f, 0xc3, 0x23, 0x0c, 0x0a,
+                        0x8a, 0x43, 0x90, 0xf0,
+                    }
+                ),
+                new Address(key)
+            );
         }
 
         [Fact]
@@ -60,7 +87,7 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void ToString_()
+        public void ToHex()
         {
             var address = new Address(
                 new byte[20]
@@ -70,21 +97,12 @@ namespace Libplanet.Tests
                 }
             );
             Assert.Equal(
+                "45a22187e2d8850bb357886958bc3e8560929ccc",
+                address.ToHex()
+            );
+            Assert.Equal(
                 "0x45a22187e2d8850bb357886958bc3e8560929ccc",
                 address.ToString()
-            );
-        }
-
-        [Fact]
-        public void FromPublicKey()
-        {
-            PublicKey key = new PublicKey(ByteUtil.ParseHex(
-                "03438b935389a7ebf838b3ae4125bd28506aa2dd457f20afc843729d3e7d60d728"));
-            Assert.Equal(
-                new Address(
-                    ByteUtil.ParseHex(
-                        "d41fadf61badf5be2de60e9fc3230c0a8a4390f0")),
-                Address.FromPublicKey(key)
             );
         }
 

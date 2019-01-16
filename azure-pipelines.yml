@@ -4,6 +4,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
+
 - job: 'LinuxOrMac'
   strategy:
     matrix:
@@ -25,17 +26,20 @@ jobs:
   - script: "msbuild /r /t:'Build,XunitTest' /p:'Configuration=$(buildConfiguration);vsVersion=latest;platform=$(buildPlatform);logProjectEvents=true' Libplanet.Tests"
     displayName: 'Test'
   - task: CopyFiles@2
-    displayName: 'Copy Files'
+    displayName: 'Copy artifacts'
     inputs:
       contents: |
         $(Build.Repository.LocalPath)/Libplanet/bin/**/*.dll
+        $(Build.Repository.LocalPath)/CHANGES.md
         $(Build.Repository.LocalPath)/README.md
+        $(Build.Repository.LocalPath)/LICENSE
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: $(Build.BuildId)_$(Build.BuildNumber)_$(imageName)
-- job: 'Window'
+
+- job: 'Windows'
   pool:
     vmImage: 'VS2017-Win2016'
   steps:
@@ -58,12 +62,22 @@ jobs:
       vsVersion: latest
       platform: $(buildPlatform)
       configuration: $(buildConfiguration)
+  - task: PowerShell@2
+    displayName: 'Build docs'
+    inputs:
+      targetType: filePath
+      filePath: Docs/build.ps1
+      failOnStderr: false
+      workingDirectory: Docs/
   - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    displayName: 'Copy artifacts'
     inputs:
       contents: |
         $(Build.Repository.LocalPath)\Libplanet\bin\**\?(*.exe|*.dll)
+        $(Build.Repository.LocalPath)\CHANGES.md
         $(Build.Repository.LocalPath)\README.md
+        $(Build.Repository.LocalPath)\LICENSE
+        $(Build.Repository.LocalPath)\Docs\_site\**
       targetFolder: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     inputs:

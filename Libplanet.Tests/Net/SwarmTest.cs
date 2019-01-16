@@ -25,15 +25,15 @@ namespace Libplanet.Tests.Net
             _swarms = new List<Swarm>
             {
                 new Swarm(
-                    PrivateKey.Generate(),
+                    new PrivateKey(),
                     new Uri($"inproc://swarmtest.a"),
                     3000),
                 new Swarm(
-                    PrivateKey.Generate(),
+                    new PrivateKey(),
                     new Uri($"inproc://swarmtest.b"),
                     3000),
                 new Swarm(
-                    PrivateKey.Generate(),
+                    new PrivateKey(),
                     new Uri($"inproc://swarmtest.c"),
                     3000),
             };
@@ -138,8 +138,8 @@ namespace Libplanet.Tests.Net
         [Fact]
         public void CanBeComparedProperly()
         {
-            var pk1 = PrivateKey.Generate();
-            var pk2 = PrivateKey.Generate();
+            var pk1 = new PrivateKey();
+            var pk2 = new PrivateKey();
             var a = new Swarm(
                 pk1,
                 new Uri($"inproc://swarmtest.t"),

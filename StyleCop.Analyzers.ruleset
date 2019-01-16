@@ -8,6 +8,12 @@
     <Rule Id="SA1309" Action="None" />
     <!-- Allow an expression not to declare parenthese. -->
     <Rule Id="SA1407" Action="None" />
+    <!-- Allow a rich text in a XML doc comment's <summary>. -->
+    <Rule Id="SA1462" Action="None" />
+    <Rule Id="SA1642" Action="None" />
+    <!-- Every property's docs doesn't have to start with "Gets", because
+    it's ridiculous. -->
+    <Rule Id="SA1623" Action="None" />
     <!--Allow to call an instance member of the local class or a base class is
     not prefixed with 'this.'. -->
     <Rule Id="SA1101" Action="None" />

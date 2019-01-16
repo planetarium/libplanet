@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Tx
                 ByteUtil.ParseHex(
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76")
             );
-            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var recipient = new Address(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Assert.Equal(
-                Address.FromPublicKey(privateKey.PublicKey),
+                new Address(privateKey.PublicKey),
                 tx.Sender
             );
             Assert.Equal(recipient, tx.Recipient);
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             );
-            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var recipient = new Address(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
@@ -123,7 +123,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             );
-            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var recipient = new Address(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
             var actions = new List<BaseAction>
             {
@@ -199,8 +199,8 @@ namespace Libplanet.Tests.Tx
             Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
-            Assert.Equal(Address.FromPublicKey(publicKey), tx.Recipient);
-            Assert.Equal(Address.FromPublicKey(publicKey), tx.Sender);
+            Assert.Equal(new Address(publicKey), tx.Recipient);
+            Assert.Equal(new Address(publicKey), tx.Sender);
             Assert.Equal(new DateTime(2018, 11, 21), tx.Timestamp);
             Assert.Equal(
                 ByteUtil.ParseHex(
@@ -276,8 +276,8 @@ namespace Libplanet.Tests.Tx
             Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencoded(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
-            Assert.Equal(Address.FromPublicKey(publicKey), tx.Recipient);
-            Assert.Equal(Address.FromPublicKey(publicKey), tx.Sender);
+            Assert.Equal(new Address(publicKey), tx.Recipient);
+            Assert.Equal(new Address(publicKey), tx.Sender);
             Assert.Equal(new DateTime(2018, 11, 21), tx.Timestamp);
             Assert.Equal(
                 ByteUtil.ParseHex(
@@ -326,7 +326,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             );
-            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var recipient = new Address(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
@@ -441,7 +441,7 @@ namespace Libplanet.Tests.Tx
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"
                 )
             );
-            var recipient = Address.FromPublicKey(privateKey.PublicKey);
+            var recipient = new Address(privateKey.PublicKey);
             var timestamp = new DateTime(2018, 11, 21);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,

@@ -119,7 +119,7 @@ namespace Libplanet.Tests.Store
 
         private Transaction<BaseAction> MakeTransaction()
         {
-            PrivateKey privateKey = PrivateKey.Generate();
+            var privateKey = new PrivateKey();
             Address recipient = privateKey.PublicKey.ToAddress();
             var timestamp = new DateTime(2018, 11, 21);
             return Transaction<BaseAction>.Make(

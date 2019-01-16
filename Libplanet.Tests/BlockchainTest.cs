@@ -98,7 +98,7 @@ namespace Libplanet.Tests
                 },
             };
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
-                PrivateKey.Generate(),
+                new PrivateKey(),
                 _fx.Address1,
                 actions,
                 DateTime.UtcNow
