@@ -23,7 +23,6 @@ namespace Libplanet.Net
     [Uno.GeneratedEquality]
     public partial class Swarm : ICollection<Peer>, IDisposable
     {
-        private const int DefaultDialTimeout = 15;
         private readonly IDictionary<Peer, DateTime> _peers;
         private readonly IDictionary<Peer, DateTime> _removedPeers;
 
@@ -33,7 +32,7 @@ namespace Libplanet.Net
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly Uri _listenUrl;
-        private readonly int _dialTimeout;
+        private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
 
@@ -44,12 +43,25 @@ namespace Libplanet.Net
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
-            int dialTimeout = DefaultDialTimeout,
+            int millisecondsDialTimeout = 15000,
+            DateTime? createdAt = null)
+            : this(
+                  privateKey,
+                  listenUrl,
+                  TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                  createdAt)
+        {
+        }
+
+        public Swarm(
+            PrivateKey privateKey,
+            Uri listenUrl,
+            TimeSpan? dialTimeout = null,
             DateTime? createdAt = null)
         {
             _privateKey = privateKey;
             _listenUrl = listenUrl;
-            _dialTimeout = dialTimeout;
+            _dialTimeout = dialTimeout ?? TimeSpan.FromMilliseconds(15000);
             _peers = new Dictionary<Peer, DateTime>();
             _removedPeers = new Dictionary<Peer, DateTime>();
             LastSeenTimestamps = new Dictionary<Peer, DateTime>();
@@ -770,7 +782,10 @@ namespace Libplanet.Net
 
                         try
                         {
-                            await BroadcastMesage(message, 300, cancellationToken);
+                            await BroadcastMesage(
+                                message,
+                                TimeSpan.FromMilliseconds(300),
+                                cancellationToken);
                         }
                         catch (TimeoutException e)
                         {
@@ -786,7 +801,7 @@ namespace Libplanet.Net
 
         private Task BroadcastMesage(
             NetMQMessage message,
-            int timeout,
+            TimeSpan timeout,
             CancellationToken cancellationToken)
         {
             return Task.WhenAll(
