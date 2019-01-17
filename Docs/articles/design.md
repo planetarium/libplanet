@@ -2,10 +2,10 @@ Libplanet design
 ================
 
 Libplanet is a network/storage library for [peer-to-peer][P2P] distributed
-multiplayer games.  From the perspective this library's user, it can be similar
-to a client library of a [PaaS] for games, except that autonomous
-nodes run by gamers communicate with each other without any authority of
-the centralized server.
+multiplayer games.  From the perspective of this library's user,
+it can be similar to a client library of a [PaaS] for games,
+except that autonomous nodes run by gamers communicate with
+each other without any authority of the centralized server.
 
 Under the hood, because we need to prevent malicious nodes in the network from
 corrupting network autonomy, the library utilizes [digital signature],
@@ -15,8 +15,8 @@ Implementing blockchain and BFT consensus for peer-to-peer distributed
 multiplayer games is highly complicated, requires a lot of code to
 be written, and is difficult and tedious to test.  For the future of
 decentralized online games, rather than every single game making such redundant
-effort, it will be more cost-efficient make a high quality open source library
-for commonly performed tasks.
+effort, it will be more cost-efficient to make a high quality open source
+library for commonly performed tasks.
 
 [P2P]: https://en.wikipedia.org/wiki/Peer-to-peer
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
