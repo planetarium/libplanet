@@ -79,7 +79,7 @@ namespace Libplanet.Tests
         [Fact]
         public void CanProcessActions()
         {
-            var actions = new List<BaseAction>()
+            var actions1 = new List<BaseAction>()
             {
                 new Attack()
                 {
@@ -97,14 +97,14 @@ namespace Libplanet.Tests
                     Target = "goblin",
                 },
             };
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
                 new PrivateKey(),
                 _fx.Address1,
-                actions,
+                actions1,
                 DateTime.UtcNow
             );
 
-            _blockchain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx });
+            _blockchain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
             _blockchain.MineBlock(_fx.Address1);
 
             AddressStateMap states = _blockchain.GetStates(new List<Address> { _fx.Address1 });
@@ -115,6 +115,28 @@ namespace Libplanet.Tests
             Assert.Contains("staff", result.UsedWeapons);
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
+
+            var actions2 = new List<BaseAction>()
+            {
+                new Attack()
+                {
+                    Weapon = "bow",
+                    Target = "goblin",
+                },
+            };
+            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Make(
+                new PrivateKey(),
+                _fx.Address1,
+                actions2,
+                DateTime.UtcNow
+            );
+
+            _blockchain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
+            _blockchain.MineBlock(_fx.Address1);
+
+            states = _blockchain.GetStates(new List<Address> { _fx.Address1 });
+            result = (BattleResult)states[_fx.Address1];
+            Assert.Contains("bow", result.UsedWeapons);
         }
 
         [Fact]

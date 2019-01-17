@@ -29,11 +29,13 @@ namespace Libplanet.Tests.Common.Action
 
         public override AddressStateMap Execute(Address from, Address to, AddressStateMap states)
         {
-            var result = (BattleResult)states.GetValueOrDefault(to);
+            var result = new BattleResult();
 
-            if (result == null)
+            if (states.TryGetValue(to, out object value))
             {
-                result = new BattleResult();
+                var previousResult = (BattleResult)value;
+                result.UsedWeapons = previousResult.UsedWeapons;
+                result.Targets = previousResult.Targets;
             }
 
             result.UsedWeapons.Add(Weapon);
