@@ -4,10 +4,10 @@ Libplanet
 [![Build Status][]][Azure Pipeline]
 
 Libplanet is a .NET library for creating multiplayer online game in
-a decentralized fashion, which means a whole game play is achieved through
-peer-to-peer network among equal nodes rather than having a authorized central
-server.  Under the hood, it shares many instruments (e.g., [digital signature],
-[BFT] consensus, data replication) with a [blockchain], or rather it is.
+decentralized fashion, which means the whole gameplay occurs on a
+peer-to-peer network among equal nodes rather than an authorized central
+server.  Under the hood, it incorporates many features (e.g.,
+[digital signature], [BFT] consensus, data replication) of a [blockchain].
 
 This project currently is not distributed through NuGet.  We are going to ship
 the first release soon, and it will be distributed as a NuGet package at that
