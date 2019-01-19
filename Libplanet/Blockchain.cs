@@ -217,8 +217,7 @@ namespace Libplanet
             return block;
         }
 
-        internal HashDigest<SHA256> FindBranchPoint(
-            IEnumerable<HashDigest<SHA256>> locator)
+        internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
         {
             // Assume locator is sorted descending by height.
             foreach (HashDigest<SHA256> hash in locator)
@@ -233,7 +232,7 @@ namespace Libplanet
         }
 
         internal IEnumerable<HashDigest<SHA256>> FindNextHashes(
-            IEnumerable<HashDigest<SHA256>> locator,
+            BlockLocator locator,
             HashDigest<SHA256>? stop = null,
             int count = 500)
         {

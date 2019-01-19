@@ -472,10 +472,9 @@ namespace Libplanet.Net
 
                     case MessageType.GetBlocks:
                         int requestedHashCount = message[2].ConvertToInt32();
-                        List<HashDigest<SHA256>> locator = message
-                            .Skip(3).Take(requestedHashCount)
-                            .Select(f => new HashDigest<SHA256>(f.ToByteArray()))
-                            .ToList();
+                        var locator = new BlockLocator(
+                            message.Skip(3).Take(requestedHashCount)
+                            .Select(f => new HashDigest<SHA256>(f.ToByteArray())));
                         HashDigest<SHA256> stop = new HashDigest<SHA256>(
                             message.Skip(2 + requestedHashCount).First().ToByteArray());
                         IEnumerable<HashDigest<SHA256>> inventories = blockchain
