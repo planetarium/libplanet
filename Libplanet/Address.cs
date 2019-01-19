@@ -178,33 +178,34 @@ namespace Libplanet
         [Pure]
         public string ToChecksumAddress()
         {
-            var digest = new KeccakDigest(256);
-            var output = new byte[digest.GetDigestSize()];
             var hex = ToHex();
             var bytes = Encoding.ASCII.GetBytes(hex);
+            var hash = CalculateHash(bytes);
+            var hashHex = ByteUtil.Hex(hash);
             var address = "0x";
-
-            digest.BlockUpdate(bytes, 0, bytes.Length);
-            digest.DoFinal(output, 0);
-
-            var hash = ByteUtil.Hex(output);
 
             for (var i = 0; i < hex.Length; i++)
             {
                 var c = hex[i];
-                address += (hash[i] >= '8') ? char.ToUpper(c) : c;
+                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
             }
 
             return address;
         }
 
+        private static byte[] CalculateHash(byte[] value)
+        {
+            var digest = new KeccakDigest(256);
+            var output = new byte[digest.GetDigestSize()];
+            digest.BlockUpdate(value, 0, value.Length);
+            digest.DoFinal(output, 0);
+            return output;
+        }
+
         private static byte[] DeriveAddress(PublicKey key)
         {
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
-            var digest = new KeccakDigest(256);
-            var output = new byte[digest.GetDigestSize()];
-            digest.BlockUpdate(hashPayload, 0, hashPayload.Length);
-            digest.DoFinal(output, 0);
+            var output = CalculateHash(hashPayload);
 
             return output.Skip(output.Length - 20).ToArray();
         }
