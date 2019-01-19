@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Text;
 using Libplanet.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 
@@ -164,6 +165,37 @@ namespace Libplanet
         public override string ToString()
         {
             return $"0x{ToHex()}";
+        }
+
+        /// <summary>
+        /// Gets a <c>0x</c>-prefixed Mixed-case checksum address of 42 letters
+        /// that represent this <see cref="Address"/>.
+        /// </summary>
+        /// <example>A returned string looks like
+        /// <c>0x87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
+        /// <returns>A <c>0x</c>-prefixed Mixed-case checksum address of 42
+        /// letters that represent this <see cref="Address"/>.</returns>
+        [Pure]
+        public string ToChecksumAddress()
+        {
+            var digest = new KeccakDigest(256);
+            var output = new byte[digest.GetDigestSize()];
+            var hex = ToHex();
+            var bytes = Encoding.ASCII.GetBytes(hex);
+            var address = "0x";
+
+            digest.BlockUpdate(bytes, 0, bytes.Length);
+            digest.DoFinal(output, 0);
+
+            var hash = ByteUtil.Hex(output);
+
+            for (var i = 0; i < hex.Length; i++)
+            {
+                var c = hex[i];
+                address += (hash[i] >= '8') ? char.ToUpper(c) : c;
+            }
+
+            return address;
         }
 
         private static byte[] DeriveAddress(PublicKey key)
