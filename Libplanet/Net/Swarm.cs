@@ -5,8 +5,13 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Serialization;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
@@ -18,17 +23,16 @@ namespace Libplanet.Net
     [Uno.GeneratedEquality]
     public partial class Swarm : ICollection<Peer>, IDisposable
     {
-        private const int DefaultDialTimeout = 15;
         private readonly IDictionary<Peer, DateTime> _peers;
         private readonly IDictionary<Peer, DateTime> _removedPeers;
 
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly NetMQQueue<PeerSetDelta> _deltas;
-        private readonly IDictionary<Uri, DealerSocket> _dealers;
+        private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly Uri _listenUrl;
-        private readonly int _dialTimeout;
+        private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
 
@@ -39,12 +43,25 @@ namespace Libplanet.Net
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
-            int dialTimeout = DefaultDialTimeout,
+            int millisecondsDialTimeout = 15000,
+            DateTime? createdAt = null)
+            : this(
+                  privateKey,
+                  listenUrl,
+                  TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                  createdAt)
+        {
+        }
+
+        public Swarm(
+            PrivateKey privateKey,
+            Uri listenUrl,
+            TimeSpan? dialTimeout = null,
             DateTime? createdAt = null)
         {
             _privateKey = privateKey;
             _listenUrl = listenUrl;
-            _dialTimeout = dialTimeout;
+            _dialTimeout = dialTimeout ?? TimeSpan.FromMilliseconds(15000);
             _peers = new Dictionary<Peer, DateTime>();
             _removedPeers = new Dictionary<Peer, DateTime>();
             LastSeenTimestamps = new Dictionary<Peer, DateTime>();
@@ -55,7 +72,7 @@ namespace Libplanet.Net
             DeltaDistributed = new AsyncManualResetEvent();
             DeltaReceived = new AsyncManualResetEvent();
 
-            _dealers = new Dictionary<Uri, DealerSocket>();
+            _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
             _deltas = new NetMQQueue<PeerSetDelta>();
 
@@ -72,6 +89,8 @@ namespace Libplanet.Net
             Ping = 0x01,
             Pong = 0x02,
             PeerSetDelta = 0x03,
+            GetBlocks = 0x4,
+            Inv = 0x5,
         }
 
         public int Count => _peers.Count;
@@ -96,6 +115,14 @@ namespace Libplanet.Net
         public IDictionary<Peer, DateTime> LastSeenTimestamps { get; private set; }
 
         public async Task<ISet<Peer>> AddPeersAsync(IEnumerable<Peer> peers, DateTime? timestamp = null)
+        {
+            return await AddPeersAsync(peers, CancellationToken.None, timestamp);
+        }
+
+        public async Task<ISet<Peer>> AddPeersAsync(
+            IEnumerable<Peer> peers,
+            CancellationToken cancellationToken,
+            DateTime? timestamp = null)
         {
             if (timestamp == null)
             {
@@ -132,7 +159,7 @@ namespace Libplanet.Net
                     try
                     {
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
-                        addedPeer = await DialPeerAsync(peer);
+                        addedPeer = await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
                     }
                     catch (IOException e)
@@ -151,12 +178,17 @@ namespace Libplanet.Net
 
         public async Task<Swarm> InitContextAsync()
         {
+            return await InitContextAsync(CancellationToken.None);
+        }
+
+        public async Task<Swarm> InitContextAsync(CancellationToken cancellationToken)
+        {
             _router.Bind(_listenUrl.ToString());
             foreach (Peer peer in _peers.Keys)
             {
                 try
                 {
-                    Peer replacedPeer = await DialPeerAsync(peer);
+                    Peer replacedPeer = await DialPeerAsync(peer, cancellationToken);
                     if (replacedPeer != peer)
                     {
                         _peers[replacedPeer] = _peers[peer];
@@ -178,7 +210,7 @@ namespace Libplanet.Net
         {
             if (_contextInitialized)
             {
-                Peer dialed = DialPeerAsync(item).Result;
+                Peer dialed = DialPeerAsync(item, CancellationToken.None).Result;
                 _peers[dialed] = DateTime.UtcNow;
             }
             else
@@ -224,11 +256,16 @@ namespace Libplanet.Net
 
         public async Task DisposeAsync()
         {
+            await DisposeAsync(CancellationToken.None);
+        }
+
+        public async Task DisposeAsync(CancellationToken cancellationToken)
+        {
             _logger.Debug("Disposing...");
             if (_contextInitialized)
             {
                 _removedPeers[AsPeer] = DateTime.UtcNow;
-                await DistributeDeltaAsync(false);
+                await DistributeDeltaAsync(false, cancellationToken);
 
                 _router.Dispose();
                 _deltas.Dispose();
@@ -265,92 +302,64 @@ namespace Libplanet.Net
             return GetEnumerator();
         }
 
-        public async Task RunAsync(int distributeInterval)
+        public async Task RunAsync<T>(
+            Blockchain<T> blockchain, int distributeInterval)
+            where T : IAction
+        {
+            await RunAsync(blockchain, distributeInterval, CancellationToken.None);
+        }
+
+        public async Task RunAsync<T>(
+            Blockchain<T> blockchain,
+            int distributeInterval,
+            CancellationToken cancellationToken)
+            where T : IAction
         {
             CheckEntered();
 
             await Task.WhenAll(
-                RepeatDeltaDistributionAsync(distributeInterval),
-                ReceiveMessageAsync(),
-                ProcessDeltaAsync());
+                RepeatDeltaDistributionAsync(
+                    distributeInterval, cancellationToken),
+                ReceiveMessageAsync(blockchain, cancellationToken),
+                ProcessDeltaAsync(cancellationToken));
         }
 
-        public async Task ReceiveMessageAsync()
+        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
+            Peer peer, IEnumerable<HashDigest<SHA256>> hashes)
+        {
+            return await GetBlocksAsync(
+                peer, hashes, CancellationToken.None);
+        }
+
+        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
+            Peer peer,
+            IEnumerable<HashDigest<SHA256>> hashes,
+            CancellationToken cancellation)
         {
             CheckEntered();
 
-            while (true)
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
             {
-                NetMQMessage message = await _router.ReceiveMultipartMessageAsync();
-                _logger.Debug($"Message received.[f-count: {message.FrameCount}]");
-                byte[] addr = message[0].ToByteArray();
-                var type = (MessageType)message[1].Buffer[0];
-
-                switch (type)
-                {
-                    case MessageType.Ping:
-                        _logger.Debug($"Ping received.");
-                        NetMQMessage reply = CreateMessage(MessageType.Pong, addr);
-                        await _router.SendMultipartMessageAsync(reply);
-                        break;
-
-                    case MessageType.PeerSetDelta:
-                        byte[] payload = message[2].ToByteArray();
-                        var (publicKey, msg) = VerifyMessage(payload);
-                        using (var stream = new MemoryStream(msg))
-                        {
-                            var formatter = new BinaryFormatter();
-                            _deltas.Enqueue((PeerSetDelta)formatter.Deserialize(stream));
-                        }
-
-                        break;
-                    default:
-                        _logger.Warning($"Can't recognize message type[{type}]. ignored.");
-                        break;
-                }
+                throw new PeerNotFoundException(
+                    $"The peer[{peer.Address}] could not be found.");
             }
-        }
 
-        public async Task ProcessDeltaAsync()
-        {
-            while (true)
+            NetMQMessage request = CreateMessage(MessageType.GetBlocks);
+            request.Append(hashes.Count());
+
+            foreach (HashDigest<SHA256> hash in hashes)
             {
-                PeerSetDelta delta;
-                while (!_deltas.TryDequeue(out delta, TimeSpan.FromMilliseconds(100)))
-                {
-                    await Task.Delay(100);
-                }
-
-                Peer sender = delta.Sender;
-                PublicKey senderKey = sender.PublicKey;
-
-                if (!_peers.ContainsKey(sender) && _peers.Keys.All(p => senderKey != p.PublicKey))
-                {
-                    delta = new PeerSetDelta(
-                        delta.Sender,
-                        delta.Timestamp,
-                        delta.AddedPeers.Add(sender),
-                        delta.RemovedPeers,
-                        delta.ExistingPeers
-                    );
-                }
-
-                _logger.Debug($"Received the delta[{delta}].");
-
-                using (await _receiveMutex.LockAsync())
-                {
-                    DeltaReceived.Reset();
-                    _logger.Debug($"Trying to apply the delta[{delta}]...");
-                    await ApplyDelta(delta);
-
-                    LastReceived = delta.Timestamp;
-                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
-
-                    DeltaReceived.Set();
-                }
-
-                _logger.Debug($"The delta[{delta}] has been applied.");
+                request.Append(hash.ToByteArray());
             }
+
+            await sock.SendMultipartMessageAsync(request, cancellation);
+
+            NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
+
+            return response
+                .Skip(2)
+                .Select(f => new HashDigest<SHA256>(f.ToByteArray()))
+                .ToList();
         }
 
         private static (PublicKey publicKey, byte[] bytes) VerifyMessage(byte[] bytes)
@@ -428,6 +437,109 @@ namespace Libplanet.Net
             }
         }
 
+        private async Task ReceiveMessageAsync<T>(
+            Blockchain<T> blockchain, CancellationToken cancellationToken)
+            where T : IAction
+        {
+            CheckEntered();
+
+            while (true)
+            {
+                NetMQMessage message = await
+                    _router.ReceiveMultipartMessageAsync(cancellationToken);
+                _logger.Debug($"Message received.[f-count: {message.FrameCount}]");
+                byte[] addr = message[0].ToByteArray();
+                var type = (MessageType)message[1].Buffer[0];
+
+                switch (type)
+                {
+                    case MessageType.Ping:
+                        _logger.Debug($"Ping received.");
+                        NetMQMessage reply = CreateMessage(MessageType.Pong, addr);
+                        await _router.SendMultipartMessageAsync(reply, cancellationToken);
+                        break;
+
+                    case MessageType.PeerSetDelta:
+                        byte[] payload = message[2].ToByteArray();
+                        var (publicKey, msg) = VerifyMessage(payload);
+                        using (var stream = new MemoryStream(msg))
+                        {
+                            var formatter = new BinaryFormatter();
+                            _deltas.Enqueue((PeerSetDelta)formatter.Deserialize(stream));
+                        }
+
+                        break;
+
+                    case MessageType.GetBlocks:
+                        int requestedHashCount = message[2].ConvertToInt32();
+                        var locator = new BlockLocator(
+                            message.Skip(3).Take(requestedHashCount)
+                            .Select(f => new HashDigest<SHA256>(f.ToByteArray())));
+                        HashDigest<SHA256> stop = new HashDigest<SHA256>(
+                            message.Skip(2 + requestedHashCount).First().ToByteArray());
+                        IEnumerable<HashDigest<SHA256>> inventories = blockchain
+                            .FindNextHashes(locator, stop, 500);
+
+                        NetMQMessage inv = CreateMessage(MessageType.Inv, addr);
+                        inv.Append(inventories.Count());
+
+                        foreach (var hash in inventories)
+                        {
+                            inv.Append(hash.ToByteArray());
+                        }
+
+                        await _router.SendMultipartMessageAsync(inv);
+                        break;
+
+                    default:
+                        _logger.Warning($"Can't recognize message type[{type}]. ignored.");
+                        break;
+                }
+            }
+        }
+
+        private async Task ProcessDeltaAsync(CancellationToken cancellationToken)
+        {
+            while (true)
+            {
+                PeerSetDelta delta;
+                while (!_deltas.TryDequeue(out delta, TimeSpan.FromMilliseconds(100)))
+                {
+                    await Task.Delay(100, cancellationToken);
+                }
+
+                Peer sender = delta.Sender;
+                PublicKey senderKey = sender.PublicKey;
+
+                if (!_peers.ContainsKey(sender) && _peers.Keys.All(p => senderKey != p.PublicKey))
+                {
+                    delta = new PeerSetDelta(
+                        delta.Sender,
+                        delta.Timestamp,
+                        delta.AddedPeers.Add(sender),
+                        delta.RemovedPeers,
+                        delta.ExistingPeers
+                    );
+                }
+
+                _logger.Debug($"Received the delta[{delta}].");
+
+                using (await _receiveMutex.LockAsync(cancellationToken))
+                {
+                    DeltaReceived.Reset();
+                    _logger.Debug($"Trying to apply the delta[{delta}]...");
+                    await ApplyDelta(delta, cancellationToken);
+
+                    LastReceived = delta.Timestamp;
+                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+
+                    DeltaReceived.Set();
+                }
+
+                _logger.Debug($"The delta[{delta}] has been applied.");
+            }
+        }
+
         private byte[] SignMessage(byte[] bytes)
         {
             var payload = new Dictionary<string, byte[]>
@@ -445,7 +557,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ApplyDelta(PeerSetDelta delta)
+        private async Task ApplyDelta(PeerSetDelta delta, CancellationToken cancellationToken)
         {
             PublicKey senderPublicKey = delta.Sender.PublicKey;
             bool firstEncounter = _peers.Keys.All(p => p.PublicKey != senderPublicKey);
@@ -465,7 +577,8 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Trying to add peers...");
-            ISet<Peer> added = await AddPeersAsync(addedPeers, delta.Timestamp);
+            ISet<Peer> added = await AddPeersAsync(
+                addedPeers, cancellationToken, delta.Timestamp);
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
                 DumpDiffs(
@@ -478,7 +591,7 @@ namespace Libplanet.Net
 
             if (firstEncounter)
             {
-                await DistributeDeltaAsync(true);
+                await DistributeDeltaAsync(true, cancellationToken);
             }
         }
 
@@ -533,7 +646,7 @@ namespace Libplanet.Net
                     _logger.Debug($"Trying to close dealers associated {peer}.");
                     if (_contextInitialized)
                     {
-                        CloseDealers(peer.Urls.ToImmutableHashSet());
+                        CloseDealer(peer);
                     }
 
                     if (existingPeers.TryGetValue(peer.PublicKey, out Peer[] remains))
@@ -544,7 +657,7 @@ namespace Libplanet.Net
 
                             if (_contextInitialized)
                             {
-                                CloseDealers(key.Urls.ToImmutableHashSet());
+                                CloseDealer(key);
                             }
                         }
                     }
@@ -554,56 +667,58 @@ namespace Libplanet.Net
             }
         }
 
-        private void CloseDealers(IEnumerable<Uri> urls)
+        private void CloseDealer(Peer peer)
         {
             CheckEntered();
-
-            foreach (Uri url in urls)
+            if (_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
             {
-                if (_dealers.TryGetValue(url, out DealerSocket sock))
-                {
-                    sock.Dispose();
-                    _dealers.Remove(url);
-                }
+                dealer.Dispose();
+                _dealers.Remove(peer.Address);
             }
         }
 
-        private async Task<DealerSocket> DialAsync(Uri address)
+        private async Task<DealerSocket> DialAsync(
+            Uri address, DealerSocket dealer, CancellationToken cancellationToken)
         {
             CheckEntered();
 
-            if (!_dealers.TryGetValue(address, out DealerSocket dialer))
-            {
-                dialer = new DealerSocket(address.ToString());
-            }
+            dealer.Connect(address.ToString());
 
             _logger.Debug($"Trying to Ping to [{address}]...");
-            await dialer.SendFrameAsync(new[] { (byte)MessageType.Ping });
+            await dealer.SendFrameAsync(
+                new[] { (byte)MessageType.Ping }, cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
-            await dialer.ReceiveMultipartMessageAsync(_dialTimeout);
+            await dealer.ReceiveMultipartMessageAsync(
+                cancellationToken, _dialTimeout);
 
             _logger.Debug($"Pong received.");
 
-            return dialer;
+            return dealer;
         }
 
-        private async Task<Peer> DialPeerAsync(Peer peer)
+        private async Task<Peer> DialPeerAsync(
+            Peer peer, CancellationToken cancellationToken)
         {
             Peer original = peer;
-            DealerSocket dealer = null;
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+            {
+                dealer = new DealerSocket();
+                dealer.Options.Identity = _privateKey.PublicKey.ToAddress().ToByteArray();
+            }
 
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
             {
                 try
                 {
                     _logger.Debug($"Trying to DialAsync({url})...");
-                    dealer = await DialAsync(url);
+                    await DialAsync(url, dealer, cancellationToken);
                     _logger.Debug($"DialAsync({url}) is complete.");
                 }
                 catch (IOException e)
                 {
                     _logger.Error(e, $"IOException occured in DialAsync({url}).");
+                    dealer.Disconnect(url.ToString());
                     continue;
                 }
 
@@ -612,7 +727,7 @@ namespace Libplanet.Net
                     peer = new Peer(peer.PublicKey, peer.Urls.Skip(i));
                 }
 
-                _dealers[url] = dealer;
+                _dealers[peer.Address] = dealer;
                 break;
             }
 
@@ -624,7 +739,8 @@ namespace Libplanet.Net
             return peer;
         }
 
-        private async Task DistributeDeltaAsync(bool all)
+        private async Task DistributeDeltaAsync(
+            bool all, CancellationToken cancellationToken)
         {
             CheckEntered();
 
@@ -654,7 +770,7 @@ namespace Libplanet.Net
                     formatter.Serialize(stream, delta);
                     LastDistributed = now;
 
-                    using (await _distributeMutex.LockAsync())
+                    using (await _distributeMutex.LockAsync(cancellationToken))
                     {
                         DeltaDistributed.Reset();
                         var message = CreateMessage(
@@ -665,7 +781,10 @@ namespace Libplanet.Net
 
                         try
                         {
-                            await BroadcastMesage(message, 300);
+                            await BroadcastMesage(
+                                message,
+                                TimeSpan.FromMilliseconds(300),
+                                cancellationToken);
                         }
                         catch (TimeoutException e)
                         {
@@ -679,20 +798,25 @@ namespace Libplanet.Net
             }
         }
 
-        private Task BroadcastMesage(NetMQMessage message, int timeout)
+        private Task BroadcastMesage(
+            NetMQMessage message,
+            TimeSpan timeout,
+            CancellationToken cancellationToken)
         {
             return Task.WhenAll(
                 _dealers.Values.Select(
-                    s => s.SendMultipartMessageAsync(message, timeout)));
+                    s => s.SendMultipartMessageAsync(
+                        message, cancellationToken, timeout)));
         }
 
-        private async Task RepeatDeltaDistributionAsync(int interval)
+        private async Task RepeatDeltaDistributionAsync(
+            int interval, CancellationToken cancellationToken)
         {
             int i = 1;
             while (true)
             {
-                await DistributeDeltaAsync(i % 10 == 0);
-                await Task.Delay(interval);
+                await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
+                await Task.Delay(interval, cancellationToken);
                 i = (i + 1) % 10;
             }
         }

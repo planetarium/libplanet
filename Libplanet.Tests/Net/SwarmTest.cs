@@ -1,17 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Store;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Net
 {
-    public class SwarmTest
+    public class SwarmTest : IDisposable
     {
+        private readonly FileStoreFixture _fx1;
+        private readonly FileStoreFixture _fx2;
+        private readonly FileStoreFixture _fx3;
+
+        private readonly List<Blockchain<BaseAction>> _blockchains;
         private readonly List<Swarm> _swarms;
 
         public SwarmTest(ITestOutputHelper output)
@@ -22,6 +33,18 @@ namespace Libplanet.Tests.Net
                 .WriteTo.TestOutput(output, outputTemplate: "{Timestamp:HH:mm:ss}[@{Swarm_listenUrl}][{ThreadId}] - {Message}")
                 .CreateLogger()
                 .ForContext<SwarmTest>();
+
+            _fx1 = new FileStoreFixture();
+            _fx2 = new FileStoreFixture();
+            _fx3 = new FileStoreFixture();
+
+            _blockchains = new List<Blockchain<BaseAction>>
+            {
+                new Blockchain<BaseAction>(_fx1.Store),
+                new Blockchain<BaseAction>(_fx2.Store),
+                new Blockchain<BaseAction>(_fx3.Store),
+            };
+
             _swarms = new List<Swarm>
             {
                 new Swarm(
@@ -39,12 +62,21 @@ namespace Libplanet.Tests.Net
             };
         }
 
+        public void Dispose()
+        {
+            _fx1.Dispose();
+            _fx2.Dispose();
+            _fx3.Dispose();
+        }
+
         [Fact]
         public async Task WorksAsExpected()
         {
             Swarm a = _swarms[0];
             Swarm b = _swarms[1];
             Swarm c = _swarms[2];
+
+            Blockchain<BaseAction> chain = _blockchains[0];
 
             DateTime lastDistA;
             Peer aAsPeer;
@@ -58,15 +90,15 @@ namespace Libplanet.Tests.Net
                 {
                     await a.InitContextAsync();
 
-                    var at = Task.Run(async () => await a.RunAsync(250));
+                    var at = Task.Run(async () => await a.RunAsync(chain, 250));
                     await b.AddPeersAsync(new[] { a.AsPeer });
-                    var bt = Task.Run(async () => await b.RunAsync(250));
+                    var bt = Task.Run(async () => await b.RunAsync(chain, 250));
                     await EnsureExchange(a, b);
                     Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), a.ToImmutableHashSet());
                     Assert.Equal(new[] { a.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
 
                     await c.AddPeersAsync(new[] { a.AsPeer });
-                    var ct = Task.Run(async () => await c.RunAsync(250));
+                    var ct = Task.Run(async () => await c.RunAsync(chain, 250));
                     await EnsureExchange(a, c);
                     await EnsureExchange(a, b);
 
@@ -161,6 +193,75 @@ namespace Libplanet.Tests.Net
 
             Assert.NotEqual(a, b);
             Assert.True(a.KeyEquals(b));
+        }
+
+        [Fact]
+        public async Task CanBeCancelled()
+        {
+            Swarm swarm = _swarms[0];
+            Blockchain<BaseAction> chain = _blockchains[0];
+            var cts = new CancellationTokenSource();
+
+            try
+            {
+                await swarm.InitContextAsync();
+                var at = Task.Run(
+                    async () => await swarm.RunAsync(chain, 250, cts.Token));
+
+                cts.Cancel();
+                await Assert.ThrowsAsync<TaskCanceledException>(async () => await at);
+            }
+            finally
+            {
+                await swarm.DisposeAsync();
+            }
+        }
+
+        [Fact]
+        public async Task CanGetBlock()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+
+            Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis); // chainA and chainB shares genesis block.
+
+            Block<BaseAction> block1 = chainA.MineBlock(_fx1.Address1);
+            Block<BaseAction> block2 = chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync());
+                var at = Task.Run(
+                    async () => await swarmA.RunAsync(chainA, 250));
+                var bt = Task.Run(
+                    async () => await swarmB.RunAsync(chainB, 250));
+
+                await Assert.ThrowsAsync<PeerNotFoundException>(
+                    async () => await swarmB.GetBlocksAsync(
+                        swarmA.AsPeer, new[] { genesis.Hash }));
+
+                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer });
+
+                IEnumerable<HashDigest<SHA256>> inventories =
+                    await swarmB.GetBlocksAsync(
+                        swarmA.AsPeer, new[] { genesis.Hash });
+
+                Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories);
+
+                // TODO Test swarmB.GetData(swarmA.AsPeer, invetories);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync());
+            }
         }
 
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTime? lastReceived = null)

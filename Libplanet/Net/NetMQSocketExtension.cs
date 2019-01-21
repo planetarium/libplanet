@@ -1,23 +1,37 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using NetMQ;
 
 namespace Libplanet.Net
 {
-    public static class NetMQSocketExtension
+    internal static class NetMQSocketExtension
     {
         public static async Task SendFrameAsync(
             this IOutgoingSocket socket,
             byte[] data,
-            int? timeout = null,
-            int delay = 100)
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
         {
-            int elapsed = 0;
+            await SendFrameAsync(
+                socket, data, CancellationToken.None, timeout, delay);
+        }
+
+        public static async Task SendFrameAsync(
+            this IOutgoingSocket socket,
+            byte[] data,
+            CancellationToken cancellationToken,
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
+        {
+            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
+            TimeSpan elapsed = TimeSpan.Zero;
+
             while (!socket.TrySendFrame(data))
             {
-                await Task.Delay(delay);
+                await Task.Delay(delayNotNull, cancellationToken);
 
-                elapsed += 100;
+                elapsed += delayNotNull;
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
@@ -29,15 +43,28 @@ namespace Libplanet.Net
         public static async Task SendMultipartMessageAsync(
             this IOutgoingSocket socket,
             NetMQMessage message,
-            int? timeout = null,
-            int delay = 100)
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
         {
-            int elapsed = 0;
+            await SendMultipartMessageAsync(
+                socket, message, CancellationToken.None, timeout, delay);
+        }
+
+        public static async Task SendMultipartMessageAsync(
+            this IOutgoingSocket socket,
+            NetMQMessage message,
+            CancellationToken cancellationToken,
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
+        {
+            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
+            TimeSpan elapsed = TimeSpan.Zero;
+
             while (!socket.TrySendMultipartMessage(message))
             {
-                await Task.Delay(delay);
+                await Task.Delay(delayNotNull, cancellationToken);
 
-                elapsed += 100;
+                elapsed += delayNotNull;
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
@@ -48,16 +75,28 @@ namespace Libplanet.Net
 
         public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
             this IReceivingSocket socket,
-            int? timeout = null,
-            int delay = 100)
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
+        {
+            return await ReceiveMultipartMessageAsync(
+                socket, CancellationToken.None, timeout, delay);
+        }
+
+        public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
+            this IReceivingSocket socket,
+            CancellationToken cancellationToken,
+            TimeSpan? timeout = null,
+            TimeSpan? delay = null)
         {
             NetMQMessage message = new NetMQMessage();
-            int elapsed = 0;
+            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
+            TimeSpan elapsed = TimeSpan.Zero;
+
             while (!socket.TryReceiveMultipartMessage(ref message))
             {
-                await Task.Delay(delay);
+                await Task.Delay(delayNotNull, cancellationToken);
 
-                elapsed += delay;
+                elapsed += delayNotNull;
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
