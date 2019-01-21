@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain-1.html",
-          "hash": "3gWAcgiXaitUmPG39v2kDA=="
+          "hash": "l+Z7wCR+avuWiiPz/d422g=="
         }
       },
       "is_incremental": false,
@@ -329,18 +329,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Net.NetMQSocketExtension.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Libplanet.Net.NetMQSocketExtension.html",
-          "hash": "Q1MS7dwPZ9kHYta+Z/drvA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.NoSwarmContextException.yml",
       "output": {
         ".html": {
@@ -365,6 +353,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Net.PeerNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Net.PeerNotFoundException.html",
+          "hash": "jaPLusdobvhYESWaZ09WnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/Libplanet.Net.PeerSetDelta.yml",
       "output": {
         ".html": {
@@ -381,7 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm.html",
-          "hash": "IdvtY4ZpF8VuXIUGjPbNMA=="
+          "hash": "7taih/Z3/C64IKQtaR4D2A=="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.SwarmException.html",
-          "hash": "vvlVUziO2Xwn10c91LgxAA=="
+          "hash": "pDFoWbNsZi5KT2q0qOJ6Mg=="
         }
       },
       "is_incremental": false,
@@ -405,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.html",
-          "hash": "lYScNm2Au2qnIwDSSj0tpQ=="
+          "hash": "Vm+A5yUP8Vh+R5cN1XYsTw=="
         }
       },
       "is_incremental": false,
@@ -681,7 +681,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "P3slrPPKgABBMLwElZjq+w=="
+          "hash": "2ed/eBKBvWZQC7wcyBzMrA=="
         }
       },
       "is_incremental": false,
@@ -766,11 +766,6 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
@@ -782,6 +777,11 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         }
       }

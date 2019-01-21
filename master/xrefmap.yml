@@ -2338,60 +2338,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
   nameWithType: InvalidMessageException.InvalidMessageException
-- uid: Libplanet.Net.NetMQSocketExtension
-  name: NetMQSocketExtension
-  href: api/Libplanet.Net.NetMQSocketExtension.html
-  commentId: T:Libplanet.Net.NetMQSocketExtension
-  fullName: Libplanet.Net.NetMQSocketExtension
-  nameWithType: NetMQSocketExtension
-- uid: Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync(NetMQ.IReceivingSocket,System.Nullable{System.Int32},System.Int32)
-  name: ReceiveMultipartMessageAsync(IReceivingSocket, Nullable<Int32>, Int32)
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_ReceiveMultipartMessageAsync_NetMQ_IReceivingSocket_System_Nullable_System_Int32__System_Int32_
-  commentId: M:Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync(NetMQ.IReceivingSocket,System.Nullable{System.Int32},System.Int32)
-  name.vb: ReceiveMultipartMessageAsync(IReceivingSocket, Nullable(Of Int32), Int32)
-  fullName: Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync(NetMQ.IReceivingSocket, System.Nullable<System.Int32>, System.Int32)
-  fullName.vb: Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync(NetMQ.IReceivingSocket, System.Nullable(Of System.Int32), System.Int32)
-  nameWithType: NetMQSocketExtension.ReceiveMultipartMessageAsync(IReceivingSocket, Nullable<Int32>, Int32)
-  nameWithType.vb: NetMQSocketExtension.ReceiveMultipartMessageAsync(IReceivingSocket, Nullable(Of Int32), Int32)
-- uid: Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync*
-  name: ReceiveMultipartMessageAsync
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_ReceiveMultipartMessageAsync_
-  commentId: Overload:Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQSocketExtension.ReceiveMultipartMessageAsync
-  nameWithType: NetMQSocketExtension.ReceiveMultipartMessageAsync
-- uid: Libplanet.Net.NetMQSocketExtension.SendFrameAsync(NetMQ.IOutgoingSocket,System.Byte[],System.Nullable{System.Int32},System.Int32)
-  name: SendFrameAsync(IOutgoingSocket, Byte[], Nullable<Int32>, Int32)
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_SendFrameAsync_NetMQ_IOutgoingSocket_System_Byte___System_Nullable_System_Int32__System_Int32_
-  commentId: M:Libplanet.Net.NetMQSocketExtension.SendFrameAsync(NetMQ.IOutgoingSocket,System.Byte[],System.Nullable{System.Int32},System.Int32)
-  name.vb: SendFrameAsync(IOutgoingSocket, Byte(), Nullable(Of Int32), Int32)
-  fullName: Libplanet.Net.NetMQSocketExtension.SendFrameAsync(NetMQ.IOutgoingSocket, System.Byte[], System.Nullable<System.Int32>, System.Int32)
-  fullName.vb: Libplanet.Net.NetMQSocketExtension.SendFrameAsync(NetMQ.IOutgoingSocket, System.Byte(), System.Nullable(Of System.Int32), System.Int32)
-  nameWithType: NetMQSocketExtension.SendFrameAsync(IOutgoingSocket, Byte[], Nullable<Int32>, Int32)
-  nameWithType.vb: NetMQSocketExtension.SendFrameAsync(IOutgoingSocket, Byte(), Nullable(Of Int32), Int32)
-- uid: Libplanet.Net.NetMQSocketExtension.SendFrameAsync*
-  name: SendFrameAsync
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_SendFrameAsync_
-  commentId: Overload:Libplanet.Net.NetMQSocketExtension.SendFrameAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQSocketExtension.SendFrameAsync
-  nameWithType: NetMQSocketExtension.SendFrameAsync
-- uid: Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync(NetMQ.IOutgoingSocket,NetMQ.NetMQMessage,System.Nullable{System.Int32},System.Int32)
-  name: SendMultipartMessageAsync(IOutgoingSocket, NetMQMessage, Nullable<Int32>, Int32)
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_SendMultipartMessageAsync_NetMQ_IOutgoingSocket_NetMQ_NetMQMessage_System_Nullable_System_Int32__System_Int32_
-  commentId: M:Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync(NetMQ.IOutgoingSocket,NetMQ.NetMQMessage,System.Nullable{System.Int32},System.Int32)
-  name.vb: SendMultipartMessageAsync(IOutgoingSocket, NetMQMessage, Nullable(Of Int32), Int32)
-  fullName: Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync(NetMQ.IOutgoingSocket, NetMQ.NetMQMessage, System.Nullable<System.Int32>, System.Int32)
-  fullName.vb: Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync(NetMQ.IOutgoingSocket, NetMQ.NetMQMessage, System.Nullable(Of System.Int32), System.Int32)
-  nameWithType: NetMQSocketExtension.SendMultipartMessageAsync(IOutgoingSocket, NetMQMessage, Nullable<Int32>, Int32)
-  nameWithType.vb: NetMQSocketExtension.SendMultipartMessageAsync(IOutgoingSocket, NetMQMessage, Nullable(Of Int32), Int32)
-- uid: Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync*
-  name: SendMultipartMessageAsync
-  href: api/Libplanet.Net.NetMQSocketExtension.html#Libplanet_Net_NetMQSocketExtension_SendMultipartMessageAsync_
-  commentId: Overload:Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.NetMQSocketExtension.SendMultipartMessageAsync
-  nameWithType: NetMQSocketExtension.SendMultipartMessageAsync
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html
@@ -2640,6 +2586,43 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.Urls
   nameWithType: Peer.Urls
+- uid: Libplanet.Net.PeerNotFoundException
+  name: PeerNotFoundException
+  href: api/Libplanet.Net.PeerNotFoundException.html
+  commentId: T:Libplanet.Net.PeerNotFoundException
+  fullName: Libplanet.Net.PeerNotFoundException
+  nameWithType: PeerNotFoundException
+- uid: Libplanet.Net.PeerNotFoundException.#ctor
+  name: PeerNotFoundException()
+  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor
+  commentId: M:Libplanet.Net.PeerNotFoundException.#ctor
+  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException()
+  nameWithType: PeerNotFoundException.PeerNotFoundException()
+- uid: Libplanet.Net.PeerNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: PeerNotFoundException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Net.PeerNotFoundException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: PeerNotFoundException.PeerNotFoundException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.PeerNotFoundException.#ctor(System.String)
+  name: PeerNotFoundException(String)
+  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_System_String_
+  commentId: M:Libplanet.Net.PeerNotFoundException.#ctor(System.String)
+  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException(System.String)
+  nameWithType: PeerNotFoundException.PeerNotFoundException(String)
+- uid: Libplanet.Net.PeerNotFoundException.#ctor(System.String,System.Exception)
+  name: PeerNotFoundException(String, Exception)
+  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_System_String_System_Exception_
+  commentId: M:Libplanet.Net.PeerNotFoundException.#ctor(System.String,System.Exception)
+  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException(System.String, System.Exception)
+  nameWithType: PeerNotFoundException.PeerNotFoundException(String, Exception)
+- uid: Libplanet.Net.PeerNotFoundException.#ctor*
+  name: PeerNotFoundException
+  href: api/Libplanet.Net.PeerNotFoundException.html#Libplanet_Net_PeerNotFoundException__ctor_
+  commentId: Overload:Libplanet.Net.PeerNotFoundException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException
+  nameWithType: PeerNotFoundException.PeerNotFoundException
 - uid: Libplanet.Net.PeerSetDelta
   name: PeerSetDelta
   href: api/Libplanet.Net.PeerSetDelta.html
@@ -2870,6 +2853,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Uri, System.Int32, System.Nullable(Of System.DateTime))
   nameWithType: Swarm.Swarm(PrivateKey, Uri, Int32, Nullable<DateTime>)
   nameWithType.vb: Swarm.Swarm(PrivateKey, Uri, Int32, Nullable(Of DateTime))
+- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Uri,System.Nullable{System.TimeSpan},System.Nullable{System.DateTime})
+  name: Swarm(PrivateKey, Uri, Nullable<TimeSpan>, Nullable<DateTime>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Uri_System_Nullable_System_TimeSpan__System_Nullable_System_DateTime__
+  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Uri,System.Nullable{System.TimeSpan},System.Nullable{System.DateTime})
+  name.vb: Swarm(PrivateKey, Uri, Nullable(Of TimeSpan), Nullable(Of DateTime))
+  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Uri, System.Nullable<System.TimeSpan>, System.Nullable<System.DateTime>)
+  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Uri, System.Nullable(Of System.TimeSpan), System.Nullable(Of System.DateTime))
+  nameWithType: Swarm.Swarm(PrivateKey, Uri, Nullable<TimeSpan>, Nullable<DateTime>)
+  nameWithType.vb: Swarm.Swarm(PrivateKey, Uri, Nullable(Of TimeSpan), Nullable(Of DateTime))
 - uid: Libplanet.Net.Swarm.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_
@@ -2899,6 +2891,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of System.DateTime))
   nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, Nullable<DateTime>)
   nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTime))
+- uid: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Threading.CancellationToken,System.Nullable{System.DateTime})
+  name: AddPeersAsync(IEnumerable<Peer>, CancellationToken, Nullable<DateTime>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Threading_CancellationToken_System_Nullable_System_DateTime__
+  commentId: M:Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Threading.CancellationToken,System.Nullable{System.DateTime})
+  name.vb: AddPeersAsync(IEnumerable(Of Peer), CancellationToken, Nullable(Of DateTime))
+  fullName: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Threading.CancellationToken, System.Nullable<System.DateTime>)
+  fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Threading.CancellationToken, System.Nullable(Of System.DateTime))
+  nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, CancellationToken, Nullable<DateTime>)
+  nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), CancellationToken, Nullable(Of DateTime))
 - uid: Libplanet.Net.Swarm.AddPeersAsync*
   name: AddPeersAsync
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_
@@ -3019,6 +3020,12 @@ references:
   commentId: M:Libplanet.Net.Swarm.DisposeAsync
   fullName: Libplanet.Net.Swarm.DisposeAsync()
   nameWithType: Swarm.DisposeAsync()
+- uid: Libplanet.Net.Swarm.DisposeAsync(System.Threading.CancellationToken)
+  name: DisposeAsync(CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DisposeAsync_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.DisposeAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm.DisposeAsync(System.Threading.CancellationToken)
+  nameWithType: Swarm.DisposeAsync(CancellationToken)
 - uid: Libplanet.Net.Swarm.DisposeAsync*
   name: DisposeAsync
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DisposeAsync_
@@ -3051,6 +3058,31 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Equals
   nameWithType: Swarm.Equals
+- uid: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
+  name: GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___
+  commentId: M:Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
+  name.vb: GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>)
+  fullName.vb: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)))
+  nameWithType: Swarm.GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>)
+  nameWithType.vb: Swarm.GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
+  name: GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
+  name.vb: GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), CancellationToken)
+  fullName: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Threading.CancellationToken)
+  nameWithType: Swarm.GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, CancellationToken)
+  nameWithType.vb: Swarm.GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), CancellationToken)
+- uid: Libplanet.Net.Swarm.GetBlocksAsync*
+  name: GetBlocksAsync
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_
+  commentId: Overload:Libplanet.Net.Swarm.GetBlocksAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.GetBlocksAsync
+  nameWithType: Swarm.GetBlocksAsync
 - uid: Libplanet.Net.Swarm.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetEnumerator
@@ -3096,6 +3128,12 @@ references:
   commentId: M:Libplanet.Net.Swarm.InitContextAsync
   fullName: Libplanet.Net.Swarm.InitContextAsync()
   nameWithType: Swarm.InitContextAsync()
+- uid: Libplanet.Net.Swarm.InitContextAsync(System.Threading.CancellationToken)
+  name: InitContextAsync(CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_InitContextAsync_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.InitContextAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm.InitContextAsync(System.Threading.CancellationToken)
+  nameWithType: Swarm.InitContextAsync(CancellationToken)
 - uid: Libplanet.Net.Swarm.InitContextAsync*
   name: InitContextAsync
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_InitContextAsync_
@@ -3200,32 +3238,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Inequality
   nameWithType: Swarm.Inequality
-- uid: Libplanet.Net.Swarm.ProcessDeltaAsync
-  name: ProcessDeltaAsync()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_ProcessDeltaAsync
-  commentId: M:Libplanet.Net.Swarm.ProcessDeltaAsync
-  fullName: Libplanet.Net.Swarm.ProcessDeltaAsync()
-  nameWithType: Swarm.ProcessDeltaAsync()
-- uid: Libplanet.Net.Swarm.ProcessDeltaAsync*
-  name: ProcessDeltaAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_ProcessDeltaAsync_
-  commentId: Overload:Libplanet.Net.Swarm.ProcessDeltaAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm.ProcessDeltaAsync
-  nameWithType: Swarm.ProcessDeltaAsync
-- uid: Libplanet.Net.Swarm.ReceiveMessageAsync
-  name: ReceiveMessageAsync()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_ReceiveMessageAsync
-  commentId: M:Libplanet.Net.Swarm.ReceiveMessageAsync
-  fullName: Libplanet.Net.Swarm.ReceiveMessageAsync()
-  nameWithType: Swarm.ReceiveMessageAsync()
-- uid: Libplanet.Net.Swarm.ReceiveMessageAsync*
-  name: ReceiveMessageAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_ReceiveMessageAsync_
-  commentId: Overload:Libplanet.Net.Swarm.ReceiveMessageAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm.ReceiveMessageAsync
-  nameWithType: Swarm.ReceiveMessageAsync
 - uid: Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)
   name: Remove(Peer)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Remove_Libplanet_Net_Peer_
@@ -3239,12 +3251,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Remove
   nameWithType: Swarm.Remove
-- uid: Libplanet.Net.Swarm.RunAsync(System.Int32)
-  name: RunAsync(Int32)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync_System_Int32_
-  commentId: M:Libplanet.Net.Swarm.RunAsync(System.Int32)
-  fullName: Libplanet.Net.Swarm.RunAsync(System.Int32)
-  nameWithType: Swarm.RunAsync(Int32)
 - uid: Libplanet.Net.Swarm.RunAsync*
   name: RunAsync
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync_
@@ -3252,6 +3258,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.RunAsync
   nameWithType: Swarm.RunAsync
+- uid: Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32)
+  name: RunAsync<T>(Blockchain<T>, Int32)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync__1_Libplanet_Blockchain___0__System_Int32_
+  commentId: M:Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32)
+  name.vb: RunAsync(Of T)(Blockchain(Of T), Int32)
+  fullName: Libplanet.Net.Swarm.RunAsync<T>(Libplanet.Blockchain<T>, System.Int32)
+  fullName.vb: Libplanet.Net.Swarm.RunAsync(Of T)(Libplanet.Blockchain(Of T), System.Int32)
+  nameWithType: Swarm.RunAsync<T>(Blockchain<T>, Int32)
+  nameWithType.vb: Swarm.RunAsync(Of T)(Blockchain(Of T), Int32)
+- uid: Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32,System.Threading.CancellationToken)
+  name: RunAsync<T>(Blockchain<T>, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync__1_Libplanet_Blockchain___0__System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32,System.Threading.CancellationToken)
+  name.vb: RunAsync(Of T)(Blockchain(Of T), Int32, CancellationToken)
+  fullName: Libplanet.Net.Swarm.RunAsync<T>(Libplanet.Blockchain<T>, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.RunAsync(Of T)(Libplanet.Blockchain(Of T), System.Int32, System.Threading.CancellationToken)
+  nameWithType: Swarm.RunAsync<T>(Blockchain<T>, Int32, CancellationToken)
+  nameWithType.vb: Swarm.RunAsync(Of T)(Blockchain(Of T), Int32, CancellationToken)
 - uid: Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator
