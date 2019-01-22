@@ -84,11 +84,17 @@ the most part) to deal with <a class="xref" href="Libplanet.Address.html">Addres
       <h4><a class="xref" href="Libplanet.Blockchain-1.html">Blockchain&lt;T&gt;</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.ByteUtil.html">ByteUtil</a></h4>
-      <section></section>
+      <section><p>Utility methods to deal with <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> arrays.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Hashcash.html">Hashcash</a></h4>
-      <section></section>
+      <section><p>This contains a set of functions that implements
+<a href="https://en.wikipedia.org/wiki/Hashcash">Hashcash</a>,
+a <a href="https://en.wikipedia.org/wiki/Proof-of-work_system">proof-of-work system</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.HashDigestExtension.html">HashDigestExtension</a></h4>
-      <section></section>
+      <section><p>Augments types to have some shortcut methods dealing with
+<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> values.</p>
+</section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Libplanet.Address.html">Address</a></h4>
@@ -110,13 +116,25 @@ displays these 20 bytes in hexadecimal, with a prefix <code>0x</code>.
 can be used by Libplanet-backed games/apps too.</p>
 </section>
       <h4><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a></h4>
-      <section></section>
+      <section><p>A value type to represent digest bytes determined by a
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.  For more type safety, it takes
+a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> of
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Nonce.html">Nonce</a></h4>
-      <section></section>
+      <section><p>An arbitrary <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
+<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+</section>
     <h3 id="delegates">Delegates
   </h3>
       <h4><a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a></h4>
-      <section></section>
+      <section><p>A delegate to determine a consistent <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s
+representation derived from a given <code data-dev-comment-type="paramref" class="paramref">nonce</code>.</p>
+<p>Since it is called multiple times with different
+<code data-dev-comment-type="paramref" class="paramref">nonce</code>s for
+<a href="https://en.wikipedia.org/wiki/Proof-of-work_system">proof-of-work system</a>, the total time an implementation elapses
+should not vary for different <code data-dev-comment-type="paramref" class="paramref">nonce</code>s.</p>
+</section>
 </article>
           </div>
           

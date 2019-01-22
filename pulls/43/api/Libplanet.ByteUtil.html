@@ -73,7 +73,8 @@
   
   <h1 id="Libplanet_ByteUtil" data-uid="Libplanet.ByteUtil" class="text-break">Class ByteUtil
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Utility methods to deal with <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> arrays.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -117,15 +118,19 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_ByteUtil_CalculateHashCode_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil.CalculateHashCode(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L92">View Source</a>
   </span>
   <a id="Libplanet_ByteUtil_CalculateHashCode_" data-uid="Libplanet.ByteUtil.CalculateHashCode*"></a>
   <h4 id="Libplanet_ByteUtil_CalculateHashCode_System_Byte___" data-uid="Libplanet.ByteUtil.CalculateHashCode(System.Byte[])">CalculateHashCode(Byte[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Calculates a deterministic hash code from a given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code>.  It is mostly used to implement
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">GetHashCode()</a> method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int CalculateHashCode(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static int CalculateHashCode(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,7 +145,9 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array, which completely
+determines (or encodes) an object, to calculate a hash code.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -155,7 +162,27 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
+        <td><p>A hash code determined from the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code>.  For equivalent <code data-dev-comment-type="paramref" class="paramref">bytes</code>,
+the same hash code is returned.  It must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -164,15 +191,17 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_ByteUtil_Hex_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil.Hex(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L19">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_ByteUtil_Hex_" data-uid="Libplanet.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_ByteUtil_Hex_System_Byte___" data-uid="Libplanet.ByteUtil.Hex(System.Byte[])">Hex(Byte[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string Hex(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static string Hex(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,7 +216,9 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
+the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -202,7 +233,26 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>A hexadecimal string which encodes the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -211,15 +261,17 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_ByteUtil_ParseHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil.ParseHex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L8">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_ByteUtil_ParseHex_" data-uid="Libplanet.ByteUtil.ParseHex*"></a>
   <h4 id="Libplanet_ByteUtil_ParseHex_System_String_" data-uid="Libplanet.ByteUtil.ParseHex(System.String)">ParseHex(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte[] ParseHex(string hex)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static byte[] ParseHex(string hex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -234,7 +286,10 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> which encodes
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s in hexadecimal.  Its length must be zero or
+an even number.  It must not be <code>null</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -249,7 +304,39 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string represented in hexadecimal.
+It lengthens the half of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the length
+of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string is not a valid hexadecimal string.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -264,7 +351,7 @@
                     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_ByteUtil.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/ByteUtil.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
