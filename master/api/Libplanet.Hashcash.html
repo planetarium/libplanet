@@ -73,7 +73,10 @@
   
   <h1 id="Libplanet_Hashcash" data-uid="Libplanet.Hashcash" class="text-break">Class Hashcash
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>This contains a set of functions that implements
+<a href="https://en.wikipedia.org/wiki/Hashcash">Hashcash</a>,
+a <a href="https://en.wikipedia.org/wiki/Proof-of-work_system">proof-of-work system</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -117,11 +120,14 @@
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32_.md&amp;value=---%0Auid%3A%20Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L10">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Hashcash_Answer_" data-uid="Libplanet.Hashcash.Answer*"></a>
   <h4 id="Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32_" data-uid="Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.UInt32)">Answer(Hashcash.Stamp, UInt32)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Finds a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> that satisfies the given
+<code data-dev-comment-type="paramref" class="paramref">difficulty</code>.  This process is so-called
+“<a href="https://en.wikipedia.org/wiki/Cryptocurrency#Mining">mining</a>”.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -140,12 +146,17 @@
       <tr>
         <td><a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a></td>
         <td><span class="parametername">stamp</span></td>
-        <td></td>
+        <td><p>A callback to get a “stamp”
+which is a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array determined from a given
+<a class="xref" href="Libplanet.Nonce.html">Nonce</a> value.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
         <td><span class="parametername">difficulty</span></td>
-        <td></td>
+        <td><p>The minimum required number of
+leading zero bits that a returned answer needs to have.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -160,20 +171,27 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td></td>
+        <td><p>A <a class="xref" href="Libplanet.Nonce.html">Nonce</a> value which satisfies the given
+<code data-dev-comment-type="paramref" class="paramref">difficulty</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Hashcash_Hash_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Hashcash.Hash(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L72">View Source</a>
   </span>
   <a id="Libplanet_Hashcash_Hash_" data-uid="Libplanet.Hashcash.Hash*"></a>
   <h4 id="Libplanet_Hashcash_Hash_System_Byte___" data-uid="Libplanet.Hashcash.Hash(System.Byte[])">Hash(Byte[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Calculates a SHA-256 digest from the given <code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -192,7 +210,9 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to calculate
+its hash digest.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -207,7 +227,9 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
-        <td></td>
+        <td><p>A deterministic digest of the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -222,7 +244,7 @@
                     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Hashcash.md&amp;value=---%0Auid%3A%20Libplanet.Hashcash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Hashcash.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -73,7 +73,11 @@
   
   <h1 id="Libplanet_HashDigest_1" data-uid="Libplanet.HashDigest`1" class="text-break">Struct HashDigest&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A value type to represent digest bytes determined by a
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.  For more type safety, it takes
+a type parameter <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> of
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -111,7 +115,9 @@ public struct HashDigest&lt;T&gt; : IEquatable&lt;HashDigest&lt;T&gt;&gt;, IKeyE
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> which corresponds to
+a digest.  This determines <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> of a digest.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -122,11 +128,13 @@ public struct HashDigest&lt;T&gt; : IEquatable&lt;HashDigest&lt;T&gt;&gt;, IKeyE
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L25">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L56">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1__ctor_" data-uid="Libplanet.HashDigest`1.#ctor*"></a>
   <h4 id="Libplanet_HashDigest_1__ctor_System_Byte___" data-uid="Libplanet.HashDigest`1.#ctor(System.Byte[])">HashDigest(Byte[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a
+<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -145,7 +153,36 @@ public struct HashDigest&lt;T&gt; : IEquatable&lt;HashDigest&lt;T&gt;&gt;, IKeyE
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">hashDigest</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
+a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.  It must not be <code>null</code>,
+and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to
+<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code> is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hashDigest</code>'s <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> is not
+the same to the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> the hash algorithm
+(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -156,10 +193,15 @@ public struct HashDigest&lt;T&gt; : IEquatable&lt;HashDigest&lt;T&gt;&gt;, IKeyE
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_Size.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L32">View Source</a>
   </span>
   <h4 id="Libplanet_HashDigest_1_Size" data-uid="Libplanet.HashDigest`1.Size">Size</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The fixed, and valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> of
+a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of every digest.</p>
+<p>This varies depending upon what <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> is
+used for <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.  For example, if <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> is <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha1">SHA1</a> <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a> is <code>20</code>,
+and if <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a> it is <code>32</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -187,11 +229,12 @@ public struct HashDigest&lt;T&gt; : IEquatable&lt;HashDigest&lt;T&gt;&gt;, IKeyE
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L51">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L91">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1_ByteArray_" data-uid="Libplanet.HashDigest`1.ByteArray*"></a>
   <h4 id="Libplanet_HashDigest_1_ByteArray" data-uid="Libplanet.HashDigest`1.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -213,6 +256,14 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_HashDigest_1_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is immutable.  For a mutable array, use
+<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToByteArray">ToByteArray()</a> method instead.</p>
+</div>
+  <h5 id="Libplanet_HashDigest_1_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToByteArray">ToByteArray()</a></div>
+  </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -372,16 +423,20 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_FromString_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.FromString(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1_FromString_" data-uid="Libplanet.HashDigest`1.FromString*"></a>
   <h4 id="Libplanet_HashDigest_1_FromString_System_String_" data-uid="Libplanet.HashDigest`1.FromString(System.String)">FromString(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a given hexadecimal representation of a digest into
+a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> object.</p>
+<p>This is an inverse function of <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a>
+method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public static HashDigest&lt;T&gt; FromString(string s)</code></pre>
+public static HashDigest&lt;T&gt; FromString(string hexDigest)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -395,8 +450,10 @@ public static HashDigest&lt;T&gt; FromString(string s)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">s</span></td>
-        <td></td>
+        <td><span class="parametername">hexDigest</span></td>
+        <td><p>A hexadecimal representation of
+a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -411,10 +468,41 @@ public static HashDigest&lt;T&gt; FromString(string s)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;T&gt;</td>
-        <td></td>
+        <td><p>A corresponding <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> value.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
+the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>, the hash algorithm
+(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_HashDigest_1_FromString_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a></div>
+      <div><a class="xref" href="Libplanet.HashDigestExtension.html#Libplanet_HashDigestExtension_ToHashDigest__1_System_String_">ToHashDigest&lt;T&gt;(String)</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -482,11 +570,14 @@ public static HashDigest&lt;T&gt; FromString(string s)</code></pre>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_HasLeadingZeroBits_System_UInt32_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.HasLeadingZeroBits(System.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L156">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1_HasLeadingZeroBits_" data-uid="Libplanet.HashDigest`1.HasLeadingZeroBits*"></a>
   <h4 id="Libplanet_HashDigest_1_HasLeadingZeroBits_System_UInt32_" data-uid="Libplanet.HashDigest`1.HasLeadingZeroBits(System.UInt32)">HasLeadingZeroBits(UInt32)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Tests if a digest starts with the given number
+(i.e., <code data-dev-comment-type="paramref" class="paramref">bits</code>) of zero bits.</p>
+<p>Note that it is bitwise, not bytes.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -506,7 +597,8 @@ public bool HasLeadingZeroBits(uint bits)</code></pre>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
         <td><span class="parametername">bits</span></td>
-        <td></td>
+        <td><p>The number of leading zero bits to test.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -521,7 +613,11 @@ public bool HasLeadingZeroBits(uint bits)</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p><code>true</code> only if a digest has leading zero bits of
+the given number (i.e., <code data-dev-comment-type="paramref" class="paramref">bits</code>), or more than that.
+If <code data-dev-comment-type="paramref" class="paramref">bits</code> is <code>0</code> it always returns
+<code>true</code>.   Otherwise, it returns <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -624,11 +720,12 @@ public bool HasLeadingZeroBits(uint bits)</code></pre>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L192">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1_ToByteArray_" data-uid="Libplanet.HashDigest`1.ToByteArray*"></a>
   <h4 id="Libplanet_HashDigest_1_ToByteArray" data-uid="Libplanet.HashDigest`1.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -646,20 +743,30 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td></td>
+        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the digest.
+Since a returned array is created every time the method is called,
+any mutations on that array does not affect to the digest object.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_HashDigest_1_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ByteArray">ByteArray</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigest_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.HashDigest%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L102">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L202">View Source</a>
   </span>
   <a id="Libplanet_HashDigest_1_ToString_" data-uid="Libplanet.HashDigest`1.ToString*"></a>
   <h4 id="Libplanet_HashDigest_1_ToString" data-uid="Libplanet.HashDigest`1.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a hexadecimal representation of a digest.</p>
+<p>This is an inverse function of <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a>.
+</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -677,12 +784,17 @@ public override string ToString()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>A hexadecimal representation of a digest.</p>
+</td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
+  <h5 id="Libplanet_HashDigest_1_ToString_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a></div>
+  </div>
   <h3 id="operators">Operators
   </h3>
   <span class="small pull-right mobile-hide">
@@ -798,6 +910,10 @@ public override string ToString()</code></pre>
   </div>
   <div>
       <span class="xref">Uno.Equality.IKeyEquatable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a></div>
   </div>
 </article>
           </div>

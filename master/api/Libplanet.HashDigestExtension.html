@@ -73,7 +73,9 @@
   
   <h1 id="Libplanet_HashDigestExtension" data-uid="Libplanet.HashDigestExtension" class="text-break">Class HashDigestExtension
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Augments types to have some shortcut methods dealing with
+<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> values.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -117,15 +119,21 @@
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigestExtension_ToHashDigest__1_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigestExtension.ToHashDigest%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L111">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L237">View Source</a>
   </span>
   <a id="Libplanet_HashDigestExtension_ToHashDigest_" data-uid="Libplanet.HashDigestExtension.ToHashDigest*"></a>
   <h4 id="Libplanet_HashDigestExtension_ToHashDigest__1_System_String_" data-uid="Libplanet.HashDigestExtension.ToHashDigest``1(System.String)">ToHashDigest&lt;T&gt;(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a given hexadecimal representation of a digest into
+a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> object.</p>
+<p>This is a shortcut of
+<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a> method.</p>
+<p>This is an inverse function of
+<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a> method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static HashDigest&lt;T&gt; ToHashDigest&lt;T&gt;(this string str)
+    <pre><code class="lang-csharp hljs">public static HashDigest&lt;T&gt; ToHashDigest&lt;T&gt;(this string hexDigest)
     where T : HashAlgorithm</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -140,8 +148,10 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">str</span></td>
-        <td></td>
+        <td><span class="parametername">hexDigest</span></td>
+        <td><p>A hexadecimal representation of
+a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -156,7 +166,8 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;T&gt;</td>
-        <td></td>
+        <td><p>A corresponding <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> value.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -171,10 +182,42 @@
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> which corresponds
+to a digest.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
+the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>, the hash algorithm
+(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_HashDigestExtension_ToHashDigest__1_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a></div>
+      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a></div>
+  </div>
 </article>
           </div>
           
@@ -186,7 +229,7 @@
                     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_HashDigestExtension.md&amp;value=---%0Auid%3A%20Libplanet.HashDigestExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L109" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/HashDigest.cs/#L213" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

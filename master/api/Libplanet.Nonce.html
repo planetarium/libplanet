@@ -73,7 +73,9 @@
   
   <h1 id="Libplanet_Nonce" data-uid="Libplanet.Nonce" class="text-break">Struct Nonce
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>An arbitrary <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
+<a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -107,11 +109,15 @@ public struct Nonce : IEquatable&lt;Nonce&gt;, IKeyEquatable&lt;Nonce&gt;, IKeyE
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Nonce__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L30">View Source</a>
   </span>
   <a id="Libplanet_Nonce__ctor_" data-uid="Libplanet.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Nonce__ctor_System_Byte___" data-uid="Libplanet.Nonce.#ctor(System.Byte[])">Nonce(Byte[])</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Nonce.html">Nonce</a>
+value.</p>
+<p>This constructor is an inverse function of
+<a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray">ToByteArray()</a> method.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -130,10 +136,33 @@ public struct Nonce : IEquatable&lt;Nonce&gt;, IKeyEquatable&lt;Nonce&gt;, IKeyE
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">nonce</span></td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to convert to
+a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be <code>null</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">nonce</code> is a <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Nonce__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray">ToByteArray()</a></div>
+  </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -141,11 +170,12 @@ public struct Nonce : IEquatable&lt;Nonce&gt;, IKeyEquatable&lt;Nonce&gt;, IKeyE
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Nonce_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L54">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ByteArray_" data-uid="Libplanet.Nonce.ByteArray*"></a>
   <h4 id="Libplanet_Nonce_ByteArray" data-uid="Libplanet.Nonce.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -167,6 +197,14 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Nonce_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>It is immutable.  For a mutable array, use
+<a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray">ToByteArray()</a> method instead.</p>
+</div>
+  <h5 id="Libplanet_Nonce_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray">ToByteArray()</a></div>
+  </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -482,11 +520,12 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Nonce_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L47">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ToByteArray_" data-uid="Libplanet.Nonce.ToByteArray*"></a>
   <h4 id="Libplanet_Nonce_ToByteArray" data-uid="Libplanet.Nonce.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -504,20 +543,29 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td></td>
+        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.
+Since a returned array is created every time the method is called,
+any mutations on that array does not affect to
+the <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Nonce_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ByteArray">ByteArray</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Nonce_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Nonce.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Nonce.cs/#L85">View Source</a>
   </span>
   <a id="Libplanet_Nonce_ToString_" data-uid="Libplanet.Nonce.ToString*"></a>
   <h4 id="Libplanet_Nonce_ToString" data-uid="Libplanet.Nonce.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets a hexadecimal representation of a <a class="xref" href="Libplanet.Nonce.html">Nonce</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -535,7 +583,8 @@ public override string ToString()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
+        <td><p>A hexadecimal representation of a <a class="xref" href="Libplanet.Nonce.html">Nonce</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
