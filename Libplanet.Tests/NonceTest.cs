@@ -8,7 +8,7 @@ namespace Libplanet.Tests
         [Fact]
         public void ConstructorDoesNotTakeNullValue()
         {
-            Assert.Throws<NullReferenceException>(() => new Nonce(null));
+            Assert.Throws<ArgumentNullException>(() => new Nonce(null));
         }
 
         [Fact]
