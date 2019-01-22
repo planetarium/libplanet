@@ -49,7 +49,7 @@ namespace Libplanet.Tests.Store
         public void CanReturnAddressPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, "addr", "45a2", "2187e2d8850bb357886958bc3e8560929ccc"),
+                Path.Combine(_fx.Path, "addr", "45a2", "2187e2D8850bb357886958bC3E8560929ccc"),
                 _fx.Store.GetAddressPath(_fx.Address1)
             );
         }
