@@ -97,16 +97,12 @@ namespace Libplanet.Tests
                 }
             );
             Assert.Equal(
-                "45a22187e2d8850bb357886958bc3e8560929ccc",
+                "45a22187e2D8850bb357886958bC3E8560929ccc",
                 address.ToHex()
             );
             Assert.Equal(
-                "0x45a22187e2d8850bb357886958bc3e8560929ccc",
-                address.ToString()
-            );
-            Assert.Equal(
                 "0x45a22187e2D8850bb357886958bC3E8560929ccc",
-                address.ToChecksumAddress()
+                address.ToString()
             );
         }
 

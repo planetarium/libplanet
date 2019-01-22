@@ -131,11 +131,11 @@ namespace Libplanet
         public byte[] ToByteArray() => ByteArray.ToArray();
 
         /// <summary>
-        /// Gets a hexadecimal string of 40 letters that represent this
-        /// <see cref="Address"/>.
+        /// Gets a mixed-case hexadecimal string of 40 letters that represent
+        /// this <see cref="Address"/>.
         /// </summary>
         /// <example>A returned string looks like
-        /// <c>87ae4774e20963fd6cac967cf47adcf880c3e89b</c>.</example>
+        /// <c>87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
         /// <returns>A hexadecimal string of 40 letters that represent
         /// this <see cref="Address"/>.  Note that it does not start with
         /// a prefix.</returns>
@@ -146,15 +146,27 @@ namespace Libplanet
         [Pure]
         public string ToHex()
         {
-            return ByteUtil.Hex(ToByteArray());
+            string hex = ByteUtil.Hex(ToByteArray());
+            byte[] bytes = Encoding.ASCII.GetBytes(hex);
+            byte[] hash = CalculateHash(bytes);
+            string hashHex = ByteUtil.Hex(hash);
+            string address = string.Empty;
+
+            for (var i = 0; i < hex.Length; i++)
+            {
+                char c = hex[i];
+                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
+            }
+
+            return address;
         }
 
         /// <summary>
-        /// Gets a <c>0x</c>-prefixed hexadecimal string of 42 letters that
-        /// represent this <see cref="Address"/>.
+        /// Gets a <c>0x</c>-prefixed mixed-case hexadecimal string of
+        /// 42 letters that represent this <see cref="Address"/>.
         /// </summary>
         /// <example>A returned string looks like
-        /// <c>0x87ae4774e20963fd6cac967cf47adcf880c3e89b</c>.</example>
+        /// <c>0x87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
         /// <returns>A <c>0x</c>-hexadecimal string of 42 letters that represent
         /// this <see cref="Address"/>.</returns>
         /// <remarks>As the returned string is <c>0x</c>-prefixed, for
@@ -165,32 +177,6 @@ namespace Libplanet
         public override string ToString()
         {
             return $"0x{ToHex()}";
-        }
-
-        /// <summary>
-        /// Gets a <c>0x</c>-prefixed Mixed-case checksum address of 42 letters
-        /// that represent this <see cref="Address"/>.
-        /// </summary>
-        /// <example>A returned string looks like
-        /// <c>0x87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
-        /// <returns>A <c>0x</c>-prefixed Mixed-case checksum address of 42
-        /// letters that represent this <see cref="Address"/>.</returns>
-        [Pure]
-        public string ToChecksumAddress()
-        {
-            var hex = ToHex();
-            var bytes = Encoding.ASCII.GetBytes(hex);
-            var hash = CalculateHash(bytes);
-            var hashHex = ByteUtil.Hex(hash);
-            var address = "0x";
-
-            for (var i = 0; i < hex.Length; i++)
-            {
-                var c = hex[i];
-                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
-            }
-
-            return address;
         }
 
         private static byte[] CalculateHash(byte[] value)
