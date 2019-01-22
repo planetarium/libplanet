@@ -135,7 +135,7 @@ namespace Libplanet
         /// this <see cref="Address"/>. The returned hexadecimal string follows
         /// <a
         /// href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md"
-        /// >EIP 55</a>
+        /// >EIP 55</a>.
         /// </summary>
         /// <example>A returned string looks like
         /// <c>87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
@@ -170,7 +170,7 @@ namespace Libplanet
         /// hexadecimal string follows
         /// <a
         /// href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md"
-        /// >EIP 55</a>
+        /// >EIP 55</a>.
         /// </summary>
         /// <example>A returned string looks like
         /// <c>0x87Ae4774E20963fd6caC967CF47aDCF880C3e89B</c>.</example>
