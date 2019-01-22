@@ -119,7 +119,7 @@ jobs:
 
         $tmpGitdir = New-TemporaryFile
         rm "$tmpGitDir"
-        git clone -b gh-pages --single-branch --depth 5 "$repoUrl" "$tmpGitDir"
+        git clone -b gh-pages --single-branch "$repoUrl" "$tmpGitDir"
 
         cd "$tmpGitDir"
         git config user.name "$authorName"

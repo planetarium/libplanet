@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -28,6 +29,14 @@ namespace Libplanet.Tests
                     0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
                 },
                 ByteUtil.ParseHex(hex)
+            );
+
+            Assert.Throws<ArgumentNullException>(() => ByteUtil.ParseHex(null));
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => ByteUtil.ParseHex("abc")
+            );
+            Assert.Throws<FormatException>(
+                () => ByteUtil.ParseHex("abcdefgh")
             );
         }
 

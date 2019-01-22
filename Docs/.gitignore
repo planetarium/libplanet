@@ -1,6 +1,7 @@
 *.nuget
 _site/
-api/.gitignore
+api/*.yml
+api/.manifest
 docfx/
 docfx.zip
 sqlitepclraw.core/
