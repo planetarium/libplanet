@@ -2,16 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
-using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
+using Libplanet.Net.Messages;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
@@ -82,15 +81,6 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm>()
                 .ForContext("Swarm_listenUrl", _listenUrl.ToString());
             _contextInitialized = false;
-        }
-
-        private enum MessageType : byte
-        {
-            Ping = 0x01,
-            Pong = 0x02,
-            PeerSetDelta = 0x03,
-            GetBlocks = 0x4,
-            Inv = 0x5,
         }
 
         public int Count => _peers.Count;
@@ -325,15 +315,18 @@ namespace Libplanet.Net
         }
 
         public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
-            Peer peer, IEnumerable<HashDigest<SHA256>> hashes)
+            Peer peer,
+            IEnumerable<HashDigest<SHA256>> hashes,
+            HashDigest<SHA256>? stop)
         {
             return await GetBlocksAsync(
-                peer, hashes, CancellationToken.None);
+                peer, hashes, stop, CancellationToken.None);
         }
 
         public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> hashes,
+            HashDigest<SHA256>? stop,
             CancellationToken cancellation)
         {
             CheckEntered();
@@ -344,72 +337,20 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            NetMQMessage request = CreateMessage(MessageType.GetBlocks);
-            request.Append(hashes.Count());
-
-            foreach (HashDigest<SHA256> hash in hashes)
-            {
-                request.Append(hash.ToByteArray());
-            }
-
-            await sock.SendMultipartMessageAsync(request, cancellation);
+            var request = new GetBlocks(new BlockLocator(hashes), stop);
+            await sock.SendMultipartMessageAsync(
+                request.ToNetMQMessage(_privateKey), cancellation);
 
             NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
-
-            return response
-                .Skip(2)
-                .Select(f => new HashDigest<SHA256>(f.ToByteArray()))
-                .ToList();
-        }
-
-        private static (PublicKey publicKey, byte[] bytes) VerifyMessage(byte[] bytes)
-        {
-            var formatter = new BinaryFormatter();
-            using (var stream = new MemoryStream(bytes))
+            Message parsedMessage = Message.Parse(response, reply: true);
+            if (parsedMessage is Inventory inv)
             {
-                var d = (Dictionary<string, byte[]>)formatter.Deserialize(stream);
-
-                if (!d.TryGetValue("sig", out byte[] signature))
-                {
-                    throw new InvalidMessageException("the message lacks key for signature: 'sig'");
-                }
-
-                if (!d.TryGetValue("msg", out byte[] message))
-                {
-                    throw new InvalidMessageException("the message lacks key for original message: 'msg'");
-                }
-
-                if (!d.TryGetValue("key", out byte[] keyBytes))
-                {
-                    throw new InvalidMessageException("the message lacks key for public key: 'key'");
-                }
-
-                var publicKey = new PublicKey(keyBytes);
-                if (!publicKey.Verify(message, signature))
-                {
-                    throw new InvalidMessageException("the message signature is invalid");
-                }
-
-                return (publicKey, message);
-            }
-        }
-
-        private static NetMQMessage CreateMessage(
-            MessageType type, byte[] addr = null, params byte[][] frames)
-        {
-            var message = new NetMQMessage();
-            if (addr != null)
-            {
-                message.Append(addr);
+                return inv.BlockHashes;
             }
 
-            message.Append(new[] { (byte)type });
-            foreach (byte[] frame in frames)
-            {
-                message.Append(frame);
-            }
-
-            return message;
+            throw new InvalidMessageException(
+                $"The response of getblock isn't inventory. " +
+                $"but {parsedMessage}");
         }
 
         private static IEnumerable<Peer> FilterPeers(
@@ -445,56 +386,52 @@ namespace Libplanet.Net
 
             while (true)
             {
-                NetMQMessage message = await
+                NetMQMessage rawMessage = await
                     _router.ReceiveMultipartMessageAsync(cancellationToken);
-                _logger.Debug($"Message received.[f-count: {message.FrameCount}]");
-                byte[] addr = message[0].ToByteArray();
-                var type = (MessageType)message[1].Buffer[0];
+                _logger.Debug(
+                    $"Message received.[f-count: {rawMessage.FrameCount}]");
 
-                switch (type)
+                try
                 {
-                    case MessageType.Ping:
-                        _logger.Debug($"Ping received.");
-                        NetMQMessage reply = CreateMessage(MessageType.Pong, addr);
-                        await _router.SendMultipartMessageAsync(reply, cancellationToken);
-                        break;
+                    Message message = Message.Parse(rawMessage, reply: false);
+                    switch (message)
+                    {
+                        case Ping ping:
+                            _logger.Debug($"Ping received.");
+                            var reply = new Pong
+                            {
+                                Identity = ping.Identity,
+                            };
+                            await _router.SendMultipartMessageAsync(
+                                reply.ToNetMQMessage(_privateKey),
+                                cancellationToken);
+                            break;
 
-                    case MessageType.PeerSetDelta:
-                        byte[] payload = message[2].ToByteArray();
-                        var (publicKey, msg) = VerifyMessage(payload);
-                        using (var stream = new MemoryStream(msg))
-                        {
-                            var formatter = new BinaryFormatter();
-                            _deltas.Enqueue((PeerSetDelta)formatter.Deserialize(stream));
-                        }
+                        case Messages.PeerSetDelta peerSetDelta:
+                            _deltas.Enqueue(peerSetDelta.Delta);
+                            break;
 
-                        break;
+                        case GetBlocks getBlocks:
+                            IEnumerable<HashDigest<SHA256>> inventories =
+                                blockchain.FindNextHashes(
+                                    getBlocks.Locator, getBlocks.Stop, 500);
 
-                    case MessageType.GetBlocks:
-                        int requestedHashCount = message[2].ConvertToInt32();
-                        var locator = new BlockLocator(
-                            message.Skip(3).Take(requestedHashCount)
-                            .Select(f => f.ConvertToHashDigest<SHA256>()));
-                        HashDigest<SHA256> stop = message
-                            .Skip(2 + requestedHashCount).First()
-                            .ConvertToHashDigest<SHA256>();
-                        IEnumerable<HashDigest<SHA256>> inventories = blockchain
-                            .FindNextHashes(locator, stop, 500);
+                            var inv = new Inventory(inventories)
+                            {
+                                Identity = getBlocks.Identity,
+                            };
+                            await _router.SendMultipartMessageAsync(
+                                inv.ToNetMQMessage(_privateKey));
+                            break;
 
-                        NetMQMessage inv = CreateMessage(MessageType.Inv, addr);
-                        inv.Append(inventories.Count());
-
-                        foreach (var hash in inventories)
-                        {
-                            inv.Append(hash.ToByteArray());
-                        }
-
-                        await _router.SendMultipartMessageAsync(inv);
-                        break;
-
-                    default:
-                        _logger.Warning($"Can't recognize message type[{type}]. ignored.");
-                        break;
+                        default:
+                            Trace.Fail($"Can't handle message. [{message}]");
+                            break;
+                    }
+                }
+                catch (InvalidMessageException e)
+                {
+                    _logger.Error(e, "Can't parsed NetMQMessage properly. ignored.");
                 }
             }
         }
@@ -538,23 +475,6 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug($"The delta[{delta}] has been applied.");
-            }
-        }
-
-        private byte[] SignMessage(byte[] bytes)
-        {
-            var payload = new Dictionary<string, byte[]>
-            {
-                ["sig"] = _privateKey.Sign(bytes),
-                ["msg"] = bytes,
-                ["key"] = _privateKey.PublicKey.Format(true),
-            };
-
-            var formatter = new BinaryFormatter();
-            using (var stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, payload);
-                return stream.ToArray();
             }
         }
 
@@ -686,8 +606,9 @@ namespace Libplanet.Net
             dealer.Connect(address.ToString());
 
             _logger.Debug($"Trying to Ping to [{address}]...");
-            await dealer.SendFrameAsync(
-                new[] { (byte)MessageType.Ping }, cancellationToken);
+            var ping = new Ping();
+            await dealer.SendMultipartMessageAsync(
+                ping.ToNetMQMessage(_privateKey), cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
             await dealer.ReceiveMultipartMessageAsync(
@@ -765,36 +686,28 @@ namespace Libplanet.Net
             _logger.Debug($"Trying to distribute own delta[{delta.AddedPeers.Count}]...");
             if (delta.AddedPeers.Any() || delta.RemovedPeers.Any() || all)
             {
-                using (var stream = new MemoryStream())
+                LastDistributed = now;
+
+                using (await _distributeMutex.LockAsync(cancellationToken))
                 {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, delta);
-                    LastDistributed = now;
+                    DeltaDistributed.Reset();
+                    var message = new Messages.PeerSetDelta(delta);
+                    _logger.Debug("Send the delta to dealers...");
 
-                    using (await _distributeMutex.LockAsync(cancellationToken))
+                    try
                     {
-                        DeltaDistributed.Reset();
-                        var message = CreateMessage(
-                            MessageType.PeerSetDelta,
-                            null,
-                            SignMessage(stream.ToArray()));
-                        _logger.Debug("Send the delta to dealers...");
-
-                        try
-                        {
-                            await BroadcastMesage(
-                                message,
-                                TimeSpan.FromMilliseconds(300),
-                                cancellationToken);
-                        }
-                        catch (TimeoutException e)
-                        {
-                            _logger.Error(e, "TimeoutException occured.");
-                        }
-
-                        _logger.Debug("The delta has been sent.");
-                        DeltaDistributed.Set();
+                        await BroadcastMesage(
+                            message.ToNetMQMessage(_privateKey),
+                            TimeSpan.FromMilliseconds(300),
+                            cancellationToken);
                     }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(e, "TimeoutException occured.");
+                    }
+
+                    _logger.Debug("The delta has been sent.");
+                    DeltaDistributed.Set();
                 }
             }
         }
