@@ -73,7 +73,13 @@
   
   <h1 id="Libplanet_Hashcash_Stamp" data-uid="Libplanet.Hashcash.Stamp" class="text-break">Delegate Hashcash.Stamp
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A delegate to determine a consistent <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s
+representation derived from a given <code data-dev-comment-type="paramref" class="paramref">nonce</code>.</p>
+<p>Since it is called multiple times with different
+<code data-dev-comment-type="paramref" class="paramref">nonce</code>s for
+<a href="https://en.wikipedia.org/wiki/Proof-of-work_system">proof-of-work system</a>, the total time an implementation elapses
+should not vary for different <code data-dev-comment-type="paramref" class="paramref">nonce</code>s.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
@@ -94,7 +100,9 @@
       <tr>
         <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
         <td><span class="parametername">nonce</span></td>
-        <td></td>
+        <td><p>An arbitrary nonce for an attempt, provided
+by <a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32_">Answer(Hashcash.Stamp, UInt32)</a> method.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -109,10 +117,19 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td></td>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array determined from the given
+<code data-dev-comment-type="paramref" class="paramref">nonce</code>.  It should return consistently
+an equivalent array for equivalent <code data-dev-comment-type="paramref" class="paramref">nonce</code>
+values.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32_">Answer(Hashcash.Stamp, UInt32)</a></div>
+      <div><a class="xref" href="Libplanet.Nonce.html">Nonce</a></div>
+  </div>
 </article>
           </div>
           
@@ -124,7 +141,7 @@
                     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Hashcash_Stamp.md&amp;value=---%0Auid%3A%20Libplanet.Hashcash.Stamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Hashcash.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Hashcash.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
