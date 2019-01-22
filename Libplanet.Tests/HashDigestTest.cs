@@ -1,6 +1,5 @@
 using System;
 using System.Security.Cryptography;
-using Libplanet;
 using Xunit;
 
 namespace Libplanet.Tests
@@ -15,6 +14,17 @@ namespace Libplanet.Tests
 
             HashDigest<SHA256> sha256Default = default;
             Assert.Equal(new HashDigest<SHA256>(new byte[32]), sha256Default);
+        }
+
+        [Fact]
+        public void DisallowNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new HashDigest<SHA1>(null)
+            );
+            Assert.Throws<ArgumentNullException>(
+                () => new HashDigest<SHA256>(null)
+            );
         }
 
         [Fact]
@@ -47,6 +57,10 @@ namespace Libplanet.Tests
                 "45a22187e2d8850bb357886958bc3e8560929ccc");
 
             Assert.Equal(actual, expected);
+
+            Assert.Throws<ArgumentNullException>(
+                () => HashDigest<SHA1>.FromString(null)
+            );
         }
 
         [Fact]
@@ -61,10 +75,10 @@ namespace Libplanet.Tests
                     continue;
                 }
 
-                Assert.Throws<ArgumentException>(
+                Assert.Throws<ArgumentOutOfRangeException>(
                     () => new HashDigest<SHA1>(new byte[i])
                 );
-                Assert.Throws<ArgumentException>(
+                Assert.Throws<ArgumentOutOfRangeException>(
                     () => HashDigest<SHA1>.FromString(new string('0', i * 2))
                 );
             }
