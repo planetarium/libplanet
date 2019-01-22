@@ -89,8 +89,7 @@ namespace Libplanet.Crypto
         public byte[] Encrypt(byte[] message)
         {
             PrivateKey disposablePrivateKey = new PrivateKey();
-            byte[] aesKey = disposablePrivateKey.ExchangeKey(this);
-            var aes = new Aesgcm(aesKey);
+            SymmetricKey aes = disposablePrivateKey.ExchangeKey(this);
 
             return aes.Encrypt(
                 message,

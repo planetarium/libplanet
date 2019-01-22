@@ -201,8 +201,7 @@ namespace Libplanet.Crypto
         public byte[] Decrypt(byte[] ciphertext)
         {
             PublicKey pubKey = new PublicKey(ciphertext.Take(33).ToArray());
-            byte[] aesKey = ExchangeKey(pubKey);
-            var aes = new Aesgcm(aesKey);
+            SymmetricKey aes = ExchangeKey(pubKey);
 
             // FIXME: This merely returns null when the given ciphertext is
             // invalid (which means it is not encrypted with the corresponding
@@ -213,9 +212,8 @@ namespace Libplanet.Crypto
         }
 
         /// <summary>
-        /// Securely exchange an <a
-        /// href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard"
-        /// >AES</a> key with a peer's <see cref="PublicKey"/>.
+        /// Securely exchange a <see cref="SymmetricKey"/> with a peer's
+        /// <see cref="PublicKey"/>.
         /// Two parties can agree on a (new, unique, and typically temporal)
         /// key without revealing to any eavesdropping party what key has been
         /// agreed upon.
@@ -227,12 +225,12 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="publicKey">The <see cref="PublicKey"/> possessed by
         /// a peer to whom exchange a private key with.</param>
-        /// <returns>An <a
+        /// <returns>An exchanged (agreed) <see cref="SymmetricKey"/>.
+        /// Note that it is not an elliptic-curve private key, but an <a
         /// href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard"
-        /// >AES</a> key in <see cref="byte"/> array representation.
-        /// Note that it is not an elliptic-curve private key.</returns>
+        /// >AES</a> key.</returns>
         [Pure]
-        public byte[] ExchangeKey(PublicKey publicKey)
+        public SymmetricKey ExchangeKey(PublicKey publicKey)
         {
             ECPoint p = CalculatePoint(publicKey.KeyParam);
             BigInteger x = p.AffineXCoord.ToBigInteger();
@@ -248,7 +246,7 @@ namespace Libplanet.Crypto
             hash.BlockUpdate(xbuf, 0, xbuf.Length);
             hash.DoFinal(result, 0);
 
-            return result;
+            return new SymmetricKey(result);
         }
 
         internal static ECDomainParameters GetECParameters()
