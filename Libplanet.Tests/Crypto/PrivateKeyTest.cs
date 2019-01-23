@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
-        public void ECDHtest()
+        public void ExchangeTest()
         {
             var prvKey = new PrivateKey(ByteUtil.ParseHex(
                 "82fc9947e878fc7ed01c6c310688603f0a41c8e8704e5b990e8388343b0fd465"));
@@ -51,9 +51,16 @@ namespace Libplanet.Tests.Crypto
             );
             var pubKey = new PrivateKey(pubkeyBytes).PublicKey;
 
-            var expected = ByteUtil.ParseHex(
-                "5935d0476af9df2998efb60383adf2ff23bc928322cfbb738fca88e49d557d7e");
-            var actual = prvKey.ExchangeKey(pubKey);
+            var expected = new SymmetricKey(
+                new byte[]
+                {
+                    0x59, 0x35, 0xd0, 0x47, 0x6a, 0xf9, 0xdf, 0x29, 0x98, 0xef,
+                    0xb6, 0x03, 0x83, 0xad, 0xf2, 0xff, 0x23, 0xbc, 0x92, 0x83,
+                    0x22, 0xcf, 0xbb, 0x73, 0x8f, 0xca, 0x88, 0xe4, 0x9d, 0x55,
+                    0x7d, 0x7e,
+                }
+            );
+            SymmetricKey actual = prvKey.ExchangeKey(pubKey);
 
             Assert.Equal(expected, actual);
         }
