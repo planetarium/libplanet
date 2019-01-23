@@ -27,7 +27,11 @@ namespace Libplanet.Tests.Common.Action
             Target = (string)plainValue["target"];
         }
 
-        public override AddressStateMap Execute(Address from, Address to, AddressStateMap states)
+        public override AddressStateMap Execute(
+            Address from,
+            Address to,
+            AddressStateMap states,
+            IActionContext context)
         {
             var result = new BattleResult();
 

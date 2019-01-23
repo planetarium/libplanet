@@ -17,7 +17,11 @@ namespace Libplanet.Tests.Common.Action
                 { "zone_id", ZoneId },
             }.ToImmutableDictionary();
 
-        public override AddressStateMap Execute(Address from, Address to, AddressStateMap states)
+        public override AddressStateMap Execute(
+            Address from,
+            Address to,
+            AddressStateMap states,
+            IActionContext context)
         {
             throw new NotImplementedException();
         }
