@@ -25,29 +25,7 @@ namespace Libplanet.Tx
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
-        public Transaction(RawTransaction rawTx)
-            : this(
-                new Address(rawTx.Sender),
-                new PublicKey(rawTx.PublicKey),
-                new Address(rawTx.Recipient),
-                DateTime.ParseExact(
-                    rawTx.Timestamp,
-                    TimestampFormat,
-                    CultureInfo.InvariantCulture
-                ).ToUniversalTime(),
-                rawTx.Actions.Select(ToAction).ToList(),
-                rawTx.Signature
-            )
-        {
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private Transaction(SerializationInfo info, StreamingContext context)
-            : this(new RawTransaction(info, context))
-        {
-        }
-
-        private Transaction(
+        public Transaction(
             Address sender,
             PublicKey publicKey,
             Address recipient,
@@ -64,6 +42,42 @@ namespace Libplanet.Tx
                 throw new ArgumentNullException(nameof(actions));
             PublicKey = publicKey ??
                 throw new ArgumentNullException(nameof(publicKey));
+
+            Validate();
+        }
+
+        internal Transaction(RawTransaction rawTx)
+        {
+            Sender = new Address(rawTx.Sender);
+            PublicKey = new PublicKey(rawTx.PublicKey);
+            Recipient = new Address(rawTx.Recipient);
+            Timestamp = DateTime.ParseExact(
+                rawTx.Timestamp,
+                TimestampFormat,
+                CultureInfo.InvariantCulture).ToUniversalTime();
+            Actions = rawTx.Actions.Select(ToAction).ToList();
+            Signature = rawTx.Signature;
+        }
+
+        // ReSharper disable once UnusedMember.Local
+        private Transaction(SerializationInfo info, StreamingContext context)
+            : this(new RawTransaction(info, context))
+        {
+        }
+
+        private Transaction(
+            Address sender,
+            PublicKey publicKey,
+            Address recipient,
+            DateTime timestamp,
+            IList<T> actions)
+        {
+            Sender = sender;
+            PublicKey = publicKey;
+            Recipient = recipient;
+            Timestamp = timestamp;
+            Actions = actions;
+            Signature = new byte[0];
         }
 
         public TxId Id
@@ -113,8 +127,7 @@ namespace Libplanet.Tx
                 publicKey,
                 recipient,
                 timestamp,
-                actions,
-                new byte[0]
+                actions
             );
             return new Transaction<T>(
                 sender,
@@ -190,7 +203,7 @@ namespace Libplanet.Tx
             return Id.GetHashCode();
         }
 
-        public RawTransaction ToRawTransaction(bool includeSign)
+        internal RawTransaction ToRawTransaction(bool includeSign)
         {
             var rawTx = new RawTransaction(
                 sender: Sender.ToByteArray(),

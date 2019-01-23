@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
 
+[assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
 {
-    public struct RawTransaction : ISerializable, IEquatable<RawTransaction>
+    internal struct RawTransaction : ISerializable, IEquatable<RawTransaction>
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
@@ -34,6 +36,25 @@ namespace Libplanet.Tx
             Timestamp = timestamp;
             Actions = actions;
             Signature = signature;
+        }
+
+        public RawTransaction(Dictionary<string, object> dict)
+        {
+            Sender = (byte[])dict["sender"];
+            Recipient = (byte[])dict["recipient"];
+            PublicKey = (byte[])dict["public_key"];
+            Timestamp = (string)dict["timestamp"];
+            Actions = ((IEnumerable)dict["actions"])
+                .Cast<Dictionary<string, object>>()
+                .ToList();
+            if (dict.TryGetValue("signature", out object signature))
+            {
+                Signature = (byte[])signature;
+            }
+            else
+            {
+                Signature = null;
+            }
         }
 
         public byte[] Sender { get; }

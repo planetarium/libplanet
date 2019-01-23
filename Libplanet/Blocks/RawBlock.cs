@@ -4,7 +4,7 @@ using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
 {
-    public struct RawBlock : ISerializable
+    internal struct RawBlock : ISerializable
     {
         public RawBlock(
             ulong index,
@@ -38,7 +38,7 @@ namespace Libplanet.Blocks
             Hash = hash;
         }
 
-        private RawBlock(SerializationInfo info, StreamingContext context)
+        internal RawBlock(SerializationInfo info, StreamingContext context)
             : this(
                   index: info.GetUInt64("index"),
                   timestamp: info.GetString("timestamp"),

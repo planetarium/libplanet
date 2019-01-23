@@ -92,16 +92,22 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
-        internal static Block<T> MineNext<T>(Block<T> previousBlock)
+        internal static Block<T> MineNext<T>(
+            Block<T> previousBlock, IEnumerable<Transaction<T>> txs = null)
             where T : IAction
         {
+            if (txs == null)
+            {
+                txs = new List<Transaction<T>>();
+            }
+
             return Block<T>.Mine(
                 index: 1,
                 difficulty: 1,
                 rewardBeneficiary: previousBlock.RewardBeneficiary.Value,
                 previousHash: previousBlock.Hash,
                 timestamp: previousBlock.Timestamp.AddDays(1),
-                transactions: new List<Transaction<T>>()
+                transactions: txs
             );
         }
     }
