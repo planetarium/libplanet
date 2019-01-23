@@ -1414,60 +1414,6 @@ references:
   commentId: N:Libplanet.Crypto
   fullName: Libplanet.Crypto
   nameWithType: Libplanet.Crypto
-- uid: Libplanet.Crypto.Aesgcm
-  name: Aesgcm
-  href: api/Libplanet.Crypto.Aesgcm.html
-  commentId: T:Libplanet.Crypto.Aesgcm
-  fullName: Libplanet.Crypto.Aesgcm
-  nameWithType: Aesgcm
-- uid: Libplanet.Crypto.Aesgcm.#ctor(System.Byte[])
-  name: Aesgcm(Byte[])
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm__ctor_System_Byte___
-  commentId: M:Libplanet.Crypto.Aesgcm.#ctor(System.Byte[])
-  name.vb: Aesgcm(Byte())
-  fullName: Libplanet.Crypto.Aesgcm.Aesgcm(System.Byte[])
-  fullName.vb: Libplanet.Crypto.Aesgcm.Aesgcm(System.Byte())
-  nameWithType: Aesgcm.Aesgcm(Byte[])
-  nameWithType.vb: Aesgcm.Aesgcm(Byte())
-- uid: Libplanet.Crypto.Aesgcm.#ctor*
-  name: Aesgcm
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm__ctor_
-  commentId: Overload:Libplanet.Crypto.Aesgcm.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Crypto.Aesgcm.Aesgcm
-  nameWithType: Aesgcm.Aesgcm
-- uid: Libplanet.Crypto.Aesgcm.Decrypt(System.Byte[],System.Int32)
-  name: Decrypt(Byte[], Int32)
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm_Decrypt_System_Byte___System_Int32_
-  commentId: M:Libplanet.Crypto.Aesgcm.Decrypt(System.Byte[],System.Int32)
-  name.vb: Decrypt(Byte(), Int32)
-  fullName: Libplanet.Crypto.Aesgcm.Decrypt(System.Byte[], System.Int32)
-  fullName.vb: Libplanet.Crypto.Aesgcm.Decrypt(System.Byte(), System.Int32)
-  nameWithType: Aesgcm.Decrypt(Byte[], Int32)
-  nameWithType.vb: Aesgcm.Decrypt(Byte(), Int32)
-- uid: Libplanet.Crypto.Aesgcm.Decrypt*
-  name: Decrypt
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm_Decrypt_
-  commentId: Overload:Libplanet.Crypto.Aesgcm.Decrypt
-  isSpec: "True"
-  fullName: Libplanet.Crypto.Aesgcm.Decrypt
-  nameWithType: Aesgcm.Decrypt
-- uid: Libplanet.Crypto.Aesgcm.Encrypt(System.Byte[],System.Byte[])
-  name: Encrypt(Byte[], Byte[])
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm_Encrypt_System_Byte___System_Byte___
-  commentId: M:Libplanet.Crypto.Aesgcm.Encrypt(System.Byte[],System.Byte[])
-  name.vb: Encrypt(Byte(), Byte())
-  fullName: Libplanet.Crypto.Aesgcm.Encrypt(System.Byte[], System.Byte[])
-  fullName.vb: Libplanet.Crypto.Aesgcm.Encrypt(System.Byte(), System.Byte())
-  nameWithType: Aesgcm.Encrypt(Byte[], Byte[])
-  nameWithType.vb: Aesgcm.Encrypt(Byte(), Byte())
-- uid: Libplanet.Crypto.Aesgcm.Encrypt*
-  name: Encrypt
-  href: api/Libplanet.Crypto.Aesgcm.html#Libplanet_Crypto_Aesgcm_Encrypt_
-  commentId: Overload:Libplanet.Crypto.Aesgcm.Encrypt
-  isSpec: "True"
-  fullName: Libplanet.Crypto.Aesgcm.Encrypt
-  nameWithType: Aesgcm.Encrypt
 - uid: Libplanet.Crypto.PrivateKey
   name: PrivateKey
   href: api/Libplanet.Crypto.PrivateKey.html
@@ -1826,6 +1772,182 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Verify
   nameWithType: PublicKey.Verify
+- uid: Libplanet.Crypto.SymmetricKey
+  name: SymmetricKey
+  href: api/Libplanet.Crypto.SymmetricKey.html
+  commentId: T:Libplanet.Crypto.SymmetricKey
+  fullName: Libplanet.Crypto.SymmetricKey
+  nameWithType: SymmetricKey
+- uid: Libplanet.Crypto.SymmetricKey.#ctor(System.Byte[])
+  name: SymmetricKey(Byte[])
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey__ctor_System_Byte___
+  commentId: M:Libplanet.Crypto.SymmetricKey.#ctor(System.Byte[])
+  name.vb: SymmetricKey(Byte())
+  fullName: Libplanet.Crypto.SymmetricKey.SymmetricKey(System.Byte[])
+  fullName.vb: Libplanet.Crypto.SymmetricKey.SymmetricKey(System.Byte())
+  nameWithType: SymmetricKey.SymmetricKey(Byte[])
+  nameWithType.vb: SymmetricKey.SymmetricKey(Byte())
+- uid: Libplanet.Crypto.SymmetricKey.#ctor*
+  name: SymmetricKey
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey__ctor_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.SymmetricKey
+  nameWithType: SymmetricKey.SymmetricKey
+- uid: Libplanet.Crypto.SymmetricKey.ByteArray
+  name: ByteArray
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ByteArray
+  commentId: P:Libplanet.Crypto.SymmetricKey.ByteArray
+  fullName: Libplanet.Crypto.SymmetricKey.ByteArray
+  nameWithType: SymmetricKey.ByteArray
+- uid: Libplanet.Crypto.SymmetricKey.ByteArray*
+  name: ByteArray
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ByteArray_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.ByteArray
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.ByteArray
+  nameWithType: SymmetricKey.ByteArray
+- uid: Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte[],System.Int32)
+  name: Decrypt(Byte[], Int32)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32_
+  commentId: M:Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte[],System.Int32)
+  name.vb: Decrypt(Byte(), Int32)
+  fullName: Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte[], System.Int32)
+  fullName.vb: Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte(), System.Int32)
+  nameWithType: SymmetricKey.Decrypt(Byte[], Int32)
+  nameWithType.vb: SymmetricKey.Decrypt(Byte(), Int32)
+- uid: Libplanet.Crypto.SymmetricKey.Decrypt*
+  name: Decrypt
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Decrypt_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.Decrypt
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Decrypt
+  nameWithType: SymmetricKey.Decrypt
+- uid: Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte[],System.Byte[])
+  name: Encrypt(Byte[], Byte[])
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte___
+  commentId: M:Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte[],System.Byte[])
+  name.vb: Encrypt(Byte(), Byte())
+  fullName: Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte(), System.Byte())
+  nameWithType: SymmetricKey.Encrypt(Byte[], Byte[])
+  nameWithType.vb: SymmetricKey.Encrypt(Byte(), Byte())
+- uid: Libplanet.Crypto.SymmetricKey.Encrypt*
+  name: Encrypt
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Encrypt_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.Encrypt
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Encrypt
+  nameWithType: SymmetricKey.Encrypt
+- uid: Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey)
+  name: Equals(SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Equals(SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  name: Equals(SymmetricKey, SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey, Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Equals(SymmetricKey, SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Equals_System_Object_
+  commentId: M:Libplanet.Crypto.SymmetricKey.Equals(System.Object)
+  fullName: Libplanet.Crypto.SymmetricKey.Equals(System.Object)
+  nameWithType: SymmetricKey.Equals(Object)
+- uid: Libplanet.Crypto.SymmetricKey.Equals*
+  name: Equals
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Equals_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.Equals
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Equals
+  nameWithType: SymmetricKey.Equals
+- uid: Libplanet.Crypto.SymmetricKey.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_GetHashCode
+  commentId: M:Libplanet.Crypto.SymmetricKey.GetHashCode
+  fullName: Libplanet.Crypto.SymmetricKey.GetHashCode()
+  nameWithType: SymmetricKey.GetHashCode()
+- uid: Libplanet.Crypto.SymmetricKey.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_GetHashCode_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.GetHashCode
+  nameWithType: SymmetricKey.GetHashCode
+- uid: Libplanet.Crypto.SymmetricKey.GetKeyHashCode
+  name: GetKeyHashCode()
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_GetKeyHashCode
+  commentId: M:Libplanet.Crypto.SymmetricKey.GetKeyHashCode
+  fullName: Libplanet.Crypto.SymmetricKey.GetKeyHashCode()
+  nameWithType: SymmetricKey.GetKeyHashCode()
+- uid: Libplanet.Crypto.SymmetricKey.GetKeyHashCode*
+  name: GetKeyHashCode
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_GetKeyHashCode_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.GetKeyHashCode
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.GetKeyHashCode
+  nameWithType: SymmetricKey.GetKeyHashCode
+- uid: Libplanet.Crypto.SymmetricKey.KeyEquals(Libplanet.Crypto.SymmetricKey)
+  name: KeyEquals(SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_KeyEquals_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.KeyEquals(Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.KeyEquals(Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.KeyEquals(SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.KeyEquals(System.Object)
+  name: KeyEquals(Object)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_KeyEquals_System_Object_
+  commentId: M:Libplanet.Crypto.SymmetricKey.KeyEquals(System.Object)
+  fullName: Libplanet.Crypto.SymmetricKey.KeyEquals(System.Object)
+  nameWithType: SymmetricKey.KeyEquals(Object)
+- uid: Libplanet.Crypto.SymmetricKey.KeyEquals*
+  name: KeyEquals
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_KeyEquals_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.KeyEquals
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.KeyEquals
+  nameWithType: SymmetricKey.KeyEquals
+- uid: Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  name: Equality(SymmetricKey, SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Equality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Equality(Libplanet.Crypto.SymmetricKey, Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Equality(SymmetricKey, SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.op_Equality*
+  name: Equality
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Equality_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Equality
+  nameWithType: SymmetricKey.Equality
+- uid: Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  name: Inequality(SymmetricKey, SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Inequality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Inequality(Libplanet.Crypto.SymmetricKey, Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Inequality(SymmetricKey, SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Inequality_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Inequality
+  nameWithType: SymmetricKey.Inequality
+- uid: Libplanet.Crypto.SymmetricKey.ToByteArray
+  name: ToByteArray()
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray
+  commentId: M:Libplanet.Crypto.SymmetricKey.ToByteArray
+  fullName: Libplanet.Crypto.SymmetricKey.ToByteArray()
+  nameWithType: SymmetricKey.ToByteArray()
+- uid: Libplanet.Crypto.SymmetricKey.ToByteArray*
+  name: ToByteArray
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.ToByteArray
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.ToByteArray
+  nameWithType: SymmetricKey.ToByteArray
 - uid: Libplanet.Hashcash
   name: Hashcash
   href: api/Libplanet.Hashcash.html

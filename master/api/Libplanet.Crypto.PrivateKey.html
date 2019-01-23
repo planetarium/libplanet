@@ -505,11 +505,12 @@ not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/PrivateKey.cs/#L234">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/PrivateKey.cs/#L232">View Source</a>
   </span>
   <a id="Libplanet_Crypto_PrivateKey_ExchangeKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey*"></a>
   <h4 id="Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)">ExchangeKey(PublicKey)</h4>
-  <div class="markdown level1 summary"><p>Securely exchange an <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> key with a peer's <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
+  <div class="markdown level1 summary"><p>Securely exchange a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> with a peer's
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
 Two parties can agree on a (new, unique, and typically temporal)
 key without revealing to any eavesdropping party what key has been
 agreed upon.</p>
@@ -520,7 +521,7 @@ agreed upon.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ExchangeKey(PublicKey publicKey)</code></pre>
+public SymmetricKey ExchangeKey(PublicKey publicKey)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -551,9 +552,9 @@ a peer to whom exchange a private key with.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>An <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> key in <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.
-Note that it is not an elliptic-curve private key.</p>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><p>An exchanged (agreed) <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>.
+Note that it is not an elliptic-curve private key, but an <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> key.</p>
 </td>
       </tr>
     </tbody>

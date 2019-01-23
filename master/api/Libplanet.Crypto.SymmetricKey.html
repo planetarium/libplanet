@@ -1,0 +1,858 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SymmetricKey
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SymmetricKey
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.40.7.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Crypto.SymmetricKey">
+  
+  
+  <h1 id="Libplanet_Crypto_SymmetricKey" data-uid="Libplanet.Crypto.SymmetricKey" class="text-break">Class SymmetricKey
+  </h1>
+  <div class="markdown level0 summary"><p>An <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key</a>.  Unlike <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> and
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> that are involved in an asymmetric key
+cryptography, it uses the same <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> for both
+encrypting a plaintext and decrypting a ciphertext.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">SymmetricKey</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>&gt;</div>
+    <div><span class="xref">Uno.Equality.IKeyEquatable</span>&lt;<a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>&gt;</div>
+    <div><span class="xref">Uno.Equality.IKeyEquatable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Crypto_SymmetricKey_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[GeneratedEquality]
+public class SymmetricKey : IEquatable&lt;SymmetricKey&gt;, IKeyEquatable&lt;SymmetricKey&gt;, IKeyEquatable</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/SymmetricKey.cs/#L54">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey__ctor_" data-uid="Libplanet.Crypto.SymmetricKey.#ctor*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey__ctor_System_Byte___" data-uid="Libplanet.Crypto.SymmetricKey.#ctor(System.Byte[])">SymmetricKey(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> instance from the given
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">key</code>),
+which encodes a valid <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SymmetricKey(byte[] key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">key</span></td>
+        <td><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that
+encodes an AES-GCM symmetric key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey__ctor_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array for
+a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> can be encoded using
+<a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray">ToByteArray()</a> method.</p>
+</div>
+  <h5 id="Libplanet_Crypto_SymmetricKey__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/SymmetricKey.cs/#L74">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_ByteArray_" data-uid="Libplanet.Crypto.SymmetricKey.ByteArray*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_ByteArray" data-uid="Libplanet.Crypto.SymmetricKey.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>An immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array encoding of this key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[EqualityKey(KeyEqualityMode.Auto)]
+[Pure]
+public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is immutable.  For a mutable array, call
+<a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray">ToByteArray()</a> method.</p>
+</div>
+  <h5 id="Libplanet_Crypto_SymmetricKey_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/SymmetricKey.cs/#L145">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_Decrypt_" data-uid="Libplanet.Crypto.SymmetricKey.Decrypt*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32_" data-uid="Libplanet.Crypto.SymmetricKey.Decrypt(System.Byte[],System.Int32)">Decrypt(Byte[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Converts a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> which was encrypted with
+the same key to the plain message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] Decrypt(byte[] ciphertext, int nonSecretLength = 0)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">ciphertext</span></td>
+        <td><p>The encrypted data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">nonSecretLength</span></td>
+        <td><p>The length of <code>nonSecret</code> data.
+(See also <a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte___">Encrypt(Byte[], Byte[])</a> method's the second
+parameter, which is optional.)  <code>0</code> by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>The plain data the <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> encrypted.
+It returns <code>null</code> if the <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> is
+invalid (this behavior will be eventually changed in the future to
+throw an exception instead).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
+word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code>
+and a returned message are a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> string,
+not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>.</p>
+</div>
+  <h5 id="Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte___">Encrypt(Byte[], Byte[])</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte%5B%5D%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/SymmetricKey.cs/#L94">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_Encrypt_" data-uid="Libplanet.Crypto.SymmetricKey.Encrypt*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte___" data-uid="Libplanet.Crypto.SymmetricKey.Encrypt(System.Byte[],System.Byte[])">Encrypt(Byte[], Byte[])</h4>
+  <div class="markdown level1 summary"><p>Converts a plain <code data-dev-comment-type="paramref" class="paramref">message</code> to a ciphertext
+which can be decrypted with the same key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] Encrypt(byte[] message, byte[] nonSecret = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A binary data to be encrypted.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">nonSecret</span></td>
+        <td><p>An extra data not to be encrypted, but
+to be just transmitted as is.  The default value is <code>null</code>,
+which means empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A ciphertext that was encrypted from the <code data-dev-comment-type="paramref" class="paramref">message</code>
+and can be decrypted with the same key.
+(Although the word “ciphertext” has the word
+“text”, a returned ciphertext is not a Unicode
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, but a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey_Encrypt_System_Byte___System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32_">Decrypt(Byte[], Int32)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L30">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_Equals_" data-uid="Libplanet.Crypto.SymmetricKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_" data-uid="Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey)">Equals(SymmetricKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(SymmetricKey other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey%2CLibplanet.Crypto.SymmetricKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L19">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_Equals_" data-uid="Libplanet.Crypto.SymmetricKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_" data-uid="Libplanet.Crypto.SymmetricKey.Equals(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)">Equals(SymmetricKey, SymmetricKey)</h4>
+  <div class="markdown level1 summary"><p>Checks two instances of SymmetricKey for equality.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Equals(SymmetricKey a, SymmetricKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey_Equals_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can also simply use the overriden '==' and '!=' operators.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L38">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_Equals_" data-uid="Libplanet.Crypto.SymmetricKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_Equals_System_Object_" data-uid="Libplanet.Crypto.SymmetricKey.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_GetHashCode_" data-uid="Libplanet.Crypto.SymmetricKey.GetHashCode*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_GetHashCode" data-uid="Libplanet.Crypto.SymmetricKey.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_GetKeyHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.GetKeyHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_GetKeyHashCode_" data-uid="Libplanet.Crypto.SymmetricKey.GetKeyHashCode*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_GetKeyHashCode" data-uid="Libplanet.Crypto.SymmetricKey.GetKeyHashCode">GetKeyHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetKeyHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_KeyEquals_Libplanet_Crypto_SymmetricKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.KeyEquals(Libplanet.Crypto.SymmetricKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L104">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_KeyEquals_" data-uid="Libplanet.Crypto.SymmetricKey.KeyEquals*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_KeyEquals_Libplanet_Crypto_SymmetricKey_" data-uid="Libplanet.Crypto.SymmetricKey.KeyEquals(Libplanet.Crypto.SymmetricKey)">KeyEquals(SymmetricKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeyEquals(SymmetricKey other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_KeyEquals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.KeyEquals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L99">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_KeyEquals_" data-uid="Libplanet.Crypto.SymmetricKey.KeyEquals*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_KeyEquals_System_Object_" data-uid="Libplanet.Crypto.SymmetricKey.KeyEquals(System.Object)">KeyEquals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeyEquals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Crypto/SymmetricKey.cs/#L202">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_ToByteArray_" data-uid="Libplanet.Crypto.SymmetricKey.ToByteArray*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_ToByteArray" data-uid="Libplanet.Crypto.SymmetricKey.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Gets a mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which encodes this key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which encodes this
+key.  Since it is created every time the method is called, any
+mutation on that does not affect this <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>
+object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_SymmetricKey_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ByteArray">ByteArray</a></div>
+      <div><a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey__ctor_System_Byte___">SymmetricKey(Byte[])</a></div>
+  </div>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_op_Equality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey%2CLibplanet.Crypto.SymmetricKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_op_Equality_" data-uid="Libplanet.Crypto.SymmetricKey.op_Equality*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_op_Equality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_" data-uid="Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)">Equality(SymmetricKey, SymmetricKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(SymmetricKey a, SymmetricKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey_op_Inequality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey%2CLibplanet.Crypto.SymmetricKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L66">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_SymmetricKey_op_Inequality_" data-uid="Libplanet.Crypto.SymmetricKey.op_Inequality*"></a>
+  <h4 id="Libplanet_Crypto_SymmetricKey_op_Inequality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_" data-uid="Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)">Inequality(SymmetricKey, SymmetricKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(SymmetricKey a, SymmetricKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">Uno.Equality.IKeyEquatable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">Uno.Equality.IKeyEquatable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Crypto_SymmetricKey.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.SymmetricKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/SymmetricKey_2313BC46.g.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -77,8 +77,6 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
-      <h4><a class="xref" href="Libplanet.Crypto.Aesgcm.html">Aesgcm</a></h4>
-      <section></section>
       <h4><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></h4>
       <section><p>A secret part of a key pair involved in
 <a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
@@ -106,6 +104,12 @@ This can be distributed publicly, hence the name.</p>
 <a href="https://www.ethereum.org/">Ethereum</a>.
 It means public keys generated for Bitcoin/Ethereum can be used by
 Libplanet-backed games/apps too.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></h4>
+      <section><p>An <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key</a>.  Unlike <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> and
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> that are involved in an asymmetric key
+cryptography, it uses the same <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> for both
+encrypting a plaintext and decrypting a ciphertext.</p>
 </section>
 </article>
           </div>
