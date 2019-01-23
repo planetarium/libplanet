@@ -846,6 +846,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T)
   nameWithType: Block<T>
   nameWithType.vb: Block(Of T)
+- uid: Libplanet.Blocks.Block`1.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: Block(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Libplanet.Blocks.Block<T>.Block(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: Block<T>.Block(SerializationInfo, StreamingContext)
+  nameWithType.vb: Block(Of T).Block(SerializationInfo, StreamingContext)
 - uid: Libplanet.Blocks.Block`1.#ctor(System.UInt64,System.UInt32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
   name: Block(UInt64, UInt32, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_UInt64_System_UInt32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
@@ -933,6 +941,24 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Equals
   nameWithType: Block<T>.Equals
   nameWithType.vb: Block(Of T).Equals
+- uid: Libplanet.Blocks.Block`1.FromBencoded(System.Byte[])
+  name: FromBencoded(Byte[])
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencoded_System_Byte___
+  commentId: M:Libplanet.Blocks.Block`1.FromBencoded(System.Byte[])
+  name.vb: FromBencoded(Byte())
+  fullName: Libplanet.Blocks.Block<T>.FromBencoded(System.Byte[])
+  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencoded(System.Byte())
+  nameWithType: Block<T>.FromBencoded(Byte[])
+  nameWithType.vb: Block(Of T).FromBencoded(Byte())
+- uid: Libplanet.Blocks.Block`1.FromBencoded*
+  name: FromBencoded
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencoded_
+  commentId: Overload:Libplanet.Blocks.Block`1.FromBencoded
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.FromBencoded
+  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencoded
+  nameWithType: Block<T>.FromBencoded
+  nameWithType.vb: Block(Of T).FromBencoded
 - uid: Libplanet.Blocks.Block`1.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_GetHashCode
@@ -1166,23 +1192,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Timestamp
   nameWithType: Block<T>.Timestamp
   nameWithType.vb: Block(Of T).Timestamp
-- uid: Libplanet.Blocks.Block`1.ToRawBlock(System.Boolean,System.Boolean)
-  name: ToRawBlock(Boolean, Boolean)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToRawBlock_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Blocks.Block`1.ToRawBlock(System.Boolean,System.Boolean)
-  fullName: Libplanet.Blocks.Block<T>.ToRawBlock(System.Boolean, System.Boolean)
-  fullName.vb: Libplanet.Blocks.Block(Of T).ToRawBlock(System.Boolean, System.Boolean)
-  nameWithType: Block<T>.ToRawBlock(Boolean, Boolean)
-  nameWithType.vb: Block(Of T).ToRawBlock(Boolean, Boolean)
-- uid: Libplanet.Blocks.Block`1.ToRawBlock*
-  name: ToRawBlock
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToRawBlock_
-  commentId: Overload:Libplanet.Blocks.Block`1.ToRawBlock
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.ToRawBlock
-  fullName.vb: Libplanet.Blocks.Block(Of T).ToRawBlock
-  nameWithType: Block<T>.ToRawBlock
-  nameWithType.vb: Block(Of T).ToRawBlock
 - uid: Libplanet.Blocks.Block`1.ToString
   name: ToString()
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToString
@@ -1348,170 +1357,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
   nameWithType: InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
-- uid: Libplanet.Blocks.RawBlock
-  name: RawBlock
-  href: api/Libplanet.Blocks.RawBlock.html
-  commentId: T:Libplanet.Blocks.RawBlock
-  fullName: Libplanet.Blocks.RawBlock
-  nameWithType: RawBlock
-- uid: Libplanet.Blocks.RawBlock.#ctor(System.UInt64,System.String,System.Byte[],System.Byte[],System.UInt32,System.Byte[],System.Collections.IEnumerable)
-  name: RawBlock(UInt64, String, Byte[], Byte[], UInt32, Byte[], IEnumerable)
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock__ctor_System_UInt64_System_String_System_Byte___System_Byte___System_UInt32_System_Byte___System_Collections_IEnumerable_
-  commentId: M:Libplanet.Blocks.RawBlock.#ctor(System.UInt64,System.String,System.Byte[],System.Byte[],System.UInt32,System.Byte[],System.Collections.IEnumerable)
-  name.vb: RawBlock(UInt64, String, Byte(), Byte(), UInt32, Byte(), IEnumerable)
-  fullName: Libplanet.Blocks.RawBlock.RawBlock(System.UInt64, System.String, System.Byte[], System.Byte[], System.UInt32, System.Byte[], System.Collections.IEnumerable)
-  fullName.vb: Libplanet.Blocks.RawBlock.RawBlock(System.UInt64, System.String, System.Byte(), System.Byte(), System.UInt32, System.Byte(), System.Collections.IEnumerable)
-  nameWithType: RawBlock.RawBlock(UInt64, String, Byte[], Byte[], UInt32, Byte[], IEnumerable)
-  nameWithType.vb: RawBlock.RawBlock(UInt64, String, Byte(), Byte(), UInt32, Byte(), IEnumerable)
-- uid: Libplanet.Blocks.RawBlock.#ctor(System.UInt64,System.String,System.Byte[],System.Byte[],System.UInt32,System.Byte[],System.Collections.IEnumerable,System.Byte[])
-  name: RawBlock(UInt64, String, Byte[], Byte[], UInt32, Byte[], IEnumerable, Byte[])
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock__ctor_System_UInt64_System_String_System_Byte___System_Byte___System_UInt32_System_Byte___System_Collections_IEnumerable_System_Byte___
-  commentId: M:Libplanet.Blocks.RawBlock.#ctor(System.UInt64,System.String,System.Byte[],System.Byte[],System.UInt32,System.Byte[],System.Collections.IEnumerable,System.Byte[])
-  name.vb: RawBlock(UInt64, String, Byte(), Byte(), UInt32, Byte(), IEnumerable, Byte())
-  fullName: Libplanet.Blocks.RawBlock.RawBlock(System.UInt64, System.String, System.Byte[], System.Byte[], System.UInt32, System.Byte[], System.Collections.IEnumerable, System.Byte[])
-  fullName.vb: Libplanet.Blocks.RawBlock.RawBlock(System.UInt64, System.String, System.Byte(), System.Byte(), System.UInt32, System.Byte(), System.Collections.IEnumerable, System.Byte())
-  nameWithType: RawBlock.RawBlock(UInt64, String, Byte[], Byte[], UInt32, Byte[], IEnumerable, Byte[])
-  nameWithType.vb: RawBlock.RawBlock(UInt64, String, Byte(), Byte(), UInt32, Byte(), IEnumerable, Byte())
-- uid: Libplanet.Blocks.RawBlock.#ctor*
-  name: RawBlock
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock__ctor_
-  commentId: Overload:Libplanet.Blocks.RawBlock.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.RawBlock
-  nameWithType: RawBlock.RawBlock
-- uid: Libplanet.Blocks.RawBlock.AddHash(System.Byte[])
-  name: AddHash(Byte[])
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_AddHash_System_Byte___
-  commentId: M:Libplanet.Blocks.RawBlock.AddHash(System.Byte[])
-  name.vb: AddHash(Byte())
-  fullName: Libplanet.Blocks.RawBlock.AddHash(System.Byte[])
-  fullName.vb: Libplanet.Blocks.RawBlock.AddHash(System.Byte())
-  nameWithType: RawBlock.AddHash(Byte[])
-  nameWithType.vb: RawBlock.AddHash(Byte())
-- uid: Libplanet.Blocks.RawBlock.AddHash*
-  name: AddHash
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_AddHash_
-  commentId: Overload:Libplanet.Blocks.RawBlock.AddHash
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.AddHash
-  nameWithType: RawBlock.AddHash
-- uid: Libplanet.Blocks.RawBlock.Difficulty
-  name: Difficulty
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Difficulty
-  commentId: P:Libplanet.Blocks.RawBlock.Difficulty
-  fullName: Libplanet.Blocks.RawBlock.Difficulty
-  nameWithType: RawBlock.Difficulty
-- uid: Libplanet.Blocks.RawBlock.Difficulty*
-  name: Difficulty
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Difficulty_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Difficulty
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Difficulty
-  nameWithType: RawBlock.Difficulty
-- uid: Libplanet.Blocks.RawBlock.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Blocks.RawBlock.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Blocks.RawBlock.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: RawBlock.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.RawBlock.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_GetObjectData_
-  commentId: Overload:Libplanet.Blocks.RawBlock.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.GetObjectData
-  nameWithType: RawBlock.GetObjectData
-- uid: Libplanet.Blocks.RawBlock.Hash
-  name: Hash
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Hash
-  commentId: P:Libplanet.Blocks.RawBlock.Hash
-  fullName: Libplanet.Blocks.RawBlock.Hash
-  nameWithType: RawBlock.Hash
-- uid: Libplanet.Blocks.RawBlock.Hash*
-  name: Hash
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Hash_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Hash
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Hash
-  nameWithType: RawBlock.Hash
-- uid: Libplanet.Blocks.RawBlock.Index
-  name: Index
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Index
-  commentId: P:Libplanet.Blocks.RawBlock.Index
-  fullName: Libplanet.Blocks.RawBlock.Index
-  nameWithType: RawBlock.Index
-- uid: Libplanet.Blocks.RawBlock.Index*
-  name: Index
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Index_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Index
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Index
-  nameWithType: RawBlock.Index
-- uid: Libplanet.Blocks.RawBlock.Nonce
-  name: Nonce
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Nonce
-  commentId: P:Libplanet.Blocks.RawBlock.Nonce
-  fullName: Libplanet.Blocks.RawBlock.Nonce
-  nameWithType: RawBlock.Nonce
-- uid: Libplanet.Blocks.RawBlock.Nonce*
-  name: Nonce
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Nonce_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Nonce
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Nonce
-  nameWithType: RawBlock.Nonce
-- uid: Libplanet.Blocks.RawBlock.PreviousHash
-  name: PreviousHash
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_PreviousHash
-  commentId: P:Libplanet.Blocks.RawBlock.PreviousHash
-  fullName: Libplanet.Blocks.RawBlock.PreviousHash
-  nameWithType: RawBlock.PreviousHash
-- uid: Libplanet.Blocks.RawBlock.PreviousHash*
-  name: PreviousHash
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_PreviousHash_
-  commentId: Overload:Libplanet.Blocks.RawBlock.PreviousHash
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.PreviousHash
-  nameWithType: RawBlock.PreviousHash
-- uid: Libplanet.Blocks.RawBlock.RewardBeneficiary
-  name: RewardBeneficiary
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_RewardBeneficiary
-  commentId: P:Libplanet.Blocks.RawBlock.RewardBeneficiary
-  fullName: Libplanet.Blocks.RawBlock.RewardBeneficiary
-  nameWithType: RawBlock.RewardBeneficiary
-- uid: Libplanet.Blocks.RawBlock.RewardBeneficiary*
-  name: RewardBeneficiary
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_RewardBeneficiary_
-  commentId: Overload:Libplanet.Blocks.RawBlock.RewardBeneficiary
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.RewardBeneficiary
-  nameWithType: RawBlock.RewardBeneficiary
-- uid: Libplanet.Blocks.RawBlock.Timestamp
-  name: Timestamp
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Timestamp
-  commentId: P:Libplanet.Blocks.RawBlock.Timestamp
-  fullName: Libplanet.Blocks.RawBlock.Timestamp
-  nameWithType: RawBlock.Timestamp
-- uid: Libplanet.Blocks.RawBlock.Timestamp*
-  name: Timestamp
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Timestamp_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Timestamp
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Timestamp
-  nameWithType: RawBlock.Timestamp
-- uid: Libplanet.Blocks.RawBlock.Transactions
-  name: Transactions
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Transactions
-  commentId: P:Libplanet.Blocks.RawBlock.Transactions
-  fullName: Libplanet.Blocks.RawBlock.Transactions
-  nameWithType: RawBlock.Transactions
-- uid: Libplanet.Blocks.RawBlock.Transactions*
-  name: Transactions
-  href: api/Libplanet.Blocks.RawBlock.html#Libplanet_Blocks_RawBlock_Transactions_
-  commentId: Overload:Libplanet.Blocks.RawBlock.Transactions
-  isSpec: "True"
-  fullName: Libplanet.Blocks.RawBlock.Transactions
-  nameWithType: RawBlock.Transactions
 - uid: Libplanet.ByteUtil
   name: ByteUtil
   href: api/Libplanet.ByteUtil.html
@@ -5473,208 +5318,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.InvalidTxSignatureException.InvalidTxSignatureException
   nameWithType: InvalidTxSignatureException.InvalidTxSignatureException
-- uid: Libplanet.Tx.RawTransaction
-  name: RawTransaction
-  href: api/Libplanet.Tx.RawTransaction.html
-  commentId: T:Libplanet.Tx.RawTransaction
-  fullName: Libplanet.Tx.RawTransaction
-  nameWithType: RawTransaction
-- uid: Libplanet.Tx.RawTransaction.#ctor(System.Byte[],System.Byte[],System.Byte[],System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}})
-  name: RawTransaction(Byte[], Byte[], Byte[], String, IEnumerable<IDictionary<String, Object>>)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction__ctor_System_Byte___System_Byte___System_Byte___System_String_System_Collections_Generic_IEnumerable_System_Collections_Generic_IDictionary_System_String_System_Object___
-  commentId: M:Libplanet.Tx.RawTransaction.#ctor(System.Byte[],System.Byte[],System.Byte[],System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}})
-  name.vb: RawTransaction(Byte(), Byte(), Byte(), String, IEnumerable(Of IDictionary(Of String, Object)))
-  fullName: Libplanet.Tx.RawTransaction.RawTransaction(System.Byte[], System.Byte[], System.Byte[], System.String, System.Collections.Generic.IEnumerable<System.Collections.Generic.IDictionary<System.String, System.Object>>)
-  fullName.vb: Libplanet.Tx.RawTransaction.RawTransaction(System.Byte(), System.Byte(), System.Byte(), System.String, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.IDictionary(Of System.String, System.Object)))
-  nameWithType: RawTransaction.RawTransaction(Byte[], Byte[], Byte[], String, IEnumerable<IDictionary<String, Object>>)
-  nameWithType.vb: RawTransaction.RawTransaction(Byte(), Byte(), Byte(), String, IEnumerable(Of IDictionary(Of String, Object)))
-- uid: Libplanet.Tx.RawTransaction.#ctor(System.Byte[],System.Byte[],System.Byte[],System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},System.Byte[])
-  name: RawTransaction(Byte[], Byte[], Byte[], String, IEnumerable<IDictionary<String, Object>>, Byte[])
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction__ctor_System_Byte___System_Byte___System_Byte___System_String_System_Collections_Generic_IEnumerable_System_Collections_Generic_IDictionary_System_String_System_Object___System_Byte___
-  commentId: M:Libplanet.Tx.RawTransaction.#ctor(System.Byte[],System.Byte[],System.Byte[],System.String,System.Collections.Generic.IEnumerable{System.Collections.Generic.IDictionary{System.String,System.Object}},System.Byte[])
-  name.vb: RawTransaction(Byte(), Byte(), Byte(), String, IEnumerable(Of IDictionary(Of String, Object)), Byte())
-  fullName: Libplanet.Tx.RawTransaction.RawTransaction(System.Byte[], System.Byte[], System.Byte[], System.String, System.Collections.Generic.IEnumerable<System.Collections.Generic.IDictionary<System.String, System.Object>>, System.Byte[])
-  fullName.vb: Libplanet.Tx.RawTransaction.RawTransaction(System.Byte(), System.Byte(), System.Byte(), System.String, System.Collections.Generic.IEnumerable(Of System.Collections.Generic.IDictionary(Of System.String, System.Object)), System.Byte())
-  nameWithType: RawTransaction.RawTransaction(Byte[], Byte[], Byte[], String, IEnumerable<IDictionary<String, Object>>, Byte[])
-  nameWithType.vb: RawTransaction.RawTransaction(Byte(), Byte(), Byte(), String, IEnumerable(Of IDictionary(Of String, Object)), Byte())
-- uid: Libplanet.Tx.RawTransaction.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: RawTransaction(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Tx.RawTransaction.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Tx.RawTransaction.RawTransaction(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: RawTransaction.RawTransaction(SerializationInfo, StreamingContext)
-- uid: Libplanet.Tx.RawTransaction.#ctor*
-  name: RawTransaction
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction__ctor_
-  commentId: Overload:Libplanet.Tx.RawTransaction.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.RawTransaction
-  nameWithType: RawTransaction.RawTransaction
-- uid: Libplanet.Tx.RawTransaction.Actions
-  name: Actions
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Actions
-  commentId: P:Libplanet.Tx.RawTransaction.Actions
-  fullName: Libplanet.Tx.RawTransaction.Actions
-  nameWithType: RawTransaction.Actions
-- uid: Libplanet.Tx.RawTransaction.Actions*
-  name: Actions
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Actions_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Actions
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Actions
-  nameWithType: RawTransaction.Actions
-- uid: Libplanet.Tx.RawTransaction.AddSignature(System.Byte[])
-  name: AddSignature(Byte[])
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_AddSignature_System_Byte___
-  commentId: M:Libplanet.Tx.RawTransaction.AddSignature(System.Byte[])
-  name.vb: AddSignature(Byte())
-  fullName: Libplanet.Tx.RawTransaction.AddSignature(System.Byte[])
-  fullName.vb: Libplanet.Tx.RawTransaction.AddSignature(System.Byte())
-  nameWithType: RawTransaction.AddSignature(Byte[])
-  nameWithType.vb: RawTransaction.AddSignature(Byte())
-- uid: Libplanet.Tx.RawTransaction.AddSignature*
-  name: AddSignature
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_AddSignature_
-  commentId: Overload:Libplanet.Tx.RawTransaction.AddSignature
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.AddSignature
-  nameWithType: RawTransaction.AddSignature
-- uid: Libplanet.Tx.RawTransaction.Equals(Libplanet.Tx.RawTransaction)
-  name: Equals(RawTransaction)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Equals_Libplanet_Tx_RawTransaction_
-  commentId: M:Libplanet.Tx.RawTransaction.Equals(Libplanet.Tx.RawTransaction)
-  fullName: Libplanet.Tx.RawTransaction.Equals(Libplanet.Tx.RawTransaction)
-  nameWithType: RawTransaction.Equals(RawTransaction)
-- uid: Libplanet.Tx.RawTransaction.Equals(System.Object)
-  name: Equals(Object)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Equals_System_Object_
-  commentId: M:Libplanet.Tx.RawTransaction.Equals(System.Object)
-  fullName: Libplanet.Tx.RawTransaction.Equals(System.Object)
-  nameWithType: RawTransaction.Equals(Object)
-- uid: Libplanet.Tx.RawTransaction.Equals*
-  name: Equals
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Equals_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Equals
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Equals
-  nameWithType: RawTransaction.Equals
-- uid: Libplanet.Tx.RawTransaction.GetHashCode
-  name: GetHashCode()
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_GetHashCode
-  commentId: M:Libplanet.Tx.RawTransaction.GetHashCode
-  fullName: Libplanet.Tx.RawTransaction.GetHashCode()
-  nameWithType: RawTransaction.GetHashCode()
-- uid: Libplanet.Tx.RawTransaction.GetHashCode*
-  name: GetHashCode
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_GetHashCode_
-  commentId: Overload:Libplanet.Tx.RawTransaction.GetHashCode
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.GetHashCode
-  nameWithType: RawTransaction.GetHashCode
-- uid: Libplanet.Tx.RawTransaction.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:Libplanet.Tx.RawTransaction.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Libplanet.Tx.RawTransaction.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: RawTransaction.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Tx.RawTransaction.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_GetObjectData_
-  commentId: Overload:Libplanet.Tx.RawTransaction.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.GetObjectData
-  nameWithType: RawTransaction.GetObjectData
-- uid: Libplanet.Tx.RawTransaction.op_Equality(Libplanet.Tx.RawTransaction,Libplanet.Tx.RawTransaction)
-  name: Equality(RawTransaction, RawTransaction)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_op_Equality_Libplanet_Tx_RawTransaction_Libplanet_Tx_RawTransaction_
-  commentId: M:Libplanet.Tx.RawTransaction.op_Equality(Libplanet.Tx.RawTransaction,Libplanet.Tx.RawTransaction)
-  fullName: Libplanet.Tx.RawTransaction.Equality(Libplanet.Tx.RawTransaction, Libplanet.Tx.RawTransaction)
-  nameWithType: RawTransaction.Equality(RawTransaction, RawTransaction)
-- uid: Libplanet.Tx.RawTransaction.op_Equality*
-  name: Equality
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_op_Equality_
-  commentId: Overload:Libplanet.Tx.RawTransaction.op_Equality
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Equality
-  nameWithType: RawTransaction.Equality
-- uid: Libplanet.Tx.RawTransaction.op_Inequality(Libplanet.Tx.RawTransaction,Libplanet.Tx.RawTransaction)
-  name: Inequality(RawTransaction, RawTransaction)
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_op_Inequality_Libplanet_Tx_RawTransaction_Libplanet_Tx_RawTransaction_
-  commentId: M:Libplanet.Tx.RawTransaction.op_Inequality(Libplanet.Tx.RawTransaction,Libplanet.Tx.RawTransaction)
-  fullName: Libplanet.Tx.RawTransaction.Inequality(Libplanet.Tx.RawTransaction, Libplanet.Tx.RawTransaction)
-  nameWithType: RawTransaction.Inequality(RawTransaction, RawTransaction)
-- uid: Libplanet.Tx.RawTransaction.op_Inequality*
-  name: Inequality
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_op_Inequality_
-  commentId: Overload:Libplanet.Tx.RawTransaction.op_Inequality
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Inequality
-  nameWithType: RawTransaction.Inequality
-- uid: Libplanet.Tx.RawTransaction.PublicKey
-  name: PublicKey
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_PublicKey
-  commentId: P:Libplanet.Tx.RawTransaction.PublicKey
-  fullName: Libplanet.Tx.RawTransaction.PublicKey
-  nameWithType: RawTransaction.PublicKey
-- uid: Libplanet.Tx.RawTransaction.PublicKey*
-  name: PublicKey
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_PublicKey_
-  commentId: Overload:Libplanet.Tx.RawTransaction.PublicKey
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.PublicKey
-  nameWithType: RawTransaction.PublicKey
-- uid: Libplanet.Tx.RawTransaction.Recipient
-  name: Recipient
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Recipient
-  commentId: P:Libplanet.Tx.RawTransaction.Recipient
-  fullName: Libplanet.Tx.RawTransaction.Recipient
-  nameWithType: RawTransaction.Recipient
-- uid: Libplanet.Tx.RawTransaction.Recipient*
-  name: Recipient
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Recipient_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Recipient
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Recipient
-  nameWithType: RawTransaction.Recipient
-- uid: Libplanet.Tx.RawTransaction.Sender
-  name: Sender
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Sender
-  commentId: P:Libplanet.Tx.RawTransaction.Sender
-  fullName: Libplanet.Tx.RawTransaction.Sender
-  nameWithType: RawTransaction.Sender
-- uid: Libplanet.Tx.RawTransaction.Sender*
-  name: Sender
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Sender_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Sender
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Sender
-  nameWithType: RawTransaction.Sender
-- uid: Libplanet.Tx.RawTransaction.Signature
-  name: Signature
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Signature
-  commentId: P:Libplanet.Tx.RawTransaction.Signature
-  fullName: Libplanet.Tx.RawTransaction.Signature
-  nameWithType: RawTransaction.Signature
-- uid: Libplanet.Tx.RawTransaction.Signature*
-  name: Signature
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Signature_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Signature
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Signature
-  nameWithType: RawTransaction.Signature
-- uid: Libplanet.Tx.RawTransaction.Timestamp
-  name: Timestamp
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Timestamp
-  commentId: P:Libplanet.Tx.RawTransaction.Timestamp
-  fullName: Libplanet.Tx.RawTransaction.Timestamp
-  nameWithType: RawTransaction.Timestamp
-- uid: Libplanet.Tx.RawTransaction.Timestamp*
-  name: Timestamp
-  href: api/Libplanet.Tx.RawTransaction.html#Libplanet_Tx_RawTransaction_Timestamp_
-  commentId: Overload:Libplanet.Tx.RawTransaction.Timestamp
-  isSpec: "True"
-  fullName: Libplanet.Tx.RawTransaction.Timestamp
-  nameWithType: RawTransaction.Timestamp
 - uid: Libplanet.Tx.Transaction`1
   name: Transaction<T>
   href: api/Libplanet.Tx.Transaction-1.html
@@ -5684,14 +5327,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T)
   nameWithType: Transaction<T>
   nameWithType.vb: Transaction(Of T)
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.RawTransaction)
-  name: Transaction(RawTransaction)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Tx_RawTransaction_
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Tx.RawTransaction)
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Tx.RawTransaction)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Tx.RawTransaction)
-  nameWithType: Transaction<T>.Transaction(RawTransaction)
-  nameWithType.vb: Transaction(Of T).Transaction(RawTransaction)
+- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Address,Libplanet.Crypto.PublicKey,Libplanet.Address,System.DateTime,System.Collections.Generic.IList{`0},System.Byte[])
+  name: Transaction(Address, PublicKey, Address, DateTime, IList<T>, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Address_Libplanet_Crypto_PublicKey_Libplanet_Address_System_DateTime_System_Collections_Generic_IList__0__System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Address,Libplanet.Crypto.PublicKey,Libplanet.Address,System.DateTime,System.Collections.Generic.IList{`0},System.Byte[])
+  name.vb: Transaction(Address, PublicKey, Address, DateTime, IList(Of T), Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Address, Libplanet.Crypto.PublicKey, Libplanet.Address, System.DateTime, System.Collections.Generic.IList<T>, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Address, Libplanet.Crypto.PublicKey, Libplanet.Address, System.DateTime, System.Collections.Generic.IList(Of T), System.Byte())
+  nameWithType: Transaction<T>.Transaction(Address, PublicKey, Address, DateTime, IList<T>, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(Address, PublicKey, Address, DateTime, IList(Of T), Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor*
   name: Transaction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_
@@ -5933,23 +5577,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Timestamp
   nameWithType: Transaction<T>.Timestamp
   nameWithType.vb: Transaction(Of T).Timestamp
-- uid: Libplanet.Tx.Transaction`1.ToRawTransaction(System.Boolean)
-  name: ToRawTransaction(Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToRawTransaction_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.ToRawTransaction(System.Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.ToRawTransaction(System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).ToRawTransaction(System.Boolean)
-  nameWithType: Transaction<T>.ToRawTransaction(Boolean)
-  nameWithType.vb: Transaction(Of T).ToRawTransaction(Boolean)
-- uid: Libplanet.Tx.Transaction`1.ToRawTransaction*
-  name: ToRawTransaction
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToRawTransaction_
-  commentId: Overload:Libplanet.Tx.Transaction`1.ToRawTransaction
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.ToRawTransaction
-  fullName.vb: Libplanet.Tx.Transaction(Of T).ToRawTransaction
-  nameWithType: Transaction<T>.ToRawTransaction
-  nameWithType.vb: Transaction(Of T).ToRawTransaction
 - uid: Libplanet.Tx.Transaction`1.Validate
   name: Validate()
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Validate
