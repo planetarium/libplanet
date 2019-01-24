@@ -106,15 +106,10 @@ namespace Libplanet.Net
 
         public IDictionary<Peer, DateTime> LastSeenTimestamps { get; private set; }
 
-        public async Task<ISet<Peer>> AddPeersAsync(IEnumerable<Peer> peers, DateTime? timestamp = null)
-        {
-            return await AddPeersAsync(peers, CancellationToken.None, timestamp);
-        }
-
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
-            CancellationToken cancellationToken,
-            DateTime? timestamp = null)
+            DateTime? timestamp = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (timestamp == null)
             {
@@ -168,12 +163,8 @@ namespace Libplanet.Net
             return addedPeers;
         }
 
-        public async Task<Swarm> InitContextAsync()
-        {
-            return await InitContextAsync(CancellationToken.None);
-        }
-
-        public async Task<Swarm> InitContextAsync(CancellationToken cancellationToken)
+        public async Task<Swarm> InitContextAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             _router.Bind(_listenUrl.ToString());
             foreach (Peer peer in _peers.Keys)
@@ -246,12 +237,8 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task DisposeAsync()
-        {
-            await DisposeAsync(CancellationToken.None);
-        }
-
-        public async Task DisposeAsync(CancellationToken cancellationToken)
+        public async Task DisposeAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             _logger.Debug("Disposing...");
             if (_contextInitialized)
@@ -295,16 +282,9 @@ namespace Libplanet.Net
         }
 
         public async Task RunAsync<T>(
-            Blockchain<T> blockchain, int distributeInterval)
-            where T : IAction
-        {
-            await RunAsync(blockchain, distributeInterval, CancellationToken.None);
-        }
-
-        public async Task RunAsync<T>(
             Blockchain<T> blockchain,
             int distributeInterval,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             CheckEntered();
@@ -319,17 +299,8 @@ namespace Libplanet.Net
         public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> hashes,
-            HashDigest<SHA256>? stop)
-        {
-            return await GetBlocksAsync(
-                peer, hashes, stop, CancellationToken.None);
-        }
-
-        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
-            Peer peer,
-            IEnumerable<HashDigest<SHA256>> hashes,
             HashDigest<SHA256>? stop,
-            CancellationToken cancellation)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckEntered();
 
@@ -341,7 +312,8 @@ namespace Libplanet.Net
 
             var request = new GetBlocks(new BlockLocator(hashes), stop);
             await sock.SendMultipartMessageAsync(
-                request.ToNetMQMessage(_privateKey), cancellation);
+                request.ToNetMQMessage(_privateKey),
+                cancellationToken: cancellationToken);
 
             NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
             Message parsedMessage = Message.Parse(response, reply: true);
@@ -374,7 +346,8 @@ namespace Libplanet.Net
             {
                 var request = new GetData(blockHashes);
                 await sock.SendMultipartMessageAsync(
-                    request.ToNetMQMessage(_privateKey), cancellationToken);
+                    request.ToNetMQMessage(_privateKey),
+                    cancellationToken: cancellationToken);
 
                 int hashCount = blockHashes.Count();
                 while (hashCount > 0)
@@ -433,7 +406,8 @@ namespace Libplanet.Net
             while (true)
             {
                 NetMQMessage rawMessage = await
-                    _router.ReceiveMultipartMessageAsync(cancellationToken);
+                    _router.ReceiveMultipartMessageAsync(
+                        cancellationToken: cancellationToken);
                 _logger.Debug(
                     $"Message received.[f-count: {rawMessage.FrameCount}]");
 
@@ -492,7 +466,9 @@ namespace Libplanet.Net
         private async Task SendAsync(Message message, CancellationToken token)
         {
             NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);
-            await _router.SendMultipartMessageAsync(netMQMessage, token);
+            await _router.SendMultipartMessageAsync(
+                netMQMessage,
+                cancellationToken: token);
         }
 
         private async Task TransferBlocks<T>(
@@ -577,7 +553,7 @@ namespace Libplanet.Net
 
             _logger.Debug("Trying to add peers...");
             ISet<Peer> added = await AddPeersAsync(
-                addedPeers, cancellationToken, delta.Timestamp);
+                addedPeers, delta.Timestamp, cancellationToken);
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
                 DumpDiffs(
@@ -686,11 +662,13 @@ namespace Libplanet.Net
             _logger.Debug($"Trying to Ping to [{address}]...");
             var ping = new Ping();
             await dealer.SendMultipartMessageAsync(
-                ping.ToNetMQMessage(_privateKey), cancellationToken);
+                ping.ToNetMQMessage(_privateKey),
+                cancellationToken: cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
             await dealer.ReceiveMultipartMessageAsync(
-                cancellationToken, _dialTimeout);
+                timeout: _dialTimeout,
+                cancellationToken: cancellationToken);
 
             _logger.Debug($"Pong received.");
 
@@ -798,7 +776,9 @@ namespace Libplanet.Net
             return Task.WhenAll(
                 _dealers.Values.Select(
                     s => s.SendMultipartMessageAsync(
-                        message, cancellationToken, timeout)));
+                        message,
+                        timeout: timeout,
+                        cancellationToken: cancellationToken)));
         }
 
         private async Task RepeatDeltaDistributionAsync(

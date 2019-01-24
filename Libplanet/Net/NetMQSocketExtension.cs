@@ -11,18 +11,8 @@ namespace Libplanet.Net
             this IOutgoingSocket socket,
             byte[] data,
             TimeSpan? timeout = null,
-            TimeSpan? delay = null)
-        {
-            await SendFrameAsync(
-                socket, data, CancellationToken.None, timeout, delay);
-        }
-
-        public static async Task SendFrameAsync(
-            this IOutgoingSocket socket,
-            byte[] data,
-            CancellationToken cancellationToken,
-            TimeSpan? timeout = null,
-            TimeSpan? delay = null)
+            TimeSpan? delay = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
             TimeSpan elapsed = TimeSpan.Zero;
@@ -44,18 +34,8 @@ namespace Libplanet.Net
             this IOutgoingSocket socket,
             NetMQMessage message,
             TimeSpan? timeout = null,
-            TimeSpan? delay = null)
-        {
-            await SendMultipartMessageAsync(
-                socket, message, CancellationToken.None, timeout, delay);
-        }
-
-        public static async Task SendMultipartMessageAsync(
-            this IOutgoingSocket socket,
-            NetMQMessage message,
-            CancellationToken cancellationToken,
-            TimeSpan? timeout = null,
-            TimeSpan? delay = null)
+            TimeSpan? delay = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
             TimeSpan elapsed = TimeSpan.Zero;
@@ -76,17 +56,8 @@ namespace Libplanet.Net
         public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
             this IReceivingSocket socket,
             TimeSpan? timeout = null,
-            TimeSpan? delay = null)
-        {
-            return await ReceiveMultipartMessageAsync(
-                socket, CancellationToken.None, timeout, delay);
-        }
-
-        public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
-            this IReceivingSocket socket,
-            CancellationToken cancellationToken,
-            TimeSpan? timeout = null,
-            TimeSpan? delay = null)
+            TimeSpan? delay = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetMQMessage message = new NetMQMessage();
             TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
