@@ -414,47 +414,16 @@ namespace Libplanet.Net
                 try
                 {
                     Message message = Message.Parse(rawMessage, reply: false);
-                    switch (message)
+
+                    // Queue a task per message to avoid blocking.
+                    #pragma warning disable CS4014
+                    Task.Run(async () =>
                     {
-                        case Ping ping:
-                            _logger.Debug($"Ping received.");
-                            var reply = new Pong
-                            {
-                                Identity = ping.Identity,
-                            };
-                            await SendAsync(reply, cancellationToken);
-                            break;
-
-                        case Messages.PeerSetDelta peerSetDelta:
-                            _deltas.Enqueue(peerSetDelta.Delta);
-                            break;
-
-                        case GetBlocks getBlocks:
-                            IEnumerable<HashDigest<SHA256>> inventories =
-                                blockchain.FindNextHashes(
-                                    getBlocks.Locator, getBlocks.Stop, 500);
-
-                            var inv = new Inventory(inventories)
-                            {
-                                Identity = getBlocks.Identity,
-                            };
-                            await SendAsync(inv, cancellationToken);
-                            break;
-
-                        case GetData getData:
-                            #pragma warning disable CS4014
-                            Task.Run(() =>
-                            {
-                                TransferBlocks(
-                                    blockchain, getData, cancellationToken);
-                            });
-                            #pragma warning restore CS4014
-                            break;
-
-                        default:
-                            Trace.Fail($"Can't handle message. [{message}]");
-                            break;
-                    }
+                        // it's still async because some method it relies are
+                        // async yet.
+                        await ProcessMessageAsync(blockchain, message, cancellationToken);
+                    });
+                    #pragma warning restore CS4014
                 }
                 catch (InvalidMessageException e)
                 {
@@ -463,7 +432,51 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task SendAsync(Message message, CancellationToken token)
+        private async Task ProcessMessageAsync<T>(
+            Blockchain<T> blockchain,
+            Message message,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
+            switch (message)
+            {
+                case Ping ping:
+                    _logger.Debug($"Ping received.");
+                    var reply = new Pong
+                    {
+                        Identity = ping.Identity,
+                    };
+                    await ReplyAsync(reply, cancellationToken);
+                    break;
+
+                case Messages.PeerSetDelta peerSetDelta:
+                    _deltas.Enqueue(peerSetDelta.Delta);
+                    break;
+
+                case GetBlocks getBlocks:
+                    IEnumerable<HashDigest<SHA256>> inventories =
+                        blockchain.FindNextHashes(
+                            getBlocks.Locator, getBlocks.Stop, 500);
+
+                    var inv = new Inventory(inventories)
+                    {
+                        Identity = getBlocks.Identity,
+                    };
+                    await ReplyAsync(inv, cancellationToken);
+                    break;
+
+                case GetData getData:
+                    await TransferBlocks(
+                        blockchain, getData, cancellationToken);
+                    break;
+
+                default:
+                    Trace.Fail($"Can't handle message. [{message}]");
+                    break;
+            }
+        }
+
+        private async Task ReplyAsync(Message message, CancellationToken token)
         {
             NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);
             await _router.SendMultipartMessageAsync(
@@ -485,7 +498,7 @@ namespace Libplanet.Net
                     {
                         Identity = getData.Identity,
                     };
-                    await SendAsync(response, cancellationToken);
+                    await ReplyAsync(response, cancellationToken);
                 }
             }
         }
