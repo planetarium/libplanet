@@ -34,6 +34,16 @@ namespace Libplanet.Net.Messages
             /// Inventory to transfer blocks or txs.
             /// </summary>
             Inventory = 0x05,
+
+            /// <summary>
+            /// Request to query block or tx payload.
+            /// </summary>
+            GetData = 0x06,
+
+            /// <summary>
+            /// Message containing serialized block.
+            /// </summary>
+            Block = 0x07,
         }
 
         public Address? Identity { get; set; }
@@ -80,6 +90,12 @@ namespace Libplanet.Net.Messages
                     break;
                 case MessageType.Inventory:
                     message = Inventory.Parse(body);
+                    break;
+                case MessageType.GetData:
+                    message = GetData.Parse(body);
+                    break;
+                case MessageType.Block:
+                    message = Block.Parse(body);
                     break;
                 default:
                     throw new InvalidMessageException(
