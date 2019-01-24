@@ -357,7 +357,7 @@ namespace Libplanet.Net
                     Message parsedMessage = Message.Parse(response, true);
                     if (parsedMessage is Block blockMessage)
                     {
-                        Block<T> block = Block<T>.FromBencoded(
+                        Block<T> block = Block<T>.FromBencodex(
                             blockMessage.Payload);
                         await yield.ReturnAsync(block);
                         hashCount--;
@@ -481,7 +481,7 @@ namespace Libplanet.Net
             {
                 if (blockchain.Blocks.TryGetValue(hash, out Block<T> block))
                 {
-                    Message response = new Block(block.Bencode(true, true))
+                    Message response = new Block(block.ToBencodex(true, true))
                     {
                         Identity = getData.Identity,
                     };
