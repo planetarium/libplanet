@@ -6,9 +6,26 @@ matrix:
   - os: osx
     osx_image: xcode10.1
     language: csharp
+  - os: windows
+    language: shell
 
 solution: Libplanet.sln
-install: nuget restore Libplanet.sln
+install:
+- |
+  if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+    # MSBuild
+    {
+      echo "#!/bin/bash"
+      echo "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe' $@"
+    } > /usr/bin/msbuild
+    chmod +x /usr/bin/msbuild
+
+    # NuGet
+    curl -o /usr/bin/nuget.exe \
+      https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+    chmod +x /usr/bin/nuget.exe
+  fi
+- nuget restore Libplanet.sln
 
 script:
 - msbuild /p:Configuration=Release /r
