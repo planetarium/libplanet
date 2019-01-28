@@ -2,13 +2,15 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <Summary>A .NET library for creating blockchain games.</Summary>
+    <Summary>A .NET library for creating multiplayer online game in
+      decentralized fashion.</Summary>
     <!-- FIXME: The above summary should be rewritten. -->
     <Version>0.1.0-dev</Version>
     <PackageProjectUrl>https://github.com/planetarium/libplanet.net</PackageProjectUrl>
     <Authors>Hong Minhee</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <PackageReleaseNotes>https://github.com/planetarium/libplanet.net/blob/master/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
     <RepositoryUrl>git://github.com/planetarium/libplanet.net.git</RepositoryUrl>

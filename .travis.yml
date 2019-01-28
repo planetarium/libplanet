@@ -30,3 +30,4 @@ install:
 script:
 - msbuild /p:Configuration=Release /r
 - msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
+- msbuild /p:Configuration=Release /t:pack Libplanet
