@@ -3026,22 +3026,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.GetBlocksAsync
   nameWithType: Swarm.GetBlocksAsync
-- uid: Libplanet.Net.Swarm.GetDataAsync*
-  name: GetDataAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetDataAsync_
-  commentId: Overload:Libplanet.Net.Swarm.GetDataAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm.GetDataAsync
-  nameWithType: Swarm.GetDataAsync
-- uid: Libplanet.Net.Swarm.GetDataAsync``1(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
-  name: GetDataAsync<T>(Peer, IEnumerable<HashDigest<SHA256>>, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetDataAsync__1_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.GetDataAsync``1(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
-  name.vb: GetDataAsync(Of T)(Peer, IEnumerable(Of HashDigest(Of SHA256)), CancellationToken)
-  fullName: Libplanet.Net.Swarm.GetDataAsync<T>(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.GetDataAsync(Of T)(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Threading.CancellationToken)
-  nameWithType: Swarm.GetDataAsync<T>(Peer, IEnumerable<HashDigest<SHA256>>, CancellationToken)
-  nameWithType.vb: Swarm.GetDataAsync(Of T)(Peer, IEnumerable(Of HashDigest(Of SHA256)), CancellationToken)
 - uid: Libplanet.Net.Swarm.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetEnumerator
