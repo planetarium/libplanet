@@ -1,0 +1,15 @@
+matrix:
+  include:
+  - os: linux
+    dist: xenial
+    language: csharp
+  - os: osx
+    osx_image: xcode10.1
+    language: csharp
+
+solution: Libplanet.sln
+install: nuget restore Libplanet.sln
+
+script:
+- msbuild /p:Configuration=Release /r
+- msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
