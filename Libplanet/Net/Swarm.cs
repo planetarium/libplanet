@@ -765,7 +765,7 @@ namespace Libplanet.Net
 
                     try
                     {
-                        await BroadcastMesage(
+                        await BroadcastMessage(
                             message.ToNetMQMessage(_privateKey),
                             TimeSpan.FromMilliseconds(300),
                             cancellationToken);
@@ -781,7 +781,7 @@ namespace Libplanet.Net
             }
         }
 
-        private Task BroadcastMesage(
+        private Task BroadcastMessage(
             NetMQMessage message,
             TimeSpan timeout,
             CancellationToken cancellationToken)
