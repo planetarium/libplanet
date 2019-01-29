@@ -7,6 +7,10 @@ matrix:
       apt:
         packages:
         - libxml2-utils
+        - powershell
+        sources:
+        - sourceline: deb [arch=amd64] https://packages.microsoft.com/ubuntu/16.04/prod xenial main
+          key_url: https://packages.microsoft.com/keys/microsoft.asc
   - os: osx
     osx_image: xcode10.1
     language: csharp
@@ -16,7 +20,11 @@ matrix:
 solution: Libplanet.sln
 install:
 - |
-  if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+  set -e
+  if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+    brew update
+    brew cask install powershell
+  elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
     # MSBuild
     {
       echo "#!/bin/bash"
@@ -47,6 +55,7 @@ install:
     mv */*.exe */*.dll /c/Windows/
     popd
   fi
+  set +e
 - nuget restore Libplanet.sln
 
 script:
@@ -70,6 +79,20 @@ script:
 
 # Build Libplanet.*.nupkg
 - msbuild /p:Configuration=Release /t:pack Libplanet
+
+# Build docs using DocFX
+- |
+  if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+    powershell -Command "Set-ExecutionPolicy Unrestricted"
+    pwsh=powershell
+  else
+    pwsh=pwsh
+  fi
+  $pwsh \
+    -File Docs/build.ps1 \
+    -WorkingDirectory Docs/ \
+    -ExecutionPolicy Bypass
+- '[[ -f Docs/_site/index.html ]]'
 
 # Turn off "set -e" option
 - set +e
