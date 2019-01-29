@@ -3,6 +3,10 @@ matrix:
   - os: linux
     dist: xenial
     language: csharp
+    addons:
+      apt:
+        packages:
+        - libxml2-utils
   - os: osx
     osx_image: xcode10.1
     language: csharp
@@ -24,10 +28,48 @@ install:
     curl -o /usr/bin/nuget.exe \
       https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     chmod +x /usr/bin/nuget.exe
+
+    # xmllint
+    mkdir /tmp/libxml2
+    pushd /tmp/libxml2
+    wget \
+      https://www.zlatkovic.com/pub/libxml/64bit/iconv-1.14-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libtool-2.4.6-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libxml2-2.9.3-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libxslt-1.1.28-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/mingwrt-5.2.0-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/openssl-1.0.2e-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/xmlsec1-1.2.20-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/zlib-1.2.8-win32-x86_64.7z
+    for z in *.7z; do
+      7z x "$z"
+    done
+    mv */*.exe */*.dll /c/Windows/
+    popd
   fi
 - nuget restore Libplanet.sln
 
 script:
+# Fail fast if anything in below commands fails
+- set -e
+
+# If a tag is pushed, the NuGet package version has to be the same to
+# the tag name.
+- |
+  version="$(xmllint \
+    --xpath './Project/PropertyGroup/Version/text()' \
+    Libplanet/Libplanet.csproj)"
+- 'echo "NuGet package version: $version"'
+- '[[ "$TRAVIS_TAG" = "" || "$version" = "$TRAVIS_TAG" ]]'
+
+# Build the whole solution.
 - msbuild /p:Configuration=Release /r
+
+# Run unit tests
 - msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
+
+# Build Libplanet.*.nupkg
 - msbuild /p:Configuration=Release /t:pack Libplanet
+
+# Turn off "set -e" option
+- set +e
