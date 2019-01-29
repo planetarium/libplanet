@@ -319,28 +319,27 @@ namespace Libplanet.Net
             HashDigest<SHA256>? stop,
             CancellationToken cancellationToken)
         {
-            var request = new GetBlocks(locator, stop);
+            var request = new GetBlockHashes(locator, stop);
             await sock.SendMultipartMessageAsync(
                 request.ToNetMQMessage(_privateKey),
                 cancellationToken: cancellationToken);
 
             NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
             Message parsedMessage = Message.Parse(response, reply: true);
-            if (parsedMessage is Inventory inv)
+            if (parsedMessage is BlockHashes blockHashes)
             {
-                return inv.BlockHashes;
+                return blockHashes.Hashes;
             }
 
             throw new InvalidMessageException(
-                $"The response of getblock isn't inventory. " +
+                $"The response of GetBlockHashes isn't BlockHashes. " +
                 $"but {parsedMessage}");
         }
 
-        // TODO: Add TxIds
-        internal IAsyncEnumerable<Block<T>> GetDataAsync<T>(
+        internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken token = default(CancellationToken))
             where T : IAction
         {
             CheckEntered();
@@ -351,9 +350,18 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
+            return GetBlocksAsync<T>(sock, blockHashes, token);
+        }
+
+        internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
+            DealerSocket sock,
+            IEnumerable<HashDigest<SHA256>> blockHashes,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
             return new AsyncEnumerable<Block<T>>(async yield =>
             {
-                var request = new GetData(blockHashes);
+                var request = new GetBlocks(blockHashes);
                 await sock.SendMultipartMessageAsync(
                     request.ToNetMQMessage(_privateKey),
                     cancellationToken: cancellationToken);
@@ -450,34 +458,44 @@ namespace Libplanet.Net
             switch (message)
             {
                 case Ping ping:
-                    _logger.Debug($"Ping received.");
-                    var reply = new Pong
                     {
-                        Identity = ping.Identity,
-                    };
-                    await ReplyAsync(reply, cancellationToken);
-                    break;
+                        _logger.Debug($"Ping received.");
+                        var reply = new Pong
+                        {
+                            Identity = ping.Identity,
+                        };
+                        await ReplyAsync(reply, cancellationToken);
+                        break;
+                    }
 
                 case Messages.PeerSetDelta peerSetDelta:
-                    _deltas.Enqueue(peerSetDelta.Delta);
-                    break;
+                    {
+                        _deltas.Enqueue(peerSetDelta.Delta);
+                        break;
+                    }
+
+                case GetBlockHashes getBlockHashes:
+                    {
+                        IEnumerable<HashDigest<SHA256>> hashes =
+                            blockchain.FindNextHashes(
+                                getBlockHashes.Locator,
+                                getBlockHashes.Stop,
+                                500);
+                        var reply = new BlockHashes(hashes)
+                        {
+                            Identity = getBlockHashes.Identity,
+                        };
+                        await ReplyAsync(reply, cancellationToken);
+                        break;
+                    }
 
                 case GetBlocks getBlocks:
-                    IEnumerable<HashDigest<SHA256>> inventories =
-                        blockchain.FindNextHashes(
-                            getBlocks.Locator, getBlocks.Stop, 500);
-
-                    var inv = new Inventory(inventories)
                     {
-                        Identity = getBlocks.Identity,
-                    };
-                    await ReplyAsync(inv, cancellationToken);
-                    break;
+                        await TransferBlocks(
+                            blockchain, getBlocks, cancellationToken);
+                        break;
+                    }
 
-                case GetData getData:
-                    await TransferBlocks(
-                        blockchain, getData, cancellationToken);
-                    break;
 
                 default:
                     Trace.Fail($"Can't handle message. [{message}]");
@@ -495,7 +513,7 @@ namespace Libplanet.Net
 
         private async Task TransferBlocks<T>(
             Blockchain<T> blockchain,
-            GetData getData,
+            GetBlocks getData,
             CancellationToken cancellationToken)
             where T : IAction
         {

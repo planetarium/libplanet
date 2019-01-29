@@ -28,17 +28,17 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Request to query block hashes.
             /// </summary>
-            GetBlocks = 0x04,
+            GetBlockHashes = 0x04,
 
             /// <summary>
-            /// Inventory to transfer blocks or txs.
+            /// Inventory to transfer blocks.
             /// </summary>
-            Inventory = 0x05,
+            BlockHashes = 0x05,
 
             /// <summary>
-            /// Request to query block or tx payload.
+            /// Request to query blocks.
             /// </summary>
-            GetData = 0x06,
+            GetBlocks = 0x06,
 
             /// <summary>
             /// Message containing serialized block.
@@ -85,14 +85,14 @@ namespace Libplanet.Net.Messages
                 case MessageType.PeerSetDelta:
                     message = PeerSetDelta.ParseBody(body);
                     break;
+                case MessageType.GetBlockHashes:
+                    message = GetBlockHashes.ParseBody(body);
+                    break;
+                case MessageType.BlockHashes:
+                    message = BlockHashes.Parse(body);
+                    break;
                 case MessageType.GetBlocks:
-                    message = GetBlocks.ParseBody(body);
-                    break;
-                case MessageType.Inventory:
-                    message = Inventory.Parse(body);
-                    break;
-                case MessageType.GetData:
-                    message = GetData.Parse(body);
+                    message = GetBlocks.Parse(body);
                     break;
                 case MessageType.Block:
                     message = Block.Parse(body);

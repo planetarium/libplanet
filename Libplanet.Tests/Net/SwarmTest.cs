@@ -266,7 +266,7 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(new[] { block1.Hash }, inventories2);
 
                 List<Block<BaseAction>> receivedBlocks =
-                    await swarmB.GetDataAsync<BaseAction>(
+                    await swarmB.GetBlocksAsync<BaseAction>(
                         swarmA.AsPeer, inventories1
                     ).ToListAsync();
 

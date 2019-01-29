@@ -7,16 +7,12 @@ namespace Libplanet.Net.Messages
 {
     internal class GetBlocks : Message
     {
-        public GetBlocks(
-            BlockLocator locator, HashDigest<SHA256>? stop)
+        public GetBlocks(IEnumerable<HashDigest<SHA256>> hashes)
         {
-            Locator = locator;
-            Stop = stop;
+            BlockHashes = hashes;
         }
 
-        public BlockLocator Locator { get; }
-
-        public HashDigest<SHA256>? Stop { get; }
+        public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
 
         protected override MessageType Type => MessageType.GetBlocks;
 
@@ -25,34 +21,24 @@ namespace Libplanet.Net.Messages
             get
             {
                 yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(Locator.Count()));
+                    NetworkOrderBitsConverter.GetBytes(BlockHashes.Count()));
 
-                foreach (HashDigest<SHA256> hash in Locator)
+                foreach (HashDigest<SHA256> hash in BlockHashes)
                 {
                     yield return new NetMQFrame(hash.ToByteArray());
-                }
-
-                if (Stop is HashDigest<SHA256> stop)
-                {
-                    yield return new NetMQFrame(stop.ToByteArray());
-                }
-                else
-                {
-                    yield return NetMQFrame.Empty;
                 }
             }
         }
 
-        public static Message ParseBody(NetMQFrame[] frames)
+        internal static Message Parse(NetMQFrame[] frames)
         {
-            int requestedHashCount = frames[0].ConvertToInt32();
-            var locator = new BlockLocator(
-                frames.Skip(1).Take(requestedHashCount)
-                .Select(f => f.ConvertToHashDigest<SHA256>()));
-            HashDigest<SHA256>? stop = frames[1 + requestedHashCount].IsEmpty
-                ? default(HashDigest<SHA256>?)
-                : frames[1 + requestedHashCount].ConvertToHashDigest<SHA256>();
-            return new GetBlocks(locator, stop);
+            int hashCount = frames[0].ConvertToInt32();
+            IEnumerable<HashDigest<SHA256>> hashes = frames
+                .Skip(1).Take(hashCount)
+                .Select(f => f.ConvertToHashDigest<SHA256>())
+                .ToList();
+
+            return new GetBlocks(hashes);
         }
     }
 }

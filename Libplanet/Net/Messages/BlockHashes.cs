@@ -5,40 +5,40 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
-    internal class GetData : Message
+    internal class BlockHashes : Message
     {
-        public GetData(IEnumerable<HashDigest<SHA256>> hashes)
+        public BlockHashes(IEnumerable<HashDigest<SHA256>> hashes)
         {
-            BlockHashes = hashes;
+            Hashes = hashes;
         }
 
-        public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
+        public IEnumerable<HashDigest<SHA256>> Hashes { get; }
 
-        protected override MessageType Type => MessageType.GetData;
+        protected override MessageType Type => MessageType.BlockHashes;
 
         protected override IEnumerable<NetMQFrame> DataFrames
         {
             get
             {
                 yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(BlockHashes.Count()));
+                    NetworkOrderBitsConverter.GetBytes(Hashes.Count()));
 
-                foreach (HashDigest<SHA256> hash in BlockHashes)
+                foreach (var hash in Hashes)
                 {
                     yield return new NetMQFrame(hash.ToByteArray());
                 }
             }
         }
 
-        internal static Message Parse(NetMQFrame[] frames)
+        public static Message Parse(NetMQFrame[] frames)
         {
             int hashCount = frames[0].ConvertToInt32();
-            IEnumerable<HashDigest<SHA256>> hashes = frames
-                .Skip(1).Take(hashCount)
+            IEnumerable<HashDigest<SHA256>> blockHashes =
+                frames.Skip(1).Take(hashCount)
                 .Select(f => f.ConvertToHashDigest<SHA256>())
                 .ToList();
 
-            return new GetData(hashes);
+            return new BlockHashes(blockHashes);
         }
     }
 }
