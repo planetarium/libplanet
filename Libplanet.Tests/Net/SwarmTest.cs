@@ -244,19 +244,25 @@ namespace Libplanet.Tests.Net
                     async () => await swarmB.RunAsync(chainB, 250));
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
-                    async () => await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, null));
+                    async () => await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        null));
 
                 await swarmB.AddPeersAsync(new[] { swarmA.AsPeer });
 
                 IEnumerable<HashDigest<SHA256>> inventories1 =
-                    await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, null);
+                    await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        null);
                 Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories1);
 
                 IEnumerable<HashDigest<SHA256>> inventories2 =
-                    await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, block1.Hash);
+                    await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        block1.Hash);
                 Assert.Equal(new[] { block1.Hash }, inventories2);
 
                 List<Block<BaseAction>> receivedBlocks =

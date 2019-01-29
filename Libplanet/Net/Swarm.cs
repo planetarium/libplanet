@@ -296,11 +296,11 @@ namespace Libplanet.Net
                 ProcessDeltaAsync(cancellationToken));
         }
 
-        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
+        internal async Task<IEnumerable<HashDigest<SHA256>>> GetBlockHashesAsync(
             Peer peer,
-            IEnumerable<HashDigest<SHA256>> hashes,
+            BlockLocator locator,
             HashDigest<SHA256>? stop,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken token = default(CancellationToken))
         {
             CheckEntered();
 
@@ -310,7 +310,16 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            var request = new GetBlocks(new BlockLocator(hashes), stop);
+            return await GetBlockHashesAsync(sock, locator, stop, token);
+        }
+
+        internal async Task<IEnumerable<HashDigest<SHA256>>> GetBlockHashesAsync(
+            DealerSocket sock,
+            BlockLocator locator,
+            HashDigest<SHA256>? stop,
+            CancellationToken cancellationToken)
+        {
+            var request = new GetBlocks(locator, stop);
             await sock.SendMultipartMessageAsync(
                 request.ToNetMQMessage(_privateKey),
                 cancellationToken: cancellationToken);
