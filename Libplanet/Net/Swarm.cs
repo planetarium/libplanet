@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -9,6 +10,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using NetMQ;
@@ -104,15 +106,10 @@ namespace Libplanet.Net
 
         public IDictionary<Peer, DateTime> LastSeenTimestamps { get; private set; }
 
-        public async Task<ISet<Peer>> AddPeersAsync(IEnumerable<Peer> peers, DateTime? timestamp = null)
-        {
-            return await AddPeersAsync(peers, CancellationToken.None, timestamp);
-        }
-
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
-            CancellationToken cancellationToken,
-            DateTime? timestamp = null)
+            DateTime? timestamp = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (timestamp == null)
             {
@@ -166,12 +163,8 @@ namespace Libplanet.Net
             return addedPeers;
         }
 
-        public async Task<Swarm> InitContextAsync()
-        {
-            return await InitContextAsync(CancellationToken.None);
-        }
-
-        public async Task<Swarm> InitContextAsync(CancellationToken cancellationToken)
+        public async Task<Swarm> InitContextAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             _router.Bind(_listenUrl.ToString());
             foreach (Peer peer in _peers.Keys)
@@ -244,12 +237,8 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task DisposeAsync()
-        {
-            await DisposeAsync(CancellationToken.None);
-        }
-
-        public async Task DisposeAsync(CancellationToken cancellationToken)
+        public async Task DisposeAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             _logger.Debug("Disposing...");
             if (_contextInitialized)
@@ -293,16 +282,9 @@ namespace Libplanet.Net
         }
 
         public async Task RunAsync<T>(
-            Blockchain<T> blockchain, int distributeInterval)
-            where T : IAction
-        {
-            await RunAsync(blockchain, distributeInterval, CancellationToken.None);
-        }
-
-        public async Task RunAsync<T>(
             Blockchain<T> blockchain,
             int distributeInterval,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             CheckEntered();
@@ -317,17 +299,8 @@ namespace Libplanet.Net
         public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> hashes,
-            HashDigest<SHA256>? stop)
-        {
-            return await GetBlocksAsync(
-                peer, hashes, stop, CancellationToken.None);
-        }
-
-        public async Task<IEnumerable<HashDigest<SHA256>>> GetBlocksAsync(
-            Peer peer,
-            IEnumerable<HashDigest<SHA256>> hashes,
             HashDigest<SHA256>? stop,
-            CancellationToken cancellation)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             CheckEntered();
 
@@ -339,7 +312,8 @@ namespace Libplanet.Net
 
             var request = new GetBlocks(new BlockLocator(hashes), stop);
             await sock.SendMultipartMessageAsync(
-                request.ToNetMQMessage(_privateKey), cancellation);
+                request.ToNetMQMessage(_privateKey),
+                cancellationToken: cancellationToken);
 
             NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
             Message parsedMessage = Message.Parse(response, reply: true);
@@ -351,6 +325,51 @@ namespace Libplanet.Net
             throw new InvalidMessageException(
                 $"The response of getblock isn't inventory. " +
                 $"but {parsedMessage}");
+        }
+
+        // TODO: Add TxIds
+        internal IAsyncEnumerable<Block<T>> GetDataAsync<T>(
+            Peer peer,
+            IEnumerable<HashDigest<SHA256>> blockHashes,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            CheckEntered();
+
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            {
+                throw new PeerNotFoundException(
+                    $"The peer[{peer.Address}] could not be found.");
+            }
+
+            return new AsyncEnumerable<Block<T>>(async yield =>
+            {
+                var request = new GetData(blockHashes);
+                await sock.SendMultipartMessageAsync(
+                    request.ToNetMQMessage(_privateKey),
+                    cancellationToken: cancellationToken);
+
+                int hashCount = blockHashes.Count();
+                while (hashCount > 0)
+                {
+                    NetMQMessage response =
+                    await sock.ReceiveMultipartMessageAsync();
+                    Message parsedMessage = Message.Parse(response, true);
+                    if (parsedMessage is Block blockMessage)
+                    {
+                        Block<T> block = Block<T>.FromBencodex(
+                            blockMessage.Payload);
+                        await yield.ReturnAsync(block);
+                        hashCount--;
+                    }
+                    else
+                    {
+                        throw new InvalidMessageException(
+                            $"The response of getdata isn't block. " +
+                            $"but {parsedMessage}");
+                    }
+                }
+            });
         }
 
         private static IEnumerable<Peer> FilterPeers(
@@ -387,51 +406,99 @@ namespace Libplanet.Net
             while (true)
             {
                 NetMQMessage rawMessage = await
-                    _router.ReceiveMultipartMessageAsync(cancellationToken);
+                    _router.ReceiveMultipartMessageAsync(
+                        cancellationToken: cancellationToken);
                 _logger.Debug(
                     $"Message received.[f-count: {rawMessage.FrameCount}]");
 
                 try
                 {
                     Message message = Message.Parse(rawMessage, reply: false);
-                    switch (message)
+
+                    // Queue a task per message to avoid blocking.
+                    #pragma warning disable CS4014
+                    Task.Run(async () =>
                     {
-                        case Ping ping:
-                            _logger.Debug($"Ping received.");
-                            var reply = new Pong
-                            {
-                                Identity = ping.Identity,
-                            };
-                            await _router.SendMultipartMessageAsync(
-                                reply.ToNetMQMessage(_privateKey),
-                                cancellationToken);
-                            break;
-
-                        case Messages.PeerSetDelta peerSetDelta:
-                            _deltas.Enqueue(peerSetDelta.Delta);
-                            break;
-
-                        case GetBlocks getBlocks:
-                            IEnumerable<HashDigest<SHA256>> inventories =
-                                blockchain.FindNextHashes(
-                                    getBlocks.Locator, getBlocks.Stop, 500);
-
-                            var inv = new Inventory(inventories)
-                            {
-                                Identity = getBlocks.Identity,
-                            };
-                            await _router.SendMultipartMessageAsync(
-                                inv.ToNetMQMessage(_privateKey));
-                            break;
-
-                        default:
-                            Trace.Fail($"Can't handle message. [{message}]");
-                            break;
-                    }
+                        // it's still async because some method it relies are
+                        // async yet.
+                        await ProcessMessageAsync(blockchain, message, cancellationToken);
+                    });
+                    #pragma warning restore CS4014
                 }
                 catch (InvalidMessageException e)
                 {
                     _logger.Error(e, "Can't parsed NetMQMessage properly. ignored.");
+                }
+            }
+        }
+
+        private async Task ProcessMessageAsync<T>(
+            Blockchain<T> blockchain,
+            Message message,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
+            switch (message)
+            {
+                case Ping ping:
+                    _logger.Debug($"Ping received.");
+                    var reply = new Pong
+                    {
+                        Identity = ping.Identity,
+                    };
+                    await ReplyAsync(reply, cancellationToken);
+                    break;
+
+                case Messages.PeerSetDelta peerSetDelta:
+                    _deltas.Enqueue(peerSetDelta.Delta);
+                    break;
+
+                case GetBlocks getBlocks:
+                    IEnumerable<HashDigest<SHA256>> inventories =
+                        blockchain.FindNextHashes(
+                            getBlocks.Locator, getBlocks.Stop, 500);
+
+                    var inv = new Inventory(inventories)
+                    {
+                        Identity = getBlocks.Identity,
+                    };
+                    await ReplyAsync(inv, cancellationToken);
+                    break;
+
+                case GetData getData:
+                    await TransferBlocks(
+                        blockchain, getData, cancellationToken);
+                    break;
+
+                default:
+                    Trace.Fail($"Can't handle message. [{message}]");
+                    break;
+            }
+        }
+
+        private async Task ReplyAsync(Message message, CancellationToken token)
+        {
+            NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);
+            await _router.SendMultipartMessageAsync(
+                netMQMessage,
+                cancellationToken: token);
+        }
+
+        private async Task TransferBlocks<T>(
+            Blockchain<T> blockchain,
+            GetData getData,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
+            foreach (HashDigest<SHA256> hash in getData.BlockHashes)
+            {
+                if (blockchain.Blocks.TryGetValue(hash, out Block<T> block))
+                {
+                    Message response = new Block(block.ToBencodex(true, true))
+                    {
+                        Identity = getData.Identity,
+                    };
+                    await ReplyAsync(response, cancellationToken);
                 }
             }
         }
@@ -499,7 +566,7 @@ namespace Libplanet.Net
 
             _logger.Debug("Trying to add peers...");
             ISet<Peer> added = await AddPeersAsync(
-                addedPeers, cancellationToken, delta.Timestamp);
+                addedPeers, delta.Timestamp, cancellationToken);
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
                 DumpDiffs(
@@ -608,11 +675,13 @@ namespace Libplanet.Net
             _logger.Debug($"Trying to Ping to [{address}]...");
             var ping = new Ping();
             await dealer.SendMultipartMessageAsync(
-                ping.ToNetMQMessage(_privateKey), cancellationToken);
+                ping.ToNetMQMessage(_privateKey),
+                cancellationToken: cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
             await dealer.ReceiveMultipartMessageAsync(
-                cancellationToken, _dialTimeout);
+                timeout: _dialTimeout,
+                cancellationToken: cancellationToken);
 
             _logger.Debug($"Pong received.");
 
@@ -720,7 +789,9 @@ namespace Libplanet.Net
             return Task.WhenAll(
                 _dealers.Values.Select(
                     s => s.SendMultipartMessageAsync(
-                        message, cancellationToken, timeout)));
+                        message,
+                        timeout: timeout,
+                        cancellationToken: cancellationToken)));
         }
 
         private async Task RepeatDeltaDistributionAsync(

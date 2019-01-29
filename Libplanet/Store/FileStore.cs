@@ -394,7 +394,7 @@ namespace Libplanet.Store
             blockFile.Directory.Create();
             using (Stream stream = blockFile.Open(FileMode.OpenOrCreate, FileAccess.Write))
             {
-                byte[] blockBytes = block.Bencode(true, transactionData: false);
+                byte[] blockBytes = block.ToBencodex(true, transactionData: false);
                 stream.Write(blockBytes, 0, blockBytes.Length);
             }
         }
@@ -405,7 +405,7 @@ namespace Libplanet.Store
             txFile.Directory.Create();
             using (Stream stream = txFile.Open(FileMode.OpenOrCreate, FileAccess.Write))
             {
-                byte[] txBytes = tx.Bencode(true);
+                byte[] txBytes = tx.ToBencodex(true);
                 stream.Write(txBytes, 0, txBytes.Length);
             }
         }

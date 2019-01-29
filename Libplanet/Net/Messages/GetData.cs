@@ -5,18 +5,16 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Inventory : Message
+    internal class GetData : Message
     {
-        public Inventory(
-            IEnumerable<HashDigest<SHA256>> blockHashes)
+        public GetData(IEnumerable<HashDigest<SHA256>> hashes)
         {
-            BlockHashes = blockHashes;
+            BlockHashes = hashes;
         }
 
-        // FIXME Add TxIds;
         public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
 
-        protected override MessageType Type => MessageType.Inventory;
+        protected override MessageType Type => MessageType.GetData;
 
         protected override IEnumerable<NetMQFrame> DataFrames
         {
@@ -25,20 +23,22 @@ namespace Libplanet.Net.Messages
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(BlockHashes.Count()));
 
-                foreach (var hash in BlockHashes)
+                foreach (HashDigest<SHA256> hash in BlockHashes)
                 {
                     yield return new NetMQFrame(hash.ToByteArray());
                 }
             }
         }
 
-        public static Message Parse(NetMQFrame[] frames)
+        internal static Message Parse(NetMQFrame[] frames)
         {
-            int count = frames[0].ConvertToInt32();
-            return new Inventory(
-                frames.Skip(1).Take(count)
+            int hashCount = frames[0].ConvertToInt32();
+            IEnumerable<HashDigest<SHA256>> hashes = frames
+                .Skip(1).Take(hashCount)
                 .Select(f => f.ConvertToHashDigest<SHA256>())
-                .ToList());
+                .ToList();
+
+            return new GetData(hashes);
         }
     }
 }

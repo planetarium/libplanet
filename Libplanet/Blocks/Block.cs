@@ -67,7 +67,7 @@ namespace Libplanet.Blocks
         {
             get
             {
-                byte[] bencoded = Bencode(hash: false, transactionData: true);
+                byte[] bencoded = ToBencodex(hash: false, transactionData: true);
                 return Hashcash.Hash(bencoded);
             }
         }
@@ -111,13 +111,13 @@ namespace Libplanet.Blocks
                 transactions
             );
             Nonce nonce = Hashcash.Answer(
-                n => MakeBlock(n).Bencode(false, true),
+                n => MakeBlock(n).ToBencodex(false, true),
                 difficulty
             );
             return MakeBlock(nonce);
         }
 
-        public static Block<T> FromBencoded(byte[] encoded)
+        public static Block<T> FromBencodex(byte[] encoded)
         {
             var serializer = new BencodexFormatter<Block<T>>();
             using (var stream = new MemoryStream(encoded))
@@ -126,7 +126,7 @@ namespace Libplanet.Blocks
             }
         }
 
-        public byte[] Bencode(bool hash, bool transactionData)
+        public byte[] ToBencodex(bool hash, bool transactionData)
         {
             var serializer = new BencodexFormatter<Block<T>>
             {

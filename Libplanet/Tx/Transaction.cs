@@ -86,7 +86,7 @@ namespace Libplanet.Tx
             {
                 using (var hasher = SHA256.Create())
                 {
-                    byte[] payload = Bencode(true);
+                    byte[] payload = ToBencodex(true);
                     return new TxId(hasher.ComputeHash(payload));
                 }
             }
@@ -104,7 +104,7 @@ namespace Libplanet.Tx
 
         public PublicKey PublicKey { get; }
 
-        public static Transaction<T> FromBencoded(byte[] bytes)
+        public static Transaction<T> FromBencodex(byte[] bytes)
         {
             var serializer = new BencodexFormatter<Transaction<T>>();
             using (var stream = new MemoryStream(bytes))
@@ -135,11 +135,11 @@ namespace Libplanet.Tx
                 recipient,
                 timestamp,
                 actions,
-                privateKey.Sign(tx.Bencode(false))
+                privateKey.Sign(tx.ToBencodex(false))
             );
         }
 
-        public byte[] Bencode(bool sign)
+        public byte[] ToBencodex(bool sign)
         {
             var serializer = new BencodexFormatter<Transaction<T>>
             {
@@ -157,7 +157,7 @@ namespace Libplanet.Tx
 
         public void Validate()
         {
-            if (!PublicKey.Verify(Bencode(false), Signature))
+            if (!PublicKey.Verify(ToBencodex(false), Signature))
             {
                 throw new InvalidTxSignatureException(
                     $"the signature ({ByteUtil.Hex(Signature)}) is failed to verify."

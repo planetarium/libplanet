@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -258,7 +259,12 @@ namespace Libplanet.Tests.Net
                         swarmA.AsPeer, new[] { genesis.Hash }, block1.Hash);
                 Assert.Equal(new[] { block1.Hash }, inventories2);
 
-                // TODO Test swarmB.GetData(swarmA.AsPeer, invetories);
+                List<Block<BaseAction>> receivedBlocks =
+                    await swarmB.GetDataAsync<BaseAction>(
+                        swarmA.AsPeer, inventories1
+                    ).ToListAsync();
+
+                Assert.Equal(new[] { block1, block2 }, receivedBlocks);
             }
             finally
             {

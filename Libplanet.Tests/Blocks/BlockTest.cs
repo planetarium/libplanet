@@ -74,7 +74,7 @@ namespace Libplanet.Tests.Blocks
                 0x6e, 0x73, 0x6c, 0x65, 0x65,
             };
 
-            AssertBytesEqual(expected, _fx.Genesis.Bencode(true, true));
+            AssertBytesEqual(expected, _fx.Genesis.ToBencodex(true, true));
         }
 
         [Fact]
@@ -146,7 +146,7 @@ namespace Libplanet.Tests.Blocks
                 0x30, 0x30, 0x3a, 0x30, 0x30, 0x3a, 0x30, 0x30, 0x2e, 0x30,
                 0x30, 0x30, 0x30, 0x30, 0x30, 0x5a, 0x65, 0x65, 0x65,
             };
-            Block<BaseAction> actual = Block<BaseAction>.FromBencoded(encoded);
+            Block<BaseAction> actual = Block<BaseAction>.FromBencodex(encoded);
             Assert.Equal(_fx.HasTx, actual);
         }
 
