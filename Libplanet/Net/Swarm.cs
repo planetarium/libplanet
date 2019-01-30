@@ -391,7 +391,7 @@ namespace Libplanet.Net
             });
         }
 
-        internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
+        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync<T>(
             Peer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -405,10 +405,10 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return GetTxAsync<T>(sock, txIds, cancellationToken);
+            return GetTxsAsync<T>(sock, txIds, cancellationToken);
         }
 
-        internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
+        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync<T>(
             DealerSocket socket,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))

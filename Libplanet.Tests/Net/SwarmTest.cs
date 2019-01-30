@@ -311,13 +311,13 @@ namespace Libplanet.Tests.Net
                 #pragma warning restore CS4014
 
                 Assert.Throws<PeerNotFoundException>(
-                    () => swarmB.GetTxAsync<BaseAction>(
+                    () => swarmB.GetTxsAsync<BaseAction>(
                         swarmA.AsPeer, new[] { tx.Id }));
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
 
                 List<Transaction<BaseAction>> txs =
-                    await swarmA.GetTxAsync<BaseAction>(
+                    await swarmA.GetTxsAsync<BaseAction>(
                         swarmB.AsPeer, new[] { tx.Id }
                     ).ToListAsync();
 
