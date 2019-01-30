@@ -36,14 +36,29 @@ namespace Libplanet.Net.Messages
             BlockHashes = 0x05,
 
             /// <summary>
+            /// Inventory to transfer transactions.
+            /// </summary>
+            TxIds = 0x06,
+
+            /// <summary>
             /// Request to query blocks.
             /// </summary>
-            GetBlocks = 0x06,
+            GetBlocks = 0x07,
+
+            /// <summary>
+            /// Request to query transactions.
+            /// </summary>
+            GetTxs = 0x08,
 
             /// <summary>
             /// Message containing serialized block.
             /// </summary>
-            Block = 0x07,
+            Block = 0x09,
+
+            /// <summary>
+            /// Message containing serialized transaction.
+            /// </summary>
+            Tx = 0x10,
         }
 
         public Address? Identity { get; set; }
@@ -91,11 +106,20 @@ namespace Libplanet.Net.Messages
                 case MessageType.BlockHashes:
                     message = BlockHashes.Parse(body);
                     break;
+                case MessageType.TxIds:
+                    message = TxIds.Parse(body);
+                    break;
                 case MessageType.GetBlocks:
                     message = GetBlocks.Parse(body);
                     break;
+                case MessageType.GetTxs:
+                    message = GetTxs.Parse(body);
+                    break;
                 case MessageType.Block:
                     message = Block.Parse(body);
+                    break;
+                case MessageType.Tx:
+                    message = Tx.Parse(body);
                     break;
                 default:
                     throw new InvalidMessageException(

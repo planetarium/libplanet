@@ -11,6 +11,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -271,6 +272,56 @@ namespace Libplanet.Tests.Net
                     ).ToListAsync();
 
                 Assert.Equal(new[] { block1, block2 }, receivedBlocks);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync());
+            }
+        }
+
+        [Fact]
+        public async Task CanGetTx()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                new PrivateKey(),
+                new PrivateKey().PublicKey.ToAddress(),
+                new BaseAction[] { },
+                DateTime.Now
+            );
+            chainB.StageTransactions(new[] { tx }.ToHashSet());
+            chainB.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync());
+
+                #pragma warning disable CS4014
+                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
+                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                #pragma warning restore CS4014
+
+                Assert.Throws<PeerNotFoundException>(
+                    () => swarmB.GetTxAsync<BaseAction>(
+                        swarmA.AsPeer, new[] { tx.Id }));
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+
+                List<Transaction<BaseAction>> txs =
+                    await swarmA.GetTxAsync<BaseAction>(
+                        swarmB.AsPeer, new[] { tx.Id }
+                    ).ToListAsync();
+
+                Assert.Equal(new[] { tx }, txs);
             }
             finally
             {

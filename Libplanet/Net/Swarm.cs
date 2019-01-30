@@ -13,6 +13,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
@@ -389,6 +390,59 @@ namespace Libplanet.Net
             });
         }
 
+        internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
+            Peer peer,
+            IEnumerable<TxId> txIds,
+            CancellationToken token = default(CancellationToken))
+            where T : IAction
+        {
+            CheckEntered();
+
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            {
+                throw new PeerNotFoundException(
+                    $"The peer[{peer.Address}] could not be found.");
+            }
+
+            return GetTxAsync<T>(sock, txIds, token);
+        }
+
+        internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
+            DealerSocket socket,
+            IEnumerable<TxId> txIds,
+            CancellationToken token = default(CancellationToken))
+            where T : IAction
+        {
+            return new AsyncEnumerable<Transaction<T>>(async yield =>
+            {
+                var request = new GetTxs(txIds);
+                await socket.SendMultipartMessageAsync(
+                    request.ToNetMQMessage(_privateKey),
+                    cancellationToken: token);
+
+                int hashCount = txIds.Count();
+                while (hashCount > 0)
+                {
+                    NetMQMessage response =
+                    await socket.ReceiveMultipartMessageAsync();
+                    Message parsedMessage = Message.Parse(response, true);
+                    if (parsedMessage is Messages.Tx parsed)
+                    {
+                        Transaction<T> tx = Transaction<T>.FromBencodex(
+                            parsed.Payload);
+                        await yield.ReturnAsync(tx);
+                        hashCount--;
+                    }
+                    else
+                    {
+                        throw new InvalidMessageException(
+                            $"The response of getdata isn't block. " +
+                            $"but {parsedMessage}");
+                    }
+                }
+            });
+        }
+
         private static IEnumerable<Peer> FilterPeers(
             IDictionary<Peer, DateTime> peers,
             DateTime before,
@@ -494,6 +548,12 @@ namespace Libplanet.Net
                         break;
                     }
 
+                case GetTxs getTxs:
+                    {
+                        await TransferTxs(
+                            blockchain, getTxs, cancellationToken);
+                        break;
+                    }
 
                 default:
                     Trace.Fail($"Can't handle message. [{message}]");
@@ -501,6 +561,25 @@ namespace Libplanet.Net
             }
         }
 
+        private async Task TransferTxs<T>(
+            Blockchain<T> blockchain,
+            GetTxs getTxs,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
+            IDictionary<TxId, Transaction<T>> txs = blockchain.Transactions;
+            foreach (var txid in getTxs.TxIds)
+            {
+                if (txs.TryGetValue(txid, out Transaction<T> tx))
+                {
+                    Message response = new Messages.Tx(tx.ToBencodex(true))
+                    {
+                        Identity = getTxs.Identity,
+                    };
+                    await ReplyAsync(response, cancellationToken);
+                }
+            }
+        }
         private async Task ReplyAsync(Message message, CancellationToken token)
         {
             NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);
