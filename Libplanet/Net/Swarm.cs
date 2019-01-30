@@ -445,6 +445,19 @@ namespace Libplanet.Net
             });
         }
 
+        internal async Task BroadcastTxsAsync<T>(
+            IEnumerable<Transaction<T>> txs,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Broadcast Txs.");
+            var message = new TxIds(txs.Select(tx => tx.Id));
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
+        }
+
         private static IEnumerable<Peer> FilterPeers(
             IDictionary<Peer, DateTime> peers,
             DateTime before,
@@ -557,6 +570,13 @@ namespace Libplanet.Net
                         break;
                     }
 
+                case TxIds txIds:
+                    {
+                        await ProcessTxIds(
+                            txIds, blockchain, cancellationToken);
+                        break;
+                    }
+
                 default:
                     Trace.Fail($"Can't handle message. [{message}]");
                     break;
@@ -582,6 +602,37 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        private async Task ProcessTxIds<T>(
+            TxIds message,
+            Blockchain<T> blockchain,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            IEnumerable<TxId> unknownTxIds = message.Ids
+                .Where(id => !blockchain.Transactions.ContainsKey(id));
+
+            if (!(message.Identity is Address from))
+            {
+                throw new NullReferenceException(
+                    "TxIds doesn't have sender address.");
+            }
+
+            if (!_dealers.TryGetValue(from, out DealerSocket sock))
+            {
+                _logger.Information(
+                    "TxIds was sent from unknown peer. ignored.");
+                return;
+            }
+
+            IAsyncEnumerable<Transaction<T>> fetched =
+                GetTxsAsync<T>(sock, unknownTxIds, cancellationToken);
+            var toStage = new HashSet<Transaction<T>>(
+                await fetched.ToListAsync(cancellationToken));
+
+            blockchain.StageTransactions(toStage);
+        }
+
         private async Task ReplyAsync(Message message, CancellationToken token)
         {
             NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);

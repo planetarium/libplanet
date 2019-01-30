@@ -331,6 +331,61 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task CanBroadcastTx()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+            Swarm swarmC = _swarms[2];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+            Blockchain<BaseAction> chainC = _blockchains[1];
+
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                new PrivateKey(),
+                new PrivateKey().PublicKey.ToAddress(),
+                new BaseAction[] { },
+                DateTime.Now);
+
+            chainA.StageTransactions(new[] { tx }.ToHashSet());
+            chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync(),
+                    swarmC.InitContextAsync());
+
+                #pragma warning disable CS4014
+                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
+                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                Task.Run(async () => await swarmC.RunAsync(chainC, 250));
+                #pragma warning restore CS4014
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+                await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
+
+                await EnsureExchange(swarmA, swarmB);
+                await EnsureExchange(swarmA, swarmC);
+
+                await swarmA.BroadcastTxsAsync(new[] { tx });
+
+                await Task.Delay(1000);
+
+                Assert.Equal(tx, chainB.Transactions[tx.Id]);
+                Assert.Equal(tx, chainC.Transactions[tx.Id]);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync(),
+                    swarmC.DisposeAsync());
+            }
+        }
+
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTime? lastReceived = null)
         {
             while (true)
