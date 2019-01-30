@@ -425,12 +425,10 @@ namespace Libplanet.Net
                 NetMQMessage rawMessage = await
                     _router.ReceiveMultipartMessageAsync(
                         cancellationToken: cancellationToken);
-                _logger.Debug(
-                    $"Message received.[f-count: {rawMessage.FrameCount}]");
-
                 try
                 {
                     Message message = Message.Parse(rawMessage, reply: false);
+                    _logger.Debug($"Message[{message}] received.");
 
                     // Queue a task per message to avoid blocking.
                     #pragma warning disable CS4014
