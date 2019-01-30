@@ -371,7 +371,8 @@ namespace Libplanet.Net
                 while (hashCount > 0)
                 {
                     NetMQMessage response =
-                    await sock.ReceiveMultipartMessageAsync();
+                    await sock.ReceiveMultipartMessageAsync(
+                        cancellationToken: cancellationToken);
                     Message parsedMessage = Message.Parse(response, true);
                     if (parsedMessage is Block blockMessage)
                     {
@@ -393,7 +394,7 @@ namespace Libplanet.Net
         internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
             Peer peer,
             IEnumerable<TxId> txIds,
-            CancellationToken token = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             CheckEntered();
@@ -404,13 +405,13 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return GetTxAsync<T>(sock, txIds, token);
+            return GetTxAsync<T>(sock, txIds, cancellationToken);
         }
 
         internal IAsyncEnumerable<Transaction<T>> GetTxAsync<T>(
             DealerSocket socket,
             IEnumerable<TxId> txIds,
-            CancellationToken token = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             return new AsyncEnumerable<Transaction<T>>(async yield =>
@@ -418,13 +419,14 @@ namespace Libplanet.Net
                 var request = new GetTxs(txIds);
                 await socket.SendMultipartMessageAsync(
                     request.ToNetMQMessage(_privateKey),
-                    cancellationToken: token);
+                    cancellationToken: cancellationToken);
 
                 int hashCount = txIds.Count();
                 while (hashCount > 0)
                 {
                     NetMQMessage response =
-                    await socket.ReceiveMultipartMessageAsync();
+                    await socket.ReceiveMultipartMessageAsync(
+                        cancellationToken: cancellationToken);
                     Message parsedMessage = Message.Parse(response, true);
                     if (parsedMessage is Messages.Tx parsed)
                     {
