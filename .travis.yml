@@ -11,11 +11,24 @@ matrix:
         sources:
         - sourceline: deb [arch=amd64] https://packages.microsoft.com/ubuntu/16.04/prod xenial main
           key_url: https://packages.microsoft.com/keys/microsoft.asc
+    cache:
+      directories:
+      - $HOME/.nuget/packages
+      - $HOME/.local/share/NuGet/v3-cache
   - os: osx
     osx_image: xcode10.1
     language: csharp
+    cache:
+      directories:
+      - $HOME/Library/Caches/Homebrew
+      - $HOME/.nuget/packages
+      - $HOME/.local/share/NuGet/v3-cache
   - os: windows
     language: shell
+    cache:
+      directories:
+      - $HOME/.nuget/packages
+      - $HOME/AppData/Local/NuGet/v3-cache
 
 solution: Libplanet.sln
 install:
@@ -96,3 +109,9 @@ script:
 
 # Turn off "set -e" option
 - set +e
+
+before_cache:
+- |
+  if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+    brew cleanup
+  fi
