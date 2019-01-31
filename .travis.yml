@@ -35,7 +35,23 @@ solution: Libplanet.sln
 install:
 - |
   set -ev
-  if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+  if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+    mkdir -p "$HOME/.local/bin"
+    export PATH="$PATH:$HOME/.local/bin"
+
+    # submark
+    curl -L -o "$HOME/.local/bin/submark" \
+      https://github.com/dahlia/submark/releases/download/0.2.0/submark-linux-x86_64
+    chmod +x $HOME/.local/bin/submark
+
+    # github-release
+    pushd /tmp
+    curl -LO \
+      https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
+    tar xvfj linux-amd64-github-release.tar.bz2
+    mv bin/linux/amd64/github-release $HOME/.local/bin/
+    popd
+  elif [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
     brew update
     brew cask install powershell
   elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
@@ -85,7 +101,14 @@ script:
 - 'echo "NuGet package version: $version"'
 - '[[ "$TRAVIS_TAG" = "" || "$version" = "$TRAVIS_TAG" ]]'
 
-# Build the whole solution.
+# If a tag is pushed, there has to be an entry in CHANGES.md for the version.
+- |
+  if [[ "$TRAVIS_OS_NAME" = "linux" && "$TRAVIS_TAG" != "" ]]; then
+    changes="$(submark -i --h2 "Version $TRAVIS_TAG" CHANGES.md | egrep '\S')"
+    [[ "$changes" != "" ]]
+  fi
+
+# Build the whole solution
 - msbuild /p:Configuration=Release /r
 
 # Run unit tests
@@ -118,9 +141,37 @@ before_cache:
   fi
 
 deploy:
+# Upload a .nupkg file to GitHub releases
+- provider: releases
+  on:
+    tags: true
+  skip_cleanup: true
+  api_key: "$GITHUB_TOKEN"
+  file_glob: yes
+  file: Libplanet/bin/Release/Libplanet.*.nupkg
+  name: "Libplanet $TRAVIS_TAG"
+
 # Publish docs to GitHub Pages
 - provider: script
   on:
     all_branches: true
   skip_cleanup: true
   script: bash Docs/publish.sh
+
+# Adjust the release note on GitHub releases
+after_deploy: |
+  [[ "$TRAVIS_TAG" != "" && "$TRAVIS_OS_NAME" = "linux" ]] || exit 0
+
+  # Extract a release note from the full changelog
+  submark -o /tmp/release-note -i --h2 "Version $TRAVIS_TAG" -O CHANGES.md
+
+  # Fill the description on GitHub releases with the release note
+  export \
+    GITHUB_USER="${TRAVIS_REPO_SLUG%%/[^/]*}" \
+    GITHUB_REPO="${TRAVIS_REPO_SLUG#[^/]*/}"
+  github-release edit \
+    --user "$GITHUB_USER" \
+    --repo "$GITHUB_REPO" \
+    --tag "$TRAVIS_TAG" \
+    --name "Libplanet $TRAVIS_TAG" \
+    --description "$(cat /tmp/release-note)"
