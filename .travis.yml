@@ -29,11 +29,12 @@ matrix:
       directories:
       - $HOME/.nuget/packages
       - $HOME/AppData/Local/NuGet/v3-cache
+    filter_secrets: false  # https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
 
 solution: Libplanet.sln
 install:
 - |
-  set -e
+  set -ev
   if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
     brew update
     brew cask install powershell
@@ -68,7 +69,7 @@ install:
     mv */*.exe */*.dll /c/Windows/
     popd
   fi
-  set +e
+  set +ev
 - nuget restore Libplanet.sln
 
 script:
@@ -115,3 +116,11 @@ before_cache:
   if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
     brew cleanup
   fi
+
+deploy:
+# Publish docs to GitHub Pages
+- provider: script
+  on:
+    all_branches: true
+  skip_cleanup: true
+  script: bash Docs/publish.sh
