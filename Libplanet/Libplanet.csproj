@@ -2,12 +2,14 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <Summary>A .NET library for creating multiplayer online game in
-      decentralized fashion.</Summary>
-    <!-- FIXME: The above summary should be rewritten. -->
     <Version>0.1.0-dev</Version>
+    <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
+    <Description>A .NET library for creating multiplayer online game in decentralized fashion.
+See also the docs for details:
+http://planetarium.github.io/libplanet.net/</Description>
+    <!-- FIXME: The above summary/description should be rewritten. -->
     <PackageProjectUrl>https://github.com/planetarium/libplanet.net</PackageProjectUrl>
-    <Authors>Hong Minhee</Authors>
+    <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>

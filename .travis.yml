@@ -134,7 +134,25 @@ script:
 - msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
 
 # Build Libplanet.*.nupkg
-- msbuild /p:Configuration=Release /t:pack Libplanet
+- |
+  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  if [[ "$TRAVIS_TAG" = "" ]]; then
+    # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
+    # if it's not a tag push.
+    if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
+      appended_version="${version/-dev/-nightly}.$(date +%Y%m%d)"
+    else
+      appended_version="$version.$TRAVIS_BUILD_NUMBER+$(date +%Y%m%d)"
+    fi
+    msbuild \
+      /p:Configuration=Release \
+      /p:NoPackageAnalysis=true \
+      /p:PackageVersion="$appended_version" \
+      /t:pack \
+      Libplanet
+  else
+    msbuild /p:Configuration=Release /t:pack Libplanet
+  fi
 
 # Build docs using DocFX
 - |
@@ -169,6 +187,13 @@ deploy:
   file_glob: yes
   file: Libplanet/bin/Release/Libplanet.*.nupkg
   name: "Libplanet $TRAVIS_TAG"
+
+# Upload a .nupkg file to NuGet
+- provider: script
+  on:
+    all_branches: true
+  skip_cleanup: true
+  script: bash publish.sh
 
 # Publish docs to GitHub Pages
 - provider: script
