@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
 {
     internal abstract class Message
     {
-        protected enum MessageType : byte
+        internal enum MessageType : byte
         {
             /// <summary>
             /// Check message to determine peer is alive.
@@ -77,7 +77,7 @@ namespace Libplanet.Net.Messages
             // (reply == true)  [type, sign, pubkey, frames...]
             // (reply == false) [identity, type, sign, pubkey, frames...]
             int headerCount = reply ? 3 : 4;
-            var type = (MessageType)raw[headerCount - 3].ConvertToInt32();
+            var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
             var publicKey = new PublicKey(raw[headerCount - 2].ToByteArray());
             byte[] signature = raw[headerCount - 1].ToByteArray();
 
@@ -88,43 +88,28 @@ namespace Libplanet.Net.Messages
                 throw new InvalidMessageException("the message signature is invalid");
             }
 
-            Message message;
-            switch (type)
+            var types = new Dictionary<MessageType, Type>
             {
-                case MessageType.Ping:
-                    message = new Ping();
-                    break;
-                case MessageType.Pong:
-                    message = new Pong();
-                    break;
-                case MessageType.PeerSetDelta:
-                    message = PeerSetDelta.ParseBody(body);
-                    break;
-                case MessageType.GetBlockHashes:
-                    message = GetBlockHashes.ParseBody(body);
-                    break;
-                case MessageType.BlockHashes:
-                    message = BlockHashes.Parse(body);
-                    break;
-                case MessageType.TxIds:
-                    message = TxIds.Parse(body);
-                    break;
-                case MessageType.GetBlocks:
-                    message = GetBlocks.Parse(body);
-                    break;
-                case MessageType.GetTxs:
-                    message = GetTxs.Parse(body);
-                    break;
-                case MessageType.Block:
-                    message = Block.Parse(body);
-                    break;
-                case MessageType.Tx:
-                    message = Tx.Parse(body);
-                    break;
-                default:
-                    throw new InvalidMessageException(
-                        $"Can't determine NetMQMessage. [type: {type}]");
+                { MessageType.Ping, typeof(Ping) },
+                { MessageType.Pong, typeof(Pong) },
+                { MessageType.PeerSetDelta, typeof(PeerSetDelta) },
+                { MessageType.GetBlockHashes, typeof(GetBlockHashes) },
+                { MessageType.BlockHashes, typeof(BlockHashes) },
+                { MessageType.TxIds, typeof(TxIds) },
+                { MessageType.GetBlocks, typeof(GetBlocks) },
+                { MessageType.GetTxs, typeof(GetTxs) },
+                { MessageType.Block, typeof(Block) },
+                { MessageType.Tx, typeof(Tx) },
+            };
+
+            if (!types.TryGetValue(rawType, out Type type))
+            {
+                throw new InvalidMessageException(
+                    $"Can't determine NetMQMessage. [type: {rawType}]");
             }
+
+            var message = (Message)Activator.CreateInstance(
+                type, new[] { body });
 
             if (!reply)
             {

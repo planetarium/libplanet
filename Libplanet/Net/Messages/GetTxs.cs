@@ -12,6 +12,15 @@ namespace Libplanet.Net.Messages
             TxIds = txIds;
         }
 
+        public GetTxs(NetMQFrame[] frames)
+        {
+            int txCount = frames[0].ConvertToInt32();
+            TxIds = frames
+                .Skip(1).Take(txCount)
+                .Select(f => f.ConvertToTxId())
+                .ToList();
+        }
+
         public IEnumerable<TxId> TxIds { get; }
 
         protected override MessageType Type => MessageType.GetTxs;
@@ -28,17 +37,6 @@ namespace Libplanet.Net.Messages
                     yield return new NetMQFrame(id.ToByteArray());
                 }
             }
-        }
-
-        internal static Message Parse(NetMQFrame[] frames)
-        {
-            int txCount = frames[0].ConvertToInt32();
-            IEnumerable<TxId> txIds = frames
-                .Skip(1).Take(txCount)
-                .Select(f => f.ConvertToTxId())
-                .ToList();
-
-            return new GetTxs(txIds);
         }
     }
 }

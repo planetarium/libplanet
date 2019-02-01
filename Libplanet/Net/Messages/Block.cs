@@ -10,6 +10,11 @@ namespace Libplanet.Net.Messages
             Payload = payload;
         }
 
+        public Block(NetMQFrame[] body)
+        {
+            Payload = body.ToByteArray();
+        }
+
         public byte[] Payload { get; }
 
         protected override MessageType Type => MessageType.Block;
@@ -20,11 +25,6 @@ namespace Libplanet.Net.Messages
             {
                 yield return new NetMQFrame(Payload);
             }
-        }
-
-        internal static Message Parse(NetMQFrame[] body)
-        {
-            return new Block(body.ToByteArray());
         }
     }
 }

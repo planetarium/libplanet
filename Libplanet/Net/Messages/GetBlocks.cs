@@ -12,6 +12,15 @@ namespace Libplanet.Net.Messages
             BlockHashes = hashes;
         }
 
+        public GetBlocks(NetMQFrame[] frames)
+        {
+            int hashCount = frames[0].ConvertToInt32();
+            BlockHashes = frames
+                .Skip(1).Take(hashCount)
+                .Select(f => f.ConvertToHashDigest<SHA256>())
+                .ToList();
+        }
+
         public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
 
         protected override MessageType Type => MessageType.GetBlocks;
@@ -28,17 +37,6 @@ namespace Libplanet.Net.Messages
                     yield return new NetMQFrame(hash.ToByteArray());
                 }
             }
-        }
-
-        internal static Message Parse(NetMQFrame[] frames)
-        {
-            int hashCount = frames[0].ConvertToInt32();
-            IEnumerable<HashDigest<SHA256>> hashes = frames
-                .Skip(1).Take(hashCount)
-                .Select(f => f.ConvertToHashDigest<SHA256>())
-                .ToList();
-
-            return new GetBlocks(hashes);
         }
     }
 }

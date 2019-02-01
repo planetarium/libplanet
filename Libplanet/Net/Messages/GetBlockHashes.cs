@@ -14,6 +14,17 @@ namespace Libplanet.Net.Messages
             Stop = stop;
         }
 
+        public GetBlockHashes(NetMQFrame[] frames)
+        {
+            int requestedHashCount = frames[0].ConvertToInt32();
+            Locator = new BlockLocator(
+                frames.Skip(1).Take(requestedHashCount)
+                .Select(f => f.ConvertToHashDigest<SHA256>()));
+            Stop = frames[1 + requestedHashCount].IsEmpty
+                ? default(HashDigest<SHA256>?)
+                : frames[1 + requestedHashCount].ConvertToHashDigest<SHA256>();
+        }
+
         public BlockLocator Locator { get; }
 
         public HashDigest<SHA256>? Stop { get; }
@@ -41,18 +52,6 @@ namespace Libplanet.Net.Messages
                     yield return NetMQFrame.Empty;
                 }
             }
-        }
-
-        public static Message ParseBody(NetMQFrame[] frames)
-        {
-            int requestedHashCount = frames[0].ConvertToInt32();
-            var locator = new BlockLocator(
-                frames.Skip(1).Take(requestedHashCount)
-                .Select(f => f.ConvertToHashDigest<SHA256>()));
-            HashDigest<SHA256>? stop = frames[1 + requestedHashCount].IsEmpty
-                ? default(HashDigest<SHA256>?)
-                : frames[1 + requestedHashCount].ConvertToHashDigest<SHA256>();
-            return new GetBlockHashes(locator, stop);
         }
     }
 }
