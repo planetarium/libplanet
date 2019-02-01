@@ -71,8 +71,8 @@ namespace Libplanet.Net
             DateTime now = createdAt.GetValueOrDefault(DateTime.UtcNow);
             LastDistributed = now;
             LastReceived = now;
-            DeltaDistributed = new AsyncManualResetEvent();
-            DeltaReceived = new AsyncManualResetEvent();
+            DeltaDistributed = new AsyncAutoResetEvent();
+            DeltaReceived = new AsyncAutoResetEvent();
             TxReceived = new AsyncAutoResetEvent();
 
             _dealers = new Dictionary<Address, DealerSocket>();
@@ -97,10 +97,10 @@ namespace Libplanet.Net
             (_listenUrl != null) ? new[] { _listenUrl } : new Uri[] { });
 
         [Uno.EqualityIgnore]
-        public AsyncManualResetEvent DeltaReceived { get; }
+        public AsyncAutoResetEvent DeltaReceived { get; }
 
         [Uno.EqualityIgnore]
-        public AsyncManualResetEvent DeltaDistributed { get; }
+        public AsyncAutoResetEvent DeltaDistributed { get; }
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
@@ -730,7 +730,6 @@ namespace Libplanet.Net
 
                 using (await _receiveMutex.LockAsync(cancellationToken))
                 {
-                    DeltaReceived.Reset();
                     _logger.Debug($"Trying to apply the delta[{delta}]...");
                     await ApplyDelta(delta, cancellationToken);
 
@@ -980,7 +979,6 @@ namespace Libplanet.Net
 
                 using (await _distributeMutex.LockAsync(cancellationToken))
                 {
-                    DeltaDistributed.Reset();
                     var message = new Messages.PeerSetDelta(delta);
                     _logger.Debug("Send the delta to dealers...");
 
