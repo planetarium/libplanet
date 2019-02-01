@@ -73,6 +73,7 @@ namespace Libplanet.Net
             LastReceived = now;
             DeltaDistributed = new AsyncManualResetEvent();
             DeltaReceived = new AsyncManualResetEvent();
+            TxReceived = new AsyncAutoResetEvent();
 
             _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
@@ -100,6 +101,9 @@ namespace Libplanet.Net
 
         [Uno.EqualityIgnore]
         public AsyncManualResetEvent DeltaDistributed { get; }
+
+        [Uno.EqualityIgnore]
+        public AsyncAutoResetEvent TxReceived { get; }
 
         public DateTime LastReceived { get; private set; }
 
@@ -609,6 +613,8 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
+            _logger.Debug("Trying to fetch txs...");
+
             IEnumerable<TxId> unknownTxIds = message.Ids
                 .Where(id => !blockchain.Transactions.ContainsKey(id));
 
@@ -631,6 +637,8 @@ namespace Libplanet.Net
                 await fetched.ToListAsync(cancellationToken));
 
             blockchain.StageTransactions(toStage);
+            TxReceived.Set();
+            _logger.Debug("Txs staged successfully.");
         }
 
         private async Task ReplyAsync(Message message, CancellationToken token)

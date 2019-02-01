@@ -340,7 +340,7 @@ namespace Libplanet.Tests.Net
 
             Blockchain<BaseAction> chainA = _blockchains[0];
             Blockchain<BaseAction> chainB = _blockchains[1];
-            Blockchain<BaseAction> chainC = _blockchains[1];
+            Blockchain<BaseAction> chainC = _blockchains[2];
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 new PrivateKey(),
@@ -372,7 +372,8 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.BroadcastTxsAsync(new[] { tx });
 
-                await Task.Delay(1000);
+                await swarmC.TxReceived.WaitAsync();
+                await swarmB.TxReceived.WaitAsync();
 
                 Assert.Equal(tx, chainB.Transactions[tx.Id]);
                 Assert.Equal(tx, chainC.Transactions[tx.Id]);
