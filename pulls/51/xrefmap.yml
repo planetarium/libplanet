@@ -3205,6 +3205,19 @@ references:
   fullName: Libplanet.Net.Swarm.System.Collections.IEnumerable.GetEnumerator
   nameWithType: Swarm.IEnumerable.GetEnumerator
   nameWithType.vb: Swarm.System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Net.Swarm.TxReceived
+  name: TxReceived
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived
+  commentId: P:Libplanet.Net.Swarm.TxReceived
+  fullName: Libplanet.Net.Swarm.TxReceived
+  nameWithType: Swarm.TxReceived
+- uid: Libplanet.Net.Swarm.TxReceived*
+  name: TxReceived
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived_
+  commentId: Overload:Libplanet.Net.Swarm.TxReceived
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.TxReceived
+  nameWithType: Swarm.TxReceived
 - uid: Libplanet.Net.SwarmException
   name: SwarmException
   href: api/Libplanet.Net.SwarmException.html
