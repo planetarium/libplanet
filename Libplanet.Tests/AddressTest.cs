@@ -47,14 +47,15 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void HexadecimalAddressConstructor()
+        public void HexAddressConstructor()
         {
             Assert.Equal(
                 new Address(
                     new byte[20]
                     {
-                        0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
-                        0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+                        0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3,
+                        0x57, 0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92,
+                        0x9c, 0xcc,
                     }
                 ),
                 new Address(
@@ -62,7 +63,9 @@ namespace Libplanet.Tests
                 )
             );
 
-            var address = new Address("45a22187e2d8850bb357886958bc3e8560929ccc");
+            var address = new Address(
+                "45a22187e2d8850bb357886958bc3e8560929ccc"
+            );
             Assert.Equal(
                 "45a22187e2D8850bb357886958bC3E8560929ccc",
                 address.ToHex()
