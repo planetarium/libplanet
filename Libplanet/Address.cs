@@ -224,8 +224,9 @@ namespace Libplanet
         {
             if (hex == null)
             {
-                throw new NullReferenceException(
-                    "address hex must not be null"
+                throw new ArgumentNullException(
+                    "address hex must not be null",
+                    nameof(hex)
                 );
             }
 
