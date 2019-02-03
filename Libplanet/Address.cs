@@ -98,9 +98,14 @@ namespace Libplanet
 
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a hexadecimal
-        /// address string. If a string is mixed-case and the checksum is
-        /// invalid it throws an exception.
+        /// address string.
         /// </summary>
+        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> was
+        /// passed to <paramref name="hex"/>.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref
+        /// name="hex"/> did not lengthen 40 bytes.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref
+        /// name="hex"/> is mixed-case and the checksum is invalid.</exception>
         /// <param name="hex">A 40 bytes hexadecimal address string to derive
         /// the corresponding <see cref="Address"/> from.</param>
         public Address(string hex)
