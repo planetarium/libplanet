@@ -232,12 +232,18 @@ namespace Libplanet
 
             if (hex.Length != 40)
             {
-                throw new ArgumentException("address hex must be 40 bytes");
+                throw new ArgumentException(
+                    "address hex must be 40 bytes",
+                    nameof(hex)
+                );
             }
 
             if (hex.ToLower() != hex && ToChecksumAddress(hex.ToLower()) != hex)
             {
-                throw new ArgumentException("address checksum is invalid");
+                throw new ArgumentException(
+                    "address checksum is invalid",
+                    nameof(hex)
+                );
             }
 
             return ByteUtil.ParseHex(hex);
