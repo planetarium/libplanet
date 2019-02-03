@@ -97,6 +97,18 @@ namespace Libplanet
         }
 
         /// <summary>
+        /// Derives the corresponding <see cref="Address"/> from a hexadecimal
+        /// address string. If a string is mixed-case and the checksum is
+        /// invalid it throws an exception.
+        /// </summary>
+        /// <param name="hex">A 40 bytes hexadecimal address string to derive
+        /// the corresponding <see cref="Address"/> from.</param>
+        public Address(string hex)
+            : this(DeriveAddress(hex))
+        {
+        }
+
+        /// <summary>
         /// An immutable array of 20 <see cref="byte"/>s that represent this
         /// <see cref="Address"/>.
         /// </summary>
@@ -150,18 +162,7 @@ namespace Libplanet
         public string ToHex()
         {
             string hex = ByteUtil.Hex(ToByteArray());
-            byte[] bytes = Encoding.ASCII.GetBytes(hex);
-            byte[] hash = CalculateHash(bytes);
-            string hashHex = ByteUtil.Hex(hash);
-            string address = string.Empty;
-
-            for (var i = 0; i < hex.Length; i++)
-            {
-                char c = hex[i];
-                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
-            }
-
-            return address;
+            return ToChecksumAddress(hex);
         }
 
         /// <summary>
@@ -186,6 +187,22 @@ namespace Libplanet
             return $"0x{ToHex()}";
         }
 
+        private static string ToChecksumAddress(string hex)
+        {
+            byte[] bytes = Encoding.ASCII.GetBytes(hex);
+            byte[] hash = CalculateHash(bytes);
+            string hashHex = ByteUtil.Hex(hash);
+            string address = string.Empty;
+
+            for (var i = 0; i < hex.Length; i++)
+            {
+                char c = hex[i];
+                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
+            }
+
+            return address;
+        }
+
         private static byte[] CalculateHash(byte[] value)
         {
             var digest = new KeccakDigest(256);
@@ -201,6 +218,28 @@ namespace Libplanet
             var output = CalculateHash(hashPayload);
 
             return output.Skip(output.Length - 20).ToArray();
+        }
+
+        private static byte[] DeriveAddress(string hex)
+        {
+            if (hex == null)
+            {
+                throw new NullReferenceException(
+                    "address hex must not be null"
+                );
+            }
+
+            if (hex.Length != 40)
+            {
+                throw new ArgumentException("address hex must be 40 bytes");
+            }
+
+            if (hex.ToLower() != hex && ToChecksumAddress(hex.ToLower()) != hex)
+            {
+                throw new ArgumentException("address checksum is invalid");
+            }
+
+            return ByteUtil.ParseHex(hex);
         }
     }
 }
