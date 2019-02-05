@@ -106,6 +106,8 @@ namespace Libplanet
         /// name="hex"/> did not lengthen 40 bytes.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="hex"/> is mixed-case and the checksum is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref
+        /// name="hex"/> does not consist of ASCII characters.</exception>
         /// <param name="hex">A 40 bytes hexadecimal address string to derive
         /// the corresponding <see cref="Address"/> from.</param>
         public Address(string hex)
@@ -251,7 +253,16 @@ namespace Libplanet
                 );
             }
 
-            return ByteUtil.ParseHex(hex);
+            try
+            {
+                return ByteUtil.ParseHex(hex);
+            }
+            catch (FormatException)
+            {
+                throw new ArgumentException(
+                    "address hex must only consist of ASCII characters"
+                );
+            }
         }
     }
 }

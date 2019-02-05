@@ -73,6 +73,14 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void HexAddressConstructorOnlyTakesASCIICharacters()
+        {
+            Assert.Throws<ArgumentException>(
+                () => new Address("45a22187e2d8850bb357886958BC3E8560929£한글")
+            );
+        }
+
+        [Fact]
         public void CanDetectInvalidMixedCaseChecksum()
         {
             Assert.Throws<ArgumentException>(() =>
