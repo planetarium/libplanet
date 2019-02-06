@@ -53,13 +53,13 @@ namespace Libplanet.Tests
                 new Address(
                     new byte[20]
                     {
-                        0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3,
-                        0x57, 0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92,
-                        0x9c, 0xcc,
+                        0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xab,
+                        0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab,
+                        0xcd, 0xef,
                     }
                 ),
                 new Address(
-                    "45a22187e2d8850bb357886958bc3e8560929ccc"
+                    "0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"
                 )
             );
 
@@ -73,8 +73,11 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void HexAddressConstructorOnlyTakesASCIICharacters()
+        public void HexAddressConstructorOnlyTakesHexadecimalCharacters()
         {
+            Assert.Throws<ArgumentException>(
+                () => new Address("45a22187e2d8850bb357886958BC3E8560929ghi")
+            );
             Assert.Throws<ArgumentException>(
                 () => new Address("45a22187e2d8850bb357886958BC3E8560929£한글")
             );
