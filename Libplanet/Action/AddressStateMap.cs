@@ -27,7 +27,7 @@ namespace Libplanet.Action
 
             foreach (SerializationEntry entry in info)
             {
-                dict[new Address(ByteUtil.ParseHex(entry.Name))] = entry.Value;
+                dict[new Address(entry.Name)] = entry.Value;
             }
 
             _impl = dict.ToImmutableDictionary();

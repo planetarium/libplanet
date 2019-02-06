@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Null(_fx.Genesis.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 29), _fx.Genesis.Timestamp);
             Assert.Equal(
-                new Address(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")),
+                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Genesis.RewardBeneficiary);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
             AssertBytesEqual(
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
             Assert.Equal(new DateTime(2018, 11, 30), _fx.Next.Timestamp);
             Assert.Equal(
-                new Address(ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644")),
+                new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Next.RewardBeneficiary);
         }
 

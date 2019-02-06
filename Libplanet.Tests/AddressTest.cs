@@ -47,6 +47,62 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void HexAddressConstructor()
+        {
+            Assert.Equal(
+                new Address(
+                    new byte[20]
+                    {
+                        0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xab,
+                        0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab,
+                        0xcd, 0xef,
+                    }
+                ),
+                new Address(
+                    "0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"
+                )
+            );
+
+            var address = new Address(
+                "45a22187e2d8850bb357886958bc3e8560929ccc"
+            );
+            Assert.Equal(
+                "45a22187e2D8850bb357886958bC3E8560929ccc",
+                address.ToHex()
+            );
+        }
+
+        [Fact]
+        public void HexMustBe40Characters()
+        {
+            Assert.Throws<ArgumentException>(
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE")
+            );
+            Assert.Throws<ArgumentException>(
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF")
+            );
+        }
+
+        [Fact]
+        public void HexAddressConstructorOnlyTakesHexadecimalCharacters()
+        {
+            Assert.Throws<ArgumentException>(
+                () => new Address("45a22187e2d8850bb357886958BC3E8560929ghi")
+            );
+            Assert.Throws<ArgumentException>(
+                () => new Address("45a22187e2d8850bb357886958BC3E8560929£한글")
+            );
+        }
+
+        [Fact]
+        public void CanDetectInvalidMixedCaseChecksum()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                new Address("45A22187E2D8850BB357886958BC3E8560929CCC")
+            );
+        }
+
+        [Fact]
         public void AddressMustBe20Bytes()
         {
             for (int size = 0; size < 25; size++)

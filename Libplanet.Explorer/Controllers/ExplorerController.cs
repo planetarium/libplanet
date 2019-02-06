@@ -157,7 +157,7 @@ namespace Libplanet.Explorer.Controllers
 
             try
             {
-                address = new Address(ByteUtil.ParseHex(addressId));
+                address = new Address(addressId);
             }
             catch (ArgumentException)
             {
