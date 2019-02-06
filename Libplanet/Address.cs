@@ -109,7 +109,10 @@ namespace Libplanet
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="hex"/> does not consist of ASCII characters.</exception>
         /// <param name="hex">A 40 bytes hexadecimal address string to derive
-        /// the corresponding <see cref="Address"/> from.</param>
+        /// the corresponding <see cref="Address"/> from. The string should be
+        /// all lower-case or mixed-case which follows <a
+        /// href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md"
+        /// >EIP 55</a>.</param>
         public Address(string hex)
             : this(DeriveAddress(hex))
         {
