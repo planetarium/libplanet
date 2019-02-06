@@ -234,10 +234,7 @@ namespace Libplanet
         {
             if (hex == null)
             {
-                throw new ArgumentNullException(
-                    "address hex must not be null",
-                    nameof(hex)
-                );
+                throw new ArgumentNullException(nameof(hex));
             }
 
             if (hex.Length != 40)
