@@ -420,6 +420,12 @@ references:
   fullName.vb: Libplanet.Address.Address(System.Byte())
   nameWithType: Address.Address(Byte[])
   nameWithType.vb: Address.Address(Byte())
+- uid: Libplanet.Address.#ctor(System.String)
+  name: Address(String)
+  href: api/Libplanet.Address.html#Libplanet_Address__ctor_System_String_
+  commentId: M:Libplanet.Address.#ctor(System.String)
+  fullName: Libplanet.Address.Address(System.String)
+  nameWithType: Address.Address(String)
 - uid: Libplanet.Address.#ctor*
   name: Address
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_
@@ -872,23 +878,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block
   nameWithType: Block<T>.Block
   nameWithType.vb: Block(Of T).Block
-- uid: Libplanet.Blocks.Block`1.Bencode(System.Boolean,System.Boolean)
-  name: Bencode(Boolean, Boolean)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Bencode_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Blocks.Block`1.Bencode(System.Boolean,System.Boolean)
-  fullName: Libplanet.Blocks.Block<T>.Bencode(System.Boolean, System.Boolean)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Bencode(System.Boolean, System.Boolean)
-  nameWithType: Block<T>.Bencode(Boolean, Boolean)
-  nameWithType.vb: Block(Of T).Bencode(Boolean, Boolean)
-- uid: Libplanet.Blocks.Block`1.Bencode*
-  name: Bencode
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Bencode_
-  commentId: Overload:Libplanet.Blocks.Block`1.Bencode
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.Bencode
-  fullName.vb: Libplanet.Blocks.Block(Of T).Bencode
-  nameWithType: Block<T>.Bencode
-  nameWithType.vb: Block(Of T).Bencode
 - uid: Libplanet.Blocks.Block`1.Difficulty
   name: Difficulty
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty
@@ -941,24 +930,24 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Equals
   nameWithType: Block<T>.Equals
   nameWithType.vb: Block(Of T).Equals
-- uid: Libplanet.Blocks.Block`1.FromBencoded(System.Byte[])
-  name: FromBencoded(Byte[])
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencoded_System_Byte___
-  commentId: M:Libplanet.Blocks.Block`1.FromBencoded(System.Byte[])
-  name.vb: FromBencoded(Byte())
-  fullName: Libplanet.Blocks.Block<T>.FromBencoded(System.Byte[])
-  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencoded(System.Byte())
-  nameWithType: Block<T>.FromBencoded(Byte[])
-  nameWithType.vb: Block(Of T).FromBencoded(Byte())
-- uid: Libplanet.Blocks.Block`1.FromBencoded*
-  name: FromBencoded
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencoded_
-  commentId: Overload:Libplanet.Blocks.Block`1.FromBencoded
+- uid: Libplanet.Blocks.Block`1.FromBencodex(System.Byte[])
+  name: FromBencodex(Byte[])
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencodex_System_Byte___
+  commentId: M:Libplanet.Blocks.Block`1.FromBencodex(System.Byte[])
+  name.vb: FromBencodex(Byte())
+  fullName: Libplanet.Blocks.Block<T>.FromBencodex(System.Byte[])
+  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencodex(System.Byte())
+  nameWithType: Block<T>.FromBencodex(Byte[])
+  nameWithType.vb: Block(Of T).FromBencodex(Byte())
+- uid: Libplanet.Blocks.Block`1.FromBencodex*
+  name: FromBencodex
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencodex_
+  commentId: Overload:Libplanet.Blocks.Block`1.FromBencodex
   isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.FromBencoded
-  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencoded
-  nameWithType: Block<T>.FromBencoded
-  nameWithType.vb: Block(Of T).FromBencoded
+  fullName: Libplanet.Blocks.Block<T>.FromBencodex
+  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencodex
+  nameWithType: Block<T>.FromBencodex
+  nameWithType.vb: Block(Of T).FromBencodex
 - uid: Libplanet.Blocks.Block`1.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_GetHashCode
@@ -1192,6 +1181,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Timestamp
   nameWithType: Block<T>.Timestamp
   nameWithType.vb: Block(Of T).Timestamp
+- uid: Libplanet.Blocks.Block`1.ToBencodex(System.Boolean,System.Boolean)
+  name: ToBencodex(Boolean, Boolean)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToBencodex_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Blocks.Block`1.ToBencodex(System.Boolean,System.Boolean)
+  fullName: Libplanet.Blocks.Block<T>.ToBencodex(System.Boolean, System.Boolean)
+  fullName.vb: Libplanet.Blocks.Block(Of T).ToBencodex(System.Boolean, System.Boolean)
+  nameWithType: Block<T>.ToBencodex(Boolean, Boolean)
+  nameWithType.vb: Block(Of T).ToBencodex(Boolean, Boolean)
+- uid: Libplanet.Blocks.Block`1.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToBencodex_
+  commentId: Overload:Libplanet.Blocks.Block`1.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.ToBencodex
+  fullName.vb: Libplanet.Blocks.Block(Of T).ToBencodex
+  nameWithType: Block<T>.ToBencodex
+  nameWithType.vb: Block(Of T).ToBencodex
 - uid: Libplanet.Blocks.Block`1.ToString
   name: ToString()
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToString
@@ -2849,24 +2855,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Add
   nameWithType: Swarm.Add
-- uid: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTime})
-  name: AddPeersAsync(IEnumerable<Peer>, Nullable<DateTime>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTime__
-  commentId: M:Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTime})
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTime))
-  fullName: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Nullable<System.DateTime>)
-  fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of System.DateTime))
-  nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, Nullable<DateTime>)
-  nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTime))
-- uid: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Threading.CancellationToken,System.Nullable{System.DateTime})
-  name: AddPeersAsync(IEnumerable<Peer>, CancellationToken, Nullable<DateTime>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Threading_CancellationToken_System_Nullable_System_DateTime__
-  commentId: M:Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Threading.CancellationToken,System.Nullable{System.DateTime})
-  name.vb: AddPeersAsync(IEnumerable(Of Peer), CancellationToken, Nullable(Of DateTime))
-  fullName: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Threading.CancellationToken, System.Nullable<System.DateTime>)
-  fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Threading.CancellationToken, System.Nullable(Of System.DateTime))
-  nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, CancellationToken, Nullable<DateTime>)
-  nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), CancellationToken, Nullable(Of DateTime))
+- uid: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTime},System.Threading.CancellationToken)
+  name: AddPeersAsync(IEnumerable<Peer>, Nullable<DateTime>, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTime__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTime},System.Threading.CancellationToken)
+  name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTime), CancellationToken)
+  fullName: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Nullable<System.DateTime>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of System.DateTime), System.Threading.CancellationToken)
+  nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, Nullable<DateTime>, CancellationToken)
+  nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTime), CancellationToken)
 - uid: Libplanet.Net.Swarm.AddPeersAsync*
   name: AddPeersAsync
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_
@@ -2981,12 +2978,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Dispose
   nameWithType: Swarm.Dispose
-- uid: Libplanet.Net.Swarm.DisposeAsync
-  name: DisposeAsync()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DisposeAsync
-  commentId: M:Libplanet.Net.Swarm.DisposeAsync
-  fullName: Libplanet.Net.Swarm.DisposeAsync()
-  nameWithType: Swarm.DisposeAsync()
 - uid: Libplanet.Net.Swarm.DisposeAsync(System.Threading.CancellationToken)
   name: DisposeAsync(CancellationToken)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DisposeAsync_System_Threading_CancellationToken_
@@ -3025,15 +3016,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Equals
   nameWithType: Swarm.Equals
-- uid: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name: GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: Swarm.GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: Swarm.GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
 - uid: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
   name: GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>, CancellationToken)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Threading_CancellationToken_
@@ -3089,12 +3071,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.GetKeyHashCode
   nameWithType: Swarm.GetKeyHashCode
-- uid: Libplanet.Net.Swarm.InitContextAsync
-  name: InitContextAsync()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_InitContextAsync
-  commentId: M:Libplanet.Net.Swarm.InitContextAsync
-  fullName: Libplanet.Net.Swarm.InitContextAsync()
-  nameWithType: Swarm.InitContextAsync()
 - uid: Libplanet.Net.Swarm.InitContextAsync(System.Threading.CancellationToken)
   name: InitContextAsync(CancellationToken)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_InitContextAsync_System_Threading_CancellationToken_
@@ -3225,15 +3201,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.RunAsync
   nameWithType: Swarm.RunAsync
-- uid: Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32)
-  name: RunAsync<T>(Blockchain<T>, Int32)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync__1_Libplanet_Blockchain___0__System_Int32_
-  commentId: M:Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32)
-  name.vb: RunAsync(Of T)(Blockchain(Of T), Int32)
-  fullName: Libplanet.Net.Swarm.RunAsync<T>(Libplanet.Blockchain<T>, System.Int32)
-  fullName.vb: Libplanet.Net.Swarm.RunAsync(Of T)(Libplanet.Blockchain(Of T), System.Int32)
-  nameWithType: Swarm.RunAsync<T>(Blockchain<T>, Int32)
-  nameWithType.vb: Swarm.RunAsync(Of T)(Blockchain(Of T), Int32)
 - uid: Libplanet.Net.Swarm.RunAsync``1(Libplanet.Blockchain{``0},System.Int32,System.Threading.CancellationToken)
   name: RunAsync<T>(Blockchain<T>, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_RunAsync__1_Libplanet_Blockchain___0__System_Int32_System_Threading_CancellationToken_
@@ -5484,23 +5451,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
-- uid: Libplanet.Tx.Transaction`1.Bencode(System.Boolean)
-  name: Bencode(Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Bencode_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.Bencode(System.Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.Bencode(System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Bencode(System.Boolean)
-  nameWithType: Transaction<T>.Bencode(Boolean)
-  nameWithType.vb: Transaction(Of T).Bencode(Boolean)
-- uid: Libplanet.Tx.Transaction`1.Bencode*
-  name: Bencode
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Bencode_
-  commentId: Overload:Libplanet.Tx.Transaction`1.Bencode
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.Bencode
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Bencode
-  nameWithType: Transaction<T>.Bencode
-  nameWithType.vb: Transaction(Of T).Bencode
 - uid: Libplanet.Tx.Transaction`1.Equals(Libplanet.Tx.Transaction{`0})
   name: Equals(Transaction<T>)
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Equals_Libplanet_Tx_Transaction__0__
@@ -5527,24 +5477,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Equals
   nameWithType: Transaction<T>.Equals
   nameWithType.vb: Transaction(Of T).Equals
-- uid: Libplanet.Tx.Transaction`1.FromBencoded(System.Byte[])
-  name: FromBencoded(Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencoded_System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.FromBencoded(System.Byte[])
-  name.vb: FromBencoded(Byte())
-  fullName: Libplanet.Tx.Transaction<T>.FromBencoded(System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencoded(System.Byte())
-  nameWithType: Transaction<T>.FromBencoded(Byte[])
-  nameWithType.vb: Transaction(Of T).FromBencoded(Byte())
-- uid: Libplanet.Tx.Transaction`1.FromBencoded*
-  name: FromBencoded
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencoded_
-  commentId: Overload:Libplanet.Tx.Transaction`1.FromBencoded
+- uid: Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])
+  name: FromBencodex(Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])
+  name.vb: FromBencodex(Byte())
+  fullName: Libplanet.Tx.Transaction<T>.FromBencodex(System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencodex(System.Byte())
+  nameWithType: Transaction<T>.FromBencodex(Byte[])
+  nameWithType.vb: Transaction(Of T).FromBencodex(Byte())
+- uid: Libplanet.Tx.Transaction`1.FromBencodex*
+  name: FromBencodex
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencodex_
+  commentId: Overload:Libplanet.Tx.Transaction`1.FromBencodex
   isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.FromBencoded
-  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencoded
-  nameWithType: Transaction<T>.FromBencoded
-  nameWithType.vb: Transaction(Of T).FromBencoded
+  fullName: Libplanet.Tx.Transaction<T>.FromBencodex
+  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencodex
+  nameWithType: Transaction<T>.FromBencodex
+  nameWithType.vb: Transaction(Of T).FromBencodex
 - uid: Libplanet.Tx.Transaction`1.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GetHashCode
@@ -5699,6 +5649,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Timestamp
   nameWithType: Transaction<T>.Timestamp
   nameWithType.vb: Transaction(Of T).Timestamp
+- uid: Libplanet.Tx.Transaction`1.ToBencodex(System.Boolean)
+  name: ToBencodex(Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.ToBencodex(System.Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.ToBencodex(System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).ToBencodex(System.Boolean)
+  nameWithType: Transaction<T>.ToBencodex(Boolean)
+  nameWithType.vb: Transaction(Of T).ToBencodex(Boolean)
+- uid: Libplanet.Tx.Transaction`1.ToBencodex*
+  name: ToBencodex
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_ToBencodex_
+  commentId: Overload:Libplanet.Tx.Transaction`1.ToBencodex
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.ToBencodex
+  fullName.vb: Libplanet.Tx.Transaction(Of T).ToBencodex
+  nameWithType: Transaction<T>.ToBencodex
+  nameWithType.vb: Transaction(Of T).ToBencodex
 - uid: Libplanet.Tx.Transaction`1.Validate
   name: Validate()
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Validate
