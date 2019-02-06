@@ -293,7 +293,7 @@ namespace Libplanet.Store
                         continue;
                     }
 
-                    yield return new Address(ByteUtil.ParseHex(prefix.Name + rest.Name));
+                    yield return new Address(prefix.Name + rest.Name);
                 }
             }
         }
