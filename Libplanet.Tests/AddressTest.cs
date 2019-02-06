@@ -73,6 +73,17 @@ namespace Libplanet.Tests
         }
 
         [Fact]
+        public void HexMustBe40Characters()
+        {
+            Assert.Throws<ArgumentException>(
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDE")
+            );
+            Assert.Throws<ArgumentException>(
+                () => new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEFF")
+            );
+        }
+
+        [Fact]
         public void HexAddressConstructorOnlyTakesHexadecimalCharacters()
         {
             Assert.Throws<ArgumentException>(
