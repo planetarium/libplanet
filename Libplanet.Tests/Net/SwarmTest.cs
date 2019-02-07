@@ -260,21 +260,27 @@ namespace Libplanet.Tests.Net
                         swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         null);
-                Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories1);
+                Assert.Equal(
+                    new[] { genesis.Hash, block1.Hash, block2.Hash },
+                    inventories1);
 
                 IEnumerable<HashDigest<SHA256>> inventories2 =
                     await swarmB.GetBlockHashesAsync(
                         swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         block1.Hash);
-                Assert.Equal(new[] { block1.Hash }, inventories2);
+                Assert.Equal(
+                    new[] { genesis.Hash, block1.Hash },
+                    inventories2);
 
                 List<Block<BaseAction>> receivedBlocks =
                     await swarmB.GetBlocksAsync<BaseAction>(
                         swarmA.AsPeer, inventories1
                     ).ToListAsync();
 
-                Assert.Equal(new[] { block1, block2 }, receivedBlocks);
+                Assert.Equal(
+                    new[] { genesis, block1, block2 },
+                    receivedBlocks);
             }
             finally
             {

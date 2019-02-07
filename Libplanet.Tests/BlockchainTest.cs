@@ -183,20 +183,20 @@ namespace Libplanet.Tests
             var block3 = _blockchain.MineBlock(_fx.Address1);
 
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash, block3.Hash, },
+                new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash, },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash })));
             Assert.Equal(
-                new[] { block2.Hash, block3.Hash },
+                new[] { block1.Hash, block2.Hash, block3.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block1.Hash, block0.Hash })));
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash },
+                new[] { block0.Hash, block1.Hash, block2.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     stop: block2.Hash));
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash },
+                new[] { block0.Hash, block1.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     count: 2));

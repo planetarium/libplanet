@@ -247,7 +247,7 @@ namespace Libplanet
             }
 
             HashDigest<SHA256>? tip = Store.IndexBlockHash(-1);
-            HashDigest<SHA256>? currentHash = Next(FindBranchPoint(locator));
+            HashDigest<SHA256>? currentHash = FindBranchPoint(locator);
 
             while (currentHash != null && count > 0)
             {
