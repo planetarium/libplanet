@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -200,6 +198,18 @@ namespace Libplanet.Tests
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     count: 2));
+        }
+
+        [Fact]
+        public void CanDeleteAfter()
+        {
+            var block1 = _blockchain.MineBlock(_fx.Address1);
+            var block2 = _blockchain.MineBlock(_fx.Address1);
+            var block3 = _blockchain.MineBlock(_fx.Address1);
+
+            _blockchain.DeleteAfter(block2.Hash);
+
+            Assert.Equal(new[] { block1, block2 }, _blockchain);
         }
     }
 }

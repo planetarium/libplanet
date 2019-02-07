@@ -263,6 +263,20 @@ namespace Libplanet
             }
         }
 
+        internal void DeleteAfter(HashDigest<SHA256> point)
+        {
+            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+
+            while (current is HashDigest<SHA256> hash && hash != point)
+            {
+                HashDigest<SHA256>? previous = Blocks[hash].PreviousHash;
+                Store.DeleteBlock(hash);
+                Store.DeleteIndex(hash);
+
+                current = previous;
+            }
+        }
+
         private static IEnumerable<DifficultyExpectation> ExpectDifficulties(
             IEnumerable<Block<T>> blocks, bool yieldNext = false)
         {
