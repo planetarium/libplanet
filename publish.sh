@@ -14,11 +14,15 @@ fi
 
 set -ev
 
+curl -o /tmp/nuget.exe \
+  https://dist.nuget.org/win-x86-commandline/v5.0.0-preview2/nuget.exe
+
 if compgen -G "Libplanet/bin/Release/Libplanet.*.nupkg" > /dev/null; then
   for f in Libplanet/bin/Release/Libplanet.*.nupkg; do
-    nuget push \
+    mono /tmp/nuget.exe push \
       "$f" \
       -ApiKey "$NUGET_API_KEY" \
+      -NonInteractive \
       -Source https://api.nuget.org/v3/index.json
   done
 fi
