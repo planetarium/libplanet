@@ -1,0 +1,221 @@
+matrix:
+  include:
+  - os: linux
+    dist: xenial
+    language: csharp
+    addons:
+      apt:
+        packages:
+        - libxml2-utils
+        - powershell
+        sources:
+        - sourceline: deb [arch=amd64] https://packages.microsoft.com/ubuntu/16.04/prod xenial main
+          key_url: https://packages.microsoft.com/keys/microsoft.asc
+    cache:
+      directories:
+      - $HOME/.nuget/packages
+      - $HOME/.local/share/NuGet/v3-cache
+  - os: osx
+    osx_image: xcode10.1
+    language: csharp
+    cache:
+      directories:
+      - $HOME/Library/Caches/Homebrew
+      - $HOME/.nuget/packages
+      - $HOME/.local/share/NuGet/v3-cache
+  - os: windows
+    language: shell
+    cache:
+      directories:
+      - $HOME/.nuget/packages
+      - $HOME/AppData/Local/NuGet/v3-cache
+    filter_secrets: false  # https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
+
+solution: Libplanet.sln
+install:
+- |
+  set -ev
+  if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
+    mkdir -p "$HOME/.local/bin"
+    export PATH="$PATH:$HOME/.local/bin"
+
+    # submark
+    curl -L -o "$HOME/.local/bin/submark" \
+      https://github.com/dahlia/submark/releases/download/0.2.0/submark-linux-x86_64
+    chmod +x $HOME/.local/bin/submark
+
+    # github-release
+    pushd /tmp
+    curl -LO \
+      https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
+    tar xvfj linux-amd64-github-release.tar.bz2
+    mv bin/linux/amd64/github-release $HOME/.local/bin/
+    popd
+  elif [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+    brew update
+    brew cask install powershell
+  elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+    # MSBuild
+    {
+      echo "#!/bin/bash"
+      echo "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe' $@"
+    } > /usr/bin/msbuild
+    chmod +x /usr/bin/msbuild
+
+    # NuGet
+    curl -o /usr/bin/nuget.exe \
+      https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+    chmod +x /usr/bin/nuget.exe
+
+    # xmllint
+    mkdir /tmp/libxml2
+    pushd /tmp/libxml2
+    wget \
+      https://www.zlatkovic.com/pub/libxml/64bit/iconv-1.14-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libtool-2.4.6-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libxml2-2.9.3-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/libxslt-1.1.28-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/mingwrt-5.2.0-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/openssl-1.0.2e-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/xmlsec1-1.2.20-win32-x86_64.7z \
+      https://www.zlatkovic.com/pub/libxml/64bit/zlib-1.2.8-win32-x86_64.7z
+    for z in *.7z; do
+      7z x "$z"
+    done
+    mv */*.exe */*.dll /c/Windows/
+    popd
+  fi
+  set +ev
+- nuget restore Libplanet.sln
+
+script:
+# Fail fast if anything in below commands fails
+- set -e
+
+# If a tag is pushed, the NuGet package version has to be the same to
+# the tag name.
+- |
+  version="$(xmllint \
+    --xpath './Project/PropertyGroup/Version/text()' \
+    Libplanet/Libplanet.csproj)"
+- 'echo "NuGet package version: $version"'
+- '[[ "$TRAVIS_TAG" = "" || "$version" = "$TRAVIS_TAG" ]]'
+
+# If a tag is pushed, there has to be an entry in CHANGES.md for the version.
+- |
+  if [[ "$TRAVIS_OS_NAME" = "linux" && "$TRAVIS_TAG" != "" ]]; then
+    changes="$(submark -i --h2 "Version $TRAVIS_TAG" CHANGES.md | egrep '\S')"
+    [[ "$changes" != "" ]]
+  fi
+
+# Check changelog
+- |
+  commit_sha="${TRAVIS_PULL_REQUEST_SHA:-${TRAVIS_TAG:-${TRAVIS_COMMIT}}}"
+  if [[ "$(git tag -l)" = "" ]]; then
+    echo "Skip changelog chekcer because there has been no release yet."
+  elif git show --format=%B --quiet "$commit_sha" \
+     | egrep '\[(skip changelog|changelog skip)\]' > /dev/null; then
+    echo "Skip changelog checker..."
+  elif [[ "$TRAVIS_TAG" != "" ]]; then
+    ! grep -i "to be released" CHANGES.md
+  else
+    if [[ "$TRAVIS_PULL_REQUEST_SHA" = "" ]]; then
+      commit_range="$TRAVIS_COMMIT_RANGE"
+    else
+      commit_range="$TRAVIS_BRANCH...$TRAVIS_PULL_REQUEST_SHA"
+    fi
+    [[ "$(git diff --name-only "$commit_range" | grep CHANGES\.md)" != "" ]]
+  fi
+
+# Build the whole solution
+- msbuild /p:Configuration=Release /r
+
+# Run unit tests
+- msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
+
+# Build Libplanet.*.nupkg
+- |
+  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  if [[ "$TRAVIS_TAG" = "" ]]; then
+    # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
+    # if it's not a tag push.
+    if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
+      appended_version="${version/-dev/-nightly}.$(date +%Y%m%d)"
+    else
+      appended_version="$version.$TRAVIS_BUILD_NUMBER+$(date +%Y%m%d)"
+    fi
+    msbuild \
+      /p:Configuration=Release \
+      /p:NoPackageAnalysis=true \
+      /p:PackageVersion="$appended_version" \
+      /t:pack \
+      Libplanet
+  else
+    msbuild /p:Configuration=Release /t:pack Libplanet
+  fi
+
+# Build docs using DocFX
+- |
+  if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+    powershell -Command "Set-ExecutionPolicy Unrestricted"
+    pwsh=powershell
+  else
+    pwsh=pwsh
+  fi
+  $pwsh \
+    -File Docs/build.ps1 \
+    -WorkingDirectory Docs/ \
+    -ExecutionPolicy Bypass
+- '[[ -f Docs/_site/index.html ]]'
+
+# Turn off "set -e" option
+- set +e
+
+before_cache:
+- |
+  if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+    brew cleanup
+  fi
+
+deploy:
+# Upload a .nupkg file to GitHub releases
+- provider: releases
+  on:
+    tags: true
+  skip_cleanup: true
+  api_key: "$GITHUB_TOKEN"
+  file_glob: yes
+  file: Libplanet/bin/Release/Libplanet.*.nupkg
+  name: "Libplanet $TRAVIS_TAG"
+
+# Upload a .nupkg file to NuGet
+- provider: script
+  on:
+    all_branches: true
+  skip_cleanup: true
+  script: bash publish.sh
+
+# Publish docs to GitHub Pages
+- provider: script
+  on:
+    all_branches: true
+  skip_cleanup: true
+  script: bash Docs/publish.sh
+
+# Adjust the release note on GitHub releases
+after_deploy: |
+  [[ "$TRAVIS_TAG" != "" && "$TRAVIS_OS_NAME" = "linux" ]] || exit 0
+
+  # Extract a release note from the full changelog
+  submark -o /tmp/release-note -i --h2 "Version $TRAVIS_TAG" -O CHANGES.md
+
+  # Fill the description on GitHub releases with the release note
+  export \
+    GITHUB_USER="${TRAVIS_REPO_SLUG%%/[^/]*}" \
+    GITHUB_REPO="${TRAVIS_REPO_SLUG#[^/]*/}"
+  github-release edit \
+    --user "$GITHUB_USER" \
+    --repo "$GITHUB_REPO" \
+    --tag "$TRAVIS_TAG" \
+    --name "Libplanet $TRAVIS_TAG" \
+    --description "$(cat /tmp/release-note)"

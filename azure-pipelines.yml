@@ -136,18 +136,5 @@ jobs:
         Copy-Item -Path $buildPath -Recurse -Destination $dirName
         git add "$dirName"
 
-        # The below code updates the root index.html so that it's equivalent
-        # to the actual index.html in the docs directory.  It should be adjusted
-        # later so that the root index.html is update only when a new tag is
-        # made.
-        $addedTags = @"
-        <meta http-equiv="refresh" content="0;$dirName/">
-        <base href="$dirName/">
-        "@
-        Get-Content "$dirName/index.html" `
-          | %{$_ -replace "</title>","</title>$addedTags"} `
-          > index.html
-        git add index.html
-
         git commit --allow-empty -m "Triggered by $commit"
         git push origin gh-pages
