@@ -77,5 +77,7 @@ namespace Libplanet.Store
         {
             return IterateAddresses().Count();
         }
+
+        public abstract bool DeleteIndex(HashDigest<SHA256> hash);
     }
 }
