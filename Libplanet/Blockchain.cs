@@ -312,7 +312,7 @@ namespace Libplanet
             int seed = BitConverter.ToInt32(block.Hash.ToByteArray(), 0);
             foreach (Transaction<T> tx in block.Transactions)
             {
-                var context = new ActionContext(randomSeed: unchecked(seed++));
+                int txSeed = seed ^ BitConverter.ToInt32(tx.Signature, 0);
                 foreach (T action in tx.Actions)
                 {
                     IEnumerable<Address> requestedAddresses =
@@ -325,8 +325,13 @@ namespace Libplanet
                         requestedAddresses
                         .Where(states.ContainsKey)
                         .ToImmutableDictionary(a => a, a => states[a]));
-                    AddressStateMap changes =
-                        action.Execute(tx.Sender, tx.Recipient, prevState, context);
+                    var context = new ActionContext(
+                        from: tx.Sender,
+                        to: tx.Recipient,
+                        previousStates: prevState,
+                        randomSeed: unchecked(txSeed++)
+                    );
+                    AddressStateMap changes = action.Execute(context);
                     states = (AddressStateMap)states.SetItems(changes);
                 }
             }
