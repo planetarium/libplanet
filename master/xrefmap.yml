@@ -3016,22 +3016,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.Equals
   nameWithType: Swarm.Equals
-- uid: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
-  name: GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_Libplanet_Net_Peer_System_Collections_Generic_IEnumerable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer,System.Collections.Generic.IEnumerable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Threading.CancellationToken)
-  name.vb: GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)), CancellationToken)
-  fullName: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.GetBlocksAsync(Libplanet.Net.Peer, System.Collections.Generic.IEnumerable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Threading.CancellationToken)
-  nameWithType: Swarm.GetBlocksAsync(Peer, IEnumerable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>, CancellationToken)
-  nameWithType.vb: Swarm.GetBlocksAsync(Peer, IEnumerable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)), CancellationToken)
-- uid: Libplanet.Net.Swarm.GetBlocksAsync*
-  name: GetBlocksAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetBlocksAsync_
-  commentId: Overload:Libplanet.Net.Swarm.GetBlocksAsync
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm.GetBlocksAsync
-  nameWithType: Swarm.GetBlocksAsync
 - uid: Libplanet.Net.Swarm.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetEnumerator
@@ -3227,6 +3211,19 @@ references:
   fullName: Libplanet.Net.Swarm.System.Collections.IEnumerable.GetEnumerator
   nameWithType: Swarm.IEnumerable.GetEnumerator
   nameWithType.vb: Swarm.System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Net.Swarm.TxReceived
+  name: TxReceived
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived
+  commentId: P:Libplanet.Net.Swarm.TxReceived
+  fullName: Libplanet.Net.Swarm.TxReceived
+  nameWithType: Swarm.TxReceived
+- uid: Libplanet.Net.Swarm.TxReceived*
+  name: TxReceived
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived_
+  commentId: Overload:Libplanet.Net.Swarm.TxReceived
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.TxReceived
+  nameWithType: Swarm.TxReceived
 - uid: Libplanet.Net.SwarmException
   name: SwarmException
   href: api/Libplanet.Net.SwarmException.html
