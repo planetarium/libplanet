@@ -20,7 +20,10 @@ namespace Libplanet.Net
         {
         }
 
-        protected PeerNotFoundException(SerializationInfo info, StreamingContext context)
+        protected PeerNotFoundException(
+            SerializationInfo info,
+            StreamingContext context
+        )
             : base(info, context)
         {
         }

@@ -145,7 +145,10 @@ namespace Libplanet.Tx
             {
                 Context = new StreamingContext(
                     StreamingContextStates.All,
-                    new TransactionSerializationContext { IncludeSignature = sign }
+                    new TransactionSerializationContext
+                    {
+                        IncludeSignature = sign,
+                    }
                 ),
             };
             using (var stream = new MemoryStream())
@@ -160,14 +163,16 @@ namespace Libplanet.Tx
             if (!PublicKey.Verify(ToBencodex(false), Signature))
             {
                 throw new InvalidTxSignatureException(
-                    $"the signature ({ByteUtil.Hex(Signature)}) is failed to verify."
+                    $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
+                    "to verify."
                 );
             }
 
             if (!new Address(PublicKey).Equals(Sender))
             {
                 throw new InvalidTxPublicKeyException(
-                    $"the public key ({ByteUtil.Hex(PublicKey.Format(true))} is not matched to the address ({Sender})."
+                    $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
+                    $"is not matched to the address ({Sender})."
                 );
             }
         }
@@ -229,9 +234,8 @@ namespace Libplanet.Tx
         {
             var typeStr = (string)arg["type_id"];
             var action = (T)Activator.CreateInstance(Types[typeStr]);
-            action.LoadPlainValue(
-                ((IDictionary<string, object>)arg["values"]).ToImmutableDictionary()
-            );
+            var values = (IDictionary<string, object>)arg["values"];
+            action.LoadPlainValue(values.ToImmutableDictionary());
             return action;
         }
 

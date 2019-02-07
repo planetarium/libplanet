@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Common.Action
 
         public override AddressStateMap Execute(IActionContext context)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void LoadPlainValue(

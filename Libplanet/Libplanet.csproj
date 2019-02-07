@@ -32,13 +32,16 @@ http://planetarium.github.io/libplanet.net/</Description>
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
     <None Include="..\README.md" Pack="true" PackagePath="README.md" />
+    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +57,7 @@ http://planetarium.github.io/libplanet.net/</Description>
       -->
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
+    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3" />
     <PackageReference Include="NetMQ" Version="4.0.0.1" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
     <PackageReference Include="Serilog" Version="2.7.1" />

@@ -6,16 +6,17 @@ namespace Libplanet.Tests.Common.Action
 {
     public class DummyAction : BaseAction
     {
-        public override IImmutableDictionary<string, object> PlainValue => throw new NotImplementedException();
+        public override IImmutableDictionary<string, object> PlainValue =>
+            throw new NotSupportedException();
 
         public override AddressStateMap Execute(IActionContext context)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

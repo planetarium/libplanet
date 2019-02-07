@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void CanNotStore()
         {
-            Assert.Throws<NotImplementedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
             {
                 _set[_fx.Address1] = new List<Transaction<BaseAction>>()
                 {
@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void CanNotRemoveItem()
         {
-            Assert.Throws<NotImplementedException>(() =>
+            Assert.Throws<NotSupportedException>(() =>
             {
                 _set.Remove(_fx.Address1);
             });

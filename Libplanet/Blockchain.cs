@@ -35,7 +35,10 @@ namespace Libplanet
 
         public IDictionary<TxId, Transaction<T>> Transactions { get; }
 
-        public IDictionary<Address, IEnumerable<Transaction<T>>> Addresses { get; }
+        public IDictionary<Address, IEnumerable<Transaction<T>>> Addresses
+        {
+            get;
+        }
 
         public IStore Store { get; }
 
@@ -94,10 +97,11 @@ namespace Libplanet
                     }
 
                     throw new InvalidBlockPreviousHashException(
-                        $"the block #{i} is not continuous from the block #{i - 1};" +
-                        $"while previous block's hash is {prevHash}, " +
-                        $"the block #{i}'s pointer to the previous hash refers to " +
-                        $"{block.PreviousHash?.ToString() ?? "nothing"}"
+                        $"the block #{i} is not continuous from the " +
+                        $"block #{i - 1}; while previous block's hash is " +
+                        $"{prevHash}, the block #{i}'s pointer to " +
+                        "the previous hash refers to " +
+                        (block.PreviousHash?.ToString() ?? "nothing")
                     );
                 }
 
@@ -112,8 +116,8 @@ namespace Libplanet
                 if (block.Timestamp <= prevTimestamp)
                 {
                     throw new InvalidBlockTimestampException(
-                        $"the block #{i}'s timestamp ({block.Timestamp}) is earlier than " +
-                        $"the block #{i - 1}'s ({prevTimestamp})"
+                        $"the block #{i}'s timestamp ({block.Timestamp}) is " +
+                        $"earlier than the block #{i - 1}'s ({prevTimestamp})"
                     );
                 }
 
@@ -289,7 +293,10 @@ namespace Libplanet
                     prevPrevTimestamp == null ||
                     prevTimestamp - prevPrevTimestamp < BlockInterval
                     );
-                difficulty = Math.Max(needMore ? difficulty + 1 : difficulty - 1, 1);
+                difficulty = Math.Max(
+                    needMore ? difficulty + 1 : difficulty - 1,
+                    1
+                );
                 yield return new DifficultyExpectation
                 {
                     Difficulty = difficulty,

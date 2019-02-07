@@ -14,7 +14,16 @@ namespace Libplanet.Blocks
             uint difficulty,
             byte[] previousHash,
             IEnumerable transactions)
-            : this(index, timestamp, nonce, rewardBenificiary, difficulty, previousHash, transactions, null)
+            : this(
+                index,
+                timestamp,
+                nonce,
+                rewardBenificiary,
+                difficulty,
+                previousHash,
+                transactions,
+                null
+            )
         {
         }
 
@@ -40,14 +49,17 @@ namespace Libplanet.Blocks
 
         internal RawBlock(SerializationInfo info, StreamingContext context)
             : this(
-                  index: info.GetUInt64("index"),
-                  timestamp: info.GetString("timestamp"),
-                  nonce: info.GetValue<byte[]>("nonce"),
-                  rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
-                  difficulty: info.GetUInt32("difficulty"),
-                  previousHash: info.GetValueOrDefault<byte[]>("previous_hash", null),
-                  transactions: info.GetValue<IEnumerable>("transactions"),
-                  hash: info.GetValue<byte[]>("hash")
+                index: info.GetUInt64("index"),
+                timestamp: info.GetString("timestamp"),
+                nonce: info.GetValue<byte[]>("nonce"),
+                rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
+                difficulty: info.GetUInt32("difficulty"),
+                previousHash: info.GetValueOrDefault<byte[]>(
+                    "previous_hash",
+                    null
+                ),
+                transactions: info.GetValue<IEnumerable>("transactions"),
+                hash: info.GetValue<byte[]>("hash")
             )
         {
         }
@@ -68,7 +80,10 @@ namespace Libplanet.Blocks
 
         public IEnumerable Transactions { get; }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             info.AddValue("index", Index);
             info.AddValue("timestamp", Timestamp);

@@ -109,7 +109,11 @@ namespace Libplanet.Net
 
         public DateTime LastDistributed { get; private set; }
 
-        public IDictionary<Peer, DateTime> LastSeenTimestamps { get; private set; }
+        public IDictionary<Peer, DateTime> LastSeenTimestamps
+        {
+            get;
+            private set;
+        }
 
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
@@ -129,7 +133,9 @@ namespace Libplanet.Net
                 }
             }
 
-            var existingKeys = new HashSet<PublicKey>(_peers.Keys.Select(p => p.PublicKey));
+            var existingKeys = new HashSet<PublicKey>(
+                _peers.Keys.Select(p => p.PublicKey)
+            );
             PublicKey publicKey = _privateKey.PublicKey;
             var addedPeers = new HashSet<Peer>();
 
@@ -151,12 +157,18 @@ namespace Libplanet.Net
                     try
                     {
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
-                        addedPeer = await DialPeerAsync(peer, cancellationToken);
+                        addedPeer = await DialPeerAsync(
+                            peer,
+                            cancellationToken
+                        );
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
                     }
                     catch (IOException e)
                     {
-                        _logger.Error(e, $"IOException occured in DialPeerAsync({peer}).");
+                        _logger.Error(
+                            e,
+                            $"IOException occured in DialPeerAsync ({peer})."
+                        );
                         continue;
                     }
                 }
@@ -176,7 +188,10 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    Peer replacedPeer = await DialPeerAsync(peer, cancellationToken);
+                    Peer replacedPeer = await DialPeerAsync(
+                        peer,
+                        cancellationToken
+                    );
                     if (replacedPeer != peer)
                     {
                         _peers[replacedPeer] = _peers[peer];
@@ -185,7 +200,10 @@ namespace Libplanet.Net
                 }
                 catch (IOException e)
                 {
-                    _logger.Error(e, $"IOException occured in DialPeerAsync({peer}).");
+                    _logger.Error(
+                        e,
+                        $"IOException occured in DialPeerAsync ({peer})."
+                    );
                     continue;
                 }
             }
@@ -198,7 +216,8 @@ namespace Libplanet.Net
         {
             if (_contextInitialized)
             {
-                Peer dialed = DialPeerAsync(item, CancellationToken.None).Result;
+                var task = DialPeerAsync(item, CancellationToken.None);
+                Peer dialed = task.Result;
                 _peers[dialed] = DateTime.UtcNow;
             }
             else
@@ -301,11 +320,13 @@ namespace Libplanet.Net
                 ProcessDeltaAsync(cancellationToken));
         }
 
-        internal async Task<IEnumerable<HashDigest<SHA256>>> GetBlockHashesAsync(
-            Peer peer,
-            BlockLocator locator,
-            HashDigest<SHA256>? stop,
-            CancellationToken token = default(CancellationToken))
+        internal async Task<IEnumerable<HashDigest<SHA256>>>
+            GetBlockHashesAsync(
+                Peer peer,
+                BlockLocator locator,
+                HashDigest<SHA256>? stop,
+                CancellationToken token = default(CancellationToken)
+            )
         {
             CheckEntered();
 
@@ -318,11 +339,13 @@ namespace Libplanet.Net
             return await GetBlockHashesAsync(sock, locator, stop, token);
         }
 
-        internal async Task<IEnumerable<HashDigest<SHA256>>> GetBlockHashesAsync(
-            DealerSocket sock,
-            BlockLocator locator,
-            HashDigest<SHA256>? stop,
-            CancellationToken cancellationToken)
+        internal async Task<IEnumerable<HashDigest<SHA256>>>
+            GetBlockHashesAsync(
+                DealerSocket sock,
+                BlockLocator locator,
+                HashDigest<SHA256>? stop,
+                CancellationToken cancellationToken
+            )
         {
             var request = new GetBlockHashes(locator, stop);
             await sock.SendMultipartMessageAsync(
@@ -509,13 +532,20 @@ namespace Libplanet.Net
                     {
                         // it's still async because some method it relies are
                         // async yet.
-                        await ProcessMessageAsync(blockchain, message, cancellationToken);
+                        await ProcessMessageAsync(
+                            blockchain,
+                            message,
+                            cancellationToken
+                        );
                     });
                     #pragma warning restore CS4014
                 }
                 catch (InvalidMessageException e)
                 {
-                    _logger.Error(e, "Can't parsed NetMQMessage properly. ignored.");
+                    _logger.Error(
+                        e,
+                        "Could not parse NetMQMessage properly; ignore."
+                    );
                 }
             }
         }
@@ -668,12 +698,15 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ProcessDeltaAsync(CancellationToken cancellationToken)
+        private async Task ProcessDeltaAsync(
+            CancellationToken cancellationToken
+        )
         {
+            TimeSpan step = TimeSpan.FromMilliseconds(100);
             while (true)
             {
                 PeerSetDelta delta;
-                while (!_deltas.TryDequeue(out delta, TimeSpan.FromMilliseconds(100)))
+                while (!_deltas.TryDequeue(out delta, step))
                 {
                     await Task.Delay(100, cancellationToken);
                 }
@@ -681,7 +714,8 @@ namespace Libplanet.Net
                 Peer sender = delta.Sender;
                 PublicKey senderKey = sender.PublicKey;
 
-                if (!_peers.ContainsKey(sender) && _peers.Keys.All(p => senderKey != p.PublicKey))
+                if (!_peers.ContainsKey(sender) &&
+                    _peers.Keys.All(p => senderKey != p.PublicKey))
                 {
                     delta = new PeerSetDelta(
                         delta.Sender,
@@ -710,10 +744,15 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ApplyDelta(PeerSetDelta delta, CancellationToken cancellationToken)
+        private async Task ApplyDelta(
+            PeerSetDelta delta,
+            CancellationToken cancellationToken
+        )
         {
             PublicKey senderPublicKey = delta.Sender.PublicKey;
-            bool firstEncounter = _peers.Keys.All(p => p.PublicKey != senderPublicKey);
+            bool firstEncounter = _peers.Keys.All(
+                p => p.PublicKey != senderPublicKey
+            );
             RemovePeers(delta.RemovedPeers, delta.Timestamp);
             var addedPeers = new HashSet<Peer>(delta.AddedPeers);
 
@@ -785,10 +824,11 @@ namespace Libplanet.Net
                 _removedPeers[peer] = timestamp;
             }
 
-            Dictionary<PublicKey, Peer[]> existingPeers = _peers.Keys.ToDictionary(
-                p => p.PublicKey,
-                p => new[] { p }
-            );
+            Dictionary<PublicKey, Peer[]> existingPeers =
+                _peers.Keys.ToDictionary(
+                    p => p.PublicKey,
+                    p => new[] { p }
+                );
 
             using (_distributeMutex.Lock())
             {
@@ -796,13 +836,17 @@ namespace Libplanet.Net
                 {
                     _peers.Remove(peer);
 
-                    _logger.Debug($"Trying to close dealers associated {peer}.");
+                    _logger.Debug(
+                        $"Trying to close dealers associated {peer}."
+                    );
                     if (_contextInitialized)
                     {
                         CloseDealer(peer);
                     }
 
-                    if (existingPeers.TryGetValue(peer.PublicKey, out Peer[] remains))
+                    var pubKey = peer.PublicKey;
+
+                    if (existingPeers.TryGetValue(pubKey, out Peer[] remains))
                     {
                         foreach (Peer key in remains)
                         {
@@ -831,7 +875,10 @@ namespace Libplanet.Net
         }
 
         private async Task<DealerSocket> DialAsync(
-            Uri address, DealerSocket dealer, CancellationToken cancellationToken)
+            Uri address,
+            DealerSocket dealer,
+            CancellationToken cancellationToken
+        )
         {
             CheckEntered();
 
@@ -860,7 +907,8 @@ namespace Libplanet.Net
             if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
             {
                 dealer = new DealerSocket();
-                dealer.Options.Identity = _privateKey.PublicKey.ToAddress().ToByteArray();
+                dealer.Options.Identity =
+                    _privateKey.PublicKey.ToAddress().ToByteArray();
             }
 
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
@@ -873,7 +921,10 @@ namespace Libplanet.Net
                 }
                 catch (IOException e)
                 {
-                    _logger.Error(e, $"IOException occured in DialAsync({url}).");
+                    _logger.Error(
+                        e,
+                        $"IOException occured in DialAsync ({url})."
+                    );
                     dealer.Disconnect(url.ToString());
                     continue;
                 }
@@ -909,15 +960,20 @@ namespace Libplanet.Net
                 _removedPeers,
                 before: now,
                 remove: true).ToImmutableHashSet();
+            var existingPeers = all
+                    ? _peers.Keys.ToImmutableHashSet().Except(addedPeers)
+                    : null;
             var delta = new PeerSetDelta(
                 sender: AsPeer,
                 timestamp: now,
                 addedPeers: addedPeers,
                 removedPeers: removedPeers,
-                existingPeers: all ? _peers.Keys.ToImmutableHashSet().Except(addedPeers) : null
+                existingPeers: existingPeers
             );
 
-            _logger.Debug($"Trying to distribute own delta[{delta.AddedPeers.Count}]...");
+            _logger.Debug(
+                $"Trying to distribute own delta ({delta.AddedPeers.Count})..."
+            );
             if (delta.AddedPeers.Any() || delta.RemovedPeers.Any() || all)
             {
                 LastDistributed = now;

@@ -294,7 +294,7 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new PrivateKey().PublicKey.ToAddress(),
                 new BaseAction[] { },
-                DateTime.Now
+                DateTime.UtcNow
             );
             chainB.StageTransactions(new[] { tx }.ToHashSet());
             chainB.MineBlock(_fx1.Address1);
@@ -346,7 +346,8 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new PrivateKey().PublicKey.ToAddress(),
                 new BaseAction[] { },
-                DateTime.Now);
+                DateTime.UtcNow
+            );
 
             chainA.StageTransactions(new[] { tx }.ToHashSet());
             chainA.MineBlock(_fx1.Address1);

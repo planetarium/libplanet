@@ -53,7 +53,10 @@ namespace Libplanet.Net
         [Uno.EqualityHash]
         public IImmutableSet<Peer> ExistingPeers { get; }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             info.AddValue("sender", Sender);
             info.AddValue("timestamp", Timestamp);

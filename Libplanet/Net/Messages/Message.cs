@@ -85,7 +85,9 @@ namespace Libplanet.Net.Messages
 
             if (!publicKey.Verify(body.ToByteArray(), signature))
             {
-                throw new InvalidMessageException("the message signature is invalid");
+                throw new InvalidMessageException(
+                    "the message signature is invalid"
+                );
             }
 
             var types = new Dictionary<MessageType, Type>
