@@ -420,6 +420,12 @@ references:
   fullName.vb: Libplanet.Address.Address(System.Byte())
   nameWithType: Address.Address(Byte[])
   nameWithType.vb: Address.Address(Byte())
+- uid: Libplanet.Address.#ctor(System.String)
+  name: Address(String)
+  href: api/Libplanet.Address.html#Libplanet_Address__ctor_System_String_
+  commentId: M:Libplanet.Address.#ctor(System.String)
+  fullName: Libplanet.Address.Address(System.String)
+  nameWithType: Address.Address(String)
 - uid: Libplanet.Address.#ctor*
   name: Address
   href: api/Libplanet.Address.html#Libplanet_Address__ctor_
