@@ -9,6 +9,7 @@ See also the docs for details:
 http://planetarium.github.io/libplanet.net/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
     <PackageProjectUrl>https://github.com/planetarium/libplanet.net</PackageProjectUrl>
+    <PackageDocumentationFile>README.md</PackageDocumentationFile>
     <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
