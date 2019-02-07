@@ -68,7 +68,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         internal static byte[] GetRandomBytes(int size)
         {
-            var random = new Random();
+            var random = new System.Random();
             var bytes = new byte[size];
             random.NextBytes(bytes);
 

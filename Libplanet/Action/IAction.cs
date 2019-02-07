@@ -11,6 +11,10 @@ namespace Libplanet.Action
 
         ISet<Address> RequestStates(Address from, Address to);
 
-        AddressStateMap Execute(Address from, Address to, AddressStateMap states);
+        AddressStateMap Execute(
+            Address from,
+            Address to,
+            AddressStateMap states,
+            IActionContext context);
     }
 }
