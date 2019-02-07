@@ -22,6 +22,7 @@ if compgen -G "Libplanet/bin/Release/Libplanet.*.nupkg" > /dev/null; then
     mono /tmp/nuget.exe push \
       "$f" \
       -ApiKey "$NUGET_API_KEY" \
+      -NonInteractive \
       -Source https://api.nuget.org/v3/index.json
   done
 fi
