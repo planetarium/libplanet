@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -47,6 +48,9 @@ namespace Libplanet.Tests
             Assert.Throws<IndexOutOfRangeException>(() => { var x = _blockchain[0]; });
             Block<BaseAction> block = _blockchain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockchain[0]);
+
+            // To avoid InvalidBlockTimestampException.
+            Thread.Sleep(100);
 
             Block<BaseAction> anotherBlock = _blockchain.MineBlock(_fx.Address2);
             Assert.Equal(anotherBlock, _blockchain[1]);

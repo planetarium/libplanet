@@ -11,6 +11,7 @@ using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
+using Libplanet.Tx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -244,23 +245,29 @@ namespace Libplanet.Tests.Net
                     async () => await swarmB.RunAsync(chainB, 250));
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
-                    async () => await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, null));
+                    async () => await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        null));
 
                 await swarmB.AddPeersAsync(new[] { swarmA.AsPeer });
 
                 IEnumerable<HashDigest<SHA256>> inventories1 =
-                    await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, null);
+                    await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        null);
                 Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories1);
 
                 IEnumerable<HashDigest<SHA256>> inventories2 =
-                    await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer, new[] { genesis.Hash }, block1.Hash);
+                    await swarmB.GetBlockHashesAsync(
+                        swarmA.AsPeer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        block1.Hash);
                 Assert.Equal(new[] { block1.Hash }, inventories2);
 
                 List<Block<BaseAction>> receivedBlocks =
-                    await swarmB.GetDataAsync<BaseAction>(
+                    await swarmB.GetBlocksAsync<BaseAction>(
                         swarmA.AsPeer, inventories1
                     ).ToListAsync();
 
@@ -271,6 +278,112 @@ namespace Libplanet.Tests.Net
                 await Task.WhenAll(
                     swarmA.DisposeAsync(),
                     swarmB.DisposeAsync());
+            }
+        }
+
+        [Fact]
+        public async Task CanGetTx()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                new PrivateKey(),
+                new PrivateKey().PublicKey.ToAddress(),
+                new BaseAction[] { },
+                DateTime.Now
+            );
+            chainB.StageTransactions(new[] { tx }.ToHashSet());
+            chainB.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync());
+
+                #pragma warning disable CS4014
+                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
+                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                #pragma warning restore CS4014
+
+                Assert.Throws<PeerNotFoundException>(
+                    () => swarmB.GetTxsAsync<BaseAction>(
+                        swarmA.AsPeer, new[] { tx.Id }));
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+
+                List<Transaction<BaseAction>> txs =
+                    await swarmA.GetTxsAsync<BaseAction>(
+                        swarmB.AsPeer, new[] { tx.Id }
+                    ).ToListAsync();
+
+                Assert.Equal(new[] { tx }, txs);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync());
+            }
+        }
+
+        [Fact]
+        public async Task CanBroadcastTx()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+            Swarm swarmC = _swarms[2];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+            Blockchain<BaseAction> chainC = _blockchains[2];
+
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                new PrivateKey(),
+                new PrivateKey().PublicKey.ToAddress(),
+                new BaseAction[] { },
+                DateTime.Now);
+
+            chainA.StageTransactions(new[] { tx }.ToHashSet());
+            chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync(),
+                    swarmC.InitContextAsync());
+
+                #pragma warning disable CS4014
+                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
+                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                Task.Run(async () => await swarmC.RunAsync(chainC, 250));
+                #pragma warning restore CS4014
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+                await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
+
+                await EnsureExchange(swarmA, swarmB);
+                await EnsureExchange(swarmA, swarmC);
+
+                await swarmA.BroadcastTxsAsync(new[] { tx });
+
+                await swarmC.TxReceived.WaitAsync();
+                await swarmB.TxReceived.WaitAsync();
+
+                Assert.Equal(tx, chainB.Transactions[tx.Id]);
+                Assert.Equal(tx, chainC.Transactions[tx.Id]);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync(),
+                    swarmC.DisposeAsync());
             }
         }
 

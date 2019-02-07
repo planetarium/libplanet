@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using Libplanet.Tx;
 using NetMQ;
 
 namespace Libplanet.Net
@@ -12,6 +13,11 @@ namespace Libplanet.Net
             where T : HashAlgorithm
         {
             return new HashDigest<T>(frame.ToByteArray());
+        }
+
+        public static TxId ConvertToTxId(this NetMQFrame frame)
+        {
+            return new TxId(frame.ToByteArray());
         }
 
         public static byte[] ToByteArray(this IEnumerable<NetMQFrame> frames)

@@ -3,21 +3,21 @@ using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
-    internal class Block : Message
+    internal class Tx : Message
     {
-        public Block(byte[] payload)
+        public Tx(byte[] payload)
         {
             Payload = payload;
         }
 
-        public Block(NetMQFrame[] body)
+        public Tx(NetMQFrame[] body)
         {
             Payload = body.ToByteArray();
         }
 
         public byte[] Payload { get; }
 
-        protected override MessageType Type => MessageType.Block;
+        protected override MessageType Type => MessageType.Tx;
 
         protected override IEnumerable<NetMQFrame> DataFrames
         {

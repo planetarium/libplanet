@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
 {
     internal abstract class Message
     {
-        protected enum MessageType : byte
+        internal enum MessageType : byte
         {
             /// <summary>
             /// Check message to determine peer is alive.
@@ -28,22 +28,37 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// Request to query block hashes.
             /// </summary>
-            GetBlocks = 0x04,
+            GetBlockHashes = 0x04,
 
             /// <summary>
-            /// Inventory to transfer blocks or txs.
+            /// Inventory to transfer blocks.
             /// </summary>
-            Inventory = 0x05,
+            BlockHashes = 0x05,
 
             /// <summary>
-            /// Request to query block or tx payload.
+            /// Inventory to transfer transactions.
             /// </summary>
-            GetData = 0x06,
+            TxIds = 0x06,
+
+            /// <summary>
+            /// Request to query blocks.
+            /// </summary>
+            GetBlocks = 0x07,
+
+            /// <summary>
+            /// Request to query transactions.
+            /// </summary>
+            GetTxs = 0x08,
 
             /// <summary>
             /// Message containing serialized block.
             /// </summary>
-            Block = 0x07,
+            Block = 0x09,
+
+            /// <summary>
+            /// Message containing serialized transaction.
+            /// </summary>
+            Tx = 0x10,
         }
 
         public Address? Identity { get; set; }
@@ -62,7 +77,7 @@ namespace Libplanet.Net.Messages
             // (reply == true)  [type, sign, pubkey, frames...]
             // (reply == false) [identity, type, sign, pubkey, frames...]
             int headerCount = reply ? 3 : 4;
-            var type = (MessageType)raw[headerCount - 3].ConvertToInt32();
+            var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
             var publicKey = new PublicKey(raw[headerCount - 2].ToByteArray());
             byte[] signature = raw[headerCount - 1].ToByteArray();
 
@@ -73,34 +88,28 @@ namespace Libplanet.Net.Messages
                 throw new InvalidMessageException("the message signature is invalid");
             }
 
-            Message message;
-            switch (type)
+            var types = new Dictionary<MessageType, Type>
             {
-                case MessageType.Ping:
-                    message = new Ping();
-                    break;
-                case MessageType.Pong:
-                    message = new Pong();
-                    break;
-                case MessageType.PeerSetDelta:
-                    message = PeerSetDelta.ParseBody(body);
-                    break;
-                case MessageType.GetBlocks:
-                    message = GetBlocks.ParseBody(body);
-                    break;
-                case MessageType.Inventory:
-                    message = Inventory.Parse(body);
-                    break;
-                case MessageType.GetData:
-                    message = GetData.Parse(body);
-                    break;
-                case MessageType.Block:
-                    message = Block.Parse(body);
-                    break;
-                default:
-                    throw new InvalidMessageException(
-                        $"Can't determine NetMQMessage. [type: {type}]");
+                { MessageType.Ping, typeof(Ping) },
+                { MessageType.Pong, typeof(Pong) },
+                { MessageType.PeerSetDelta, typeof(PeerSetDelta) },
+                { MessageType.GetBlockHashes, typeof(GetBlockHashes) },
+                { MessageType.BlockHashes, typeof(BlockHashes) },
+                { MessageType.TxIds, typeof(TxIds) },
+                { MessageType.GetBlocks, typeof(GetBlocks) },
+                { MessageType.GetTxs, typeof(GetTxs) },
+                { MessageType.Block, typeof(Block) },
+                { MessageType.Tx, typeof(Tx) },
+            };
+
+            if (!types.TryGetValue(rawType, out Type type))
+            {
+                throw new InvalidMessageException(
+                    $"Can't determine NetMQMessage. [type: {rawType}]");
             }
+
+            var message = (Message)Activator.CreateInstance(
+                type, new[] { body });
 
             if (!reply)
             {
