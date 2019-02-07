@@ -82,9 +82,10 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 "21744f4f08db23e044178dafb8273aeb5ebe6644"
             );
             var timestamp = new DateTime(2018, 11, 29);
-            return Block<T>.Mine(
+            return new Block<T>(
                 index: 0,
                 difficulty: 0,
+                nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
                 rewardBeneficiary: rewardBenificiary,
                 previousHash: null,
                 timestamp: timestamp,
@@ -93,7 +94,10 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         internal static Block<T> MineNext<T>(
-            Block<T> previousBlock, IEnumerable<Transaction<T>> txs = null)
+            Block<T> previousBlock,
+            IEnumerable<Transaction<T>> txs = null,
+            byte[] nonce = null
+        )
             where T : IAction
         {
             if (txs == null)
@@ -101,12 +105,31 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txs = new List<Transaction<T>>();
             }
 
-            return Block<T>.Mine(
-                index: 1,
-                difficulty: 1,
-                rewardBeneficiary: previousBlock.RewardBeneficiary.Value,
-                previousHash: previousBlock.Hash,
-                timestamp: previousBlock.Timestamp.AddDays(1),
+            const ulong index = 1;
+            const uint difficulty = 1;
+            HashDigest<SHA256> previousHash = previousBlock.Hash;
+            DateTime timestamp = previousBlock.Timestamp.AddDays(1);
+            Address rewardBeneficiary = previousBlock.RewardBeneficiary.Value;
+
+            if (nonce == null)
+            {
+                return Block<T>.Mine(
+                    index: index,
+                    difficulty: difficulty,
+                    rewardBeneficiary: rewardBeneficiary,
+                    previousHash: previousHash,
+                    timestamp: timestamp,
+                    transactions: txs
+                );
+            }
+
+            return new Block<T>(
+                index: index,
+                difficulty: difficulty,
+                nonce: new Nonce(nonce),
+                rewardBeneficiary: rewardBeneficiary,
+                previousHash: previousHash,
+                timestamp: timestamp,
                 transactions: txs
             );
         }
