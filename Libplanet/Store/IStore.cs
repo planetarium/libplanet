@@ -50,7 +50,10 @@ namespace Libplanet.Store
 
         AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
 
-        void SetBlockStates(HashDigest<SHA256> blockHash, AddressStateMap states);
+        void SetBlockStates(
+            HashDigest<SHA256> blockHash,
+            AddressStateMap states
+        );
 
         int CountTransactions();
 

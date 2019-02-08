@@ -20,7 +20,10 @@ namespace Libplanet.Net
         {
         }
 
-        protected NoSwarmContextException(SerializationInfo info, StreamingContext context)
+        protected NoSwarmContextException(
+            SerializationInfo info,
+            StreamingContext context
+        )
             : base(info, context)
         {
         }

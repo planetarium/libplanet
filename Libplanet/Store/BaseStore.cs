@@ -19,9 +19,14 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<Address> IterateAddresses();
 
-        public abstract IEnumerable<TxId> GetAddressTransactionIds(Address address);
+        public abstract IEnumerable<TxId> GetAddressTransactionIds(
+            Address address
+        );
 
-        public abstract long AppendAddressTransactionId(Address address, TxId txId);
+        public abstract long AppendAddressTransactionId(
+            Address address,
+            TxId txId
+        );
 
         public abstract void StageTransactionIds(ISet<TxId> txids);
 
@@ -49,9 +54,14 @@ namespace Libplanet.Store
 
         public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
 
-        public abstract AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
+        public abstract AddressStateMap GetBlockStates(
+            HashDigest<SHA256> blockHash
+        );
 
-        public abstract void SetBlockStates(HashDigest<SHA256> blockHash, AddressStateMap states);
+        public abstract void SetBlockStates(
+            HashDigest<SHA256> blockHash,
+            AddressStateMap states
+        );
 
         public int CountTransactions()
         {

@@ -7,7 +7,8 @@ using System.Runtime.Serialization;
 namespace Libplanet.Action
 {
     [Serializable]
-    public class AddressStateMap : IImmutableDictionary<Address, object>, ISerializable
+    public class AddressStateMap
+        : IImmutableDictionary<Address, object>, ISerializable
     {
         private IImmutableDictionary<Address, object> _impl;
 
@@ -21,7 +22,10 @@ namespace Libplanet.Action
             _impl = impl;
         }
 
-        protected AddressStateMap(SerializationInfo info, StreamingContext context)
+        protected AddressStateMap(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             var dict = new Dictionary<Address, object>();
 
@@ -41,12 +45,17 @@ namespace Libplanet.Action
 
         public object this[Address key] => _impl[key];
 
-        public IImmutableDictionary<Address, object> Add(Address key, object value)
+        public IImmutableDictionary<Address, object> Add(
+            Address key,
+            object value
+        )
         {
             return new AddressStateMap(_impl.Add(key, value));
         }
 
-        public IImmutableDictionary<Address, object> AddRange(IEnumerable<KeyValuePair<Address, object>> pairs)
+        public IImmutableDictionary<Address, object> AddRange(
+            IEnumerable<KeyValuePair<Address, object>> pairs
+        )
         {
             return new AddressStateMap(_impl.AddRange(pairs));
         }
@@ -76,17 +85,24 @@ namespace Libplanet.Action
             return new AddressStateMap(_impl.Remove(key));
         }
 
-        public IImmutableDictionary<Address, object> RemoveRange(IEnumerable<Address> keys)
+        public IImmutableDictionary<Address, object> RemoveRange(
+            IEnumerable<Address> keys
+        )
         {
             return new AddressStateMap(_impl.RemoveRange(keys));
         }
 
-        public IImmutableDictionary<Address, object> SetItem(Address key, object value)
+        public IImmutableDictionary<Address, object> SetItem(
+            Address key,
+            object value
+        )
         {
             return new AddressStateMap(_impl.SetItem(key, value));
         }
 
-        public IImmutableDictionary<Address, object> SetItems(IEnumerable<KeyValuePair<Address, object>> items)
+        public IImmutableDictionary<Address, object> SetItems(
+            IEnumerable<KeyValuePair<Address, object>> items
+        )
         {
             return new AddressStateMap(_impl.SetItems(items));
         }
@@ -106,7 +122,10 @@ namespace Libplanet.Action
             return _impl.GetEnumerator();
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             foreach (var kv in this)
             {

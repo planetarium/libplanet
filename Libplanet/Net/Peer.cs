@@ -57,7 +57,10 @@ namespace Libplanet.Net
         [Pure]
         public Peer AddUrl(Uri url) => new Peer(PublicKey, Urls.Add(url));
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             info.AddValue("public_key", PublicKey.Format(true));
             info.AddValue("urls", Urls.Select(u => u.ToString()).ToList());
@@ -65,9 +68,11 @@ namespace Libplanet.Net
 
         public override string ToString()
         {
+            IEnumerable<string> urlStrings = Urls.Select(u => u.ToString());
             return string.Join(
                 ",",
-                new[] { Address.ToString() }.Concat(Urls.Select(u => u.ToString())));
+                new[] { Address.ToString() }.Concat(urlStrings)
+            );
         }
     }
 }

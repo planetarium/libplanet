@@ -67,7 +67,10 @@ namespace Libplanet.Blocks
         {
             get
             {
-                byte[] bencoded = ToBencodex(hash: false, transactionData: true);
+                byte[] bencoded = ToBencodex(
+                    hash: false,
+                    transactionData: true
+                );
                 return Hashcash.Hash(bencoded);
             }
         }
@@ -156,7 +159,8 @@ namespace Libplanet.Blocks
                 if (Difficulty != 0)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"difficulty must be 0 for the genesis block, but its difficulty is {Difficulty}."
+                        "difficulty must be 0 for the genesis block, " +
+                        $"but its difficulty is {Difficulty}."
                     );
                 }
 
@@ -172,14 +176,17 @@ namespace Libplanet.Blocks
                 if (Difficulty < 1)
                 {
                     throw new InvalidBlockDifficultyException(
-                        $"difficulty must be more than 0 (except of the genesis block), but its difficulty is {Difficulty}."
+                        "difficulty must be more than 0 (except of " +
+                        "the genesis block), but its difficulty is " +
+                        $"{Difficulty}."
                     );
                 }
 
                 if (PreviousHash == null)
                 {
                     throw new InvalidBlockPreviousHashException(
-                        "previous hash must be present except of the genesis block."
+                        "previous hash must be present except of " +
+                        "the genesis block."
                     );
                 }
             }
@@ -187,7 +194,8 @@ namespace Libplanet.Blocks
             if (!Hash.HasLeadingZeroBits(Difficulty))
             {
                 throw new InvalidBlockNonceException(
-                    $"hash ({Hash}) with the nonce ({Nonce}) does not satisfy its difficulty level {Difficulty}."
+                    $"hash ({Hash}) with the nonce ({Nonce}) does not " +
+                    $"satisfy its difficulty level {Difficulty}."
                 );
             }
         }
@@ -197,21 +205,27 @@ namespace Libplanet.Blocks
             return Hash.ToString();
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             bool includeHash = false;
             bool includeTransactionData = false;
-            if (context.Context is BlockSerializationContext blockSerializationContext)
+            if (context.Context is BlockSerializationContext serialCtx)
             {
-                includeHash = blockSerializationContext.IncludeHash;
-                includeTransactionData = blockSerializationContext.IncludeTransactionData;
+                includeHash = serialCtx.IncludeHash;
+                includeTransactionData = serialCtx.IncludeTransactionData;
             }
 
             RawBlock rawBlock = ToRawBlock(includeHash, includeTransactionData);
             rawBlock.GetObjectData(info, context);
         }
 
-        internal RawBlock ToRawBlock(bool includeHash, bool includeTransactionData)
+        internal RawBlock ToRawBlock(
+            bool includeHash,
+            bool includeTransactionData
+        )
         {
             IEnumerable transactions =
                 Transactions.Select(

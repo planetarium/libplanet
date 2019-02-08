@@ -13,12 +13,18 @@ namespace Libplanet.Tx
         {
             if (bytes == null)
             {
-                throw new ArgumentNullException($"it must not be null", nameof(bytes));
+                throw new ArgumentNullException(
+                    $"It must not be null.",
+                    nameof(bytes)
+                );
             }
 
             if (bytes.Length != RequiredLength)
             {
-                throw new ArgumentException($"it must be {RequiredLength} bytes", nameof(bytes));
+                throw new ArgumentException(
+                    $"It must be {RequiredLength} bytes.",
+                    nameof(bytes)
+                );
             }
 
             _bytes = bytes;

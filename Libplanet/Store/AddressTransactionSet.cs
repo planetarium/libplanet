@@ -6,7 +6,8 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public class AddressTransactionSet<T> : BaseIndex<Address, IEnumerable<Transaction<T>>>
+    public class AddressTransactionSet<T>
+        : BaseIndex<Address, IEnumerable<Transaction<T>>>
         where T : IAction
     {
         public AddressTransactionSet(IStore store)
@@ -54,13 +55,13 @@ namespace Libplanet.Store
 
             set
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 
         public override bool Remove(Address key)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

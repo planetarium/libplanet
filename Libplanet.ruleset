@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for Libplanet" Description="Code analysis rules for Libplanet.csproj." ToolsVersion="10.0">
-  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+<RuleSet
+  Name="Rules for Libplanet"
+  Description="Code analysis rules for Libplanet.csproj."
+  ToolsVersion="10.0">
+
+  <Rules
+    AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis"
+    RuleNamespace="Microsoft.Rules.Managed">
+
     <!-- TODO: Write copyright -->
     <Rule Id="SA1633" Action="None" />
     <Rule Id="SA1652" Action="None" />
@@ -24,5 +31,13 @@
     <Rule Id="SA1600" Action="None" />
     <Rule Id="SA1601" Action="None" />
     <Rule Id="SA0001" Action="None" />
+  </Rules>
+
+  <Rules AnalyzerId="Menees.Analyzers" RuleNamespace="Menees.Analyzers">
+    <Rule Id="MEN002" Action="Warning" />
+    <Rule Id="MEN007" Action="None" />
+    <Rule Id="MEN009" Action="Warning" />
+    <Rule Id="MEN010" Action="None" />
+    <Rule Id="MEN011" Action="None" />
   </Rules>
 </RuleSet>

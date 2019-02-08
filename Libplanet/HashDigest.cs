@@ -35,7 +35,8 @@ namespace Libplanet
 
         static HashDigest()
         {
-            var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(null, new object[0]);
+            var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(
+                null, new object[0]);
             Size = thunk.HashSize / 8;
         }
 

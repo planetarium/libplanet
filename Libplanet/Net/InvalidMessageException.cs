@@ -20,7 +20,10 @@ namespace Libplanet.Net
         {
         }
 
-        protected InvalidMessageException(SerializationInfo info, StreamingContext context)
+        protected InvalidMessageException(
+            SerializationInfo info,
+            StreamingContext context
+        )
             : base(info, context)
         {
         }

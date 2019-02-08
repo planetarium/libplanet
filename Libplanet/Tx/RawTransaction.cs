@@ -13,22 +13,36 @@ namespace Libplanet.Tx
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
-                  sender: info.GetValue<byte[]>("sender"),
-                  publicKey: info.GetValue<byte[]>("public_key"),
-                  recipient: info.GetValue<byte[]>("recipient"),
-                  timestamp: info.GetString("timestamp"),
-                  signature: info.GetValue<byte[]>("signature"),
-                  actions: info.GetValue<IEnumerable>("actions").OfType<IDictionary<string, object>>()
+                sender: info.GetValue<byte[]>("sender"),
+                publicKey: info.GetValue<byte[]>("public_key"),
+                recipient: info.GetValue<byte[]>("recipient"),
+                timestamp: info.GetString("timestamp"),
+                signature: info.GetValue<byte[]>("signature"),
+                actions: info.GetValue<IEnumerable>(
+                    "actions").OfType<IDictionary<string, object>>()
               )
         {
         }
 
-        public RawTransaction(byte[] sender, byte[] recipient, byte[] publicKey, string timestamp, IEnumerable<IDictionary<string, object>> actions)
+        public RawTransaction(
+            byte[] sender,
+            byte[] recipient,
+            byte[] publicKey,
+            string timestamp,
+            IEnumerable<IDictionary<string, object>> actions
+        )
             : this(sender, recipient, publicKey, timestamp, actions, null)
         {
         }
 
-        public RawTransaction(byte[] sender, byte[] recipient, byte[] publicKey, string timestamp, IEnumerable<IDictionary<string, object>> actions, byte[] signature)
+        public RawTransaction(
+            byte[] sender,
+            byte[] recipient,
+            byte[] publicKey,
+            string timestamp,
+            IEnumerable<IDictionary<string, object>> actions,
+            byte[] signature
+        )
         {
             Sender = sender;
             Recipient = recipient;
@@ -69,17 +83,20 @@ namespace Libplanet.Tx
 
         public IEnumerable<IDictionary<string, object>> Actions { get; }
 
-        public static bool operator ==(RawTransaction transaction1, RawTransaction transaction2)
+        public static bool operator ==(RawTransaction tx1, RawTransaction tx2)
         {
-            return transaction1.Equals(transaction2);
+            return tx1.Equals(tx2);
         }
 
-        public static bool operator !=(RawTransaction transaction1, RawTransaction transaction2)
+        public static bool operator !=(RawTransaction tx1, RawTransaction tx2)
         {
-            return !(transaction1 == transaction2);
+            return !(tx1 == tx2);
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
         {
             info.AddValue("sender", Sender);
             info.AddValue("recipient", Recipient);

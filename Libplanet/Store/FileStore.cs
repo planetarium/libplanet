@@ -178,7 +178,9 @@ namespace Libplanet.Store
             return true;
         }
 
-        public override IEnumerable<TxId> GetAddressTransactionIds(Address address)
+        public override IEnumerable<TxId> GetAddressTransactionIds(
+            Address address
+        )
         {
             var addrFile = new FileInfo(GetAddressPath(address));
             if (addrFile.Exists)
@@ -212,9 +214,15 @@ namespace Libplanet.Store
             {
                 var formatter = new BencodexFormatter<RawBlock>();
                 RawBlock rawBlock = (RawBlock)formatter.Deserialize(stream);
-                HashDigest<SHA256>? previousHash = (rawBlock.PreviousHash != null) ?
-                    new HashDigest<SHA256>?(new HashDigest<SHA256>(rawBlock.PreviousHash)) :
-                    null;
+                HashDigest<SHA256>? previousHash = null;
+
+                if (rawBlock.PreviousHash != null)
+                {
+                    previousHash = new HashDigest<SHA256>?(
+                        new HashDigest<SHA256>(rawBlock.PreviousHash)
+                    );
+                }
+
                 return new Block<T>(
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
@@ -266,8 +274,15 @@ namespace Libplanet.Store
             using (Stream stream = IndexFileStream())
             {
                 var blockHash = new byte[HashDigest<SHA256>.Size];
-                stream.Seek(HashDigest<SHA256>.Size * (int)index, SeekOrigin.Begin);
-                var bytesRead = stream.Read(blockHash, 0, HashDigest<SHA256>.Size);
+                stream.Seek(
+                    HashDigest<SHA256>.Size * (int)index,
+                    SeekOrigin.Begin
+                );
+                var bytesRead = stream.Read(
+                    blockHash,
+                    0,
+                    HashDigest<SHA256>.Size
+                );
                 Trace.Assert(bytesRead == HashDigest<SHA256>.Size);
 
                 return new HashDigest<SHA256>(blockHash);
@@ -276,10 +291,17 @@ namespace Libplanet.Store
 
         public override IEnumerable<Address> IterateAddresses()
         {
-            var prefixRegex = new Regex(@"^[a-f0-9]{4}$", RegexOptions.IgnoreCase);
-            var restRegex = new Regex(@"^[a-f0-9]{36}$", RegexOptions.IgnoreCase);
+            var prefixRegex = new Regex(
+                @"^[a-f0-9]{4}$",
+                RegexOptions.IgnoreCase
+            );
+            var restRegex = new Regex(
+                @"^[a-f0-9]{36}$",
+                RegexOptions.IgnoreCase
+            );
             var addressesRoot = new DirectoryInfo(_addressesPath);
-            foreach (DirectoryInfo prefix in addressesRoot.EnumerateDirectories())
+            var prefixes = addressesRoot.EnumerateDirectories();
+            foreach (DirectoryInfo prefix in prefixes)
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
                 {
@@ -300,10 +322,17 @@ namespace Libplanet.Store
 
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            var prefixRegex = new Regex(@"^[a-f0-9]{4}$", RegexOptions.IgnoreCase);
-            var restRegex = new Regex(@"^[a-f0-9]{60}$", RegexOptions.IgnoreCase);
+            var prefixRegex = new Regex(
+                @"^[a-f0-9]{4}$",
+                RegexOptions.IgnoreCase
+            );
+            var restRegex = new Regex(
+                @"^[a-f0-9]{60}$",
+                RegexOptions.IgnoreCase
+            );
             var addressesRoot = new DirectoryInfo(_blocksPath);
-            foreach (DirectoryInfo prefix in addressesRoot.EnumerateDirectories())
+            var prefixes = addressesRoot.EnumerateDirectories();
+            foreach (DirectoryInfo prefix in prefixes)
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
                 {
@@ -317,7 +346,9 @@ namespace Libplanet.Store
                         continue;
                     }
 
-                    yield return new HashDigest<SHA256>(ByteUtil.ParseHex(prefix.Name + rest.Name));
+                    yield return new HashDigest<SHA256>(
+                        ByteUtil.ParseHex(prefix.Name + rest.Name)
+                    );
                 }
             }
         }
@@ -334,7 +365,11 @@ namespace Libplanet.Store
                 while (true)
                 {
                     var blockHash = new byte[HashDigest<SHA256>.Size];
-                    var bytesRead = stream.Read(blockHash, 0, HashDigest<SHA256>.Size);
+                    var bytesRead = stream.Read(
+                        blockHash,
+                        0,
+                        HashDigest<SHA256>.Size
+                    );
 
                     if (bytesRead == 0)
                     {
@@ -351,7 +386,8 @@ namespace Libplanet.Store
             var stagingDirectory = new DirectoryInfo(_stagedTransactionsPath);
             if (stagingDirectory.Exists)
             {
-                foreach (var staged in new DirectoryInfo(_stagedTransactionsPath).EnumerateFiles())
+                var dir = new DirectoryInfo(_stagedTransactionsPath);
+                foreach (var staged in dir.EnumerateFiles())
                 {
                     yield return new TxId(ByteUtil.ParseHex(staged.Name));
                 }
@@ -361,10 +397,16 @@ namespace Libplanet.Store
         public override IEnumerable<TxId> IterateTransactionIds()
         {
             // TODO: refactor
-            var prefixRegex = new Regex(@"^[a-f0-9]{4}$", RegexOptions.IgnoreCase);
-            var restRegex = new Regex(@"^[a-f0-9]{60}$", RegexOptions.IgnoreCase);
-            var transactionsRoot = new DirectoryInfo(_transactionsPath);
-            foreach (DirectoryInfo prefix in transactionsRoot.EnumerateDirectories())
+            var prefixRegex = new Regex(
+                @"^[a-f0-9]{4}$",
+                RegexOptions.IgnoreCase
+            );
+            var restRegex = new Regex(
+                @"^[a-f0-9]{60}$",
+                RegexOptions.IgnoreCase
+            );
+            var rootDir = new DirectoryInfo(_transactionsPath);
+            foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
                 {
@@ -378,7 +420,9 @@ namespace Libplanet.Store
                         continue;
                     }
 
-                    yield return new TxId(ByteUtil.ParseHex(prefix.Name + rest.Name));
+                    yield return new TxId(
+                        ByteUtil.ParseHex(prefix.Name + rest.Name)
+                    );
                 }
             }
         }
@@ -392,9 +436,13 @@ namespace Libplanet.Store
 
             var blockFile = new FileInfo(GetBlockPath(block.Hash));
             blockFile.Directory.Create();
-            using (Stream stream = blockFile.Open(FileMode.OpenOrCreate, FileAccess.Write))
+            using (Stream stream = blockFile.Open(
+                FileMode.OpenOrCreate, FileAccess.Write))
             {
-                byte[] blockBytes = block.ToBencodex(true, transactionData: false);
+                byte[] blockBytes = block.ToBencodex(
+                    true,
+                    transactionData: false
+                );
                 stream.Write(blockBytes, 0, blockBytes.Length);
             }
         }
@@ -403,7 +451,8 @@ namespace Libplanet.Store
         {
             var txFile = new FileInfo(GetTransactionPath(tx.Id));
             txFile.Directory.Create();
-            using (Stream stream = txFile.Open(FileMode.OpenOrCreate, FileAccess.Write))
+            using (Stream stream = txFile.Open(
+                FileMode.OpenOrCreate, FileAccess.Write))
             {
                 byte[] txBytes = tx.ToBencodex(true);
                 stream.Write(txBytes, 0, txBytes.Length);
@@ -429,7 +478,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
+        public override AddressStateMap GetBlockStates(
+            HashDigest<SHA256> blockHash
+        )
         {
             var statesFile = new FileInfo(GetStatesPath(blockHash));
 
@@ -445,7 +496,10 @@ namespace Libplanet.Store
             }
         }
 
-        public override void SetBlockStates(HashDigest<SHA256> blockHash, AddressStateMap states)
+        public override void SetBlockStates(
+            HashDigest<SHA256> blockHash,
+            AddressStateMap states
+        )
         {
             var statesFile = new FileInfo(GetStatesPath(blockHash));
             if (!statesFile.Directory.Exists)
@@ -462,7 +516,8 @@ namespace Libplanet.Store
 
         private FileStream IndexFileStream()
         {
-            var stream = new FileStream(_indexPath, FileMode.Open, FileAccess.Read);
+            var stream =
+                    new FileStream(_indexPath, FileMode.Open, FileAccess.Read);
             if (stream.Length % HashDigest<SHA256>.Size != 0)
             {
                 throw new FileLoadException(
@@ -474,7 +529,9 @@ namespace Libplanet.Store
             return stream;
         }
 
-        private IEnumerable<Transaction<T>> GetTransactions<T>(IEnumerable transactions)
+        private IEnumerable<Transaction<T>> GetTransactions<T>(
+            IEnumerable transactions
+        )
             where T : IAction
         {
             return transactions

@@ -25,7 +25,9 @@ namespace Libplanet.Net
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
-                        $"The operation exceeded the specified time[{timeout}].");
+                        "The operation exceeded the specified time: " +
+                        $"{timeout}."
+                    );
                 }
             }
         }
@@ -48,7 +50,9 @@ namespace Libplanet.Net
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
-                        $"The operation exceeded the specified time[{timeout}].");
+                        "The operation exceeded the specified time: " +
+                        $"{timeout}."
+                    );
                 }
             }
         }
@@ -71,7 +75,9 @@ namespace Libplanet.Net
                 if (elapsed > timeout)
                 {
                     throw new TimeoutException(
-                        $"The operation exceeded the specified time[{timeout}].");
+                        "The operation exceeded the specified time: " +
+                        $"{timeout}."
+                    );
                 }
             }
 
