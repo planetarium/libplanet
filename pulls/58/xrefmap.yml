@@ -344,12 +344,12 @@ references:
   commentId: T:Libplanet.Action.IAction
   fullName: Libplanet.Action.IAction
   nameWithType: IAction
-- uid: Libplanet.Action.IAction.Execute(Libplanet.Address,Libplanet.Address,Libplanet.Action.AddressStateMap,Libplanet.Action.IActionContext)
-  name: Execute(Address, Address, AddressStateMap, IActionContext)
-  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Address_Libplanet_Address_Libplanet_Action_AddressStateMap_Libplanet_Action_IActionContext_
-  commentId: M:Libplanet.Action.IAction.Execute(Libplanet.Address,Libplanet.Address,Libplanet.Action.AddressStateMap,Libplanet.Action.IActionContext)
-  fullName: Libplanet.Action.IAction.Execute(Libplanet.Address, Libplanet.Address, Libplanet.Action.AddressStateMap, Libplanet.Action.IActionContext)
-  nameWithType: IAction.Execute(Address, Address, AddressStateMap, IActionContext)
+- uid: Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  nameWithType: IAction.Execute(IActionContext)
 - uid: Libplanet.Action.IAction.Execute*
   name: Execute
   href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_
@@ -405,6 +405,32 @@ references:
   commentId: T:Libplanet.Action.IActionContext
   fullName: Libplanet.Action.IActionContext
   nameWithType: IActionContext
+- uid: Libplanet.Action.IActionContext.From
+  name: From
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From
+  commentId: P:Libplanet.Action.IActionContext.From
+  fullName: Libplanet.Action.IActionContext.From
+  nameWithType: IActionContext.From
+- uid: Libplanet.Action.IActionContext.From*
+  name: From
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From_
+  commentId: Overload:Libplanet.Action.IActionContext.From
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.From
+  nameWithType: IActionContext.From
+- uid: Libplanet.Action.IActionContext.PreviousStates
+  name: PreviousStates
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
+  commentId: P:Libplanet.Action.IActionContext.PreviousStates
+  fullName: Libplanet.Action.IActionContext.PreviousStates
+  nameWithType: IActionContext.PreviousStates
+- uid: Libplanet.Action.IActionContext.PreviousStates*
+  name: PreviousStates
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates_
+  commentId: Overload:Libplanet.Action.IActionContext.PreviousStates
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.PreviousStates
+  nameWithType: IActionContext.PreviousStates
 - uid: Libplanet.Action.IActionContext.Random
   name: Random
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random
@@ -418,6 +444,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.Random
   nameWithType: IActionContext.Random
+- uid: Libplanet.Action.IActionContext.To
+  name: To
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_To
+  commentId: P:Libplanet.Action.IActionContext.To
+  fullName: Libplanet.Action.IActionContext.To
+  nameWithType: IActionContext.To
+- uid: Libplanet.Action.IActionContext.To*
+  name: To
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_To_
+  commentId: Overload:Libplanet.Action.IActionContext.To
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.To
+  nameWithType: IActionContext.To
 - uid: Libplanet.Action.IRandom
   name: IRandom
   href: api/Libplanet.Action.IRandom.html
