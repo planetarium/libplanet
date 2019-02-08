@@ -344,12 +344,12 @@ references:
   commentId: T:Libplanet.Action.IAction
   fullName: Libplanet.Action.IAction
   nameWithType: IAction
-- uid: Libplanet.Action.IAction.Execute(Libplanet.Address,Libplanet.Address,Libplanet.Action.AddressStateMap)
-  name: Execute(Address, Address, AddressStateMap)
-  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Address_Libplanet_Address_Libplanet_Action_AddressStateMap_
-  commentId: M:Libplanet.Action.IAction.Execute(Libplanet.Address,Libplanet.Address,Libplanet.Action.AddressStateMap)
-  fullName: Libplanet.Action.IAction.Execute(Libplanet.Address, Libplanet.Address, Libplanet.Action.AddressStateMap)
-  nameWithType: IAction.Execute(Address, Address, AddressStateMap)
+- uid: Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)
+  nameWithType: IAction.Execute(IActionContext)
 - uid: Libplanet.Action.IAction.Execute*
   name: Execute
   href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_
@@ -399,6 +399,124 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAction.RequestStates
   nameWithType: IAction.RequestStates
+- uid: Libplanet.Action.IActionContext
+  name: IActionContext
+  href: api/Libplanet.Action.IActionContext.html
+  commentId: T:Libplanet.Action.IActionContext
+  fullName: Libplanet.Action.IActionContext
+  nameWithType: IActionContext
+- uid: Libplanet.Action.IActionContext.From
+  name: From
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From
+  commentId: P:Libplanet.Action.IActionContext.From
+  fullName: Libplanet.Action.IActionContext.From
+  nameWithType: IActionContext.From
+- uid: Libplanet.Action.IActionContext.From*
+  name: From
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From_
+  commentId: Overload:Libplanet.Action.IActionContext.From
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.From
+  nameWithType: IActionContext.From
+- uid: Libplanet.Action.IActionContext.PreviousStates
+  name: PreviousStates
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
+  commentId: P:Libplanet.Action.IActionContext.PreviousStates
+  fullName: Libplanet.Action.IActionContext.PreviousStates
+  nameWithType: IActionContext.PreviousStates
+- uid: Libplanet.Action.IActionContext.PreviousStates*
+  name: PreviousStates
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates_
+  commentId: Overload:Libplanet.Action.IActionContext.PreviousStates
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.PreviousStates
+  nameWithType: IActionContext.PreviousStates
+- uid: Libplanet.Action.IActionContext.Random
+  name: Random
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random
+  commentId: P:Libplanet.Action.IActionContext.Random
+  fullName: Libplanet.Action.IActionContext.Random
+  nameWithType: IActionContext.Random
+- uid: Libplanet.Action.IActionContext.Random*
+  name: Random
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random_
+  commentId: Overload:Libplanet.Action.IActionContext.Random
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.Random
+  nameWithType: IActionContext.Random
+- uid: Libplanet.Action.IActionContext.To
+  name: To
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_To
+  commentId: P:Libplanet.Action.IActionContext.To
+  fullName: Libplanet.Action.IActionContext.To
+  nameWithType: IActionContext.To
+- uid: Libplanet.Action.IActionContext.To*
+  name: To
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_To_
+  commentId: Overload:Libplanet.Action.IActionContext.To
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.To
+  nameWithType: IActionContext.To
+- uid: Libplanet.Action.IRandom
+  name: IRandom
+  href: api/Libplanet.Action.IRandom.html
+  commentId: T:Libplanet.Action.IRandom
+  fullName: Libplanet.Action.IRandom
+  nameWithType: IRandom
+- uid: Libplanet.Action.IRandom.Next
+  name: Next()
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Next
+  commentId: M:Libplanet.Action.IRandom.Next
+  fullName: Libplanet.Action.IRandom.Next()
+  nameWithType: IRandom.Next()
+- uid: Libplanet.Action.IRandom.Next(System.Int32)
+  name: Next(Int32)
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Next_System_Int32_
+  commentId: M:Libplanet.Action.IRandom.Next(System.Int32)
+  fullName: Libplanet.Action.IRandom.Next(System.Int32)
+  nameWithType: IRandom.Next(Int32)
+- uid: Libplanet.Action.IRandom.Next(System.Int32,System.Int32)
+  name: Next(Int32, Int32)
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Next_System_Int32_System_Int32_
+  commentId: M:Libplanet.Action.IRandom.Next(System.Int32,System.Int32)
+  fullName: Libplanet.Action.IRandom.Next(System.Int32, System.Int32)
+  nameWithType: IRandom.Next(Int32, Int32)
+- uid: Libplanet.Action.IRandom.Next*
+  name: Next
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_Next_
+  commentId: Overload:Libplanet.Action.IRandom.Next
+  isSpec: "True"
+  fullName: Libplanet.Action.IRandom.Next
+  nameWithType: IRandom.Next
+- uid: Libplanet.Action.IRandom.NextBytes(System.Byte[])
+  name: NextBytes(Byte[])
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_NextBytes_System_Byte___
+  commentId: M:Libplanet.Action.IRandom.NextBytes(System.Byte[])
+  name.vb: NextBytes(Byte())
+  fullName: Libplanet.Action.IRandom.NextBytes(System.Byte[])
+  fullName.vb: Libplanet.Action.IRandom.NextBytes(System.Byte())
+  nameWithType: IRandom.NextBytes(Byte[])
+  nameWithType.vb: IRandom.NextBytes(Byte())
+- uid: Libplanet.Action.IRandom.NextBytes*
+  name: NextBytes
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_NextBytes_
+  commentId: Overload:Libplanet.Action.IRandom.NextBytes
+  isSpec: "True"
+  fullName: Libplanet.Action.IRandom.NextBytes
+  nameWithType: IRandom.NextBytes
+- uid: Libplanet.Action.IRandom.NextDouble
+  name: NextDouble()
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_NextDouble
+  commentId: M:Libplanet.Action.IRandom.NextDouble
+  fullName: Libplanet.Action.IRandom.NextDouble()
+  nameWithType: IRandom.NextDouble()
+- uid: Libplanet.Action.IRandom.NextDouble*
+  name: NextDouble
+  href: api/Libplanet.Action.IRandom.html#Libplanet_Action_IRandom_NextDouble_
+  commentId: Overload:Libplanet.Action.IRandom.NextDouble
+  isSpec: "True"
+  fullName: Libplanet.Action.IRandom.NextDouble
+  nameWithType: IRandom.NextDouble
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
