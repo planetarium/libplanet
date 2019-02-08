@@ -277,6 +277,34 @@ namespace Libplanet
             }
         }
 
+        internal BlockLocator GetBlockLocator(int threshold = 10)
+        {
+            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+            ulong step = 1;
+            var hashes = new List<HashDigest<SHA256>>();
+
+            while (current is HashDigest<SHA256> hash)
+            {
+                hashes.Add(hash);
+                Block<T> currentBlock = Blocks[hash];
+
+                if (currentBlock.Index == 0)
+                {
+                    break;
+                }
+
+                ulong nextIndex = Math.Max(currentBlock.Index - step, 0);
+                current = Store.IndexBlockHash((long)nextIndex);
+
+                if (hashes.Count > threshold)
+                {
+                    step *= 2;
+                }
+            }
+
+            return new BlockLocator(hashes);
+        }
+
         private static IEnumerable<DifficultyExpectation> ExpectDifficulties(
             IEnumerable<Block<T>> blocks, bool yieldNext = false)
         {

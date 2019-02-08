@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -210,6 +211,27 @@ namespace Libplanet.Tests
             _blockchain.DeleteAfter(block2.Hash);
 
             Assert.Equal(new[] { block1, block2 }, _blockchain);
+        }
+
+        [Fact]
+        public void CanGetBlockLocator()
+        {
+            List<Block<BaseAction>> blocks = Enumerable.Range(0, 10)
+                .Select(_ => _blockchain.MineBlock(_fx.Address1))
+                .ToList();
+
+            BlockLocator actual = _blockchain.GetBlockLocator(threshold: 2);
+            BlockLocator expected = new BlockLocator(new[]
+            {
+                blocks[9].Hash,
+                blocks[8].Hash,
+                blocks[7].Hash,
+                blocks[6].Hash,
+                blocks[4].Hash,
+                blocks[0].Hash,
+            });
+
+            Assert.Equal(expected, actual);
         }
     }
 }
