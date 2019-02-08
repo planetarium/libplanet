@@ -42,6 +42,8 @@ namespace Libplanet
 
         public IStore Store { get; }
 
+        public Block<T> Tip => this[-1];
+
         public Block<T> this[long index]
         {
             get

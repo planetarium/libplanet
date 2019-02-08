@@ -472,6 +472,19 @@ namespace Libplanet.Net
             });
         }
 
+        internal async Task BroadcastBlocksAsync<T>(
+            IEnumerable<Block<T>> blocks,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Broadcast Blocks.");
+            var message = new BlockHashes(blocks.Select(b => b.Hash));
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
+        }
+
         internal async Task BroadcastTxsAsync<T>(
             IEnumerable<Transaction<T>> txs,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -611,9 +624,94 @@ namespace Libplanet.Net
                         break;
                     }
 
+                case BlockHashes blockHashes:
+                    {
+                        await ProcessBlockHashes(
+                            blockHashes, blockchain, cancellationToken);
+                        break;
+                    }
+
                 default:
                     Trace.Fail($"Can't handle message. [{message}]");
                     break;
+            }
+        }
+
+        private async Task ProcessBlockHashes<T>(
+            BlockHashes message,
+            Blockchain<T> blockchain,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            if (!(message.Identity is Address from))
+            {
+                throw new NullReferenceException(
+                    "BlockHashes doesn't have sender address.");
+            }
+
+            if (!_dealers.TryGetValue(from, out DealerSocket sock))
+            {
+                _logger.Information(
+                    "BlockHashes was sent from unknown peer. ignored.");
+                return;
+            }
+
+            IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
+                sock, message.Hashes, cancellationToken);
+
+            List<Block<T>> blocks = await fetched.ToListAsync();
+            await AppendBlocksAsync(
+                sock, blockchain, blocks, cancellationToken);
+        }
+
+        private async Task AppendBlocksAsync<T>(
+            DealerSocket socket,
+            Blockchain<T> blockchain,
+            List<Block<T>> blocks,
+            CancellationToken cancellationToken)
+            where T : IAction
+        {
+            // We assume that the blocks are sorted in order.
+            Block<T> oldest = blocks.First();
+            Block<T> latest = blocks.Last();
+            HashDigest<SHA256>? tip = blockchain.Store.IndexBlockHash(-1);
+
+            if (tip == null || oldest.PreviousHash == tip)
+            {
+                // Caught up with everything, so we just connect it.
+                foreach (Block<T> block in blocks)
+                {
+                    blockchain.Append(block);
+                }
+            }
+            else if (latest.Index > blockchain.Tip.Index)
+            {
+                // We need some other blocks, so request to sender.
+                BlockLocator locator = blockchain.GetBlockLocator();
+                IEnumerable<HashDigest<SHA256>> hashes =
+                    await GetBlockHashesAsync(
+                        socket, locator, oldest.Hash, cancellationToken);
+                HashDigest<SHA256> branchPoint = hashes.First();
+
+                blockchain.DeleteAfter(branchPoint);
+
+                await GetBlocksAsync<T>(
+                    socket,
+                    hashes.Skip(1),
+                    cancellationToken
+                ).ForEachAsync(block =>
+                {
+                    blockchain.Append(block);
+                });
+
+                await AppendBlocksAsync(
+                    socket, blockchain, blocks, cancellationToken);
+            }
+            else
+            {
+                _logger.Information(
+                    "Received index is older than current chain's tip." +
+                    " ignored.");
             }
         }
 
