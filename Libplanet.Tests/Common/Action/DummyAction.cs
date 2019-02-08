@@ -8,11 +8,7 @@ namespace Libplanet.Tests.Common.Action
     {
         public override IImmutableDictionary<string, object> PlainValue => throw new NotImplementedException();
 
-        public override AddressStateMap Execute(
-            Address sender,
-            Address recipient,
-            AddressStateMap requestedStates,
-            IActionContext context)
+        public override AddressStateMap Execute(IActionContext context)
         {
             throw new NotImplementedException();
         }

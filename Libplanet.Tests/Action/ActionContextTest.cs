@@ -15,7 +15,12 @@ namespace Libplanet.Tests.Action
             };
             foreach (var (seed, expected) in testCases)
             {
-                var context = new ActionContext(seed);
+                var context = new ActionContext(
+                    from: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                    to: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                    previousStates: new AddressStateMap(),
+                    randomSeed: seed
+                );
                 IRandom random = context.Random;
                 Assert.Equal(expected, random.Next());
             }
