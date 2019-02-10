@@ -84,6 +84,22 @@ install:
     done
     mv */*.exe */*.dll /c/Windows/
     popd
+
+    # Tools for test coverage (dotcover-clt, codecov-exe, xunit)
+    if [[ "$CODECOV_TOKEN" != "" ]]; then
+      mkdir /tmp/dotcover
+      pushd /tmp
+      wget \
+        https://download.jetbrains.com/resharper/ReSharperUltimate.2018.3.3/JetBrains.dotCover.CommandLineTools.2018.3.3.zip
+      pushd dotcover
+      7z x ../JetBrains.dotCover.CommandLineTools.*.zip
+      popd
+      mv dotcover/* /c/Windows/
+      rm JetBrains.dotCover.CommandLineTools.*.zip
+      popd
+
+      choco install codecov xunit
+    fi
   fi
   set +ev
 - nuget restore Libplanet.sln
@@ -132,6 +148,23 @@ script:
 
 # Run unit tests
 - msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
+
+# Run unit tests with coverage report
+- cat codecov.yml | curl --data-binary @- https://codecov.io/validate
+- |
+  if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
+    msbuild /p:Configuration=Debug /p:DebugType=full /p:DebugSymbols:true /r
+    for assembly in Libplanet.Tests/bin/Debug/*/Libplanet.Tests.dll; do
+      echo "$assembly:"
+      dotCover_config="$(cat .travis.dotCover.xml)"
+      assembly_abspath="$(cygpath -w "$(pwd)/$assembly")"
+      echo "${dotCover_config//\$ASSEMBLY/$assembly_abspath}" \
+        > "$assembly.dotCover.xml"
+      dotCover.exe cover "$assembly.dotCover.xml"
+      # Upload report to Codecov.io
+      codecov.exe -f "$assembly.cov.xml" -t "$CODECOV_TOKEN"
+    done
+  fi
 
 # Build Libplanet.*.nupkg
 - |
