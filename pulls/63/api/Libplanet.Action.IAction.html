@@ -84,7 +84,7 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
-<p>By convention, action classes are named verbally, e.g.,
+<p>By convention, action classes are named with verb phrases, e.g.,
 <code>Heal</code>, <code>Sell</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -96,13 +96,13 @@ a constructor parameters of that class.</p>
   </div>
   <h5 id="Libplanet_Action_IAction_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every action class should be marked with the
-<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  Even if a superclass which is marked
+<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  Even if a superclass is marked
 with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> its subclass also should be
 marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
 </div>
   <h5 id="Libplanet_Action_IAction_examples"><strong>Examples</strong></h5>
-  <p>The following example shows how to implement an action someone healing
-someone:</p>
+  <p>The following example shows how to implement an action of a character
+healing someone:</p>
 <pre><code>using System;
 using System.Collections.Generic;
 using Libplanet.Action;
@@ -138,7 +138,7 @@ public class Heal : IAction
         return new HashSet&lt;Address> { from, to }.ToImmutableHashSet();
     }
 
-    // The main game logic goes to Execute() method.  It takes the
+    // The main game logic belongs to here.  It takes the
     // previous states through its parameter named context,
     // and is offered &quot;bound&quot; argument values through
     // its own properties (or fields).
@@ -168,7 +168,7 @@ public class Heal : IAction
         if (receiver == null)
             throw new Exception(&quot;Receiver&apos;s player was not made.&quot;);
 
-        // The amount of healt to be healed is randomly determined
+        // The amount of health to be healed is randomly determined
         // in a range from 10 to 15 (see HealedHealthMin and
         // HealedHealthMax).  Note that it does not use System.Random.
         int healedHealth = context.Random.Next(
@@ -177,7 +177,7 @@ public class Heal : IAction
         );
 
         // Prepares new game objects that represent states after
-        // this action affected.  Note that Character objects are
+        // this action executes.  Note that Character objects are
         // immutable, so their properties do not have setter but
         // WithPropName() methods instead.
         Character targetPrev = receiver.Characters[TargetId];
@@ -231,9 +231,9 @@ public class Heal : IAction
   </span>
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
-  <div class="markdown level1 summary"><p>Serializes values bound to an action, which held by properties
-(or fields) of an action, so that they are transmitted over network
-or stored to the persistent storage.</p>
+  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
+(or fields) of an action, so that they can be transmitted over
+network or saved to persistent storage.</p>
 <p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
 later.</p>
 <p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
@@ -277,11 +277,10 @@ by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-u
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
   <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
 <em>deterministic</em>.</p>
-<p>It is offered information such as a sender and a receiver of
-the transaction this action belongs to, states immediately before
-this action is executed, and a deterministic random seed, through
-the <code data-dev-comment-type="paramref" class="paramref">context</code> object.
-</p>
+<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
+it receives information such as a transaction sender and a receiver,
+its states immediately before the execution,
+and a deterministic random seed.</p>
 <p>Other “bound” information resides in the action
 object in itself, as its properties (or fields).</p>
 <p>A returned <a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a> object functions as
@@ -305,10 +304,10 @@ a delta which shifts from previous states to next states.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td><p>A context object which holds addresses that
-signed and receives the transaction this action belongs to, states
-immediately before this action is executed, and a PRNG object
-which procudes deterministic random numbers.
+        <td><p>A context object containing addresses that
+signed and receives the transaction,
+states immediately before the execution,
+and a PRNG object which produces deterministic random numbers.
 See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
 </td>
       </tr>
@@ -325,21 +324,22 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></td>
-        <td><p>A map of <a class="xref" href="Libplanet.Address.html">Address</a>es to update their states.
-Only addresses this map contains are updated in the global states.
+        <td><p>A map of <a class="xref" href="Libplanet.Address.html">Address</a>es with changed states.
+Only those addresses this map contains will have their states
+updated globally.
 That means, addresses this map misses are unchanged.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method should be replayable (deterministic).
-For structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
+  <div class="markdown level1 remarks"><p>This method should be deterministic:
+for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
 <p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
-nor any other PRNGs provided by other than Libplanet, but use
-<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
-<p>It also disallows to do any I/O like file system access or
-networking.  These bring an action indeterministic.</p>
+nor any other PRNGs provided by other than Libplanet.
+Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
+<p>Also do not perform I/O operations such as file system access
+or networking.  These bring an action indeterministic.</p>
 </div>
   <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
   <div class="seealso">
@@ -354,9 +354,9 @@ networking.  These bring an action indeterministic.</p>
   </span>
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Deserializes values made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a> property, and
-then fills this action's properties (or fields) with
-the deserialized values.</p>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -376,9 +376,9 @@ the deserialized values.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">plainValue</span></td>
-        <td><p>Data, made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
-property, to deserialize and populate this action's properties
-(or fields).</p>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
 </td>
       </tr>
     </tbody>
@@ -400,7 +400,7 @@ property, to deserialize and populate this action's properties
 to fetch states.</p>
 <p>For example, if an action is someone healing someone it needs
 to know a healer&apos;s remaning mana (i.e., MP) and a healing target&apos;s
-remaning health (i.e., HP).  As a healing character belongs to
+remaining health (i.e., HP).  As a healing character belongs to
 an account who signed the transaction and a healed character belongs
 to an account who will receive the transaction, that healing
 action&apos;s <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address_">RequestStates(Address, Address)</a> should

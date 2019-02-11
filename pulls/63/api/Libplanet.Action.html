@@ -79,16 +79,16 @@
   </h3>
       <h4><a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a></h4>
       <section><p>Indicates that an action class (i.e., a class implementing
-<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>) can be wired into transactions and blocks.
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>) can be held by transactions and blocks.
 It also gives an action class a <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for
 serialization and deserialization.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></h4>
       <section><p>An immutable key–value data structure to represent states of
-multile accounts.  Keys are an account <a class="xref" href="Libplanet.Address.html">Address</a>,
+multiple accounts.  Keys are an account <a class="xref" href="Libplanet.Address.html">Address</a>,
 and values are their state.</p>
 <p>Since this implements <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary&lt;TKey,TValue&gt;</a>
-interface, the usage is the same to that.</p>
+interface, the usage is same.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -104,17 +104,17 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
-<p>By convention, action classes are named verbally, e.g.,
+<p>By convention, action classes are named with verb phrases, e.g.,
 <code>Heal</code>, <code>Sell</code>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
-      <section><p>A contextual data decided by a transaction and a block it belongs to
-that is passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+      <section><p>Contextual data determined by a transaction and a block.
+Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to
 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
-<p>Although two types have the mostly same shape, they are not
+<p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>
 </article>

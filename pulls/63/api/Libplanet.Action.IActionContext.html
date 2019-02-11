@@ -73,8 +73,8 @@
   
   <h1 id="Libplanet_Action_IActionContext" data-uid="Libplanet.Action.IActionContext" class="text-break">Interface IActionContext
   </h1>
-  <div class="markdown level0 summary"><p>A contextual data decided by a transaction and a block it belongs to
-that is passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+  <div class="markdown level0 summary"><p>Contextual data determined by a transaction and a block.
+Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
@@ -122,12 +122,13 @@ a transaction that an executed <a class="xref" href="Libplanet.Action.IAction.ht
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Action_IActionContext_PreviousStates.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.PreviousStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Action/IActionContext.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Action/IActionContext.cs/#L27">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_PreviousStates_" data-uid="Libplanet.Action.IActionContext.PreviousStates*"></a>
   <h4 id="Libplanet_Action_IActionContext_PreviousStates" data-uid="Libplanet.Action.IActionContext.PreviousStates">PreviousStates</h4>
-  <div class="markdown level1 summary"><p>The state, immediately before an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is executed,
-of accounts requested to query.</p>
+  <div class="markdown level1 summary"><p>The state of accounts related to query before <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+executes.  Those addresses are determined by
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address_">RequestStates(Address, Address)</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -158,15 +159,15 @@ of accounts requested to query.</p>
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Action_IActionContext_Random.md&amp;value=---%0Auid%3A%20Libplanet.Action.IActionContext.Random%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Action/IActionContext.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Action/IActionContext.cs/#L38">View Source</a>
   </span>
   <a id="Libplanet_Action_IActionContext_Random_" data-uid="Libplanet.Action.IActionContext.Random*"></a>
   <h4 id="Libplanet_Action_IActionContext_Random" data-uid="Libplanet.Action.IActionContext.Random">Random</h4>
   <div class="markdown level1 summary"><p>An initialized pseudorandom number generator.  Its seed (state)
-is determined depending on a block and a transaction, which is
+is determined by a block and a transaction, which is
 deterministic so that every node can replay the same action and
 then reproduce the same result, while neither a single block miner
-nor a single transaction signer cannot predict the result and cheat.</p>
+nor a single transaction signer can predict the result and cheat.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -184,7 +185,7 @@ nor a single transaction signer cannot predict the result and cheat.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></td>
-        <td><p>A random object that shares the mostly equivalent interface
+        <td><p>A random object that shares interface mostly equivalent
 to <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
 </td>
       </tr>
@@ -199,7 +200,7 @@ to <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Ra
   </span>
   <a id="Libplanet_Action_IActionContext_To_" data-uid="Libplanet.Action.IActionContext.To*"></a>
   <h4 id="Libplanet_Action_IActionContext_To" data-uid="Libplanet.Action.IActionContext.To">To</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Address.html">Address</a> of an account who receive a transaction that
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Address.html">Address</a> of an account who receives a transaction that
 an executed <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> belongs to.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
