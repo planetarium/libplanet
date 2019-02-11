@@ -12,6 +12,12 @@ if [[ "$TRAVIS_JOB_NUMBER" != *.1 ]]; then
   exit 0
 fi
 
+if [[ "$NUGET_API_KEY" = "" ]]; then
+  echo "This script is skipped if NUGET_API_KEY envrionment variable is not" \
+       "present." > /dev/stderr
+  exit 0
+fi
+
 set -ev
 
 curl -o /tmp/nuget.exe \
