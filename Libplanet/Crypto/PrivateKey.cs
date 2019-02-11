@@ -24,8 +24,8 @@ namespace Libplanet.Crypto
     /// messages which were encrypted with the corresponding
     /// <see cref="Libplanet.Crypto.PublicKey"/>.
     /// <para>Note that it uses <a href="https://en.bitcoin.it/wiki/Secp256k1"
-    /// >secp256k1</a> as the parameters of the elliptic curve, which is same to
-    /// <a href="https://bitcoin.org/">Bitcoin</a> and
+    /// >secp256k1</a> as the parameters of the elliptic curve, which is
+    /// the same to <a href="https://bitcoin.org/">Bitcoin</a> and
     /// <a href="https://www.ethereum.org/">Ethereum</a>.
     /// It means private keys generated for Bitcoin/Ethereum can be used by
     /// Libplanet-backed games/apps too.</para>
@@ -109,12 +109,15 @@ namespace Libplanet.Crypto
         /// (i.e., <see cref="PrivateKey(byte[])"/>.
         /// <para>As like <see cref="PrivateKey"/> instances, this also must be
         /// kept secret.  In practice, this must not be sent over the network,
-        /// and securely stored in the file system.  For the most part, modern
-        /// operating systems, mobile ones in particular, provide their own API
+        /// and be securely stored in the file system.
+        /// For the most part, modern operating systems, mobile ones
+        /// in particular, provide their own API
         /// to store password and private keys in the secure manner, which
-        /// means they encrypt things to store using
-        /// <a href="https://en.wikipedia.org/wiki/Hardware_security_module">HSM
-        /// </a> if possible.</para>
+        /// means they encrypt things to store using their own hardware
+        /// security unit if possible.  See also <a
+        /// href="https://developer.android.com/training/articles/keystore"
+        /// >Android keystore system</a> or <a href="https://apple.co/2JHjxAq"
+        /// >iOS Secure Enclave</a>.</para>
         /// </remarks>
         /// <seealso cref="PrivateKey(byte[])"/>
         [Pure]
