@@ -175,7 +175,11 @@ namespace Libplanet.Tests
             _blockchain.Append(_fx.Block1);
             var block0 = _fx.Block1;
             var block1 = _blockchain.MineBlock(_fx.Address1);
+
+            Thread.Sleep(1);
             var block2 = _blockchain.MineBlock(_fx.Address1);
+
+            Thread.Sleep(1);
             var block3 = _blockchain.MineBlock(_fx.Address1);
 
             Assert.Equal(

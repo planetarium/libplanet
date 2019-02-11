@@ -231,7 +231,10 @@ namespace Libplanet.Tests.Net
             Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
 
+            Thread.Sleep(1);
             Block<BaseAction> block1 = chainA.MineBlock(_fx1.Address1);
+
+            Thread.Sleep(1);
             Block<BaseAction> block2 = chainA.MineBlock(_fx1.Address1);
 
             try
