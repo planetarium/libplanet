@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet | Libplanet ">
+    <meta name="generator" content="docfx 2.40.7.0">
+    
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet">Libplanet</h1>
+
+<p><a href="https://travis-ci.com/planetarium/libplanet.net"><img src="https://travis-ci.com/planetarium/libplanet.net.svg?branch=master" alt="Build Status"></a>
+<a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/v/Libplanet.svg?style=flat" alt="NuGet"></a>
+<a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat" alt="NuGet (prerelease)"></a></p>
+<p>Libplanet is a .NET library for creating multiplayer online game in
+decentralized fashion, which means the whole gameplay occurs on a
+peer-to-peer network among equal nodes rather than an authorized central
+server.  Under the hood, it incorporates many features (e.g.,
+<a href="https://en.wikipedia.org/wiki/Digital_signature">digital signature</a>, <a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance">BFT</a> consensus, data replication) of a <a href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>.</p>
+<h2 id="nuget">NuGet</h2>
+<p>Although this project has never released any version, for everyday and every
+merge commit, it is packed into a <em>.nupkg</em> and uploaded to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> with
+a hyphen-suffixed version name.</p>
+<p>For a merge commit build, a version name is like <code>0.1.0-dev.123+20181231</code> where
+<code>123</code> is a build number in our CI system and <code>20181231</code> is a date of the build.
+For a daily build, a version name is like <code>0.1.0-nightly.20181231</code>.</p>
+<p>In the near future, we are going to submit it to <a href="https://assetstore.unity.com/">Unity Asset Store</a> too.</p>
+<h2 id="build">Build</h2>
+<p>The following command installs dependencies (required library packages) and
+builds the whole Libplanet solution:</p>
+<pre><code class="lang-bash">msbuild /r
+</code></pre>
+<p>Note that <code>msbuild</code> is distributed together with Mono framework or
+Visual Studio.</p>
+<h2 id="test">Test</h2>
+<p>To build and run unit tests at a time execute the below command:</p>
+<pre><code class="lang-bash">msbuild /r /t:'Build;XunitTest' Libplanet.Tests
+</code></pre>
+<p>It's okay to omit <code>/r</code> and <code>Build</code> task if you've already run <code>msbuild /r</code>
+right before:</p>
+<pre><code class="lang-bash">msbuild /t:XunitTest Libplanet.Tests
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Docs/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
