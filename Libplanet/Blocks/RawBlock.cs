@@ -7,11 +7,11 @@ namespace Libplanet.Blocks
     internal struct RawBlock : ISerializable
     {
         public RawBlock(
-            ulong index,
+            long index,
             string timestamp,
             byte[] nonce,
             byte[] rewardBenificiary,
-            uint difficulty,
+            int difficulty,
             byte[] previousHash,
             IEnumerable transactions)
             : this(
@@ -28,11 +28,11 @@ namespace Libplanet.Blocks
         }
 
         public RawBlock(
-            ulong index,
+            long index,
             string timestamp,
             byte[] nonce,
             byte[] rewardBenificiary,
-            uint difficulty,
+            int difficulty,
             byte[] previousHash,
             IEnumerable transactions,
             byte[] hash)
@@ -49,11 +49,11 @@ namespace Libplanet.Blocks
 
         internal RawBlock(SerializationInfo info, StreamingContext context)
             : this(
-                index: info.GetUInt64("index"),
+                index: info.GetInt64("index"),
                 timestamp: info.GetString("timestamp"),
                 nonce: info.GetValue<byte[]>("nonce"),
                 rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
-                difficulty: info.GetUInt32("difficulty"),
+                difficulty: info.GetInt32("difficulty"),
                 previousHash: info.GetValueOrDefault<byte[]>(
                     "previous_hash",
                     null
@@ -64,7 +64,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public ulong Index { get; }
+        public long Index { get; }
 
         public string Timestamp { get; }
 
@@ -72,7 +72,7 @@ namespace Libplanet.Blocks
 
         public byte[] RewardBeneficiary { get; }
 
-        public uint Difficulty { get; }
+        public int Difficulty { get; }
 
         public byte[] PreviousHash { get; }
 

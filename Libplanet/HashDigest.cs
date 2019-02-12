@@ -155,9 +155,9 @@ namespace Libplanet
         /// <c>true</c>.   Otherwise, it returns <c>false</c>.
         /// </returns>
         [Pure]
-        public bool HasLeadingZeroBits(uint bits)
+        public bool HasLeadingZeroBits(int bits)
         {
-            uint leadingBytes = bits / 8;
+            int leadingBytes = bits / 8;
             int trailingBits = (int)bits % 8;
 
             if (ByteArray.Length < (bits / 8) + 1)

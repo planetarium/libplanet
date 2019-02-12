@@ -67,9 +67,9 @@ namespace Libplanet.Blockchain.Policies
         {
             HashDigest<SHA256>? prevHash = null;
             DateTime? prevTimestamp = null;
-            IEnumerable<(ulong i, DifficultyExpectation)> indexedDifficulties =
+            IEnumerable<(long i, DifficultyExpectation)> indexedDifficulties =
                 ExpectDifficulties(blocks).Select(
-                    (exp, i) => { return ((ulong)i, exp); }
+                    (exp, i) => { return ((long)i, exp); }
                 ).ToArray();
 
             foreach (var (i, exp) in indexedDifficulties)
@@ -128,7 +128,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public uint GetNextBlockDifficulty(IEnumerable<Block<T>> blocks)
+        public int GetNextBlockDifficulty(IEnumerable<Block<T>> blocks)
         {
             return ExpectDifficulties(blocks, yieldNext: true)
                 .First(t => t.Block == null)
@@ -147,7 +147,7 @@ namespace Libplanet.Blockchain.Policies
             }
 
             bool genesis = true;
-            uint difficulty = 1;
+            int difficulty = 1;
             prevTimestamp = blocks.FirstOrDefault()?.Timestamp;
 
             foreach (Block<T> block in blocks)
@@ -192,7 +192,7 @@ namespace Libplanet.Blockchain.Policies
         {
             internal Block<T> Block;
 
-            internal uint Difficulty;
+            internal int Difficulty;
         }
     }
 }

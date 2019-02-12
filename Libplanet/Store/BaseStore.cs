@@ -9,7 +9,7 @@ namespace Libplanet.Store
 {
     public abstract class BaseStore : IStore
     {
-        public abstract ulong CountIndex();
+        public abstract long CountIndex();
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex();
 
