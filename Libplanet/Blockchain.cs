@@ -107,15 +107,7 @@ namespace Libplanet
                     );
                 }
 
-                if (now < block.Timestamp)
-                {
-                    throw new InvalidBlockTimestampException(
-                        $"the block #{i}'s timestamp ({block.Timestamp}) is " +
-                        $"later than now ({now})"
-                    );
-                }
-
-                if (block.Timestamp <= prevTimestamp)
+                if (block.Timestamp < prevTimestamp)
                 {
                     throw new InvalidBlockTimestampException(
                         $"the block #{i}'s timestamp ({block.Timestamp}) is " +
@@ -123,7 +115,7 @@ namespace Libplanet
                     );
                 }
 
-                block.Validate();
+                block.Validate(now);
                 prevHash = block.Hash;
                 prevTimestamp = block.Timestamp;
             }

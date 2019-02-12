@@ -48,9 +48,6 @@ namespace Libplanet.Tests
             Block<BaseAction> block = _blockchain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockchain[0]);
 
-            // To avoid InvalidBlockTimestampException.
-            Thread.Sleep(100);
-
             Block<BaseAction> anotherBlock = _blockchain.MineBlock(_fx.Address2);
             Assert.Equal(anotherBlock, _blockchain[1]);
         }
@@ -174,11 +171,7 @@ namespace Libplanet.Tests
             _blockchain.Append(_fx.Block1);
             var block0 = _fx.Block1;
             var block1 = _blockchain.MineBlock(_fx.Address1);
-
-            Thread.Sleep(1);
             var block2 = _blockchain.MineBlock(_fx.Address1);
-
-            Thread.Sleep(1);
             var block3 = _blockchain.MineBlock(_fx.Address1);
 
             Assert.Equal(
