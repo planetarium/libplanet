@@ -32,6 +32,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.ActionTypeAttribute
   nameWithType: ActionTypeAttribute.ActionTypeAttribute
+- uid: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
+  name: TypeIdentifier
+  href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier
+  commentId: P:Libplanet.Action.ActionTypeAttribute.TypeIdentifier
+  fullName: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
+  nameWithType: ActionTypeAttribute.TypeIdentifier
+- uid: Libplanet.Action.ActionTypeAttribute.TypeIdentifier*
+  name: TypeIdentifier
+  href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier_
+  commentId: Overload:Libplanet.Action.ActionTypeAttribute.TypeIdentifier
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionTypeAttribute.TypeIdentifier
+  nameWithType: ActionTypeAttribute.TypeIdentifier
 - uid: Libplanet.Action.ActionTypeAttribute.ValueOf(System.Type)
   name: ValueOf(Type)
   href: api/Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_ValueOf_System_Type_
