@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 
@@ -158,6 +159,26 @@ namespace Libplanet.Tests.Blocks
 
             _fx.Genesis.Validate();
             _fx.Next.Validate();
+        }
+
+        [Fact]
+        public void CanDetectInvalidTimestamp()
+        {
+            DateTime now = DateTime.UtcNow;
+            var block = Block<BaseAction>.Mine(
+                _fx.Next.Index,
+                _fx.Next.Difficulty,
+                _fx.Next.RewardBeneficiary.Value,
+                _fx.Genesis.Hash,
+                now + TimeSpan.FromSeconds(901),
+                new Transaction<BaseAction>[] { }
+            );
+
+            Assert.Throws<InvalidBlockTimestampException>(
+                () => { block.Validate(now); });
+
+            // it's okay because 2 seconds later.
+            block.Validate(now + TimeSpan.FromSeconds(2));
         }
 
         [Fact]

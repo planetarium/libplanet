@@ -18,6 +18,9 @@ namespace Libplanet.Blocks
     {
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
+        private static readonly TimeSpan TimestampThreshold =
+            TimeSpan.FromSeconds(900);
+
         public Block(
             ulong index,
             uint difficulty,
@@ -147,6 +150,19 @@ namespace Libplanet.Blocks
 
         public void Validate()
         {
+            Validate(DateTime.UtcNow);
+        }
+
+        public void Validate(DateTime now)
+        {
+            if (now + TimestampThreshold < Timestamp)
+            {
+                throw new InvalidBlockTimestampException(
+                    $"The block #{Index}'s timestamp ({Timestamp}) is " +
+                    $"later than now ({now}, threshold: {TimestampThreshold})."
+                );
+            }
+
             if (Index < 0)
             {
                 throw new InvalidBlockIndexException(
