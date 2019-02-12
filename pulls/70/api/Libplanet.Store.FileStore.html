@@ -268,7 +268,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_CountIndex.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.CountIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L137">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_CountIndex_" data-uid="Libplanet.Store.FileStore.CountIndex*"></a>
   <h4 id="Libplanet_Store_FileStore_CountIndex" data-uid="Libplanet.Store.FileStore.CountIndex">CountIndex()</h4>
@@ -300,7 +300,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteBlock(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L157">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L182">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_DeleteBlock_" data-uid="Libplanet.Store.FileStore.DeleteBlock*"></a>
   <h4 id="Libplanet_Store_FileStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteBlock(HashDigest&lt;SHA256&gt;)</h4>
@@ -346,10 +346,59 @@
   <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.DeleteBlock(HashDigest&lt;SHA256&gt;)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteIndex(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L137">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_DeleteIndex_" data-uid="Libplanet.Store.FileStore.DeleteIndex*"></a>
+  <h4 id="Libplanet_Store_FileStore_DeleteIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.DeleteIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteIndex(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteIndex(HashDigest&lt;SHA256&gt; hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">hash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.DeleteIndex(HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L169">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L194">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_DeleteTransaction_" data-uid="Libplanet.Store.FileStore.DeleteTransaction*"></a>
   <h4 id="Libplanet_Store_FileStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
@@ -445,7 +494,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_GetAddressTransactionIds_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetAddressTransactionIds(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L181">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L206">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_GetAddressTransactionIds_" data-uid="Libplanet.Store.FileStore.GetAddressTransactionIds*"></a>
   <h4 id="Libplanet_Store_FileStore_GetAddressTransactionIds_Libplanet_Address_" data-uid="Libplanet.Store.FileStore.GetAddressTransactionIds(Libplanet.Address)">GetAddressTransactionIds(Address)</h4>
@@ -494,7 +543,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlock%60%601(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L205">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L230">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_GetBlock_" data-uid="Libplanet.Store.FileStore.GetBlock*"></a>
   <h4 id="Libplanet_Store_FileStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</h4>
@@ -606,7 +655,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L481">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L506">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_GetBlockStates_" data-uid="Libplanet.Store.FileStore.GetBlockStates*"></a>
   <h4 id="Libplanet_Store_FileStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
@@ -749,7 +798,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L242">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L267">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_GetTransaction_" data-uid="Libplanet.Store.FileStore.GetTransaction*"></a>
   <h4 id="Libplanet_Store_FileStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
@@ -861,7 +910,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IndexBlockHash_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IndexBlockHash(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L257">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L282">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IndexBlockHash_" data-uid="Libplanet.Store.FileStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_FileStore_IndexBlockHash_System_Int64_" data-uid="Libplanet.Store.FileStore.IndexBlockHash(System.Int64)">IndexBlockHash(Int64)</h4>
@@ -910,7 +959,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IterateAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L292">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L317">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IterateAddresses_" data-uid="Libplanet.Store.FileStore.IterateAddresses*"></a>
   <h4 id="Libplanet_Store_FileStore_IterateAddresses" data-uid="Libplanet.Store.FileStore.IterateAddresses">IterateAddresses()</h4>
@@ -942,7 +991,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L323">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L348">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IterateBlockHashes_" data-uid="Libplanet.Store.FileStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_FileStore_IterateBlockHashes" data-uid="Libplanet.Store.FileStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -974,7 +1023,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IterateIndex.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L356">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L381">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IterateIndex_" data-uid="Libplanet.Store.FileStore.IterateIndex*"></a>
   <h4 id="Libplanet_Store_FileStore_IterateIndex" data-uid="Libplanet.Store.FileStore.IterateIndex">IterateIndex()</h4>
@@ -1006,7 +1055,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L384">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L409">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.FileStore.IterateStagedTransactionIds*"></a>
   <h4 id="Libplanet_Store_FileStore_IterateStagedTransactionIds" data-uid="Libplanet.Store.FileStore.IterateStagedTransactionIds">IterateStagedTransactionIds()</h4>
@@ -1038,7 +1087,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L397">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L422">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_IterateTransactionIds_" data-uid="Libplanet.Store.FileStore.IterateTransactionIds*"></a>
   <h4 id="Libplanet_Store_FileStore_IterateTransactionIds" data-uid="Libplanet.Store.FileStore.IterateTransactionIds">IterateTransactionIds()</h4>
@@ -1070,7 +1119,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L430">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L455">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_PutBlock_" data-uid="Libplanet.Store.FileStore.PutBlock*"></a>
   <h4 id="Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
@@ -1120,7 +1169,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L450">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L475">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_PutTransaction_" data-uid="Libplanet.Store.FileStore.PutTransaction*"></a>
   <h4 id="Libplanet_Store_FileStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.FileStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
@@ -1170,7 +1219,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.SetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L499">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L524">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_SetBlockStates_" data-uid="Libplanet.Store.FileStore.SetBlockStates*"></a>
   <h4 id="Libplanet_Store_FileStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.FileStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
@@ -1209,7 +1258,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L462">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L487">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_StageTransactionIds_" data-uid="Libplanet.Store.FileStore.StageTransactionIds*"></a>
   <h4 id="Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">StageTransactionIds(ISet&lt;TxId&gt;)</h4>
@@ -1243,7 +1292,7 @@
     <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_FileStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.UnstageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L473">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/FileStore.cs/#L498">View Source</a>
   </span>
   <a id="Libplanet_Store_FileStore_UnstageTransactionIds_" data-uid="Libplanet.Store.FileStore.UnstageTransactionIds*"></a>
   <h4 id="Libplanet_Store_FileStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.FileStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(ISet&lt;TxId&gt;)</h4>
