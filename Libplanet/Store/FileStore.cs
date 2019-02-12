@@ -134,6 +134,31 @@ namespace Libplanet.Store
             }
         }
 
+        public override bool DeleteIndex(HashDigest<SHA256> hash)
+        {
+            bool found = false;
+            using (var writer = new MemoryStream())
+            {
+                foreach (var idx in IterateIndex())
+                {
+                    if (!found && idx == hash)
+                    {
+                        found = true;
+                    }
+                    else
+                    {
+                        writer.Write(
+                            idx.ToByteArray(), 0, HashDigest<SHA256>.Size);
+                    }
+                }
+
+                // FIXME We can't this if the index is too large to buffer...
+                File.WriteAllBytes(_indexPath, writer.ToArray());
+            }
+
+            return found;
+        }
+
         public override ulong CountIndex()
         {
             var indexFile = new FileInfo(_indexPath);

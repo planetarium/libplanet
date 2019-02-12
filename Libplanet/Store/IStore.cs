@@ -16,6 +16,8 @@ namespace Libplanet.Store
 
         long AppendIndex(HashDigest<SHA256> hash);
 
+        bool DeleteIndex(HashDigest<SHA256> hash);
+
         IEnumerable<Address> IterateAddresses();
 
         IEnumerable<TxId> GetAddressTransactionIds(Address address);

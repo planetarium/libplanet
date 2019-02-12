@@ -2,6 +2,7 @@ using System;
 using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -260,21 +261,27 @@ namespace Libplanet.Tests.Net
                         swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         null);
-                Assert.Equal(new[] { block1.Hash, block2.Hash }, inventories1);
+                Assert.Equal(
+                    new[] { genesis.Hash, block1.Hash, block2.Hash },
+                    inventories1);
 
                 IEnumerable<HashDigest<SHA256>> inventories2 =
                     await swarmB.GetBlockHashesAsync(
                         swarmA.AsPeer,
                         new BlockLocator(new[] { genesis.Hash }),
                         block1.Hash);
-                Assert.Equal(new[] { block1.Hash }, inventories2);
+                Assert.Equal(
+                    new[] { genesis.Hash, block1.Hash },
+                    inventories2);
 
                 List<Block<BaseAction>> receivedBlocks =
                     await swarmB.GetBlocksAsync<BaseAction>(
                         swarmA.AsPeer, inventories1
                     ).ToListAsync();
 
-                Assert.Equal(new[] { block1, block2 }, receivedBlocks);
+                Assert.Equal(
+                    new[] { genesis, block1, block2 },
+                    receivedBlocks);
             }
             finally
             {
@@ -381,6 +388,79 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(tx, chainB.Transactions[tx.Id]);
                 Assert.Equal(tx, chainC.Transactions[tx.Id]);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.DisposeAsync(),
+                    swarmB.DisposeAsync(),
+                    swarmC.DisposeAsync());
+            }
+        }
+
+        [Fact]
+        public async Task CanBroadcastBlock()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+            Swarm swarmC = _swarms[2];
+
+            Blockchain<BaseAction> chainA = _blockchains[0];
+            Blockchain<BaseAction> chainB = _blockchains[1];
+            Blockchain<BaseAction> chainC = _blockchains[2];
+
+            // chainA, chainB and chainC shares genesis block.
+            Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis);
+            chainC.Append(genesis);
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                chainA.MineBlock(_fx1.Address1);
+                await Task.Delay(100);
+            }
+
+            foreach (int i in Enumerable.Range(0, 3))
+            {
+                chainB.MineBlock(_fx2.Address1);
+                await Task.Delay(100);
+            }
+
+            try
+            {
+                await Task.WhenAll(
+                    swarmA.InitContextAsync(),
+                    swarmB.InitContextAsync(),
+                    swarmC.InitContextAsync());
+
+                #pragma warning disable CS4014
+                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
+                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                Task.Run(async () => await swarmC.RunAsync(chainC, 250));
+                #pragma warning restore CS4014
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+                await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
+
+                await EnsureExchange(swarmA, swarmB);
+                await EnsureExchange(swarmA, swarmC);
+
+                await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
+
+                await Task.Delay(5000);
+
+                Assert.Equal(chainB.AsEnumerable(), chainC);
+
+                // chainB doesn't applied to chainA since chainB is shorter
+                // than chainA
+                Assert.NotEqual(chainB.AsEnumerable(), chainA);
+
+                await swarmA.BroadcastBlocksAsync(new[] { chainA.Last() });
+
+                await Task.Delay(5000);
+
+                Assert.Equal(chainA.AsEnumerable(), chainB);
+                Assert.Equal(chainA.AsEnumerable(), chainC);
             }
             finally
             {

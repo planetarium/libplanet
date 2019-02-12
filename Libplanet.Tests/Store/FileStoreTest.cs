@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -9,13 +10,13 @@ using Xunit;
 
 namespace Libplanet.Tests.Store
 {
-    public class FileStoreTest : IClassFixture<FileStoreFixture>
+    public class FileStoreTest : IDisposable
     {
         private readonly FileStoreFixture _fx;
 
-        public FileStoreTest(FileStoreFixture fixture)
+        public FileStoreTest()
         {
-            _fx = fixture;
+            _fx = new FileStoreFixture();
         }
 
         [Fact]
@@ -323,6 +324,21 @@ namespace Libplanet.Tests.Store
             AddressStateMap actual = _fx.Store.GetBlockStates(_fx.Hash1);
             Assert.Equal(states[_fx.Address1], actual[_fx.Address1]);
             Assert.Equal(states[_fx.Address2], actual[_fx.Address2]);
+        }
+
+        [Fact]
+        public void CanDeleteIndex()
+        {
+            Assert.False(_fx.Store.DeleteIndex(_fx.Hash1));
+            _fx.Store.AppendIndex(_fx.Hash1);
+            Assert.NotEmpty(_fx.Store.IterateIndex());
+            Assert.True(_fx.Store.DeleteIndex(_fx.Hash1));
+            Assert.Empty(_fx.Store.IterateIndex());
+        }
+
+        public void Dispose()
+        {
+            _fx.Dispose();
         }
     }
 }

@@ -42,6 +42,8 @@ namespace Libplanet
 
         public IStore Store { get; }
 
+        public Block<T> Tip => this[-1];
+
         public Block<T> this[long index]
         {
             get
@@ -247,7 +249,7 @@ namespace Libplanet
             }
 
             HashDigest<SHA256>? tip = Store.IndexBlockHash(-1);
-            HashDigest<SHA256>? currentHash = Next(FindBranchPoint(locator));
+            HashDigest<SHA256>? currentHash = FindBranchPoint(locator);
 
             while (currentHash != null && count > 0)
             {
@@ -261,6 +263,48 @@ namespace Libplanet
                 currentHash = Next(currentHash.Value);
                 count--;
             }
+        }
+
+        internal void DeleteAfter(HashDigest<SHA256> point)
+        {
+            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+
+            while (current is HashDigest<SHA256> hash && hash != point)
+            {
+                HashDigest<SHA256>? previous = Blocks[hash].PreviousHash;
+                Store.DeleteBlock(hash);
+                Store.DeleteIndex(hash);
+
+                current = previous;
+            }
+        }
+
+        internal BlockLocator GetBlockLocator(int threshold = 10)
+        {
+            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+            ulong step = 1;
+            var hashes = new List<HashDigest<SHA256>>();
+
+            while (current is HashDigest<SHA256> hash)
+            {
+                hashes.Add(hash);
+                Block<T> currentBlock = Blocks[hash];
+
+                if (currentBlock.Index == 0)
+                {
+                    break;
+                }
+
+                ulong nextIndex = Math.Max(currentBlock.Index - step, 0);
+                current = Store.IndexBlockHash((long)nextIndex);
+
+                if (hashes.Count > threshold)
+                {
+                    step *= 2;
+                }
+            }
+
+            return new BlockLocator(hashes);
         }
 
         private static IEnumerable<DifficultyExpectation> ExpectDifficulties(

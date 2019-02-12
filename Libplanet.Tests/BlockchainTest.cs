@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
-using Libplanet.Tests.Common;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -183,23 +182,56 @@ namespace Libplanet.Tests
             var block3 = _blockchain.MineBlock(_fx.Address1);
 
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash, block3.Hash, },
+                new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash, },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash })));
             Assert.Equal(
-                new[] { block2.Hash, block3.Hash },
+                new[] { block1.Hash, block2.Hash, block3.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block1.Hash, block0.Hash })));
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash },
+                new[] { block0.Hash, block1.Hash, block2.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     stop: block2.Hash));
             Assert.Equal(
-                new[] { block1.Hash, block2.Hash },
+                new[] { block0.Hash, block1.Hash },
                 _blockchain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     count: 2));
+        }
+
+        [Fact]
+        public void CanDeleteAfter()
+        {
+            var block1 = _blockchain.MineBlock(_fx.Address1);
+            var block2 = _blockchain.MineBlock(_fx.Address1);
+            var block3 = _blockchain.MineBlock(_fx.Address1);
+
+            _blockchain.DeleteAfter(block2.Hash);
+
+            Assert.Equal(new[] { block1, block2 }, _blockchain);
+        }
+
+        [Fact]
+        public void CanGetBlockLocator()
+        {
+            List<Block<BaseAction>> blocks = Enumerable.Range(0, 10)
+                .Select(_ => _blockchain.MineBlock(_fx.Address1))
+                .ToList();
+
+            BlockLocator actual = _blockchain.GetBlockLocator(threshold: 2);
+            BlockLocator expected = new BlockLocator(new[]
+            {
+                blocks[9].Hash,
+                blocks[8].Hash,
+                blocks[7].Hash,
+                blocks[6].Hash,
+                blocks[4].Hash,
+                blocks[0].Hash,
+            });
+
+            Assert.Equal(expected, actual);
         }
     }
 }
