@@ -39,8 +39,6 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
 
-        private bool _contextInitialized;
-
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
@@ -82,7 +80,17 @@ namespace Libplanet.Net
 
             _logger = Log.ForContext<Swarm>()
                 .ForContext("Swarm_listenUrl", _listenUrl.ToString());
-            _contextInitialized = false;
+            Running = false;
+        }
+
+        ~Swarm()
+        {
+            // FIXME If possible, we should stop Swarm appropriately here.
+            if (Running)
+            {
+                _logger.Warning(
+                    "Swarm is scheduled to destruct, but it's still running.");
+            }
         }
 
         public int Count => _peers.Count;
@@ -112,6 +120,8 @@ namespace Libplanet.Net
             get;
             private set;
         }
+
+        public bool Running { get; private set; }
 
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
@@ -150,7 +160,7 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                if (_contextInitialized)
+                if (Running)
                 {
                     try
                     {
@@ -178,41 +188,9 @@ namespace Libplanet.Net
             return addedPeers;
         }
 
-        public async Task<Swarm> InitContextAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            _router.Bind(_listenUrl.ToString());
-            foreach (Peer peer in _peers.Keys)
-            {
-                try
-                {
-                    Peer replacedPeer = await DialPeerAsync(
-                        peer,
-                        cancellationToken
-                    );
-                    if (replacedPeer != peer)
-                    {
-                        _peers[replacedPeer] = _peers[peer];
-                        _peers.Remove(peer);
-                    }
-                }
-                catch (IOException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"IOException occured in DialPeerAsync ({peer})."
-                    );
-                    continue;
-                }
-            }
-
-            _contextInitialized = true;
-            return this;
-        }
-
         public void Add(Peer item)
         {
-            if (_contextInitialized)
+            if (Running)
             {
                 var task = DialPeerAsync(item, CancellationToken.None);
                 Peer dialed = task.Result;
@@ -259,11 +237,11 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task DisposeAsync(
+        public async Task StopAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            _logger.Debug("Disposing...");
-            if (_contextInitialized)
+            _logger.Debug("Stopping...");
+            if (Running)
             {
                 _removedPeers[AsPeer] = DateTime.UtcNow;
                 await DistributeDeltaAsync(false, cancellationToken);
@@ -276,15 +254,15 @@ namespace Libplanet.Net
 
                 _dealers.Clear();
 
-                _contextInitialized = false;
+                Running = false;
             }
 
-            _logger.Debug("Disposed.");
+            _logger.Debug("Stopped.");
         }
 
         public void Dispose()
         {
-            DisposeAsync().Wait();
+            StopAsync().Wait();
         }
 
         public IEnumerator<Peer> GetEnumerator()
@@ -302,13 +280,42 @@ namespace Libplanet.Net
             return GetEnumerator();
         }
 
-        public async Task RunAsync<T>(
+        public async Task StartAsync<T>(
             Blockchain<T> blockchain,
             int distributeInterval,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
-            CheckEntered();
+            if (Running)
+            {
+                throw new SwarmException("Swarm is already running.");
+            }
+
+            Running = true;
+            _router.Bind(_listenUrl.ToString());
+            foreach (Peer peer in _peers.Keys)
+            {
+                try
+                {
+                    Peer replacedPeer = await DialPeerAsync(
+                        peer,
+                        cancellationToken
+                    );
+                    if (replacedPeer != peer)
+                    {
+                        _peers[replacedPeer] = _peers[peer];
+                        _peers.Remove(peer);
+                    }
+                }
+                catch (IOException e)
+                {
+                    _logger.Error(
+                        e,
+                        $"IOException occured in DialPeerAsync ({peer})."
+                    );
+                    continue;
+                }
+            }
 
             await Task.WhenAll(
                 RepeatDeltaDistributionAsync(
@@ -324,7 +331,7 @@ namespace Libplanet.Net
                 CancellationToken token = default(CancellationToken)
             )
         {
-            CheckEntered();
+            CheckStarted();
 
             if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
             {
@@ -366,7 +373,7 @@ namespace Libplanet.Net
             CancellationToken token = default(CancellationToken))
             where T : IAction
         {
-            CheckEntered();
+            CheckStarted();
 
             if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
             {
@@ -420,7 +427,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
-            CheckEntered();
+            CheckStarted();
 
             if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
             {
@@ -523,16 +530,27 @@ namespace Libplanet.Net
             Blockchain<T> blockchain, CancellationToken cancellationToken)
             where T : IAction
         {
-            CheckEntered();
+            CheckStarted();
 
-            while (true)
+            while (Running)
             {
-                NetMQMessage rawMessage = await
-                    _router.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken);
                 try
                 {
-                    Message message = Message.Parse(rawMessage, reply: false);
+                    NetMQMessage raw;
+                    try
+                    {
+                        raw = await _router.ReceiveMultipartMessageAsync(
+                            timeout: TimeSpan.FromMilliseconds(100),
+                            cancellationToken: cancellationToken);
+                    }
+                    catch (TimeoutException)
+                    {
+                        // Ignore this exception because it's expected
+                        // when there is no received message in duration.
+                        continue;
+                    }
+
+                    Message message = Message.Parse(raw, reply: false);
                     _logger.Debug($"Message[{message}] received.");
 
                     // Queue a task per message to avoid blocking.
@@ -924,7 +942,7 @@ namespace Libplanet.Net
                     _logger.Debug(
                         $"Trying to close dealers associated {peer}."
                     );
-                    if (_contextInitialized)
+                    if (Running)
                     {
                         CloseDealer(peer);
                     }
@@ -937,7 +955,7 @@ namespace Libplanet.Net
                         {
                             _peers.Remove(key);
 
-                            if (_contextInitialized)
+                            if (Running)
                             {
                                 CloseDealer(key);
                             }
@@ -951,7 +969,7 @@ namespace Libplanet.Net
 
         private void CloseDealer(Peer peer)
         {
-            CheckEntered();
+            CheckStarted();
             if (_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
             {
                 dealer.Dispose();
@@ -965,7 +983,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            CheckEntered();
+            CheckStarted();
 
             dealer.Connect(address.ToString());
 
@@ -1034,7 +1052,7 @@ namespace Libplanet.Net
         private async Task DistributeDeltaAsync(
             bool all, CancellationToken cancellationToken)
         {
-            CheckEntered();
+            CheckStarted();
 
             DateTime now = DateTime.UtcNow;
             var addedPeers = FilterPeers(
@@ -1103,7 +1121,7 @@ namespace Libplanet.Net
             int interval, CancellationToken cancellationToken)
         {
             int i = 1;
-            while (true)
+            while (Running)
             {
                 await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
                 await Task.Delay(interval, cancellationToken);
@@ -1111,13 +1129,11 @@ namespace Libplanet.Net
             }
         }
 
-        private void CheckEntered()
+        private void CheckStarted()
         {
-            if (!_contextInitialized)
+            if (!Running)
             {
-                throw new NoSwarmContextException(
-                    "the object is not entered to the context yet"
-                );
+                throw new NoSwarmContextException("Swarm hasn't started yet.");
             }
         }
     }
