@@ -73,7 +73,12 @@
   
   <h1 id="Libplanet_Action_AddressStateMap" data-uid="Libplanet.Action.AddressStateMap" class="text-break">Class AddressStateMap
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>An immutable key–value data structure to represent states of
+multiple accounts.  Keys are an account <a class="xref" href="Libplanet.Address.html">Address</a>,
+and values are their state.</p>
+<p>Since this implements <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary&lt;TKey,TValue&gt;</a>
+interface, the usage is same.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -127,11 +132,12 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L15">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap__ctor_" data-uid="Libplanet.Action.AddressStateMap.#ctor*"></a>
   <h4 id="Libplanet_Action_AddressStateMap__ctor" data-uid="Libplanet.Action.AddressStateMap.#ctor">AddressStateMap()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates an empty map.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -142,15 +148,17 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap__ctor_System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.%23ctor(System.Collections.Immutable.IImmutableDictionary%7BLibplanet.Address%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L20">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L37">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap__ctor_" data-uid="Libplanet.Action.AddressStateMap.#ctor*"></a>
   <h4 id="Libplanet_Action_AddressStateMap__ctor_System_Collections_Immutable_IImmutableDictionary_Libplanet_Address_System_Object__" data-uid="Libplanet.Action.AddressStateMap.#ctor(System.Collections.Immutable.IImmutableDictionary{Libplanet.Address,System.Object})">AddressStateMap(IImmutableDictionary&lt;Address, Object&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a new map from the items of the
+<code data-dev-comment-type="paramref" class="paramref">dictionary</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AddressStateMap(IImmutableDictionary&lt;Address, object&gt; impl)</code></pre>
+    <pre><code class="lang-csharp hljs">public AddressStateMap(IImmutableDictionary&lt;Address, object&gt; dictionary)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -164,8 +172,10 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td><span class="parametername">impl</span></td>
-        <td></td>
+        <td><span class="parametername">dictionary</span></td>
+        <td><p>A dictionary of items to
+fill the new map with.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -174,7 +184,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L25">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L42">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap__ctor_" data-uid="Libplanet.Action.AddressStateMap.#ctor*"></a>
   <h4 id="Libplanet_Action_AddressStateMap__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Action.AddressStateMap.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">AddressStateMap(SerializationInfo, StreamingContext)</h4>
@@ -213,7 +223,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Count.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L44">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L64">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Count_" data-uid="Libplanet.Action.AddressStateMap.Count*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Count" data-uid="Libplanet.Action.AddressStateMap.Count">Count</h4>
@@ -243,7 +253,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Item_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Item(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L46">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L67">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Item_" data-uid="Libplanet.Action.AddressStateMap.Item*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Item_Libplanet_Address_" data-uid="Libplanet.Action.AddressStateMap.Item(Libplanet.Address)">Item[Address]</h4>
@@ -290,7 +300,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Keys.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Keys%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L40">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L58">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Keys_" data-uid="Libplanet.Action.AddressStateMap.Keys*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Keys" data-uid="Libplanet.Action.AddressStateMap.Keys">Keys</h4>
@@ -320,7 +330,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Values.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Values%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L61">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Values_" data-uid="Libplanet.Action.AddressStateMap.Values*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Values" data-uid="Libplanet.Action.AddressStateMap.Values">Values</h4>
@@ -352,7 +362,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Add_Libplanet_Address_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Add(Libplanet.Address%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Add_" data-uid="Libplanet.Action.AddressStateMap.Add*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Add_Libplanet_Address_System_Object_" data-uid="Libplanet.Action.AddressStateMap.Add(Libplanet.Address,System.Object)">Add(Address, Object)</h4>
@@ -404,7 +414,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_AddRange_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object___.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.AddRange(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7BLibplanet.Address%2CSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L56">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L79">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_AddRange_" data-uid="Libplanet.Action.AddressStateMap.AddRange*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_AddRange_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object___" data-uid="Libplanet.Action.AddressStateMap.AddRange(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Libplanet.Address,System.Object}})">AddRange(IEnumerable&lt;KeyValuePair&lt;Address, Object&gt;&gt;)</h4>
@@ -451,7 +461,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Clear.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L63">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Clear_" data-uid="Libplanet.Action.AddressStateMap.Clear*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Clear" data-uid="Libplanet.Action.AddressStateMap.Clear">Clear()</h4>
@@ -481,7 +491,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Contains(System.Collections.Generic.KeyValuePair%7BLibplanet.Address%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Contains_" data-uid="Libplanet.Action.AddressStateMap.Contains*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object__" data-uid="Libplanet.Action.AddressStateMap.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Address,System.Object})">Contains(KeyValuePair&lt;Address, Object&gt;)</h4>
@@ -528,7 +538,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_ContainsKey_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.ContainsKey(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L73">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_ContainsKey_" data-uid="Libplanet.Action.AddressStateMap.ContainsKey*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_ContainsKey_Libplanet_Address_" data-uid="Libplanet.Action.AddressStateMap.ContainsKey(Libplanet.Address)">ContainsKey(Address)</h4>
@@ -575,7 +585,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L78">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L105">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_GetEnumerator_" data-uid="Libplanet.Action.AddressStateMap.GetEnumerator*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_GetEnumerator" data-uid="Libplanet.Action.AddressStateMap.GetEnumerator">GetEnumerator()</h4>
@@ -605,7 +615,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L125">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L160">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_GetObjectData_" data-uid="Libplanet.Action.AddressStateMap.GetObjectData*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Action.AddressStateMap.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -642,7 +652,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_Remove_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.Remove(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L83">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L111">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_Remove_" data-uid="Libplanet.Action.AddressStateMap.Remove*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_Remove_Libplanet_Address_" data-uid="Libplanet.Action.AddressStateMap.Remove(Libplanet.Address)">Remove(Address)</h4>
@@ -689,7 +699,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_RemoveRange_System_Collections_Generic_IEnumerable_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.RemoveRange(System.Collections.Generic.IEnumerable%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L88">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_RemoveRange_" data-uid="Libplanet.Action.AddressStateMap.RemoveRange*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_RemoveRange_System_Collections_Generic_IEnumerable_Libplanet_Address__" data-uid="Libplanet.Action.AddressStateMap.RemoveRange(System.Collections.Generic.IEnumerable{Libplanet.Address})">RemoveRange(IEnumerable&lt;Address&gt;)</h4>
@@ -736,7 +746,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_SetItem_Libplanet_Address_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.SetItem(Libplanet.Address%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L95">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L125">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_SetItem_" data-uid="Libplanet.Action.AddressStateMap.SetItem*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_SetItem_Libplanet_Address_System_Object_" data-uid="Libplanet.Action.AddressStateMap.SetItem(Libplanet.Address,System.Object)">SetItem(Address, Object)</h4>
@@ -788,7 +798,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_SetItems_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object___.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.SetItems(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7BLibplanet.Address%2CSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L103">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L134">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_SetItems_" data-uid="Libplanet.Action.AddressStateMap.SetItems*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_SetItems_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair_Libplanet_Address_System_Object___" data-uid="Libplanet.Action.AddressStateMap.SetItems(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{Libplanet.Address,System.Object}})">SetItems(IEnumerable&lt;KeyValuePair&lt;Address, Object&gt;&gt;)</h4>
@@ -835,7 +845,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_TryGetKey_Libplanet_Address_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address%2CLibplanet.Address%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L142">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_TryGetKey_" data-uid="Libplanet.Action.AddressStateMap.TryGetKey*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_TryGetKey_Libplanet_Address_Libplanet_Address__" data-uid="Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address,Libplanet.Address@)">TryGetKey(Address, out Address)</h4>
@@ -887,7 +897,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_TryGetValue_Libplanet_Address_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address%2CSystem.Object%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L115">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L148">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_TryGetValue_" data-uid="Libplanet.Action.AddressStateMap.TryGetValue*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_TryGetValue_Libplanet_Address_System_Object__" data-uid="Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address,System.Object@)">TryGetValue(Address, out Object)</h4>
@@ -941,7 +951,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L154">View Source</a>
   </span>
   <a id="Libplanet_Action_AddressStateMap_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Action.AddressStateMap.System#Collections#IEnumerable#GetEnumerator*"></a>
   <h4 id="Libplanet_Action_AddressStateMap_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Action.AddressStateMap.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
@@ -996,7 +1006,7 @@ public class AddressStateMap : IImmutableDictionary&lt;Address, object&gt;, IRea
                     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_AddressStateMap.md&amp;value=---%0Auid%3A%20Libplanet.Action.AddressStateMap%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/AddressStateMap.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

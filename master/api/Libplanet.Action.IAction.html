@@ -73,7 +73,20 @@
   
   <h1 id="Libplanet_Action_IAction" data-uid="Libplanet.Action.IAction" class="text-break">Interface IAction
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>An in-game action.  Every action should be replayable, because
+multiple nodes in a network should execute an action and get the same
+result.</p>
+<p>A “class” which implements this interface is
+analogous to a function, and its instance is analogous to a
+<a href="https://en.wikipedia.org/wiki/Partial_application">partial
+function application</a>, in other words, a function with some bound
+arguments.  Those parameters that will be bound at runtime should be
+represented as fields or properties in an action class, and bound
+argument values to these parameters should be received through
+a constructor parameters of that class.</p>
+<p>By convention, action classes are named with verb phrases, e.g.,
+<code>Heal</code>, <code>Sell</code>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
@@ -81,6 +94,132 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IAction</code></pre>
   </div>
+  <h5 id="Libplanet_Action_IAction_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Every action class should be marked with the
+<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  Even if a superclass is marked
+with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> its subclass also should be
+marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
+</div>
+  <h5 id="Libplanet_Action_IAction_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how to implement an action of a character
+healing someone:</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using Libplanet.Action;
+
+// Declare the unique identifier of an action type by marking
+// it with ActionTypeAttribute.
+[ActionType(&quot;heal&quot;)]
+public class Heal : IAction
+{
+    const int RequiredMana = 10;
+    const int HealedHealthMin = 10;
+    const int HealedHealthMAx = 15;
+
+    // Declare properties (or fields) to store &quot;bound&quot; argument values.
+    public CharacterId HealerId { get; private set; }
+    public CharacterId TargetId { get; private set; }
+
+    // Take argument values to &quot;bind&quot; through constructor parameters.
+    public Heal(CharacterId healerId, CharacterId targetId)
+    {
+        HealerId = healerId;
+        TargetId = targetId;
+    }
+
+    public IImmutableSet&lt;Address> RequestStates(Address from,
+                                                Address to)
+    {
+        // In this action, we need states of two accounts for healing:
+        // - A transaction signer (&quot;from&quot;) who holds the healer
+        //   character, and
+        // - A transaction receiver (&quot;to&quot;) who hols the healing target
+        //   character.
+        return new HashSet&lt;Address> { from, to }.ToImmutableHashSet();
+    }
+
+    // The main game logic belongs to here.  It takes the
+    // previous states through its parameter named context,
+    // and is offered &quot;bound&quot; argument values through
+    // its own properties (or fields).
+    public AddressStateMap Execute(IActionContext context)
+    {
+        // Gets the states immediately before this action is executed.
+        // The AddressStateMap implemenets IImmutableDictionary&lt;Address,
+        // object> so that you could treat it as a dictionary of account
+        // addresses to their own state.
+        // Note that there are only requested accounts&apos; states.
+        // See also RequestStates() method.
+        AddressStateMap states = context.PreviousStates;
+
+        // Suppose we already declared below in-game objects &quot;Player&quot;
+        // and &quot;Character&quot;.  These are immutable (as we highly
+        // recommend) and methods like &quot;.WithFoo(bar)&quot; mean it copies
+        // a game object and set new object&apos;s &quot;Foo&quot; property with &quot;bar&quot;.
+        Player sender = states[context.From] as Player;
+        if (sender == null)
+            throw new Exception(&quot;Sender&apos;s player was not made.&quot;);
+
+        Character healerPrev = sender.Characters[HealerId];
+        if (healerPrev.Mana &lt; RequiredMana)
+            throw new Exception(&quot;The healer doesn&apos;t have enough mana.&quot;);
+
+        Player receiver = states[context.To] as Player;
+        if (receiver == null)
+            throw new Exception(&quot;Receiver&apos;s player was not made.&quot;);
+
+        // The amount of health to be healed is randomly determined
+        // in a range from 10 to 15 (see HealedHealthMin and
+        // HealedHealthMax).  Note that it does not use System.Random.
+        int healedHealth = context.Random.Next(
+            HealedHealthMin,
+            HealedHealthMax + 1  // As this is exclusive bound, add 1.
+        );
+
+        // Prepares new game objects that represent states after
+        // this action executes.  Note that Character objects are
+        // immutable, so their properties do not have setter but
+        // WithPropName() methods instead.
+        Character targetPrev = receiver.Characters[TargetId];
+        Character healerNext =
+            healerPrev.WithMana(healerPrev.Mana - RequiredMana);
+        Character targetNext = targetPrev.WithHealth(
+            Math.Min(
+                targetPrev.Health + healedHealth,
+                targetPrev.MaxHealth
+            )
+        );
+
+        // Builds a delta (diff) from previous to next states, and
+        // returns it as AddressStateMap.
+        var statesDelta = new Dictionary&lt;Address, object>
+        {
+            {context.From, sender.WithCharacters(HealerId, healerNext)},
+            {context.To, receiver.WithCharacters(TargetId, targetNext)},
+        };
+        return new AddressStateMap(statesDelta.ToImmutableDictionary());
+    }
+
+    // Serializes its &quot;bound arguments&quot; so that they are transmitted
+    // over network or stored to the persistent storage.
+    // It uses .NET&apos;s built-in serialization mechanism.
+    public IImmutableDictionary&lt;string, object> PlainValue =>
+        new Dictionary&lt;string, object>
+        {
+            {&quot;healer_id&quot;, HealerId.ToInt()},
+            {&quot;target_id&quot;, TargetId.ToInt()},
+        }
+
+    // Deserializes &quot;bound arguments&quot;.  That is, it is inverse
+    // of PlainValue property.
+    public void LoadPlainValue(
+        IImmutableDictionary&lt;string, object> plainValue)
+    {
+        HealerId = CharacterId.FromInt(plainValue[&quot;healer_id&quot;] as int);
+        TargetId = CharacterId.FromInt(plainValue[&quot;target_id&quot;] as int);
+    }
+}</code></pre>
+
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -88,11 +227,17 @@
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L8">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L164">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
+(or fields) of an action, so that they can be transmitted over
+network or saved to persistent storage.</p>
+<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
+later.</p>
+<p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -109,10 +254,16 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
-        <td></td>
+        <td><p>A value which encodes this action's bound values (held
+by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">serializable</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IAction_PlainValue_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a></div>
+  </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -120,11 +271,21 @@
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L14">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L240">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
+<em>deterministic</em>.</p>
+<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
+it receives information such as a transaction sender and a receiver,
+its states immediately before the execution,
+and a deterministic random seed.</p>
+<p>Other “bound” information resides in the action
+object in itself, as its properties (or fields).</p>
+<p>A returned <a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a> object functions as
+a delta which shifts from previous states to next states.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -143,7 +304,12 @@
       <tr>
         <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
         <td><span class="parametername">context</span></td>
-        <td></td>
+        <td><p>A context object containing addresses that
+signed and receives the transaction,
+states immediately before the execution,
+and a PRNG object which produces deterministic random numbers.
+See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -158,20 +324,40 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></td>
-        <td></td>
+        <td><p>A map of <a class="xref" href="Libplanet.Address.html">Address</a>es with changed states.
+Only those addresses this map contains will have their states
+updated globally.
+That means, addresses this map misses are unchanged.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method should be deterministic:
+for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
+nor any other PRNGs provided by other than Libplanet.
+Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
+<p>Also do not perform I/O operations such as file system access
+or networking.  These bring an action indeterministic.</p>
+</div>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L10">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L175">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -190,24 +376,41 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">plainValue</span></td>
-        <td></td>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.RequestStates(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L12">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L207">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_RequestStates_" data-uid="Libplanet.Action.IAction.RequestStates*"></a>
   <h4 id="Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Action.IAction.RequestStates(Libplanet.Address,Libplanet.Address)">RequestStates(Address, Address)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Declares the set of <a class="xref" href="Libplanet.Address.html">Address</a>es that an action requires
+to fetch states.</p>
+<p>For example, if an action is someone healing someone it needs
+to know a healer&apos;s remaning mana (i.e., MP) and a healing target&apos;s
+remaining health (i.e., HP).  As a healing character belongs to
+an account who signed the transaction and a healed character belongs
+to an account who will receive the transaction, that healing
+action&apos;s <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address_">RequestStates(Address, Address)</a> should
+return a set of <code data-dev-comment-type="paramref" class="paramref">from</code> and <code data-dev-comment-type="paramref" class="paramref">to</code>.
+</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">ISet&lt;Address&gt; RequestStates(Address from, Address to)</code></pre>
+    <pre><code class="lang-csharp hljs">IImmutableSet&lt;Address&gt; RequestStates(Address from, Address to)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -222,12 +425,16 @@
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">from</span></td>
-        <td></td>
+        <td><p>An <a class="xref" href="Libplanet.Address.html">Address</a> of the account who
+signed the transaction this action belongs to.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">to</span></td>
-        <td></td>
+        <td><p>An <a class="xref" href="Libplanet.Address.html">Address</a> of the account who will
+receive the transaction this action belongs to.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -241,11 +448,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><p>An immutable set of <a class="xref" href="Libplanet.Address.html">Address</a>es required by
+this action.  Addresses are not limited to only <code data-dev-comment-type="paramref" class="paramref">from</code> and <code data-dev-comment-type="paramref" class="paramref">to</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IAction_RequestStates_Libplanet_Address_Libplanet_Address__examples">Examples</h5>
+  <p>The following example shows an action requiring states of
+a transaction sender and a transaction receiver:</p>
+<pre><code>public IImmutableSet&lt;Address> RequestStates(Address from,
+                                            Address to)
+{
+    return new HashSet&lt;Address> { from, to }.ToImmutableHashSet();
+}</code></pre>
+
 </article>
           </div>
           
@@ -257,7 +475,7 @@
                     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Action/IAction.cs/#L145" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
