@@ -30,7 +30,6 @@ namespace Libplanet.Net
 
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
-        private readonly NetMQQueue<PeerSetDelta> _deltas;
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly Uri _listenUrl;
@@ -77,7 +76,6 @@ namespace Libplanet.Net
 
             _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
-            _deltas = new NetMQQueue<PeerSetDelta>();
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
@@ -271,7 +269,6 @@ namespace Libplanet.Net
                 await DistributeDeltaAsync(false, cancellationToken);
 
                 _router.Dispose();
-                _deltas.Dispose();
                 foreach (DealerSocket s in _dealers.Values)
                 {
                     s.Dispose();
@@ -316,8 +313,7 @@ namespace Libplanet.Net
             await Task.WhenAll(
                 RepeatDeltaDistributionAsync(
                     distributeInterval, cancellationToken),
-                ReceiveMessageAsync(blockchain, cancellationToken),
-                ProcessDeltaAsync(cancellationToken));
+                ReceiveMessageAsync(blockchain, cancellationToken));
         }
 
         internal async Task<IEnumerable<HashDigest<SHA256>>>
@@ -584,7 +580,8 @@ namespace Libplanet.Net
 
                 case Messages.PeerSetDelta peerSetDelta:
                     {
-                        _deltas.Enqueue(peerSetDelta.Delta);
+                        await ProcessDeltaAsync(
+                            peerSetDelta.Delta, cancellationToken);
                         break;
                     }
 
@@ -797,48 +794,39 @@ namespace Libplanet.Net
         }
 
         private async Task ProcessDeltaAsync(
+            PeerSetDelta delta,
             CancellationToken cancellationToken
         )
         {
-            TimeSpan step = TimeSpan.FromMilliseconds(100);
-            while (true)
+            Peer sender = delta.Sender;
+            PublicKey senderKey = sender.PublicKey;
+
+            if (!_peers.ContainsKey(sender) &&
+                _peers.Keys.All(p => senderKey != p.PublicKey))
             {
-                PeerSetDelta delta;
-                while (!_deltas.TryDequeue(out delta, step))
-                {
-                    await Task.Delay(100, cancellationToken);
-                }
-
-                Peer sender = delta.Sender;
-                PublicKey senderKey = sender.PublicKey;
-
-                if (!_peers.ContainsKey(sender) &&
-                    _peers.Keys.All(p => senderKey != p.PublicKey))
-                {
-                    delta = new PeerSetDelta(
-                        delta.Sender,
-                        delta.Timestamp,
-                        delta.AddedPeers.Add(sender),
-                        delta.RemovedPeers,
-                        delta.ExistingPeers
-                    );
-                }
-
-                _logger.Debug($"Received the delta[{delta}].");
-
-                using (await _receiveMutex.LockAsync(cancellationToken))
-                {
-                    _logger.Debug($"Trying to apply the delta[{delta}]...");
-                    await ApplyDelta(delta, cancellationToken);
-
-                    LastReceived = delta.Timestamp;
-                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
-
-                    DeltaReceived.Set();
-                }
-
-                _logger.Debug($"The delta[{delta}] has been applied.");
+                delta = new PeerSetDelta(
+                    delta.Sender,
+                    delta.Timestamp,
+                    delta.AddedPeers.Add(sender),
+                    delta.RemovedPeers,
+                    delta.ExistingPeers
+                );
             }
+
+            _logger.Debug($"Received the delta[{delta}].");
+
+            using (await _receiveMutex.LockAsync(cancellationToken))
+            {
+                _logger.Debug($"Trying to apply the delta[{delta}]...");
+                await ApplyDelta(delta, cancellationToken);
+
+                LastReceived = delta.Timestamp;
+                LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+
+                DeltaReceived.Set();
+            }
+
+            _logger.Debug($"The delta[{delta}] has been applied.");
         }
 
         private async Task ApplyDelta(
