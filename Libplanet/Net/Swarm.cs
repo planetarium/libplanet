@@ -42,7 +42,7 @@ namespace Libplanet.Net
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
-            int millisecondsDialTimeout = 15000,
+            int millisecondsDialTimeout,
             DateTime? createdAt = null)
             : this(
                   privateKey,
