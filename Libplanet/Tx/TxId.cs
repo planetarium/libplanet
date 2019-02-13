@@ -1,74 +1,71 @@
 using System;
+using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Libplanet.Tx
 {
-    public struct TxId : IEquatable<TxId>
+    #pragma warning disable CS0282
+    [Uno.GeneratedEquality]
+    public partial struct TxId
+    #pragma warning restore CS0282
     {
         public const int RequiredLength = 32;
-        private readonly byte[] _bytes;
+        private ImmutableArray<byte> _byteArray;
 
-        public TxId(byte[] bytes)
+        public TxId(byte[] txid)
         {
-            if (bytes == null)
+            if (txid == null)
             {
                 throw new ArgumentNullException(
                     $"It must not be null.",
-                    nameof(bytes)
+                    nameof(txid)
                 );
             }
 
-            if (bytes.Length != RequiredLength)
+            if (txid.Length != RequiredLength)
             {
                 throw new ArgumentException(
                     $"It must be {RequiredLength} bytes.",
-                    nameof(bytes)
+                    nameof(txid)
                 );
             }
 
-            _bytes = bytes;
+            _byteArray = txid.ToImmutableArray();
+
+            #pragma warning disable CS0103
+            /* Suppress CS0171.
+            See also https://github.com/nventive/Uno.CodeGen/pull/91
+            */
+            _computedHashCode = null;
+            _computedKeyHashCode = null;
+            #pragma warning restore CS0103
         }
 
-        public static bool operator ==(TxId id1, TxId id2)
+        [Uno.EqualityKey]
+        public ImmutableArray<byte> ByteArray
         {
-            return id1.Equals(id2);
-        }
+            get
+            {
+                if (_byteArray.IsDefault)
+                {
+                    _byteArray = new byte[RequiredLength].ToImmutableArray();
+                }
 
-        public static bool operator !=(TxId id1, TxId id2)
-        {
-            return !(id1 == id2);
+                return _byteArray;
+            }
         }
 
         [Pure]
-        public byte[] ToByteArray()
-        {
-            return (byte[])_bytes.Clone();
-        }
+        public byte[] ToByteArray() => ByteArray.ToArray();
 
+        [Pure]
+        public string ToHex() => ByteUtil.Hex(ToByteArray());
+
+        [Pure]
         public override string ToString()
         {
-            return ByteUtil.Hex(_bytes);
-        }
-
-        public bool Equals(TxId other)
-        {
-            return _bytes.SequenceEqual(other._bytes);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            return obj is TxId other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return ByteUtil.CalculateHashCode(_bytes);
+            return ToHex();
         }
     }
 }
