@@ -95,7 +95,7 @@ namespace Libplanet.Tests.Net
             Blockchain<BaseAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
-            Task t = Task.Run(async () =>
+            Task task = Task.Run(async () =>
             {
                 await swarm.StartAsync(chain, 250);
             });
@@ -105,7 +105,7 @@ namespace Libplanet.Tests.Net
             await swarm.StopAsync();
 
             Assert.False(swarm.Running);
-            await t;
+            await task;
         }
 
         [Fact]
@@ -237,18 +237,12 @@ namespace Libplanet.Tests.Net
             Blockchain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
-            try
-            {
-                var at = Task.Run(
-                    async () => await swarm.StartAsync(chain, 250, cts.Token));
+            Task task = Task.Run(
+                async () => await swarm.StartAsync(chain, 250, cts.Token));
 
-                cts.Cancel();
-                await Assert.ThrowsAsync<TaskCanceledException>(async () => await at);
-            }
-            finally
-            {
-                await swarm.StopAsync();
-            }
+            cts.Cancel();
+            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            Assert.False(swarm.Running);
         }
 
         [Fact]

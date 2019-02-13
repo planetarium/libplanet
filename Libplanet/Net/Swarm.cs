@@ -293,34 +293,42 @@ namespace Libplanet.Net
 
             Running = true;
             _router.Bind(_listenUrl.ToString());
-            foreach (Peer peer in _peers.Keys)
+
+            try
             {
-                try
+                foreach (Peer peer in _peers.Keys)
                 {
-                    Peer replacedPeer = await DialPeerAsync(
-                        peer,
-                        cancellationToken
-                    );
-                    if (replacedPeer != peer)
+                    try
                     {
-                        _peers[replacedPeer] = _peers[peer];
-                        _peers.Remove(peer);
+                        Peer replacedPeer = await DialPeerAsync(
+                            peer,
+                            cancellationToken
+                        );
+                        if (replacedPeer != peer)
+                        {
+                            _peers[replacedPeer] = _peers[peer];
+                            _peers.Remove(peer);
+                        }
+                    }
+                    catch (IOException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"IOException occured in DialPeerAsync ({peer})."
+                        );
+                        continue;
                     }
                 }
-                catch (IOException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"IOException occured in DialPeerAsync ({peer})."
-                    );
-                    continue;
-                }
-            }
 
-            await Task.WhenAll(
-                RepeatDeltaDistributionAsync(
-                    distributeInterval, cancellationToken),
-                ReceiveMessageAsync(blockchain, cancellationToken));
+                await Task.WhenAll(
+                    RepeatDeltaDistributionAsync(
+                        distributeInterval, cancellationToken),
+                    ReceiveMessageAsync(blockchain, cancellationToken));
+            }
+            finally
+            {
+                await StopAsync();
+            }
         }
 
         internal async Task<IEnumerable<HashDigest<SHA256>>>
