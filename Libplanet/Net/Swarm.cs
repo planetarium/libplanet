@@ -282,7 +282,20 @@ namespace Libplanet.Net
 
         public async Task StartAsync<T>(
             Blockchain<T> blockchain,
-            int distributeInterval,
+            int millisecondsDistributeInterval = 1500,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            await StartAsync(
+                blockchain,
+                TimeSpan.FromMilliseconds(millisecondsDistributeInterval),
+                cancellationToken
+            );
+        }
+
+        public async Task StartAsync<T>(
+            Blockchain<T> blockchain,
+            TimeSpan distributeInterval,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
@@ -1126,7 +1139,7 @@ namespace Libplanet.Net
         }
 
         private async Task RepeatDeltaDistributionAsync(
-            int interval, CancellationToken cancellationToken)
+            TimeSpan interval, CancellationToken cancellationToken)
         {
             int i = 1;
             while (Running)
