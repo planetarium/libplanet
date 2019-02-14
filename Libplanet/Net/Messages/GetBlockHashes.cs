@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Blockchain;
 using NetMQ;
 
 namespace Libplanet.Net.Messages

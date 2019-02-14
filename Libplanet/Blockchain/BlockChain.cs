@@ -12,9 +12,9 @@ using Libplanet.Store;
 using Libplanet.Tx;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
-namespace Libplanet
+namespace Libplanet.Blockchain
 {
-    public class Blockchain<T> : IEnumerable<Block<T>>
+    public class BlockChain<T> : IEnumerable<Block<T>>
         where T : IAction
     {
         private static readonly TimeSpan BlockInterval = new TimeSpan(
@@ -23,7 +23,7 @@ namespace Libplanet
             seconds: 5
         );
 
-        public Blockchain(IStore store)
+        public BlockChain(IStore store)
         {
             Store = store;
             Blocks = new BlockSet<T>(store);
@@ -369,7 +369,7 @@ namespace Libplanet
                         .Where(states.ContainsKey)
                         .ToImmutableDictionary(a => a, a => states[a]));
                     var context = new ActionContext(
-                        from: tx.Sender,
+                        @from: tx.Sender,
                         to: tx.Recipient,
                         previousStates: prevState,
                         randomSeed: unchecked(txSeed++)

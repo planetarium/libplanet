@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
@@ -281,20 +282,20 @@ namespace Libplanet.Net
         }
 
         public async Task StartAsync<T>(
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             int millisecondsDistributeInterval = 1500,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             await StartAsync(
-                blockchain,
+                blockChain,
                 TimeSpan.FromMilliseconds(millisecondsDistributeInterval),
                 cancellationToken
             );
         }
 
         public async Task StartAsync<T>(
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             TimeSpan distributeInterval,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
@@ -336,7 +337,7 @@ namespace Libplanet.Net
                 await Task.WhenAll(
                     RepeatDeltaDistributionAsync(
                         distributeInterval, cancellationToken),
-                    ReceiveMessageAsync(blockchain, cancellationToken));
+                    ReceiveMessageAsync(blockChain, cancellationToken));
             }
             finally
             {
@@ -548,7 +549,7 @@ namespace Libplanet.Net
         }
 
         private async Task ReceiveMessageAsync<T>(
-            Blockchain<T> blockchain, CancellationToken cancellationToken)
+            BlockChain<T> blockChain, CancellationToken cancellationToken)
             where T : IAction
         {
             CheckStarted();
@@ -581,7 +582,7 @@ namespace Libplanet.Net
                         // it's still async because some method it relies are
                         // async yet.
                         await ProcessMessageAsync(
-                            blockchain,
+                            blockChain,
                             message,
                             cancellationToken
                         );
@@ -599,7 +600,7 @@ namespace Libplanet.Net
         }
 
         private async Task ProcessMessageAsync<T>(
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             Message message,
             CancellationToken cancellationToken)
             where T : IAction
@@ -627,7 +628,7 @@ namespace Libplanet.Net
                 case GetBlockHashes getBlockHashes:
                     {
                         IEnumerable<HashDigest<SHA256>> hashes =
-                            blockchain.FindNextHashes(
+                            blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 500);
@@ -642,28 +643,28 @@ namespace Libplanet.Net
                 case GetBlocks getBlocks:
                     {
                         await TransferBlocks(
-                            blockchain, getBlocks, cancellationToken);
+                            blockChain, getBlocks, cancellationToken);
                         break;
                     }
 
                 case GetTxs getTxs:
                     {
                         await TransferTxs(
-                            blockchain, getTxs, cancellationToken);
+                            blockChain, getTxs, cancellationToken);
                         break;
                     }
 
                 case TxIds txIds:
                     {
                         await ProcessTxIds(
-                            txIds, blockchain, cancellationToken);
+                            txIds, blockChain, cancellationToken);
                         break;
                     }
 
                 case BlockHashes blockHashes:
                     {
                         await ProcessBlockHashes(
-                            blockHashes, blockchain, cancellationToken);
+                            blockHashes, blockChain, cancellationToken);
                         break;
                     }
 
@@ -675,7 +676,7 @@ namespace Libplanet.Net
 
         private async Task ProcessBlockHashes<T>(
             BlockHashes message,
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
@@ -697,12 +698,12 @@ namespace Libplanet.Net
 
             List<Block<T>> blocks = await fetched.ToListAsync();
             await AppendBlocksAsync(
-                sock, blockchain, blocks, cancellationToken);
+                sock, blockChain, blocks, cancellationToken);
         }
 
         private async Task AppendBlocksAsync<T>(
             DealerSocket socket,
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             List<Block<T>> blocks,
             CancellationToken cancellationToken)
             where T : IAction
@@ -710,26 +711,26 @@ namespace Libplanet.Net
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
             Block<T> latest = blocks.Last();
-            HashDigest<SHA256>? tip = blockchain.Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? tip = blockChain.Store.IndexBlockHash(-1);
 
             if (tip == null || oldest.PreviousHash == tip)
             {
                 // Caught up with everything, so we just connect it.
                 foreach (Block<T> block in blocks)
                 {
-                    blockchain.Append(block);
+                    blockChain.Append(block);
                 }
             }
-            else if (latest.Index > blockchain.Tip.Index)
+            else if (latest.Index > blockChain.Tip.Index)
             {
                 // We need some other blocks, so request to sender.
-                BlockLocator locator = blockchain.GetBlockLocator();
+                BlockLocator locator = blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
                         socket, locator, oldest.Hash, cancellationToken);
                 HashDigest<SHA256> branchPoint = hashes.First();
 
-                blockchain.DeleteAfter(branchPoint);
+                blockChain.DeleteAfter(branchPoint);
 
                 await GetBlocksAsync<T>(
                     socket,
@@ -737,11 +738,11 @@ namespace Libplanet.Net
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
-                    blockchain.Append(block);
+                    blockChain.Append(block);
                 });
 
                 await AppendBlocksAsync(
-                    socket, blockchain, blocks, cancellationToken);
+                    socket, blockChain, blocks, cancellationToken);
             }
             else
             {
@@ -752,12 +753,12 @@ namespace Libplanet.Net
         }
 
         private async Task TransferTxs<T>(
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             GetTxs getTxs,
             CancellationToken cancellationToken)
             where T : IAction
         {
-            IDictionary<TxId, Transaction<T>> txs = blockchain.Transactions;
+            IDictionary<TxId, Transaction<T>> txs = blockChain.Transactions;
             foreach (var txid in getTxs.TxIds)
             {
                 if (txs.TryGetValue(txid, out Transaction<T> tx))
@@ -773,14 +774,14 @@ namespace Libplanet.Net
 
         private async Task ProcessTxIds<T>(
             TxIds message,
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
             _logger.Debug("Trying to fetch txs...");
 
             IEnumerable<TxId> unknownTxIds = message.Ids
-                .Where(id => !blockchain.Transactions.ContainsKey(id));
+                .Where(id => !blockChain.Transactions.ContainsKey(id));
 
             if (!(message.Identity is Address from))
             {
@@ -800,7 +801,7 @@ namespace Libplanet.Net
             var toStage = new HashSet<Transaction<T>>(
                 await fetched.ToListAsync(cancellationToken));
 
-            blockchain.StageTransactions(toStage);
+            blockChain.StageTransactions(toStage);
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
         }
@@ -814,14 +815,14 @@ namespace Libplanet.Net
         }
 
         private async Task TransferBlocks<T>(
-            Blockchain<T> blockchain,
+            BlockChain<T> blockChain,
             GetBlocks getData,
             CancellationToken cancellationToken)
             where T : IAction
         {
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (blockchain.Blocks.TryGetValue(hash, out Block<T> block))
+                if (blockChain.Blocks.TryGetValue(hash, out Block<T> block))
                 {
                     Message response = new Block(block.ToBencodex(true, true))
                     {
