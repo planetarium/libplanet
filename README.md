@@ -2,6 +2,7 @@ Libplanet
 =========
 
 [![Build Status](https://travis-ci.com/planetarium/libplanet.net.svg?branch=master)][Travis CI]
+[![Codecov](https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg)][Codecov]
 [![NuGet](https://img.shields.io/nuget/v/Libplanet.svg?style=flat)][NuGet]
 [![NuGet (prerelease)](https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat)][NuGet]
 
@@ -12,6 +13,7 @@ server.  Under the hood, it incorporates many features (e.g.,
 [digital signature], [BFT] consensus, data replication) of a [blockchain].
 
 [Travis CI]: https://travis-ci.com/planetarium/libplanet.net
+[Codecov]: https://codecov.io/gh/planetarium/libplanet.net
 [NuGet]: https://www.nuget.org/packages/Libplanet/
 [digital signature]: https://en.wikipedia.org/wiki/Digital_signature
 [BFT]: https://en.wikipedia.org/wiki/Byzantine_fault_tolerance
