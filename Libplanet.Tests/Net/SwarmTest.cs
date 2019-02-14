@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -73,6 +72,43 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
+        public async Task CanNotStartTwice()
+        {
+            Swarm swarm = _swarms[0];
+            Blockchain<BaseAction> chain = _blockchains[0];
+
+            #pragma warning disable CS4014
+            Task.Run(async () => { await swarm.StartAsync(chain); });
+            #pragma warning restore CS4014
+
+            await Assert.ThrowsAsync<SwarmException>(async () =>
+            {
+                await swarm.StartAsync(chain);
+            });
+            await swarm.StopAsync();
+        }
+
+        [Fact]
+        public async Task CanStop()
+        {
+            Swarm swarm = _swarms[0];
+            Blockchain<BaseAction> chain = _blockchains[0];
+
+            await swarm.StopAsync();
+            Task task = Task.Run(async () =>
+            {
+                await swarm.StartAsync(chain, 250);
+            });
+
+            await Task.Delay(500);
+            Assert.True(swarm.Running);
+            await swarm.StopAsync();
+
+            Assert.False(swarm.Running);
+            await task;
+        }
+
+        [Fact]
         public async Task WorksAsExpected()
         {
             Swarm a = _swarms[0];
@@ -86,22 +122,18 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await b.InitContextAsync();
-                await c.InitContextAsync();
-
                 try
                 {
-                    await a.InitContextAsync();
+                    var at = Task.Run(async () => await a.StartAsync(chain, 250));
+                    var bt = Task.Run(async () => await b.StartAsync(chain, 250));
+                    var ct = Task.Run(async () => await c.StartAsync(chain, 250));
 
-                    var at = Task.Run(async () => await a.RunAsync(chain, 250));
                     await b.AddPeersAsync(new[] { a.AsPeer });
-                    var bt = Task.Run(async () => await b.RunAsync(chain, 250));
                     await EnsureExchange(a, b);
                     Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), a.ToImmutableHashSet());
                     Assert.Equal(new[] { a.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
 
                     await c.AddPeersAsync(new[] { a.AsPeer });
-                    var ct = Task.Run(async () => await c.RunAsync(chain, 250));
                     await EnsureExchange(a, c);
                     await EnsureExchange(a, b);
 
@@ -114,7 +146,7 @@ namespace Libplanet.Tests.Net
                 }
                 finally
                 {
-                    await a.DisposeAsync();
+                    await a.StopAsync();
                 }
 
                 Assert.True(lastDistA < a.LastDistributed);
@@ -128,8 +160,8 @@ namespace Libplanet.Tests.Net
             }
             finally
             {
-                await b.DisposeAsync();
-                await c.DisposeAsync();
+                await b.StopAsync();
+                await c.StopAsync();
             }
         }
 
@@ -205,19 +237,12 @@ namespace Libplanet.Tests.Net
             Blockchain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
-            try
-            {
-                await swarm.InitContextAsync();
-                var at = Task.Run(
-                    async () => await swarm.RunAsync(chain, 250, cts.Token));
+            Task task = Task.Run(
+                async () => await swarm.StartAsync(chain, 250, cts.Token));
 
-                cts.Cancel();
-                await Assert.ThrowsAsync<TaskCanceledException>(async () => await at);
-            }
-            finally
-            {
-                await swarm.DisposeAsync();
-            }
+            cts.Cancel();
+            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            Assert.False(swarm.Running);
         }
 
         [Fact]
@@ -236,13 +261,10 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await Task.WhenAll(
-                    swarmA.InitContextAsync(),
-                    swarmB.InitContextAsync());
                 var at = Task.Run(
-                    async () => await swarmA.RunAsync(chainA, 250));
+                    async () => await swarmA.StartAsync(chainA, 250));
                 var bt = Task.Run(
-                    async () => await swarmB.RunAsync(chainB, 250));
+                    async () => await swarmB.StartAsync(chainB, 250));
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
                     async () => await swarmB.GetBlockHashesAsync(
@@ -282,8 +304,8 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await Task.WhenAll(
-                    swarmA.DisposeAsync(),
-                    swarmB.DisposeAsync());
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
             }
         }
 
@@ -307,13 +329,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await Task.WhenAll(
-                    swarmA.InitContextAsync(),
-                    swarmB.InitContextAsync());
-
                 #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
-                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
+                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
+                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
                 #pragma warning restore CS4014
 
                 Assert.Throws<PeerNotFoundException>(
@@ -332,8 +350,8 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await Task.WhenAll(
-                    swarmA.DisposeAsync(),
-                    swarmB.DisposeAsync());
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
             }
         }
 
@@ -360,15 +378,10 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await Task.WhenAll(
-                    swarmA.InitContextAsync(),
-                    swarmB.InitContextAsync(),
-                    swarmC.InitContextAsync());
-
                 #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
-                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
-                Task.Run(async () => await swarmC.RunAsync(chainC, 250));
+                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
+                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
+                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
                 #pragma warning restore CS4014
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
@@ -388,9 +401,9 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await Task.WhenAll(
-                    swarmA.DisposeAsync(),
-                    swarmB.DisposeAsync(),
-                    swarmC.DisposeAsync());
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync(),
+                    swarmC.StopAsync());
             }
         }
 
@@ -424,15 +437,10 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await Task.WhenAll(
-                    swarmA.InitContextAsync(),
-                    swarmB.InitContextAsync(),
-                    swarmC.InitContextAsync());
-
                 #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.RunAsync(chainA, 250));
-                Task.Run(async () => await swarmB.RunAsync(chainB, 250));
-                Task.Run(async () => await swarmC.RunAsync(chainC, 250));
+                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
+                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
+                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
                 #pragma warning restore CS4014
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
@@ -461,9 +469,9 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await Task.WhenAll(
-                    swarmA.DisposeAsync(),
-                    swarmB.DisposeAsync(),
-                    swarmC.DisposeAsync());
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync(),
+                    swarmC.StopAsync());
             }
         }
 
