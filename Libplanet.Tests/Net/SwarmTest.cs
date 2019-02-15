@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -38,15 +39,16 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
+            var policy = new BlockPolicy<BaseAction>();
             _fx1 = new FileStoreFixture();
             _fx2 = new FileStoreFixture();
             _fx3 = new FileStoreFixture();
 
             _blockchains = new List<BlockChain<BaseAction>>
             {
-                new BlockChain<BaseAction>(_fx1.Store),
-                new BlockChain<BaseAction>(_fx2.Store),
-                new BlockChain<BaseAction>(_fx3.Store),
+                new BlockChain<BaseAction>(policy, _fx1.Store),
+                new BlockChain<BaseAction>(policy, _fx2.Store),
+                new BlockChain<BaseAction>(policy, _fx3.Store),
             };
 
             _swarms = new List<Swarm>

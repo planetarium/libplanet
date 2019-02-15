@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -20,7 +21,10 @@ namespace Libplanet.Tests.Blockchain
         public BlockChainTest()
         {
             _fx = new FileStoreFixture();
-            _blockChain = new BlockChain<BaseAction>(_fx.Store);
+            _blockChain = new BlockChain<BaseAction>(
+                new BlockPolicy<BaseAction>(),
+                _fx.Store
+            );
         }
 
         public void Dispose()
