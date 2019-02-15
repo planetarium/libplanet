@@ -45,7 +45,7 @@ namespace Libplanet.Net
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
-            int millisecondsDialTimeout,
+            int millisecondsDialTimeout = 15000,
             DateTimeOffset? createdAt = null)
             : this(
                   privateKey,
@@ -58,12 +58,12 @@ namespace Libplanet.Net
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
-            TimeSpan? dialTimeout = null,
+            TimeSpan dialTimeout,
             DateTimeOffset? createdAt = null)
         {
             _privateKey = privateKey;
             _listenUrl = listenUrl;
-            _dialTimeout = dialTimeout ?? TimeSpan.FromMilliseconds(15000);
+            _dialTimeout = dialTimeout;
             _peers = new Dictionary<Peer, DateTimeOffset>();
             _removedPeers = new Dictionary<Peer, DateTimeOffset>();
             LastSeenTimestamps = new Dictionary<Peer, DateTimeOffset>();
