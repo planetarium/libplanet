@@ -27,7 +27,8 @@ namespace Libplanet.Explorer.Controllers
 
         public BlockChain<T> GetBlockChain()
         {
-            var chain = new BlockChain<T>(Store.Store);
+            // FIXME: policy should be configurable
+            var chain = new BlockChain<T>(new BlockPolicy<T>(), Store.Store);
 
             return chain;
         }
