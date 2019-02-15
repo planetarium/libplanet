@@ -58,11 +58,13 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public static void Validate(IEnumerable<Block<T>> blocks)
+        public static void Validate(
+            IEnumerable<Block<T>> blocks,
+            DateTime currentTime
+        )
         {
             HashDigest<SHA256>? prevHash = null;
             DateTime? prevTimestamp = null;
-            DateTime now = DateTime.UtcNow;
             IEnumerable<(ulong i, DifficultyExpectation)> indexedDifficulties =
                 ExpectDifficulties(blocks)
                 .Select((exp, i) => { return ((ulong)i, exp); });
@@ -115,7 +117,7 @@ namespace Libplanet.Blockchain
                     );
                 }
 
-                block.Validate(now);
+                block.Validate(currentTime);
                 prevHash = block.Hash;
                 prevTimestamp = block.Timestamp;
             }
@@ -162,9 +164,9 @@ namespace Libplanet.Blockchain
             return states;
         }
 
-        public void Append(Block<T> block)
+        public void Append(Block<T> block, DateTime currentTime)
         {
-            Validate(Enumerable.Append(this, block));
+            Validate(Enumerable.Append(this, block), currentTime);
             Blocks[block.Hash] = block;
             EvaluateActions(block);
 
@@ -180,6 +182,8 @@ namespace Libplanet.Blockchain
             }
         }
 
+        public void Append(Block<T> block) => Append(block, DateTime.UtcNow);
+
         public void StageTransactions(ISet<Transaction<T>> txs)
         {
             foreach (Transaction<T> tx in txs)
@@ -191,7 +195,10 @@ namespace Libplanet.Blockchain
                 txs.Select(tx => tx.Id).ToImmutableHashSet());
         }
 
-        public Block<T> MineBlock(Address rewardBeneficiary)
+        public Block<T> MineBlock(
+            Address rewardBeneficiary,
+            DateTime currentTime
+        )
         {
             ulong index = Store.CountIndex();
             uint difficulty = ExpectDifficulties(this, yieldNext: true)
@@ -204,16 +211,19 @@ namespace Libplanet.Blockchain
                 difficulty: difficulty,
                 rewardBeneficiary: rewardBeneficiary,
                 previousHash: Store.IndexBlockHash((long)index - 1),
-                timestamp: DateTime.UtcNow,
+                timestamp: currentTime,
                 transactions: Store.IterateStagedTransactionIds()
                 .Select(txId => Store.GetTransaction<T>(txId))
                 .OfType<Transaction<T>>()
                 .ToList()
             );
-            Append(block);
+            Append(block, currentTime);
 
             return block;
         }
+
+        public Block<T> MineBlock(Address rewardBeneficiary) =>
+            MineBlock(rewardBeneficiary, DateTime.UtcNow);
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
         {
