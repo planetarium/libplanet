@@ -8,9 +8,21 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain.Policies
 {
+    /// <summary>
+    /// A default implementation of <see cref="IBlockPolicy{T}"/> interface.
+    /// </summary>
+    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction
     {
+        /// <summary>
+        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
+        /// <see cref="BlockInterval"/> in seconds.
+        /// </summary>
+        /// <param name="blockIntervalSeconds">Configures
+        /// <see cref="BlockInterval"/> in seconds.  5 seconds by default.
+        /// </param>
         public BlockPolicy(uint blockIntervalSeconds = 5)
             : this(
                 TimeSpan.FromSeconds(blockIntervalSeconds)
@@ -18,13 +30,28 @@ namespace Libplanet.Blockchain.Policies
         {
         }
 
+        /// <summary>
+        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
+        /// <see cref="BlockInterval"/>.
+        /// </summary>
+        /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
+        /// </param>
         public BlockPolicy(TimeSpan blockInterval)
         {
             BlockInterval = blockInterval;
         }
 
+        /// <summary>
+        /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
+        /// It is usually from 20 to 30 seconds.
+        /// <para>If a previous interval took longer than this
+        /// <see cref="GetNextBlockDifficulty(IEnumerable{Block{T}})"/> method
+        /// raises the <see cref="Block{T}.Difficulty"/>.  If it took shorter
+        /// than this <see cref="Block{T}.Difficulty"/> is dropped.</para>
+        /// </summary>
         public TimeSpan BlockInterval { get; }
 
+        /// <inheritdoc />
         public InvalidBlockException ValidateBlocks(
             IEnumerable<Block<T>> blocks,
             DateTime currentTime
@@ -92,6 +119,7 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
+        /// <inheritdoc />
         public uint GetNextBlockDifficulty(IEnumerable<Block<T>> blocks)
         {
             return ExpectDifficulties(blocks, yieldNext: true)
