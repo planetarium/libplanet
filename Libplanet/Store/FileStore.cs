@@ -112,8 +112,8 @@ namespace Libplanet.Store
                 FileMode.Append, FileAccess.Write))
             {
                 var offset = stream.Position;
-                stream.Write(txId.ToByteArray(), 0, TxId.RequiredLength);
-                return Convert.ToInt64(offset / (float)TxId.RequiredLength);
+                stream.Write(txId.ToByteArray(), 0, TxId.Size);
+                return Convert.ToInt64(offset / (float)TxId.Size);
             }
         }
 
@@ -214,8 +214,8 @@ namespace Libplanet.Store
                 {
                     while (true)
                     {
-                        var txIdBytes = new byte[TxId.RequiredLength];
-                        var length = f.Read(txIdBytes, 0, TxId.RequiredLength);
+                        var txIdBytes = new byte[TxId.Size];
+                        var length = f.Read(txIdBytes, 0, TxId.Size);
                         if (length == 0)
                         {
                             break;
