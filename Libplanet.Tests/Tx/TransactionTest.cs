@@ -83,6 +83,16 @@ namespace Libplanet.Tests.Tx
                     timestamp
                 )
             );
+
+            // The actions parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                Transaction<BaseAction>.Make(
+                    privateKey,
+                    recipient,
+                    null,
+                    timestamp
+                )
+            );
         }
 
         [Fact]
@@ -155,16 +165,52 @@ namespace Libplanet.Tests.Tx
                 0x3f,
             };
 
-            Assert.Throws<InvalidTxSignatureException>(() =>
-            {
+            // The publicKey parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    null,
+                    recipient,
+                    timestamp,
+                    new List<BaseAction>(),
+                    signature
+                )
+            );
+
+            // The actions parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    privateKey.PublicKey,
+                    recipient,
+                    timestamp,
+                    null,
+                    signature
+                )
+            );
+
+            // The signature parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<BaseAction>(
                     privateKey.PublicKey.ToAddress(),
                     privateKey.PublicKey,
                     recipient,
                     timestamp,
                     new List<BaseAction>(),
-                    invalidSignature);
-            });
+                    null
+                )
+            );
+
+            Assert.Throws<InvalidTxSignatureException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    privateKey.PublicKey,
+                    recipient,
+                    timestamp,
+                    new List<BaseAction>(),
+                    invalidSignature
+                )
+            );
         }
 
         [Fact]
