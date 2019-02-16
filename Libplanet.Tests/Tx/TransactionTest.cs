@@ -73,6 +73,16 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
+
+            // The privateKey parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                Transaction<BaseAction>.Make(
+                    null,
+                    recipient,
+                    new List<BaseAction>(),
+                    timestamp
+                )
+            );
         }
 
         [Fact]

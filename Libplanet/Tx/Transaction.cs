@@ -119,6 +119,11 @@ namespace Libplanet.Tx
             IList<T> actions,
             DateTime timestamp)
         {
+            if (privateKey == null)
+            {
+                throw new ArgumentNullException(nameof(privateKey));
+            }
+
             PublicKey publicKey = privateKey.PublicKey;
             var sender = new Address(publicKey);
 
