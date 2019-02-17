@@ -36,6 +36,8 @@ namespace Libplanet.Tx
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
             .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
+        private byte[] _signature;
+
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
         /// </summary>
@@ -61,7 +63,8 @@ namespace Libplanet.Tx
         /// this <see cref="Transaction{T}"/>.  This has to be signed by
         /// the account who corresponds to <paramref name="publicKey"/>,
         /// or it will throw <see cref="InvalidTxSignatureException"/>.
-        /// This goes to the <see cref="Signature"/> property.</param>
+        /// This is copied and then assigned to the <see cref="Signature"/>
+        /// property.</param>
         /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
         /// is passed to <paramref name="signature"/>,
         /// <paramref name="actions"/>, or <paramref name="publicKey"/>.
@@ -164,11 +167,24 @@ namespace Libplanet.Tx
         /// who corresponds to <see cref="PublicKey"/>.
         /// This cannot be <c>null</c>.
         /// </summary>
-        public byte[] Signature { get; }
-        /*
-        FIXME: This should be an ImmutableArray<byte>.
-        Currently as this is mutable the whole transaction is also mutable.
-        */
+        /// <returns>A new <see cref="byte"/> array of this transaction's
+        /// signature.  Changing a returned array does not affect the internal
+        /// state of this <see cref="Transaction{T}"/> object.</returns>
+        public byte[] Signature
+        {
+            get
+            {
+                var sig = new byte[_signature.Length];
+                Array.Copy(_signature, sig, _signature.Length);
+                return sig;
+            }
+
+            private set
+            {
+                _signature = new byte[value.Length];
+                Array.Copy(value, _signature, value.Length);
+            }
+        }
 
         /// <summary>
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
