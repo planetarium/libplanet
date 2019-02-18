@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.ViewModels;
@@ -23,9 +25,10 @@ namespace Libplanet.Explorer.Controllers
             Store = store;
         }
 
-        public Blockchain<T> GetBlockchain()
+        public BlockChain<T> GetBlockChain()
         {
-            var chain = new Blockchain<T>(Store.Store);
+            // FIXME: policy should be configurable
+            var chain = new BlockChain<T>(new BlockPolicy<T>(), Store.Store);
 
             return chain;
         }
@@ -33,7 +36,7 @@ namespace Libplanet.Explorer.Controllers
         [HttpGet("/blocks/")]
         public List<Dictionary<string, string>> Index()
         {
-            Blockchain<T> chain = GetBlockchain();
+            BlockChain<T> chain = GetBlockChain();
 
             return chain.Select(block => new Dictionary<string, string>
                 {
@@ -48,7 +51,7 @@ namespace Libplanet.Explorer.Controllers
         {
             Block<T> block;
             HashDigest<SHA256> blockHash;
-            Blockchain<T> chain = GetBlockchain();
+            BlockChain<T> chain = GetBlockChain();
 
             try
             {
@@ -98,7 +101,7 @@ namespace Libplanet.Explorer.Controllers
         {
             Transaction<T> tx;
             TxId txId;
-            Blockchain<T> chain = GetBlockchain();
+            BlockChain<T> chain = GetBlockChain();
 
             try
             {
@@ -153,7 +156,7 @@ namespace Libplanet.Explorer.Controllers
         {
             Address address;
             IEnumerable<Transaction<T>> txs;
-            Blockchain<T> chain = GetBlockchain();
+            BlockChain<T> chain = GetBlockChain();
 
             try
             {
