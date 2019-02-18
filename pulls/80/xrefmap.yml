@@ -1179,6 +1179,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T)
   nameWithType: Block<T>
   nameWithType.vb: Block(Of T)
+- uid: Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: Block(Int64, Int32, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: Block(Int64, Int32, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Blocks.Block<T>.Block(System.Int64, System.Int32, Libplanet.Nonce, System.Nullable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTime, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.Int64, System.Int32, Libplanet.Nonce, System.Nullable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTime, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: Block<T>.Block(Int64, Int32, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
+  nameWithType.vb: Block(Of T).Block(Int64, Int32, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
 - uid: Libplanet.Blocks.Block`1.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: Block(SerializationInfo, StreamingContext)
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
@@ -1187,15 +1196,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
   nameWithType: Block<T>.Block(SerializationInfo, StreamingContext)
   nameWithType.vb: Block(Of T).Block(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.Block`1.#ctor(System.UInt64,System.UInt32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
-  name: Block(UInt64, UInt32, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_UInt64_System_UInt32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blocks.Block`1.#ctor(System.UInt64,System.UInt32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
-  name.vb: Block(UInt64, UInt32, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
-  fullName: Libplanet.Blocks.Block<T>.Block(System.UInt64, System.UInt32, Libplanet.Nonce, System.Nullable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTime, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Block(System.UInt64, System.UInt32, Libplanet.Nonce, System.Nullable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTime, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: Block<T>.Block(UInt64, UInt32, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
-  nameWithType.vb: Block(Of T).Block(UInt64, UInt32, Nonce, Nullable(Of Address), Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
 - uid: Libplanet.Blocks.Block`1.#ctor*
   name: Block
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_
@@ -1386,15 +1386,15 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).KeyEquals
   nameWithType: Block<T>.KeyEquals
   nameWithType.vb: Block(Of T).KeyEquals
-- uid: Libplanet.Blocks.Block`1.Mine(System.UInt64,System.UInt32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
-  name: Mine(UInt64, UInt32, Address, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_System_UInt64_System_UInt32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blocks.Block`1.Mine(System.UInt64,System.UInt32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
-  name.vb: Mine(UInt64, UInt32, Address, Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
-  fullName: Libplanet.Blocks.Block<T>.Mine(System.UInt64, System.UInt32, Libplanet.Address, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTime, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Mine(System.UInt64, System.UInt32, Libplanet.Address, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTime, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: Block<T>.Mine(UInt64, UInt32, Address, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
-  nameWithType.vb: Block(Of T).Mine(UInt64, UInt32, Address, Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
+- uid: Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: Mine(Int64, Int32, Address, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_System_Int64_System_Int32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: Mine(Int64, Int32, Address, Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Blocks.Block<T>.Mine(System.Int64, System.Int32, Libplanet.Address, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.DateTime, System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Mine(System.Int64, System.Int32, Libplanet.Address, System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.DateTime, System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: Block<T>.Mine(Int64, Int32, Address, Nullable<HashDigest<SHA256>>, DateTime, IEnumerable<Transaction<T>>)
+  nameWithType.vb: Block(Of T).Mine(Int64, Int32, Address, Nullable(Of HashDigest(Of SHA256)), DateTime, IEnumerable(Of Transaction(Of T)))
 - uid: Libplanet.Blocks.Block`1.Mine*
   name: Mine
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Mine_
@@ -2295,12 +2295,12 @@ references:
   commentId: T:Libplanet.Hashcash
   fullName: Libplanet.Hashcash
   nameWithType: Hashcash
-- uid: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.UInt32)
-  name: Answer(Hashcash.Stamp, UInt32)
-  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_UInt32_
-  commentId: M:Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.UInt32)
-  fullName: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp, System.UInt32)
-  nameWithType: Hashcash.Answer(Hashcash.Stamp, UInt32)
+- uid: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.Int32)
+  name: Answer(Hashcash.Stamp, Int32)
+  href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_Libplanet_Hashcash_Stamp_System_Int32_
+  commentId: M:Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp,System.Int32)
+  fullName: Libplanet.Hashcash.Answer(Libplanet.Hashcash.Stamp, System.Int32)
+  nameWithType: Hashcash.Answer(Hashcash.Stamp, Int32)
 - uid: Libplanet.Hashcash.Answer*
   name: Answer
   href: api/Libplanet.Hashcash.html#Libplanet_Hashcash_Answer_
@@ -2460,14 +2460,14 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).GetKeyHashCode
   nameWithType: HashDigest<T>.GetKeyHashCode
   nameWithType.vb: HashDigest(Of T).GetKeyHashCode
-- uid: Libplanet.HashDigest`1.HasLeadingZeroBits(System.UInt32)
-  name: HasLeadingZeroBits(UInt32)
-  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_HasLeadingZeroBits_System_UInt32_
-  commentId: M:Libplanet.HashDigest`1.HasLeadingZeroBits(System.UInt32)
-  fullName: Libplanet.HashDigest<T>.HasLeadingZeroBits(System.UInt32)
-  fullName.vb: Libplanet.HashDigest(Of T).HasLeadingZeroBits(System.UInt32)
-  nameWithType: HashDigest<T>.HasLeadingZeroBits(UInt32)
-  nameWithType.vb: HashDigest(Of T).HasLeadingZeroBits(UInt32)
+- uid: Libplanet.HashDigest`1.HasLeadingZeroBits(System.Int32)
+  name: HasLeadingZeroBits(Int32)
+  href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_HasLeadingZeroBits_System_Int32_
+  commentId: M:Libplanet.HashDigest`1.HasLeadingZeroBits(System.Int32)
+  fullName: Libplanet.HashDigest<T>.HasLeadingZeroBits(System.Int32)
+  fullName.vb: Libplanet.HashDigest(Of T).HasLeadingZeroBits(System.Int32)
+  nameWithType: HashDigest<T>.HasLeadingZeroBits(Int32)
+  nameWithType.vb: HashDigest(Of T).HasLeadingZeroBits(Int32)
 - uid: Libplanet.HashDigest`1.HasLeadingZeroBits*
   name: HasLeadingZeroBits
   href: api/Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_HasLeadingZeroBits_

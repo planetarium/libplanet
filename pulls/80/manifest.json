@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.html",
-          "hash": "aBsP5gDjdU2/3/E/F1z8kA=="
+          "hash": "cE42EP+qyqIKrWXse7vz/A=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html",
-          "hash": "Z/eo/HA37zkLHdSS7Weohg=="
+          "hash": "W8Q+H5qNAc5UDkGNrVCfCA=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "qQ4r1tTtcSmPRT9Pz9/Qvw=="
+          "hash": "/OOSeGA8GIb0vfPX+3OMNA=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.HashDigest-1.html",
-          "hash": "9LYGVn+sV72GgJcjbvyyow=="
+          "hash": "eTXL5PrpA/O1C5vrQk46oA=="
         }
       },
       "is_incremental": false,
@@ -357,7 +357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Hashcash.Stamp.html",
-          "hash": "jFG3uhonXoxVTc+tyf22Hw=="
+          "hash": "wHAmSGsE3YNnYYp1uEzwKg=="
         }
       },
       "is_incremental": false,
@@ -369,7 +369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Hashcash.html",
-          "hash": "CmufhQzE7MsL75vA1OWiSQ=="
+          "hash": "5saZSLj4Vu5EFaUzWScgUw=="
         }
       },
       "is_incremental": false,
@@ -549,7 +549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "Hwf538orFmGXMFpH3duBbA=="
+          "hash": "xfS8Kj5j0ThyksjM0H4/5w=="
         }
       },
       "is_incremental": false,
@@ -573,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.FileStore.html",
-          "hash": "a4FkylV00hk80U2+FDm1xQ=="
+          "hash": "rpM4AZyjep4DYS3hBKCPFQ=="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "60m3wOjKptdvuWw+zF9eEg=="
+          "hash": "GAGnMKlum6MMZUTCN9zu+Q=="
         }
       },
       "is_incremental": false,
