@@ -6,6 +6,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,38 +35,40 @@ namespace Libplanet.Net
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
-        private readonly Uri _listenUrl;
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
+        private readonly IPAddress _ipAddress;
 
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object> _runningEvent;
+        private int? _listenPort;
 
         public Swarm(
             PrivateKey privateKey,
-            Uri listenUrl,
             int millisecondsDialTimeout = 15000,
+            IPAddress ipAddress = null,
+            int? listenPort = null,
             DateTimeOffset? createdAt = null)
             : this(
                   privateKey,
-                  listenUrl,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                  ipAddress,
+                  listenPort,
                   createdAt)
         {
         }
 
         public Swarm(
             PrivateKey privateKey,
-            Uri listenUrl,
             TimeSpan dialTimeout,
+            IPAddress ipAddress = null,
+            int? listenPort = null,
             DateTimeOffset? createdAt = null)
         {
             _privateKey = privateKey
                 ?? throw new ArgumentNullException(nameof(privateKey));
-            _listenUrl = listenUrl
-                ?? throw new ArgumentNullException(nameof(listenUrl));
             _dialTimeout = dialTimeout;
             _peers = new Dictionary<Peer, DateTimeOffset>();
             _removedPeers = new Dictionary<Peer, DateTimeOffset>();
@@ -84,8 +88,12 @@ namespace Libplanet.Net
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
 
+            _ipAddress = ipAddress ?? GetLocalIPAddress();
+            _listenPort = listenPort;
+
+            string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
-                .ForContext("Swarm_listenUrl", _listenUrl.ToString());
+                .ForContext("SwarmId", loggerId);
 
             Running = false;
         }
@@ -104,10 +112,30 @@ namespace Libplanet.Net
 
         public bool IsReadOnly => false;
 
+        public Uri Url
+        {
+            get
+            {
+                if (_ipAddress != null && _listenPort is int port)
+                {
+                    return new UriBuilder()
+                    {
+                        Scheme = "tcp",
+                        Host = _ipAddress.ToString(),
+                        Port = port,
+                    }.Uri;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         [Uno.EqualityKey]
         public Peer AsPeer => new Peer(
             _privateKey.PublicKey,
-            new[] { _listenUrl }
+            Url != null ? new[] { Url } : new Uri[] { }
         );
 
         [Uno.EqualityIgnore]
@@ -337,11 +365,18 @@ namespace Libplanet.Net
                 throw new SwarmException("Swarm is already running.");
             }
 
-            _router.Bind(_listenUrl.ToString());
-            Running = true;
+            if (_listenPort == null)
+            {
+                _listenPort = _router.BindRandomPort("tcp://*");
+            }
+            else
+            {
+                _router.Bind($"tcp://*:{_listenPort}");
+            }
 
             try
             {
+                Running = true;
                 foreach (Peer peer in _peers.Keys)
                 {
                     try
@@ -553,6 +588,22 @@ namespace Libplanet.Net
                 message.ToNetMQMessage(_privateKey),
                 TimeSpan.FromMilliseconds(300),
                 cancellationToken);
+        }
+
+        private static IPAddress GetLocalIPAddress()
+        {
+            using (var socket = new Socket(
+                AddressFamily.InterNetwork,
+                SocketType.Dgram,
+                0))
+            {
+                // it's a workaround for checking the IP on the activated NIC.
+                // we don't need to make sure the endpoint is reachable
+                // because it doesn't connect.
+                socket.Connect("8.8.8.8", 65530);
+                var endPoint = socket.LocalEndPoint as IPEndPoint;
+                return endPoint.Address;
+            }
         }
 
         private static IEnumerable<Peer> FilterPeers(
@@ -1040,7 +1091,7 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            dealer.Connect(address.ToString());
+            dealer.Connect(address.ToString().TrimEnd('/'));
 
             _logger.Debug($"Trying to Ping to [{address}]...");
             var ping = new Ping();

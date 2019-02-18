@@ -3,6 +3,7 @@ using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,16 +56,13 @@ namespace Libplanet.Tests.Net
             {
                 new Swarm(
                     new PrivateKey(),
-                    new Uri($"inproc://swarmtest.a"),
-                    3000),
+                    ipAddress: IPAddress.Loopback),
                 new Swarm(
                     new PrivateKey(),
-                    new Uri($"inproc://swarmtest.b"),
-                    3000),
+                    ipAddress: IPAddress.Loopback),
                 new Swarm(
                     new PrivateKey(),
-                    new Uri($"inproc://swarmtest.c"),
-                    3000),
+                    ipAddress: IPAddress.Loopback),
             };
         }
 
@@ -235,19 +233,9 @@ namespace Libplanet.Tests.Net
         {
             var pk1 = new PrivateKey();
             var pk2 = new PrivateKey();
-            var a = new Swarm(
-                pk1,
-                new Uri($"inproc://swarmtest.t"),
-                3000);
-            var b = new Swarm(
-                pk1,
-                new Uri($"inproc://swarmtest.t"),
-                3000,
-                a.LastDistributed);
-            var c = new Swarm(
-                pk2,
-                new Uri($"inproc://swarmtest.t"),
-                3000);
+            var a = new Swarm(pk1);
+            var b = new Swarm(pk1, createdAt: a.LastDistributed);
+            var c = new Swarm(pk2);
             var u1 = new Uri($"inproc://swarmtest.t");
 
             Assert.Equal(a, b);
@@ -503,12 +491,22 @@ namespace Libplanet.Tests.Net
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm(null, new Uri("inproc://illegal_swarm"));
+                new Swarm(null);
             });
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                new Swarm(new PrivateKey(), null);
-            });
+        }
+
+        [Fact]
+        public void CanResolveUrl()
+        {
+            Swarm s = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Parse("1.2.3.4"),
+                listenPort: 5678);
+
+            Assert.Equal(new Uri("tcp://1.2.3.4:5678"), s.Url);
+            Assert.Equal(
+                new[] { new Uri("tcp://1.2.3.4:5678") },
+                s.AsPeer.Urls);
         }
 
         private async Task<Task> StartAsync<T>(
