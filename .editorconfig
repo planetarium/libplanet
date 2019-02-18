@@ -18,6 +18,9 @@ max_line_length = 80
 [*.{cs,md}]
 indent_size = 4
 
+[{*.{ps1,sh},hooks/*}]
+indent_size = 2
+
 [*.{csproj,xml}]
 indent_size = 2
 quote_type = double

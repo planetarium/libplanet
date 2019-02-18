@@ -143,6 +143,9 @@ script:
     [[ "$(git diff --name-only "$commit_range" | grep CHANGES\.md)" != "" ]]
   fi
 
+# Check coding styles
+- hooks/pre-commit
+
 # Build the whole solution
 - msbuild /p:Configuration=Release /r
 

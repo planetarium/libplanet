@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e
+
+list_bom_files() {
+  git grep -lI $'\xEF\xBB\xBF' . | grep -Ev '.sln$'
+}
+
+check_bom() {
+  if list_bom_files > /dev/null; then
+    {
+      echo "The following files have BOM:"
+      list_bom_files | awk '{ print "  " $0 }'
+      echo "You can trim these BOMs by the below command:"
+      echo "  $0 --apply"
+    } > /dev/stderr
+    exit 1
+  fi
+}
+
+trim_bom() {
+  if list_bom_files > /dev/null; then
+    {
+      echo "Trimming BOM from the following files:"
+      list_bom_files | awk '{ print "  " $0 }'
+    } > /dev/stderr
+
+    temp_file="$(mktemp)"
+    list_bom_files | \
+      while IFS= read -r filename; do
+        sed '1s/^\xEF\xBB\xBF//' "$filename" > "$temp_file"
+        cat "$temp_file" > "$filename"
+      done
+  else
+    exit 1
+  fi
+}
+
+if [[ "$1" = "-a" || "$1" = "--apply" ]]; then
+  trim_bom
+else
+  check_bom
+fi
+
+# vim: set filetype=sh ts=2 sw=2 et:
