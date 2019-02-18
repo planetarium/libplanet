@@ -81,14 +81,14 @@ namespace Libplanet.Tests.Net
             Swarm swarm = _swarms[0];
             BlockChain<BaseAction> chain = _blockchains[0];
 
-            #pragma warning disable CS4014
-            Task.Run(async () => { await swarm.StartAsync(chain); });
-            #pragma warning restore CS4014
+            Task t = await Task.WhenAny(
+                swarm.StartAsync(chain),
+                swarm.StartAsync(chain));
 
-            await Assert.ThrowsAsync<SwarmException>(async () =>
-            {
-                await swarm.StartAsync(chain);
-            });
+            Assert.True(swarm.Running);
+            Assert.True(t.IsFaulted);
+            Assert.IsType<SwarmException>(t.Exception.InnerException);
+
             await swarm.StopAsync();
         }
 
