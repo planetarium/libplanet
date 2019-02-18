@@ -153,13 +153,14 @@ namespace Libplanet.Blocks
             Validate(DateTime.UtcNow);
         }
 
-        public void Validate(DateTime now)
+        public void Validate(DateTime currentTime)
         {
-            if (now + TimestampThreshold < Timestamp)
+            if (currentTime + TimestampThreshold < Timestamp)
             {
                 throw new InvalidBlockTimestampException(
                     $"The block #{Index}'s timestamp ({Timestamp}) is " +
-                    $"later than now ({now}, threshold: {TimestampThreshold})."
+                    $"later than now ({currentTime}, " +
+                    $"threshold: {TimestampThreshold})."
                 );
             }
 

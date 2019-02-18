@@ -6,6 +6,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -24,7 +27,7 @@ namespace Libplanet.Tests.Net
         private readonly FileStoreFixture _fx2;
         private readonly FileStoreFixture _fx3;
 
-        private readonly List<Blockchain<BaseAction>> _blockchains;
+        private readonly List<BlockChain<BaseAction>> _blockchains;
         private readonly List<Swarm> _swarms;
 
         public SwarmTest(ITestOutputHelper output)
@@ -36,15 +39,16 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
+            var policy = new BlockPolicy<BaseAction>();
             _fx1 = new FileStoreFixture();
             _fx2 = new FileStoreFixture();
             _fx3 = new FileStoreFixture();
 
-            _blockchains = new List<Blockchain<BaseAction>>
+            _blockchains = new List<BlockChain<BaseAction>>
             {
-                new Blockchain<BaseAction>(_fx1.Store),
-                new Blockchain<BaseAction>(_fx2.Store),
-                new Blockchain<BaseAction>(_fx3.Store),
+                new BlockChain<BaseAction>(policy, _fx1.Store),
+                new BlockChain<BaseAction>(policy, _fx2.Store),
+                new BlockChain<BaseAction>(policy, _fx3.Store),
             };
 
             _swarms = new List<Swarm>
@@ -75,7 +79,7 @@ namespace Libplanet.Tests.Net
         public async Task CanNotStartTwice()
         {
             Swarm swarm = _swarms[0];
-            Blockchain<BaseAction> chain = _blockchains[0];
+            BlockChain<BaseAction> chain = _blockchains[0];
 
             #pragma warning disable CS4014
             Task.Run(async () => { await swarm.StartAsync(chain); });
@@ -92,7 +96,7 @@ namespace Libplanet.Tests.Net
         public async Task CanStop()
         {
             Swarm swarm = _swarms[0];
-            Blockchain<BaseAction> chain = _blockchains[0];
+            BlockChain<BaseAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
             Task task = Task.Run(async () =>
@@ -115,7 +119,7 @@ namespace Libplanet.Tests.Net
             Swarm b = _swarms[1];
             Swarm c = _swarms[2];
 
-            Blockchain<BaseAction> chain = _blockchains[0];
+            BlockChain<BaseAction> chain = _blockchains[0];
 
             DateTime lastDistA;
             Peer aAsPeer;
@@ -234,7 +238,7 @@ namespace Libplanet.Tests.Net
         public async Task CanBeCancelled()
         {
             Swarm swarm = _swarms[0];
-            Blockchain<BaseAction> chain = _blockchains[0];
+            BlockChain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
             Task task = Task.Run(
@@ -251,8 +255,8 @@ namespace Libplanet.Tests.Net
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
 
-            Blockchain<BaseAction> chainA = _blockchains[0];
-            Blockchain<BaseAction> chainB = _blockchains[1];
+            BlockChain<BaseAction> chainA = _blockchains[0];
+            BlockChain<BaseAction> chainB = _blockchains[1];
 
             Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
@@ -315,8 +319,8 @@ namespace Libplanet.Tests.Net
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
 
-            Blockchain<BaseAction> chainA = _blockchains[0];
-            Blockchain<BaseAction> chainB = _blockchains[1];
+            BlockChain<BaseAction> chainA = _blockchains[0];
+            BlockChain<BaseAction> chainB = _blockchains[1];
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 new PrivateKey(),
@@ -362,9 +366,9 @@ namespace Libplanet.Tests.Net
             Swarm swarmB = _swarms[1];
             Swarm swarmC = _swarms[2];
 
-            Blockchain<BaseAction> chainA = _blockchains[0];
-            Blockchain<BaseAction> chainB = _blockchains[1];
-            Blockchain<BaseAction> chainC = _blockchains[2];
+            BlockChain<BaseAction> chainA = _blockchains[0];
+            BlockChain<BaseAction> chainB = _blockchains[1];
+            BlockChain<BaseAction> chainC = _blockchains[2];
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 new PrivateKey(),
@@ -414,9 +418,9 @@ namespace Libplanet.Tests.Net
             Swarm swarmB = _swarms[1];
             Swarm swarmC = _swarms[2];
 
-            Blockchain<BaseAction> chainA = _blockchains[0];
-            Blockchain<BaseAction> chainB = _blockchains[1];
-            Blockchain<BaseAction> chainC = _blockchains[2];
+            BlockChain<BaseAction> chainA = _blockchains[0];
+            BlockChain<BaseAction> chainB = _blockchains[1];
+            BlockChain<BaseAction> chainC = _blockchains[2];
 
             // chainA, chainB and chainC shares genesis block.
             Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
