@@ -61,8 +61,10 @@ namespace Libplanet.Net
             TimeSpan dialTimeout,
             DateTimeOffset? createdAt = null)
         {
-            _privateKey = privateKey;
-            _listenUrl = listenUrl;
+            _privateKey = privateKey
+                ?? throw new ArgumentNullException(nameof(privateKey));
+            _listenUrl = listenUrl
+                ?? throw new ArgumentNullException(nameof(listenUrl));
             _dialTimeout = dialTimeout;
             _peers = new Dictionary<Peer, DateTimeOffset>();
             _removedPeers = new Dictionary<Peer, DateTimeOffset>();
@@ -105,7 +107,8 @@ namespace Libplanet.Net
         [Uno.EqualityKey]
         public Peer AsPeer => new Peer(
             _privateKey.PublicKey,
-            (_listenUrl != null) ? new[] { _listenUrl } : new Uri[] { });
+            new[] { _listenUrl }
+        );
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaReceived { get; }

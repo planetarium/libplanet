@@ -498,6 +498,19 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public void CanDenyNullParams()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new Swarm(null, new Uri("inproc://illegal_swarm"));
+            });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                new Swarm(new PrivateKey(), null);
+            });
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm swarm,
             BlockChain<T> blockChain,
