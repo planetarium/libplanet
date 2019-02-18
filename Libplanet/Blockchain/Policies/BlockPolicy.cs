@@ -23,7 +23,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="blockIntervalSeconds">Configures
         /// <see cref="BlockInterval"/> in seconds.  5 seconds by default.
         /// </param>
-        public BlockPolicy(uint blockIntervalSeconds = 5)
+        public BlockPolicy(int blockIntervalSeconds = 5)
             : this(
                 TimeSpan.FromSeconds(blockIntervalSeconds)
             )
@@ -38,6 +38,14 @@ namespace Libplanet.Blockchain.Policies
         /// </param>
         public BlockPolicy(TimeSpan blockInterval)
         {
+            if (blockInterval < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(blockInterval),
+                    "Interval between blocks cannot be negative."
+                );
+            }
+
             BlockInterval = blockInterval;
         }
 

@@ -43,6 +43,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval
             );
+
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new BlockPolicy<BaseAction>(tenSec.Negate())
+            );
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => new BlockPolicy<BaseAction>(-5)
+            );
         }
 
         [Fact]
