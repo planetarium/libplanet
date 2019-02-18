@@ -148,8 +148,8 @@ namespace Libplanet.Blockchain
             DateTime currentTime
         )
         {
-            ulong index = Store.CountIndex();
-            uint difficulty = Policy.GetNextBlockDifficulty(this);
+            long index = Store.CountIndex();
+            int difficulty = Policy.GetNextBlockDifficulty(this);
 
             Block<T> block = Block<T>.Mine(
                 index: index,
@@ -229,7 +229,7 @@ namespace Libplanet.Blockchain
         internal BlockLocator GetBlockLocator(int threshold = 10)
         {
             HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
-            ulong step = 1;
+            long step = 1;
             var hashes = new List<HashDigest<SHA256>>();
 
             while (current is HashDigest<SHA256> hash)
@@ -242,7 +242,7 @@ namespace Libplanet.Blockchain
                     break;
                 }
 
-                ulong nextIndex = Math.Max(currentBlock.Index - step, 0);
+                long nextIndex = Math.Max(currentBlock.Index - step, 0);
                 current = Store.IndexBlockHash((long)nextIndex);
 
                 if (hashes.Count > threshold)

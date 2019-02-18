@@ -22,8 +22,8 @@ namespace Libplanet.Blocks
             TimeSpan.FromSeconds(900);
 
         public Block(
-            ulong index,
-            uint difficulty,
+            long index,
+            int difficulty,
             Nonce nonce,
             Address? rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
@@ -79,10 +79,10 @@ namespace Libplanet.Blocks
         }
 
         [Uno.EqualityIgnore]
-        public ulong Index { get; }
+        public long Index { get; }
 
         [Uno.EqualityIgnore]
-        public uint Difficulty { get; }
+        public int Difficulty { get; }
 
         [Uno.EqualityIgnore]
         public Nonce Nonce { get; }
@@ -100,8 +100,8 @@ namespace Libplanet.Blocks
         public IEnumerable<Transaction<T>> Transactions { get; }
 
         public static Block<T> Mine(
-            ulong index,
-            uint difficulty,
+            long index,
+            int difficulty,
             Address rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
             DateTime timestamp,

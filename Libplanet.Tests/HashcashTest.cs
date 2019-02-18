@@ -11,7 +11,7 @@ namespace Libplanet.Tests
     {
         [Theory]
         [ClassData(typeof(HashcashTestData))]
-        public void AnswerHasLeadingZeroBits(byte[] challenge, uint bits)
+        public void AnswerHasLeadingZeroBits(byte[] challenge, int bits)
         {
             byte[] Stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(Stamp, bits);
@@ -24,7 +24,7 @@ namespace Libplanet.Tests
         {
             Assert.True(HasLeadingZeros(new byte[1] { 0x80 }, 0));
             Assert.False(HasLeadingZeros(new byte[1] { 0x80 }, 1));
-            for (uint bits = 0; bits < 9; bits++)
+            for (int bits = 0; bits < 9; bits++)
             {
                 Assert.True(HasLeadingZeros(new byte[2] { 0x00, 0x80 }, bits));
             }
@@ -35,7 +35,7 @@ namespace Libplanet.Tests
             Assert.True(HasLeadingZeros(new byte[2] { 0x00, 0x20 }, 10));
         }
 
-        private bool HasLeadingZeros(byte[] bytes, uint bits)
+        private bool HasLeadingZeros(byte[] bytes, int bits)
         {
             byte[] digest;
             if (bytes.Length < HashDigest<SHA256>.Size)

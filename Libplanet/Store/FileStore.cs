@@ -159,13 +159,13 @@ namespace Libplanet.Store
             return found;
         }
 
-        public override ulong CountIndex()
+        public override long CountIndex()
         {
             var indexFile = new FileInfo(_indexPath);
             if (indexFile.Exists)
             {
-                var indexSize = (ulong)indexFile.Length;
-                if (indexSize % (ulong)HashDigest<SHA256>.Size != 0)
+                var indexSize = indexFile.Length;
+                if (indexSize % HashDigest<SHA256>.Size != 0)
                 {
                     throw new FileLoadException(
                         $"Index size {indexSize} should be a multiple " +
@@ -173,7 +173,7 @@ namespace Libplanet.Store
                     );
                 }
 
-                return indexSize / (ulong)HashDigest<SHA256>.Size;
+                return indexSize / HashDigest<SHA256>.Size;
             }
 
             return 0;

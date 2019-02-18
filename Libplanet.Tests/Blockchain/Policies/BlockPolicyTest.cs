@@ -57,35 +57,35 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             var policy = new BlockPolicy<BaseAction>(new TimeSpan(3, 0, 0));
             Block<BaseAction>[] blocks = MineBlocks(
-                new[] { (0, 0U), (1, 1U), (3, 2U), (7, 3U), (9, 2U), (13, 3U) }
+                new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2), (13, 3) }
             ).ToArray();
 
             Assert.Equal(
-                0U,
+                0,
                 policy.GetNextBlockDifficulty(blocks.Take(0))
             );
             Assert.Equal(
-                1U,
+                1,
                 policy.GetNextBlockDifficulty(blocks.Take(1))
             );
             Assert.Equal(
-                2U,
+                2,
                 policy.GetNextBlockDifficulty(blocks.Take(2))
             );
             Assert.Equal(
-                3U,
+                3,
                 policy.GetNextBlockDifficulty(blocks.Take(3))
             );
             Assert.Equal(
-                2U,
+                2,
                 policy.GetNextBlockDifficulty(blocks.Take(4))
             );
             Assert.Equal(
-                3U,
+                3,
                 policy.GetNextBlockDifficulty(blocks.Take(5))
             );
             Assert.Equal(
-                2U,
+                2,
                 policy.GetNextBlockDifficulty(blocks)
             );
         }
@@ -99,10 +99,10 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockIndexException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U) },
+                        new[] { (0, 0) },
                         fields =>
                         {
-                            fields.Index = 1UL;
+                            fields.Index = 1;
                             return fields;
                         }
                     ),
@@ -114,7 +114,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockPreviousHashException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U) },
+                        new[] { (0, 0) },
                         fields =>
                         {
                             fields.PreviousHash = default(HashDigest<SHA256>);
@@ -129,10 +129,10 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockIndexException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U) },
+                        new[] { (0, 0), (1, 1) },
                         fields =>
                         {
-                            fields.Index = fields.Index == 0UL ? 0UL : 2UL;
+                            fields.Index = fields.Index == 0 ? 0 : 2;
                             return fields;
                         }
                     ),
@@ -148,7 +148,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (3, 2U) }
+                        new[] { (0, 0), (1, 1), (3, 2) }
                     ),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockDifficultyException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (3, 1U) }
+                        new[] { (0, 0), (1, 1), (3, 1) }
                     ),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
@@ -164,7 +164,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (5, 2U), (9, 1U) }
+                        new[] { (0, 0), (1, 1), (5, 2), (9, 1) }
                     ),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
@@ -172,7 +172,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (5, 2U), (9, 5U) }
+                        new[] { (0, 0), (1, 1), (5, 2), (9, 5) }
                     ),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
@@ -183,7 +183,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockPreviousHashException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (5, 2U) },
+                        new[] { (0, 0), (1, 1), (5, 2) },
                         fields =>
                         {
                             if (fields.Index >= 2)
@@ -203,7 +203,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockTimestampException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (2, 1U), (1, 2U) }
+                        new[] { (0, 0), (2, 1), (1, 2) }
                     ),
                     FixtureEpoch + new TimeSpan(2, 1, 0)
                 )
@@ -213,7 +213,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0U), (1, 1U), (3, 2U), (7, 3U), (9, 2U) }
+                        new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2) }
                     ),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
@@ -221,17 +221,17 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         private IEnumerable<Block<BaseAction>> MineBlocks(
-            (int, uint)[] blockArgs,
+            (int, int)[] blockArgs,
             Func<BlockFields, BlockFields> interprocess = null
         )
         {
             _output.WriteLine($"MineBlocks({blockArgs.Length}):");
             var miner = default(Address);
-            ulong i = 0;
+            long i = 0;
             HashDigest<SHA256>? previousHash = null;
-            foreach ((int timestampHour, uint d) in blockArgs)
+            foreach ((int timestampHour, int d) in blockArgs)
             {
-                uint difficulty = d;
+                int difficulty = d;
                 var timestamp =
                     FixtureEpoch + TimeSpan.FromHours(timestampHour);
                 if (interprocess != null)
@@ -274,8 +274,8 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         private struct BlockFields
         {
-            internal ulong Index;
-            internal uint Difficulty;
+            internal long Index;
+            internal int Difficulty;
             internal HashDigest<SHA256>? PreviousHash;
             internal DateTime Timestamp;
         }

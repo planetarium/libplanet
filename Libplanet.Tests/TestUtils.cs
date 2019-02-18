@@ -105,8 +105,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txs = new List<Transaction<T>>();
             }
 
-            const ulong index = 1;
-            const uint difficulty = 1;
+            const long index = 1;
+            const int difficulty = 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTime timestamp = previousBlock.Timestamp.AddDays(1);
             Address rewardBeneficiary = previousBlock.RewardBeneficiary.Value;
