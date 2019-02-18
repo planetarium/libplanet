@@ -113,11 +113,59 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/Libplanet.Blockchain-1.yml",
+      "source_relative_path": "api/Libplanet.Blockchain.BlockChain-1.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Libplanet.Blockchain-1.html",
-          "hash": "lNz2p6DHRkBslRcZ0xMxXw=="
+          "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
+          "hash": "S1Ifm6ILPcW7z5EEkDzQlA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-1.html",
+          "hash": "aBsP5gDjdU2/3/E/F1z8kA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html",
+          "hash": "Z/eo/HA37zkLHdSS7Weohg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.Policies.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.Policies.html",
+          "hash": "un0NIfiebrm059IOaD5raA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Libplanet.Blockchain.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Libplanet.Blockchain.html",
+          "hash": "jkITCcb0QQdD5pnPLu5L2w=="
         }
       },
       "is_incremental": false,
@@ -129,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "/PE5DC2PpKdakNOmF1Dv5w=="
+          "hash": "qQ4r1tTtcSmPRT9Pz9/Qvw=="
         }
       },
       "is_incremental": false,
@@ -393,7 +441,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm.html",
-          "hash": "pg9AsUr4flHdb6T4n+Dbuw=="
+          "hash": "/mD3FZJGAqiZ9kwS4gaddA=="
         }
       },
       "is_incremental": false,
@@ -621,7 +669,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.Transaction-1.html",
-          "hash": "bk/Jm3edgKnJ2MiCTqXhzA=="
+          "hash": "L3bZ6yPZhEczJbSHvOigIw=="
         }
       },
       "is_incremental": false,
@@ -657,7 +705,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.html",
-          "hash": "abZsXHaZPqi5oz0oWRIUtw=="
+          "hash": "wdyG+jLsNOWmleNT95tbYA=="
         }
       },
       "is_incremental": false,
@@ -681,7 +729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "NKAN2DvN94gj1SADzLn7mg=="
+          "hash": "ZywcV69/vhtTxpGXvWWadg=="
         }
       },
       "is_incremental": false,
@@ -766,17 +814,17 @@
         "incrementalPhase": "build"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build"
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "TocDocumentProcessor": {
