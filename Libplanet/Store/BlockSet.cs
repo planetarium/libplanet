@@ -1,3 +1,4 @@
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateBlockHashes().ToList();
+                return Store.IterateBlockHashes().ToListAsync().Result;
             }
         }
 
@@ -30,11 +31,12 @@ namespace Libplanet.Store
                 return Store.IterateBlockHashes()
                     .Select(h => Store.GetBlock<T>(h))
                     .OfType<Block<T>>()
-                    .ToList();
+                    .ToListAsync()
+                    .Result;
             }
         }
 
-        public override int Count => Store.CountBlocks();
+        public override int Count => Store.CountBlocks().Result;
 
         public override bool IsReadOnly => false;
 
@@ -42,7 +44,7 @@ namespace Libplanet.Store
         {
             get
             {
-                Block<T> block = Store.GetBlock<T>(key);
+                Block<T> block = Store.GetBlock<T>(key).Result;
                 if (block == null)
                 {
                     throw new KeyNotFoundException();
@@ -68,7 +70,7 @@ namespace Libplanet.Store
 
         public override bool Remove(HashDigest<SHA256> key)
         {
-            return Store.DeleteBlock(key);
+            return Store.DeleteBlock(key).Result;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -8,10 +9,12 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
 using Libplanet.Tx;
+using Uno.Extensions;
 
 namespace Libplanet.Store
 {
@@ -102,7 +105,7 @@ namespace Libplanet.Store
                 keyHex.Substring(4));
         }
 
-        public override long AppendAddressTransactionId(
+        public override async Task<long> AppendAddressTransactionId(
             Address address, TxId txId)
         {
             var addrFile = new FileInfo(GetAddressPath(address));
@@ -112,12 +115,14 @@ namespace Libplanet.Store
                 FileMode.Append, FileAccess.Write))
             {
                 var offset = stream.Position;
-                stream.Write(txId.ToByteArray(), 0, TxId.RequiredLength);
+                await stream.WriteAsync(
+                    txId.ToByteArray(), 0, TxId.RequiredLength
+                );
                 return Convert.ToInt64(offset / (float)TxId.RequiredLength);
             }
         }
 
-        public override long AppendIndex(HashDigest<SHA256> hash)
+        public override async Task<long> AppendIndex(HashDigest<SHA256> hash)
         {
             var indexFile = new FileInfo(_indexPath);
             if (!indexFile.Directory.Exists)
@@ -129,17 +134,19 @@ namespace Libplanet.Store
                 FileMode.Append, FileAccess.Write))
             {
                 var offset = stream.Position;
-                stream.Write(hash.ToByteArray(), 0, hash.ToByteArray().Length);
+                await stream.WriteAsync(
+                    hash.ToByteArray(), 0, hash.ToByteArray().Length
+                );
                 return offset / HashDigest<SHA256>.Size;
             }
         }
 
-        public override bool DeleteIndex(HashDigest<SHA256> hash)
+        public override async Task<bool> DeleteIndex(HashDigest<SHA256> hash)
         {
             bool found = false;
             using (var writer = new MemoryStream())
             {
-                foreach (var idx in IterateIndex())
+                foreach (var idx in await this.IterateIndex().ToListAsync())
                 {
                     if (!found && idx == hash)
                     {
@@ -147,20 +154,24 @@ namespace Libplanet.Store
                     }
                     else
                     {
-                        writer.Write(
+                        await writer.WriteAsync(
                             idx.ToByteArray(), 0, HashDigest<SHA256>.Size);
                     }
                 }
 
                 // FIXME We can't this if the index is too large to buffer...
-                File.WriteAllBytes(_indexPath, writer.ToArray());
+                using (var file = IndexFileStream())
+                {
+                    await writer.CopyToAsync(file);
+                }
             }
 
             return found;
         }
 
-        public override long CountIndex()
+        public override async Task<long> CountIndex()
         {
+            await Task.CompletedTask;
             var indexFile = new FileInfo(_indexPath);
             if (indexFile.Exists)
             {
@@ -176,11 +187,13 @@ namespace Libplanet.Store
                 return indexSize / HashDigest<SHA256>.Size;
             }
 
-            return 0;
+            return 0L;
         }
 
-        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
+        public override async Task<bool> DeleteBlock(
+            HashDigest<SHA256> blockHash)
         {
+            await Task.CompletedTask;
             var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (blockFile.Exists)
             {
@@ -191,8 +204,9 @@ namespace Libplanet.Store
             return false;
         }
 
-        public override bool DeleteTransaction(TxId txid)
+        public override async Task<bool> DeleteTransaction(TxId txid)
         {
+            await Task.CompletedTask;
             var txFile = new FileInfo(GetTransactionPath(txid));
             if (!txFile.Exists)
             {
@@ -203,31 +217,37 @@ namespace Libplanet.Store
             return true;
         }
 
-        public override IEnumerable<TxId> GetAddressTransactionIds(
+        public override IAsyncEnumerable<TxId> GetAddressTransactionIds(
             Address address
         )
         {
-            var addrFile = new FileInfo(GetAddressPath(address));
-            if (addrFile.Exists)
+            return new AsyncEnumerable<TxId>(async yield =>
             {
-                using (var f = addrFile.OpenRead())
+                var addrFile = new FileInfo(GetAddressPath(address));
+                if (addrFile.Exists)
                 {
-                    while (true)
+                    using (var f = addrFile.OpenRead())
                     {
-                        var txIdBytes = new byte[TxId.RequiredLength];
-                        var length = f.Read(txIdBytes, 0, TxId.RequiredLength);
-                        if (length == 0)
+                        while (true)
                         {
-                            break;
-                        }
+                            var txIdBytes = new byte[TxId.RequiredLength];
+                            var length = await f.ReadAsync(
+                                txIdBytes, 0, TxId.RequiredLength
+                            );
+                            if (length == 0)
+                            {
+                                break;
+                            }
 
-                        yield return new TxId(txIdBytes);
+                            await yield.ReturnAsync(new TxId(txIdBytes));
+                        }
                     }
                 }
-            }
+            });
         }
 
-        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        public override async Task<Block<T>> GetBlock<T>(
+            HashDigest<SHA256> blockHash)
         {
             var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (!blockFile.Exists)
@@ -235,36 +255,40 @@ namespace Libplanet.Store
                 return null;
             }
 
-            using (Stream stream = blockFile.OpenRead())
+            RawBlock rawBlock = await Task.Run(() =>
             {
-                var formatter = new BencodexFormatter<RawBlock>();
-                RawBlock rawBlock = (RawBlock)formatter.Deserialize(stream);
-                HashDigest<SHA256>? previousHash = null;
-
-                if (rawBlock.PreviousHash != null)
+                using (Stream stream = blockFile.OpenRead())
                 {
-                    previousHash = new HashDigest<SHA256>?(
-                        new HashDigest<SHA256>(rawBlock.PreviousHash)
-                    );
+                    var formatter = new BencodexFormatter<RawBlock>();
+                    return (RawBlock)formatter.Deserialize(stream);
                 }
+            });
 
-                return new Block<T>(
-                    index: rawBlock.Index,
-                    difficulty: rawBlock.Difficulty,
-                    nonce: new Nonce(rawBlock.Nonce),
-                    rewardBeneficiary: new Address(rawBlock.RewardBeneficiary),
-                    previousHash: previousHash,
-                    timestamp: DateTime.ParseExact(
-                        rawBlock.Timestamp,
-                        Block<T>.TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
-                );
+            HashDigest<SHA256>? previousHash = null;
+
+            if (rawBlock.PreviousHash != null)
+            {
+                previousHash = new HashDigest<SHA256>(rawBlock.PreviousHash);
             }
+
+            List<Transaction<T>> transactions =
+                await GetTransactions<T>(rawBlock.Transactions).ToListAsync();
+            return new Block<T>(
+                index: rawBlock.Index,
+                difficulty: rawBlock.Difficulty,
+                nonce: new Nonce(rawBlock.Nonce),
+                rewardBeneficiary: new Address(rawBlock.RewardBeneficiary),
+                previousHash: previousHash,
+                timestamp: DateTime.ParseExact(
+                    rawBlock.Timestamp,
+                    Block<T>.TimestampFormat,
+                    CultureInfo.InvariantCulture
+                ).ToUniversalTime(),
+                transactions: transactions
+            );
         }
 
-        public override Transaction<T> GetTransaction<T>(TxId txid)
+        public override async Task<Transaction<T>> GetTransaction<T>(TxId txid)
         {
             var txFile = new FileInfo(GetTransactionPath(txid));
             if (!txFile.Exists)
@@ -272,18 +296,22 @@ namespace Libplanet.Store
                 return null;
             }
 
-            using (Stream stream = txFile.OpenRead())
+            return await Task.Run(() =>
             {
-                var formatter = new BencodexFormatter<Transaction<T>>();
-                return (Transaction<T>)formatter.Deserialize(stream);
-            }
+                using (Stream stream = txFile.OpenRead())
+                {
+                    var formatter = new BencodexFormatter<Transaction<T>>();
+                    return (Transaction<T>)formatter.Deserialize(stream);
+                }
+            });
         }
 
-        public override HashDigest<SHA256>? IndexBlockHash(long index)
+        public override async Task<HashDigest<SHA256>?> IndexBlockHash(
+            long index)
         {
             if (index < 0)
             {
-                index += (long)CountIndex();
+                index += await CountIndex();
 
                 if (index < 0)
                 {
@@ -303,7 +331,7 @@ namespace Libplanet.Store
                     HashDigest<SHA256>.Size * (int)index,
                     SeekOrigin.Begin
                 );
-                var bytesRead = stream.Read(
+                var bytesRead = await stream.ReadAsync(
                     blockHash,
                     0,
                     HashDigest<SHA256>.Size
@@ -314,150 +342,167 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<Address> IterateAddresses()
+        public override IAsyncEnumerable<Address> IterateAddresses()
         {
-            var prefixRegex = new Regex(
-                @"^[a-f0-9]{4}$",
-                RegexOptions.IgnoreCase
-            );
-            var restRegex = new Regex(
-                @"^[a-f0-9]{36}$",
-                RegexOptions.IgnoreCase
-            );
-            var addressesRoot = new DirectoryInfo(_addressesPath);
-            var prefixes = addressesRoot.EnumerateDirectories();
-            foreach (DirectoryInfo prefix in prefixes)
+            return new AsyncEnumerable<Address>(async yield =>
             {
-                if (!prefixRegex.IsMatch(prefix.Name))
+                var prefixRegex = new Regex(
+                    @"^[a-f0-9]{4}$",
+                    RegexOptions.IgnoreCase
+                );
+                var restRegex = new Regex(
+                    @"^[a-f0-9]{36}$",
+                    RegexOptions.IgnoreCase
+                );
+                var addressesRoot = new DirectoryInfo(_addressesPath);
+                var prefixes = addressesRoot.EnumerateDirectories();
+                foreach (DirectoryInfo prefix in prefixes)
                 {
-                    continue;
-                }
-
-                foreach (FileInfo rest in prefix.EnumerateFiles())
-                {
-                    if (!restRegex.IsMatch(rest.Name))
+                    if (!prefixRegex.IsMatch(prefix.Name))
                     {
                         continue;
                     }
 
-                    yield return new Address(prefix.Name + rest.Name);
+                    foreach (FileInfo rest in prefix.EnumerateFiles())
+                    {
+                        if (!restRegex.IsMatch(rest.Name))
+                        {
+                            continue;
+                        }
+
+                        await yield.ReturnAsync(
+                            new Address(prefix.Name + rest.Name));
+                    }
                 }
-            }
+            });
         }
 
-        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        public override IAsyncEnumerable<HashDigest<SHA256>>
+            IterateBlockHashes()
         {
-            var prefixRegex = new Regex(
-                @"^[a-f0-9]{4}$",
-                RegexOptions.IgnoreCase
-            );
-            var restRegex = new Regex(
-                @"^[a-f0-9]{60}$",
-                RegexOptions.IgnoreCase
-            );
-            var addressesRoot = new DirectoryInfo(_blocksPath);
-            var prefixes = addressesRoot.EnumerateDirectories();
-            foreach (DirectoryInfo prefix in prefixes)
+            return new AsyncEnumerable<HashDigest<SHA256>>(async yield =>
             {
-                if (!prefixRegex.IsMatch(prefix.Name))
+                var prefixRegex = new Regex(
+                    @"^[a-f0-9]{4}$",
+                    RegexOptions.IgnoreCase
+                );
+                var restRegex = new Regex(
+                    @"^[a-f0-9]{60}$",
+                    RegexOptions.IgnoreCase
+                );
+                var addressesRoot = new DirectoryInfo(_blocksPath);
+                var prefixes = addressesRoot.EnumerateDirectories();
+                foreach (DirectoryInfo prefix in prefixes)
                 {
-                    continue;
-                }
-
-                foreach (FileInfo rest in prefix.EnumerateFiles())
-                {
-                    if (!restRegex.IsMatch(rest.Name))
+                    if (!prefixRegex.IsMatch(prefix.Name))
                     {
                         continue;
                     }
 
-                    yield return new HashDigest<SHA256>(
-                        ByteUtil.ParseHex(prefix.Name + rest.Name)
-                    );
-                }
-            }
-        }
-
-        public override IEnumerable<HashDigest<SHA256>> IterateIndex()
-        {
-            if (!File.Exists(_indexPath))
-            {
-                yield break;
-            }
-
-            using (Stream stream = IndexFileStream())
-            {
-                while (true)
-                {
-                    var blockHash = new byte[HashDigest<SHA256>.Size];
-                    var bytesRead = stream.Read(
-                        blockHash,
-                        0,
-                        HashDigest<SHA256>.Size
-                    );
-
-                    if (bytesRead == 0)
+                    foreach (FileInfo rest in prefix.EnumerateFiles())
                     {
-                        yield break;
+                        if (!restRegex.IsMatch(rest.Name))
+                        {
+                            continue;
+                        }
+
+                        await yield.ReturnAsync(new HashDigest<SHA256>(
+                            ByteUtil.ParseHex(prefix.Name + rest.Name)
+                        ));
                     }
-
-                    yield return new HashDigest<SHA256>(blockHash);
                 }
-            }
+            });
         }
 
-        public override IEnumerable<TxId> IterateStagedTransactionIds()
+        public override IAsyncEnumerable<HashDigest<SHA256>> IterateIndex()
         {
-            var stagingDirectory = new DirectoryInfo(_stagedTransactionsPath);
-            if (stagingDirectory.Exists)
+            return new AsyncEnumerable<HashDigest<SHA256>>(async yield =>
             {
-                var dir = new DirectoryInfo(_stagedTransactionsPath);
-                foreach (var staged in dir.EnumerateFiles())
+                if (!File.Exists(_indexPath))
                 {
-                    yield return new TxId(ByteUtil.ParseHex(staged.Name));
+                    yield.Break();
                 }
-            }
+
+                using (Stream stream = IndexFileStream())
+                {
+                    while (true)
+                    {
+                        var blockHash = new byte[HashDigest<SHA256>.Size];
+                        var bytesRead = await stream.ReadAsync(
+                            blockHash,
+                            0,
+                            HashDigest<SHA256>.Size
+                        );
+
+                        if (bytesRead == 0)
+                        {
+                            yield.Break();
+                        }
+
+                        await yield.ReturnAsync(
+                            new HashDigest<SHA256>(blockHash));
+                    }
+                }
+            });
         }
 
-        public override IEnumerable<TxId> IterateTransactionIds()
+        public override IAsyncEnumerable<TxId> IterateStagedTransactionIds()
         {
-            // TODO: refactor
-            var prefixRegex = new Regex(
-                @"^[a-f0-9]{4}$",
-                RegexOptions.IgnoreCase
-            );
-            var restRegex = new Regex(
-                @"^[a-f0-9]{60}$",
-                RegexOptions.IgnoreCase
-            );
-            var rootDir = new DirectoryInfo(_transactionsPath);
-            foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
+            return new AsyncEnumerable<TxId>(async yield =>
             {
-                if (!prefixRegex.IsMatch(prefix.Name))
+                var stagingDirectory =
+                    new DirectoryInfo(_stagedTransactionsPath);
+                if (stagingDirectory.Exists)
                 {
-                    continue;
+                    var dir = new DirectoryInfo(_stagedTransactionsPath);
+                    foreach (var staged in dir.EnumerateFiles())
+                    {
+                        await yield.ReturnAsync(
+                            new TxId(ByteUtil.ParseHex(staged.Name)));
+                    }
                 }
+            });
+        }
 
-                foreach (FileInfo rest in prefix.EnumerateFiles())
+        public override IAsyncEnumerable<TxId> IterateTransactionIds()
+        {
+            return new AsyncEnumerable<TxId>(async yield =>
+            {
+                // TODO: refactor
+                var prefixRegex = new Regex(
+                    @"^[a-f0-9]{4}$",
+                    RegexOptions.IgnoreCase
+                );
+                var restRegex = new Regex(
+                    @"^[a-f0-9]{60}$",
+                    RegexOptions.IgnoreCase
+                );
+                var rootDir = new DirectoryInfo(_transactionsPath);
+                foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
                 {
-                    if (!restRegex.IsMatch(rest.Name))
+                    if (!prefixRegex.IsMatch(prefix.Name))
                     {
                         continue;
                     }
 
-                    yield return new TxId(
-                        ByteUtil.ParseHex(prefix.Name + rest.Name)
-                    );
+                    foreach (FileInfo rest in prefix.EnumerateFiles())
+                    {
+                        if (!restRegex.IsMatch(rest.Name))
+                        {
+                            continue;
+                        }
+
+                        await yield.ReturnAsync(new TxId(
+                            ByteUtil.ParseHex(prefix.Name + rest.Name)
+                        ));
+                    }
                 }
-            }
+            });
         }
 
-        public override void PutBlock<T>(Block<T> block)
+        public override async Task PutBlock<T>(Block<T> block)
         {
-            foreach (var tx in block.Transactions)
-            {
-                PutTransaction(tx);
-            }
+            await Task.WhenAll(block.Transactions.Select(PutTransaction));
 
             var blockFile = new FileInfo(GetBlockPath(block.Hash));
             blockFile.Directory.Create();
@@ -468,11 +513,11 @@ namespace Libplanet.Store
                     true,
                     transactionData: false
                 );
-                stream.Write(blockBytes, 0, blockBytes.Length);
+                await stream.WriteAsync(blockBytes, 0, blockBytes.Length);
             }
         }
 
-        public override void PutTransaction<T>(Transaction<T> tx)
+        public override async Task PutTransaction<T>(Transaction<T> tx)
         {
             var txFile = new FileInfo(GetTransactionPath(tx.Id));
             txFile.Directory.Create();
@@ -480,12 +525,13 @@ namespace Libplanet.Store
                 FileMode.OpenOrCreate, FileAccess.Write))
             {
                 byte[] txBytes = tx.ToBencodex(true);
-                stream.Write(txBytes, 0, txBytes.Length);
+                await stream.WriteAsync(txBytes, 0, txBytes.Length);
             }
         }
 
-        public override void StageTransactionIds(ISet<TxId> txids)
+        public override async Task StageTransactionIds(ISet<TxId> txids)
         {
+            await Task.CompletedTask;
             foreach (var txid in txids)
             {
                 string stagedPath = GetStagedTransactionPath(txid);
@@ -495,33 +541,36 @@ namespace Libplanet.Store
             }
         }
 
-        public override void UnstageTransactionIds(ISet<TxId> txids)
+        public override async Task UnstageTransactionIds(ISet<TxId> txids)
         {
+            await Task.CompletedTask;
             foreach (TxId txid in txids)
             {
                 File.Delete(GetStagedTransactionPath(txid));
             }
         }
 
-        public override AddressStateMap GetBlockStates(
+        public override async Task<AddressStateMap> GetBlockStates(
             HashDigest<SHA256> blockHash
         )
         {
             var statesFile = new FileInfo(GetStatesPath(blockHash));
-
             if (!statesFile.Exists)
             {
                 return new AddressStateMap();
             }
 
-            using (Stream stream = statesFile.OpenRead())
+            return await Task.Run(() =>
             {
-                var formatter = new BinaryFormatter();
-                return (AddressStateMap)formatter.Deserialize(stream);
-            }
+                using (Stream stream = statesFile.OpenRead())
+                {
+                    var formatter = new BinaryFormatter();
+                    return (AddressStateMap)formatter.Deserialize(stream);
+                }
+            });
         }
 
-        public override void SetBlockStates(
+        public override async Task SetBlockStates(
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         )
@@ -532,17 +581,20 @@ namespace Libplanet.Store
                 statesFile.Directory.Create();
             }
 
-            using (Stream stream = statesFile.OpenWrite())
+            await Task.Run(() =>
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, states);
-            }
+                using (Stream stream = statesFile.OpenWrite())
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, states);
+                }
+            });
         }
 
         private FileStream IndexFileStream()
         {
             var stream =
-                    new FileStream(_indexPath, FileMode.Open, FileAccess.Read);
+                new FileStream(_indexPath, FileMode.Open, FileAccess.Read);
             if (stream.Length % HashDigest<SHA256>.Size != 0)
             {
                 throw new FileLoadException(
@@ -554,15 +606,22 @@ namespace Libplanet.Store
             return stream;
         }
 
-        private IEnumerable<Transaction<T>> GetTransactions<T>(
+        private IAsyncEnumerable<Transaction<T>> GetTransactions<T>(
             IEnumerable transactions
         )
             where T : IAction
         {
-            return transactions
-                .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
-                .Where(tx => tx != null);
+            return new AsyncEnumerable<Transaction<T>>(async yield =>
+            {
+                var txs = await Task.WhenAll(
+                    transactions
+                        .Cast<byte[]>()
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes)))
+                );
+                await Task.WhenAll(
+                    txs.Where(tx => tx != null).Select(yield.ReturnAsync)
+                );
+            });
         }
     }
 }

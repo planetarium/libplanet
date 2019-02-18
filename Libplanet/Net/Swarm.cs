@@ -627,12 +627,14 @@ namespace Libplanet.Net
 
                 case GetBlockHashes getBlockHashes:
                     {
-                        IEnumerable<HashDigest<SHA256>> hashes =
+                        IAsyncEnumerable<HashDigest<SHA256>> hashes =
                             blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 500);
-                        var reply = new BlockHashes(hashes)
+                        var reply = new BlockHashes(
+                            await hashes.ToListAsync(cancellationToken)
+                        )
                         {
                             Identity = getBlockHashes.Identity,
                         };
@@ -711,26 +713,26 @@ namespace Libplanet.Net
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
             Block<T> latest = blocks.Last();
-            HashDigest<SHA256>? tip = blockChain.Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? tip = await blockChain.Store.IndexBlockHash(-1);
 
             if (tip == null || oldest.PreviousHash == tip)
             {
                 // Caught up with everything, so we just connect it.
                 foreach (Block<T> block in blocks)
                 {
-                    blockChain.Append(block);
+                    await blockChain.Append(block);
                 }
             }
             else if (latest.Index > blockChain.Tip.Index)
             {
                 // We need some other blocks, so request to sender.
-                BlockLocator locator = blockChain.GetBlockLocator();
+                BlockLocator locator = await blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
                         socket, locator, oldest.Hash, cancellationToken);
                 HashDigest<SHA256> branchPoint = hashes.First();
 
-                blockChain.DeleteAfter(branchPoint);
+                await blockChain.DeleteAfter(branchPoint);
 
                 await GetBlocksAsync<T>(
                     socket,

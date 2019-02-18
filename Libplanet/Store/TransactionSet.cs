@@ -1,3 +1,4 @@
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateTransactionIds().ToList();
+                return Store.IterateTransactionIds().ToListAsync().Result;
             }
         }
 
@@ -33,7 +34,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override int Count => Store.CountTransactions();
+        public override int Count => Store.CountTransactions().Result;
 
         public override bool IsReadOnly => true;
 
@@ -41,7 +42,7 @@ namespace Libplanet.Store
         {
             get
             {
-                Transaction<T> tx = Store.GetTransaction<T>(key);
+                Transaction<T> tx = Store.GetTransaction<T>(key).Result;
 
                 if (tx == null)
                 {
@@ -70,7 +71,7 @@ namespace Libplanet.Store
 
         public override bool Remove(TxId key)
         {
-            return Store.DeleteTransaction(key);
+            return Store.DeleteTransaction(key).Result;
         }
     }
 }

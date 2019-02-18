@@ -1,6 +1,8 @@
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -9,75 +11,77 @@ namespace Libplanet.Store
 {
     public abstract class BaseStore : IStore
     {
-        public abstract long CountIndex();
+        public abstract Task<long> CountIndex();
 
-        public abstract IEnumerable<HashDigest<SHA256>> IterateIndex();
+        public abstract IAsyncEnumerable<HashDigest<SHA256>> IterateIndex();
 
-        public abstract HashDigest<SHA256>? IndexBlockHash(long index);
+        public abstract Task<HashDigest<SHA256>?> IndexBlockHash(long index);
 
-        public abstract long AppendIndex(HashDigest<SHA256> hash);
+        public abstract Task<long> AppendIndex(HashDigest<SHA256> hash);
 
-        public abstract IEnumerable<Address> IterateAddresses();
+        public abstract IAsyncEnumerable<Address> IterateAddresses();
 
-        public abstract IEnumerable<TxId> GetAddressTransactionIds(
+        public abstract IAsyncEnumerable<TxId> GetAddressTransactionIds(
             Address address
         );
 
-        public abstract long AppendAddressTransactionId(
+        public abstract Task<long> AppendAddressTransactionId(
             Address address,
             TxId txId
         );
 
-        public abstract void StageTransactionIds(ISet<TxId> txids);
+        public abstract Task StageTransactionIds(ISet<TxId> txids);
 
-        public abstract void UnstageTransactionIds(ISet<TxId> txids);
+        public abstract Task UnstageTransactionIds(ISet<TxId> txids);
 
-        public abstract IEnumerable<TxId> IterateStagedTransactionIds();
+        public abstract IAsyncEnumerable<TxId> IterateStagedTransactionIds();
 
-        public abstract IEnumerable<TxId> IterateTransactionIds();
+        public abstract IAsyncEnumerable<TxId> IterateTransactionIds();
 
-        public abstract Transaction<T> GetTransaction<T>(TxId txid)
+        public abstract Task<Transaction<T>> GetTransaction<T>(TxId txid)
             where T : IAction;
 
-        public abstract void PutTransaction<T>(Transaction<T> tx)
+        public abstract Task PutTransaction<T>(Transaction<T> tx)
             where T : IAction;
 
-        public abstract bool DeleteTransaction(TxId txid);
+        public abstract Task<bool> DeleteTransaction(TxId txid);
 
-        public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
+        public abstract IAsyncEnumerable<HashDigest<SHA256>>
+            IterateBlockHashes();
 
-        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        public abstract Task<Block<T>> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
-        public abstract void PutBlock<T>(Block<T> block)
+        public abstract Task PutBlock<T>(Block<T> block)
             where T : IAction;
 
-        public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
+        public abstract Task<bool> DeleteBlock(HashDigest<SHA256> blockHash);
 
-        public abstract AddressStateMap GetBlockStates(
+        public abstract Task<AddressStateMap> GetBlockStates(
             HashDigest<SHA256> blockHash
         );
 
-        public abstract void SetBlockStates(
+        public abstract Task SetBlockStates(
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );
 
-        public int CountTransactions()
+        public virtual async Task<int> CountTransactions()
         {
-            return IterateTransactionIds().Count();
+            var iterateTransactionIds = IterateTransactionIds();
+            return (await iterateTransactionIds.ToListAsync()).Count;
         }
 
-        public int CountBlocks()
+        public virtual async Task<int> CountBlocks()
         {
-            return IterateBlockHashes().Count();
+            return (await IterateBlockHashes().ToListAsync()).Count;
         }
 
-        public int CountAddresses()
+        public virtual async Task<int> CountAddresses()
         {
-            return IterateAddresses().Count();
+            return (await IterateAddresses().ToListAsync()).Count;
         }
 
-        public abstract bool DeleteIndex(HashDigest<SHA256> hash);
+        public abstract Task<bool> DeleteIndex(HashDigest<SHA256> hash);
     }
 }

@@ -1,5 +1,7 @@
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -8,59 +10,59 @@ namespace Libplanet.Store
 {
     public interface IStore
     {
-        long CountIndex();
+        Task<long> CountIndex();
 
-        IEnumerable<HashDigest<SHA256>> IterateIndex();
+        IAsyncEnumerable<HashDigest<SHA256>> IterateIndex();
 
-        HashDigest<SHA256>? IndexBlockHash(long index);
+        Task<HashDigest<SHA256>?> IndexBlockHash(long index);
 
-        long AppendIndex(HashDigest<SHA256> hash);
+        Task<long> AppendIndex(HashDigest<SHA256> hash);
 
-        bool DeleteIndex(HashDigest<SHA256> hash);
+        Task<bool> DeleteIndex(HashDigest<SHA256> hash);
 
-        IEnumerable<Address> IterateAddresses();
+        IAsyncEnumerable<Address> IterateAddresses();
 
-        IEnumerable<TxId> GetAddressTransactionIds(Address address);
+        IAsyncEnumerable<TxId> GetAddressTransactionIds(Address address);
 
-        long AppendAddressTransactionId(Address address, TxId txId);
+        Task<long> AppendAddressTransactionId(Address address, TxId txId);
 
-        void StageTransactionIds(ISet<TxId> txids);
+        Task StageTransactionIds(ISet<TxId> txids);
 
-        void UnstageTransactionIds(ISet<TxId> txids);
+        Task UnstageTransactionIds(ISet<TxId> txids);
 
-        IEnumerable<TxId> IterateStagedTransactionIds();
+        IAsyncEnumerable<TxId> IterateStagedTransactionIds();
 
-        IEnumerable<TxId> IterateTransactionIds();
+        IAsyncEnumerable<TxId> IterateTransactionIds();
 
-        Transaction<T> GetTransaction<T>(TxId txid)
+        Task<Transaction<T>> GetTransaction<T>(TxId txid)
             where T : IAction;
 
-        void PutTransaction<T>(Transaction<T> tx)
+        Task PutTransaction<T>(Transaction<T> tx)
             where T : IAction;
 
-        bool DeleteTransaction(TxId txid);
+        Task<bool> DeleteTransaction(TxId txid);
 
-        IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
+        IAsyncEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        Task<Block<T>> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
-        void PutBlock<T>(Block<T> block)
+        Task PutBlock<T>(Block<T> block)
             where T : IAction;
 
-        bool DeleteBlock(HashDigest<SHA256> blockHash);
+        Task<bool> DeleteBlock(HashDigest<SHA256> blockHash);
 
-        AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
+        Task<AddressStateMap> GetBlockStates(HashDigest<SHA256> blockHash);
 
-        void SetBlockStates(
+        Task SetBlockStates(
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );
 
-        int CountTransactions();
+        Task<int> CountTransactions();
 
-        int CountBlocks();
+        Task<int> CountBlocks();
 
-        int CountAddresses();
+        Task<int> CountAddresses();
     }
 }

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -33,26 +35,26 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanMineBlock()
+        public async Task CanMineBlock()
         {
-            Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
+            Block<BaseAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate();
             Assert.Contains(block, _blockChain);
 
-            Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
+            Block<BaseAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate();
             Assert.Contains(anotherBlock, _blockChain);
         }
 
         [Fact]
-        public void CanFindBlockByIndex()
+        public async Task CanFindBlockByIndex()
         {
             // use assignment to snooze compiler error (CS0201)
             Assert.Throws<IndexOutOfRangeException>(() => { var x = _blockChain[0]; });
-            Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
+            Block<BaseAction> block = await _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
 
-            Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
+            Block<BaseAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             Assert.Equal(anotherBlock, _blockChain[1]);
         }
 
@@ -82,7 +84,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanProcessActions()
+        public async Task CanProcessActions()
         {
             var actions1 = new List<BaseAction>()
             {
@@ -110,9 +112,9 @@ namespace Libplanet.Tests.Blockchain
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
-            _blockChain.MineBlock(_fx.Address1);
+            await _blockChain.MineBlock(_fx.Address1);
 
-            AddressStateMap states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
+            AddressStateMap states = await _blockChain.GetStates(new List<Address> { _fx.Address1 });
             Assert.NotEmpty(states);
 
             var result = (BattleResult)states[_fx.Address1];
@@ -137,9 +139,9 @@ namespace Libplanet.Tests.Blockchain
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
-            _blockChain.MineBlock(_fx.Address1);
+            await _blockChain.MineBlock(_fx.Address1);
 
-            states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
+            states = await _blockChain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
         }
@@ -170,54 +172,55 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanFindNextHashes()
+        public async Task CanFindNextHashes()
         {
-            _blockChain.Append(_fx.Block1);
+            await _blockChain.Append(_fx.Block1);
             var block0 = _fx.Block1;
-            var block1 = _blockChain.MineBlock(_fx.Address1);
-            var block2 = _blockChain.MineBlock(_fx.Address1);
-            var block3 = _blockChain.MineBlock(_fx.Address1);
+            var block1 = await _blockChain.MineBlock(_fx.Address1);
+            var block2 = await _blockChain.MineBlock(_fx.Address1);
+            var block3 = await _blockChain.MineBlock(_fx.Address1);
 
             Assert.Equal(
                 new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash, },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash })));
+                await _blockChain.FindNextHashes(
+                    new BlockLocator(new[] { block0.Hash })).ToArrayAsync());
             Assert.Equal(
                 new[] { block1.Hash, block2.Hash, block3.Hash },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block1.Hash, block0.Hash })));
+                await _blockChain.FindNextHashes(
+                    new BlockLocator(new[] { block1.Hash, block0.Hash })).ToArrayAsync());
             Assert.Equal(
                 new[] { block0.Hash, block1.Hash, block2.Hash },
-                _blockChain.FindNextHashes(
+                await _blockChain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
-                    stop: block2.Hash));
+                    stop: block2.Hash).ToArrayAsync());
             Assert.Equal(
                 new[] { block0.Hash, block1.Hash },
-                _blockChain.FindNextHashes(
+                await _blockChain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
-                    count: 2));
+                    count: 2).ToArrayAsync());
         }
 
         [Fact]
-        public void CanDeleteAfter()
+        public async Task CanDeleteAfter()
         {
-            var block1 = _blockChain.MineBlock(_fx.Address1);
-            var block2 = _blockChain.MineBlock(_fx.Address1);
-            var block3 = _blockChain.MineBlock(_fx.Address1);
+            var block1 = await _blockChain.MineBlock(_fx.Address1);
+            var block2 = await _blockChain.MineBlock(_fx.Address1);
+            var block3 = await _blockChain.MineBlock(_fx.Address1);
 
-            _blockChain.DeleteAfter(block2.Hash);
+            await _blockChain.DeleteAfter(block2.Hash);
 
             Assert.Equal(new[] { block1, block2 }, _blockChain);
         }
 
         [Fact]
-        public void CanGetBlockLocator()
+        public async Task CanGetBlockLocator()
         {
-            List<Block<BaseAction>> blocks = Enumerable.Range(0, 10)
-                .Select(_ => _blockChain.MineBlock(_fx.Address1))
-                .ToList();
+            List<Block<BaseAction>> blocks = (await Task.WhenAll(
+                Enumerable.Range(0, 10)
+                    .Select(_ => _blockChain.MineBlock(_fx.Address1))
+            )).ToList();
 
-            BlockLocator actual = _blockChain.GetBlockLocator(threshold: 2);
+            BlockLocator actual = await _blockChain.GetBlockLocator(threshold: 2);
             BlockLocator expected = new BlockLocator(new[]
             {
                 blocks[9].Hash,

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Async;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Tx;
 
@@ -19,7 +21,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateAddresses().ToList();
+                return Store.IterateAddresses().ToListAsync().Result;
             }
         }
 
@@ -31,7 +33,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override int Count => Store.CountAddresses();
+        public override int Count => Store.CountAddresses().Result;
 
         public override bool IsReadOnly => true;
 
@@ -39,18 +41,16 @@ namespace Libplanet.Store
         {
             get
             {
-                IEnumerable<TxId> txIds = Store.GetAddressTransactionIds(key);
+                IEnumerable<TxId> txIds =
+                    Store.GetAddressTransactionIds(key).ToListAsync().Result;
                 if (txIds.Count() == 0)
                 {
                     throw new KeyNotFoundException();
                 }
 
-                var x = txIds
-                    .Select(id => Store.GetTransaction<T>(id));
-
-                return txIds
-                    .Select(id => Store.GetTransaction<T>(id))
-                    .OfType<Transaction<T>>();
+                return Task.WhenAll(
+                    txIds.Select(id => Store.GetTransaction<T>(id))
+                ).Result.OfType<Transaction<T>>();
             }
 
             set
