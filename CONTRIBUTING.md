@@ -11,9 +11,9 @@ Style convention
 
 Please follow the existing coding convention.  We are already using several
 static analyzers.  They are automatically executed together with `msbuild`,
-and will warn you if there are some style errors.
+and will warn you if there are any style errors.
 
-You should register Git hooks we commonly use too:
+You should also register Git hooks we commonly use:
 
     git config core.hooksPath hooks
 
