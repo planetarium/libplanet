@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
-            Task task = await StartAsync(swarm, chain, 250);
+            Task task = await StartAsync(swarm, chain);
 
             Assert.True(swarm.Running);
             await swarm.StopAsync();
@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Net
 
             Task producerTask = Task.Run(async () =>
             {
-                await swarm.StartAsync(chain, 250);
+                await swarm.StartAsync(chain);
             });
 
             await consumerTask;
@@ -152,9 +152,9 @@ namespace Libplanet.Tests.Net
             {
                 try
                 {
-                    await StartAsync(a, chain, 250);
-                    await StartAsync(b, chain, 250);
-                    await StartAsync(c, chain, 250);
+                    await StartAsync(a, chain);
+                    await StartAsync(b, chain);
+                    await StartAsync(c, chain);
 
                     await b.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, b);
@@ -265,7 +265,11 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
-            Task task = await StartAsync(swarm, chain, 250, cts.Token);
+            Task task = await StartAsync(
+                swarm,
+                chain,
+                cancellationToken: cts.Token
+            );
 
             cts.Cancel();
             await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
@@ -288,8 +292,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await StartAsync(swarmA, chainA, 250);
-                await StartAsync(swarmB, chainA, 250);
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainA);
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
                     async () => await swarmB.GetBlockHashesAsync(
@@ -354,8 +358,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await StartAsync(swarmA, chainA, 250);
-                await StartAsync(swarmB, chainB, 250);
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
 
                 Assert.Throws<PeerNotFoundException>(
                     () => swarmB.GetTxsAsync<BaseAction>(
@@ -401,9 +405,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await StartAsync(swarmA, chainA, 250);
-                await StartAsync(swarmB, chainB, 250);
-                await StartAsync(swarmC, chainC, 250);
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+                await StartAsync(swarmC, chainC);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
@@ -458,9 +462,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await StartAsync(swarmA, chainA, 250);
-                await StartAsync(swarmB, chainB, 250);
-                await StartAsync(swarmC, chainC, 250);
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+                await StartAsync(swarmC, chainC);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
