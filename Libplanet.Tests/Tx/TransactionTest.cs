@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             var signature = new byte[]
             {
                 0x30, 0x45, 0x02, 0x21, 0x00, 0x9b, 0x8e, 0xb8, 0xb8, 0x6b,
@@ -351,7 +351,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(new Address(publicKey), tx.Recipient);
             Assert.Equal(new Address(publicKey), tx.Sender);
-            Assert.Equal(new DateTime(2018, 11, 21), tx.Timestamp);
+            Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             Assert.Equal(
                 new byte[]
                 {
@@ -441,7 +441,7 @@ namespace Libplanet.Tests.Tx
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(new Address(publicKey), tx.Recipient);
             Assert.Equal(new Address(publicKey), tx.Sender);
-            Assert.Equal(new DateTime(2018, 11, 21), tx.Timestamp);
+            Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             Assert.Equal(
                 new byte[]
                 {
@@ -501,7 +501,7 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,
@@ -603,7 +603,7 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,

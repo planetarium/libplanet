@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Net
                     new PrivateKey().PublicKey,
                     new[] { new Uri("inproc://a") }
                 ),
-                DateTime.UtcNow,
+                DateTimeOffset.UtcNow,
                 new[]
                 {
                     new Peer(

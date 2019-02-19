@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Tx
                 ByteUtil.ParseHex(
                     "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"));
             var recipient = new Address(privateKey.PublicKey);
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
             Tx = Transaction<BaseAction>.Make(
                 privateKey,

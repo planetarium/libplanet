@@ -26,8 +26,8 @@ namespace Libplanet.Net
     [Uno.GeneratedEquality]
     public partial class Swarm : ICollection<Peer>, IDisposable
     {
-        private readonly IDictionary<Peer, DateTime> _peers;
-        private readonly IDictionary<Peer, DateTime> _removedPeers;
+        private readonly IDictionary<Peer, DateTimeOffset> _peers;
+        private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
@@ -44,7 +44,7 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             Uri listenUrl,
             int millisecondsDialTimeout,
-            DateTime? createdAt = null)
+            DateTimeOffset? createdAt = null)
             : this(
                   privateKey,
                   listenUrl,
@@ -57,16 +57,17 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             Uri listenUrl,
             TimeSpan? dialTimeout = null,
-            DateTime? createdAt = null)
+            DateTimeOffset? createdAt = null)
         {
             _privateKey = privateKey;
             _listenUrl = listenUrl;
             _dialTimeout = dialTimeout ?? TimeSpan.FromMilliseconds(15000);
-            _peers = new Dictionary<Peer, DateTime>();
-            _removedPeers = new Dictionary<Peer, DateTime>();
-            LastSeenTimestamps = new Dictionary<Peer, DateTime>();
+            _peers = new Dictionary<Peer, DateTimeOffset>();
+            _removedPeers = new Dictionary<Peer, DateTimeOffset>();
+            LastSeenTimestamps = new Dictionary<Peer, DateTimeOffset>();
 
-            DateTime now = createdAt.GetValueOrDefault(DateTime.UtcNow);
+            DateTimeOffset now = createdAt.GetValueOrDefault(
+                DateTimeOffset.UtcNow);
             LastDistributed = now;
             LastReceived = now;
             DeltaDistributed = new AsyncAutoResetEvent();
@@ -112,11 +113,11 @@ namespace Libplanet.Net
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
 
-        public DateTime LastReceived { get; private set; }
+        public DateTimeOffset LastReceived { get; private set; }
 
-        public DateTime LastDistributed { get; private set; }
+        public DateTimeOffset LastDistributed { get; private set; }
 
-        public IDictionary<Peer, DateTime> LastSeenTimestamps
+        public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps
         {
             get;
             private set;
@@ -126,12 +127,12 @@ namespace Libplanet.Net
 
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
-            DateTime? timestamp = null,
+            DateTimeOffset? timestamp = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (timestamp == null)
             {
-                timestamp = DateTime.UtcNow;
+                timestamp = DateTimeOffset.UtcNow;
             }
 
             foreach (Peer peer in peers)
@@ -195,11 +196,11 @@ namespace Libplanet.Net
             {
                 var task = DialPeerAsync(item, CancellationToken.None);
                 Peer dialed = task.Result;
-                _peers[dialed] = DateTime.UtcNow;
+                _peers[dialed] = DateTimeOffset.UtcNow;
             }
             else
             {
-                _peers[item] = DateTime.UtcNow;
+                _peers[item] = DateTimeOffset.UtcNow;
             }
         }
 
@@ -244,7 +245,7 @@ namespace Libplanet.Net
             _logger.Debug("Stopping...");
             if (Running)
             {
-                _removedPeers[AsPeer] = DateTime.UtcNow;
+                _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
                 await DistributeDeltaAsync(false, cancellationToken);
 
                 _router.Dispose();
@@ -524,12 +525,12 @@ namespace Libplanet.Net
         }
 
         private static IEnumerable<Peer> FilterPeers(
-            IDictionary<Peer, DateTime> peers,
-            DateTime before,
-            DateTime? after = null,
+            IDictionary<Peer, DateTimeOffset> peers,
+            DateTimeOffset before,
+            DateTimeOffset? after = null,
             bool remove = false)
         {
-            foreach (KeyValuePair<Peer, DateTime> kv in peers.ToList())
+            foreach (KeyValuePair<Peer, DateTimeOffset> kv in peers.ToList())
             {
                 if (after != null && kv.Value <= after)
                 {
@@ -918,7 +919,7 @@ namespace Libplanet.Net
             IEnumerable<Peer> existing,
             IEnumerable<Peer> removed)
         {
-            DateTime timestamp = delta.Timestamp;
+            DateTimeOffset timestamp = delta.Timestamp;
 
             foreach (Peer peer in added)
             {
@@ -936,7 +937,8 @@ namespace Libplanet.Net
             }
         }
 
-        private void RemovePeers(IEnumerable<Peer> peers, DateTime timestamp)
+        private void RemovePeers(
+            IEnumerable<Peer> peers, DateTimeOffset timestamp)
         {
             PublicKey publicKey = _privateKey.PublicKey;
             foreach (Peer peer in peers)
@@ -1076,7 +1078,7 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            DateTime now = DateTime.UtcNow;
+            DateTimeOffset now = DateTimeOffset.UtcNow;
             var addedPeers = FilterPeers(
                 _peers,
                 before: now,

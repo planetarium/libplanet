@@ -121,7 +121,7 @@ namespace Libplanet.Tests.Store
         {
             var privateKey = new PrivateKey();
             Address recipient = privateKey.PublicKey.ToAddress();
-            var timestamp = new DateTime(2018, 11, 21);
+            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             return Transaction<BaseAction>.Make(
                 privateKey,
                 recipient,

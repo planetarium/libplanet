@@ -55,7 +55,8 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public void Validate(IEnumerable<Block<T>> blocks, DateTime currentTime)
+        public void Validate(
+            IEnumerable<Block<T>> blocks, DateTimeOffset currentTime)
         {
             foreach (Block<T> block in blocks)
             {
@@ -112,7 +113,7 @@ namespace Libplanet.Blockchain
             return states;
         }
 
-        public void Append(Block<T> block, DateTime currentTime)
+        public void Append(Block<T> block, DateTimeOffset currentTime)
         {
             Validate(Enumerable.Append(this, block), currentTime);
             Blocks[block.Hash] = block;
@@ -130,7 +131,8 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public void Append(Block<T> block) => Append(block, DateTime.UtcNow);
+        public void Append(Block<T> block) => Append(
+            block, DateTimeOffset.UtcNow);
 
         public void StageTransactions(ISet<Transaction<T>> txs)
         {
@@ -145,7 +147,7 @@ namespace Libplanet.Blockchain
 
         public Block<T> MineBlock(
             Address rewardBeneficiary,
-            DateTime currentTime
+            DateTimeOffset currentTime
         )
         {
             long index = Store.CountIndex();
@@ -168,7 +170,7 @@ namespace Libplanet.Blockchain
         }
 
         public Block<T> MineBlock(Address rewardBeneficiary) =>
-            MineBlock(rewardBeneficiary, DateTime.UtcNow);
+            MineBlock(rewardBeneficiary, DateTimeOffset.UtcNow);
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
         {

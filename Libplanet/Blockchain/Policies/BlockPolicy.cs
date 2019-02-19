@@ -62,11 +62,11 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc />
         public InvalidBlockException ValidateBlocks(
             IEnumerable<Block<T>> blocks,
-            DateTime currentTime
+            DateTimeOffset currentTime
         )
         {
             HashDigest<SHA256>? prevHash = null;
-            DateTime? prevTimestamp = null;
+            DateTimeOffset? prevTimestamp = null;
             IEnumerable<(long i, DifficultyExpectation)> indexedDifficulties =
                 ExpectDifficulties(blocks).Select(
                     (exp, i) => { return ((long)i, exp); }
@@ -138,8 +138,8 @@ namespace Libplanet.Blockchain.Policies
         private IEnumerable<DifficultyExpectation> ExpectDifficulties(
             IEnumerable<Block<T>> blocks, bool yieldNext = false)
         {
-            DateTime? prevTimestamp = null;
-            DateTime? prevPrevTimestamp = null;
+            DateTimeOffset? prevTimestamp = null;
+            DateTimeOffset? prevPrevTimestamp = null;
 
             if (yieldNext)
             {
