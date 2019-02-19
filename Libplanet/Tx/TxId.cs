@@ -5,28 +5,52 @@ using System.Linq;
 
 namespace Libplanet.Tx
 {
+    /// <summary>
+    /// <see cref="TxId"/>, abbreviation of transaction identifier,
+    /// is a SHA-256 digest derived from a <see cref="Transaction{T}"/>'s
+    /// content.
+    /// <para>As it is a SHA-256 digest, it consists of 32 <see cref="byte"/>s,
+    /// and 64 characters in hexadecimal.
+    /// (See also <see cref="Size"/> constant.)</para>
+    /// </summary>
+    /// <seealso cref="Transaction{T}.Id"/>
     #pragma warning disable CS0282
     [Uno.GeneratedEquality]
     public partial struct TxId
     #pragma warning restore CS0282
     {
-        public const int RequiredLength = 32;
+        /// <summary>
+        /// The <see cref="byte"/> size that each <see cref="TxId"/> takes.
+        /// <para>As a txid is a SHA-256 digest, it is 32 <see cref="byte"/>s.
+        /// </para>
+        /// </summary>
+        public const int Size = 32;
+
         private ImmutableArray<byte> _byteArray;
 
+        /// <summary>
+        /// Converts a <see cref="byte"/> array into a <see cref="TxId"/>.
+        /// </summary>
+        /// <param name="txid">A <see cref="byte"/> array that encodes
+        /// a <see cref="TxId"/>.  It must not be <c>null</c>,
+        /// and its <see cref="Array.Length"/> must be the same to
+        /// <see cref="Size"/>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the given
+        /// <paramref name="txid"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given
+        /// <paramref name="txid"/>'s <see cref="Array.Length"/> is not
+        /// the same to the required <see cref="Size"/>.</exception>
         public TxId(byte[] txid)
         {
             if (txid == null)
             {
-                throw new ArgumentNullException(
-                    $"It must not be null.",
-                    nameof(txid)
-                );
+                throw new ArgumentNullException(nameof(txid));
             }
 
-            if (txid.Length != RequiredLength)
+            if (txid.Length != Size)
             {
-                throw new ArgumentException(
-                    $"It must be {RequiredLength} bytes.",
+                throw new ArgumentOutOfRangeException(
+                    $"TxId must be {Size} bytes.",
                     nameof(txid)
                 );
             }
@@ -42,6 +66,13 @@ namespace Libplanet.Tx
             #pragma warning restore CS0103
         }
 
+        /// <summary>
+        /// A bare immutable <see cref="byte"/> array of
+        /// this <see cref="TxId"/>.
+        /// </summary>
+        /// <remarks>It is immutable.  For a mutable array, use
+        /// <see cref="ToByteArray()"/> method instead.</remarks>
+        /// <seealso cref="ToByteArray()"/>
         [Uno.EqualityKey]
         public ImmutableArray<byte> ByteArray
         {
@@ -49,23 +80,40 @@ namespace Libplanet.Tx
             {
                 if (_byteArray.IsDefault)
                 {
-                    _byteArray = new byte[RequiredLength].ToImmutableArray();
+                    _byteArray = new byte[Size].ToImmutableArray();
                 }
 
                 return _byteArray;
             }
         }
 
+        /// <summary>
+        /// Gets a bare mutable <see cref="byte"/> array of
+        /// this <see cref="TxId"/>.
+        /// </summary>
+        /// <returns>A new mutable <see cref="byte"/> array of
+        /// this <see cref="TxId"/>.
+        /// Since a returned array is created every time the method is called,
+        /// any mutations on that array does not affect to
+        /// the <see cref="TxId"/> object.
+        /// </returns>
+        /// <seealso cref="ByteArray"/>
         [Pure]
         public byte[] ToByteArray() => ByteArray.ToArray();
 
+        /// <summary>
+        /// Gets a hexadecimal form of a <see cref="TxId"/>.
+        /// </summary>
+        /// <returns>64 hexadecimal characters.</returns>
         [Pure]
         public string ToHex() => ByteUtil.Hex(ToByteArray());
 
+        /// <summary>
+        /// Gets a <see cref="TxId"/>'s representative string.
+        /// </summary>
+        /// <returns>A string which represents this <see cref="TxId"/>.
+        /// </returns>
         [Pure]
-        public override string ToString()
-        {
-            return ToHex();
-        }
+        public override string ToString() => ToHex();
     }
 }

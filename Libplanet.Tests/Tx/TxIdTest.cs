@@ -23,7 +23,9 @@ namespace Libplanet.Tests.Tx
                 }
 
                 byte[] bytes = TestUtils.GetRandomBytes(size);
-                Assert.Throws<ArgumentException>(() => new TxId(bytes));
+                Assert.Throws<ArgumentOutOfRangeException>(
+                    () => new TxId(bytes)
+                );
             }
         }
 

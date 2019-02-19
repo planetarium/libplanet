@@ -73,6 +73,26 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
+
+            // The privateKey parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                Transaction<BaseAction>.Make(
+                    null,
+                    recipient,
+                    new List<BaseAction>(),
+                    timestamp
+                )
+            );
+
+            // The actions parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                Transaction<BaseAction>.Make(
+                    privateKey,
+                    recipient,
+                    null,
+                    timestamp
+                )
+            );
         }
 
         [Fact]
@@ -145,16 +165,52 @@ namespace Libplanet.Tests.Tx
                 0x3f,
             };
 
-            Assert.Throws<InvalidTxSignatureException>(() =>
-            {
+            // The publicKey parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    null,
+                    recipient,
+                    timestamp,
+                    new List<BaseAction>(),
+                    signature
+                )
+            );
+
+            // The actions parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    privateKey.PublicKey,
+                    recipient,
+                    timestamp,
+                    null,
+                    signature
+                )
+            );
+
+            // The signature parameter cannot be null.
+            Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<BaseAction>(
                     privateKey.PublicKey.ToAddress(),
                     privateKey.PublicKey,
                     recipient,
                     timestamp,
                     new List<BaseAction>(),
-                    invalidSignature);
-            });
+                    null
+                )
+            );
+
+            Assert.Throws<InvalidTxSignatureException>(() =>
+                new Transaction<BaseAction>(
+                    privateKey.PublicKey.ToAddress(),
+                    privateKey.PublicKey,
+                    recipient,
+                    timestamp,
+                    new List<BaseAction>(),
+                    invalidSignature
+                )
+            );
         }
 
         [Fact]
@@ -571,6 +627,37 @@ namespace Libplanet.Tests.Tx
             RawTransaction rawTx = GetExpectedRawTransaction(true);
             var tx = new Transaction<BaseAction>(rawTx);
             tx.Validate();
+        }
+
+        [Fact]
+        public void SignatureBufferIsIsolated()
+        {
+            Transaction<BaseAction> tx = _fx.Tx;
+            byte[] sig = tx.Signature;
+            for (int i = 0; i < sig.Length; i++)
+            {
+                sig[i] = 0;
+            }
+
+            Assert.NotEqual(new byte[sig.Length], tx.Signature);
+
+            var sig2 = new byte[tx.Signature.Length];
+            Array.Copy(tx.Signature, sig2, sig2.Length);
+            var tx2 = new Transaction<BaseAction>(
+                tx.Sender,
+                tx.PublicKey,
+                tx.Recipient,
+                tx.Timestamp,
+                tx.Actions,
+                sig2
+            );
+            for (int i = 0; i < sig2.Length; i++)
+            {
+                sig2[i] = 0;
+            }
+
+            Assert.NotEqual(new byte[sig.Length], tx2.Signature);
+            AssertBytesEqual(tx.Signature, tx2.Signature);
         }
 
         [SuppressMessage(
