@@ -99,12 +99,8 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
-            Task task = Task.Run(async () =>
-            {
-                await swarm.StartAsync(chain, 250);
-            });
+            Task task = await StartAsync(swarm, chain, 250);
 
-            await swarm.WaitForRunningAsync();
             Assert.True(swarm.Running);
             await swarm.StopAsync();
 
@@ -156,17 +152,15 @@ namespace Libplanet.Tests.Net
             {
                 try
                 {
-                    var at = Task.Run(async () => await a.StartAsync(chain, 250));
-                    var bt = Task.Run(async () => await b.StartAsync(chain, 250));
-                    var ct = Task.Run(async () => await c.StartAsync(chain, 250));
+                    await StartAsync(a, chain, 250);
+                    await StartAsync(b, chain, 250);
+                    await StartAsync(c, chain, 250);
 
-                    await b.WaitForRunningAsync();
                     await b.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, b);
                     Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), a.ToImmutableHashSet());
                     Assert.Equal(new[] { a.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
 
-                    await c.WaitForRunningAsync();
                     await c.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, c);
                     await EnsureExchange(a, b);
@@ -271,9 +265,7 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
-            Task task = Task.Run(
-                async () => await swarm.StartAsync(chain, 250, cts.Token));
-            await swarm.WaitForRunningAsync();
+            Task task = await StartAsync(swarm, chain, 250, cts.Token);
 
             cts.Cancel();
             await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
@@ -296,13 +288,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                var at = Task.Run(
-                    async () => await swarmA.StartAsync(chainA, 250));
-                var bt = Task.Run(
-                    async () => await swarmB.StartAsync(chainB, 250));
-
-                await swarmA.WaitForRunningAsync();
-                await swarmB.WaitForRunningAsync();
+                await StartAsync(swarmA, chainA, 250);
+                await StartAsync(swarmB, chainA, 250);
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
                     async () => await swarmB.GetBlockHashesAsync(
@@ -367,13 +354,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                #pragma warning restore CS4014
-
-                await swarmA.WaitForRunningAsync();
-                await swarmB.WaitForRunningAsync();
+                await StartAsync(swarmA, chainA, 250);
+                await StartAsync(swarmB, chainB, 250);
 
                 Assert.Throws<PeerNotFoundException>(
                     () => swarmB.GetTxsAsync<BaseAction>(
@@ -419,15 +401,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
-                #pragma warning restore CS4014
-
-                await swarmA.WaitForRunningAsync();
-                await swarmB.WaitForRunningAsync();
-                await swarmC.WaitForRunningAsync();
+                await StartAsync(swarmA, chainA, 250);
+                await StartAsync(swarmB, chainB, 250);
+                await StartAsync(swarmC, chainC, 250);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
@@ -482,15 +458,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
-                #pragma warning restore CS4014
-
-                await swarmA.WaitForRunningAsync();
-                await swarmB.WaitForRunningAsync();
-                await swarmC.WaitForRunningAsync();
+                await StartAsync(swarmA, chainA, 250);
+                await StartAsync(swarmB, chainB, 250);
+                await StartAsync(swarmC, chainC, 250);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
@@ -522,6 +492,25 @@ namespace Libplanet.Tests.Net
                     swarmB.StopAsync(),
                     swarmC.StopAsync());
             }
+        }
+
+        private async Task<Task> StartAsync<T>(
+            Swarm swarm,
+            BlockChain<T> blockChain,
+            int millisecondsDistributeInterval = 1500,
+            CancellationToken cancellationToken = default
+        )
+            where T : IAction
+        {
+            Task task = Task.Run(
+                async () => await swarm.StartAsync(
+                    blockChain,
+                    millisecondsDistributeInterval,
+                    cancellationToken
+                )
+            );
+            await swarm.WaitForRunningAsync();
+            return task;
         }
 
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTimeOffset? lastReceived = null)
