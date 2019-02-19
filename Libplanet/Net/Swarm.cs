@@ -85,7 +85,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm>()
                 .ForContext("Swarm_listenUrl", _listenUrl.ToString());
 
-            _runningEvent = new TaskCompletionSource<object>();
+            Running = false;
         }
 
         ~Swarm()
@@ -129,8 +129,22 @@ namespace Libplanet.Net
         /// <summary>
         /// Whether this <see cref="Swarm"/> instance is running.
         /// </summary>
-        public bool Running =>
-            _runningEvent.Task.Status == TaskStatus.RanToCompletion;
+        public bool Running
+        {
+            get => _runningEvent.Task.Status == TaskStatus.RanToCompletion;
+
+            private set
+            {
+                if (value)
+                {
+                    _runningEvent.TrySetResult(null);
+                }
+                else
+                {
+                    _runningEvent = new TaskCompletionSource<object>();
+                }
+            }
+        }
 
         /// <summary>
         /// Waits until this <see cref="Swarm"/> instance gets started to run.
@@ -270,7 +284,7 @@ namespace Libplanet.Net
 
                 _dealers.Clear();
 
-                _runningEvent = new TaskCompletionSource<object>();
+                Running = false;
             }
 
             _logger.Debug("Stopped.");
@@ -321,7 +335,7 @@ namespace Libplanet.Net
             }
 
             _router.Bind(_listenUrl.ToString());
-            _runningEvent.SetResult(null);
+            Running = true;
 
             try
             {
