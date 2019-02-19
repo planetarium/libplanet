@@ -40,6 +40,8 @@ namespace Libplanet.Net
 
         private readonly ILogger _logger;
 
+        private TaskCompletionSource<object> _runningEvent;
+
         public Swarm(
             PrivateKey privateKey,
             Uri listenUrl,
@@ -82,7 +84,8 @@ namespace Libplanet.Net
 
             _logger = Log.ForContext<Swarm>()
                 .ForContext("Swarm_listenUrl", _listenUrl.ToString());
-            Running = false;
+
+            _runningEvent = new TaskCompletionSource<object>();
         }
 
         ~Swarm()
@@ -123,7 +126,18 @@ namespace Libplanet.Net
             private set;
         }
 
-        public bool Running { get; private set; }
+        /// <summary>
+        /// Whether this <see cref="Swarm"/> instance is running.
+        /// </summary>
+        public bool Running =>
+            _runningEvent.Task.Status == TaskStatus.RanToCompletion;
+
+        /// <summary>
+        /// Waits until this <see cref="Swarm"/> instance gets started to run.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> completed when <see cref="Running"/>
+        /// property becomes <c>true</c>.</returns>
+        public Task WaitForRunningAsync() => _runningEvent.Task;
 
         public async Task<ISet<Peer>> AddPeersAsync(
             IEnumerable<Peer> peers,
@@ -256,7 +270,7 @@ namespace Libplanet.Net
 
                 _dealers.Clear();
 
-                Running = false;
+                _runningEvent = new TaskCompletionSource<object>();
             }
 
             _logger.Debug("Stopped.");
@@ -306,8 +320,8 @@ namespace Libplanet.Net
                 throw new SwarmException("Swarm is already running.");
             }
 
-            Running = true;
             _router.Bind(_listenUrl.ToString());
+            _runningEvent.SetResult(null);
 
             try
             {
