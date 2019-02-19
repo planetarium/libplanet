@@ -27,7 +27,7 @@ namespace Libplanet.Blocks
             Nonce nonce,
             Address? rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
-            DateTime timestamp,
+            DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
             Index = index;
@@ -55,7 +55,7 @@ namespace Libplanet.Blocks
             PreviousHash = (rawBlock.PreviousHash != null)
                 ? new HashDigest<SHA256>(rawBlock.PreviousHash)
                 : default(HashDigest<SHA256>?);
-            Timestamp = DateTime.ParseExact(
+            Timestamp = DateTimeOffset.ParseExact(
                 rawBlock.Timestamp,
                 TimestampFormat,
                 CultureInfo.InvariantCulture).ToUniversalTime();
@@ -94,7 +94,7 @@ namespace Libplanet.Blocks
         public HashDigest<SHA256>? PreviousHash { get; }
 
         [Uno.EqualityIgnore]
-        public DateTime Timestamp { get; }
+        public DateTimeOffset Timestamp { get; }
 
         [Uno.EqualityIgnore]
         public IEnumerable<Transaction<T>> Transactions { get; }
@@ -104,7 +104,7 @@ namespace Libplanet.Blocks
             int difficulty,
             Address rewardBeneficiary,
             HashDigest<SHA256>? previousHash,
-            DateTime timestamp,
+            DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
             Block<T> MakeBlock(Nonce n) => new Block<T>(
@@ -150,10 +150,10 @@ namespace Libplanet.Blocks
 
         public void Validate()
         {
-            Validate(DateTime.UtcNow);
+            Validate(DateTimeOffset.UtcNow);
         }
 
-        public void Validate(DateTime currentTime)
+        public void Validate(DateTimeOffset currentTime)
         {
             if (currentTime + TimestampThreshold < Timestamp)
             {

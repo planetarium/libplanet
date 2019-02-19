@@ -12,7 +12,7 @@ namespace Libplanet.Net
     {
         public PeerSetDelta(
             Peer sender,
-            DateTime timestamp,
+            DateTimeOffset timestamp,
             IImmutableSet<Peer> addedPeers,
             IImmutableSet<Peer> removedPeers,
             IImmutableSet<Peer> existingPeers)
@@ -27,7 +27,7 @@ namespace Libplanet.Net
         protected PeerSetDelta(SerializationInfo info, StreamingContext context)
         {
             Sender = info.GetValue<Peer>("sender");
-            Timestamp = info.GetValue<DateTime>("timestamp");
+            Timestamp = info.GetValue<DateTimeOffset>("timestamp");
             AddedPeers = info.GetValue<Peer[]>("added_peers")?
                 .ToImmutableHashSet();
             RemovedPeers = info.GetValue<Peer[]>("removed_peers")?
@@ -42,7 +42,7 @@ namespace Libplanet.Net
 
         [Uno.EqualityHash]
         [Uno.EqualityKey]
-        public DateTime Timestamp { get; }
+        public DateTimeOffset Timestamp { get; }
 
         [Uno.EqualityHash]
         public IImmutableSet<Peer> AddedPeers { get; }

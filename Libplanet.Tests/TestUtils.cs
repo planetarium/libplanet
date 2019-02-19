@@ -81,7 +81,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var rewardBenificiary = new Address(
                 "21744f4f08db23e044178dafb8273aeb5ebe6644"
             );
-            var timestamp = new DateTime(2018, 11, 29);
+            var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
             return new Block<T>(
                 index: 0,
                 difficulty: 0,
@@ -108,7 +108,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             const long index = 1;
             const int difficulty = 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
-            DateTime timestamp = previousBlock.Timestamp.AddDays(1);
+            DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
             Address rewardBeneficiary = previousBlock.RewardBeneficiary.Value;
 
             if (nonce == null)

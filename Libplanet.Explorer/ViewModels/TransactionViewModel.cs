@@ -9,7 +9,7 @@ namespace Libplanet.Explorer.ViewModels
     {
         public string Id { get; set; }
         public byte[] Signature { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
         public string Sender { get; set; }
         public string Recipient { get; set; }
         public IEnumerable<Dictionary<string, object>> Actions { get; set; }

@@ -15,8 +15,8 @@ namespace Libplanet.Tests.Blockchain.Policies
 {
     public class BlockPolicyTest : IClassFixture<FileStoreFixture>
     {
-        private static readonly DateTime FixtureEpoch =
-            new DateTime(2018, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTimeOffset FixtureEpoch =
+            new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         private readonly ITestOutputHelper _output;
 
@@ -277,7 +277,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             internal long Index;
             internal int Difficulty;
             internal HashDigest<SHA256>? PreviousHash;
-            internal DateTime Timestamp;
+            internal DateTimeOffset Timestamp;
         }
     }
 }

@@ -254,7 +254,7 @@ namespace Libplanet.Store
                     nonce: new Nonce(rawBlock.Nonce),
                     rewardBeneficiary: new Address(rawBlock.RewardBeneficiary),
                     previousHash: previousHash,
-                    timestamp: DateTime.ParseExact(
+                    timestamp: DateTimeOffset.ParseExact(
                         rawBlock.Timestamp,
                         Block<T>.TimestampFormat,
                         CultureInfo.InvariantCulture

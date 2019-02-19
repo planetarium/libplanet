@@ -106,7 +106,7 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 _fx.Address1,
                 actions1,
-                DateTime.UtcNow
+                DateTimeOffset.UtcNow
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Blockchain
                 new PrivateKey(),
                 _fx.Address1,
                 actions2,
-                DateTime.UtcNow
+                DateTimeOffset.UtcNow
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });

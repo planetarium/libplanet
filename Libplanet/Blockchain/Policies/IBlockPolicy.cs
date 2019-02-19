@@ -25,13 +25,13 @@ namespace Libplanet.Blockchain.Policies
         /// validate.</param>
         /// <param name="currentTime">The current time to be used to validate
         /// of <see cref="Block{T}.Timestamp"/>s.
-        /// Usually <see cref="DateTime.UtcNow"/> is used.</param>
+        /// Usually <see cref="DateTimeOffset.UtcNow"/> is used.</param>
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
         InvalidBlockException ValidateBlocks(
             IEnumerable<Block<T>> blocks,
-            DateTime currentTime
+            DateTimeOffset currentTime
         );
 
         /// <summary>

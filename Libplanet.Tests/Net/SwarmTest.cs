@@ -121,7 +121,7 @@ namespace Libplanet.Tests.Net
 
             BlockChain<BaseAction> chain = _blockchains[0];
 
-            DateTime lastDistA;
+            DateTimeOffset lastDistA;
             Peer aAsPeer;
 
             try
@@ -326,7 +326,7 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new PrivateKey().PublicKey.ToAddress(),
                 new BaseAction[] { },
-                DateTime.UtcNow
+                DateTimeOffset.UtcNow
             );
             chainB.StageTransactions(new[] { tx }.ToHashSet());
             chainB.MineBlock(_fx1.Address1);
@@ -374,7 +374,7 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new PrivateKey().PublicKey.ToAddress(),
                 new BaseAction[] { },
-                DateTime.UtcNow
+                DateTimeOffset.UtcNow
             );
 
             chainA.StageTransactions(new[] { tx }.ToHashSet());
@@ -479,7 +479,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTime? lastReceived = null)
+        private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTimeOffset? lastReceived = null)
         {
             while (true)
             {
@@ -492,7 +492,7 @@ namespace Libplanet.Tests.Net
                     break;
                 }
 
-                DateTime? lastSeen = null;
+                DateTimeOffset? lastSeen = null;
                 if (peer == null)
                 {
                     lastSeen = swarm.LastReceived;
@@ -505,7 +505,7 @@ namespace Libplanet.Tests.Net
                     }
                     else
                     {
-                        foreach (KeyValuePair<Peer, DateTime> kv in swarm.LastSeenTimestamps)
+                        foreach (KeyValuePair<Peer, DateTimeOffset> kv in swarm.LastSeenTimestamps)
                         {
                             if (peer.PublicKey == kv.Key.PublicKey)
                             {

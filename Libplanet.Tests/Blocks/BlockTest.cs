@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(0, _fx.Genesis.Index);
             Assert.Equal(0, _fx.Genesis.Difficulty);
             Assert.Null(_fx.Genesis.PreviousHash);
-            Assert.Equal(new DateTime(2018, 11, 29), _fx.Genesis.Timestamp);
+            Assert.Equal(new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero), _fx.Genesis.Timestamp);
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Genesis.RewardBeneficiary);
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
             Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
-            Assert.Equal(new DateTime(2018, 11, 30), _fx.Next.Timestamp);
+            Assert.Equal(new DateTimeOffset(2018, 11, 30, 0, 0, 0, TimeSpan.Zero), _fx.Next.Timestamp);
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Next.RewardBeneficiary);
@@ -164,7 +164,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanDetectInvalidTimestamp()
         {
-            DateTime now = DateTime.UtcNow;
+            DateTimeOffset now = DateTimeOffset.UtcNow;
             var block = Block<BaseAction>.Mine(
                 _fx.Next.Index,
                 _fx.Next.Difficulty,

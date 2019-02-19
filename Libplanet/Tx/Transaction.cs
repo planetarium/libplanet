@@ -80,7 +80,7 @@ namespace Libplanet.Tx
             Address sender,
             PublicKey publicKey,
             Address recipient,
-            DateTime timestamp,
+            DateTimeOffset timestamp,
             IList<T> actions,
             byte[] signature)
         {
@@ -102,7 +102,7 @@ namespace Libplanet.Tx
             Sender = new Address(rawTx.Sender);
             PublicKey = new PublicKey(rawTx.PublicKey);
             Recipient = new Address(rawTx.Recipient);
-            Timestamp = DateTime.ParseExact(
+            Timestamp = DateTimeOffset.ParseExact(
                 rawTx.Timestamp,
                 TimestampFormat,
                 CultureInfo.InvariantCulture).ToUniversalTime();
@@ -120,7 +120,7 @@ namespace Libplanet.Tx
             Address sender,
             PublicKey publicKey,
             Address recipient,
-            DateTime timestamp,
+            DateTimeOffset timestamp,
             IList<T> actions)
         {
             Sender = sender;
@@ -195,7 +195,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// The time this <see cref="Transaction{T}"/> is created and signed.
         /// </summary>
-        public DateTime Timestamp { get; }
+        public DateTimeOffset Timestamp { get; }
 
         /// <summary>
         /// A <see cref="PublicKey"/> of the account who signs this
@@ -226,8 +226,8 @@ namespace Libplanet.Tx
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// Unlike the <see cref="Transaction(Address, PublicKey, Address,
-        /// DateTime, IList{T}, byte[])"/> constructor, it automatically signs,
-        /// and fills the appropriate <see cref="Sender"/> and
+        /// DateTimeOffset, IList{T}, byte[])"/> constructor, it automatically
+        /// signs, and fills the appropriate <see cref="Sender"/> and
         /// <see cref="PublicKey"/> properties using the given
         /// <paramref name="privateKey"/>.  However, the <paramref
         /// name="privateKey"/> in itself is not included in the created
@@ -257,7 +257,7 @@ namespace Libplanet.Tx
             PrivateKey privateKey,
             Address recipient,
             IList<T> actions,
-            DateTime timestamp)
+            DateTimeOffset timestamp)
         {
             if (privateKey == null)
             {
