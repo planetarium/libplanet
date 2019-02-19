@@ -374,6 +374,8 @@ namespace Libplanet.Net
                 _router.Bind($"tcp://*:{_listenPort}");
             }
 
+            _logger.Information($"Listen on {_listenPort}");
+
             try
             {
                 Running = true;
@@ -391,11 +393,19 @@ namespace Libplanet.Net
                             _peers.Remove(peer);
                         }
                     }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"TimeoutException occured ({peer})."
+                        );
+                        continue;
+                    }
                     catch (IOException e)
                     {
                         _logger.Error(
                             e,
-                            $"IOException occured in DialPeerAsync ({peer})."
+                            $"IOException occured ({peer})."
                         );
                         continue;
                     }
@@ -405,6 +415,11 @@ namespace Libplanet.Net
                     RepeatDeltaDistributionAsync(
                         distributeInterval, cancellationToken),
                     ReceiveMessageAsync(blockChain, cancellationToken));
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected exception occured.");
+                throw;
             }
             finally
             {
@@ -655,8 +670,9 @@ namespace Libplanet.Net
                         continue;
                     }
 
+                    _logger.Debug($"The raw message[{raw}] has received.");
                     Message message = Message.Parse(raw, reply: false);
-                    _logger.Debug($"Message[{message}] received.");
+                    _logger.Debug($"The message[{message}] has parsed.");
 
                     // Queue a task per message to avoid blocking.
                     #pragma warning disable CS4014
@@ -679,6 +695,11 @@ namespace Libplanet.Net
                         "Could not parse NetMQMessage properly; ignore."
                     );
                 }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Unexpected exception occured.");
+                    throw;
+                }
             }
         }
 
@@ -698,6 +719,7 @@ namespace Libplanet.Net
                             Identity = ping.Identity,
                         };
                         await ReplyAsync(reply, cancellationToken);
+                        _logger.Debug($"Pong sent.");
                         break;
                     }
 
@@ -903,6 +925,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
             where T : IAction
         {
+            _logger.Debug("Trying to transfer blocks...");
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
                 if (blockChain.Blocks.TryGetValue(hash, out Block<T> block))
@@ -914,6 +937,8 @@ namespace Libplanet.Net
                     await ReplyAsync(response, cancellationToken);
                 }
             }
+
+            _logger.Debug("Transfer complete.");
         }
 
         private async Task ProcessDeltaAsync(
