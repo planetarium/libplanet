@@ -99,17 +99,41 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
-            Task task = Task.Run(async () =>
-            {
-                await swarm.StartAsync(chain, 250);
-            });
+            Task task = await StartAsync(swarm, chain);
 
-            await Task.Delay(500);
             Assert.True(swarm.Running);
             await swarm.StopAsync();
 
             Assert.False(swarm.Running);
             await task;
+        }
+
+        [Fact]
+        public async Task CanWaitForRunning()
+        {
+            Swarm swarm = _swarms[0];
+            BlockChain<BaseAction> chain = _blockchains[0];
+
+            Assert.False(swarm.Running);
+
+            Task consumerTask = Task.Run(
+                async () =>
+                {
+                    await swarm.WaitForRunningAsync();
+                    Assert.True(swarm.Running);
+                }
+            );
+
+            Task producerTask = Task.Run(async () =>
+            {
+                await swarm.StartAsync(chain);
+            });
+
+            await consumerTask;
+            Assert.True(swarm.Running);
+
+            await swarm.StopAsync();
+            Assert.False(swarm.Running);
         }
 
         [Fact]
@@ -128,9 +152,9 @@ namespace Libplanet.Tests.Net
             {
                 try
                 {
-                    var at = Task.Run(async () => await a.StartAsync(chain, 250));
-                    var bt = Task.Run(async () => await b.StartAsync(chain, 250));
-                    var ct = Task.Run(async () => await c.StartAsync(chain, 250));
+                    await StartAsync(a, chain);
+                    await StartAsync(b, chain);
+                    await StartAsync(c, chain);
 
                     await b.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, b);
@@ -241,8 +265,11 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
-            Task task = Task.Run(
-                async () => await swarm.StartAsync(chain, 250, cts.Token));
+            Task task = await StartAsync(
+                swarm,
+                chain,
+                cancellationToken: cts.Token
+            );
 
             cts.Cancel();
             await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
@@ -265,10 +292,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                var at = Task.Run(
-                    async () => await swarmA.StartAsync(chainA, 250));
-                var bt = Task.Run(
-                    async () => await swarmB.StartAsync(chainB, 250));
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainA);
 
                 await Assert.ThrowsAsync<PeerNotFoundException>(
                     async () => await swarmB.GetBlockHashesAsync(
@@ -333,10 +358,8 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                #pragma warning restore CS4014
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
 
                 Assert.Throws<PeerNotFoundException>(
                     () => swarmB.GetTxsAsync<BaseAction>(
@@ -382,11 +405,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
-                #pragma warning restore CS4014
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+                await StartAsync(swarmC, chainC);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
@@ -441,11 +462,9 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                #pragma warning disable CS4014
-                Task.Run(async () => await swarmA.StartAsync(chainA, 250));
-                Task.Run(async () => await swarmB.StartAsync(chainB, 250));
-                Task.Run(async () => await swarmC.StartAsync(chainC, 250));
-                #pragma warning restore CS4014
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+                await StartAsync(swarmC, chainC);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
                 await swarmA.AddPeersAsync(new[] { swarmC.AsPeer });
@@ -477,6 +496,25 @@ namespace Libplanet.Tests.Net
                     swarmB.StopAsync(),
                     swarmC.StopAsync());
             }
+        }
+
+        private async Task<Task> StartAsync<T>(
+            Swarm swarm,
+            BlockChain<T> blockChain,
+            int millisecondsDistributeInterval = 1500,
+            CancellationToken cancellationToken = default
+        )
+            where T : IAction
+        {
+            Task task = Task.Run(
+                async () => await swarm.StartAsync(
+                    blockChain,
+                    millisecondsDistributeInterval,
+                    cancellationToken
+                )
+            );
+            await swarm.WaitForRunningAsync();
+            return task;
         }
 
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTimeOffset? lastReceived = null)
@@ -525,6 +563,9 @@ namespace Libplanet.Tests.Net
 
         private async Task EnsureExchange(Swarm a, Swarm b)
         {
+            await a.WaitForRunningAsync();
+            await b.WaitForRunningAsync();
+
             Log.Debug($"Waiting for a[{a.AsPeer}] to distribute... ");
             await a.DeltaDistributed.WaitAsync();
             Log.Debug($"Waiting for b[{b.AsPeer}] to receive a[{a.AsPeer}]...");
