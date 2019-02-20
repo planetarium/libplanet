@@ -34,6 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 </Project>
