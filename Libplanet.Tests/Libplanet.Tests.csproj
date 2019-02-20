@@ -33,6 +33,17 @@
     <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
+    <!--
+    As Mono has no proper AppDomain, we prevent it on Mono.
+    This works around Xunit's fatal error on Mono.
+    -->
+    <Content Include="xunit.runner.mono.json">
+      <Link>xunit.runner.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
