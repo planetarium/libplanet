@@ -1138,15 +1138,13 @@ namespace Libplanet.Net
             Peer peer, CancellationToken cancellationToken)
         {
             Peer original = peer;
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
-            {
-                dealer = new DealerSocket();
-                dealer.Options.Identity =
-                    _privateKey.PublicKey.ToAddress().ToByteArray();
-            }
+            var connected = false;
 
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
             {
+                var dealer = new DealerSocket();
+                dealer.Options.Identity =
+                    _privateKey.PublicKey.ToAddress().ToByteArray();
                 try
                 {
                     _logger.Debug($"Trying to DialAsync({url})...");
@@ -1159,7 +1157,16 @@ namespace Libplanet.Net
                         e,
                         $"IOException occured in DialAsync ({url})."
                     );
-                    dealer.Disconnect(url.ToString());
+                    dealer.Dispose();
+                    continue;
+                }
+                catch (TimeoutException e)
+                {
+                    _logger.Error(
+                        e,
+                        $"TimeoutException occured in DialAsync ({url})."
+                    );
+                    dealer.Dispose();
                     continue;
                 }
 
@@ -1169,10 +1176,11 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+                connected = true;
                 break;
             }
 
-            if (dealer == null)
+            if (!connected)
             {
                 throw new IOException($"not reachable at all to {original}");
             }
