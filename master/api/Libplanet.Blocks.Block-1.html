@@ -128,6 +128,68 @@ public class Block&lt;T&gt; : ISerializable, IEquatable&lt;Block&lt;T&gt;&gt;, I
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.%23ctor(System.Int64%2CSystem.Int32%2CLibplanet.Nonce%2CSystem.Nullable%7BLibplanet.Address%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CSystem.DateTimeOffset%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L24">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_Block_1__ctor_" data-uid="Libplanet.Blocks.Block`1.#ctor*"></a>
+  <h4 id="Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">Block(Int64, Int32, Nonce, Nullable&lt;Address&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block(long index, int difficulty, Nonce nonce, Address? rewardBeneficiary, HashDigest&lt;SHA256&gt;? previousHash, DateTimeOffset timestamp, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">difficulty</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
+        <td><span class="parametername">nonce</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">rewardBeneficiary</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="parametername">previousHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">timestamp</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">transactions</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -163,68 +225,6 @@ public class Block&lt;T&gt; : ISerializable, IEquatable&lt;Block&lt;T&gt;&gt;, I
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1__ctor_System_UInt64_System_UInt32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.%23ctor(System.UInt64%2CSystem.UInt32%2CLibplanet.Nonce%2CSystem.Nullable%7BLibplanet.Address%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CSystem.DateTime%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L24">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_Block_1__ctor_" data-uid="Libplanet.Blocks.Block`1.#ctor*"></a>
-  <h4 id="Libplanet_Blocks_Block_1__ctor_System_UInt64_System_UInt32_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blocks.Block`1.#ctor(System.UInt64,System.UInt32,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">Block(UInt64, UInt32, Nonce, Nullable&lt;Address&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, DateTime, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Block(ulong index, uint difficulty, Nonce nonce, Address? rewardBeneficiary, HashDigest&lt;SHA256&gt;? previousHash, DateTime timestamp, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a></td>
-        <td><span class="parametername">index</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
-        <td><span class="parametername">difficulty</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Nonce.html">Nonce</a></td>
-        <td><span class="parametername">nonce</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
-        <td><span class="parametername">rewardBeneficiary</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><span class="parametername">previousHash</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
-        <td><span class="parametername">timestamp</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
-        <td><span class="parametername">transactions</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -241,7 +241,7 @@ public class Block&lt;T&gt; : ISerializable, IEquatable&lt;Block&lt;T&gt;&gt;, I
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[EqualityIgnore]
-public uint Difficulty { get; }</code></pre>
+public int Difficulty { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -253,7 +253,7 @@ public uint Difficulty { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -303,7 +303,7 @@ public HashDigest&lt;SHA256&gt; Hash { get; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[EqualityIgnore]
-public ulong Index { get; }</code></pre>
+public long Index { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -315,7 +315,7 @@ public ulong Index { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -427,7 +427,7 @@ public Address? RewardBeneficiary { get; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[EqualityIgnore]
-public DateTime Timestamp { get; }</code></pre>
+public DateTimeOffset Timestamp { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -439,7 +439,7 @@ public DateTime Timestamp { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -743,7 +743,7 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L224">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L225">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_GetObjectData_" data-uid="Libplanet.Blocks.Block`1.GetObjectData*"></a>
   <h4 id="Libplanet_Blocks_Block_1_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Blocks.Block`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -871,18 +871,18 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Mine_System_UInt64_System_UInt32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Mine(System.UInt64%2CSystem.UInt32%2CLibplanet.Address%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CSystem.DateTime%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Mine_System_Int64_System_Int32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Mine(System.Int64%2CSystem.Int32%2CLibplanet.Address%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D%2CSystem.DateTimeOffset%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_Mine_" data-uid="Libplanet.Blocks.Block`1.Mine*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_Mine_System_UInt64_System_UInt32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTime_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blocks.Block`1.Mine(System.UInt64,System.UInt32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTime,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">Mine(UInt64, UInt32, Address, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, DateTime, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <h4 id="Libplanet_Blocks_Block_1_Mine_System_Int64_System_Int32_Libplanet_Address_System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_DateTimeOffset_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blocks.Block`1.Mine(System.Int64,System.Int32,Libplanet.Address,System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.DateTimeOffset,System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">Mine(Int64, Int32, Address, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; Mine(ulong index, uint difficulty, Address rewardBeneficiary, HashDigest&lt;SHA256&gt;? previousHash, DateTime timestamp, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Block&lt;T&gt; Mine(long index, int difficulty, Address rewardBeneficiary, HashDigest&lt;SHA256&gt;? previousHash, DateTimeOffset timestamp, IEnumerable&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -895,12 +895,12 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint64">UInt64</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">difficulty</span></td>
         <td></td>
       </tr>
@@ -915,7 +915,7 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
         <td><span class="parametername">timestamp</span></td>
         <td></td>
       </tr>
@@ -998,7 +998,7 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
     <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L219">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L220">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_ToString_" data-uid="Libplanet.Blocks.Block`1.ToString*"></a>
   <h4 id="Libplanet_Blocks_Block_1_ToString" data-uid="Libplanet.Blocks.Block`1.ToString">ToString()</h4>
@@ -1042,18 +1042,18 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Validate_System_DateTime_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Validate(System.DateTime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Validate_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Validate(System.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Blocks/Block.cs/#L156">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_Validate_" data-uid="Libplanet.Blocks.Block`1.Validate*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_Validate_System_DateTime_" data-uid="Libplanet.Blocks.Block`1.Validate(System.DateTime)">Validate(DateTime)</h4>
+  <h4 id="Libplanet_Blocks_Block_1_Validate_System_DateTimeOffset_" data-uid="Libplanet.Blocks.Block`1.Validate(System.DateTimeOffset)">Validate(DateTimeOffset)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Validate(DateTime now)</code></pre>
+    <pre><code class="lang-csharp hljs">public void Validate(DateTimeOffset currentTime)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1066,8 +1066,8 @@ public IEnumerable&lt;Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
-        <td><span class="parametername">now</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">currentTime</span></td>
         <td></td>
       </tr>
     </tbody>
