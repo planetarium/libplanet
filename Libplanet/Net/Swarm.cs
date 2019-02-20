@@ -427,6 +427,32 @@ namespace Libplanet.Net
             }
         }
 
+        public async Task BroadcastBlocksAsync<T>(
+            IEnumerable<Block<T>> blocks,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Broadcast Blocks.");
+            var message = new BlockHashes(blocks.Select(b => b.Hash));
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
+        }
+
+        public async Task BroadcastTxsAsync<T>(
+            IEnumerable<Transaction<T>> txs,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Broadcast Txs.");
+            var message = new TxIds(txs.Select(tx => tx.Id));
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
+        }
+
         internal async Task<IEnumerable<HashDigest<SHA256>>>
             GetBlockHashesAsync(
                 Peer peer,
@@ -577,32 +603,6 @@ namespace Libplanet.Net
                     }
                 }
             });
-        }
-
-        internal async Task BroadcastBlocksAsync<T>(
-            IEnumerable<Block<T>> blocks,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
-        {
-            _logger.Debug("Broadcast Blocks.");
-            var message = new BlockHashes(blocks.Select(b => b.Hash));
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
-        }
-
-        internal async Task BroadcastTxsAsync<T>(
-            IEnumerable<Transaction<T>> txs,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
-        {
-            _logger.Debug("Broadcast Txs.");
-            var message = new TxIds(txs.Select(tx => tx.Id));
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
         }
 
         private static IPAddress GetLocalIPAddress()
