@@ -39,7 +39,20 @@ namespace Libplanet.Blockchain
 
         public IStore Store { get; }
 
-        public Block<T> Tip => this[-1];
+        public Block<T> Tip
+        {
+            get
+            {
+                try
+                {
+                    return this[-1];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return null;
+                }
+            }
+        }
 
         public Block<T> this[long index]
         {

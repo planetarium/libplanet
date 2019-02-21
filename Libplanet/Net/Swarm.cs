@@ -740,9 +740,9 @@ namespace Libplanet.Net
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
             Block<T> latest = blocks.Last();
-            HashDigest<SHA256>? tip = blockChain.Store.IndexBlockHash(-1);
+            Block<T> tip = blockChain.Tip;
 
-            if (tip == null || oldest.PreviousHash == tip)
+            if (tip == null || oldest.PreviousHash == tip.Hash)
             {
                 // Caught up with everything, so we just connect it.
                 foreach (Block<T> block in blocks)
@@ -750,7 +750,7 @@ namespace Libplanet.Net
                     blockChain.Append(block);
                 }
             }
-            else if (latest.Index > blockChain.Tip.Index)
+            else if (latest.Index > tip.Index)
             {
                 // We need some other blocks, so request to sender.
                 BlockLocator locator = blockChain.GetBlockLocator();
