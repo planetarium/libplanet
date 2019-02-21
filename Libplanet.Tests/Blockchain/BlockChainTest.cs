@@ -211,6 +211,19 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void CanFork()
+        {
+            var block1 = _blockChain.MineBlock(_fx.Address1);
+            var block2 = _blockChain.MineBlock(_fx.Address1);
+            var block3 = _blockChain.MineBlock(_fx.Address1);
+
+            BlockChain<BaseAction> forked = _blockChain.Fork(block2.Hash);
+
+            Assert.Equal(new[] { block1, block2, block3 }, _blockChain);
+            Assert.Equal(new[] { block1, block2 }, forked);
+        }
+
+        [Fact]
         public void CanGetBlockLocator()
         {
             List<Block<BaseAction>> blocks = Enumerable.Range(0, 10)

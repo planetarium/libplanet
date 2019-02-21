@@ -8,59 +8,75 @@ namespace Libplanet.Store
 {
     public interface IStore
     {
-        long CountIndex();
+        void InitNamespace(string @namespace);
 
-        IEnumerable<HashDigest<SHA256>> IterateIndex();
+        long CountIndex(string @namespace);
 
-        HashDigest<SHA256>? IndexBlockHash(long index);
+        IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);
 
-        long AppendIndex(HashDigest<SHA256> hash);
+        HashDigest<SHA256>? IndexBlockHash(string @namespace, long index);
 
-        bool DeleteIndex(HashDigest<SHA256> hash);
+        long AppendIndex(string @namespace, HashDigest<SHA256> hash);
 
-        IEnumerable<Address> IterateAddresses();
+        bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
-        IEnumerable<TxId> GetAddressTransactionIds(Address address);
+        IEnumerable<Address> IterateAddresses(string @namespace);
 
-        long AppendAddressTransactionId(Address address, TxId txId);
+        IEnumerable<TxId> GetAddressTransactionIds(
+            string @namespace,
+            Address address
+        );
 
-        void StageTransactionIds(ISet<TxId> txids);
+        long AppendAddressTransactionId(
+            string @namespace,
+            Address address,
+            TxId txId
+        );
 
-        void UnstageTransactionIds(ISet<TxId> txids);
+        void StageTransactionIds(string @namespace, ISet<TxId> txids);
 
-        IEnumerable<TxId> IterateStagedTransactionIds();
+        void UnstageTransactionIds(string @namespace, ISet<TxId> txids);
 
-        IEnumerable<TxId> IterateTransactionIds();
+        IEnumerable<TxId> IterateStagedTransactionIds(string @namespace);
 
-        Transaction<T> GetTransaction<T>(TxId txid)
+        IEnumerable<TxId> IterateTransactionIds(string @namespace);
+
+        Transaction<T> GetTransaction<T>(string @namespace, TxId txid)
             where T : IAction;
 
-        void PutTransaction<T>(Transaction<T> tx)
+        void PutTransaction<T>(string @namespace, Transaction<T> tx)
             where T : IAction;
 
-        bool DeleteTransaction(TxId txid);
+        bool DeleteTransaction(string @namespace, TxId txid);
 
-        IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
+        IEnumerable<HashDigest<SHA256>> IterateBlockHashes(string @namespace);
 
-        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        Block<T> GetBlock<T>(
+            string @namespace,
+            HashDigest<SHA256> blockHash
+        )
             where T : IAction;
 
-        void PutBlock<T>(Block<T> block)
+        void PutBlock<T>(string @namespace, Block<T> block)
             where T : IAction;
 
-        bool DeleteBlock(HashDigest<SHA256> blockHash);
+        bool DeleteBlock(string @namespace, HashDigest<SHA256> blockHash);
 
-        AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
+        AddressStateMap GetBlockStates(
+            string @namespace,
+            HashDigest<SHA256> blockHash
+        );
 
         void SetBlockStates(
+            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );
 
-        int CountTransactions();
+        int CountTransactions(string @namespace);
 
-        int CountBlocks();
+        int CountBlocks(string @namespace);
 
-        int CountAddresses();
+        int CountAddresses(string @namespace);
     }
 }

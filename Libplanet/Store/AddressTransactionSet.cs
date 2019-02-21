@@ -10,8 +10,8 @@ namespace Libplanet.Store
         : BaseIndex<Address, IEnumerable<Transaction<T>>>
         where T : IAction
     {
-        public AddressTransactionSet(IStore store)
-            : base(store)
+        public AddressTransactionSet(IStore store, string @namespace)
+            : base(store, @namespace)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateAddresses().ToList();
+                return Store.IterateAddresses(StoreNamespace).ToList();
             }
         }
 
@@ -31,7 +31,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override int Count => Store.CountAddresses();
+        public override int Count => Store.CountAddresses(StoreNamespace);
 
         public override bool IsReadOnly => true;
 
@@ -39,17 +39,16 @@ namespace Libplanet.Store
         {
             get
             {
-                IEnumerable<TxId> txIds = Store.GetAddressTransactionIds(key);
+                IEnumerable<TxId> txIds = Store.GetAddressTransactionIds(
+                    StoreNamespace,
+                    key);
                 if (txIds.Count() == 0)
                 {
                     throw new KeyNotFoundException();
                 }
 
-                var x = txIds
-                    .Select(id => Store.GetTransaction<T>(id));
-
                 return txIds
-                    .Select(id => Store.GetTransaction<T>(id))
+                    .Select(id => Store.GetTransaction<T>(StoreNamespace, id))
                     .OfType<Transaction<T>>();
             }
 

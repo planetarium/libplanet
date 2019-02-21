@@ -7,9 +7,10 @@ namespace Libplanet.Store
 {
     public abstract class BaseIndex<TKey, TVal> : IDictionary<TKey, TVal>
     {
-        protected BaseIndex(IStore store)
+        protected BaseIndex(IStore store, string @namespace)
         {
             Store = store;
+            StoreNamespace = @namespace;
         }
 
         public abstract ICollection<TKey> Keys { get; }
@@ -21,6 +22,8 @@ namespace Libplanet.Store
         public abstract bool IsReadOnly { get; }
 
         protected IStore Store { get; }
+
+        protected string StoreNamespace { get; }
 
         public abstract TVal this[TKey key] { get; set; }
 

@@ -17,13 +17,14 @@ namespace Libplanet.Store
 {
     public class FileStore : BaseStore, IStore
     {
+        private const string _transactionsDir = "tx";
+        private const string _blocksDir = "blocks";
+        private const string _stagedTransactionsDir = "stage";
+        private const string _addressesDir = "addr";
+        private const string _statesDir = "states";
+        private const string _indexFile = "index";
+
         private readonly string _path;
-        private readonly string _transactionsPath;
-        private readonly string _blocksPath;
-        private readonly string _indexPath;
-        private readonly string _stagedTransactionsPath;
-        private readonly string _addressesPath;
-        private readonly string _statesPath;
 
         public FileStore(string path)
         {
@@ -36,76 +37,109 @@ namespace Libplanet.Store
             }
 
             _path = path;
-            _transactionsPath = Path.Combine(_path, "tx");
-            _blocksPath = Path.Combine(_path, "blocks");
-            _stagedTransactionsPath = Path.Combine(_path, "stage");
-            _addressesPath = Path.Combine(_path, "addr");
-            _statesPath = Path.Combine(_path, "states");
-            _indexPath = Path.Combine(_path, "index");
-
-            var dirPaths = new string[]
-            {
-                _transactionsPath,
-                _blocksPath,
-                _stagedTransactionsPath,
-                _addressesPath,
-                _statesPath,
-            };
-
-            foreach (var p in dirPaths)
-            {
-                if (!Directory.Exists(p))
-                {
-                    Directory.CreateDirectory(p);
-                }
-            }
         }
 
-        public string GetTransactionPath(TxId txid)
+        public string GetTransactionPath(string @namespace, TxId txid)
         {
             var txidHex = txid.ToString();
             return Path.Combine(
-                _transactionsPath,
+                _path,
+                @namespace,
+                _transactionsDir,
                 txidHex.Substring(0, 4),
                 txidHex.Substring(4));
         }
 
-        public string GetBlockPath(HashDigest<SHA256> blockHash)
+        public string GetBlockPath(
+            string @namespace,
+            HashDigest<SHA256> blockHash
+        )
         {
             var keyHex = blockHash.ToString();
             return Path.Combine(
-                _blocksPath,
+                _path,
+                @namespace,
+                _blocksDir,
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
         }
 
-        public string GetStagedTransactionPath(TxId txid)
+        public string GetStagedTransactionPath(string @namespace, TxId txid)
         {
-            return Path.Combine(_stagedTransactionsPath, txid.ToString());
+            return Path.Combine(
+                _path,
+                @namespace,
+                _stagedTransactionsDir,
+                txid.ToString()
+            );
         }
 
-        public string GetAddressPath(Address address)
+        public string GetAddressPath(string @namespace, Address address)
         {
             var addrHex = address.ToHex();
             return Path.Combine(
-                _addressesPath,
+                _path,
+                @namespace,
+                _addressesDir,
                 addrHex.Substring(0, 4),
                 addrHex.Substring(4));
         }
 
-        public string GetStatesPath(HashDigest<SHA256> key)
+        public string GetStatesPath(string @namespace, HashDigest<SHA256> key)
         {
             var keyHex = key.ToString();
             return Path.Combine(
-                _statesPath,
+                _path,
+                @namespace,
+                _statesDir,
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
         }
 
-        public override long AppendAddressTransactionId(
-            Address address, TxId txId)
+        public string GetIndexPath(string @namespace)
         {
-            var addrFile = new FileInfo(GetAddressPath(address));
+            return Path.Combine(
+                _path,
+                @namespace,
+                _indexFile
+            );
+        }
+
+        public override void InitNamespace(string @namespace)
+        {
+            string namespacePath = Path.Combine(_path, @namespace);
+
+            if (!Directory.Exists(namespacePath))
+            {
+                Directory.CreateDirectory(namespacePath);
+
+                var dirPaths = new string[]
+                {
+                    _transactionsDir,
+                    _blocksDir,
+                    _stagedTransactionsDir,
+                    _addressesDir,
+                    _statesDir,
+                };
+
+                foreach (var dir in dirPaths)
+                {
+                    string path = Path.Combine(namespacePath, dir);
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                }
+            }
+        }
+
+        public override long AppendAddressTransactionId(
+            string @namespace,
+            Address address,
+            TxId txId
+        )
+        {
+            var addrFile = new FileInfo(GetAddressPath(@namespace, address));
             addrFile.Directory.Create();
 
             using (Stream stream = addrFile.Open(
@@ -117,9 +151,12 @@ namespace Libplanet.Store
             }
         }
 
-        public override long AppendIndex(HashDigest<SHA256> hash)
+        public override long AppendIndex(
+            string @namespace,
+            HashDigest<SHA256> hash
+        )
         {
-            var indexFile = new FileInfo(_indexPath);
+            var indexFile = new FileInfo(GetIndexPath(@namespace));
             if (!indexFile.Directory.Exists)
             {
                 indexFile.Directory.Create();
@@ -134,12 +171,15 @@ namespace Libplanet.Store
             }
         }
 
-        public override bool DeleteIndex(HashDigest<SHA256> hash)
+        public override bool DeleteIndex(
+            string @namespace,
+            HashDigest<SHA256> hash
+        )
         {
             bool found = false;
             using (var writer = new MemoryStream())
             {
-                foreach (var idx in IterateIndex())
+                foreach (var idx in IterateIndex(@namespace))
                 {
                     if (!found && idx == hash)
                     {
@@ -153,15 +193,15 @@ namespace Libplanet.Store
                 }
 
                 // FIXME We can't this if the index is too large to buffer...
-                File.WriteAllBytes(_indexPath, writer.ToArray());
+                File.WriteAllBytes(GetIndexPath(@namespace), writer.ToArray());
             }
 
             return found;
         }
 
-        public override long CountIndex()
+        public override long CountIndex(string @namespace)
         {
-            var indexFile = new FileInfo(_indexPath);
+            var indexFile = new FileInfo(GetIndexPath(@namespace));
             if (indexFile.Exists)
             {
                 var indexSize = indexFile.Length;
@@ -179,9 +219,12 @@ namespace Libplanet.Store
             return 0;
         }
 
-        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
+        public override bool DeleteBlock(
+            string @namespace,
+            HashDigest<SHA256> blockHash
+        )
         {
-            var blockFile = new FileInfo(GetBlockPath(blockHash));
+            var blockFile = new FileInfo(GetBlockPath(@namespace, blockHash));
             if (blockFile.Exists)
             {
                 blockFile.Delete();
@@ -191,9 +234,9 @@ namespace Libplanet.Store
             return false;
         }
 
-        public override bool DeleteTransaction(TxId txid)
+        public override bool DeleteTransaction(string @namespace, TxId txid)
         {
-            var txFile = new FileInfo(GetTransactionPath(txid));
+            var txFile = new FileInfo(GetTransactionPath(@namespace, txid));
             if (!txFile.Exists)
             {
                 return false;
@@ -204,10 +247,11 @@ namespace Libplanet.Store
         }
 
         public override IEnumerable<TxId> GetAddressTransactionIds(
+            string @namespace,
             Address address
         )
         {
-            var addrFile = new FileInfo(GetAddressPath(address));
+            var addrFile = new FileInfo(GetAddressPath(@namespace, address));
             if (addrFile.Exists)
             {
                 using (var f = addrFile.OpenRead())
@@ -227,9 +271,12 @@ namespace Libplanet.Store
             }
         }
 
-        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        public override Block<T> GetBlock<T>(
+            string @namespace,
+            HashDigest<SHA256> blockHash
+        )
         {
-            var blockFile = new FileInfo(GetBlockPath(blockHash));
+            var blockFile = new FileInfo(GetBlockPath(@namespace, blockHash));
             if (!blockFile.Exists)
             {
                 return null;
@@ -259,14 +306,20 @@ namespace Libplanet.Store
                         Block<T>.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
+                    transactions: GetTransactions<T>(
+                        @namespace,
+                        rawBlock.Transactions
+                    )
                 );
             }
         }
 
-        public override Transaction<T> GetTransaction<T>(TxId txid)
+        public override Transaction<T> GetTransaction<T>(
+            string @namespace,
+            TxId txid
+        )
         {
-            var txFile = new FileInfo(GetTransactionPath(txid));
+            var txFile = new FileInfo(GetTransactionPath(@namespace, txid));
             if (!txFile.Exists)
             {
                 return null;
@@ -279,11 +332,14 @@ namespace Libplanet.Store
             }
         }
 
-        public override HashDigest<SHA256>? IndexBlockHash(long index)
+        public override HashDigest<SHA256>? IndexBlockHash(
+            string @namespace,
+            long index
+        )
         {
             if (index < 0)
             {
-                index += (long)CountIndex();
+                index += CountIndex(@namespace);
 
                 if (index < 0)
                 {
@@ -291,12 +347,12 @@ namespace Libplanet.Store
                 }
             }
 
-            if (!File.Exists(_indexPath))
+            if (!File.Exists(GetIndexPath(@namespace)))
             {
                 return null;
             }
 
-            using (Stream stream = IndexFileStream())
+            using (Stream stream = IndexFileStream(@namespace))
             {
                 var blockHash = new byte[HashDigest<SHA256>.Size];
                 stream.Seek(
@@ -314,7 +370,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<Address> IterateAddresses()
+        public override IEnumerable<Address> IterateAddresses(
+            string @namespace
+        )
         {
             var prefixRegex = new Regex(
                 @"^[a-f0-9]{4}$",
@@ -324,7 +382,9 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{36}$",
                 RegexOptions.IgnoreCase
             );
-            var addressesRoot = new DirectoryInfo(_addressesPath);
+            var addressesRoot = new DirectoryInfo(
+                Path.Combine(_path, @namespace, _addressesDir)
+            );
             var prefixes = addressesRoot.EnumerateDirectories();
             foreach (DirectoryInfo prefix in prefixes)
             {
@@ -345,7 +405,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes(
+            string @namespace
+        )
         {
             var prefixRegex = new Regex(
                 @"^[a-f0-9]{4}$",
@@ -355,8 +417,10 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var addressesRoot = new DirectoryInfo(_blocksPath);
-            var prefixes = addressesRoot.EnumerateDirectories();
+            var rootDir = new DirectoryInfo(
+                Path.Combine(_path, @namespace, _blocksDir)
+            );
+            var prefixes = rootDir.EnumerateDirectories();
             foreach (DirectoryInfo prefix in prefixes)
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
@@ -378,14 +442,16 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<HashDigest<SHA256>> IterateIndex()
+        public override IEnumerable<HashDigest<SHA256>> IterateIndex(
+            string @namespace
+        )
         {
-            if (!File.Exists(_indexPath))
+            if (!File.Exists(GetIndexPath(@namespace)))
             {
                 yield break;
             }
 
-            using (Stream stream = IndexFileStream())
+            using (Stream stream = IndexFileStream(@namespace))
             {
                 while (true)
                 {
@@ -406,12 +472,19 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<TxId> IterateStagedTransactionIds()
+        public override IEnumerable<TxId> IterateStagedTransactionIds(
+            string @namespace
+        )
         {
-            var stagingDirectory = new DirectoryInfo(_stagedTransactionsPath);
+            string stagedTxPath = Path.Combine(
+                _path,
+                @namespace,
+                _stagedTransactionsDir
+            );
+            var stagingDirectory = new DirectoryInfo(stagedTxPath);
             if (stagingDirectory.Exists)
             {
-                var dir = new DirectoryInfo(_stagedTransactionsPath);
+                var dir = new DirectoryInfo(stagedTxPath);
                 foreach (var staged in dir.EnumerateFiles())
                 {
                     yield return new TxId(ByteUtil.ParseHex(staged.Name));
@@ -419,7 +492,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<TxId> IterateTransactionIds()
+        public override IEnumerable<TxId> IterateTransactionIds(
+            string @namespace
+        )
         {
             // TODO: refactor
             var prefixRegex = new Regex(
@@ -430,7 +505,9 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var rootDir = new DirectoryInfo(_transactionsPath);
+            var rootDir = new DirectoryInfo(
+                Path.Combine(_path, @namespace, _transactionsDir)
+            );
             foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
@@ -452,14 +529,14 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutBlock<T>(Block<T> block)
+        public override void PutBlock<T>(string @namespace, Block<T> block)
         {
             foreach (var tx in block.Transactions)
             {
-                PutTransaction(tx);
+                PutTransaction(@namespace, tx);
             }
 
-            var blockFile = new FileInfo(GetBlockPath(block.Hash));
+            var blockFile = new FileInfo(GetBlockPath(@namespace, block.Hash));
             blockFile.Directory.Create();
             using (Stream stream = blockFile.Open(
                 FileMode.OpenOrCreate, FileAccess.Write))
@@ -472,9 +549,12 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutTransaction<T>(Transaction<T> tx)
+        public override void PutTransaction<T>(
+            string @namespace,
+            Transaction<T> tx
+        )
         {
-            var txFile = new FileInfo(GetTransactionPath(tx.Id));
+            var txFile = new FileInfo(GetTransactionPath(@namespace, tx.Id));
             txFile.Directory.Create();
             using (Stream stream = txFile.Open(
                 FileMode.OpenOrCreate, FileAccess.Write))
@@ -484,30 +564,39 @@ namespace Libplanet.Store
             }
         }
 
-        public override void StageTransactionIds(ISet<TxId> txids)
+        public override void StageTransactionIds(
+            string @namespace,
+            ISet<TxId> txids
+        )
         {
             foreach (var txid in txids)
             {
-                string stagedPath = GetStagedTransactionPath(txid);
+                string stagedPath = GetStagedTransactionPath(@namespace, txid);
                 var stagedFile = new FileInfo(stagedPath);
                 stagedFile.Directory.Create();
                 stagedFile.Create().Close();
             }
         }
 
-        public override void UnstageTransactionIds(ISet<TxId> txids)
+        public override void UnstageTransactionIds(
+            string @namespace,
+            ISet<TxId> txids
+        )
         {
             foreach (TxId txid in txids)
             {
-                File.Delete(GetStagedTransactionPath(txid));
+                File.Delete(GetStagedTransactionPath(@namespace, txid));
             }
         }
 
         public override AddressStateMap GetBlockStates(
+            string @namespace,
             HashDigest<SHA256> blockHash
         )
         {
-            var statesFile = new FileInfo(GetStatesPath(blockHash));
+            var statesFile = new FileInfo(
+                GetStatesPath(@namespace, blockHash)
+            );
 
             if (!statesFile.Exists)
             {
@@ -522,11 +611,14 @@ namespace Libplanet.Store
         }
 
         public override void SetBlockStates(
+            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         )
         {
-            var statesFile = new FileInfo(GetStatesPath(blockHash));
+            var statesFile = new FileInfo(
+                GetStatesPath(@namespace, blockHash)
+            );
             if (!statesFile.Directory.Exists)
             {
                 statesFile.Directory.Create();
@@ -539,10 +631,13 @@ namespace Libplanet.Store
             }
         }
 
-        private FileStream IndexFileStream()
+        private FileStream IndexFileStream(string @namespace)
         {
-            var stream =
-                    new FileStream(_indexPath, FileMode.Open, FileAccess.Read);
+            var stream = new FileStream(
+                GetIndexPath(@namespace),
+                FileMode.Open,
+                FileAccess.Read
+            );
             if (stream.Length % HashDigest<SHA256>.Size != 0)
             {
                 throw new FileLoadException(
@@ -555,13 +650,14 @@ namespace Libplanet.Store
         }
 
         private IEnumerable<Transaction<T>> GetTransactions<T>(
+            string @namespace,
             IEnumerable transactions
         )
             where T : IAction
         {
             return transactions
                 .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
+                .Select(bytes => GetTransaction<T>(@namespace, new TxId(bytes)))
                 .Where(tx => tx != null);
         }
     }
