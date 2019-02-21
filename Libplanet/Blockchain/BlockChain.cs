@@ -246,6 +246,22 @@ namespace Libplanet.Blockchain
             }
         }
 
+        internal BlockChain<T> Fork(HashDigest<SHA256> point)
+        {
+            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
+            foreach (var index in Store.IterateIndex(_id.ToString()))
+            {
+                forked.Append(Blocks[index]);
+
+                if (index == point)
+                {
+                    break;
+                }
+            }
+
+            return forked;
+        }
+
         internal void DeleteAfter(HashDigest<SHA256> point)
         {
             HashDigest<SHA256>? current = Store.IndexBlockHash(
