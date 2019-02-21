@@ -17,13 +17,23 @@ namespace Libplanet.Blockchain
     public class BlockChain<T> : IEnumerable<Block<T>>
         where T : IAction
     {
+        private readonly Guid _id;
+
         public BlockChain(IBlockPolicy<T> policy, IStore store)
+            : this(policy, store, Guid.NewGuid())
         {
+        }
+
+        public BlockChain(IBlockPolicy<T> policy, IStore store, Guid id)
+        {
+            _id = id;
             Policy = policy;
             Store = store;
-            Blocks = new BlockSet<T>(store);
-            Transactions = new TransactionSet<T>(store);
-            Addresses = new AddressTransactionSet<T>(store);
+            Blocks = new BlockSet<T>(store, _id.ToString());
+            Transactions = new TransactionSet<T>(store, _id.ToString());
+            Addresses = new AddressTransactionSet<T>(store, _id.ToString());
+
+            Store.InitNamespace(_id.ToString());
         }
 
         public IBlockPolicy<T> Policy { get; }
@@ -58,7 +68,9 @@ namespace Libplanet.Blockchain
         {
             get
             {
-                HashDigest<SHA256>? blockHash = Store.IndexBlockHash(index);
+                HashDigest<SHA256>? blockHash = Store.IndexBlockHash(
+                    _id.ToString(), index
+                );
                 if (blockHash == null)
                 {
                     throw new IndexOutOfRangeException();
@@ -87,7 +99,10 @@ namespace Libplanet.Blockchain
 
         public IEnumerator<Block<T>> GetEnumerator()
         {
-            foreach (HashDigest<SHA256> hash in Store.IterateIndex())
+            IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
+                _id.ToString()
+            );
+            foreach (HashDigest<SHA256> hash in indexes)
             {
                 yield return Blocks[hash];
             }
@@ -103,14 +118,14 @@ namespace Libplanet.Blockchain
         {
             if (offset == null)
             {
-                offset = Store.IndexBlockHash(-1);
+                offset = Store.IndexBlockHash(_id.ToString(), -1);
             }
 
             var states = new AddressStateMap();
             while (offset != null)
             {
                 states = (AddressStateMap)states.SetItems(
-                    Store.GetBlockStates(offset.Value)
+                    Store.GetBlockStates(_id.ToString(), offset.Value)
                     .Where(
                         kv => addresses.Contains(kv.Key) &&
                         !states.ContainsKey(kv.Key))
@@ -132,15 +147,17 @@ namespace Libplanet.Blockchain
             Blocks[block.Hash] = block;
             EvaluateActions(block);
 
-            long index = Store.AppendIndex(block.Hash);
+            long index = Store.AppendIndex(_id.ToString(), block.Hash);
             ISet<TxId> txIds = block.Transactions
                 .Select(t => t.Id)
                 .ToImmutableHashSet();
 
-            Store.UnstageTransactionIds(txIds);
+            Store.UnstageTransactionIds(_id.ToString(), txIds);
             foreach (Transaction<T> tx in block.Transactions)
             {
-                Store.AppendAddressTransactionId(tx.Recipient, tx.Id);
+                Store.AppendAddressTransactionId(
+                    _id.ToString(), tx.Recipient, tx.Id
+                );
             }
         }
 
@@ -155,7 +172,9 @@ namespace Libplanet.Blockchain
             }
 
             Store.StageTransactionIds(
-                txs.Select(tx => tx.Id).ToImmutableHashSet());
+                _id.ToString(),
+                txs.Select(tx => tx.Id).ToImmutableHashSet()
+            );
         }
 
         public Block<T> MineBlock(
@@ -163,17 +182,17 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime
         )
         {
-            long index = Store.CountIndex();
+            long index = Store.CountIndex(_id.ToString());
             int difficulty = Policy.GetNextBlockDifficulty(this);
 
             Block<T> block = Block<T>.Mine(
                 index: index,
                 difficulty: difficulty,
                 rewardBeneficiary: rewardBeneficiary,
-                previousHash: Store.IndexBlockHash((long)index - 1),
+                previousHash: Store.IndexBlockHash(_id.ToString(), index - 1),
                 timestamp: currentTime,
-                transactions: Store.IterateStagedTransactionIds()
-                .Select(txId => Store.GetTransaction<T>(txId))
+                transactions: Store.IterateStagedTransactionIds(_id.ToString())
+                .Select(txId => Store.GetTransaction<T>(_id.ToString(), txId))
                 .OfType<Transaction<T>>()
                 .ToList()
             );
@@ -206,11 +225,11 @@ namespace Libplanet.Blockchain
         {
             HashDigest<SHA256>? Next(HashDigest<SHA256> hash)
             {
-                long nextIndex = (long)Blocks[hash].Index + 1;
-                return Store.IndexBlockHash(nextIndex);
+                long nextIndex = Blocks[hash].Index + 1;
+                return Store.IndexBlockHash(_id.ToString(), nextIndex);
             }
 
-            HashDigest<SHA256>? tip = Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? tip = Store.IndexBlockHash(_id.ToString(), -1);
             HashDigest<SHA256>? currentHash = FindBranchPoint(locator);
 
             while (currentHash != null && count > 0)
@@ -229,13 +248,15 @@ namespace Libplanet.Blockchain
 
         internal void DeleteAfter(HashDigest<SHA256> point)
         {
-            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? current = Store.IndexBlockHash(
+                _id.ToString(), -1
+            );
 
             while (current is HashDigest<SHA256> hash && hash != point)
             {
                 HashDigest<SHA256>? previous = Blocks[hash].PreviousHash;
-                Store.DeleteBlock(hash);
-                Store.DeleteIndex(hash);
+                Store.DeleteBlock(_id.ToString(), hash);
+                Store.DeleteIndex(_id.ToString(), hash);
 
                 current = previous;
             }
@@ -243,7 +264,9 @@ namespace Libplanet.Blockchain
 
         internal BlockLocator GetBlockLocator(int threshold = 10)
         {
-            HashDigest<SHA256>? current = Store.IndexBlockHash(-1);
+            HashDigest<SHA256>? current = Store.IndexBlockHash(
+                _id.ToString(), -1
+            );
             long step = 1;
             var hashes = new List<HashDigest<SHA256>>();
 
@@ -258,7 +281,7 @@ namespace Libplanet.Blockchain
                 }
 
                 long nextIndex = Math.Max(currentBlock.Index - step, 0);
-                current = Store.IndexBlockHash((long)nextIndex);
+                current = Store.IndexBlockHash(_id.ToString(), nextIndex);
 
                 if (hashes.Count > threshold)
                 {
@@ -301,7 +324,7 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            Store.SetBlockStates(block.Hash, states);
+            Store.SetBlockStates(_id.ToString(), block.Hash, states);
         }
     }
 }

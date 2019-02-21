@@ -18,6 +18,9 @@ namespace Libplanet.Tests.Store
             Path = System.IO.Path.Combine(
                 System.IO.Path.GetTempPath(), $"filestore_test_{postfix}");
             Store = new FileStore(Path);
+            StoreNamespace = Guid.NewGuid().ToString();
+            Store.InitNamespace(StoreNamespace);
+
             Address1 = new Address(new byte[]
             {
                 0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
@@ -82,6 +85,8 @@ namespace Libplanet.Tests.Store
         public string Path { get; }
 
         public FileStore Store { get; }
+
+        public string StoreNamespace { get; }
 
         public Address Address1 { get; }
 

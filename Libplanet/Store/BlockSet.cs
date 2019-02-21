@@ -10,8 +10,8 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction
     {
-        public BlockSet(IStore store)
-            : base(store)
+        public BlockSet(IStore store, string @namespace)
+            : base(store, @namespace)
         {
         }
 
@@ -19,7 +19,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateBlockHashes().ToList();
+                return Store.IterateBlockHashes(StoreNamespace).ToList();
             }
         }
 
@@ -27,14 +27,14 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateBlockHashes()
-                    .Select(h => Store.GetBlock<T>(h))
+                return Store.IterateBlockHashes(StoreNamespace)
+                    .Select(h => Store.GetBlock<T>(StoreNamespace, h))
                     .OfType<Block<T>>()
                     .ToList();
             }
         }
 
-        public override int Count => Store.CountBlocks();
+        public override int Count => Store.CountBlocks(StoreNamespace);
 
         public override bool IsReadOnly => false;
 
@@ -42,7 +42,7 @@ namespace Libplanet.Store
         {
             get
             {
-                Block<T> block = Store.GetBlock<T>(key);
+                Block<T> block = Store.GetBlock<T>(StoreNamespace, key);
                 if (block == null)
                 {
                     throw new KeyNotFoundException();
@@ -62,13 +62,13 @@ namespace Libplanet.Store
                 }
 
                 value.Validate();
-                Store.PutBlock(value);
+                Store.PutBlock(StoreNamespace, value);
             }
         }
 
         public override bool Remove(HashDigest<SHA256> key)
         {
-            return Store.DeleteBlock(key);
+            return Store.DeleteBlock(StoreNamespace, key);
         }
     }
 }

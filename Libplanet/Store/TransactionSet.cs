@@ -9,8 +9,8 @@ namespace Libplanet.Store
     public class TransactionSet<T> : BaseIndex<TxId, Transaction<T>>
         where T : IAction
     {
-        public TransactionSet(IStore store)
-            : base(store)
+        public TransactionSet(IStore store, string @namespace)
+            : base(store, @namespace)
         {
         }
 
@@ -18,7 +18,7 @@ namespace Libplanet.Store
         {
             get
             {
-                return Store.IterateTransactionIds().ToList();
+                return Store.IterateTransactionIds(StoreNamespace).ToList();
             }
         }
 
@@ -27,13 +27,13 @@ namespace Libplanet.Store
             get
             {
                 return Keys
-                    .Select(k => Store.GetTransaction<T>(k))
+                    .Select(k => Store.GetTransaction<T>(StoreNamespace, k))
                     .OfType<Transaction<T>>()
                     .ToList();
             }
         }
 
-        public override int Count => Store.CountTransactions();
+        public override int Count => Store.CountTransactions(StoreNamespace);
 
         public override bool IsReadOnly => true;
 
@@ -41,7 +41,9 @@ namespace Libplanet.Store
         {
             get
             {
-                Transaction<T> tx = Store.GetTransaction<T>(key);
+                Transaction<T> tx = Store.GetTransaction<T>(
+                    StoreNamespace, key
+                );
 
                 if (tx == null)
                 {
@@ -64,13 +66,13 @@ namespace Libplanet.Store
                 }
 
                 value.Validate();
-                Store.PutTransaction(value);
+                Store.PutTransaction(StoreNamespace, value);
             }
         }
 
         public override bool Remove(TxId key)
         {
-            return Store.DeleteTransaction(key);
+            return Store.DeleteTransaction(StoreNamespace, key);
         }
     }
 }
