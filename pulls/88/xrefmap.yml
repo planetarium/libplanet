@@ -3206,6 +3206,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.AddPeersAsync
   nameWithType: Swarm.AddPeersAsync
+- uid: Libplanet.Net.Swarm.Address
+  name: Address
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Address
+  commentId: P:Libplanet.Net.Swarm.Address
+  fullName: Libplanet.Net.Swarm.Address
+  nameWithType: Swarm.Address
+- uid: Libplanet.Net.Swarm.Address*
+  name: Address
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Address_
+  commentId: Overload:Libplanet.Net.Swarm.Address
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.Address
+  nameWithType: Swarm.Address
 - uid: Libplanet.Net.Swarm.AsPeer
   name: AsPeer
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AsPeer
@@ -3219,6 +3232,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.AsPeer
   nameWithType: Swarm.AsPeer
+- uid: Libplanet.Net.Swarm.BroadcastBlocksAsync*
+  name: BroadcastBlocksAsync
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastBlocksAsync_
+  commentId: Overload:Libplanet.Net.Swarm.BroadcastBlocksAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.BroadcastBlocksAsync
+  nameWithType: Swarm.BroadcastBlocksAsync
+- uid: Libplanet.Net.Swarm.BroadcastBlocksAsync``1(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{``0}},System.Threading.CancellationToken)
+  name: BroadcastBlocksAsync<T>(IEnumerable<Block<T>>, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastBlocksAsync__1_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block___0___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.BroadcastBlocksAsync``1(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{``0}},System.Threading.CancellationToken)
+  name.vb: BroadcastBlocksAsync(Of T)(IEnumerable(Of Block(Of T)), CancellationToken)
+  fullName: Libplanet.Net.Swarm.BroadcastBlocksAsync<T>(System.Collections.Generic.IEnumerable<Libplanet.Blocks.Block<T>>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.BroadcastBlocksAsync(Of T)(System.Collections.Generic.IEnumerable(Of Libplanet.Blocks.Block(Of T)), System.Threading.CancellationToken)
+  nameWithType: Swarm.BroadcastBlocksAsync<T>(IEnumerable<Block<T>>, CancellationToken)
+  nameWithType.vb: Swarm.BroadcastBlocksAsync(Of T)(IEnumerable(Of Block(Of T)), CancellationToken)
+- uid: Libplanet.Net.Swarm.BroadcastTxsAsync*
+  name: BroadcastTxsAsync
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastTxsAsync_
+  commentId: Overload:Libplanet.Net.Swarm.BroadcastTxsAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.BroadcastTxsAsync
+  nameWithType: Swarm.BroadcastTxsAsync
+- uid: Libplanet.Net.Swarm.BroadcastTxsAsync``1(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{``0}},System.Threading.CancellationToken)
+  name: BroadcastTxsAsync<T>(IEnumerable<Transaction<T>>, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastTxsAsync__1_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction___0___System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.BroadcastTxsAsync``1(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{``0}},System.Threading.CancellationToken)
+  name.vb: BroadcastTxsAsync(Of T)(IEnumerable(Of Transaction(Of T)), CancellationToken)
+  fullName: Libplanet.Net.Swarm.BroadcastTxsAsync<T>(System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.BroadcastTxsAsync(Of T)(System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)), System.Threading.CancellationToken)
+  nameWithType: Swarm.BroadcastTxsAsync<T>(IEnumerable<Transaction<T>>, CancellationToken)
+  nameWithType.vb: Swarm.BroadcastTxsAsync(Of T)(IEnumerable(Of Transaction(Of T)), CancellationToken)
 - uid: Libplanet.Net.Swarm.Clear
   name: Clear()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Clear
