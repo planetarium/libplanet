@@ -1,0 +1,954 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PrivateKey
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PrivateKey
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.40.7.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Crypto.PrivateKey">
+  
+  
+  <h1 id="Libplanet_Crypto_PrivateKey" data-uid="Libplanet.Crypto.PrivateKey" class="text-break">Class PrivateKey
+  </h1>
+  <div class="markdown level0 summary"><p>A secret part of a key pair involved in
+<a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
+signature algorithm on which the Libplanet is based.  It can be used to
+create signatures, which can be verified with the corresponding
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>, as well as to decrypt
+messages which were encrypted with the corresponding
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
+<p>Note that it uses <a href="https://en.bitcoin.it/wiki/Secp256k1">secp256k1</a> as the parameters of the elliptic curve, which is
+the same to <a href="https://bitcoin.org/">Bitcoin</a> and
+<a href="https://www.ethereum.org/">Ethereum</a>.
+It means private keys generated for Bitcoin/Ethereum can be used by
+Libplanet-backed games/apps too.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">PrivateKey</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>&gt;</div>
+    <div><span class="xref">Uno.Equality.IKeyEquatable</span>&lt;<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>&gt;</div>
+    <div><span class="xref">Uno.Equality.IKeyEquatable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Crypto_PrivateKey_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[GeneratedEquality]
+public class PrivateKey : IEquatable&lt;PrivateKey&gt;, IKeyEquatable&lt;PrivateKey&gt;, IKeyEquatable</code></pre>
+  </div>
+  <h5 id="Libplanet_Crypto_PrivateKey_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>These (and any derived representations, e.g., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a>)
+must be kept secret, if they are exposed, an attacker will be able to
+forge signatures.</p>
+<p>Every <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object is immutable.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L49">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey__ctor" data-uid="Libplanet.Crypto.PrivateKey.#ctor">PrivateKey()</h4>
+  <div class="markdown level1 summary"><p>Generates a new unique <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance.
+It can be analogous to creating a new account in a degree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrivateKey()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L70">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey__ctor_" data-uid="Libplanet.Crypto.PrivateKey.#ctor*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey__ctor_System_Byte___" data-uid="Libplanet.Crypto.PrivateKey.#ctor(System.Byte[])">PrivateKey(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instance from the given
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">privateKey</code>),
+which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
+ECDSA</a> private key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PrivateKey(byte[] privateKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">privateKey</span></td>
+        <td><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that
+encodes an ECDSA private key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey__ctor_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array for
+a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> can be encoded using
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a> property.</p>
+</div>
+  <h5 id="Libplanet_Crypto_PrivateKey__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_ByteArray">ByteArray</a></div>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L123">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_ByteArray_" data-uid="Libplanet.Crypto.PrivateKey.ByteArray*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_ByteArray" data-uid="Libplanet.Crypto.PrivateKey.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array encoding of this private key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+[EqualityKey(KeyEqualityMode.Auto)]
+public byte[] ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>An encoded <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation can recover
+a <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> object again using its constructor
+(i.e., <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Byte___">PrivateKey(Byte[])</a>.</p>
+<p>As like <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> instances, this also must be
+kept secret.  In practice, this must not be sent over the network,
+and be securely stored in the file system.
+For the most part, modern operating systems, mobile ones
+in particular, provide their own API
+to store password and private keys in the secure manner, which
+means they encrypt things to store using their own hardware
+security unit if possible.  See also <a href="https://developer.android.com/training/articles/keystore">Android keystore system</a> or <a href="https://apple.co/2JHjxAq">iOS Secure Enclave</a>.</p>
+</div>
+  <h5 id="Libplanet_Crypto_PrivateKey_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey__ctor_System_Byte___">PrivateKey(Byte[])</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L90">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_PublicKey_" data-uid="Libplanet.Crypto.PrivateKey.PublicKey*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_PublicKey" data-uid="Libplanet.Crypto.PrivateKey.PublicKey">PublicKey</h4>
+  <div class="markdown level1 summary"><p>The corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> of
+this private key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+[EqualityIgnore]
+public PublicKey PublicKey { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Decrypt(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L203">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Decrypt_" data-uid="Libplanet.Crypto.PrivateKey.Decrypt*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___" data-uid="Libplanet.Crypto.PrivateKey.Decrypt(System.Byte[])">Decrypt(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Converts a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> which was encrypted with
+the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to the plain message.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] Decrypt(byte[] ciphertext)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">ciphertext</span></td>
+        <td><p>The encrypted data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>The plain data the <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> encrypted.
+It returns <code>null</code> if the <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> is
+invalid (this behavior will be eventually changed in the future to
+throw an exception instead).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
+word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code>
+and a returned message are a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> string,
+not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>.</p>
+</div>
+  <h5 id="Libplanet_Crypto_PrivateKey_Decrypt_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Encrypt_System_Byte___">Encrypt(Byte[])</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Equals_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Equals(Libplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L30">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Equals_" data-uid="Libplanet.Crypto.PrivateKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Equals_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Crypto.PrivateKey.Equals(Libplanet.Crypto.PrivateKey)">Equals(PrivateKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(PrivateKey other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Equals_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Equals(Libplanet.Crypto.PrivateKey%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L19">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Equals_" data-uid="Libplanet.Crypto.PrivateKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Equals_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Crypto.PrivateKey.Equals(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)">Equals(PrivateKey, PrivateKey)</h4>
+  <div class="markdown level1 summary"><p>Checks two instances of PrivateKey for equality.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool Equals(PrivateKey a, PrivateKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Equals_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>You can also simply use the overriden '==' and '!=' operators.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L38">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Equals_" data-uid="Libplanet.Crypto.PrivateKey.Equals*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Equals_System_Object_" data-uid="Libplanet.Crypto.PrivateKey.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L235">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_ExchangeKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_ExchangeKey_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Crypto.PrivateKey.ExchangeKey(Libplanet.Crypto.PublicKey)">ExchangeKey(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>Securely exchange a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> with a peer's
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
+Two parties can agree on a (new, unique, and typically temporal)
+key without revealing to any eavesdropping party what key has been
+agreed upon.</p>
+<p>Technically it is <a href="https://en.wikipedia.org/wiki/ECDH">ECDH</a>, a <a href="https://en.wikipedia.org/wiki/DH_key_exchange">Diffie–Hellman key exchange</a> of elliptic-curve version.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public SymmetricKey ExchangeKey(PublicKey publicKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> possessed by
+a peer to whom exchange a private key with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></td>
+        <td><p>An exchanged (agreed) <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>.
+Note that it is not an elliptic-curve private key, but an <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a> key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_GetHashCode_" data-uid="Libplanet.Crypto.PrivateKey.GetHashCode*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_GetHashCode" data-uid="Libplanet.Crypto.PrivateKey.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_GetKeyHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.GetKeyHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L129">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_GetKeyHashCode_" data-uid="Libplanet.Crypto.PrivateKey.GetKeyHashCode*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_GetKeyHashCode" data-uid="Libplanet.Crypto.PrivateKey.GetKeyHashCode">GetKeyHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetKeyHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_KeyEquals_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.KeyEquals(Libplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L107">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_KeyEquals_" data-uid="Libplanet.Crypto.PrivateKey.KeyEquals*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_KeyEquals_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Crypto.PrivateKey.KeyEquals(Libplanet.Crypto.PrivateKey)">KeyEquals(PrivateKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeyEquals(PrivateKey other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_KeyEquals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.KeyEquals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L102">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_KeyEquals_" data-uid="Libplanet.Crypto.PrivateKey.KeyEquals*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_KeyEquals_System_Object_" data-uid="Libplanet.Crypto.PrivateKey.KeyEquals(System.Object)">KeyEquals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool KeyEquals(object other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_Sign_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.Sign(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/Crypto/PrivateKey.cs/#L158">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_Sign_" data-uid="Libplanet.Crypto.PrivateKey.Sign*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_Sign_System_Byte___" data-uid="Libplanet.Crypto.PrivateKey.Sign(System.Byte[])">Sign(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates a signature from the given <code data-dev-comment-type="paramref" class="paramref">message</code>.</p>
+<p>
+A created signature can be verified by the corresponding
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a>.
+</p>
+<p>
+Signatures can be created by only the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>
+which corresponds a <a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey">PublicKey</a> to verify these
+signatures.
+</p>
+<p>
+To sum up, a signature is used to guarantee:
+</p>
+<ul><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was created
+by someone possessing the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>,
+</li><li>that the possessor cannot deny having sent the
+<code data-dev-comment-type="paramref" class="paramref">message</code>, and</li><li>that the <code data-dev-comment-type="paramref" class="paramref">message</code> was not
+forged in the middle of transit.</li></ul>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Sign(byte[] message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">message</span></td>
+        <td><p>A message to sign in <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array
+representation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A signature that verifies the <code data-dev-comment-type="paramref" class="paramref">message</code>.
+It can be verified using
+<a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___">Verify(Byte[], Byte[])</a>
+method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Crypto_PrivateKey_Sign_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___">Verify(Byte[], Byte[])</a></div>
+  </div>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_op_Equality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.op_Equality(Libplanet.Crypto.PrivateKey%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_op_Equality_" data-uid="Libplanet.Crypto.PrivateKey.op_Equality*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_op_Equality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Crypto.PrivateKey.op_Equality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)">Equality(PrivateKey, PrivateKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(PrivateKey a, PrivateKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey_op_Inequality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey.op_Inequality(Libplanet.Crypto.PrivateKey%2CLibplanet.Crypto.PrivateKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L66">View Source</a>
+  </span>
+  <a id="Libplanet_Crypto_PrivateKey_op_Inequality_" data-uid="Libplanet.Crypto.PrivateKey.op_Inequality*"></a>
+  <h4 id="Libplanet_Crypto_PrivateKey_op_Inequality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_" data-uid="Libplanet.Crypto.PrivateKey.op_Inequality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)">Inequality(PrivateKey, PrivateKey)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(PrivateKey a, PrivateKey b)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">a</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">b</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
+  </div>
+  <div>
+      <span class="xref">Uno.Equality.IKeyEquatable&lt;T&gt;</span>
+  </div>
+  <div>
+      <span class="xref">Uno.Equality.IKeyEquatable</span>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet.net/new/revert-94-vscode-tasks/apiSpec/new?filename=Libplanet_Crypto_PrivateKey.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PrivateKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet.net/blob/revert-94-vscode-tasks/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/PrivateKey_2313BC46.g.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
