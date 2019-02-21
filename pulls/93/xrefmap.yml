@@ -755,6 +755,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Store.IStore)
   nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStore)
   nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStore)
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore,System.Guid)
+  name: BlockChain(IBlockPolicy<T>, IStore, Guid)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_System_Guid_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore,System.Guid)
+  name.vb: BlockChain(IBlockPolicy(Of T), IStore, Guid)
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Store.IStore, System.Guid)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Store.IStore, System.Guid)
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStore, Guid)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStore, Guid)
 - uid: Libplanet.Blockchain.BlockChain`1.#ctor*
   name: BlockChain
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_
