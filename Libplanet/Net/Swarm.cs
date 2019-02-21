@@ -218,8 +218,9 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                if (existingKeys.Contains(peer.PublicKey))
+                if (!IsUnknownPeer(peer))
                 {
+                    _logger.Debug($"Peer[{peer}] is already exists, ignored.");
                     continue;
                 }
 
@@ -434,7 +435,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
-            _logger.Debug("Broadcast Blocks.");
+            _logger.Debug("Trying to broadcast blocks...");
             var message = new BlockHashes(
                 Address,
                 blocks.Select(b => b.Hash)
@@ -443,6 +444,7 @@ namespace Libplanet.Net
                 message.ToNetMQMessage(_privateKey),
                 TimeSpan.FromMilliseconds(300),
                 cancellationToken);
+            _logger.Debug("Block broadcasting complete.");
         }
 
         public async Task BroadcastTxsAsync<T>(
@@ -799,8 +801,18 @@ namespace Libplanet.Net
                 "trying to AppendBlocksAsync()...");
             try
             {
-                await AppendBlocksAsync(
-                    peer, blockChain, blocks, cancellationToken);
+                if (blocks.Last().Index > blockChain.Tip.Index)
+                {
+                    await AppendBlocksAsync(
+                        peer, blockChain, blocks, cancellationToken);
+                }
+                else
+                {
+                    _logger.Information(
+                        "Received index is older than current chain's tip." +
+                        " ignored.");
+                }
+
                 _logger.Debug("Append complete.");
             }
             catch (Exception e)
@@ -819,7 +831,6 @@ namespace Libplanet.Net
         {
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
-            Block<T> latest = blocks.Last();
             Block<T> tip = blockChain.Tip;
 
             if (tip == null || oldest.PreviousHash == tip.Hash)
@@ -830,7 +841,7 @@ namespace Libplanet.Net
                     blockChain.Append(block);
                 }
             }
-            else if (latest.Index > tip.Index)
+            else
             {
                 // We need some other blocks, so request to sender.
                 BlockLocator locator = blockChain.GetBlockLocator();
@@ -852,12 +863,6 @@ namespace Libplanet.Net
 
                 await AppendBlocksAsync(
                     peer, blockChain, blocks, cancellationToken);
-            }
-            else
-            {
-                _logger.Information(
-                    "Received index is older than current chain's tip." +
-                    " ignored.");
             }
         }
 
@@ -952,10 +957,8 @@ namespace Libplanet.Net
         )
         {
             Peer sender = delta.Sender;
-            PublicKey senderKey = sender.PublicKey;
 
-            if (!_peers.ContainsKey(sender) &&
-                _peers.Keys.All(p => senderKey != p.PublicKey))
+            if (IsUnknownPeer(sender))
             {
                 delta = new PeerSetDelta(
                     delta.Sender,
@@ -982,15 +985,28 @@ namespace Libplanet.Net
             _logger.Debug($"The delta[{delta}] has been applied.");
         }
 
+        private bool IsUnknownPeer(Peer sender)
+        {
+            if (_peers.Keys.All(p => sender.PublicKey != p.PublicKey))
+            {
+                return true;
+            }
+
+            if (_dealers.Keys.All(a => sender.Address != a))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private async Task ApplyDelta(
             PeerSetDelta delta,
             CancellationToken cancellationToken
         )
         {
             PublicKey senderPublicKey = delta.Sender.PublicKey;
-            bool firstEncounter = _peers.Keys.All(
-                p => p.PublicKey != senderPublicKey
-            );
+            bool firstEncounter = IsUnknownPeer(delta.Sender);
             RemovePeers(delta.RemovedPeers, delta.Timestamp);
             var addedPeers = new HashSet<Peer>(delta.AddedPeers);
 
