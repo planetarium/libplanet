@@ -38,6 +38,7 @@ namespace Libplanet.Net
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
+        private readonly AsyncLock _blockSyncMutex;
         private readonly IPAddress _ipAddress;
 
         private readonly ILogger _logger;
@@ -87,6 +88,7 @@ namespace Libplanet.Net
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
+            _blockSyncMutex = new AsyncLock();
 
             _ipAddress = ipAddress ?? GetLocalIPAddress();
             _listenPort = listenPort;
@@ -795,16 +797,75 @@ namespace Libplanet.Net
                 peer, message.Hashes, cancellationToken);
 
             List<Block<T>> blocks = await fetched.ToListAsync();
+            _logger.Debug("GetBlocksAsync() complete.");
 
-            _logger.Debug(
-                "GetBlocksAsync() complete. " +
-                "trying to AppendBlocksAsync()...");
             try
             {
-                if (blocks.Last().Index > blockChain.Tip.Index)
+                // We assume that the blocks are sorted in order.
+                Block<T> oldest = blocks.First();
+                Block<T> latest = blocks.Last();
+                Block<T> tip = blockChain.Tip;
+
+                if (tip == null || latest.Index > tip.Index)
                 {
-                    await AppendBlocksAsync(
-                        peer, blockChain, blocks, cancellationToken);
+                    using (await _blockSyncMutex.LockAsync())
+                    {
+                        _logger.Debug("Trying to find branchpoint...");
+                        BlockLocator locator = blockChain.GetBlockLocator();
+                        IEnumerable<HashDigest<SHA256>> hashes =
+                            await GetBlockHashesAsync(
+                                peer, locator, oldest.Hash, cancellationToken);
+                        HashDigest<SHA256> branchPoint = hashes.First();
+
+                        _logger.Debug(
+                            $"Branchpoint is " +
+                            $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
+                        );
+
+                        BlockChain<T> toSync;
+
+                        if (tip == null || branchPoint == tip.Hash)
+                        {
+                            _logger.Debug("it doesn't need fork.");
+                            toSync = blockChain;
+                        }
+
+                        // FIXME BlockChain.Blocks.ContainsKey() can be very
+                        // expensive.
+                        // we can omit this clause if assume every chain shares
+                        // same genesis block...
+                        else if (!blockChain.Blocks.ContainsKey(branchPoint))
+                        {
+                            toSync = new BlockChain<T>(
+                                blockChain.Policy,
+                                blockChain.Store);
+                        }
+                        else
+                        {
+                            _logger.Debug("Forking needed. trying to fork...");
+                            toSync = blockChain.Fork(branchPoint);
+                            _logger.Debug("Forking complete. ");
+                        }
+
+                        _logger.Debug("Trying to fill up previous blocks...");
+                        await FillBlocksAsync(
+                            peer, toSync, oldest.PreviousHash, cancellationToken
+                        );
+                        _logger.Debug("Filled up. trying to concatenation...");
+
+                        foreach (Block<T> block in blocks)
+                        {
+                            toSync.Append(block);
+                        }
+
+                        _logger.Debug("Sync is done.");
+                        if (!toSync.Id.Equals(blockChain.Id))
+                        {
+                            _logger.Debug("trying to swapping chain...");
+                            blockChain.Swap(toSync);
+                            _logger.Debug("Swapping complete");
+                        }
+                    }
                 }
                 else
                 {
@@ -817,52 +878,43 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-                _logger.Error(e, "AppendBlockAsync() Failed");
+                _logger.Error(e, $"Append Failed. exception: {e}");
                 throw;
             }
         }
 
-        private async Task AppendBlocksAsync<T>(
+        private async Task FillBlocksAsync<T>(
             Peer peer,
             BlockChain<T> blockChain,
-            List<Block<T>> blocks,
+            HashDigest<SHA256>? stop,
             CancellationToken cancellationToken)
             where T : IAction
         {
-            // We assume that the blocks are sorted in order.
-            Block<T> oldest = blocks.First();
-            Block<T> tip = blockChain.Tip;
-
-            if (tip == null || oldest.PreviousHash == tip.Hash)
+            while (blockChain.Tip?.Hash != stop)
             {
-                // Caught up with everything, so we just connect it.
-                foreach (Block<T> block in blocks)
-                {
-                    blockChain.Append(block);
-                }
-            }
-            else
-            {
-                // We need some other blocks, so request to sender.
                 BlockLocator locator = blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
-                        peer, locator, oldest.Hash, cancellationToken);
-                HashDigest<SHA256> branchPoint = hashes.First();
+                        peer, locator, stop, cancellationToken);
 
-                blockChain.DeleteAfter(branchPoint);
+                if (blockChain.Tip != null)
+                {
+                    hashes = hashes.Skip(1);
+                }
+
+                _logger.Debug(
+                    $"Required hashes are {string.Join(",", hashes)}. " +
+                    $"(tip: {blockChain.Tip?.Hash})"
+                );
 
                 await GetBlocksAsync<T>(
                     peer,
-                    tip == null ? hashes : hashes.Skip(1),
+                    hashes,
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
                     blockChain.Append(block);
                 });
-
-                await AppendBlocksAsync(
-                    peer, blockChain, blocks, cancellationToken);
             }
         }
 

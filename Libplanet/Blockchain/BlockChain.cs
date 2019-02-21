@@ -268,22 +268,6 @@ namespace Libplanet.Blockchain
             return forked;
         }
 
-        internal void DeleteAfter(HashDigest<SHA256> point)
-        {
-            HashDigest<SHA256>? current = Store.IndexBlockHash(
-                Id.ToString(), -1
-            );
-
-            while (current is HashDigest<SHA256> hash && hash != point)
-            {
-                HashDigest<SHA256>? previous = Blocks[hash].PreviousHash;
-                Store.DeleteBlock(Id.ToString(), hash);
-                Store.DeleteIndex(Id.ToString(), hash);
-
-                current = previous;
-            }
-        }
-
         internal BlockLocator GetBlockLocator(int threshold = 10)
         {
             HashDigest<SHA256>? current = Store.IndexBlockHash(
@@ -312,6 +296,17 @@ namespace Libplanet.Blockchain
             }
 
             return new BlockLocator(hashes);
+        }
+
+        // FIXME it's very dangerous because replacing Id means
+        // ALL blocks (referenced by MineBlock(), etc.) will be changed.
+        // we need to add a synchronization mechanism to handle this correctly.
+        internal void Swap(BlockChain<T> other)
+        {
+            Id = other.Id;
+            Blocks = new BlockSet<T>(Store, Id.ToString());
+            Transactions = new TransactionSet<T>(Store, Id.ToString());
+            Addresses = new AddressTransactionSet<T>(Store, Id.ToString());
         }
 
         private void EvaluateActions(Block<T> block)

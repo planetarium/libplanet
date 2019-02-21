@@ -202,18 +202,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanDeleteAfter()
-        {
-            var block1 = _blockChain.MineBlock(_fx.Address1);
-            var block2 = _blockChain.MineBlock(_fx.Address1);
-            var block3 = _blockChain.MineBlock(_fx.Address1);
-
-            _blockChain.DeleteAfter(block2.Hash);
-
-            Assert.Equal(new[] { block1, block2 }, _blockChain);
-        }
-
-        [Fact]
         public void CanFork()
         {
             var block1 = _blockChain.MineBlock(_fx.Address1);
