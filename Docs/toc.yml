@@ -7,3 +7,5 @@
   homepage: api/Libplanet.yml
 - name: Changelog
   href: ../CHANGES.md
+- name: Contribute
+  href: CONTRIBUTING.md

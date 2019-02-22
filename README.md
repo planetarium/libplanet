@@ -1,6 +1,7 @@
 Libplanet
 =========
 
+[![Discord](https://img.shields.io/discord/539405872346955788.svg?color=7289da&logo=discord&logoColor=white)][Discord]
 [![Build Status](https://travis-ci.com/planetarium/libplanet.net.svg?branch=master)][Travis CI]
 [![Codecov](https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg)][Codecov]
 [![NuGet](https://img.shields.io/nuget/v/Libplanet.svg?style=flat)][NuGet]
@@ -12,6 +13,7 @@ peer-to-peer network among equal nodes rather than an authorized central
 server.  Under the hood, it incorporates many features (e.g.,
 [digital signature], [BFT] consensus, data replication) of a [blockchain].
 
+[Discord]: https://discord.gg/ue9fgc3
 [Travis CI]: https://travis-ci.com/planetarium/libplanet.net
 [Codecov]: https://codecov.io/gh/planetarium/libplanet.net
 [NuGet]: https://www.nuget.org/packages/Libplanet/
@@ -39,29 +41,17 @@ In the near future, we are going to submit it to [Unity Asset Store] too.
 Build
 -----
 
+You could build a *Libplanet.dll* assembly from the source code.
+
 The following command installs dependencies (required library packages) and
 builds the whole Libplanet solution:
 
 ~~~~~~~~ bash
-msbuild /r
+msbuild -r
 ~~~~~~~~
 
 Note that `msbuild` is distributed together with Mono framework or
 Visual Studio.
 
-
-Test
-----
-
-To build and run unit tests at a time execute the below command:
-
-~~~~~~~~ bash
-msbuild /r /t:'Build;XunitTest' Libplanet.Tests
-~~~~~~~~
-
-It's okay to omit `/r` and `Build` task if you've already run `msbuild /r`
-right before:
-
-~~~~~~~~ bash
-msbuild /t:XunitTest Libplanet.Tests
-~~~~~~~~
+If you'd like to contribute code to the Libplanet project in earnest,
+please read our [contributor guide](CONTRIBUTING.md).
