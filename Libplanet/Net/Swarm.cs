@@ -68,6 +68,8 @@ namespace Libplanet.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null)
         {
+            Running = false;
+
             _privateKey = privateKey
                 ?? throw new ArgumentNullException(nameof(privateKey));
             _dialTimeout = dialTimeout;
@@ -96,8 +98,6 @@ namespace Libplanet.Net
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
                 .ForContext("SwarmId", loggerId);
-
-            Running = false;
         }
 
         ~Swarm()
