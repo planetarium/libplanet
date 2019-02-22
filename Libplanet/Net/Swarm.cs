@@ -1213,6 +1213,9 @@ namespace Libplanet.Net
             Peer original = peer;
             var connected = false;
 
+            // Peer can have more than 2 Url due to NAT and so on.
+            // Therefore, DialPeerAsync () checks the accessible URLs
+            // and puts them at the front.
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
             {
                 var dealer = new DealerSocket();
@@ -1362,6 +1365,7 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(peer));
             }
 
+            // See DialPeerAsync().
             Uri url = peer.Urls.FirstOrDefault();
             return url?.ToString().TrimEnd('/');
         }
