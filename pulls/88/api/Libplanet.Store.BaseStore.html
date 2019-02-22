@@ -119,18 +119,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendAddressTransactionId_Libplanet_Address_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendAddressTransactionId(Libplanet.Address%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendAddressTransactionId_System_String_Libplanet_Address_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendAddressTransactionId(System.String%2CLibplanet.Address%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_AppendAddressTransactionId_" data-uid="Libplanet.Store.BaseStore.AppendAddressTransactionId*"></a>
-  <h4 id="Libplanet_Store_BaseStore_AppendAddressTransactionId_Libplanet_Address_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.AppendAddressTransactionId(Libplanet.Address,Libplanet.Tx.TxId)">AppendAddressTransactionId(Address, TxId)</h4>
+  <h4 id="Libplanet_Store_BaseStore_AppendAddressTransactionId_System_String_Libplanet_Address_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.AppendAddressTransactionId(System.String,Libplanet.Address,Libplanet.Tx.TxId)">AppendAddressTransactionId(String, Address, TxId)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract long AppendAddressTransactionId(Address address, TxId txId)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract long AppendAddressTransactionId(string namespace, Address address, TxId txId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -142,6 +142,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
@@ -171,18 +176,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendIndex(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L18">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L25">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_AppendIndex_" data-uid="Libplanet.Store.BaseStore.AppendIndex*"></a>
-  <h4 id="Libplanet_Store_BaseStore_AppendIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.AppendIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">AppendIndex(HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.AppendIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">AppendIndex(String, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract long AppendIndex(HashDigest&lt;SHA256&gt; hash)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract long AppendIndex(string namespace, HashDigest&lt;SHA256&gt; hash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -194,6 +199,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">hash</span></td>
@@ -218,19 +228,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountAddresses_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountAddresses(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L76">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountAddresses_" data-uid="Libplanet.Store.BaseStore.CountAddresses*"></a>
-  <h4 id="Libplanet_Store_BaseStore_CountAddresses" data-uid="Libplanet.Store.BaseStore.CountAddresses">CountAddresses()</h4>
+  <h4 id="Libplanet_Store_BaseStore_CountAddresses_System_String_" data-uid="Libplanet.Store.BaseStore.CountAddresses(System.String)">CountAddresses(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CountAddresses()</code></pre>
+    <pre><code class="lang-csharp hljs">public int CountAddresses(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -248,19 +275,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountBlocks_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountBlocks(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L71">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L114">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountBlocks_" data-uid="Libplanet.Store.BaseStore.CountBlocks*"></a>
-  <h4 id="Libplanet_Store_BaseStore_CountBlocks" data-uid="Libplanet.Store.BaseStore.CountBlocks">CountBlocks()</h4>
+  <h4 id="Libplanet_Store_BaseStore_CountBlocks_System_String_" data-uid="Libplanet.Store.BaseStore.CountBlocks(System.String)">CountBlocks(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CountBlocks()</code></pre>
+    <pre><code class="lang-csharp hljs">public int CountBlocks(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -278,19 +322,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountIndex.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L12">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L14">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountIndex_" data-uid="Libplanet.Store.BaseStore.CountIndex*"></a>
-  <h4 id="Libplanet_Store_BaseStore_CountIndex" data-uid="Libplanet.Store.BaseStore.CountIndex">CountIndex()</h4>
+  <h4 id="Libplanet_Store_BaseStore_CountIndex_System_String_" data-uid="Libplanet.Store.BaseStore.CountIndex(System.String)">CountIndex(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract long CountIndex()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract long CountIndex(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -308,19 +369,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_CountTransactions_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountTransactions(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L66">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L109">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountTransactions_" data-uid="Libplanet.Store.BaseStore.CountTransactions*"></a>
-  <h4 id="Libplanet_Store_BaseStore_CountTransactions" data-uid="Libplanet.Store.BaseStore.CountTransactions">CountTransactions()</h4>
+  <h4 id="Libplanet_Store_BaseStore_CountTransactions_System_String_" data-uid="Libplanet.Store.BaseStore.CountTransactions(System.String)">CountTransactions(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CountTransactions()</code></pre>
+    <pre><code class="lang-csharp hljs">public int CountTransactions(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -338,18 +416,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteBlock_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteBlock(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L93">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteBlock_" data-uid="Libplanet.Store.BaseStore.DeleteBlock*"></a>
-  <h4 id="Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteBlock(HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_DeleteBlock_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteBlock(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteBlock(String, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool DeleteBlock(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract bool DeleteBlock(string namespace, HashDigest&lt;SHA256&gt; blockHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -361,6 +439,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
@@ -385,18 +468,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteIndex(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L81">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L124">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteIndex_" data-uid="Libplanet.Store.BaseStore.DeleteIndex*"></a>
-  <h4 id="Libplanet_Store_BaseStore_DeleteIndex_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteIndex(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteIndex(HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteIndex(String, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool DeleteIndex(HashDigest&lt;SHA256&gt; hash)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract bool DeleteIndex(string namespace, HashDigest&lt;SHA256&gt; hash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -408,6 +491,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">hash</span></td>
@@ -432,18 +520,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_System_String_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(System.String%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L75">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteTransaction_" data-uid="Libplanet.Store.BaseStore.DeleteTransaction*"></a>
-  <h4 id="Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
+  <h4 id="Libplanet_Store_BaseStore_DeleteTransaction_System_String_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.DeleteTransaction(System.String,Libplanet.Tx.TxId)">DeleteTransaction(String, TxId)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool DeleteTransaction(TxId txid)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract bool DeleteTransaction(string namespace, TxId txid)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -455,6 +543,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txid</span></td>
@@ -479,18 +572,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetAddressTransactionIds_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetAddressTransactionIds(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetAddressTransactionIds_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetAddressTransactionIds(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L34">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetAddressTransactionIds_" data-uid="Libplanet.Store.BaseStore.GetAddressTransactionIds*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetAddressTransactionIds_Libplanet_Address_" data-uid="Libplanet.Store.BaseStore.GetAddressTransactionIds(Libplanet.Address)">GetAddressTransactionIds(Address)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetAddressTransactionIds_System_String_Libplanet_Address_" data-uid="Libplanet.Store.BaseStore.GetAddressTransactionIds(System.String,Libplanet.Address)">GetAddressTransactionIds(String, Address)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; GetAddressTransactionIds(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; GetAddressTransactionIds(string namespace, Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -502,6 +595,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
@@ -526,18 +624,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L49">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L81">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlock_" data-uid="Libplanet.Store.BaseStore.GetBlock*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetBlock__1_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlock``1(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlock&lt;T&gt;(String, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Block&lt;T&gt; GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt; blockHash)
+    <pre><code class="lang-csharp hljs">public abstract Block&lt;T&gt; GetBlock&lt;T&gt;(string namespace, HashDigest&lt;SHA256&gt; blockHash)
     where T : IAction</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -550,6 +648,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
@@ -589,18 +692,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockStates_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockStates(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L98">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlockStates_" data-uid="Libplanet.Store.BaseStore.GetBlockStates*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetBlockStates_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlockStates(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockStates(String, HashDigest&lt;SHA256&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract AddressStateMap GetBlockStates(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract AddressStateMap GetBlockStates(string namespace, HashDigest&lt;SHA256&gt; blockHash)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -612,6 +715,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
@@ -636,18 +744,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTransaction__1_System_String_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTransaction%60%601(System.String%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L63">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetTransaction_" data-uid="Libplanet.Store.BaseStore.GetTransaction*"></a>
-  <h4 id="Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
+  <h4 id="Libplanet_Store_BaseStore_GetTransaction__1_System_String_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.GetTransaction``1(System.String,Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(String, TxId)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Transaction&lt;T&gt; GetTransaction&lt;T&gt;(TxId txid)
+    <pre><code class="lang-csharp hljs">public abstract Transaction&lt;T&gt; GetTransaction&lt;T&gt;(string namespace, TxId txid)
     where T : IAction</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -660,6 +768,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
         <td><span class="parametername">txid</span></td>
@@ -699,18 +812,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IndexBlockHash_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IndexBlockHash(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IndexBlockHash_System_String_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IndexBlockHash(System.String%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L16">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L20">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IndexBlockHash_" data-uid="Libplanet.Store.BaseStore.IndexBlockHash*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IndexBlockHash_System_Int64_" data-uid="Libplanet.Store.BaseStore.IndexBlockHash(System.Int64)">IndexBlockHash(Int64)</h4>
+  <h4 id="Libplanet_Store_BaseStore_IndexBlockHash_System_String_System_Int64_" data-uid="Libplanet.Store.BaseStore.IndexBlockHash(System.String,System.Int64)">IndexBlockHash(String, Int64)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract HashDigest&lt;SHA256&gt;? IndexBlockHash(long index)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract HashDigest&lt;SHA256&gt;? IndexBlockHash(string namespace, long index)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -722,6 +835,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td><span class="parametername">index</span></td>
@@ -746,19 +864,68 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_InitNamespace_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.InitNamespace(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L20">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L12">View Source</a>
   </span>
-  <a id="Libplanet_Store_BaseStore_IterateAddresses_" data-uid="Libplanet.Store.BaseStore.IterateAddresses*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IterateAddresses" data-uid="Libplanet.Store.BaseStore.IterateAddresses">IterateAddresses()</h4>
+  <a id="Libplanet_Store_BaseStore_InitNamespace_" data-uid="Libplanet.Store.BaseStore.InitNamespace*"></a>
+  <h4 id="Libplanet_Store_BaseStore_InitNamespace_System_String_" data-uid="Libplanet.Store.BaseStore.InitNamespace(System.String)">InitNamespace(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;Address&gt; IterateAddresses()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void InitNamespace(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateAddresses_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateAddresses(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L30">View Source</a>
+  </span>
+  <a id="Libplanet_Store_BaseStore_IterateAddresses_" data-uid="Libplanet.Store.BaseStore.IterateAddresses*"></a>
+  <h4 id="Libplanet_Store_BaseStore_IterateAddresses_System_String_" data-uid="Libplanet.Store.BaseStore.IterateAddresses(System.String)">IterateAddresses(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;Address&gt; IterateAddresses(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -776,19 +943,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateBlockHashes_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateBlockHashes(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L47">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L77">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateBlockHashes_" data-uid="Libplanet.Store.BaseStore.IterateBlockHashes*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IterateBlockHashes" data-uid="Libplanet.Store.BaseStore.IterateBlockHashes">IterateBlockHashes()</h4>
+  <h4 id="Libplanet_Store_BaseStore_IterateBlockHashes_System_String_" data-uid="Libplanet.Store.BaseStore.IterateBlockHashes(System.String)">IterateBlockHashes(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateBlockHashes()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateBlockHashes(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -806,19 +990,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateIndex.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L14">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L16">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateIndex_" data-uid="Libplanet.Store.BaseStore.IterateIndex*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IterateIndex" data-uid="Libplanet.Store.BaseStore.IterateIndex">IterateIndex()</h4>
+  <h4 id="Libplanet_Store_BaseStore_IterateIndex_System_String_" data-uid="Libplanet.Store.BaseStore.IterateIndex(System.String)">IterateIndex(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateIndex()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateIndex(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -836,19 +1037,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStagedTransactionIds_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L35">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.BaseStore.IterateStagedTransactionIds*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IterateStagedTransactionIds" data-uid="Libplanet.Store.BaseStore.IterateStagedTransactionIds">IterateStagedTransactionIds()</h4>
+  <h4 id="Libplanet_Store_BaseStore_IterateStagedTransactionIds_System_String_" data-uid="Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.String)">IterateStagedTransactionIds(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; IterateStagedTransactionIds()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; IterateStagedTransactionIds(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -866,19 +1084,36 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateTransactionIds_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateTransactionIds(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L37">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateTransactionIds_" data-uid="Libplanet.Store.BaseStore.IterateTransactionIds*"></a>
-  <h4 id="Libplanet_Store_BaseStore_IterateTransactionIds" data-uid="Libplanet.Store.BaseStore.IterateTransactionIds">IterateTransactionIds()</h4>
+  <h4 id="Libplanet_Store_BaseStore_IterateTransactionIds_System_String_" data-uid="Libplanet.Store.BaseStore.IterateTransactionIds(System.String)">IterateTransactionIds(String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; IterateTransactionIds()</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;TxId&gt; IterateTransactionIds(string namespace)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -896,18 +1131,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_PutBlock__1_System_String_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutBlock%60%601(System.String%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L52">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L87">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_PutBlock_" data-uid="Libplanet.Store.BaseStore.PutBlock*"></a>
-  <h4 id="Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_PutBlock__1_System_String_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.BaseStore.PutBlock``1(System.String,Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(String, Block&lt;T&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void PutBlock&lt;T&gt;(Block&lt;T&gt; block)
+    <pre><code class="lang-csharp hljs">public abstract void PutBlock&lt;T&gt;(string namespace, Block&lt;T&gt; block)
     where T : IAction</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -920,6 +1155,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
         <td><span class="parametername">block</span></td>
@@ -944,18 +1184,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_PutTransaction__1_System_String_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutTransaction%60%601(System.String%2CLibplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L42">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L69">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_PutTransaction_" data-uid="Libplanet.Store.BaseStore.PutTransaction*"></a>
-  <h4 id="Libplanet_Store_BaseStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.BaseStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_PutTransaction__1_System_String_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.BaseStore.PutTransaction``1(System.String,Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(String, Transaction&lt;T&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
+    <pre><code class="lang-csharp hljs">public abstract void PutTransaction&lt;T&gt;(string namespace, Transaction&lt;T&gt; tx)
     where T : IAction</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -968,6 +1208,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
         <td><span class="parametername">tx</span></td>
@@ -992,18 +1237,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_SetBlockStates_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetBlockStates(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L61">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L103">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_SetBlockStates_" data-uid="Libplanet.Store.BaseStore.SetBlockStates*"></a>
-  <h4 id="Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
+  <h4 id="Libplanet_Store_BaseStore_SetBlockStates_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.BaseStore.SetBlockStates(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(String, HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void SetBlockStates(HashDigest&lt;SHA256&gt; blockHash, AddressStateMap states)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void SetBlockStates(string namespace, HashDigest&lt;SHA256&gt; blockHash, AddressStateMap states)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1015,6 +1260,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td><span class="parametername">blockHash</span></td>
@@ -1029,18 +1279,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_StageTransactionIds_System_String_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StageTransactionIds(System.String%2CSystem.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_StageTransactionIds_" data-uid="Libplanet.Store.BaseStore.StageTransactionIds*"></a>
-  <h4 id="Libplanet_Store_BaseStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">StageTransactionIds(ISet&lt;TxId&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_StageTransactionIds_System_String_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.StageTransactionIds(System.String,System.Collections.Generic.ISet{Libplanet.Tx.TxId})">StageTransactionIds(String, ISet&lt;TxId&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void StageTransactionIds(ISet&lt;TxId&gt; txids)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void StageTransactionIds(string namespace, ISet&lt;TxId&gt; txids)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1052,6 +1302,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
         <td><span class="parametername">txids</span></td>
@@ -1061,18 +1316,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.UnstageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet.net/new/merge/apiSpec/new?filename=Libplanet_Store_BaseStore_UnstageTransactionIds_System_String_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.UnstageTransactionIds(System.String%2CSystem.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet.net/blob/merge/Libplanet/Store/BaseStore.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_UnstageTransactionIds_" data-uid="Libplanet.Store.BaseStore.UnstageTransactionIds*"></a>
-  <h4 id="Libplanet_Store_BaseStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(ISet&lt;TxId&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_UnstageTransactionIds_System_String_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.UnstageTransactionIds(System.String,System.Collections.Generic.ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(String, ISet&lt;TxId&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void UnstageTransactionIds(ISet&lt;TxId&gt; txids)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void UnstageTransactionIds(string namespace, ISet&lt;TxId&gt; txids)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1084,6 +1339,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
         <td><span class="parametername">txids</span></td>
