@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Drawing.Design;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -242,6 +245,65 @@ namespace Libplanet.Tests.Blockchain
             });
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanEvaluateActions()
+        {
+            PrivateKey fromPrivateKey = new PrivateKey();
+            Address fromAddress = fromPrivateKey.PublicKey.ToAddress();
+            Address toAddress = _fx.Address1;
+            long blockIndex = 0;
+
+            TestEvaluateAction action = new TestEvaluateAction();
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
+                fromPrivateKey,
+                toAddress,
+                new List<BaseAction> { action },
+                DateTimeOffset.UtcNow
+            );
+
+            _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
+            _blockChain.MineBlock(_fx.Address1);
+            var states = _blockChain.GetStates(new[]
+            {
+                TestEvaluateAction.FromKey,
+                TestEvaluateAction.ToKey,
+                TestEvaluateAction.BlockIndexKey,
+            });
+
+            Assert.Equal(states[TestEvaluateAction.FromKey], fromAddress.ToHex());
+            Assert.Equal(states[TestEvaluateAction.ToKey], toAddress.ToHex());
+            Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
+        }
+
+        [ActionType("test")]
+        private class TestEvaluateAction : BaseAction
+        {
+            public static readonly Address FromKey =
+                new PrivateKey().PublicKey.ToAddress();
+
+            public static readonly Address ToKey =
+                new PrivateKey().PublicKey.ToAddress();
+
+            public static readonly Address BlockIndexKey =
+                new PrivateKey().PublicKey.ToAddress();
+
+            public override IImmutableDictionary<string, object> PlainValue =>
+                new Dictionary<string, object>().ToImmutableDictionary();
+
+            public override void LoadPlainValue(
+                IImmutableDictionary<string, object> plainValue)
+            {
+            }
+
+            public override AddressStateMap Execute(IActionContext context)
+            {
+                return (AddressStateMap)context.PreviousStates
+                    .SetItem(FromKey, context.From.ToHex())
+                    .SetItem(ToKey, context.To.ToHex())
+                    .SetItem(BlockIndexKey, context.BlockIndex);
+            }
         }
     }
 }

@@ -332,6 +332,7 @@ namespace Libplanet.Blockchain
                     var context = new ActionContext(
                         @from: tx.Sender,
                         to: tx.Recipient,
+                        blockIndex: block.Index,
                         previousStates: prevState,
                         randomSeed: unchecked(txSeed++)
                     );

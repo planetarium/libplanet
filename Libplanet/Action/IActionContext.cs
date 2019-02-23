@@ -19,6 +19,12 @@ namespace Libplanet.Action
         Address To { get; }
 
         /// <summary>
+        /// Block index of a transaction that an executed <see cref="IAction"/>
+        /// belongs to.
+        /// </summary>
+        long BlockIndex { get; }
+
+        /// <summary>
         /// The state of accounts related to query before <see cref="IAction"/>
         /// executes.  Those addresses are determined by
         /// <see cref="IAction.RequestStates(Address, Address)"/> method.
