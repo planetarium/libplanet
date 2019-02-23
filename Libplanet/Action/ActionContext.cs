@@ -5,12 +5,14 @@ namespace Libplanet.Action
         public ActionContext(
             Address from,
             Address to,
+            long blockIndex,
             AddressStateMap previousStates,
             int randomSeed
         )
         {
             From = from;
             To = to;
+            BlockIndex = blockIndex;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
         }
@@ -18,6 +20,8 @@ namespace Libplanet.Action
         public Address From { get; }
 
         public Address To { get; }
+
+        public long BlockIndex { get; }
 
         public AddressStateMap PreviousStates { get; }
 
