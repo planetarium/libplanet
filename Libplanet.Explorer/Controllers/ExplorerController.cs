@@ -135,7 +135,7 @@ namespace Libplanet.Explorer.Controllers
                 Id = tx.Id.ToString(),
                 Signature = tx.Signature,
                 Timestamp = tx.Timestamp,
-                Sender = tx.Sender.ToHex(),
+                Signer = tx.Signer.ToHex(),
                 Recipient = tx.Recipient.ToHex(),
                 Actions = tx.Actions
                     .Select(act => new Dictionary<string, object>
