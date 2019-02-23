@@ -45,15 +45,14 @@ namespace Libplanet.Action
     ///         TargetId = targetId;
     ///     }
     ///
-    ///     public IImmutableSet<Address> RequestStates(Address from,
+    ///     public IImmutableSet<Address> RequestStates(Address signer,
     ///                                                 Address to)
     ///     {
     ///         // In this action, we need states of two accounts for healing:
-    ///         // - A transaction signer ("from") who holds the healer
-    ///         //   character, and
+    ///         // - A transaction "signer" who holds the healer character, and
     ///         // - A transaction receiver ("to") who hols the healing target
     ///         //   character.
-    ///         return new HashSet<Address> { from, to }.ToImmutableHashSet();
+    ///         return new HashSet<Address> { signer, to }.ToImmutableHashSet();
     ///     }
     ///
     ///     // The main game logic belongs to here.  It takes the
@@ -74,11 +73,11 @@ namespace Libplanet.Action
     ///         // and "Character".  These are immutable (as we highly
     ///         // recommend) and methods like ".WithFoo(bar)" mean it copies
     ///         // a game object and set new object's "Foo" property with "bar".
-    ///         Player sender = states[context.From] as Player;
-    ///         if (sender == null)
-    ///             throw new Exception("Sender's player was not made.");
+    ///         Player signer = states[context.Signer] as Player;
+    ///         if (signer == null)
+    ///             throw new Exception("Signer's player was not made.");
     ///
-    ///         Character healerPrev = sender.Characters[HealerId];
+    ///         Character healerPrev = signer.Characters[HealerId];
     ///         if (healerPrev.Mana < RequiredMana)
     ///             throw new Exception("The healer doesn't have enough mana.");
     ///
@@ -112,7 +111,10 @@ namespace Libplanet.Action
     ///         // returns it as AddressStateMap.
     ///         var statesDelta = new Dictionary<Address, object>
     ///         {
-    ///             {context.From, sender.WithCharacters(HealerId, healerNext)},
+    ///             {
+    ///                 context.Signer,
+    ///                 signer.WithCharacters(HealerId, healerNext)
+    ///             },
     ///             {context.To, receiver.WithCharacters(TargetId, targetNext)},
     ///         };
     ///         return new AddressStateMap(statesDelta.ToImmutableDictionary());
@@ -149,7 +151,7 @@ namespace Libplanet.Action
         /// (or fields) of an action, so that they can be transmitted over
         /// network or saved to persistent storage.
         /// <para>Serialized values are deserialized by <see
-        /// cref="LoadPlainValue(IImmutableDictionary{string, object})"/> method
+        /// cref="LoadPlainValue(IImmutableDictionary{string,object})"/> method
         /// later.</para>
         /// <para>It uses <a href=
         /// "https://docs.microsoft.com/en-us/dotnet/standard/serialization/"
@@ -183,34 +185,34 @@ namespace Libplanet.Action
         /// an account who signed the transaction and a healed character belongs
         /// to an account who will receive the transaction, that healing
         /// action's <see cref="RequestStates(Address, Address)"/> should
-        /// return a set of <paramref name="from"/> and <paramref name="to"/>.
+        /// return a set of <paramref name="signer"/> and <paramref name="to"/>.
         /// </para>
         /// </summary>
-        /// <param name="from">An <see cref="Address"/> of the account who
+        /// <param name="signer">An <see cref="Address"/> of the account who
         /// signed the transaction this action belongs to.</param>
         /// <param name="to">An <see cref="Address"/> of the account who will
         /// receive the transaction this action belongs to.</param>
         /// <returns>An immutable set of <see cref="Address"/>es required by
         /// this action.  Addresses are not limited to only <paramref
-        /// name="from"/> and <paramref name="to"/>.</returns>
+        /// name="signer"/> and <paramref name="to"/>.</returns>
         /// <example>
         /// The following example shows an action requiring states of
-        /// a transaction sender and a transaction receiver:
+        /// a transaction signer and a transaction receiver:
         /// <code><![CDATA[
-        /// public IImmutableSet<Address> RequestStates(Address from,
+        /// public IImmutableSet<Address> RequestStates(Address signer,
         ///                                             Address to)
         /// {
-        ///     return new HashSet<Address> { from, to }.ToImmutableHashSet();
+        ///     return new HashSet<Address> { signer, to }.ToImmutableHashSet();
         /// }
         /// ]]></code>
         /// </example>
-        IImmutableSet<Address> RequestStates(Address from, Address to);
+        IImmutableSet<Address> RequestStates(Address signer, Address to);
 
         /// <summary>
         /// Executes the main game logic of an action.  This should be
         /// <em>deterministic</em>.
         /// <para>Through the <paramref name="context"/> object,
-        /// it receives information such as a transaction sender and a receiver,
+        /// it receives information such as a transaction signer and a receiver,
         /// its states immediately before the execution,
         /// and a deterministic random seed.</para>
         /// <para>Other &#x201c;bound&#x201d; information resides in the action

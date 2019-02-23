@@ -4,7 +4,7 @@ namespace Libplanet.Tx
 {
     /// <summary>
     /// The exception that is thrown when a <see cref="Transaction{T}"/>'s
-    /// <see cref="Transaction{T}.Sender"/> is not derived from its
+    /// <see cref="Transaction{T}.Signer"/> is not derived from its
     /// <see cref="Transaction{T}.PublicKey"/>.
     /// </summary>
     [Serializable]

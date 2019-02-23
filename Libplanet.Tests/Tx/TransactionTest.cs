@@ -42,7 +42,7 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(
                 new Address(privateKey.PublicKey),
-                tx.Sender
+                tx.Signer
             );
             Assert.Equal(recipient, tx.Recipient);
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
@@ -131,7 +131,7 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(
                 new Address(privateKey.PublicKey),
-                tx.Sender
+                tx.Signer
             );
             Assert.Equal(recipient, tx.Recipient);
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
@@ -350,7 +350,7 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(new Address(publicKey), tx.Recipient);
-            Assert.Equal(new Address(publicKey), tx.Sender);
+            Assert.Equal(new Address(publicKey), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             Assert.Equal(
                 new byte[]
@@ -440,7 +440,7 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(new Address(publicKey), tx.Recipient);
-            Assert.Equal(new Address(publicKey), tx.Sender);
+            Assert.Equal(new Address(publicKey), tx.Signer);
             Assert.Equal(new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero), tx.Timestamp);
             Assert.Equal(
                 new byte[]
@@ -576,7 +576,7 @@ namespace Libplanet.Tests.Tx
                 0xa4,
             };
             var rawTxWithMismatchedAddress = new RawTransaction(
-                sender: mismatchedAddress,
+                signer: mismatchedAddress,
                 recipient: rawTx.Recipient,
                 publicKey: rawTx.PublicKey,
                 timestamp: rawTx.Timestamp,
@@ -644,7 +644,7 @@ namespace Libplanet.Tests.Tx
             var sig2 = new byte[tx.Signature.Length];
             Array.Copy(tx.Signature, sig2, sig2.Length);
             var tx2 = new Transaction<BaseAction>(
-                tx.Sender,
+                tx.Signer,
                 tx.PublicKey,
                 tx.Recipient,
                 tx.Timestamp,
@@ -667,7 +667,7 @@ namespace Libplanet.Tests.Tx
         internal RawTransaction GetExpectedRawTransaction(bool includeSingature)
         {
             var tx = new RawTransaction(
-                sender: new byte[]
+                signer: new byte[]
                 {
                     0xc2, 0xa8, 0x60, 0x14, 0x07, 0x3d, 0x66, 0x2a, 0x4a, 0x9b,
                     0xfc, 0xf9, 0xcb, 0x54, 0x26, 0x3d, 0xfa, 0x4f, 0x5c, 0xbc,

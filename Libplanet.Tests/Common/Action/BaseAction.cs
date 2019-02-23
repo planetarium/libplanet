@@ -12,9 +12,9 @@ namespace Libplanet.Tests.Common.Action
 
         public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
 
-        public IImmutableSet<Address> RequestStates(Address from, Address to)
+        public IImmutableSet<Address> RequestStates(Address signer, Address to)
         {
-            return new HashSet<Address> { from, to }.ToImmutableHashSet();
+            return new HashSet<Address> { signer, to }.ToImmutableHashSet();
         }
     }
 }

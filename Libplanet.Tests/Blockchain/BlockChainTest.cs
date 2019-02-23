@@ -255,12 +255,15 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.MineBlock(_fx.Address1);
             var states = _blockChain.GetStates(new[]
             {
-                TestEvaluateAction.FromKey,
+                TestEvaluateAction.SignerKey,
                 TestEvaluateAction.ToKey,
                 TestEvaluateAction.BlockIndexKey,
             });
 
-            Assert.Equal(states[TestEvaluateAction.FromKey], fromAddress.ToHex());
+            Assert.Equal(
+                states[TestEvaluateAction.SignerKey],
+                fromAddress.ToHex()
+            );
             Assert.Equal(states[TestEvaluateAction.ToKey], toAddress.ToHex());
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
@@ -268,7 +271,7 @@ namespace Libplanet.Tests.Blockchain
         [ActionType("test")]
         private class TestEvaluateAction : BaseAction
         {
-            public static readonly Address FromKey =
+            public static readonly Address SignerKey =
                 new PrivateKey().PublicKey.ToAddress();
 
             public static readonly Address ToKey =
@@ -288,7 +291,7 @@ namespace Libplanet.Tests.Blockchain
             public override AddressStateMap Execute(IActionContext context)
             {
                 return (AddressStateMap)context.PreviousStates
-                    .SetItem(FromKey, context.From.ToHex())
+                    .SetItem(SignerKey, context.Signer.ToHex())
                     .SetItem(ToKey, context.To.ToHex())
                     .SetItem(BlockIndexKey, context.BlockIndex);
             }

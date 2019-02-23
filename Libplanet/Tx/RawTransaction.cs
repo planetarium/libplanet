@@ -13,7 +13,9 @@ namespace Libplanet.Tx
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
-                sender: info.GetValue<byte[]>("sender"),
+
+                // FIXME: rename "sender" to "signer"
+                signer: info.GetValue<byte[]>("sender"),
                 publicKey: info.GetValue<byte[]>("public_key"),
                 recipient: info.GetValue<byte[]>("recipient"),
                 timestamp: info.GetString("timestamp"),
@@ -25,18 +27,18 @@ namespace Libplanet.Tx
         }
 
         public RawTransaction(
-            byte[] sender,
+            byte[] signer,
             byte[] recipient,
             byte[] publicKey,
             string timestamp,
             IEnumerable<IDictionary<string, object>> actions
         )
-            : this(sender, recipient, publicKey, timestamp, actions, null)
+            : this(signer, recipient, publicKey, timestamp, actions, null)
         {
         }
 
         public RawTransaction(
-            byte[] sender,
+            byte[] signer,
             byte[] recipient,
             byte[] publicKey,
             string timestamp,
@@ -44,7 +46,7 @@ namespace Libplanet.Tx
             byte[] signature
         )
         {
-            Sender = sender;
+            Signer = signer;
             Recipient = recipient;
             PublicKey = publicKey;
             Timestamp = timestamp;
@@ -54,7 +56,8 @@ namespace Libplanet.Tx
 
         public RawTransaction(Dictionary<string, object> dict)
         {
-            Sender = (byte[])dict["sender"];
+            // FIXME: rename "sender" to "signer"
+            Signer = (byte[])dict["sender"];
             Recipient = (byte[])dict["recipient"];
             PublicKey = (byte[])dict["public_key"];
             Timestamp = (string)dict["timestamp"];
@@ -71,7 +74,7 @@ namespace Libplanet.Tx
             }
         }
 
-        public byte[] Sender { get; }
+        public byte[] Signer { get; }
 
         public byte[] PublicKey { get; }
 
@@ -98,7 +101,8 @@ namespace Libplanet.Tx
             StreamingContext context
         )
         {
-            info.AddValue("sender", Sender);
+            // FIXME: rename "sender" to "signer"
+            info.AddValue("sender", Signer);
             info.AddValue("recipient", Recipient);
             info.AddValue("public_key", PublicKey);
             info.AddValue("timestamp", Timestamp);
@@ -113,7 +117,7 @@ namespace Libplanet.Tx
         public RawTransaction AddSignature(byte[] signature)
         {
             return new RawTransaction(
-                Sender,
+                Signer,
                 Recipient,
                 PublicKey,
                 Timestamp,
@@ -129,7 +133,7 @@ namespace Libplanet.Tx
 
         public bool Equals(RawTransaction other)
         {
-            bool eq = Sender.SequenceEqual(other.Sender) &&
+            bool eq = Signer.SequenceEqual(other.Signer) &&
                 PublicKey.SequenceEqual(other.PublicKey) &&
                 Recipient.SequenceEqual(other.Recipient) &&
                 Timestamp == other.Timestamp &&

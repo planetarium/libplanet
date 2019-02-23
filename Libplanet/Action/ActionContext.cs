@@ -3,21 +3,21 @@ namespace Libplanet.Action
     internal class ActionContext : IActionContext
     {
         public ActionContext(
-            Address from,
+            Address signer,
             Address to,
             long blockIndex,
             AddressStateMap previousStates,
             int randomSeed
         )
         {
-            From = from;
+            Signer = signer;
             To = to;
             BlockIndex = blockIndex;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
         }
 
-        public Address From { get; }
+        public Address Signer { get; }
 
         public Address To { get; }
 

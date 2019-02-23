@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
-using System.Text;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
@@ -41,13 +40,13 @@ namespace Libplanet.Tx
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
         /// </summary>
-        /// <param name="sender">An <see cref="Address"/> of the account
+        /// <param name="signer">An <see cref="Address"/> of the account
         /// who signs this transaction.  If this is not derived from <paramref
         /// name="publicKey"/> <see cref="InvalidTxPublicKeyException"/> is
-        /// thrown.  This goes to the <see cref="Sender"/> property.</param>
+        /// thrown.  This goes to the <see cref="Signer"/> property.</param>
         /// <param name="publicKey">A <see cref="PublicKey"/> of the account
         /// who signs this transaction.  If this does not match to <paramref
-        /// name="sender"/> address <see cref="InvalidTxPublicKeyException"/>
+        /// name="signer"/> address <see cref="InvalidTxPublicKeyException"/>
         /// is thrown.  This cannot be <c>null</c>.  This goes to
         /// the <see cref="PublicKey"/> property.</param>
         /// <param name="recipient">An <see cref="Address"/> of the account
@@ -74,17 +73,17 @@ namespace Libplanet.Tx
         /// the account who corresponds to <paramref name="publicKey"/>.
         /// </exception>
         /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <paramref name="sender"/> is not derived from its
+        /// <paramref name="signer"/> is not derived from its
         /// <paramref name="publicKey"/>.</exception>
         public Transaction(
-            Address sender,
+            Address signer,
             PublicKey publicKey,
             Address recipient,
             DateTimeOffset timestamp,
             IList<T> actions,
             byte[] signature)
         {
-            Sender = sender;
+            Signer = signer;
             Recipient = recipient;
             Signature = signature ??
                 throw new ArgumentNullException(nameof(signature));
@@ -99,7 +98,7 @@ namespace Libplanet.Tx
 
         internal Transaction(RawTransaction rawTx)
         {
-            Sender = new Address(rawTx.Sender);
+            Signer = new Address(rawTx.Signer);
             PublicKey = new PublicKey(rawTx.PublicKey);
             Recipient = new Address(rawTx.Recipient);
             Timestamp = DateTimeOffset.ParseExact(
@@ -117,13 +116,13 @@ namespace Libplanet.Tx
         }
 
         private Transaction(
-            Address sender,
+            Address signer,
             PublicKey publicKey,
             Address recipient,
             DateTimeOffset timestamp,
             IList<T> actions)
         {
-            Sender = sender;
+            Signer = signer;
             PublicKey = publicKey;
             Recipient = recipient;
             Timestamp = timestamp;
@@ -153,7 +152,7 @@ namespace Libplanet.Tx
         /// A <see cref="PublicKey"/> of the account who signs this transaction.
         /// This is derived from the <see cref="PublicKey"/>.
         /// </summary>
-        public Address Sender { get; }
+        public Address Signer { get; }
 
         /// <summary>
         /// An <see cref="Address"/> of the account who
@@ -200,7 +199,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// A <see cref="PublicKey"/> of the account who signs this
         /// <see cref="Transaction{T}"/>.
-        /// The <see cref="Sender"/> address is always corresponding to this
+        /// The <see cref="Signer"/> address is always corresponding to this
         /// for each transaction.  This cannot be <c>null</c>.
         /// </summary>
         public PublicKey PublicKey { get; }
@@ -227,7 +226,7 @@ namespace Libplanet.Tx
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// Unlike the <see cref="Transaction(Address, PublicKey, Address,
         /// DateTimeOffset, IList{T}, byte[])"/> constructor, it automatically
-        /// signs, and fills the appropriate <see cref="Sender"/> and
+        /// signs, and fills the appropriate <see cref="Signer"/> and
         /// <see cref="PublicKey"/> properties using the given
         /// <paramref name="privateKey"/>.  However, the <paramref
         /// name="privateKey"/> in itself is not included in the created
@@ -235,7 +234,7 @@ namespace Libplanet.Tx
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
-        /// the <see cref="Sender"/>, <see cref="PublicKey"/>, and
+        /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
         /// <param name="recipient">An <see cref="Address"/> of the account
@@ -265,17 +264,17 @@ namespace Libplanet.Tx
             }
 
             PublicKey publicKey = privateKey.PublicKey;
-            var sender = new Address(publicKey);
+            var signer = new Address(publicKey);
 
             var tx = new Transaction<T>(
-                sender,
+                signer,
                 publicKey,
                 recipient,
                 timestamp,
                 actions
             );
             return new Transaction<T>(
-                sender,
+                signer,
                 publicKey,
                 recipient,
                 timestamp,
@@ -326,7 +325,7 @@ namespace Libplanet.Tx
         /// the account who corresponds to its <see cref="PublicKey"/>.
         /// </exception>
         /// <exception cref="InvalidTxPublicKeyException">Thrown when its
-        /// <see cref="Transaction{T}.Sender"/> is not derived from its
+        /// <see cref="Signer"/> is not derived from its
         /// <see cref="Transaction{T}.PublicKey"/>.</exception>
         public void Validate()
         {
@@ -338,11 +337,11 @@ namespace Libplanet.Tx
                 );
             }
 
-            if (!new Address(PublicKey).Equals(Sender))
+            if (!new Address(PublicKey).Equals(Signer))
             {
                 throw new InvalidTxPublicKeyException(
                     $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
-                    $"is not matched to the address ({Sender})."
+                    $"is not matched to the address ({Signer})."
                 );
             }
         }
@@ -385,7 +384,7 @@ namespace Libplanet.Tx
         internal RawTransaction ToRawTransaction(bool includeSign)
         {
             var rawTx = new RawTransaction(
-                sender: Sender.ToByteArray(),
+                signer: Signer.ToByteArray(),
                 recipient: Recipient.ToByteArray(),
                 publicKey: PublicKey.Format(false),
                 timestamp: Timestamp.ToString(TimestampFormat),

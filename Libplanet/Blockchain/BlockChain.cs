@@ -435,7 +435,7 @@ namespace Libplanet.Blockchain
                 foreach (T action in tx.Actions)
                 {
                     IEnumerable<Address> requestedAddresses =
-                        action.RequestStates(tx.Sender, tx.Recipient);
+                        action.RequestStates(tx.Signer, tx.Recipient);
                     AddressStateMap requested = GetStates(
                         requestedAddresses.Except(states.Keys),
                         prevHash);
@@ -445,7 +445,7 @@ namespace Libplanet.Blockchain
                         .Where(states.ContainsKey)
                         .ToImmutableDictionary(a => a, a => states[a]));
                     var context = new ActionContext(
-                        @from: tx.Sender,
+                        signer: tx.Signer,
                         to: tx.Recipient,
                         blockIndex: block.Index,
                         previousStates: prevState,
