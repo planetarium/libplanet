@@ -7,20 +7,25 @@ namespace Libplanet.Net.Messages
 {
     internal class BlockHashes : Message
     {
-        public BlockHashes(IEnumerable<HashDigest<SHA256>> hashes)
+        public BlockHashes(
+            Address sender, IEnumerable<HashDigest<SHA256>> hashes)
         {
+            Sender = sender;
             Hashes = hashes;
         }
 
         public BlockHashes(NetMQFrame[] frames)
         {
-            int hashCount = frames[0].ConvertToInt32();
-            Hashes = frames.Skip(1).Take(hashCount)
+            Sender = new Address(frames[0].Buffer);
+            int hashCount = frames[1].ConvertToInt32();
+            Hashes = frames.Skip(2).Take(hashCount)
                 .Select(f => f.ConvertToHashDigest<SHA256>())
                 .ToList();
         }
 
         public IEnumerable<HashDigest<SHA256>> Hashes { get; }
+
+        public Address Sender { get; }
 
         protected override MessageType Type => MessageType.BlockHashes;
 
@@ -28,6 +33,8 @@ namespace Libplanet.Net.Messages
         {
             get
             {
+                yield return new NetMQFrame(Sender.ToByteArray());
+
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(Hashes.Count()));
 

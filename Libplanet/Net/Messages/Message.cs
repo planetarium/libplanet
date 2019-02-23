@@ -61,7 +61,7 @@ namespace Libplanet.Net.Messages
             Tx = 0x10,
         }
 
-        public Address? Identity { get; set; }
+        public byte[] Identity { get; set; }
 
         protected abstract MessageType Type { get; }
 
@@ -115,7 +115,7 @@ namespace Libplanet.Net.Messages
 
             if (!reply)
             {
-                message.Identity = new Address(raw[0].Buffer);
+                message.Identity = raw[0].Buffer.ToArray();
             }
 
             return message;
@@ -136,9 +136,9 @@ namespace Libplanet.Net.Messages
             message.Push(key.PublicKey.Format(true));
             message.Push((byte)Type);
 
-            if (Identity is Address to)
+            if (Identity is byte[] to)
             {
-                message.Push(to.ToByteArray());
+                message.Push(to);
             }
 
             return message;
