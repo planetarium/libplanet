@@ -418,6 +418,19 @@ references:
   commentId: T:Libplanet.Action.IActionContext
   fullName: Libplanet.Action.IActionContext
   nameWithType: IActionContext
+- uid: Libplanet.Action.IActionContext.BlockIndex
+  name: BlockIndex
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockIndex
+  commentId: P:Libplanet.Action.IActionContext.BlockIndex
+  fullName: Libplanet.Action.IActionContext.BlockIndex
+  nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.BlockIndex*
+  name: BlockIndex
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockIndex_
+  commentId: Overload:Libplanet.Action.IActionContext.BlockIndex
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.BlockIndex
+  nameWithType: IActionContext.BlockIndex
 - uid: Libplanet.Action.IActionContext.From
   name: From
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From
