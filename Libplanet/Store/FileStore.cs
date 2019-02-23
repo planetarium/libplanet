@@ -43,11 +43,19 @@ namespace Libplanet.Store
         {
             var txidHex = txid.ToString();
             return Path.Combine(
-                _path,
-                @namespace,
-                _transactionsDir,
+                GetTransactionPath(@namespace),
                 txidHex.Substring(0, 4),
                 txidHex.Substring(4));
+        }
+
+        public string GetTransactionPath(string @namespace)
+        {
+            EnsureNamespace(@namespace);
+
+            return Path.Combine(
+                _path,
+                @namespace,
+                _transactionsDir);
         }
 
         public string GetBlockPath(
@@ -57,25 +65,43 @@ namespace Libplanet.Store
         {
             var keyHex = blockHash.ToString();
             return Path.Combine(
-                _path,
-                @namespace,
-                _blocksDir,
+                GetBlockPath(@namespace),
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
+        }
+
+        public string GetBlockPath(string @namespace)
+        {
+            EnsureNamespace(@namespace);
+
+            return Path.Combine(
+                _path,
+                @namespace,
+                _blocksDir);
         }
 
         public string GetStagedTransactionPath(string @namespace, TxId txid)
         {
             return Path.Combine(
-                _path,
-                @namespace,
-                _stagedTransactionsDir,
+                GetStagedTransactionPath(@namespace),
                 txid.ToString()
             );
         }
 
+        public string GetStagedTransactionPath(string @namespace)
+        {
+            EnsureNamespace(@namespace);
+
+            return Path.Combine(
+                _path,
+                @namespace,
+                _stagedTransactionsDir);
+        }
+
         public string GetAddressPath(string @namespace, Address address)
         {
+            EnsureNamespace(@namespace);
+
             var addrHex = address.ToHex();
             return Path.Combine(
                 _path,
@@ -85,52 +111,46 @@ namespace Libplanet.Store
                 addrHex.Substring(4));
         }
 
-        public string GetStatesPath(string @namespace, HashDigest<SHA256> key)
+        public string GetAddressPath(string @namespace)
         {
-            var keyHex = key.ToString();
+            EnsureNamespace(@namespace);
+
             return Path.Combine(
                 _path,
                 @namespace,
-                _statesDir,
+                _addressesDir);
+        }
+
+        public string GetStatesPath(string @namespace, HashDigest<SHA256> key)
+        {
+            EnsureNamespace(@namespace);
+
+            var keyHex = key.ToString();
+            return Path.Combine(
+                GetStatesPath(@namespace),
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
         }
 
+        public string GetStatesPath(string @namespace)
+        {
+            EnsureNamespace(@namespace);
+
+            return Path.Combine(
+                _path,
+                @namespace,
+                _statesDir);
+        }
+
         public string GetIndexPath(string @namespace)
         {
+            EnsureNamespace(@namespace);
+
             return Path.Combine(
                 _path,
                 @namespace,
                 _indexFile
             );
-        }
-
-        public override void InitNamespace(string @namespace)
-        {
-            string namespacePath = Path.Combine(_path, @namespace);
-
-            if (!Directory.Exists(namespacePath))
-            {
-                Directory.CreateDirectory(namespacePath);
-
-                var dirPaths = new string[]
-                {
-                    _transactionsDir,
-                    _blocksDir,
-                    _stagedTransactionsDir,
-                    _addressesDir,
-                    _statesDir,
-                };
-
-                foreach (var dir in dirPaths)
-                {
-                    string path = Path.Combine(namespacePath, dir);
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                }
-            }
         }
 
         public override long AppendAddressTransactionId(
@@ -382,9 +402,7 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{36}$",
                 RegexOptions.IgnoreCase
             );
-            var addressesRoot = new DirectoryInfo(
-                Path.Combine(_path, @namespace, _addressesDir)
-            );
+            var addressesRoot = new DirectoryInfo(GetAddressPath(@namespace));
             var prefixes = addressesRoot.EnumerateDirectories();
             foreach (DirectoryInfo prefix in prefixes)
             {
@@ -417,9 +435,7 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var rootDir = new DirectoryInfo(
-                Path.Combine(_path, @namespace, _blocksDir)
-            );
+            var rootDir = new DirectoryInfo(GetBlockPath(@namespace));
             var prefixes = rootDir.EnumerateDirectories();
             foreach (DirectoryInfo prefix in prefixes)
             {
@@ -476,11 +492,7 @@ namespace Libplanet.Store
             string @namespace
         )
         {
-            string stagedTxPath = Path.Combine(
-                _path,
-                @namespace,
-                _stagedTransactionsDir
-            );
+            string stagedTxPath = GetStagedTransactionPath(@namespace);
             var stagingDirectory = new DirectoryInfo(stagedTxPath);
             if (stagingDirectory.Exists)
             {
@@ -505,9 +517,7 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var rootDir = new DirectoryInfo(
-                Path.Combine(_path, @namespace, _transactionsDir)
-            );
+            var rootDir = new DirectoryInfo(GetTransactionPath(@namespace));
             foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
@@ -659,6 +669,34 @@ namespace Libplanet.Store
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(@namespace, new TxId(bytes)))
                 .Where(tx => tx != null);
+        }
+
+        private void EnsureNamespace(string @namespace)
+        {
+            string namespacePath = Path.Combine(_path, @namespace);
+
+            if (!Directory.Exists(namespacePath))
+            {
+                Directory.CreateDirectory(namespacePath);
+
+                var dirPaths = new string[]
+                {
+                    _transactionsDir,
+                    _blocksDir,
+                    _stagedTransactionsDir,
+                    _addressesDir,
+                    _statesDir,
+                };
+
+                foreach (var dir in dirPaths)
+                {
+                    string path = Path.Combine(namespacePath, dir);
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                }
+            }
         }
     }
 }

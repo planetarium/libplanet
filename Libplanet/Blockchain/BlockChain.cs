@@ -30,8 +30,6 @@ namespace Libplanet.Blockchain
             Blocks = new BlockSet<T>(store, Id.ToString());
             Transactions = new TransactionSet<T>(store, Id.ToString());
             Addresses = new AddressTransactionSet<T>(store, Id.ToString());
-
-            Store.InitNamespace(Id.ToString());
         }
 
         public IBlockPolicy<T> Policy { get; }

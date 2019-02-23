@@ -8,8 +8,6 @@ namespace Libplanet.Store
 {
     public interface IStore
     {
-        void InitNamespace(string @namespace);
-
         long CountIndex(string @namespace);
 
         IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);

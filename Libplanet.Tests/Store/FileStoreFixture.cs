@@ -19,7 +19,6 @@ namespace Libplanet.Tests.Store
                 System.IO.Path.GetTempPath(), $"filestore_test_{postfix}");
             Store = new FileStore(Path);
             StoreNamespace = Guid.NewGuid().ToString();
-            Store.InitNamespace(StoreNamespace);
 
             Address1 = new Address(new byte[]
             {
