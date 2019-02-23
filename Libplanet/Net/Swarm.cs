@@ -84,6 +84,7 @@ namespace Libplanet.Net
             DeltaDistributed = new AsyncAutoResetEvent();
             DeltaReceived = new AsyncAutoResetEvent();
             TxReceived = new AsyncAutoResetEvent();
+            BlockReceived = new AsyncAutoResetEvent();
 
             _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
@@ -150,6 +151,9 @@ namespace Libplanet.Net
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
+
+        [Uno.EqualityIgnore]
+        public AsyncAutoResetEvent BlockReceived { get; }
 
         public DateTimeOffset LastReceived { get; private set; }
 
@@ -806,7 +810,7 @@ namespace Libplanet.Net
                 Block<T> latest = blocks.Last();
                 Block<T> tip = blockChain.Tip;
 
-                if (tip == null || latest.Index > tip.Index)
+                if (tip == null || latest.Index >= tip.Index)
                 {
                     using (await _blockSyncMutex.LockAsync())
                     {
@@ -874,6 +878,7 @@ namespace Libplanet.Net
                         " ignored.");
                 }
 
+                BlockReceived.Set();
                 _logger.Debug("Append complete.");
             }
             catch (Exception e)

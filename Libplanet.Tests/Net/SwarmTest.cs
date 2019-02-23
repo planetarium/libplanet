@@ -135,7 +135,73 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public async Task WorksAsExpected()
+        public async Task CanBroadcastWhlieMining()
+        {
+            Swarm a = _swarms[0];
+            Swarm b = _swarms[1];
+
+            BlockChain<BaseAction> chainA = _blockchains[0];
+            BlockChain<BaseAction> chainB = _blockchains[1];
+
+            Task CreateMiner(
+                Swarm swarm,
+                BlockChain<BaseAction> chain,
+                int delay,
+                CancellationToken cancellationToken
+            )
+            {
+                return Task.Run(async () =>
+                {
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        var block = chain.MineBlock(_fx1.Address1);
+                        Log.Debug(
+                            $"Block mined. " +
+                            $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
+                        await swarm.BroadcastBlocksAsync(new[] { block });
+                        await Task.Delay(delay);
+                    }
+
+                    await swarm.BroadcastBlocksAsync(new[] { chain.Last() });
+                    Log.Debug("Mining complete.");
+                });
+            }
+
+            var minerCanceller = new CancellationTokenSource();
+            Task miningA = CreateMiner(a, chainA, 5000, minerCanceller.Token);
+            Task miningB = CreateMiner(b, chainB, 8000, minerCanceller.Token);
+
+            try
+            {
+                await StartAsync(a, chainA);
+                await StartAsync(b, chainB);
+
+                await b.AddPeersAsync(new[] { a.AsPeer });
+                await EnsureExchange(a, b);
+
+                await Task.Delay(10000);
+                minerCanceller.Cancel();
+
+                await Task.WhenAll(miningA, miningB);
+
+                await Task.Delay(5000);
+            }
+            finally
+            {
+                await a.StopAsync();
+                await b.StopAsync();
+            }
+
+            Log.Debug($"chainA: {string.Join(",", chainA)}");
+            Log.Debug($"chainB: {string.Join(",", chainB)}");
+
+            Assert.Subset(
+                chainA.AsEnumerable().ToHashSet(),
+                chainB.AsEnumerable().ToHashSet());
+        }
+
+        [Fact]
+        public async Task CanExchangePeer()
         {
             Swarm a = _swarms[0];
             Swarm b = _swarms[1];
