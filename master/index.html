@@ -62,7 +62,8 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="libplanet">Libplanet</h1>
 
-<p><a href="https://travis-ci.com/planetarium/libplanet.net"><img src="https://travis-ci.com/planetarium/libplanet.net.svg?branch=master" alt="Build Status"></a>
+<p><a href="https://discord.gg/ue9fgc3"><img src="https://img.shields.io/discord/539405872346955788.svg?color=7289da&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
+<a href="https://travis-ci.com/planetarium/libplanet.net"><img src="https://travis-ci.com/planetarium/libplanet.net.svg?branch=master" alt="Build Status"></a>
 <a href="https://codecov.io/gh/planetarium/libplanet.net"><img src="https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg" alt="Codecov"></a>
 <a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/v/Libplanet.svg?style=flat" alt="NuGet"></a>
 <a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat" alt="NuGet (prerelease)"></a></p>
@@ -80,20 +81,15 @@ a hyphen-suffixed version name.</p>
 For a daily build, a version name is like <code>0.1.0-nightly.20181231</code>.</p>
 <p>In the near future, we are going to submit it to <a href="https://assetstore.unity.com/">Unity Asset Store</a> too.</p>
 <h2 id="build">Build</h2>
+<p>You could build a <em>Libplanet.dll</em> assembly from the source code.</p>
 <p>The following command installs dependencies (required library packages) and
 builds the whole Libplanet solution:</p>
-<pre><code class="lang-bash">msbuild /r
+<pre><code class="lang-bash">msbuild -r
 </code></pre>
 <p>Note that <code>msbuild</code> is distributed together with Mono framework or
 Visual Studio.</p>
-<h2 id="test">Test</h2>
-<p>To build and run unit tests at a time execute the below command:</p>
-<pre><code class="lang-bash">msbuild /r /t:'Build;XunitTest' Libplanet.Tests
-</code></pre>
-<p>It's okay to omit <code>/r</code> and <code>Build</code> task if you've already run <code>msbuild /r</code>
-right before:</p>
-<pre><code class="lang-bash">msbuild /t:XunitTest Libplanet.Tests
-</code></pre>
+<p>If you'd like to contribute code to the Libplanet project in earnest,
+please read our <a href="CONTRIBUTING.html">contributor guide</a>.</p>
 </article>
           </div>
           
