@@ -16,7 +16,7 @@ using Libplanet.Tx;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
-    public class BlockChain<T> : IEnumerable<Block<T>>
+    public class BlockChain<T> : IEnumerable<Block<T>>, IAccountStateView
         where T : IAction
     {
         private readonly ReaderWriterLockSlim _rwlock;
@@ -180,6 +180,19 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitReadLock();
+            }
+        }
+
+        object IAccountStateView.GetAccountState(Address address)
+        {
+            AddressStateMap states = GetStates(new[] { address });
+            try
+            {
+                return states[address];
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
             }
         }
 

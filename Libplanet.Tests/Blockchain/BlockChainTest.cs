@@ -124,6 +124,10 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
 
+            IAccountStateView view = _blockChain;
+            Assert.Equal(result, view.GetAccountState(_fx.Address1));
+            Assert.Null(view.GetAccountState(_fx.Address2));
+
             var actions2 = new List<BaseAction>()
             {
                 new Attack()
@@ -145,6 +149,8 @@ namespace Libplanet.Tests.Blockchain
             states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
+            Assert.Equal(result, view.GetAccountState(_fx.Address1));
+            Assert.Null(view.GetAccountState(_fx.Address2));
         }
 
         [Fact]

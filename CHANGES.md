@@ -10,6 +10,8 @@ To be released.
     `IActionContext.From` properties to `Signer`.
     The corresponding parameter names on constructors and
     methods were also renamed too.
+ -  Added `IAccountStateView` interface, and made `BlockChain<T>` implements it.
+    The interface purposes to provide a read-only view to account states.
  -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,
