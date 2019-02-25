@@ -418,6 +418,19 @@ references:
   commentId: T:Libplanet.Action.IActionContext
   fullName: Libplanet.Action.IActionContext
   nameWithType: IActionContext
+- uid: Libplanet.Action.IActionContext.BlockIndex
+  name: BlockIndex
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockIndex
+  commentId: P:Libplanet.Action.IActionContext.BlockIndex
+  fullName: Libplanet.Action.IActionContext.BlockIndex
+  nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.BlockIndex*
+  name: BlockIndex
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_BlockIndex_
+  commentId: Overload:Libplanet.Action.IActionContext.BlockIndex
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.BlockIndex
+  nameWithType: IActionContext.BlockIndex
 - uid: Libplanet.Action.IActionContext.From
   name: From
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_From
@@ -773,23 +786,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain
   nameWithType: BlockChain<T>.BlockChain
   nameWithType.vb: BlockChain(Of T).BlockChain
-- uid: Libplanet.Blockchain.BlockChain`1.Addresses
-  name: Addresses
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Addresses
-  commentId: P:Libplanet.Blockchain.BlockChain`1.Addresses
-  fullName: Libplanet.Blockchain.BlockChain<T>.Addresses
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Addresses
-  nameWithType: BlockChain<T>.Addresses
-  nameWithType.vb: BlockChain(Of T).Addresses
-- uid: Libplanet.Blockchain.BlockChain`1.Addresses*
-  name: Addresses
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Addresses_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Addresses
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Addresses
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Addresses
-  nameWithType: BlockChain<T>.Addresses
-  nameWithType.vb: BlockChain(Of T).Addresses
 - uid: Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0})
   name: Append(Block<T>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__
@@ -817,23 +813,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Append
   nameWithType: BlockChain<T>.Append
   nameWithType.vb: BlockChain(Of T).Append
-- uid: Libplanet.Blockchain.BlockChain`1.Blocks
-  name: Blocks
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Blocks
-  commentId: P:Libplanet.Blockchain.BlockChain`1.Blocks
-  fullName: Libplanet.Blockchain.BlockChain<T>.Blocks
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Blocks
-  nameWithType: BlockChain<T>.Blocks
-  nameWithType.vb: BlockChain(Of T).Blocks
-- uid: Libplanet.Blockchain.BlockChain`1.Blocks*
-  name: Blocks
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Blocks_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Blocks
+- uid: Libplanet.Blockchain.BlockChain`1.Finalize
+  name: Finalize()
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize
+  commentId: M:Libplanet.Blockchain.BlockChain`1.Finalize
+  fullName: Libplanet.Blockchain.BlockChain<T>.Finalize()
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Finalize()
+  nameWithType: BlockChain<T>.Finalize()
+  nameWithType.vb: BlockChain(Of T).Finalize()
+- uid: Libplanet.Blockchain.BlockChain`1.Finalize*
+  name: Finalize
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Finalize
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Blocks
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Blocks
-  nameWithType: BlockChain<T>.Blocks
-  nameWithType.vb: BlockChain(Of T).Blocks
+  fullName: Libplanet.Blockchain.BlockChain<T>.Finalize
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Finalize
+  nameWithType: BlockChain<T>.Finalize
+  nameWithType.vb: BlockChain(Of T).Finalize
 - uid: Libplanet.Blockchain.BlockChain`1.GetEnumerator
   name: GetEnumerator()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetEnumerator
@@ -964,23 +960,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransactions
   nameWithType: BlockChain<T>.StageTransactions
   nameWithType.vb: BlockChain(Of T).StageTransactions
-- uid: Libplanet.Blockchain.BlockChain`1.Store
-  name: Store
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Store
-  commentId: P:Libplanet.Blockchain.BlockChain`1.Store
-  fullName: Libplanet.Blockchain.BlockChain<T>.Store
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Store
-  nameWithType: BlockChain<T>.Store
-  nameWithType.vb: BlockChain(Of T).Store
-- uid: Libplanet.Blockchain.BlockChain`1.Store*
-  name: Store
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Store_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Store
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Store
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Store
-  nameWithType: BlockChain<T>.Store
-  nameWithType.vb: BlockChain(Of T).Store
 - uid: Libplanet.Blockchain.BlockChain`1.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_System_Collections_IEnumerable_GetEnumerator
@@ -1017,23 +996,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Tip
   nameWithType: BlockChain<T>.Tip
   nameWithType.vb: BlockChain(Of T).Tip
-- uid: Libplanet.Blockchain.BlockChain`1.Transactions
-  name: Transactions
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Transactions
-  commentId: P:Libplanet.Blockchain.BlockChain`1.Transactions
-  fullName: Libplanet.Blockchain.BlockChain<T>.Transactions
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Transactions
-  nameWithType: BlockChain<T>.Transactions
-  nameWithType.vb: BlockChain(Of T).Transactions
-- uid: Libplanet.Blockchain.BlockChain`1.Transactions*
-  name: Transactions
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Transactions_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Transactions
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Transactions
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Transactions
-  nameWithType: BlockChain<T>.Transactions
-  nameWithType.vb: BlockChain(Of T).Transactions
 - uid: Libplanet.Blockchain.BlockChain`1.Validate(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}},System.DateTimeOffset)
   name: Validate(IEnumerable<Block<T>>, DateTimeOffset)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Validate_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___System_DateTimeOffset_
@@ -4690,19 +4652,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IndexBlockHash
   nameWithType: BaseStore.IndexBlockHash
-- uid: Libplanet.Store.BaseStore.InitNamespace(System.String)
-  name: InitNamespace(String)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_InitNamespace_System_String_
-  commentId: M:Libplanet.Store.BaseStore.InitNamespace(System.String)
-  fullName: Libplanet.Store.BaseStore.InitNamespace(System.String)
-  nameWithType: BaseStore.InitNamespace(String)
-- uid: Libplanet.Store.BaseStore.InitNamespace*
-  name: InitNamespace
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_InitNamespace_
-  commentId: Overload:Libplanet.Store.BaseStore.InitNamespace
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.InitNamespace
-  nameWithType: BaseStore.InitNamespace
 - uid: Libplanet.Store.BaseStore.IterateAddresses(System.String)
   name: IterateAddresses(String)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateAddresses_System_String_
@@ -5084,6 +5033,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.DeleteTransaction
   nameWithType: FileStore.DeleteTransaction
+- uid: Libplanet.Store.FileStore.GetAddressPath(System.String)
+  name: GetAddressPath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressPath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetAddressPath(System.String)
+  fullName: Libplanet.Store.FileStore.GetAddressPath(System.String)
+  nameWithType: FileStore.GetAddressPath(String)
 - uid: Libplanet.Store.FileStore.GetAddressPath(System.String,Libplanet.Address)
   name: GetAddressPath(String, Address)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressPath_System_String_Libplanet_Address_
@@ -5126,6 +5081,12 @@ references:
   fullName.vb: Libplanet.Store.FileStore.GetBlock(Of T)(System.String, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
   nameWithType: FileStore.GetBlock<T>(String, HashDigest<SHA256>)
   nameWithType.vb: FileStore.GetBlock(Of T)(String, HashDigest(Of SHA256))
+- uid: Libplanet.Store.FileStore.GetBlockPath(System.String)
+  name: GetBlockPath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetBlockPath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetBlockPath(System.String)
+  fullName: Libplanet.Store.FileStore.GetBlockPath(System.String)
+  nameWithType: FileStore.GetBlockPath(String)
 - uid: Libplanet.Store.FileStore.GetBlockPath(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
   name: GetBlockPath(String, HashDigest<SHA256>)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetBlockPath_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
@@ -5171,6 +5132,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.GetIndexPath
   nameWithType: FileStore.GetIndexPath
+- uid: Libplanet.Store.FileStore.GetStagedTransactionPath(System.String)
+  name: GetStagedTransactionPath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetStagedTransactionPath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetStagedTransactionPath(System.String)
+  fullName: Libplanet.Store.FileStore.GetStagedTransactionPath(System.String)
+  nameWithType: FileStore.GetStagedTransactionPath(String)
 - uid: Libplanet.Store.FileStore.GetStagedTransactionPath(System.String,Libplanet.Tx.TxId)
   name: GetStagedTransactionPath(String, TxId)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetStagedTransactionPath_System_String_Libplanet_Tx_TxId_
@@ -5184,6 +5151,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.GetStagedTransactionPath
   nameWithType: FileStore.GetStagedTransactionPath
+- uid: Libplanet.Store.FileStore.GetStatesPath(System.String)
+  name: GetStatesPath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetStatesPath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetStatesPath(System.String)
+  fullName: Libplanet.Store.FileStore.GetStatesPath(System.String)
+  nameWithType: FileStore.GetStatesPath(String)
 - uid: Libplanet.Store.FileStore.GetStatesPath(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
   name: GetStatesPath(String, HashDigest<SHA256>)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetStatesPath_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
@@ -5216,6 +5189,12 @@ references:
   fullName.vb: Libplanet.Store.FileStore.GetTransaction(Of T)(System.String, Libplanet.Tx.TxId)
   nameWithType: FileStore.GetTransaction<T>(String, TxId)
   nameWithType.vb: FileStore.GetTransaction(Of T)(String, TxId)
+- uid: Libplanet.Store.FileStore.GetTransactionPath(System.String)
+  name: GetTransactionPath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTransactionPath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetTransactionPath(System.String)
+  fullName: Libplanet.Store.FileStore.GetTransactionPath(System.String)
+  nameWithType: FileStore.GetTransactionPath(String)
 - uid: Libplanet.Store.FileStore.GetTransactionPath(System.String,Libplanet.Tx.TxId)
   name: GetTransactionPath(String, TxId)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTransactionPath_System_String_Libplanet_Tx_TxId_
@@ -5242,19 +5221,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.IndexBlockHash
   nameWithType: FileStore.IndexBlockHash
-- uid: Libplanet.Store.FileStore.InitNamespace(System.String)
-  name: InitNamespace(String)
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_InitNamespace_System_String_
-  commentId: M:Libplanet.Store.FileStore.InitNamespace(System.String)
-  fullName: Libplanet.Store.FileStore.InitNamespace(System.String)
-  nameWithType: FileStore.InitNamespace(String)
-- uid: Libplanet.Store.FileStore.InitNamespace*
-  name: InitNamespace
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_InitNamespace_
-  commentId: Overload:Libplanet.Store.FileStore.InitNamespace
-  isSpec: "True"
-  fullName: Libplanet.Store.FileStore.InitNamespace
-  nameWithType: FileStore.InitNamespace
 - uid: Libplanet.Store.FileStore.IterateAddresses(System.String)
   name: IterateAddresses(String)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateAddresses_System_String_
@@ -5606,19 +5572,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IndexBlockHash
   nameWithType: IStore.IndexBlockHash
-- uid: Libplanet.Store.IStore.InitNamespace(System.String)
-  name: InitNamespace(String)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_InitNamespace_System_String_
-  commentId: M:Libplanet.Store.IStore.InitNamespace(System.String)
-  fullName: Libplanet.Store.IStore.InitNamespace(System.String)
-  nameWithType: IStore.InitNamespace(String)
-- uid: Libplanet.Store.IStore.InitNamespace*
-  name: InitNamespace
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_InitNamespace_
-  commentId: Overload:Libplanet.Store.IStore.InitNamespace
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.InitNamespace
-  nameWithType: IStore.InitNamespace
 - uid: Libplanet.Store.IStore.IterateAddresses(System.String)
   name: IterateAddresses(String)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateAddresses_System_String_

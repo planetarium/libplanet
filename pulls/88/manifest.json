@@ -69,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Action.IActionContext.html",
-          "hash": "QUPJsug+xu66PDURBAtevQ=="
+          "hash": "97EcNWB3YwgfXWq9//JuBQ=="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "aL/PSFxHg9rTpbm+uJDvsg=="
+          "hash": "rfVal8jaa0QAROY5CxWCPg=="
         }
       },
       "is_incremental": false,
@@ -561,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "a6TFm/tWhx4mu1TSW4cghQ=="
+          "hash": "x3OGMdmyvuYFyNsWRl3JPQ=="
         }
       },
       "is_incremental": false,
@@ -585,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.FileStore.html",
-          "hash": "PqXs6JJoqXW/5NSxVr9uGQ=="
+          "hash": "UB0l9Q9z+XjNFUTeUG3wVQ=="
         }
       },
       "is_incremental": false,
@@ -597,7 +597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "ptGPWWGHNut0dR+alxiBag=="
+          "hash": "1TkD21j1R1R3RuGoKC0tdw=="
         }
       },
       "is_incremental": false,
@@ -835,13 +835,13 @@
           "can_incremental": false,
           "incrementalPhase": "build"
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
           "incrementalPhase": "build"
         }
       }
