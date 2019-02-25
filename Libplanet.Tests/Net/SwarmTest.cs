@@ -578,7 +578,6 @@ namespace Libplanet.Tests.Net
         private async Task<Task> StartAsync<T>(
             Swarm swarm,
             BlockChain<T> blockChain,
-            int millisecondsDistributeInterval = 1500,
             CancellationToken cancellationToken = default
         )
             where T : IAction
@@ -586,7 +585,7 @@ namespace Libplanet.Tests.Net
             Task task = Task.Run(
                 async () => await swarm.StartAsync(
                     blockChain,
-                    millisecondsDistributeInterval,
+                    200,
                     cancellationToken
                 )
             );
