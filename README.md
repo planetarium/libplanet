@@ -2,8 +2,8 @@ Libplanet
 =========
 
 [![Discord](https://img.shields.io/discord/539405872346955788.svg?color=7289da&logo=discord&logoColor=white)][Discord]
-[![Build Status](https://travis-ci.com/planetarium/libplanet.net.svg?branch=master)][Travis CI]
-[![Codecov](https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg)][Codecov]
+[![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=master)][Travis CI]
+[![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][Codecov]
 [![NuGet](https://img.shields.io/nuget/v/Libplanet.svg?style=flat)][NuGet]
 [![NuGet (prerelease)](https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat)][NuGet]
 
@@ -14,8 +14,8 @@ server.  Under the hood, it incorporates many features (e.g.,
 [digital signature], [BFT] consensus, data replication) of a [blockchain].
 
 [Discord]: https://discord.gg/ue9fgc3
-[Travis CI]: https://travis-ci.com/planetarium/libplanet.net
-[Codecov]: https://codecov.io/gh/planetarium/libplanet.net
+[Travis CI]: https://travis-ci.com/planetarium/libplanet
+[Codecov]: https://codecov.io/gh/planetarium/libplanet
 [NuGet]: https://www.nuget.org/packages/Libplanet/
 [digital signature]: https://en.wikipedia.org/wiki/Digital_signature
 [BFT]: https://en.wikipedia.org/wiki/Byzantine_fault_tolerance
