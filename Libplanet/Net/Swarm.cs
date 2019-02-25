@@ -6,6 +6,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,37 +35,44 @@ namespace Libplanet.Net
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
-        private readonly Uri _listenUrl;
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
+        private readonly AsyncLock _blockSyncMutex;
+        private readonly IPAddress _ipAddress;
 
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object> _runningEvent;
+        private int? _listenPort;
 
         public Swarm(
             PrivateKey privateKey,
-            Uri listenUrl,
-            int millisecondsDialTimeout,
+            int millisecondsDialTimeout = 15000,
+            IPAddress ipAddress = null,
+            int? listenPort = null,
             DateTimeOffset? createdAt = null)
             : this(
                   privateKey,
-                  listenUrl,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                  ipAddress,
+                  listenPort,
                   createdAt)
         {
         }
 
         public Swarm(
             PrivateKey privateKey,
-            Uri listenUrl,
-            TimeSpan? dialTimeout = null,
+            TimeSpan dialTimeout,
+            IPAddress ipAddress = null,
+            int? listenPort = null,
             DateTimeOffset? createdAt = null)
         {
-            _privateKey = privateKey;
-            _listenUrl = listenUrl;
-            _dialTimeout = dialTimeout ?? TimeSpan.FromMilliseconds(15000);
+            Running = false;
+
+            _privateKey = privateKey
+                ?? throw new ArgumentNullException(nameof(privateKey));
+            _dialTimeout = dialTimeout;
             _peers = new Dictionary<Peer, DateTimeOffset>();
             _removedPeers = new Dictionary<Peer, DateTimeOffset>();
             LastSeenTimestamps = new Dictionary<Peer, DateTimeOffset>();
@@ -75,17 +84,21 @@ namespace Libplanet.Net
             DeltaDistributed = new AsyncAutoResetEvent();
             DeltaReceived = new AsyncAutoResetEvent();
             TxReceived = new AsyncAutoResetEvent();
+            BlockReceived = new AsyncAutoResetEvent();
 
             _dealers = new Dictionary<Address, DealerSocket>();
             _router = new RouterSocket();
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
+            _blockSyncMutex = new AsyncLock();
 
+            _ipAddress = ipAddress ?? GetLocalIPAddress();
+            _listenPort = listenPort;
+
+            string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
-                .ForContext("Swarm_listenUrl", _listenUrl.ToString());
-
-            Running = false;
+                .ForContext("SwarmId", loggerId);
         }
 
         ~Swarm()
@@ -102,10 +115,33 @@ namespace Libplanet.Net
 
         public bool IsReadOnly => false;
 
+        public Uri Url
+        {
+            get
+            {
+                if (_ipAddress != null && _listenPort is int port)
+                {
+                    return new UriBuilder()
+                    {
+                        Scheme = "tcp",
+                        Host = _ipAddress.ToString(),
+                        Port = port,
+                    }.Uri;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         [Uno.EqualityKey]
+        public Address Address => _privateKey.PublicKey.ToAddress();
+
         public Peer AsPeer => new Peer(
             _privateKey.PublicKey,
-            (_listenUrl != null) ? new[] { _listenUrl } : new Uri[] { });
+            Url != null ? new[] { Url } : new Uri[] { }
+        );
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaReceived { get; }
@@ -115,6 +151,9 @@ namespace Libplanet.Net
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
+
+        [Uno.EqualityIgnore]
+        public AsyncAutoResetEvent BlockReceived { get; }
 
         public DateTimeOffset LastReceived { get; private set; }
 
@@ -185,8 +224,9 @@ namespace Libplanet.Net
                     continue;
                 }
 
-                if (existingKeys.Contains(peer.PublicKey))
+                if (!IsUnknownPeer(peer))
                 {
+                    _logger.Debug($"Peer[{peer}] is already exists, ignored.");
                     continue;
                 }
 
@@ -334,11 +374,20 @@ namespace Libplanet.Net
                 throw new SwarmException("Swarm is already running.");
             }
 
-            _router.Bind(_listenUrl.ToString());
-            Running = true;
+            if (_listenPort == null)
+            {
+                _listenPort = _router.BindRandomPort("tcp://*");
+            }
+            else
+            {
+                _router.Bind($"tcp://*:{_listenPort}");
+            }
+
+            _logger.Information($"Listen on {_listenPort}");
 
             try
             {
+                Running = true;
                 foreach (Peer peer in _peers.Keys)
                 {
                     try
@@ -353,11 +402,19 @@ namespace Libplanet.Net
                             _peers.Remove(peer);
                         }
                     }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"TimeoutException occured ({peer})."
+                        );
+                        continue;
+                    }
                     catch (IOException e)
                     {
                         _logger.Error(
                             e,
-                            $"IOException occured in DialPeerAsync ({peer})."
+                            $"IOException occured ({peer})."
                         );
                         continue;
                     }
@@ -368,10 +425,45 @@ namespace Libplanet.Net
                         distributeInterval, cancellationToken),
                     ReceiveMessageAsync(blockChain, cancellationToken));
             }
+            catch (Exception e)
+            {
+                _logger.Error(e, "Unexpected exception occured.");
+                throw;
+            }
             finally
             {
                 await StopAsync();
             }
+        }
+
+        public async Task BroadcastBlocksAsync<T>(
+            IEnumerable<Block<T>> blocks,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Trying to broadcast blocks...");
+            var message = new BlockHashes(
+                Address,
+                blocks.Select(b => b.Hash)
+            );
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
+            _logger.Debug("Block broadcasting complete.");
+        }
+
+        public async Task BroadcastTxsAsync<T>(
+            IEnumerable<Transaction<T>> txs,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction
+        {
+            _logger.Debug("Broadcast Txs.");
+            var message = new TxIds(Address, txs.Select(tx => tx.Id));
+            await BroadcastMessage(
+                message.ToNetMQMessage(_privateKey),
+                TimeSpan.FromMilliseconds(300),
+                cancellationToken);
         }
 
         internal async Task<IEnumerable<HashDigest<SHA256>>>
@@ -384,38 +476,32 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return await GetBlockHashesAsync(sock, locator, stop, token);
-        }
-
-        internal async Task<IEnumerable<HashDigest<SHA256>>>
-            GetBlockHashesAsync(
-                DealerSocket sock,
-                BlockLocator locator,
-                HashDigest<SHA256>? stop,
-                CancellationToken cancellationToken
-            )
-        {
             var request = new GetBlockHashes(locator, stop);
-            await sock.SendMultipartMessageAsync(
-                request.ToNetMQMessage(_privateKey),
-                cancellationToken: cancellationToken);
 
-            NetMQMessage response = await sock.ReceiveMultipartMessageAsync();
-            Message parsedMessage = Message.Parse(response, reply: true);
-            if (parsedMessage is BlockHashes blockHashes)
+            using (var socket = new DealerSocket(ToNetMQAddress(peer)))
             {
-                return blockHashes.Hashes;
-            }
+                await socket.SendMultipartMessageAsync(
+                    request.ToNetMQMessage(_privateKey),
+                    cancellationToken: token);
 
-            throw new InvalidMessageException(
-                $"The response of GetBlockHashes isn't BlockHashes. " +
-                $"but {parsedMessage}");
+                NetMQMessage response =
+                    await socket.ReceiveMultipartMessageAsync();
+                Message parsedMessage = Message.Parse(response, reply: true);
+                if (parsedMessage is BlockHashes blockHashes)
+                {
+                    return blockHashes.Hashes;
+                }
+
+                throw new InvalidMessageException(
+                    $"The response of GetBlockHashes isn't BlockHashes. " +
+                    $"but {parsedMessage}");
+            }
         }
 
         internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
@@ -426,47 +512,41 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return GetBlocksAsync<T>(sock, blockHashes, token);
-        }
-
-        internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
-            DealerSocket sock,
-            IEnumerable<HashDigest<SHA256>> blockHashes,
-            CancellationToken cancellationToken)
-            where T : IAction
-        {
             return new AsyncEnumerable<Block<T>>(async yield =>
             {
-                var request = new GetBlocks(blockHashes);
-                await sock.SendMultipartMessageAsync(
-                    request.ToNetMQMessage(_privateKey),
-                    cancellationToken: cancellationToken);
-
-                int hashCount = blockHashes.Count();
-                while (hashCount > 0)
+                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    NetMQMessage response =
-                    await sock.ReceiveMultipartMessageAsync(
-                        cancellationToken: cancellationToken);
-                    Message parsedMessage = Message.Parse(response, true);
-                    if (parsedMessage is Block blockMessage)
+                    var request = new GetBlocks(blockHashes);
+                    await socket.SendMultipartMessageAsync(
+                        request.ToNetMQMessage(_privateKey),
+                        cancellationToken: token);
+
+                    int hashCount = blockHashes.Count();
+                    while (hashCount > 0)
                     {
-                        Block<T> block = Block<T>.FromBencodex(
-                            blockMessage.Payload);
-                        await yield.ReturnAsync(block);
-                        hashCount--;
-                    }
-                    else
-                    {
-                        throw new InvalidMessageException(
-                            $"The response of getdata isn't block. " +
-                            $"but {parsedMessage}");
+                        NetMQMessage response =
+                        await socket.ReceiveMultipartMessageAsync(
+                            cancellationToken: token);
+                        Message parsedMessage = Message.Parse(response, true);
+                        if (parsedMessage is Block blockMessage)
+                        {
+                            Block<T> block = Block<T>.FromBencodex(
+                                blockMessage.Payload);
+                            await yield.ReturnAsync(block);
+                            hashCount--;
+                        }
+                        else
+                        {
+                            throw new InvalidMessageException(
+                                $"The response of GetData isn't a Block. " +
+                                $"but {parsedMessage}");
+                        }
                     }
                 }
             });
@@ -480,76 +560,60 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket sock))
+            if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return GetTxsAsync<T>(sock, txIds, cancellationToken);
-        }
-
-        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync<T>(
-            DealerSocket socket,
-            IEnumerable<TxId> txIds,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
-        {
             return new AsyncEnumerable<Transaction<T>>(async yield =>
             {
-                var request = new GetTxs(txIds);
-                await socket.SendMultipartMessageAsync(
-                    request.ToNetMQMessage(_privateKey),
-                    cancellationToken: cancellationToken);
-
-                int hashCount = txIds.Count();
-                while (hashCount > 0)
+                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    NetMQMessage response =
-                    await socket.ReceiveMultipartMessageAsync(
+                    var request = new GetTxs(txIds);
+                    await socket.SendMultipartMessageAsync(
+                        request.ToNetMQMessage(_privateKey),
                         cancellationToken: cancellationToken);
-                    Message parsedMessage = Message.Parse(response, true);
-                    if (parsedMessage is Messages.Tx parsed)
+
+                    int hashCount = txIds.Count();
+                    while (hashCount > 0)
                     {
-                        Transaction<T> tx = Transaction<T>.FromBencodex(
-                            parsed.Payload);
-                        await yield.ReturnAsync(tx);
-                        hashCount--;
-                    }
-                    else
-                    {
-                        throw new InvalidMessageException(
-                            $"The response of getdata isn't block. " +
-                            $"but {parsedMessage}");
+                        NetMQMessage response =
+                        await socket.ReceiveMultipartMessageAsync(
+                            cancellationToken: cancellationToken);
+                        Message parsedMessage = Message.Parse(response, true);
+                        if (parsedMessage is Messages.Tx parsed)
+                        {
+                            Transaction<T> tx = Transaction<T>.FromBencodex(
+                                parsed.Payload);
+                            await yield.ReturnAsync(tx);
+                            hashCount--;
+                        }
+                        else
+                        {
+                            throw new InvalidMessageException(
+                                $"The response of getdata isn't block. " +
+                                $"but {parsedMessage}");
+                        }
                     }
                 }
             });
         }
 
-        internal async Task BroadcastBlocksAsync<T>(
-            IEnumerable<Block<T>> blocks,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+        private static IPAddress GetLocalIPAddress()
         {
-            _logger.Debug("Broadcast Blocks.");
-            var message = new BlockHashes(blocks.Select(b => b.Hash));
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
-        }
-
-        internal async Task BroadcastTxsAsync<T>(
-            IEnumerable<Transaction<T>> txs,
-            CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
-        {
-            _logger.Debug("Broadcast Txs.");
-            var message = new TxIds(txs.Select(tx => tx.Id));
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
+            using (var socket = new Socket(
+                AddressFamily.InterNetwork,
+                SocketType.Dgram,
+                0))
+            {
+                // it's a workaround for checking the IP on the activated NIC.
+                // we don't need to make sure the endpoint is reachable
+                // because it doesn't connect.
+                socket.Connect("8.8.8.8", 65530);
+                var endPoint = socket.LocalEndPoint as IPEndPoint;
+                return endPoint.Address;
+            }
         }
 
         private static IEnumerable<Peer> FilterPeers(
@@ -601,8 +665,9 @@ namespace Libplanet.Net
                         continue;
                     }
 
+                    _logger.Debug($"The raw message[{raw}] has received.");
                     Message message = Message.Parse(raw, reply: false);
-                    _logger.Debug($"Message[{message}] received.");
+                    _logger.Debug($"The message[{message}] has parsed.");
 
                     // Queue a task per message to avoid blocking.
                     #pragma warning disable CS4014
@@ -625,6 +690,11 @@ namespace Libplanet.Net
                         "Could not parse NetMQMessage properly; ignore."
                     );
                 }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "Unexpected exception occured.");
+                    throw;
+                }
             }
         }
 
@@ -644,6 +714,7 @@ namespace Libplanet.Net
                             Identity = ping.Identity,
                         };
                         await ReplyAsync(reply, cancellationToken);
+                        _logger.Debug($"Pong sent.");
                         break;
                     }
 
@@ -661,7 +732,7 @@ namespace Libplanet.Net
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 500);
-                        var reply = new BlockHashes(hashes)
+                        var reply = new BlockHashes(Address, hashes)
                         {
                             Identity = getBlockHashes.Identity,
                         };
@@ -709,75 +780,146 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction
         {
-            if (!(message.Identity is Address from))
+            if (!(message.Sender is Address from))
             {
                 throw new NullReferenceException(
                     "BlockHashes doesn't have sender address.");
             }
 
-            if (!_dealers.TryGetValue(from, out DealerSocket sock))
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            if (peer == null)
             {
                 _logger.Information(
                     "BlockHashes was sent from unknown peer. ignored.");
                 return;
             }
 
+            _logger.Debug(
+                $"Trying to GetBlocksAsync() " +
+                $"(using {message.Hashes.Count()} hashes");
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
-                sock, message.Hashes, cancellationToken);
+                peer, message.Hashes, cancellationToken);
 
             List<Block<T>> blocks = await fetched.ToListAsync();
-            await AppendBlocksAsync(
-                sock, blockChain, blocks, cancellationToken);
+            _logger.Debug("GetBlocksAsync() complete.");
+
+            try
+            {
+                // We assume that the blocks are sorted in order.
+                Block<T> oldest = blocks.First();
+                Block<T> latest = blocks.Last();
+                Block<T> tip = blockChain.Tip;
+
+                if (tip == null || latest.Index >= tip.Index)
+                {
+                    using (await _blockSyncMutex.LockAsync())
+                    {
+                        _logger.Debug("Trying to find branchpoint...");
+                        BlockLocator locator = blockChain.GetBlockLocator();
+                        IEnumerable<HashDigest<SHA256>> hashes =
+                            await GetBlockHashesAsync(
+                                peer, locator, oldest.Hash, cancellationToken);
+                        HashDigest<SHA256> branchPoint = hashes.First();
+
+                        _logger.Debug(
+                            $"Branchpoint is " +
+                            $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
+                        );
+
+                        BlockChain<T> toSync;
+
+                        if (tip == null || branchPoint == tip.Hash)
+                        {
+                            _logger.Debug("it doesn't need fork.");
+                            toSync = blockChain;
+                        }
+
+                        // FIXME BlockChain.Blocks.ContainsKey() can be very
+                        // expensive.
+                        // we can omit this clause if assume every chain shares
+                        // same genesis block...
+                        else if (!blockChain.Blocks.ContainsKey(branchPoint))
+                        {
+                            toSync = new BlockChain<T>(
+                                blockChain.Policy,
+                                blockChain.Store);
+                        }
+                        else
+                        {
+                            _logger.Debug("Forking needed. trying to fork...");
+                            toSync = blockChain.Fork(branchPoint);
+                            _logger.Debug("Forking complete. ");
+                        }
+
+                        _logger.Debug("Trying to fill up previous blocks...");
+                        await FillBlocksAsync(
+                            peer, toSync, oldest.PreviousHash, cancellationToken
+                        );
+                        _logger.Debug("Filled up. trying to concatenation...");
+
+                        foreach (Block<T> block in blocks)
+                        {
+                            toSync.Append(block);
+                        }
+
+                        _logger.Debug("Sync is done.");
+                        if (!toSync.Id.Equals(blockChain.Id))
+                        {
+                            _logger.Debug("trying to swapping chain...");
+                            blockChain.Swap(toSync);
+                            _logger.Debug("Swapping complete");
+                        }
+                    }
+                }
+                else
+                {
+                    _logger.Information(
+                        "Received index is older than current chain's tip." +
+                        " ignored.");
+                }
+
+                BlockReceived.Set();
+                _logger.Debug("Append complete.");
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, $"Append Failed. exception: {e}");
+                throw;
+            }
         }
 
-        private async Task AppendBlocksAsync<T>(
-            DealerSocket socket,
+        private async Task FillBlocksAsync<T>(
+            Peer peer,
             BlockChain<T> blockChain,
-            List<Block<T>> blocks,
+            HashDigest<SHA256>? stop,
             CancellationToken cancellationToken)
             where T : IAction
         {
-            // We assume that the blocks are sorted in order.
-            Block<T> oldest = blocks.First();
-            Block<T> latest = blocks.Last();
-            Block<T> tip = blockChain.Tip;
-
-            if (tip == null || oldest.PreviousHash == tip.Hash)
+            while (blockChain.Tip?.Hash != stop)
             {
-                // Caught up with everything, so we just connect it.
-                foreach (Block<T> block in blocks)
-                {
-                    blockChain.Append(block);
-                }
-            }
-            else if (latest.Index > tip.Index)
-            {
-                // We need some other blocks, so request to sender.
                 BlockLocator locator = blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
-                        socket, locator, oldest.Hash, cancellationToken);
-                HashDigest<SHA256> branchPoint = hashes.First();
+                        peer, locator, stop, cancellationToken);
 
-                blockChain.DeleteAfter(branchPoint);
+                if (blockChain.Tip != null)
+                {
+                    hashes = hashes.Skip(1);
+                }
+
+                _logger.Debug(
+                    $"Required hashes are {string.Join(",", hashes)}. " +
+                    $"(tip: {blockChain.Tip?.Hash})"
+                );
 
                 await GetBlocksAsync<T>(
-                    socket,
-                    hashes.Skip(1),
+                    peer,
+                    hashes,
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
                     blockChain.Append(block);
                 });
-
-                await AppendBlocksAsync(
-                    socket, blockChain, blocks, cancellationToken);
-            }
-            else
-            {
-                _logger.Information(
-                    "Received index is older than current chain's tip." +
-                    " ignored.");
             }
         }
 
@@ -812,21 +954,22 @@ namespace Libplanet.Net
             IEnumerable<TxId> unknownTxIds = message.Ids
                 .Where(id => !blockChain.Transactions.ContainsKey(id));
 
-            if (!(message.Identity is Address from))
+            if (!(message.Sender is Address from))
             {
                 throw new NullReferenceException(
                     "TxIds doesn't have sender address.");
             }
 
-            if (!_dealers.TryGetValue(from, out DealerSocket sock))
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            if (peer == null)
             {
                 _logger.Information(
                     "TxIds was sent from unknown peer. ignored.");
                 return;
             }
 
-            IAsyncEnumerable<Transaction<T>> fetched =
-                GetTxsAsync<T>(sock, unknownTxIds, cancellationToken);
+            IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync<T>(
+                peer, unknownTxIds, cancellationToken);
             var toStage = new HashSet<Transaction<T>>(
                 await fetched.ToListAsync(cancellationToken));
 
@@ -849,6 +992,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
             where T : IAction
         {
+            _logger.Debug("Trying to transfer blocks...");
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
                 if (blockChain.Blocks.TryGetValue(hash, out Block<T> block))
@@ -860,6 +1004,8 @@ namespace Libplanet.Net
                     await ReplyAsync(response, cancellationToken);
                 }
             }
+
+            _logger.Debug("Transfer complete.");
         }
 
         private async Task ProcessDeltaAsync(
@@ -868,10 +1014,8 @@ namespace Libplanet.Net
         )
         {
             Peer sender = delta.Sender;
-            PublicKey senderKey = sender.PublicKey;
 
-            if (!_peers.ContainsKey(sender) &&
-                _peers.Keys.All(p => senderKey != p.PublicKey))
+            if (IsUnknownPeer(sender))
             {
                 delta = new PeerSetDelta(
                     delta.Sender,
@@ -898,15 +1042,28 @@ namespace Libplanet.Net
             _logger.Debug($"The delta[{delta}] has been applied.");
         }
 
+        private bool IsUnknownPeer(Peer sender)
+        {
+            if (_peers.Keys.All(p => sender.PublicKey != p.PublicKey))
+            {
+                return true;
+            }
+
+            if (_dealers.Keys.All(a => sender.Address != a))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private async Task ApplyDelta(
             PeerSetDelta delta,
             CancellationToken cancellationToken
         )
         {
             PublicKey senderPublicKey = delta.Sender.PublicKey;
-            bool firstEncounter = _peers.Keys.All(
-                p => p.PublicKey != senderPublicKey
-            );
+            bool firstEncounter = IsUnknownPeer(delta.Sender);
             RemovePeers(delta.RemovedPeers, delta.Timestamp);
             var addedPeers = new HashSet<Peer>(delta.AddedPeers);
 
@@ -1037,7 +1194,7 @@ namespace Libplanet.Net
         {
             CheckStarted();
 
-            dealer.Connect(address.ToString());
+            dealer.Connect(address.ToString().TrimEnd('/'));
 
             _logger.Debug($"Trying to Ping to [{address}]...");
             var ping = new Ping();
@@ -1059,15 +1216,16 @@ namespace Libplanet.Net
             Peer peer, CancellationToken cancellationToken)
         {
             Peer original = peer;
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
-            {
-                dealer = new DealerSocket();
-                dealer.Options.Identity =
-                    _privateKey.PublicKey.ToAddress().ToByteArray();
-            }
+            var connected = false;
 
+            // Peer can have more than 2 Url due to NAT and so on.
+            // Therefore, DialPeerAsync () checks the accessible URLs
+            // and puts them at the front.
             foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
             {
+                var dealer = new DealerSocket();
+                dealer.Options.Identity =
+                    _privateKey.PublicKey.ToAddress().ToByteArray();
                 try
                 {
                     _logger.Debug($"Trying to DialAsync({url})...");
@@ -1080,7 +1238,16 @@ namespace Libplanet.Net
                         e,
                         $"IOException occured in DialAsync ({url})."
                     );
-                    dealer.Disconnect(url.ToString());
+                    dealer.Dispose();
+                    continue;
+                }
+                catch (TimeoutException e)
+                {
+                    _logger.Error(
+                        e,
+                        $"TimeoutException occured in DialAsync ({url})."
+                    );
+                    dealer.Dispose();
                     continue;
                 }
 
@@ -1090,10 +1257,11 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+                connected = true;
                 break;
             }
 
-            if (dealer == null)
+            if (!connected)
             {
                 throw new IOException($"not reachable at all to {original}");
             }
@@ -1149,6 +1317,11 @@ namespace Libplanet.Net
                     {
                         _logger.Error(e, "TimeoutException occured.");
                     }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "UnexpectedException occured.");
+                        throw;
+                    }
 
                     _logger.Debug("The delta has been sent.");
                     DeltaDistributed.Set();
@@ -1161,6 +1334,7 @@ namespace Libplanet.Net
             TimeSpan timeout,
             CancellationToken cancellationToken)
         {
+            // FIXME Should replace with PUB/SUB model.
             return Task.WhenAll(
                 _dealers.Values.Select(
                     s => s.SendMultipartMessageAsync(
@@ -1187,6 +1361,18 @@ namespace Libplanet.Net
             {
                 throw new NoSwarmContextException("Swarm hasn't started yet.");
             }
+        }
+
+        private string ToNetMQAddress(Peer peer)
+        {
+            if (peer == null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            // See DialPeerAsync().
+            Uri url = peer.Urls.FirstOrDefault();
+            return url?.ToString().TrimEnd('/');
         }
     }
 }
