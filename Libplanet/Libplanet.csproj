@@ -6,18 +6,18 @@
     <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
     <Description>A .NET library for creating multiplayer online game in decentralized fashion.
 See also the docs for details:
-http://planetarium.github.io/libplanet.net/</Description>
+https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
-    <PackageProjectUrl>https://github.com/planetarium/libplanet.net</PackageProjectUrl>
+    <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageIconUrl>https://avatars3.githubusercontent.com/u/47222188?s=64</PackageIconUrl>
     <PackageDocumentationFile>README.md</PackageDocumentationFile>
     <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    <PackageReleaseNotes>https://github.com/planetarium/libplanet.net/blob/master/CHANGES.md</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/planetarium/libplanet/blob/master/CHANGES.md</PackageReleaseNotes>
     <PackageTags>multiplayer online game;game;blockchain</PackageTags>
-    <RepositoryUrl>git://github.com/planetarium/libplanet.net.git</RepositoryUrl>
+    <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Libplanet</RootNamespace>
     <AssemblyName>Libplanet</AssemblyName>

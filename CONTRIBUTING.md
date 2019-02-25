@@ -69,7 +69,7 @@ builds the whole Libplanet solution:
     msbuild -r
 
 
-Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.net.svg?branch=master)][Travis CI] [![Codecov](https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg)][2]
+Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=master)][Travis CI] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][2]
 -----
 
 We write as complete tests as possible to the corresponding implementation code.
@@ -93,8 +93,8 @@ right before:
 
     msbuild -t:XunitTest Libplanet.Tests
 
-[Travis CI]: https://travis-ci.com/planetarium/libplanet.net
-[2]: https://codecov.io/gh/planetarium/libplanet.net
+[Travis CI]: https://travis-ci.com/planetarium/libplanet
+[2]: https://codecov.io/gh/planetarium/libplanet
 [Xunit]: https://xunit.github.io/
 
 
