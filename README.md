@@ -50,6 +50,12 @@ For a merge commit build, a version name is like `0.1.0-dev.123+20181231` where
 `123` is a build number in our CI system and `20181231` is a date of the build.
 For a daily build, a version name is like `0.1.0-nightly.20181231`.
 
+Unfortuneatly, Unity currently does not support NuGet.  There are some Unity
+plug-ins to deal with NuGet package system, and these seem immature at present.
+To use Libplanet on Unity, you need to manually extract *Libplanet.dll*
+from *Libplanet.\*.nupkg* file and place it inside of your Unity project.
+We are acknowledging the fact Libplanet is currently not very usable together
+with Unity, and promise to make it better in next few minor releases.
 In the near future, we are going to submit it to [Unity Asset Store] too.
 
 [releases]: https://github.com/planetarium/libplanet/releases
