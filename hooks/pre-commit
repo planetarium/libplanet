@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+
+"$(dirname "$0")/check-bom"
+
+# vim: set filetype=sh ts=2 sw=2 et:
