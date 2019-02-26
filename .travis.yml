@@ -144,7 +144,7 @@ script:
   fi
 
 # Check coding styles
-- hooks/pre-commit
+- hooks/check-bom
 
 # Build the whole solution
 - msbuild /p:Configuration=Release /r
