@@ -25,9 +25,26 @@ server.  Under the hood, it incorporates many features (e.g.,
 NuGet
 -----
 
-Although this project has never released any version, for everyday and every
-merge commit, it is packed into a *.nupkg* and uploaded to [NuGet] with
-a hyphen-suffixed version name.
+For every stable release, we pack Libplanet into a *.nupkg* and
+upload it to [NuGet] and GitHub [releases] page.
+(You can find changelog for versions from [releases] page.)
+To use Libplanet in your game, your project needs to add a dependency
+to *Libplanet* package.  On Visual Studio IDE, run the following command
+in Package Manager Console:
+
+    Install-Package Libplanet
+
+If you prefer `dotnet` CLI run the following command instead:
+
+~~~~~~~~ bash
+dotnet add package Libplanet
+~~~~~~~~
+
+See also Microsoft's docs on [different ways to install NuGet package][1].
+
+In addition to stable releases, we also provide pre-release packages.
+For everyday and every merge commit, it is packed into a *.nupkg*
+and uploaded to [NuGet] with a hyphen-suffixed version name.
 
 For a merge commit build, a version name is like `0.1.0-dev.123+20181231` where
 `123` is a build number in our CI system and `20181231` is a date of the build.
@@ -35,7 +52,9 @@ For a daily build, a version name is like `0.1.0-nightly.20181231`.
 
 In the near future, we are going to submit it to [Unity Asset Store] too.
 
+[releases]: https://github.com/planetarium/libplanet/releases
 [Unity Asset Store]: https://assetstore.unity.com/
+[1]: https://docs.microsoft.com/nuget/consume-packages/ways-to-install-a-package
 
 
 Build
