@@ -172,7 +172,7 @@ script:
 # Build Libplanet.*.nupkg
 - |
   rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
-  if [[ "$TRAVIS_TAG" = "" ]]; then
+  if [[ "$TRAVIS_TAG" = "" && "$version" = *-dev ]]; then
     # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
     # if it's not a tag push.
     if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
