@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Async;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -86,7 +87,7 @@ namespace Libplanet.Net
             TxReceived = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
 
-            _dealers = new Dictionary<Address, DealerSocket>();
+            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
 
             _distributeMutex = new AsyncLock();
