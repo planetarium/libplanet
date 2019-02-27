@@ -473,6 +473,7 @@ namespace Libplanet.Tests.Net
 
                 await EnsureExchange(swarmA, swarmB);
                 await EnsureExchange(swarmA, swarmC);
+                await EnsureExchange(swarmB, swarmC);
 
                 await swarmA.BroadcastTxsAsync(new[] { tx });
 
@@ -530,6 +531,7 @@ namespace Libplanet.Tests.Net
 
                 await EnsureExchange(swarmA, swarmB);
                 await EnsureExchange(swarmA, swarmC);
+                await EnsureExchange(swarmB, swarmC);
 
                 await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
 
