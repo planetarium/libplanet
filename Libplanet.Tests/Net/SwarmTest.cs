@@ -71,6 +71,11 @@ namespace Libplanet.Tests.Net
             _fx1.Dispose();
             _fx2.Dispose();
             _fx3.Dispose();
+
+            foreach (Swarm s in _swarms)
+            {
+                s.Dispose();
+            }
         }
 
         [Fact]
