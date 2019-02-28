@@ -535,7 +535,8 @@ namespace Libplanet.Tests.Net
 
                 await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
 
-                await Task.Delay(5000);
+                await swarmC.BlockReceived.WaitAsync();
+                await swarmA.BlockReceived.WaitAsync();
 
                 Assert.Equal(chainB.AsEnumerable(), chainC);
 
@@ -545,7 +546,8 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.BroadcastBlocksAsync(new[] { chainA.Last() });
 
-                await Task.Delay(5000);
+                await swarmB.BlockReceived.WaitAsync();
+                await swarmC.BlockReceived.WaitAsync();
 
                 Assert.Equal(chainA.AsEnumerable(), chainB);
                 Assert.Equal(chainA.AsEnumerable(), chainC);
