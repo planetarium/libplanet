@@ -37,6 +37,7 @@ namespace Libplanet.Net
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly TimeSpan _dialTimeout;
+        private readonly AsyncLock _runningMutex;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
@@ -93,6 +94,7 @@ namespace Libplanet.Net
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
+            _runningMutex = new AsyncLock();
 
             _ipAddress = ipAddress ?? GetLocalIPAddress();
             _listenPort = listenPort;
@@ -312,20 +314,23 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
         {
             _logger.Debug("Stopping...");
-            if (Running)
+            using (await _runningMutex.LockAsync())
             {
-                _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
-                await DistributeDeltaAsync(false, cancellationToken);
-
-                _router.Dispose();
-                foreach (DealerSocket s in _dealers.Values)
+                if (Running)
                 {
-                    s.Dispose();
+                    _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
+                    await DistributeDeltaAsync(false, cancellationToken);
+
+                    _router.Dispose();
+                    foreach (DealerSocket s in _dealers.Values)
+                    {
+                        s.Dispose();
+                    }
+
+                    _dealers.Clear();
+
+                    Running = false;
                 }
-
-                _dealers.Clear();
-
-                Running = false;
             }
 
             _logger.Debug("Stopped.");
@@ -388,36 +393,39 @@ namespace Libplanet.Net
 
             try
             {
-                Running = true;
-                foreach (Peer peer in _peers.Keys)
+                using (await _runningMutex.LockAsync())
                 {
-                    try
+                    Running = true;
+                    foreach (Peer peer in _peers.Keys)
                     {
-                        Peer replacedPeer = await DialPeerAsync(
-                            peer,
-                            cancellationToken
-                        );
-                        if (replacedPeer != peer)
+                        try
                         {
-                            _peers[replacedPeer] = _peers[peer];
-                            _peers.Remove(peer);
+                            Peer replacedPeer = await DialPeerAsync(
+                                peer,
+                                cancellationToken
+                            );
+                            if (replacedPeer != peer)
+                            {
+                                _peers[replacedPeer] = _peers[peer];
+                                _peers.Remove(peer);
+                            }
                         }
-                    }
-                    catch (TimeoutException e)
-                    {
-                        _logger.Error(
-                            e,
-                            $"TimeoutException occured ({peer})."
-                        );
-                        continue;
-                    }
-                    catch (IOException e)
-                    {
-                        _logger.Error(
-                            e,
-                            $"IOException occured ({peer})."
-                        );
-                        continue;
+                        catch (TimeoutException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"TimeoutException occured ({peer})."
+                            );
+                            continue;
+                        }
+                        catch (IOException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"IOException occured ({peer})."
+                            );
+                            continue;
+                        }
                     }
                 }
 
