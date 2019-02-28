@@ -582,6 +582,19 @@ namespace Libplanet.Tests.Net
                 s.AsPeer.Urls);
         }
 
+        [Fact]
+        public async Task CanStopGracefullyWhileStarting()
+        {
+            Swarm a = _swarms[0];
+            Swarm b = _swarms[1];
+
+            await StartAsync(b, _blockchains[1]);
+            await a.AddPeersAsync(new[] { b.AsPeer });
+
+            Task t = await StartAsync(a, _blockchains[0]);
+            await Task.WhenAll(a.StopAsync(), t);
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm swarm,
             BlockChain<T> blockChain,

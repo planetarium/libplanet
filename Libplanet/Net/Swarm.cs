@@ -646,8 +646,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain, CancellationToken cancellationToken)
             where T : IAction
         {
-            CheckStarted();
-
             while (Running)
             {
                 try
