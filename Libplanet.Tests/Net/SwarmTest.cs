@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Net
         public SwarmTest(ITestOutputHelper output)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Debug()
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output, outputTemplate: "{Timestamp:HH:mm:ss}[@{Swarm_listenUrl}][{ThreadId}] - {Message}")
                 .CreateLogger()

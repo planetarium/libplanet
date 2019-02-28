@@ -665,7 +665,7 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    _logger.Debug($"The raw message[{raw}] has received.");
+                    _logger.Verbose($"The raw message[{raw}] has received.");
                     Message message = Message.Parse(raw, reply: false);
                     _logger.Debug($"The message[{message}] has parsed.");
 
