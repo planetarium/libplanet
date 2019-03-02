@@ -135,12 +135,7 @@ script:
   elif [[ "$TRAVIS_TAG" != "" ]]; then
     ! grep -i "to be released" CHANGES.md
   else
-    if [[ "$TRAVIS_PULL_REQUEST_SHA" = "" ]]; then
-      commit_range="$TRAVIS_COMMIT_RANGE"
-    else
-      commit_range="$TRAVIS_BRANCH...$TRAVIS_PULL_REQUEST_SHA"
-    fi
-    [[ "$(git diff --name-only "$commit_range" | grep CHANGES\.md)" != "" ]]
+    [[ "$(git diff --name-only "$TRAVIS_COMMIT_RANGE" | grep CHANGES\.md)" != "" ]]
   fi
 
 # Check coding styles
