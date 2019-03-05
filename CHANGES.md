@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.1.1
 -------------
 
-To be released.
+Released on March 5, 2019.
 
  -  Improved stability of `Swarm` and `SwarmTest`.
 
