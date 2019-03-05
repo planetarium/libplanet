@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Async;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -36,6 +37,7 @@ namespace Libplanet.Net
         private readonly IDictionary<Address, DealerSocket> _dealers;
 
         private readonly TimeSpan _dialTimeout;
+        private readonly AsyncLock _runningMutex;
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
@@ -86,12 +88,13 @@ namespace Libplanet.Net
             TxReceived = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
 
-            _dealers = new Dictionary<Address, DealerSocket>();
+            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
+            _runningMutex = new AsyncLock();
 
             _ipAddress = ipAddress ?? GetLocalIPAddress();
             _listenPort = listenPort;
@@ -311,20 +314,23 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
         {
             _logger.Debug("Stopping...");
-            if (Running)
+            using (await _runningMutex.LockAsync())
             {
-                _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
-                await DistributeDeltaAsync(false, cancellationToken);
-
-                _router.Dispose();
-                foreach (DealerSocket s in _dealers.Values)
+                if (Running)
                 {
-                    s.Dispose();
+                    _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
+                    await DistributeDeltaAsync(false, cancellationToken);
+
+                    _router.Dispose();
+                    foreach (DealerSocket s in _dealers.Values)
+                    {
+                        s.Dispose();
+                    }
+
+                    _dealers.Clear();
+
+                    Running = false;
                 }
-
-                _dealers.Clear();
-
-                Running = false;
             }
 
             _logger.Debug("Stopped.");
@@ -387,36 +393,39 @@ namespace Libplanet.Net
 
             try
             {
-                Running = true;
-                foreach (Peer peer in _peers.Keys)
+                using (await _runningMutex.LockAsync())
                 {
-                    try
+                    Running = true;
+                    foreach (Peer peer in _peers.Keys)
                     {
-                        Peer replacedPeer = await DialPeerAsync(
-                            peer,
-                            cancellationToken
-                        );
-                        if (replacedPeer != peer)
+                        try
                         {
-                            _peers[replacedPeer] = _peers[peer];
-                            _peers.Remove(peer);
+                            Peer replacedPeer = await DialPeerAsync(
+                                peer,
+                                cancellationToken
+                            );
+                            if (replacedPeer != peer)
+                            {
+                                _peers[replacedPeer] = _peers[peer];
+                                _peers.Remove(peer);
+                            }
                         }
-                    }
-                    catch (TimeoutException e)
-                    {
-                        _logger.Error(
-                            e,
-                            $"TimeoutException occured ({peer})."
-                        );
-                        continue;
-                    }
-                    catch (IOException e)
-                    {
-                        _logger.Error(
-                            e,
-                            $"IOException occured ({peer})."
-                        );
-                        continue;
+                        catch (TimeoutException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"TimeoutException occured ({peer})."
+                            );
+                            continue;
+                        }
+                        catch (IOException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"IOException occured ({peer})."
+                            );
+                            continue;
+                        }
                     }
                 }
 
@@ -645,8 +654,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain, CancellationToken cancellationToken)
             where T : IAction
         {
-            CheckStarted();
-
             while (Running)
             {
                 try
@@ -665,7 +672,7 @@ namespace Libplanet.Net
                         continue;
                     }
 
-                    _logger.Debug($"The raw message[{raw}] has received.");
+                    _logger.Verbose($"The raw message[{raw}] has received.");
                     Message message = Message.Parse(raw, reply: false);
                     _logger.Debug($"The message[{message}] has parsed.");
 
@@ -805,80 +812,9 @@ namespace Libplanet.Net
 
             try
             {
-                // We assume that the blocks are sorted in order.
-                Block<T> oldest = blocks.First();
-                Block<T> latest = blocks.Last();
-                Block<T> tip = blockChain.Tip;
-
-                if (tip == null || latest.Index >= tip.Index)
-                {
-                    using (await _blockSyncMutex.LockAsync())
-                    {
-                        _logger.Debug("Trying to find branchpoint...");
-                        BlockLocator locator = blockChain.GetBlockLocator();
-                        IEnumerable<HashDigest<SHA256>> hashes =
-                            await GetBlockHashesAsync(
-                                peer, locator, oldest.Hash, cancellationToken);
-                        HashDigest<SHA256> branchPoint = hashes.First();
-
-                        _logger.Debug(
-                            $"Branchpoint is " +
-                            $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
-                        );
-
-                        BlockChain<T> toSync;
-
-                        if (tip == null || branchPoint == tip.Hash)
-                        {
-                            _logger.Debug("it doesn't need fork.");
-                            toSync = blockChain;
-                        }
-
-                        // FIXME BlockChain.Blocks.ContainsKey() can be very
-                        // expensive.
-                        // we can omit this clause if assume every chain shares
-                        // same genesis block...
-                        else if (!blockChain.Blocks.ContainsKey(branchPoint))
-                        {
-                            toSync = new BlockChain<T>(
-                                blockChain.Policy,
-                                blockChain.Store);
-                        }
-                        else
-                        {
-                            _logger.Debug("Forking needed. trying to fork...");
-                            toSync = blockChain.Fork(branchPoint);
-                            _logger.Debug("Forking complete. ");
-                        }
-
-                        _logger.Debug("Trying to fill up previous blocks...");
-                        await FillBlocksAsync(
-                            peer, toSync, oldest.PreviousHash, cancellationToken
-                        );
-                        _logger.Debug("Filled up. trying to concatenation...");
-
-                        foreach (Block<T> block in blocks)
-                        {
-                            toSync.Append(block);
-                        }
-
-                        _logger.Debug("Sync is done.");
-                        if (!toSync.Id.Equals(blockChain.Id))
-                        {
-                            _logger.Debug("trying to swapping chain...");
-                            blockChain.Swap(toSync);
-                            _logger.Debug("Swapping complete");
-                        }
-                    }
-                }
-                else
-                {
-                    _logger.Information(
-                        "Received index is older than current chain's tip." +
-                        " ignored.");
-                }
-
-                BlockReceived.Set();
+                await AppendBlocksAsync(
+                    blockChain, peer, blocks, cancellationToken
+                );
                 _logger.Debug("Append complete.");
             }
             catch (Exception e)
@@ -886,6 +822,119 @@ namespace Libplanet.Net
                 _logger.Error(e, $"Append Failed. exception: {e}");
                 throw;
             }
+        }
+
+        private async Task AppendBlocksAsync<T>(
+            BlockChain<T> blockChain,
+            Peer peer,
+            List<Block<T>> blocks,
+            CancellationToken cancellationToken
+        )
+            where T : IAction
+        {
+            // We assume that the blocks are sorted in order.
+            Block<T> oldest = blocks.First();
+            Block<T> latest = blocks.Last();
+            Block<T> tip = blockChain.Tip;
+
+            if (tip == null || latest.Index >= tip.Index)
+            {
+                using (await _blockSyncMutex.LockAsync())
+                {
+                    _logger.Debug("Trying to find branchpoint...");
+                    BlockLocator locator = blockChain.GetBlockLocator();
+                    IEnumerable<HashDigest<SHA256>> hashes =
+                        await GetBlockHashesAsync(
+                            peer, locator, oldest.Hash, cancellationToken);
+                    HashDigest<SHA256> branchPoint = hashes.First();
+
+                    _logger.Debug(
+                        $"Branchpoint is " +
+                        $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
+                    );
+
+                    BlockChain<T> toSync;
+
+                    if (tip == null || branchPoint == tip.Hash)
+                    {
+                        _logger.Debug("it doesn't need fork.");
+                        toSync = blockChain;
+                    }
+
+                    // FIXME BlockChain.Blocks.ContainsKey() can be very
+                    // expensive.
+                    // we can omit this clause if assume every chain shares
+                    // same genesis block...
+                    else if (!blockChain.Blocks.ContainsKey(branchPoint))
+                    {
+                        toSync = new BlockChain<T>(
+                            blockChain.Policy,
+                            blockChain.Store);
+                    }
+                    else
+                    {
+                        _logger.Debug("Forking needed. trying to fork...");
+                        toSync = blockChain.Fork(branchPoint);
+                        _logger.Debug("Forking complete. ");
+                    }
+
+                    _logger.Debug("Trying to fill up previous blocks...");
+
+                    int retry = 3;
+                    while (true)
+                    {
+                        try
+                        {
+                            await FillBlocksAsync(
+                                peer,
+                                toSync,
+                                oldest.PreviousHash,
+                                cancellationToken
+                            );
+
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            if (retry > 0)
+                            {
+                                _logger.Error(
+                                    e,
+                                    "FillBlockAsync() failed. retrying..."
+                                );
+                                retry--;
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                    }
+
+                    _logger.Debug("Filled up. trying to concatenation...");
+
+                    foreach (Block<T> block in blocks)
+                    {
+                        toSync.Append(block);
+                    }
+
+                    _logger.Debug("Sync is done.");
+                    if (!toSync.Id.Equals(blockChain.Id))
+                    {
+                        _logger.Debug("trying to swapping chain...");
+                        blockChain.Swap(toSync);
+                        _logger.Debug("Swapping complete");
+                    }
+                }
+            }
+            else
+            {
+                _logger.Information(
+                    "Received index is older than current chain's tip." +
+                    " ignored.");
+            }
+
+            BlockReceived.Set();
         }
 
         private async Task FillBlocksAsync<T>(

@@ -34,9 +34,9 @@ namespace Libplanet.Tests.Net
         public SwarmTest(ITestOutputHelper output)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Debug()
                 .Enrich.WithThreadId()
-                .WriteTo.TestOutput(output, outputTemplate: "{Timestamp:HH:mm:ss}[@{Swarm_listenUrl}][{ThreadId}] - {Message}")
+                .WriteTo.TestOutput(output, outputTemplate: "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}")
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
@@ -71,6 +71,11 @@ namespace Libplanet.Tests.Net
             _fx1.Dispose();
             _fx2.Dispose();
             _fx3.Dispose();
+
+            foreach (Swarm s in _swarms)
+            {
+                s.Dispose();
+            }
         }
 
         [Fact]
@@ -468,6 +473,7 @@ namespace Libplanet.Tests.Net
 
                 await EnsureExchange(swarmA, swarmB);
                 await EnsureExchange(swarmA, swarmC);
+                await EnsureExchange(swarmB, swarmC);
 
                 await swarmA.BroadcastTxsAsync(new[] { tx });
 
@@ -525,10 +531,12 @@ namespace Libplanet.Tests.Net
 
                 await EnsureExchange(swarmA, swarmB);
                 await EnsureExchange(swarmA, swarmC);
+                await EnsureExchange(swarmB, swarmC);
 
                 await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
 
-                await Task.Delay(5000);
+                await swarmC.BlockReceived.WaitAsync();
+                await swarmA.BlockReceived.WaitAsync();
 
                 Assert.Equal(chainB.AsEnumerable(), chainC);
 
@@ -538,7 +546,8 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.BroadcastBlocksAsync(new[] { chainA.Last() });
 
-                await Task.Delay(5000);
+                await swarmB.BlockReceived.WaitAsync();
+                await swarmC.BlockReceived.WaitAsync();
 
                 Assert.Equal(chainA.AsEnumerable(), chainB);
                 Assert.Equal(chainA.AsEnumerable(), chainC);
@@ -575,10 +584,22 @@ namespace Libplanet.Tests.Net
                 s.AsPeer.Urls);
         }
 
+        [Fact]
+        public async Task CanStopGracefullyWhileStarting()
+        {
+            Swarm a = _swarms[0];
+            Swarm b = _swarms[1];
+
+            await StartAsync(b, _blockchains[1]);
+            await a.AddPeersAsync(new[] { b.AsPeer });
+
+            Task t = await StartAsync(a, _blockchains[0]);
+            await Task.WhenAll(a.StopAsync(), t);
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm swarm,
             BlockChain<T> blockChain,
-            int millisecondsDistributeInterval = 1500,
             CancellationToken cancellationToken = default
         )
             where T : IAction
@@ -586,7 +607,7 @@ namespace Libplanet.Tests.Net
             Task task = Task.Run(
                 async () => await swarm.StartAsync(
                     blockChain,
-                    millisecondsDistributeInterval,
+                    200,
                     cancellationToken
                 )
             );
