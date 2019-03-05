@@ -12,6 +12,20 @@ if [[ "$TRAVIS_JOB_NUMBER" != *.1 ]]; then
   exit 0
 fi
 
+version="$(xmllint \
+ --xpath './Project/PropertyGroup/Version/text()' \
+ Libplanet/Libplanet.csproj)"
+if [[ "$TRAVIS_TAG" = "" && "$version" != *-dev ]]; then
+  # If we prepare a RC, at that time a package version does not end with
+  # "-dev" suffix, and Travis CI builds try to build a .nupkg file of
+  # a stable versionn number twice, because two builds for one commit
+  # are made: one for push to a branch, and another one is a tag push.
+  # So we need to avoid publishing .nupkg to NuGet for stable version numbers
+  # when it is not a tag push.
+  echo "Publishing to NuGet will be done at a tag build." > /dev/stderr
+  exit 0
+fi
+
 if [[ "$NUGET_API_KEY" = "" ]]; then
   echo "This script is skipped if NUGET_API_KEY envrionment variable is not" \
        "present." > /dev/stderr
