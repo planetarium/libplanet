@@ -4,7 +4,9 @@ Libplanet changelog
 Version 0.1.1
 -------------
 
-- Improved stability of `Swarm` and `SwarmTest`.
+To be released.
+
+ -  Improved stability of `Swarm` and `SwarmTest`.
 
 
 Version 0.1.0
