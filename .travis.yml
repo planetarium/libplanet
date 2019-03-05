@@ -122,20 +122,7 @@ script:
   if [[ "$TRAVIS_OS_NAME" = "linux" && "$TRAVIS_TAG" != "" ]]; then
     changes="$(submark -i --h2 "Version $TRAVIS_TAG" CHANGES.md | egrep '\S')"
     [[ "$changes" != "" ]]
-  fi
-
-# Check changelog
-- |
-  commit_sha="${TRAVIS_PULL_REQUEST_SHA:-${TRAVIS_TAG:-${TRAVIS_COMMIT}}}"
-  if [[ "$(git tag -l)" = "" ]]; then
-    echo "Skip changelog chekcer because there has been no release yet."
-  elif git show --format=%B --quiet "$commit_sha" \
-     | egrep '\[(skip changelog|changelog skip)\]' > /dev/null; then
-    echo "Skip changelog checker..."
-  elif [[ "$TRAVIS_TAG" != "" ]]; then
     ! grep -i "to be released" CHANGES.md
-  else
-    [[ "$(git diff --name-only "$TRAVIS_COMMIT_RANGE" | grep CHANGES\.md)" != "" ]]
   fi
 
 # Check coding styles
