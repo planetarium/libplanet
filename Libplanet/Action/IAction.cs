@@ -180,7 +180,7 @@ namespace Libplanet.Action
         /// Declares the set of <see cref="Address"/>es that an action requires
         /// to fetch states.
         /// <para>For example, if an action is someone healing someone it needs
-        /// to know a healer's remaning mana (i.e., MP) and a healing target's
+        /// to know a healer's remaining mana (i.e., MP) and a healing target's
         /// remaining health (i.e., HP).  As a healing character belongs to
         /// an account who signed the transaction and a healed character belongs
         /// to an account who will receive the transaction, that healing
