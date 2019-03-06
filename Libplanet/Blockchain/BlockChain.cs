@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -16,7 +17,7 @@ using Libplanet.Tx;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
-    public class BlockChain<T> : IEnumerable<Block<T>>, IAccountStateView
+    public class BlockChain<T> : IEnumerable<Block<T>>
         where T : IAction
     {
         private readonly ReaderWriterLockSlim _rwlock;
@@ -180,19 +181,6 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitReadLock();
-            }
-        }
-
-        object IAccountStateView.GetAccountState(Address address)
-        {
-            AddressStateMap states = GetStates(new[] { address });
-            try
-            {
-                return states[address];
-            }
-            catch (KeyNotFoundException)
-            {
-                return null;
             }
         }
 
@@ -436,10 +424,36 @@ namespace Libplanet.Blockchain
             }
         }
 
+        internal IAccountStateView GetAccountStateView(
+            HashDigest<SHA256>? offset,
+            IImmutableDictionary<Address, object> dirty = null
+        )
+        {
+            if (offset == null)
+            {
+                _rwlock.EnterReadLock();
+                try
+                {
+                    offset = Store.IndexBlockHash(Id.ToString(), -1);
+                }
+                finally
+                {
+                    _rwlock.ExitReadLock();
+                }
+            }
+
+            return new BlockChainAccountStateView
+            {
+                Chain = this,
+                Offset = offset,
+                Dirty = dirty,
+            };
+        }
+
         private void EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            var states = new AddressStateMap();
+            var dirty = ImmutableDictionary<Address, object>.Empty;
 
             int seed = BitConverter.ToInt32(block.Hash.ToByteArray(), 0);
             foreach (Transaction<T> tx in block.Transactions)
@@ -447,28 +461,57 @@ namespace Libplanet.Blockchain
                 int txSeed = seed ^ BitConverter.ToInt32(tx.Signature, 0);
                 foreach (T action in tx.Actions)
                 {
-                    IEnumerable<Address> requestedAddresses =
-                        action.RequestStates(tx.Signer, tx.Recipient);
-                    AddressStateMap requested = GetStates(
-                        requestedAddresses.Except(states.Keys),
-                        prevHash);
-                    states = (AddressStateMap)requested.SetItems(states);
-                    var prevState = new AddressStateMap(
-                        requestedAddresses
-                        .Where(states.ContainsKey)
-                        .ToImmutableDictionary(a => a, a => states[a]));
+                    var prevState = new AccountStateDeltaImpl(
+                        GetAccountStateView(prevHash, dirty)
+                    );
                     var context = new ActionContext(
                         signer: tx.Signer,
                         blockIndex: block.Index,
                         previousStates: prevState,
                         randomSeed: unchecked(txSeed++)
                     );
-                    AddressStateMap changes = action.Execute(context);
-                    states = (AddressStateMap)states.SetItems(changes);
+                    IAccountStateDelta delta = action.Execute(context);
+                    dirty = dirty.SetItems(delta.GetUpdatedStates());
                 }
             }
 
-            Store.SetBlockStates(Id.ToString(), block.Hash, states);
+            Store.SetBlockStates(
+                Id.ToString(),
+                block.Hash,
+                new AddressStateMap(dirty)
+            );
+        }
+
+        private class BlockChainAccountStateView : IAccountStateView
+        {
+            internal BlockChain<T> Chain { get; set; }
+
+            internal HashDigest<SHA256>? Offset { get; set; }
+
+            internal IImmutableDictionary<Address, object> Dirty
+            {
+                private get;
+                set;
+            }
+
+            public object GetAccountState(Address address)
+            {
+                if (!ReferenceEquals(Dirty, null) && Dirty.ContainsKey(address))
+                {
+                    return Dirty[address];
+                }
+
+                IImmutableDictionary<Address, object> result =
+                    Chain.GetStates(new[] { address }, Offset);
+                try
+                {
+                    return result[address];
+                }
+                catch (KeyNotFoundException)
+                {
+                    return null;
+                }
+            }
         }
     }
 }

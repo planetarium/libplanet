@@ -19,12 +19,16 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
-        /// The state of accounts related to query before <see cref="IAction"/>
-        /// executes.  Those addresses are determined by
-        /// <see cref="IAction.RequestStates(Address, Address)"/> method.
+        /// A null delta of states, which means it represents the states
+        /// before <see cref="IAction"/> executes.
+        /// <para>Although a <see cref="IAccountStateDelta"/> instance is
+        /// immutable, it has several manipulative methods that returns
+        /// new <see cref="IAccountStateDelta"/> instances with some "dirty"
+        /// states.  These kinds of dirty <see cref="IAccountStateDelta"/>
+        /// instances can be returned by <see
+        /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
-        /// <seealso cref="IAction.RequestStates(Address, Address)"/>
-        AddressStateMap PreviousStates { get; }
+        IAccountStateDelta PreviousStates { get; }
 
         /// <summary>
         /// An initialized pseudorandom number generator.  Its seed (state)

@@ -52,7 +52,7 @@ namespace Libplanet.Action
             {
                 object epochState = _accountStateView.GetAccountState(addr);
                 if (ReferenceEquals(epochState, state) ||
-                    epochState.Equals(state))
+                    Equals(epochState, state))
                 {
                     newState = newState.Remove(addr);
                 }

@@ -69,18 +69,14 @@ namespace Libplanet.Action
     ///     public AddressStateMap Execute(IActionContext context)
     ///     {
     ///         // Gets the states immediately before this action is executed.
-    ///         // The AddressStateMap implemenets IImmutableDictionary<Address,
-    ///         // object> so that you could treat it as a dictionary of account
-    ///         // addresses to their own state.
-    ///         // Note that there are only requested accounts' states.
-    ///         // See also RequestStates() method.
-    ///         AddressStateMap states = context.PreviousStates;
+    ///         // It is merely a null delta.
+    ///         IAccountStateDelta states = context.PreviousStates;
     ///
     ///         // Suppose we already declared below in-game objects "Player"
     ///         // and "Character".  These are immutable (as we highly
     ///         // recommend) and methods like ".WithFoo(bar)" mean it copies
     ///         // a game object and set new object's "Foo" property with "bar".
-    ///         Player signer = states[context.Signer] as Player;
+    ///         Player signer = states.GetState(context.Signer) as Player;
     ///         if (signer == null)
     ///             throw new Exception("Signer's player was not made.");
     ///
@@ -88,7 +84,7 @@ namespace Libplanet.Action
     ///         if (healerPrev.Mana < RequiredMana)
     ///             throw new Exception("The healer doesn't have enough mana.");
     ///
-    ///         Player receiver = states[TargetAddress] as Player;
+    ///         Player receiver = states.GetState(TargetAddress) as Player;
     ///         if (receiver == null)
     ///             throw new Exception("Receiver's player was not made.");
     ///
@@ -114,20 +110,15 @@ namespace Libplanet.Action
     ///             )
     ///         );
     ///
-    ///         // Builds a delta (diff) from previous to next states, and
-    ///         // returns it as AddressStateMap.
-    ///         var statesDelta = new Dictionary<Address, object>
-    ///         {
-    ///             {
-    ///                 context.Signer,
-    ///                 signer.WithCharacters(HealerId, healerNext)
-    ///             },
-    ///             {
-    ///                 TargetAddress,
-    ///                 receiver.WithCharacters(TargetId, targetNext)
-    ///             },
-    ///         };
-    ///         return new AddressStateMap(statesDelta.ToImmutableDictionary());
+    ///         // Builds a delta (dirty) from previous to next states, and
+    ///         // returns it.
+    ///         return states.SetState(
+    ///             context.Signer,
+    ///             signer.WithCharacters(HealerId, healerNext)
+    ///         ).SetState(
+    ///             TargetAddress,
+    ///             receiver.WithCharacters(TargetId, targetNext)
+    ///         );
     ///     }
     ///
     ///     // Serializes its "bound arguments" so that they are transmitted
@@ -226,7 +217,7 @@ namespace Libplanet.Action
         /// Executes the main game logic of an action.  This should be
         /// <em>deterministic</em>.
         /// <para>Through the <paramref name="context"/> object,
-        /// it receives information such as a transaction signer and a receiver,
+        /// it receives information such as a transaction signer,
         /// its states immediately before the execution,
         /// and a deterministic random seed.</para>
         /// <para>Other &#x201c;bound&#x201d; information resides in the action
@@ -235,14 +226,10 @@ namespace Libplanet.Action
         /// a delta which shifts from previous states to next states.</para>
         /// </summary>
         /// <param name="context">A context object containing addresses that
-        /// signed and receives the transaction,
-        /// states immediately before the execution,
+        /// signed the transaction, states immediately before the execution,
         /// and a PRNG object which produces deterministic random numbers.
         /// See <see cref="IActionContext"/> for details.</param>
-        /// <returns>A map of <see cref="Address"/>es with changed states.
-        /// Only those addresses this map contains will have their states
-        /// updated globally.
-        /// That means, addresses this map misses are unchanged.</returns>
+        /// <returns>A map of changed states (so-called "dirty").</returns>
         /// <remarks>This method should be deterministic:
         /// for structurally (member-wise) equal actions and <see
         /// cref="IActionContext"/>s, the same result should be returned.
@@ -253,6 +240,6 @@ namespace Libplanet.Action
         /// or networking.  These bring an action indeterministic.</para>
         /// </remarks>
         /// <seealso cref="IActionContext"/>
-        AddressStateMap Execute(IActionContext context);
+        IAccountStateDelta Execute(IActionContext context);
     }
 }

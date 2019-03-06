@@ -116,7 +116,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
-            _blockChain.MineBlock(_fx.Address1);
+            var lastBlock = _blockChain.MineBlock(_fx.Address1);
 
             AddressStateMap states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
             Assert.NotEmpty(states);
@@ -127,7 +127,8 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
 
-            IAccountStateView view = _blockChain;
+            IAccountStateView view =
+                _blockChain.GetAccountStateView(lastBlock.Hash);
             Assert.Equal(result, view.GetAccountState(_fx.Address1));
             Assert.Null(view.GetAccountState(_fx.Address2));
 
@@ -148,11 +149,13 @@ namespace Libplanet.Tests.Blockchain
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
-            _blockChain.MineBlock(_fx.Address1);
+            lastBlock = _blockChain.MineBlock(_fx.Address1);
 
             states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
+
+            view = _blockChain.GetAccountStateView(lastBlock.Hash);
             Assert.Equal(result, view.GetAccountState(_fx.Address1));
             Assert.Null(view.GetAccountState(_fx.Address2));
         }
@@ -293,11 +296,11 @@ namespace Libplanet.Tests.Blockchain
             {
             }
 
-            public override AddressStateMap Execute(IActionContext context)
+            public override IAccountStateDelta Execute(IActionContext context)
             {
-                return (AddressStateMap)context.PreviousStates
-                    .SetItem(SignerKey, context.Signer.ToHex())
-                    .SetItem(BlockIndexKey, context.BlockIndex);
+                return context.PreviousStates
+                    .SetState(SignerKey, context.Signer.ToHex())
+                    .SetState(BlockIndexKey, context.BlockIndex);
             }
         }
     }

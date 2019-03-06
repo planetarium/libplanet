@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Common.Action
                 { "zone_id", ZoneId },
             }.ToImmutableDictionary();
 
-        public override AddressStateMap Execute(IActionContext context)
+        public override IAccountStateDelta Execute(IActionContext context)
         {
             throw new NotSupportedException();
         }

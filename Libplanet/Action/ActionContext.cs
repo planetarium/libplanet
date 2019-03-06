@@ -5,7 +5,7 @@ namespace Libplanet.Action
         public ActionContext(
             Address signer,
             long blockIndex,
-            AddressStateMap previousStates,
+            IAccountStateDelta previousStates,
             int randomSeed
         )
         {
@@ -19,7 +19,7 @@ namespace Libplanet.Action
 
         public long BlockIndex { get; }
 
-        public AddressStateMap PreviousStates { get; }
+        public IAccountStateDelta PreviousStates { get; }
 
         public IRandom Random { get; }
     }

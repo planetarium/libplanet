@@ -8,7 +8,7 @@ namespace Libplanet.Tests.Common.Action
     {
         public abstract IImmutableDictionary<string, object> PlainValue { get; }
 
-        public abstract AddressStateMap Execute(IActionContext context);
+        public abstract IAccountStateDelta Execute(IActionContext context);
 
         public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
 

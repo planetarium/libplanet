@@ -29,12 +29,13 @@ namespace Libplanet.Tests.Common.Action
             TargetAddress = new Address((byte[])plainValue["target_address"]);
         }
 
-        public override AddressStateMap Execute(IActionContext context)
+        public override IAccountStateDelta Execute(IActionContext context)
         {
             var result = new BattleResult();
-            AddressStateMap previousStates = context.PreviousStates;
+            IAccountStateDelta previousStates = context.PreviousStates;
 
-            if (previousStates.TryGetValue(TargetAddress, out object value))
+            object value = previousStates.GetState(TargetAddress);
+            if (!ReferenceEquals(value, null))
             {
                 var previousResult = (BattleResult)value;
                 result.UsedWeapons = previousResult.UsedWeapons;
@@ -44,7 +45,7 @@ namespace Libplanet.Tests.Common.Action
             result.UsedWeapons.Add(Weapon);
             result.Targets.Add(Target);
 
-            return (AddressStateMap)previousStates.SetItem(TargetAddress, result);
+            return previousStates.SetState(TargetAddress, result);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Libplanet.Tests.Common.Action
         public override IImmutableDictionary<string, object> PlainValue =>
             throw new NotSupportedException();
 
-        public override AddressStateMap Execute(IActionContext context)
+        public override IAccountStateDelta Execute(IActionContext context)
         {
             throw new NotSupportedException();
         }
