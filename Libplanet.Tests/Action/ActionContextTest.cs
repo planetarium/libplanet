@@ -17,7 +17,6 @@ namespace Libplanet.Tests.Action
             {
                 var context = new ActionContext(
                     signer: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                    to: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                     blockIndex: 1,
                     previousStates: new AddressStateMap(),
                     randomSeed: seed

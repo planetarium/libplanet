@@ -10,6 +10,7 @@ To be released.
     `IActionContext.From` properties to `Signer`.
     The corresponding parameter names on constructors and
     methods were also renamed too.
+ -  Removed `IActionContext.To` property.
  -  Added `IAccountStateView` interface, and made `BlockChain<T>` implements it.
     The interface purposes to provide a read-only view to account states.
  -  Added `IAccountStateDelta` interface.

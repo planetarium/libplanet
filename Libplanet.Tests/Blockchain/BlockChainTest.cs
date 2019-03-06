@@ -85,7 +85,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanProcessActions()
+        public void ProcessActions()
         {
             var actions1 = new List<BaseAction>()
             {
@@ -93,16 +93,19 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Weapon = "sword",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
                 new Attack()
                 {
                     Weapon = "sword",
                     Target = "orc",
+                    TargetAddress = _fx.Address1,
                 },
                 new Attack()
                 {
                     Weapon = "staff",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
             };
             Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
@@ -134,6 +137,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Weapon = "bow",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
             };
             Transaction<BaseAction> tx2 = Transaction<BaseAction>.Make(
@@ -262,7 +266,6 @@ namespace Libplanet.Tests.Blockchain
             var states = _blockChain.GetStates(new[]
             {
                 TestEvaluateAction.SignerKey,
-                TestEvaluateAction.ToKey,
                 TestEvaluateAction.BlockIndexKey,
             });
 
@@ -270,7 +273,6 @@ namespace Libplanet.Tests.Blockchain
                 states[TestEvaluateAction.SignerKey],
                 fromAddress.ToHex()
             );
-            Assert.Equal(states[TestEvaluateAction.ToKey], toAddress.ToHex());
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
 
@@ -278,9 +280,6 @@ namespace Libplanet.Tests.Blockchain
         private class TestEvaluateAction : BaseAction
         {
             public static readonly Address SignerKey =
-                new PrivateKey().PublicKey.ToAddress();
-
-            public static readonly Address ToKey =
                 new PrivateKey().PublicKey.ToAddress();
 
             public static readonly Address BlockIndexKey =
@@ -298,7 +297,6 @@ namespace Libplanet.Tests.Blockchain
             {
                 return (AddressStateMap)context.PreviousStates
                     .SetItem(SignerKey, context.Signer.ToHex())
-                    .SetItem(ToKey, context.To.ToHex())
                     .SetItem(BlockIndexKey, context.BlockIndex);
             }
         }

@@ -31,6 +31,7 @@ namespace Libplanet.Tests.Tx
                     {
                         Weapon = "wand",
                         Target = "orc",
+                        TargetAddress = recipient,
                     },
                     new Sleep
                     {

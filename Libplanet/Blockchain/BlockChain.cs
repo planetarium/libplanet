@@ -459,7 +459,6 @@ namespace Libplanet.Blockchain
                         .ToImmutableDictionary(a => a, a => states[a]));
                     var context = new ActionContext(
                         signer: tx.Signer,
-                        to: tx.Recipient,
                         blockIndex: block.Index,
                         previousStates: prevState,
                         randomSeed: unchecked(txSeed++)

@@ -13,12 +13,6 @@ namespace Libplanet.Action
         Address Signer { get; }
 
         /// <summary>
-        /// <see cref="Address"/> of an account who receives a transaction that
-        /// an executed <see cref="IAction"/> belongs to.
-        /// </summary>
-        Address To { get; }
-
-        /// <summary>
         /// Block index of a transaction that an executed <see cref="IAction"/>
         /// belongs to.
         /// </summary>

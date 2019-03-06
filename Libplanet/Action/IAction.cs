@@ -36,12 +36,16 @@ namespace Libplanet.Action
     ///
     ///     // Declare properties (or fields) to store "bound" argument values.
     ///     public CharacterId HealerId { get; private set; }
+    ///     public Address TargetAddress { get; private set; }
     ///     public CharacterId TargetId { get; private set; }
     ///
     ///     // Take argument values to "bind" through constructor parameters.
-    ///     public Heal(CharacterId healerId, CharacterId targetId)
+    ///     public Heal(CharacterId healerId,
+    ///                 TargetAddress tagetAddress,
+    ///                 CharacterId targetId)
     ///     {
     ///         HealerId = healerId;
+    ///         TargetAddress = targetAddress;
     ///         TargetId = targetId;
     ///     }
     ///
@@ -50,9 +54,12 @@ namespace Libplanet.Action
     ///     {
     ///         // In this action, we need states of two accounts for healing:
     ///         // - A transaction "signer" who holds the healer character, and
-    ///         // - A transaction receiver ("to") who hols the healing target
-    ///         //   character.
-    ///         return new HashSet<Address> { signer, to }.ToImmutableHashSet();
+    ///         // - A account who holds the healing target character.
+    ///         return new HashSet<Address>
+    ///         {
+    ///             signer,
+    ///             TargetAddress,
+    ///         }.ToImmutableHashSet();
     ///     }
     ///
     ///     // The main game logic belongs to here.  It takes the
@@ -81,7 +88,7 @@ namespace Libplanet.Action
     ///         if (healerPrev.Mana < RequiredMana)
     ///             throw new Exception("The healer doesn't have enough mana.");
     ///
-    ///         Player receiver = states[context.To] as Player;
+    ///         Player receiver = states[TargetAddress] as Player;
     ///         if (receiver == null)
     ///             throw new Exception("Receiver's player was not made.");
     ///
@@ -115,7 +122,10 @@ namespace Libplanet.Action
     ///                 context.Signer,
     ///                 signer.WithCharacters(HealerId, healerNext)
     ///             },
-    ///             {context.To, receiver.WithCharacters(TargetId, targetNext)},
+    ///             {
+    ///                 TargetAddress,
+    ///                 receiver.WithCharacters(TargetId, targetNext)
+    ///             },
     ///         };
     ///         return new AddressStateMap(statesDelta.ToImmutableDictionary());
     ///     }
@@ -127,6 +137,7 @@ namespace Libplanet.Action
     ///         new Dictionary<string, object>
     ///         {
     ///             {"healer_id", HealerId.ToInt()},
+    ///             {"target_address", TargetAddress.ToByteArray()},
     ///             {"target_id", TargetId.ToInt()},
     ///         }
     ///
@@ -136,6 +147,9 @@ namespace Libplanet.Action
     ///         IImmutableDictionary<string, object> plainValue)
     ///     {
     ///         HealerId = CharacterId.FromInt(plainValue["healer_id"] as int);
+    ///         TargetAddress = new Address(
+    ///             plainValue["target_address'] as byte[]
+    ///         );
     ///         TargetId = CharacterId.FromInt(plainValue["target_id"] as int);
     ///     }
     /// }

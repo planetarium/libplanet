@@ -4,22 +4,18 @@ namespace Libplanet.Action
     {
         public ActionContext(
             Address signer,
-            Address to,
             long blockIndex,
             AddressStateMap previousStates,
             int randomSeed
         )
         {
             Signer = signer;
-            To = to;
             BlockIndex = blockIndex;
             PreviousStates = previousStates;
             Random = new Random(randomSeed);
         }
 
         public Address Signer { get; }
-
-        public Address To { get; }
 
         public long BlockIndex { get; }
 
