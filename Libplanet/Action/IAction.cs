@@ -49,19 +49,6 @@ namespace Libplanet.Action
     ///         TargetId = targetId;
     ///     }
     ///
-    ///     public IImmutableSet<Address> RequestStates(Address signer,
-    ///                                                 Address to)
-    ///     {
-    ///         // In this action, we need states of two accounts for healing:
-    ///         // - A transaction "signer" who holds the healer character, and
-    ///         // - A account who holds the healing target character.
-    ///         return new HashSet<Address>
-    ///         {
-    ///             signer,
-    ///             TargetAddress,
-    ///         }.ToImmutableHashSet();
-    ///     }
-    ///
     ///     // The main game logic belongs to here.  It takes the
     ///     // previous states through its parameter named context,
     ///     // and is offered "bound" argument values through
@@ -180,38 +167,6 @@ namespace Libplanet.Action
         /// properties (or fields).</param>
         /// <seealso cref="PlainValue"/>
         void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
-
-        /// <summary>
-        /// Declares the set of <see cref="Address"/>es that an action requires
-        /// to fetch states.
-        /// <para>For example, if an action is someone healing someone it needs
-        /// to know a healer's remaining mana (i.e., MP) and a healing target's
-        /// remaining health (i.e., HP).  As a healing character belongs to
-        /// an account who signed the transaction and a healed character belongs
-        /// to an account who will receive the transaction, that healing
-        /// action's <see cref="RequestStates(Address, Address)"/> should
-        /// return a set of <paramref name="signer"/> and <paramref name="to"/>.
-        /// </para>
-        /// </summary>
-        /// <param name="signer">An <see cref="Address"/> of the account who
-        /// signed the transaction this action belongs to.</param>
-        /// <param name="to">An <see cref="Address"/> of the account who will
-        /// receive the transaction this action belongs to.</param>
-        /// <returns>An immutable set of <see cref="Address"/>es required by
-        /// this action.  Addresses are not limited to only <paramref
-        /// name="signer"/> and <paramref name="to"/>.</returns>
-        /// <example>
-        /// The following example shows an action requiring states of
-        /// a transaction signer and a transaction receiver:
-        /// <code><![CDATA[
-        /// public IImmutableSet<Address> RequestStates(Address signer,
-        ///                                             Address to)
-        /// {
-        ///     return new HashSet<Address> { signer, to }.ToImmutableHashSet();
-        /// }
-        /// ]]></code>
-        /// </example>
-        IImmutableSet<Address> RequestStates(Address signer, Address to);
 
         /// <summary>
         /// Executes the main game logic of an action.  This should be

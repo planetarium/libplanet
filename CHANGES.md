@@ -20,6 +20,8 @@ To be released.
     `AddressStateMap` to `IAccountStateDelta`.
  -  The return type of `IAction.Execute()` method was changed from
     `AddressStateMap` to `IAccountStateDelta`.
+ -  Removed `IAction.RequestStates()` method because there is no need for it
+    and thus it is not used anymore.
  -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,

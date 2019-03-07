@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using Libplanet.Action;
 
@@ -11,10 +10,5 @@ namespace Libplanet.Tests.Common.Action
         public abstract IAccountStateDelta Execute(IActionContext context);
 
         public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
-
-        public IImmutableSet<Address> RequestStates(Address signer, Address to)
-        {
-            return new HashSet<Address> { signer, to }.ToImmutableHashSet();
-        }
     }
 }
