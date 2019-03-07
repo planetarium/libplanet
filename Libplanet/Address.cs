@@ -43,6 +43,12 @@ namespace Libplanet
     public partial struct Address : ISerializable
     #pragma warning restore CS0282
     {
+        /// <summary>
+        /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
+        /// <para>It is 20 <see cref="byte"/>s.</para>
+        /// </summary>
+        public const int Size = 20;
+
         private ImmutableArray<byte> _byteArray;
 
         /// <summary>
@@ -67,7 +73,7 @@ namespace Libplanet
                 throw new NullReferenceException("address must not be null");
             }
 
-            if (address.Length != 20)
+            if (address.Length != Size)
             {
                 throw new ArgumentException("address must be 20 bytes");
             }
@@ -142,7 +148,7 @@ namespace Libplanet
             {
                 if (_byteArray.IsDefault)
                 {
-                    _byteArray = new byte[20].ToImmutableArray();
+                    _byteArray = new byte[Size].ToImmutableArray();
                 }
 
                 return _byteArray;
@@ -245,7 +251,7 @@ namespace Libplanet
             byte[] hashPayload = key.Format(false).Skip(1).ToArray();
             var output = CalculateHash(hashPayload);
 
-            return output.Skip(output.Length - 20).ToArray();
+            return output.Skip(output.Length - Size).ToArray();
         }
 
         private static byte[] DeriveAddress(string hex)
