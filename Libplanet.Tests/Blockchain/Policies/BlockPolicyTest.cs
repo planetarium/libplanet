@@ -28,19 +28,19 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void Constructors()
         {
-            var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<BaseAction>(tenSec);
-            Assert.Equal(tenSec, a.BlockInterval);
+            var tenMilliSec = new TimeSpan(0, 0, 10000);
+            var a = new BlockPolicy<BaseAction>(tenMilliSec);
+            Assert.Equal(tenMilliSec, a.BlockInterval);
 
             var b = new BlockPolicy<BaseAction>(65);
             Assert.Equal(
-                new TimeSpan(0, 1, 5),
+                new TimeSpan(0, 1000, 5000),
                 b.BlockInterval
             );
 
             var c = new BlockPolicy<BaseAction>();
             Assert.Equal(
-                new TimeSpan(0, 0, 5),
+                new TimeSpan(0, 0, 5000),
                 c.BlockInterval
             );
 
@@ -48,14 +48,14 @@ namespace Libplanet.Tests.Blockchain.Policies
                 () => new BlockPolicy<BaseAction>(tenSec.Negate())
             );
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<BaseAction>(-5)
+                () => new BlockPolicy<BaseAction>(-5000)
             );
         }
 
         [Fact]
         public void GetNextBlockDifficulty()
         {
-            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3, 0, 0));
+            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3000, 0, 0));
             Block<BaseAction>[] blocks = MineBlocks(
                 new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2), (13, 3) }
             ).ToArray();
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateBlocks()
         {
-            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3, 0, 0));
+            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3000, 0, 0));
 
             // The genesis block must has the index #0.
             Assert.IsType<InvalidBlockIndexException>(
