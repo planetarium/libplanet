@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(result, view.GetAccountState(_fx.Address1));
             Assert.Null(view.GetAccountState(_fx.Address2));
 
-            var actions2 = new List<BaseAction>()
+            BaseAction[] actions2 =
             {
                 new Attack()
                 {
@@ -279,7 +279,7 @@ namespace Libplanet.Tests.Blockchain
                     TestEvaluateAction.SignerKey,
                     TestEvaluateAction.BlockIndexKey,
                 }.ToImmutableHashSet(),
-                new List<BaseAction> { action },
+                new[] { action },
                 DateTimeOffset.UtcNow
             );
 

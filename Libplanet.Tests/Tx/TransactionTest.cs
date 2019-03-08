@@ -36,7 +36,7 @@ namespace Libplanet.Tests.Tx
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 ImmutableHashSet<Address>.Empty,
-                new List<BaseAction>(),
+                new BaseAction[0],
                 timestamp
             );
 
@@ -78,7 +78,7 @@ namespace Libplanet.Tests.Tx
                 Transaction<BaseAction>.Make(
                     null,
                     ImmutableHashSet<Address>.Empty,
-                    new List<BaseAction>(),
+                    new BaseAction[0],
                     timestamp
                 )
             );
@@ -122,7 +122,7 @@ namespace Libplanet.Tests.Tx
                 privateKey.PublicKey,
                 ImmutableHashSet<Address>.Empty,
                 timestamp,
-                new List<BaseAction>(),
+                new BaseAction[0],
                 signature
             );
 
@@ -169,7 +169,7 @@ namespace Libplanet.Tests.Tx
                     null,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new List<BaseAction>(),
+                    new BaseAction[0],
                     signature
                 )
             );
@@ -193,7 +193,7 @@ namespace Libplanet.Tests.Tx
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new List<BaseAction>(),
+                    new BaseAction[0],
                     null
                 )
             );
@@ -204,7 +204,7 @@ namespace Libplanet.Tests.Tx
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new List<BaseAction>(),
+                    new BaseAction[0],
                     invalidSignature
                 )
             );
@@ -516,7 +516,7 @@ namespace Libplanet.Tests.Tx
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 ImmutableHashSet<Address>.Empty,
-                new List<BaseAction>(),
+                new BaseAction[0],
                 timestamp
             );
 
@@ -589,7 +589,7 @@ namespace Libplanet.Tests.Tx
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 privateKey,
                 ImmutableHashSet<Address>.Empty,
-                new List<BaseAction>(),
+                new BaseAction[0],
                 timestamp
             );
 
@@ -640,6 +640,29 @@ namespace Libplanet.Tests.Tx
 
             Assert.NotEqual(new byte[sig.Length], tx2.Signature);
             AssertBytesEqual(tx.Signature, tx2.Signature);
+        }
+
+        [Fact]
+        public void ActionsAreIsolatedFromOutside()
+        {
+            var actions = new List<BaseAction>();
+            Transaction<BaseAction> t1 = Transaction<BaseAction>.Make(
+                _fx.PrivateKey,
+                ImmutableHashSet<Address>.Empty,
+                actions,
+                DateTimeOffset.UtcNow
+            );
+            var t2 = new Transaction<BaseAction>(
+                _fx.PrivateKey.PublicKey.ToAddress(),
+                _fx.PrivateKey.PublicKey,
+                ImmutableHashSet<Address>.Empty,
+                t1.Timestamp,
+                actions,
+                t1.Signature
+            );
+            actions.Add(new Sleep());
+            Assert.Empty(t1.Actions);
+            Assert.Empty(t2.Actions);
         }
 
         [SuppressMessage(

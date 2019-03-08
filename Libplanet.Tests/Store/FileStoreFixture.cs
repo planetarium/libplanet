@@ -133,7 +133,7 @@ namespace Libplanet.Tests.Store
             return Transaction<BaseAction>.Make(
                 privateKey,
                 updatedAddresses ?? ImmutableHashSet<Address>.Empty,
-                new List<BaseAction>(actions ?? new BaseAction[0]),
+                actions ?? new BaseAction[0],
                 timestamp
             );
         }

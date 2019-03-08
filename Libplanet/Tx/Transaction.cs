@@ -80,7 +80,7 @@ namespace Libplanet.Tx
             PublicKey publicKey,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
-            IList<T> actions,
+            IEnumerable<T> actions,
             byte[] signature)
         {
             Signer = signer;
@@ -89,7 +89,7 @@ namespace Libplanet.Tx
             Signature = signature ??
                 throw new ArgumentNullException(nameof(signature));
             Timestamp = timestamp;
-            Actions = actions ??
+            Actions = actions?.ToImmutableList() ??
                 throw new ArgumentNullException(nameof(actions));
             PublicKey = publicKey ??
                 throw new ArgumentNullException(nameof(publicKey));
@@ -107,7 +107,7 @@ namespace Libplanet.Tx
                 rawTx.Timestamp,
                 TimestampFormat,
                 CultureInfo.InvariantCulture).ToUniversalTime();
-            Actions = rawTx.Actions.Select(ToAction).ToList();
+            Actions = rawTx.Actions.Select(ToAction).ToImmutableList();
             Signature = rawTx.Signature;
         }
 
@@ -122,13 +122,13 @@ namespace Libplanet.Tx
             PublicKey publicKey,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
-            IList<T> actions)
+            IEnumerable<T> actions)
         {
             Signer = signer;
             PublicKey = publicKey;
             UpdatedAddresses = updatedAddresses;
             Timestamp = timestamp;
-            Actions = actions;
+            Actions = actions.ToImmutableList();
             Signature = new byte[0];
         }
 
@@ -191,7 +191,7 @@ namespace Libplanet.Tx
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
         /// This can be empty, but cannot be <c>null</c>.
         /// </summary>
-        public IList<T> Actions { get; }
+        public IImmutableList<T> Actions { get; }
 
         /// <summary>
         /// The time this <see cref="Transaction{T}"/> is created and signed.
@@ -227,7 +227,7 @@ namespace Libplanet.Tx
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// Unlike the <see cref="Transaction(Address, PublicKey,
-        /// IImmutableSet{Address}, DateTimeOffset, IList{T}, byte[])"/>
+        /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
         /// constructor, it automatically signs,
         /// and fills the appropriate <see cref="Signer"/> and
         /// <see cref="PublicKey"/> properties using the given
@@ -258,7 +258,7 @@ namespace Libplanet.Tx
         public static Transaction<T> Make(
             PrivateKey privateKey,
             IImmutableSet<Address> updatedAddresses,
-            IList<T> actions,
+            IEnumerable<T> actions,
             DateTimeOffset timestamp)
         {
             if (privateKey == null)

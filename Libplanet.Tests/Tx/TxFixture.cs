@@ -27,25 +27,26 @@ namespace Libplanet.Tests.Tx
             Tx = Transaction<BaseAction>.Make(
                 PrivateKey,
                 ImmutableHashSet<Address>.Empty,
-                new List<BaseAction>(),
+                new BaseAction[0],
                 timestamp
             );
+            BaseAction[] actions =
+            {
+                new Attack
+                {
+                    Weapon = "wand",
+                    Target = "orc",
+                    TargetAddress = recipient,
+                },
+                new Sleep
+                {
+                    ZoneId = 10,
+                },
+            };
             TxWithActions = Transaction<BaseAction>.Make(
                 PrivateKey,
                 ImmutableHashSet.Create(recipient),
-                new List<BaseAction>
-                {
-                    new Attack
-                    {
-                        Weapon = "wand",
-                        Target = "orc",
-                        TargetAddress = recipient,
-                    },
-                    new Sleep
-                    {
-                        ZoneId = 10,
-                    },
-                },
+                actions,
                 timestamp
             );
         }
