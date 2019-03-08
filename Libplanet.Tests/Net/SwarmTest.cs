@@ -423,7 +423,7 @@ namespace Libplanet.Tests.Net
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 new PrivateKey(),
-                new PrivateKey().PublicKey.ToAddress(),
+                ImmutableHashSet<Address>.Empty,
                 new BaseAction[] { },
                 DateTimeOffset.UtcNow
             );
@@ -469,7 +469,7 @@ namespace Libplanet.Tests.Net
 
             Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
                 new PrivateKey(),
-                new PrivateKey().PublicKey.ToAddress(),
+                ImmutableHashSet<Address>.Empty,
                 new BaseAction[] { },
                 DateTimeOffset.UtcNow
             );

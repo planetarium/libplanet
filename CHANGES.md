@@ -22,6 +22,15 @@ To be released.
     `AddressStateMap` to `IAccountStateDelta`.
  -  Removed `IAction.RequestStates()` method because there is no need for it
     and thus it is not used anymore.
+ -  `Transaction<T>.Recipient` and `RawTransaction.Recipient` properties were
+    replaced by `Transaction<T>.UpdatedAddresses` and
+    `RawTransaction.UpdatedAddresses` properties.
+    The corresponding parameter names on constructors and methods were
+    replaced too.
+ -  Since the schema of `RawTransaction` class was changed, the serialization
+    format of transactions and blocks were also changed.  It affects to
+    the way to generate `Transaction<T>.Signature`, `Transaction<T>.Id`, and
+    `Block.Hash` values as well.
  -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,

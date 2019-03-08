@@ -19,7 +19,8 @@ namespace Libplanet.Tests.Common.Action
 
         public override IAccountStateDelta Execute(IActionContext context)
         {
-            throw new NotSupportedException();
+            // No-op.
+            return context.PreviousStates;
         }
 
         public override void LoadPlainValue(

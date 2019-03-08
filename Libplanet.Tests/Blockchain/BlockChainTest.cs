@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Drawing.Design;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -110,7 +108,7 @@ namespace Libplanet.Tests.Blockchain
             };
             Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
                 new PrivateKey(),
-                _fx.Address1,
+                ImmutableHashSet.Create(_fx.Address1),
                 actions1,
                 DateTimeOffset.UtcNow
             );
@@ -143,7 +141,7 @@ namespace Libplanet.Tests.Blockchain
             };
             Transaction<BaseAction> tx2 = Transaction<BaseAction>.Make(
                 new PrivateKey(),
-                _fx.Address1,
+                ImmutableHashSet.Create(_fx.Address1),
                 actions2,
                 DateTimeOffset.UtcNow
             );
@@ -176,13 +174,31 @@ namespace Libplanet.Tests.Blockchain
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new Attack
+                        {
+                            Weapon = "sword",
+                            Target = "goblin",
+                            TargetAddress = _fx.Address1,
+                        },
+                    },
+                    new[] { _fx.Address1 }.ToImmutableHashSet()
+                ),
             };
             _blockChain.StageTransactions(txs);
             _blockChain.MineBlock(_fx.Address1);
 
-            Assert.NotEmpty(_blockChain.Addresses);
-            Assert.Contains(_fx.Transaction1, _blockChain.Addresses[_fx.Transaction1.Recipient]);
-            Assert.DoesNotContain(_fx.Transaction2, _blockChain.Addresses[_fx.Transaction1.Recipient]);
+            Assert.Contains(_fx.Address1, _blockChain.Addresses);
+            foreach (Address a in _fx.Transaction1.UpdatedAddresses)
+            {
+                Assert.Contains(_fx.Transaction1, _blockChain.Addresses[a]);
+                Assert.DoesNotContain(
+                    _fx.Transaction2,
+                    _blockChain.Addresses[a]
+                );
+            }
         }
 
         [Fact]
@@ -249,17 +265,20 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanEvaluateActions()
+        public void EvaluateActions()
         {
             PrivateKey fromPrivateKey = new PrivateKey();
             Address fromAddress = fromPrivateKey.PublicKey.ToAddress();
-            Address toAddress = _fx.Address1;
             long blockIndex = 0;
 
             TestEvaluateAction action = new TestEvaluateAction();
             Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
                 fromPrivateKey,
-                toAddress,
+                new[]
+                {
+                    TestEvaluateAction.SignerKey,
+                    TestEvaluateAction.BlockIndexKey,
+                }.ToImmutableHashSet(),
                 new List<BaseAction> { action },
                 DateTimeOffset.UtcNow
             );

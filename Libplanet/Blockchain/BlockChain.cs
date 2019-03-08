@@ -194,7 +194,7 @@ namespace Libplanet.Blockchain
                 Blocks[block.Hash] = block;
                 EvaluateActions(block);
 
-                long index = Store.AppendIndex(Id.ToString(), block.Hash);
+                Store.AppendIndex(Id.ToString(), block.Hash);
                 ISet<TxId> txIds = block.Transactions
                     .Select(t => t.Id)
                     .ToImmutableHashSet();
@@ -202,9 +202,14 @@ namespace Libplanet.Blockchain
                 Store.UnstageTransactionIds(Id.ToString(), txIds);
                 foreach (Transaction<T> tx in block.Transactions)
                 {
-                    Store.AppendAddressTransactionId(
-                        Id.ToString(), tx.Recipient, tx.Id
-                    );
+                    foreach (Address address in tx.UpdatedAddresses)
+                    {
+                        Store.AppendAddressTransactionId(
+                            Id.ToString(),
+                            address,
+                            tx.Id
+                        );
+                    }
                 }
             }
             finally

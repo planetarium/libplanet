@@ -49,9 +49,9 @@ namespace Libplanet.Tx
         /// name="signer"/> address <see cref="InvalidTxPublicKeyException"/>
         /// is thrown.  This cannot be <c>null</c>.  This goes to
         /// the <see cref="PublicKey"/> property.</param>
-        /// <param name="recipient">An <see cref="Address"/> of the account
-        /// who receives this transaction.  This goes to
-        /// the <see cref="Recipient"/> property.</param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose
+        /// states affected by <paramref name="actions"/>.  This goes to
+        /// the <see cref="UpdatedAddresses"/> property.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
         /// property.</param>
@@ -78,13 +78,14 @@ namespace Libplanet.Tx
         public Transaction(
             Address signer,
             PublicKey publicKey,
-            Address recipient,
+            IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IList<T> actions,
             byte[] signature)
         {
             Signer = signer;
-            Recipient = recipient;
+            UpdatedAddresses = updatedAddresses ??
+                throw new ArgumentNullException(nameof(updatedAddresses));
             Signature = signature ??
                 throw new ArgumentNullException(nameof(signature));
             Timestamp = timestamp;
@@ -100,7 +101,8 @@ namespace Libplanet.Tx
         {
             Signer = new Address(rawTx.Signer);
             PublicKey = new PublicKey(rawTx.PublicKey);
-            Recipient = new Address(rawTx.Recipient);
+            UpdatedAddresses = rawTx.UpdatedAddresses.Select(a =>
+                new Address(a)).ToImmutableHashSet();
             Timestamp = DateTimeOffset.ParseExact(
                 rawTx.Timestamp,
                 TimestampFormat,
@@ -118,13 +120,13 @@ namespace Libplanet.Tx
         private Transaction(
             Address signer,
             PublicKey publicKey,
-            Address recipient,
+            IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IList<T> actions)
         {
             Signer = signer;
             PublicKey = publicKey;
-            Recipient = recipient;
+            UpdatedAddresses = updatedAddresses;
             Timestamp = timestamp;
             Actions = actions;
             Signature = new byte[0];
@@ -155,10 +157,10 @@ namespace Libplanet.Tx
         public Address Signer { get; }
 
         /// <summary>
-        /// An <see cref="Address"/> of the account who
-        /// receives this transaction.
+        /// <see cref="Address"/>es whose states affected by
+        /// <see cref="Actions"/>.
         /// </summary>
-        public Address Recipient { get; }
+        public IImmutableSet<Address> UpdatedAddresses { get; }
 
         /// <summary>
         /// A digital signature of the content of this
@@ -224,9 +226,10 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(Address, PublicKey, Address,
-        /// DateTimeOffset, IList{T}, byte[])"/> constructor, it automatically
-        /// signs, and fills the appropriate <see cref="Signer"/> and
+        /// Unlike the <see cref="Transaction(Address, PublicKey,
+        /// IImmutableSet{Address}, DateTimeOffset, IList{T}, byte[])"/>
+        /// constructor, it automatically signs,
+        /// and fills the appropriate <see cref="Signer"/> and
         /// <see cref="PublicKey"/> properties using the given
         /// <paramref name="privateKey"/>.  However, the <paramref
         /// name="privateKey"/> in itself is not included in the created
@@ -237,9 +240,9 @@ namespace Libplanet.Tx
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
-        /// <param name="recipient">An <see cref="Address"/> of the account
-        /// who receives this transaction.  This goes to
-        /// the <see cref="Recipient"/> property.</param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose
+        /// states affected by <paramref name="actions"/>.  This goes to
+        /// the <see cref="UpdatedAddresses"/> property.</param>
         /// <param name="actions">A list of <see cref="IAction"/>s.  This
         /// can be empty, but cannot be <c>null</c>.  This goes to
         /// the <see cref="Actions"/> property.</param>
@@ -254,7 +257,7 @@ namespace Libplanet.Tx
         /// </exception>
         public static Transaction<T> Make(
             PrivateKey privateKey,
-            Address recipient,
+            IImmutableSet<Address> updatedAddresses,
             IList<T> actions,
             DateTimeOffset timestamp)
         {
@@ -269,14 +272,14 @@ namespace Libplanet.Tx
             var tx = new Transaction<T>(
                 signer,
                 publicKey,
-                recipient,
+                updatedAddresses,
                 timestamp,
                 actions
             );
             return new Transaction<T>(
                 signer,
                 publicKey,
-                recipient,
+                updatedAddresses,
                 timestamp,
                 actions,
                 privateKey.Sign(tx.ToBencodex(false))
@@ -385,7 +388,8 @@ namespace Libplanet.Tx
         {
             var rawTx = new RawTransaction(
                 signer: Signer.ToByteArray(),
-                recipient: Recipient.ToByteArray(),
+                updatedAddresses: UpdatedAddresses.Select(a =>
+                    a.ToByteArray()).ToArray(),
                 publicKey: PublicKey.Format(false),
                 timestamp: Timestamp.ToString(TimestampFormat),
                 actions: Actions.Select(a => new Dictionary<string, object>
