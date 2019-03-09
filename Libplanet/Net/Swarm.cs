@@ -118,18 +118,13 @@ namespace Libplanet.Net
 
         public bool IsReadOnly => false;
 
-        public Uri Url
+        public IPEndPoint EndPoint
         {
             get
             {
                 if (_ipAddress != null && _listenPort is int port)
                 {
-                    return new UriBuilder()
-                    {
-                        Scheme = "tcp",
-                        Host = _ipAddress.ToString(),
-                        Port = port,
-                    }.Uri;
+                    return new IPEndPoint(_ipAddress, port);
                 }
                 else
                 {
@@ -143,7 +138,7 @@ namespace Libplanet.Net
 
         public Peer AsPeer => new Peer(
             _privateKey.PublicKey,
-            Url != null ? new[] { Url } : new Uri[] { }
+            EndPoint != null ? new[] { EndPoint } : new IPEndPoint[] { }
         );
 
         [Uno.EqualityIgnore]
@@ -1236,14 +1231,14 @@ namespace Libplanet.Net
         }
 
         private async Task<DealerSocket> DialAsync(
-            Uri address,
+            string address,
             DealerSocket dealer,
             CancellationToken cancellationToken
         )
         {
             CheckStarted();
 
-            dealer.Connect(address.ToString().TrimEnd('/'));
+            dealer.Connect(address);
 
             _logger.Debug($"Trying to Ping to [{address}]...");
             var ping = new Ping();
@@ -1270,22 +1265,26 @@ namespace Libplanet.Net
             // Peer can have more than 2 Url due to NAT and so on.
             // Therefore, DialPeerAsync () checks the accessible URLs
             // and puts them at the front.
-            foreach (var (url, i) in peer.Urls.Select((url, i) => (url, i)))
+            foreach (var (endPoint, i) in peer.EndPoints.Select((endPoint, i) =>
+                (endPoint, i)))
             {
                 var dealer = new DealerSocket();
                 dealer.Options.Identity =
                     _privateKey.PublicKey.ToAddress().ToByteArray();
                 try
                 {
-                    _logger.Debug($"Trying to DialAsync({url})...");
-                    await DialAsync(url, dealer, cancellationToken);
-                    _logger.Debug($"DialAsync({url}) is complete.");
+                    _logger.Debug($"Trying to DialAsync({endPoint})...");
+                    await DialAsync(
+                        ToNetMQAddress(peer),
+                        dealer,
+                        cancellationToken);
+                    _logger.Debug($"DialAsync({endPoint}) is complete.");
                 }
                 catch (IOException e)
                 {
                     _logger.Error(
                         e,
-                        $"IOException occured in DialAsync ({url})."
+                        $"IOException occured in DialAsync ({endPoint})."
                     );
                     dealer.Dispose();
                     continue;
@@ -1294,7 +1293,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"TimeoutException occured in DialAsync ({url})."
+                        $"TimeoutException occured in DialAsync ({endPoint})."
                     );
                     dealer.Dispose();
                     continue;
@@ -1302,7 +1301,7 @@ namespace Libplanet.Net
 
                 if (i > 0)
                 {
-                    peer = new Peer(peer.PublicKey, peer.Urls.Skip(i));
+                    peer = new Peer(peer.PublicKey, peer.EndPoints.Skip(i));
                 }
 
                 _dealers[peer.Address] = dealer;
@@ -1420,8 +1419,8 @@ namespace Libplanet.Net
             }
 
             // See DialPeerAsync().
-            Uri url = peer.Urls.FirstOrDefault();
-            return url?.ToString().TrimEnd('/');
+            var endPoint = peer.EndPoints.FirstOrDefault();
+            return $"tcp://{endPoint}";
         }
     }
 }

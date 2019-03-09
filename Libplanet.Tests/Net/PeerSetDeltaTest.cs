@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -16,20 +17,20 @@ namespace Libplanet.Tests.Net
             var peerSetDelta = new PeerSetDelta(
                 new Peer(
                     new PrivateKey().PublicKey,
-                    new[] { new Uri("inproc://a") }
+                    new[] { new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1234) }
                 ),
                 DateTimeOffset.UtcNow,
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new[] { new Uri("inproc://added") }),
+                        new[] { new IPEndPoint(IPAddress.Parse("1.2.3.4"), 1234) }),
                 }.ToImmutableHashSet(),
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new[] { new Uri("inproc://removed") }),
+                        new[] { new IPEndPoint(IPAddress.Parse("2.3.4.5"), 1234) }),
                 }.ToImmutableHashSet(),
                 null
             );

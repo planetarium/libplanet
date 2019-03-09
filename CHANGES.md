@@ -6,6 +6,8 @@ Version 0.2.0
 
 To be released.
 
+ -  Change type of Peer.`Urls` to `IPEndPoint`.
+
 
 Version 0.1.1
 -------------
