@@ -7,6 +7,7 @@ Version 0.2.0
 To be released.
 
  -  The type of `Peer.Urls` property is changed from `Uri` to `IPEndPoint`.
+ - `Address` and `TxId` are now serializable.
 
 
 Version 0.1.1

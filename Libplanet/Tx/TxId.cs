@@ -2,6 +2,8 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.Serialization;
+using Libplanet.Serialization;
 
 namespace Libplanet.Tx
 {
@@ -15,8 +17,9 @@ namespace Libplanet.Tx
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
     #pragma warning disable CS0282
+    [Serializable]
     [Uno.GeneratedEquality]
-    public partial struct TxId
+    public partial struct TxId : ISerializable
     #pragma warning restore CS0282
     {
         /// <summary>
@@ -64,6 +67,13 @@ namespace Libplanet.Tx
             _computedHashCode = null;
             _computedKeyHashCode = null;
             #pragma warning restore CS0103
+        }
+
+        public TxId(
+            SerializationInfo info,
+            StreamingContext context)
+            : this(info.GetValue<byte[]>("tx_id"))
+        {
         }
 
         /// <summary>
@@ -115,5 +125,13 @@ namespace Libplanet.Tx
         /// </returns>
         [Pure]
         public override string ToString() => ToHex();
+
+        /// <inheritdoc />
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context)
+        {
+            info.AddValue("tx_id", _byteArray.ToArray());
+        }
     }
 }

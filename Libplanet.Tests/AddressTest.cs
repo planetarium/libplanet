@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Xunit;
 
@@ -195,6 +197,29 @@ namespace Libplanet.Tests
 
             Assert.False(sameAddress1 != sameAddress2);
             Assert.True(sameAddress2 != differentAddress);
+        }
+
+        [Fact]
+        public void CanSerializeAndDeserialize()
+        {
+            // Serialize and deserialize to and from memory
+            var expectedAddress = new Address(
+                new byte[]
+                {
+                    0x45, 0xa2, 0x21, 0x87, 0xe2, 0xd8, 0x85, 0x0b, 0xb3, 0x57,
+                    0x88, 0x69, 0x58, 0xbc, 0x3e, 0x85, 0x60, 0x92, 0x9c, 0xcc,
+                }
+            );
+            Address deserializedAddress;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, expectedAddress);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                deserializedAddress = (Address)formatter.Deserialize(memoryStream);
+            }
+
+            Assert.Equal(deserializedAddress, expectedAddress);
         }
     }
 }
