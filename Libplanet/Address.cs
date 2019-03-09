@@ -3,8 +3,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.Serialization;
 using System.Text;
 using Libplanet.Crypto;
+using Libplanet.Serialization;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace Libplanet
@@ -36,8 +38,9 @@ namespace Libplanet
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
     #pragma warning disable CS0282
+    [Serializable]
     [Uno.GeneratedEquality]
-    public partial struct Address
+    public partial struct Address : ISerializable
     #pragma warning restore CS0282
     {
         private ImmutableArray<byte> _byteArray;
@@ -78,6 +81,13 @@ namespace Libplanet
             _computedHashCode = null;
             _computedKeyHashCode = null;
             #pragma warning restore CS0103
+        }
+
+        public Address(
+            SerializationInfo info,
+            StreamingContext context)
+            : this(info.GetValue<byte[]>("address"))
+        {
         }
 
         /// <summary>
@@ -195,6 +205,14 @@ namespace Libplanet
         public override string ToString()
         {
             return $"0x{ToHex()}";
+        }
+
+        /// <inheritdoc />
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context)
+        {
+            info.AddValue("address", _byteArray.ToArray());
         }
 
         private static string ToChecksumAddress(string hex)
