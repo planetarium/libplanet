@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -30,7 +31,20 @@ namespace Libplanet.Tests.Net.Stun
                 .ForContext<SwarmTest>();
 
             _fx = new FileStoreFixture();
-            _turnClient = new TurnClient("172.17.80.220", "scott", "tiger");
+
+            string turnUrl = Environment.GetEnvironmentVariable(
+                FactOnlyTurnAvailable.TurnUrlVarName);
+
+            if (!string.IsNullOrEmpty(turnUrl))
+            {
+                var uri = new Uri(turnUrl);
+                string[] userInfos = uri.UserInfo.Split(':');
+                _turnClient = new TurnClient(
+                    uri.Host,
+                    userInfos[0],
+                    userInfos[1],
+                    uri.Port);
+            }
         }
 
         public void Dispose()
@@ -39,8 +53,8 @@ namespace Libplanet.Tests.Net.Stun
             _turnClient.Dispose();
         }
 
-        // [Fact]
-        public async Task CanRelay()
+        [FactOnlyTurnAvailable]
+        public async Task WorkAsExpected()
         {
             Swarm s1 = new Swarm(new PrivateKey());
 
@@ -48,7 +62,6 @@ namespace Libplanet.Tests.Net.Stun
                 new BlockPolicy<BaseAction>(), _fx.Store);
 
             Task s1RunningTask = s1.StartAsync(chain);
-
             await s1.WaitForRunningAsync();
 
             IPEndPoint relayAddr = await _turnClient.AllocateRequestAsync(777);
@@ -66,21 +79,27 @@ namespace Libplanet.Tests.Net.Stun
 
             Task s1AddPeerTask = Task.Run(async () =>
             {
-                await Task.Delay(1000);
+                await Task.Delay(500);
                 await s1.AddPeersAsync(new[] { s2.AsPeer });
             });
 
-            while (true)
+            Task proxyBindingTask = Task.Run(async () =>
             {
-                NetworkStream stream = await _turnClient.AcceptRelayedStreamAsync();
-                Task proxyTask = Task.Run(async () =>
+                while (true)
                 {
-                    using (var proxy = new NetworkStreamProxy(stream))
+                    NetworkStream stream = await _turnClient.AcceptRelayedStreamAsync();
+                    Task proxyTask = Task.Run(async () =>
                     {
-                        await proxy.StartAsync("127.0.0.1", relayAddr.Port);
-                    }
-                });
-            }
+                        using (var proxy = new NetworkStreamProxy(stream))
+                        {
+                            await proxy.StartAsync("127.0.0.1", relayAddr.Port);
+                        }
+                    });
+                }
+            });
+
+            await Task.Delay(10000);
+            Assert.Contains(s1.AsPeer, s2.AsEnumerable());
         }
     }
 }
