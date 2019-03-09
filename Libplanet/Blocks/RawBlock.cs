@@ -10,7 +10,7 @@ namespace Libplanet.Blocks
             long index,
             string timestamp,
             byte[] nonce,
-            byte[] rewardBenificiary,
+            byte[] rewardBeneficiary,
             int difficulty,
             byte[] previousHash,
             IEnumerable transactions)
@@ -18,7 +18,7 @@ namespace Libplanet.Blocks
                 index,
                 timestamp,
                 nonce,
-                rewardBenificiary,
+                rewardBeneficiary,
                 difficulty,
                 previousHash,
                 transactions,
@@ -31,7 +31,7 @@ namespace Libplanet.Blocks
             long index,
             string timestamp,
             byte[] nonce,
-            byte[] rewardBenificiary,
+            byte[] rewardBeneficiary,
             int difficulty,
             byte[] previousHash,
             IEnumerable transactions,
@@ -40,7 +40,7 @@ namespace Libplanet.Blocks
             Index = index;
             Timestamp = timestamp;
             Nonce = nonce;
-            RewardBeneficiary = rewardBenificiary;
+            RewardBeneficiary = rewardBeneficiary;
             Difficulty = difficulty;
             PreviousHash = previousHash;
             Transactions = transactions;
@@ -52,7 +52,7 @@ namespace Libplanet.Blocks
                 index: info.GetInt64("index"),
                 timestamp: info.GetString("timestamp"),
                 nonce: info.GetValue<byte[]>("nonce"),
-                rewardBenificiary: info.GetValue<byte[]>("reward_beneficiary"),
+                rewardBeneficiary: info.GetValue<byte[]>("reward_beneficiary"),
                 difficulty: info.GetInt32("difficulty"),
                 previousHash: info.GetValueOrDefault<byte[]>(
                     "previous_hash",
@@ -108,7 +108,7 @@ namespace Libplanet.Blocks
             return new RawBlock(
                 index: Index,
                 timestamp: Timestamp,
-                rewardBenificiary: RewardBeneficiary,
+                rewardBeneficiary: RewardBeneficiary,
                 difficulty: Difficulty,
                 nonce: Nonce,
                 previousHash: PreviousHash,
