@@ -9,8 +9,8 @@ namespace Libplanet.Tests.Action
 {
     public class AccountStateDeltaImplTest
     {
-        private readonly IAccountStateView _view;
         private readonly Address[] _addr;
+        private readonly IImmutableDictionary<Address, object> _states;
 
         public AccountStateDeltaImplTest()
         {
@@ -23,17 +23,17 @@ namespace Libplanet.Tests.Action
                 Addr(),
             };
 
-            _view = new DumbAccountStateView
+            _states = new Dictionary<Address, object>()
             {
                 [_addr[0]] = "a",
                 [_addr[1]] = "b",
-            };
+            }.ToImmutableDictionary();
         }
 
         [Fact]
         public void CreateNullDelta()
         {
-            IAccountStateDelta delta = new AccountStateDeltaImpl(_view);
+            IAccountStateDelta delta = new AccountStateDeltaImpl(GetState);
             Assert.Empty(delta.UpdatedAddresses);
             Assert.Equal("a", delta.GetState(_addr[0]));
             Assert.Equal("b", delta.GetState(_addr[1]));
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void GetSetState()
         {
-            IAccountStateDelta init = new AccountStateDeltaImpl(_view);
+            IAccountStateDelta init = new AccountStateDeltaImpl(GetState);
             IAccountStateDelta a = init.SetState(_addr[0], "A");
             Assert.Equal("A", a.GetState(_addr[0]));
             Assert.Equal("a", init.GetState(_addr[0]));
@@ -78,19 +78,15 @@ namespace Libplanet.Tests.Action
             Assert.Empty(init.UpdatedAddresses);
         }
 
-        private class DumbAccountStateView
-            : Dictionary<Address, object>, IAccountStateView
+        private object GetState(Address address)
         {
-            public object GetAccountState(Address address)
+            try
             {
-                try
-                {
-                    return this[address];
-                }
-                catch (KeyNotFoundException)
-                {
-                    return null;
-                }
+                return _states[address];
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
             }
         }
     }

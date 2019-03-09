@@ -11,8 +11,8 @@ To be released.
     The corresponding parameter names on constructors and
     methods were also renamed too.
  -  Removed `IActionContext.To` property.
- -  Added `IAccountStateView` interface.
-    The interface purposes to provide a read-only view to account states.
+ -  Added `AccountStateGetter` delegate to provide a read-only view to
+    account states.
  -  Added `IAccountStateDelta` interface to replace `AddressStateMap`.
     The interface purposes to provide a read-write view to account states
     with maintaining `UpdatedAddresses` (so-called "dirty").

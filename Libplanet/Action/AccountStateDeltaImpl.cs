@@ -8,18 +8,18 @@ namespace Libplanet.Action
     /// </summary>
     internal class AccountStateDeltaImpl : IAccountStateDelta
     {
-        private readonly IAccountStateView _accountStateView;
+        private readonly AccountStateGetter _accountStateGetter;
         private IImmutableDictionary<Address, object> _updatedStates;
 
         /// <summary>
         /// Creates a null delta from the given
-        /// <paramref name="accountStateView"/>.
+        /// <paramref name="accountStateGetter"/>.
         /// </summary>
-        /// <param name="accountStateView">A view to the &#x201c;epoch&#x201d;
+        /// <param name="accountStateGetter">A view to the &#x201c;epoch&#x201d;
         /// states.</param>
-        internal AccountStateDeltaImpl(IAccountStateView accountStateView)
+        internal AccountStateDeltaImpl(AccountStateGetter accountStateGetter)
         {
-            _accountStateView = accountStateView;
+            _accountStateGetter = accountStateGetter;
             _updatedStates = ImmutableDictionary<Address, object>.Empty;
         }
 
@@ -36,7 +36,7 @@ namespace Libplanet.Action
             }
             catch (KeyNotFoundException)
             {
-                return _accountStateView.GetAccountState(address);
+                return _accountStateGetter(address);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Libplanet.Action
                 _updatedStates.SetItem(address, state);
             foreach (Address addr in newState.Keys)
             {
-                object epochState = _accountStateView.GetAccountState(addr);
+                object epochState = _accountStateGetter(addr);
                 if (ReferenceEquals(epochState, state) ||
                     Equals(epochState, state))
                 {
@@ -58,7 +58,7 @@ namespace Libplanet.Action
                 }
             }
 
-            return new AccountStateDeltaImpl(_accountStateView)
+            return new AccountStateDeltaImpl(_accountStateGetter)
             {
                 _updatedStates = newState,
             };

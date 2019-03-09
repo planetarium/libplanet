@@ -429,32 +429,6 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IAccountStateView GetAccountStateView(
-            HashDigest<SHA256>? offset,
-            IImmutableDictionary<Address, object> dirty = null
-        )
-        {
-            if (offset == null)
-            {
-                _rwlock.EnterReadLock();
-                try
-                {
-                    offset = Store.IndexBlockHash(Id.ToString(), -1);
-                }
-                finally
-                {
-                    _rwlock.ExitReadLock();
-                }
-            }
-
-            return new BlockChainAccountStateView
-            {
-                Chain = this,
-                Offset = offset,
-                Dirty = dirty,
-            };
-        }
-
         private void EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
@@ -466,9 +440,25 @@ namespace Libplanet.Blockchain
                 int txSeed = seed ^ BitConverter.ToInt32(tx.Signature, 0);
                 foreach (T action in tx.Actions)
                 {
-                    var prevState = new AccountStateDeltaImpl(
-                        GetAccountStateView(prevHash, dirty)
-                    );
+                    var prevState = new AccountStateDeltaImpl(address =>
+                    {
+                        if (!ReferenceEquals(dirty, null) &&
+                            dirty.ContainsKey(address))
+                        {
+                            return dirty[address];
+                        }
+
+                        IImmutableDictionary<Address, object> result =
+                            GetStates(new[] { address }, prevHash);
+                        try
+                        {
+                            return result[address];
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            return null;
+                        }
+                    });
                     var context = new ActionContext(
                         signer: tx.Signer,
                         blockIndex: block.Index,
@@ -485,38 +475,6 @@ namespace Libplanet.Blockchain
                 block.Hash,
                 new AddressStateMap(dirty)
             );
-        }
-
-        private class BlockChainAccountStateView : IAccountStateView
-        {
-            internal BlockChain<T> Chain { get; set; }
-
-            internal HashDigest<SHA256>? Offset { get; set; }
-
-            internal IImmutableDictionary<Address, object> Dirty
-            {
-                private get;
-                set;
-            }
-
-            public object GetAccountState(Address address)
-            {
-                if (!ReferenceEquals(Dirty, null) && Dirty.ContainsKey(address))
-                {
-                    return Dirty[address];
-                }
-
-                IImmutableDictionary<Address, object> result =
-                    Chain.GetStates(new[] { address }, Offset);
-                try
-                {
-                    return result[address];
-                }
-                catch (KeyNotFoundException)
-                {
-                    return null;
-                }
-            }
         }
     }
 }
