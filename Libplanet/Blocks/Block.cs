@@ -254,7 +254,7 @@ namespace Libplanet.Blocks
                 index: Index,
                 timestamp: Timestamp.ToString(TimestampFormat),
                 nonce: Nonce.ToByteArray(),
-                rewardBenificiary: RewardBeneficiary?.ToByteArray(),
+                rewardBeneficiary: RewardBeneficiary?.ToByteArray(),
                 difficulty: Difficulty,
                 transactions: transactions,
                 previousHash: PreviousHash?.ToByteArray()

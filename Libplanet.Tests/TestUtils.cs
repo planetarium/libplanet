@@ -78,7 +78,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         internal static Block<T> MineGenesis<T>()
             where T : IAction
         {
-            var rewardBenificiary = new Address(
+            var rewardBeneficiary = new Address(
                 "21744f4f08db23e044178dafb8273aeb5ebe6644"
             );
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
@@ -86,7 +86,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 index: 0,
                 difficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                rewardBeneficiary: rewardBenificiary,
+                rewardBeneficiary: rewardBeneficiary,
                 previousHash: null,
                 timestamp: timestamp,
                 transactions: new List<Transaction<T>>()
