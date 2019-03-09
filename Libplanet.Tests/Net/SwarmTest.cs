@@ -571,17 +571,18 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public void CanResolveUrl()
+        public void CanResolveEndPoint()
         {
+            var expected = new IPEndPoint(IPAddress.Parse("1.2.3.4"), 5678);
             Swarm s = new Swarm(
                 new PrivateKey(),
                 ipAddress: IPAddress.Parse("1.2.3.4"),
                 listenPort: 5678);
 
-            Assert.Equal(new Uri("tcp://1.2.3.4:5678"), s.Url);
+            Assert.Equal(expected, s.EndPoint);
             Assert.Equal(
-                new[] { new Uri("tcp://1.2.3.4:5678") },
-                s.AsPeer.Urls);
+                new[] { expected },
+                s.AsPeer.EndPoints);
         }
 
         [Fact]

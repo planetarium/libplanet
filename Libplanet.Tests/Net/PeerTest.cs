@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -19,52 +20,52 @@ namespace Libplanet.Tests.Net
             )
         );
 
-        private static Uri[] _sampleUrls = new Uri[]
+        private static IPEndPoint[] _sampleEndPoints = new IPEndPoint[]
         {
-            new Uri("inproc://a"),
-            new Uri("inproc://b"),
-            new Uri("tcp://[::1]:1234"),
+            new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1234),
+            new IPEndPoint(IPAddress.Parse("1.2.3.4"), 1234),
+            new IPEndPoint(IPAddress.Parse("2.3.4.5"), 1234),
         };
 
         [Fact]
         public void ConstructorWithImmutableList()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new Peer(_samplePublicKey, (IImmutableList<Uri>)null)
+                () => new Peer(_samplePublicKey, null)
             );
             var peer = new Peer(
                 _samplePublicKey,
-                _sampleUrls.ToImmutableList() as IImmutableList<Uri>
+                _sampleEndPoints.ToImmutableList()
             );
             Assert.Equal(_samplePublicKey, peer.PublicKey);
-            Assert.Equal(_sampleUrls, peer.Urls);
+            Assert.Equal(_sampleEndPoints, peer.EndPoints);
         }
 
         [Fact]
         public void ConstructorWithEnumerable()
         {
             Assert.Throws<ArgumentNullException>(
-                () => new Peer(_samplePublicKey, (IEnumerable<Uri>)null)
+                () => new Peer(_samplePublicKey, (IEnumerable<IPEndPoint>)null)
             );
-            var peer = new Peer(_samplePublicKey, _sampleUrls);
+            var peer = new Peer(_samplePublicKey, _sampleEndPoints);
             Assert.Equal(_samplePublicKey, peer.PublicKey);
-            Assert.Equal(_sampleUrls, peer.Urls);
+            Assert.Equal(_sampleEndPoints, peer.EndPoints);
         }
 
         [Fact]
         public void AddUrl()
         {
-            var peer = new Peer(_samplePublicKey, _sampleUrls);
+            var peer = new Peer(_samplePublicKey, _sampleEndPoints);
             Assert.Equal(_samplePublicKey, peer.PublicKey);
             Assert.Equal(
-                new Uri[]
+                new IPEndPoint[]
                 {
-                    new Uri("inproc://a"),
-                    new Uri("inproc://b"),
-                    new Uri("tcp://[::1]:1234"),
-                    new Uri("ipc:///tmp/planet"),
+                    new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1234),
+                    new IPEndPoint(IPAddress.Parse("1.2.3.4"), 1234),
+                    new IPEndPoint(IPAddress.Parse("2.3.4.5"), 1234),
+                    new IPEndPoint(IPAddress.Parse("3.4.5.6"), 1234),
                 },
-                peer.AddUrl(new Uri("ipc:///tmp/planet")).Urls
+                peer.AddEndPoint(new IPEndPoint(IPAddress.Parse("3.4.5.6"), 1234)).EndPoints
             );
         }
 
@@ -73,7 +74,7 @@ namespace Libplanet.Tests.Net
         {
             var peer = new Peer(
                 _samplePublicKey,
-                _sampleUrls.ToImmutableList()
+                _sampleEndPoints.ToImmutableList()
             );
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())

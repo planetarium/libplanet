@@ -1,61 +1,71 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
-using System.Text;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
+using Uno;
 
 namespace Libplanet.Net
 {
     [Serializable]
-    [Uno.GeneratedEquality]
+    [GeneratedEquality]
     public partial class Peer : ISerializable
     {
-        public Peer(PublicKey publicKey, IImmutableList<Uri> urls)
+        public Peer(PublicKey publicKey, IImmutableList<IPEndPoint> endPoints)
         {
             if (publicKey == null)
             {
                 throw new ArgumentNullException(nameof(publicKey));
             }
-            else if (urls == null)
+            else if (endPoints == null)
             {
-                throw new ArgumentNullException(nameof(urls));
+                throw new ArgumentNullException(nameof(endPoints));
             }
 
             PublicKey = publicKey;
-            Urls = urls;
+            EndPoints = endPoints;
         }
 
-        public Peer(PublicKey publicKey, IEnumerable<Uri> urls)
-            : this(publicKey, urls.ToImmutableArray())
+        public Peer(PublicKey publicKey, IEnumerable<IPEndPoint> endPoints)
+            : this(publicKey, endPoints.ToImmutableArray())
         {
         }
 
         protected Peer(SerializationInfo info, StreamingContext context)
         {
             PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
-            Urls = info.GetValue<List<string>>("urls")
-                .Select(s => new Uri(s))
-                .ToImmutableArray();
+            var points = info.GetValue<List<string>>("end_points");
+            var endPoints = new List<IPEndPoint>();
+            foreach (var point in points)
+            {
+                var split = point.Split(':');
+                var endPoint = new IPEndPoint(
+                    IPAddress.Parse(split[0]),
+                    int.Parse(split[1]));
+                endPoints.Add(endPoint);
+            }
+
+            EndPoints = endPoints.ToImmutableList();
         }
 
-        [Uno.EqualityKey]
+        [EqualityKey]
         [Pure]
         public PublicKey PublicKey { get; }
 
-        [Uno.EqualityKey]
+        [EqualityKey]
         [Pure]
-        public IImmutableList<Uri> Urls { get; }
+        public IImmutableList<IPEndPoint> EndPoints { get; }
 
         [Pure]
         public Address Address => new Address(PublicKey);
 
         [Pure]
-        public Peer AddUrl(Uri url) => new Peer(PublicKey, Urls.Add(url));
+        public Peer AddEndPoint(IPEndPoint endPoint) =>
+            new Peer(PublicKey, EndPoints.Add(endPoint));
 
         public void GetObjectData(
             SerializationInfo info,
@@ -63,15 +73,17 @@ namespace Libplanet.Net
         )
         {
             info.AddValue("public_key", PublicKey.Format(true));
-            info.AddValue("urls", Urls.Select(u => u.ToString()).ToList());
+            info.AddValue(
+                "end_points",
+                EndPoints.Select(e => e.ToString()).ToList());
         }
 
         public override string ToString()
         {
-            IEnumerable<string> urlStrings = Urls.Select(u => u.ToString());
+            var endPointStrings = EndPoints.Select(e => e.ToString());
             return string.Join(
                 ",",
-                new[] { Address.ToString() }.Concat(urlStrings)
+                new[] { Address.ToString() }.Concat(endPointStrings)
             );
         }
     }
