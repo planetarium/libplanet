@@ -38,7 +38,7 @@ namespace Libplanet.Net
         protected Peer(SerializationInfo info, StreamingContext context)
         {
             PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
-            var points = info.GetValue<List<string>>("endPoints");
+            var points = info.GetValue<List<string>>("end_points");
             var endPoints = new List<IPEndPoint>();
             foreach (var point in points)
             {
@@ -74,7 +74,7 @@ namespace Libplanet.Net
         {
             info.AddValue("public_key", PublicKey.Format(true));
             info.AddValue(
-                "endPoints",
+                "end_points",
                 EndPoints.Select(e => e.ToString()).ToList());
         }
 
