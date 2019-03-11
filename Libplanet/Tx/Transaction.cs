@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -317,6 +318,45 @@ namespace Libplanet.Tx
                 serializer.Serialize(stream, this);
                 return stream.ToArray();
             }
+        }
+
+        /// <summary>
+        /// Executes the <see cref="Actions"/> and gets the result states.
+        /// </summary>
+        /// <param name="blockHash">The <see
+        /// cref="Libplanet.Blocks.Block{T}.Hash"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
+        /// <see cref="Transaction{T}"/> will belong to.</param>
+        /// <param name="blockIndex">The <see
+        /// cref="Libplanet.Blocks.Block{T}.Index"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
+        /// <see cref="Transaction{T}"/> will belong to.</param>
+        /// <param name="previousState">The states immediately before
+        /// <see cref="Actions"/> being executed.</param>
+        /// <returns>The states immediately after <see cref="Actions"/>
+        /// being executed.</returns>
+        [Pure]
+        public IAccountStateDelta EvaluateActions(
+            HashDigest<SHA256> blockHash,
+            long blockIndex,
+            IAccountStateDelta previousState
+        )
+        {
+            int seed =
+                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
+                BitConverter.ToInt32(Signature, 0);
+            foreach (T action in Actions)
+            {
+                var context = new ActionContext(
+                    signer: Signer,
+                    blockIndex: blockIndex,
+                    previousStates: previousState,
+                    randomSeed: unchecked(seed++)
+                );
+                previousState = action.Execute(context);
+            }
+
+            return previousState;
         }
 
         /// <summary>

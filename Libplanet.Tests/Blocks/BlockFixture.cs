@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Blocks
     {
         public BlockFixture()
         {
-            var txFixture = new TxFixture();
+            TxFixture = new TxFixture();
 
             Genesis = TestUtils.MineGenesis<BaseAction>();
             Next = TestUtils.MineNext(
@@ -21,11 +21,13 @@ namespace Libplanet.Tests.Blocks
                 Next,
                 new List<Transaction<BaseAction>>
                 {
-                    txFixture.TxWithActions,
+                    TxFixture.TxWithActions,
                 },
                 new byte[] { 0x02, 0x00, 0x00, 0x00 }
             );
         }
+
+        internal TxFixture TxFixture { get; }
 
         internal Block<BaseAction> Genesis { get; }
 

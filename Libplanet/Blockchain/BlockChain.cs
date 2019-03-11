@@ -432,43 +432,19 @@ namespace Libplanet.Blockchain
         private void EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            var dirty = ImmutableDictionary<Address, object>.Empty;
-
-            int seed = BitConverter.ToInt32(block.Hash.ToByteArray(), 0);
-            foreach (Transaction<T> tx in block.Transactions)
+            var dirty = block.EvaluateActions(address =>
             {
-                int txSeed = seed ^ BitConverter.ToInt32(tx.Signature, 0);
-                foreach (T action in tx.Actions)
+                IImmutableDictionary<Address, object> result =
+                    GetStates(new[] { address }, prevHash);
+                try
                 {
-                    var prevState = new AccountStateDeltaImpl(address =>
-                    {
-                        if (!ReferenceEquals(dirty, null) &&
-                            dirty.ContainsKey(address))
-                        {
-                            return dirty[address];
-                        }
-
-                        IImmutableDictionary<Address, object> result =
-                            GetStates(new[] { address }, prevHash);
-                        try
-                        {
-                            return result[address];
-                        }
-                        catch (KeyNotFoundException)
-                        {
-                            return null;
-                        }
-                    });
-                    var context = new ActionContext(
-                        signer: tx.Signer,
-                        blockIndex: block.Index,
-                        previousStates: prevState,
-                        randomSeed: unchecked(txSeed++)
-                    );
-                    IAccountStateDelta delta = action.Execute(context);
-                    dirty = dirty.SetItems(delta.GetUpdatedStates());
+                    return result[address];
                 }
-            }
+                catch (KeyNotFoundException)
+                {
+                    return null;
+                }
+            });
 
             Store.SetBlockStates(
                 Id.ToString(),

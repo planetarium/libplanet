@@ -1,6 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -156,12 +162,107 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(_fx.HasTx, actual);
         }
 
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "SA1118",
+            Justification = "Long array literals should be multiline.")]
+        [Fact]
+        public void EvaluateActions()
+        {
+            ImmutableArray<Address> addresses = Enumerable.Range(0, 4)
+                .Select(_ => new Address(new PrivateKey().PublicKey))
+                .ToImmutableArray();
+            Attack MakeAction(Address address, char identifier) =>
+                new Attack
+                {
+                    Weapon = $"w{identifier}",
+                    Target = $"t{identifier}",
+                    TargetAddress = address,
+                };
+
+            Block<BaseAction> genesis = MineGenesis<BaseAction>();
+            Block<BaseAction> blockIdx1 = MineNext(
+                genesis,
+                new[]
+                {
+                    Transaction<BaseAction>.Make(
+                        _fx.TxFixture.PrivateKey,
+                        ImmutableHashSet<Address>.Empty,
+                        new BaseAction[]
+                        {
+                            MakeAction(addresses[0], 'A'),
+                            MakeAction(addresses[1], 'B'),
+                        },
+                        DateTimeOffset.UtcNow
+                    ),
+                    Transaction<BaseAction>.Make(
+                        _fx.TxFixture.PrivateKey,
+                        ImmutableHashSet<Address>.Empty,
+                        new BaseAction[] { MakeAction(addresses[2], 'C') },
+                        DateTimeOffset.UtcNow
+                    ),
+                }
+            );
+            IImmutableDictionary<Address, object> dirty1 =
+                blockIdx1.EvaluateActions(address => null);
+            Assert.Equal(
+                new Dictionary<Address, object>
+                {
+                    [addresses[0]] = new BattleResult(
+                        usedWeapons: new[] { "wA" },
+                        targets: new[] { "tA" }
+                    ),
+                    [addresses[1]] = new BattleResult(
+                        usedWeapons: new[] { "wB" },
+                        targets: new[] { "tB" }
+                    ),
+                    [addresses[2]] = new BattleResult(
+                        usedWeapons: new[] { "wC" },
+                        targets: new[] { "tC" }
+                    ),
+                }.ToImmutableDictionary(),
+                dirty1
+            );
+
+            Block<BaseAction> blockIdx2 = MineNext(
+                blockIdx1,
+                new[]
+                {
+                    Transaction<BaseAction>.Make(
+                        _fx.TxFixture.PrivateKey,
+                        ImmutableHashSet<Address>.Empty,
+                        new BaseAction[] { MakeAction(addresses[0], 'D') },
+                        DateTimeOffset.UtcNow
+                    ),
+                    Transaction<BaseAction>.Make(
+                        _fx.TxFixture.PrivateKey,
+                        ImmutableHashSet<Address>.Empty,
+                        new BaseAction[] { MakeAction(addresses[3], 'E') },
+                        DateTimeOffset.UtcNow
+                    ),
+                }
+            );
+            IImmutableDictionary<Address, object> dirty2 =
+                blockIdx2.EvaluateActions(dirty1.GetValueOrDefault);
+            Assert.Equal(
+                new Dictionary<Address, object>
+                {
+                    [addresses[0]] = new BattleResult(
+                        usedWeapons: new[] { "wA", "wD" },
+                        targets: new[] { "tA", "tD" }
+                    ),
+                    [addresses[3]] = new BattleResult(
+                        usedWeapons: new[] { "wE" },
+                        targets: new[] { "tE" }
+                    ),
+                }.ToImmutableDictionary(),
+                dirty2
+            );
+        }
+
         [Fact]
         public void CanValidate()
         {
-            Block<BaseAction> genesis = MineGenesis<BaseAction>();
-            Block<BaseAction> next = MineNext(genesis);
-
             _fx.Genesis.Validate();
             _fx.Next.Validate();
         }

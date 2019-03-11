@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -146,6 +148,33 @@ namespace Libplanet.Blocks
                 serializer.Serialize(stream, this);
                 return stream.ToArray();
             }
+        }
+
+        /// <summary>
+        /// Executes every <see cref="IAction"/> in the
+        /// <see cref="Transactions"/> and gets the result states.
+        /// </summary>
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
+        /// delegate to get a previous state.
+        /// A <c>null</c> value, which is default, means a constant function
+        /// that returns <c>null</c>.</param>
+        /// <returns>The states immediately after <see cref="IAction"/>s in the
+        /// <see cref="Transactions"/> being executed.</returns>
+        [Pure]
+        public IImmutableDictionary<Address, object> EvaluateActions(
+            AccountStateGetter accountStateGetter = null
+        )
+        {
+            IAccountStateDelta delta =
+                new AccountStateDeltaImpl(
+                    accountStateGetter ?? (a => null)
+                );
+            foreach (Transaction<T> tx in Transactions)
+            {
+                delta = tx.EvaluateActions(Hash, Index, delta);
+            }
+
+            return delta.GetUpdatedStates();
         }
 
         public void Validate()

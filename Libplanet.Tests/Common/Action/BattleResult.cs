@@ -1,20 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
+using Libplanet.Serialization;
 
 namespace Libplanet.Tests.Common.Action
 {
     [Serializable]
-    public class BattleResult : IEquatable<BattleResult>
+    public class BattleResult : IEquatable<BattleResult>, ISerializable
     {
-        public BattleResult()
+        public BattleResult(
+            IEnumerable<string> usedWeapons,
+            IEnumerable<string> targets
+        )
         {
-            UsedWeapons = new HashSet<string>();
-            Targets = new HashSet<string>();
+            IEqualityComparer<string> comparer =
+                StringComparer.Create(CultureInfo.InvariantCulture, false);
+            UsedWeapons = usedWeapons.ToImmutableHashSet(comparer);
+            Targets = targets.ToImmutableHashSet(comparer);
         }
 
-        public HashSet<string> UsedWeapons { get; internal set; }
+        private BattleResult(SerializationInfo info, StreamingContext context)
+            : this(
+                info.GetValue<string[]>("used_weapons").ToImmutableHashSet(),
+                info.GetValue<string[]>("targets").ToImmutableHashSet()
+            )
+        {
+        }
 
-        public HashSet<string> Targets { get; internal set; }
+        public IImmutableSet<string> UsedWeapons { get; }
+
+        public IImmutableSet<string> Targets { get; }
 
         public override bool Equals(object other)
         {
@@ -36,6 +54,28 @@ namespace Libplanet.Tests.Common.Action
                 return ((UsedWeapons?.GetHashCode() ?? 0) * 397) ^
                     (Targets?.GetHashCode() ?? 0);
             }
+        }
+
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
+        {
+            info.AddValue("used_weapons", UsedWeapons.ToArray());
+            info.AddValue("targets", Targets.ToArray());
+        }
+
+        public override string ToString()
+        {
+            string ListItems(IEnumerable<string> items) =>
+                string.Join(
+                    string.Empty,
+                    items.OrderBy(x => x).Select(a => "\n    " + a)
+                );
+
+            return $@"{nameof(BattleResult)}
+  {nameof(UsedWeapons)} = {ListItems(UsedWeapons)}
+  {nameof(Targets)} = {ListItems(Targets)}";
         }
     }
 }

@@ -31,19 +31,21 @@ namespace Libplanet.Tests.Common.Action
 
         public override IAccountStateDelta Execute(IActionContext context)
         {
-            var result = new BattleResult();
+            IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
+            IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
             IAccountStateDelta previousStates = context.PreviousStates;
 
             object value = previousStates.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
             {
                 var previousResult = (BattleResult)value;
-                result.UsedWeapons = previousResult.UsedWeapons;
-                result.Targets = previousResult.Targets;
+                usedWeapons = previousResult.UsedWeapons;
+                targets = previousResult.Targets;
             }
 
-            result.UsedWeapons.Add(Weapon);
-            result.Targets.Add(Target);
+            usedWeapons = usedWeapons.Add(Weapon);
+            targets = targets.Add(Target);
+            var result = new BattleResult(usedWeapons, targets);
 
             return previousStates.SetState(TargetAddress, result);
         }

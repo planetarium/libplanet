@@ -38,6 +38,8 @@ To be released.
     `IList<T>` to `IImmutableList<T>`.  The corresponding parameters on
     constructors and factory methods also were changed to take
     `IEnumerable<T>` instead of `IList<T>`.
+ -  Added `Block<T>.EvaluateActions()` method.
+ -  Added `Transaction<T>.EvaluateActions()` method.
  -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -497,6 +498,65 @@ namespace Libplanet.Tests.Tx
                     { "zone_id", 10 },
                 },
                 tx.Actions[1].PlainValue
+            );
+        }
+
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "SA1118",
+            Justification = "Long array literals should be multiline.")]
+        [Fact]
+        public void Evaluate()
+        {
+            Address[] addresses =
+            {
+                new PrivateKey().PublicKey.ToAddress(),
+                new PrivateKey().PublicKey.ToAddress(),
+            };
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+                _fx.PrivateKey,
+                ImmutableHashSet<Address>.Empty,
+                new BaseAction[]
+                {
+                    new Attack
+                    {
+                        Weapon = "w0",
+                        Target = "t0",
+                        TargetAddress = addresses[0],
+                    },
+                    new Attack
+                    {
+                        Weapon = "w1",
+                        Target = "t1",
+                        TargetAddress = addresses[1],
+                    },
+                    new Attack
+                    {
+                        Weapon = "w2",
+                        Target = "t2",
+                        TargetAddress = addresses[0],
+                    },
+                },
+                DateTimeOffset.UtcNow
+            );
+            IAccountStateDelta delta = tx.EvaluateActions(
+                default,
+                1,
+                new AccountStateDeltaImpl(address => null)
+            );
+            Assert.Equal(
+                new Dictionary<Address, object>
+                {
+                    [addresses[0]] = new BattleResult(
+                        usedWeapons: new[] { "w0", "w2" },
+                        targets: new[] { "t0", "t2" }
+                    ),
+                    [addresses[1]] = new BattleResult(
+                        usedWeapons: new[] { "w1" },
+                        targets: new[] { "t1" }
+                    ),
+                }.ToImmutableDictionary(),
+                delta.GetUpdatedStates()
             );
         }
 
