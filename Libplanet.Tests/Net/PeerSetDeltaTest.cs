@@ -12,25 +12,25 @@ namespace Libplanet.Tests.Net
     public class PeerSetDeltaTest
     {
         [Fact]
-        public void CanBeSerialized()
+        public void Serialize()
         {
             var peerSetDelta = new PeerSetDelta(
                 new Peer(
                     new PrivateKey().PublicKey,
-                    new[] { new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1234) }
+                    new IPEndPoint(IPAddress.Parse("0.0.0.0"), 1234)
                 ),
                 DateTimeOffset.UtcNow,
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new[] { new IPEndPoint(IPAddress.Parse("1.2.3.4"), 1234) }),
+                        new IPEndPoint(IPAddress.Parse("1.2.3.4"), 1234)),
                 }.ToImmutableHashSet(),
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new[] { new IPEndPoint(IPAddress.Parse("2.3.4.5"), 1234) }),
+                        new IPEndPoint(IPAddress.Parse("2.3.4.5"), 1234)),
                 }.ToImmutableHashSet(),
                 null
             );

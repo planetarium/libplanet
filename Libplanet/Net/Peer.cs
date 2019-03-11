@@ -15,41 +15,25 @@ namespace Libplanet.Net
     [GeneratedEquality]
     public partial class Peer : ISerializable
     {
-        public Peer(PublicKey publicKey, IImmutableList<IPEndPoint> endPoints)
+        public Peer(PublicKey publicKey, IPEndPoint endPoint)
         {
             if (publicKey == null)
             {
                 throw new ArgumentNullException(nameof(publicKey));
             }
-            else if (endPoints == null)
+            else if (endPoint == null)
             {
-                throw new ArgumentNullException(nameof(endPoints));
+                throw new ArgumentNullException(nameof(endPoint));
             }
 
             PublicKey = publicKey;
-            EndPoints = endPoints;
-        }
-
-        public Peer(PublicKey publicKey, IEnumerable<IPEndPoint> endPoints)
-            : this(publicKey, endPoints.ToImmutableArray())
-        {
+            EndPoint = endPoint;
         }
 
         protected Peer(SerializationInfo info, StreamingContext context)
         {
             PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
-            var points = info.GetValue<List<string>>("end_points");
-            var endPoints = new List<IPEndPoint>();
-            foreach (var point in points)
-            {
-                var split = point.Split(':');
-                var endPoint = new IPEndPoint(
-                    IPAddress.Parse(split[0]),
-                    int.Parse(split[1]));
-                endPoints.Add(endPoint);
-            }
-
-            EndPoints = endPoints.ToImmutableList();
+            EndPoint = info.GetValue<IPEndPoint>("end_point");
         }
 
         [EqualityKey]
@@ -58,14 +42,10 @@ namespace Libplanet.Net
 
         [EqualityKey]
         [Pure]
-        public IImmutableList<IPEndPoint> EndPoints { get; }
+        public IPEndPoint EndPoint { get; }
 
         [Pure]
         public Address Address => new Address(PublicKey);
-
-        [Pure]
-        public Peer AddEndPoint(IPEndPoint endPoint) =>
-            new Peer(PublicKey, EndPoints.Add(endPoint));
 
         public void GetObjectData(
             SerializationInfo info,
@@ -73,18 +53,12 @@ namespace Libplanet.Net
         )
         {
             info.AddValue("public_key", PublicKey.Format(true));
-            info.AddValue(
-                "end_points",
-                EndPoints.Select(e => e.ToString()).ToList());
+            info.AddValue("end_point", EndPoint);
         }
 
         public override string ToString()
         {
-            var endPointStrings = EndPoints.Select(e => e.ToString());
-            return string.Join(
-                ",",
-                new[] { Address.ToString() }.Concat(endPointStrings)
-            );
+            return $"{Address}.{EndPoint}";
         }
     }
 }
