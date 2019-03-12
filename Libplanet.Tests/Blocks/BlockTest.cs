@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -204,7 +205,8 @@ namespace Libplanet.Tests.Blocks
                 }
             );
             IImmutableDictionary<Address, object> dirty1 =
-                blockIdx1.EvaluateActions(address => null);
+                blockIdx1.EvaluateActions(address => null)
+                    .Last().GetUpdatedStates();
             Assert.Equal(
                 new Dictionary<Address, object>
                 {
@@ -243,7 +245,8 @@ namespace Libplanet.Tests.Blocks
                 }
             );
             IImmutableDictionary<Address, object> dirty2 =
-                blockIdx2.EvaluateActions(dirty1.GetValueOrDefault);
+                blockIdx2.EvaluateActions(dirty1.GetValueOrDefault)
+                    .Last().GetUpdatedStates();
             Assert.Equal(
                 new Dictionary<Address, object>
                 {

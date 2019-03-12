@@ -432,7 +432,7 @@ namespace Libplanet.Blockchain
         private void EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            var dirty = block.EvaluateActions(address =>
+            IAccountStateDelta[] deltas = block.EvaluateActions(address =>
             {
                 IImmutableDictionary<Address, object> result =
                     GetStates(new[] { address }, prevHash);
@@ -444,12 +444,26 @@ namespace Libplanet.Blockchain
                 {
                     return null;
                 }
-            });
+            }).ToArray();
+            IAccountStateDelta lastStates = deltas.LastOrDefault();
+
+            ImmutableHashSet<Address> updatedAddresses =
+                deltas.Select(d => d.UpdatedAddresses).Aggregate(
+                    ImmutableHashSet<Address>.Empty,
+                    (a, b) => a.Union(b)
+                );
+            IImmutableDictionary<Address, object> totalDelta =
+                updatedAddresses.Select(
+                    a => new KeyValuePair<Address, object>(
+                        a,
+                        lastStates?.GetState(a)
+                    )
+                ).ToImmutableDictionary();
 
             Store.SetBlockStates(
                 Id.ToString(),
                 block.Hash,
-                new AddressStateMap(dirty)
+                new AddressStateMap(totalDelta)
             );
         }
     }
