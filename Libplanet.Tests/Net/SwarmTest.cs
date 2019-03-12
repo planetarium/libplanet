@@ -263,11 +263,17 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public void WorksAsCollection()
+        public async Task WorksAsCollection()
         {
             Swarm a = _swarms[0];
             Swarm b = _swarms[1];
             Swarm c = _swarms[2];
+
+            // Obtaining swarm's endpoint...
+            await Task.WhenAll(
+                StartAsync(a, _blockchains[0]),
+                StartAsync(b, _blockchains[1]),
+                StartAsync(c, _blockchains[2]));
 
             Assert.Empty(a);
             Assert.Empty(b);
@@ -300,14 +306,23 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public void CanBeComparedProperly()
+        public void BeComparedProperly()
         {
             var pk1 = new PrivateKey();
             var pk2 = new PrivateKey();
-            var a = new Swarm(pk1);
-            var b = new Swarm(pk1, createdAt: a.LastDistributed);
-            var c = new Swarm(pk2);
-            var u1 = new Uri($"inproc://swarmtest.t");
+            var a = new Swarm(
+                pk1,
+                ipAddress: IPAddress.Parse("0.0.0.0"),
+                listenPort: 5555);
+            var b = new Swarm(
+                pk1,
+                ipAddress: IPAddress.Parse("0.0.0.0"),
+                listenPort: 5555,
+                createdAt: a.LastDistributed);
+            var c = new Swarm(
+                pk2,
+                ipAddress: IPAddress.Parse("0.0.0.0"),
+                listenPort: 5555);
 
             Assert.Equal(a, b);
             Assert.NotEqual(a, c);
@@ -580,9 +595,7 @@ namespace Libplanet.Tests.Net
                 listenPort: 5678);
 
             Assert.Equal(expected, s.EndPoint);
-            Assert.Equal(
-                new[] { expected },
-                s.AsPeer.EndPoints);
+            Assert.Equal(expected, s.AsPeer.EndPoint);
         }
 
         [Fact]
@@ -596,6 +609,16 @@ namespace Libplanet.Tests.Net
 
             Task t = await StartAsync(a, _blockchains[0]);
             await Task.WhenAll(a.StopAsync(), t);
+        }
+
+        [Fact]
+        public async Task AsPeerThrowSwarmExceptionWhenUnbound()
+        {
+            Swarm swarm = new Swarm(new PrivateKey());
+            Assert.Throws<SwarmException>(() => swarm.AsPeer);
+
+            await StartAsync(swarm, _blockchains[0]);
+            Assert.Equal(swarm.EndPoint, swarm.AsPeer.EndPoint);
         }
 
         private async Task<Task> StartAsync<T>(

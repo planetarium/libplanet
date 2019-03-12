@@ -136,10 +136,11 @@ namespace Libplanet.Net
         [Uno.EqualityKey]
         public Address Address => _privateKey.PublicKey.ToAddress();
 
-        public Peer AsPeer => new Peer(
-            _privateKey.PublicKey,
-            EndPoint != null ? new[] { EndPoint } : new IPEndPoint[] { }
-        );
+        public Peer AsPeer =>
+            EndPoint != null
+            ? new Peer(_privateKey.PublicKey, EndPoint)
+            : throw new SwarmException(
+                "Can't translate unbound Swarm to Peer.");
 
         [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaReceived { get; }
@@ -1260,58 +1261,33 @@ namespace Libplanet.Net
             Peer peer, CancellationToken cancellationToken)
         {
             Peer original = peer;
-            var connected = false;
-
-            // Peer can have more than 2 Url due to NAT and so on.
-            // Therefore, DialPeerAsync () checks the accessible URLs
-            // and puts them at the front.
-            foreach (var (endPoint, i) in peer.EndPoints.Select((endPoint, i) =>
-                (endPoint, i)))
+            var dealer = new DealerSocket();
+            dealer.Options.Identity =
+                _privateKey.PublicKey.ToAddress().ToByteArray();
+            try
             {
-                var dealer = new DealerSocket();
-                dealer.Options.Identity =
-                    _privateKey.PublicKey.ToAddress().ToByteArray();
-                try
-                {
-                    _logger.Debug($"Trying to DialAsync({endPoint})...");
-                    await DialAsync(
-                        ToNetMQAddress(peer),
-                        dealer,
-                        cancellationToken);
-                    _logger.Debug($"DialAsync({endPoint}) is complete.");
-                }
-                catch (IOException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"IOException occured in DialAsync ({endPoint})."
-                    );
-                    dealer.Dispose();
-                    continue;
-                }
-                catch (TimeoutException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"TimeoutException occured in DialAsync ({endPoint})."
-                    );
-                    dealer.Dispose();
-                    continue;
-                }
-
-                if (i > 0)
-                {
-                    peer = new Peer(peer.PublicKey, peer.EndPoints.Skip(i));
-                }
-
+                _logger.Debug($"Trying to DialAsync({peer.EndPoint})...");
+                await DialAsync(
+                    ToNetMQAddress(peer),
+                    dealer,
+                    cancellationToken);
+                _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
                 _dealers[peer.Address] = dealer;
-                connected = true;
-                break;
             }
-
-            if (!connected)
+            catch (IOException e)
             {
-                throw new IOException($"not reachable at all to {original}");
+                _logger.Error(
+                    e,
+                    $"IOException occured in DialAsync ({peer.EndPoint}).");
+                dealer.Dispose();
+            }
+            catch (TimeoutException e)
+            {
+                _logger.Error(
+                    e,
+                    $"TimeoutException occured in DialAsync ({peer.EndPoint})."
+                );
+                dealer.Dispose();
             }
 
             return peer;
@@ -1418,9 +1394,7 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(peer));
             }
 
-            // See DialPeerAsync().
-            var endPoint = peer.EndPoints.FirstOrDefault();
-            return $"tcp://{endPoint}";
+            return $"tcp://{peer.EndPoint}";
         }
     }
 }
