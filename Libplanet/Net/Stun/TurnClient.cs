@@ -135,6 +135,12 @@ namespace Libplanet.Net.Stun
                 response);
         }
 
+        public async Task<bool> IsBehindNAT()
+        {
+            IPEndPoint mapped = await GetMappedAddressAsync();
+            return !_control.Client.LocalEndPoint.Equals(mapped);
+        }
+
         public void Dispose()
         {
             _control?.Dispose();
