@@ -9,6 +9,7 @@ namespace Libplanet.Net.Stun
 {
     internal class TurnClient : IStunContext, IDisposable
     {
+        public const int TurnDefaultPort = 3478;
         private const int AllocateRetry = 5;
         private readonly string _host;
         private readonly int _port;
@@ -20,7 +21,7 @@ namespace Libplanet.Net.Stun
             string host,
             string username,
             string password,
-            int port = 3478)
+            int port = TurnDefaultPort)
         {
             _host = host;
             _port = port;
