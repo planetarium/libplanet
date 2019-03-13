@@ -1319,7 +1319,8 @@ namespace Libplanet.Net
             );
 
             _logger.Debug(
-                $"Trying to distribute own delta ({delta.AddedPeers.Count})..."
+                $"Trying to distribute own delta " +
+                $"(+{delta.AddedPeers.Count}, -{delta.RemovedPeers.Count})..."
             );
             if (delta.AddedPeers.Any() || delta.RemovedPeers.Any() || all)
             {

@@ -641,11 +641,10 @@ namespace Libplanet.Tests.Net
 
         private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTimeOffset? lastReceived = null)
         {
+            Log.Debug($"Waiting to ensure recv... [{swarm.AsPeer}]");
             while (true)
             {
-                Log.Debug($"Waiting for receive event... [{swarm.AsPeer}]");
                 await swarm.DeltaReceived.WaitAsync();
-                Log.Debug($"Event received. [{swarm.AsPeer}]");
 
                 if (lastReceived == null)
                 {
@@ -681,6 +680,8 @@ namespace Libplanet.Tests.Net
                     break;
                 }
             }
+
+            Log.Debug($"Received. [{swarm.AsPeer}]");
         }
 
         private async Task EnsureExchange(Swarm a, Swarm b)
