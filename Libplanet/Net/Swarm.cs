@@ -217,7 +217,6 @@ namespace Libplanet.Net
 
             foreach (Peer peer in peers)
             {
-                Peer addedPeer = peer;
                 if (peer.PublicKey == publicKey)
                 {
                     continue;
@@ -234,24 +233,29 @@ namespace Libplanet.Net
                     try
                     {
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
-                        addedPeer = await DialPeerAsync(
-                            peer,
-                            cancellationToken
-                        );
+                        await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
+
+                        _peers[peer] = timestamp.Value;
+                        addedPeers.Add(peer);
                     }
                     catch (IOException e)
                     {
                         _logger.Error(
                             e,
-                            $"IOException occured in DialPeerAsync ({peer})."
+                            $"DialPeerAsync({peer}) failed. ignored."
+                        );
+                        continue;
+                    }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"DialPeerAsync({peer}) failed. ignored."
                         );
                         continue;
                     }
                 }
-
-                _peers[addedPeer] = timestamp.Value;
-                addedPeers.Add(addedPeer);
             }
 
             return addedPeers;
@@ -1276,18 +1280,13 @@ namespace Libplanet.Net
             }
             catch (IOException e)
             {
-                _logger.Error(
-                    e,
-                    $"IOException occured in DialAsync ({peer.EndPoint}).");
                 dealer.Dispose();
+                throw e;
             }
             catch (TimeoutException e)
             {
-                _logger.Error(
-                    e,
-                    $"TimeoutException occured in DialAsync ({peer.EndPoint})."
-                );
                 dealer.Dispose();
+                throw e;
             }
 
             return peer;
@@ -1319,7 +1318,8 @@ namespace Libplanet.Net
             );
 
             _logger.Debug(
-                $"Trying to distribute own delta ({delta.AddedPeers.Count})..."
+                $"Trying to distribute own delta " +
+                $"(+{delta.AddedPeers.Count}, -{delta.RemovedPeers.Count})..."
             );
             if (delta.AddedPeers.Any() || delta.RemovedPeers.Any() || all)
             {

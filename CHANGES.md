@@ -9,6 +9,7 @@ To be released.
  - Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to work around NAT so that `Peer`'s endpoints don't have to be multiple,
 `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed from `IImmutableList<Uri>` to `IPEndPoint`. (See also [#120], [#126])
  - `Address` and `TxId` are now serializable.
+ - `Swarm.AddPeersAsync()` was fixed to ignore unreachable peers.
 
 
 Version 0.1.1
