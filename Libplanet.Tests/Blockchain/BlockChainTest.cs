@@ -37,11 +37,11 @@ namespace Libplanet.Tests.Blockchain
         public void CanMineBlock()
         {
             Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
-            block.Validate();
+            block.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(block, _blockChain);
 
             Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
-            anotherBlock.Validate();
+            anotherBlock.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(anotherBlock, _blockChain);
         }
 

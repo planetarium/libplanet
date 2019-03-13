@@ -38,8 +38,16 @@ To be released.
     `IList<T>` to `IImmutableList<T>`.  The corresponding parameters on
     constructors and factory methods also were changed to take
     `IEnumerable<T>` instead of `IList<T>`.
- -  Added `Block<T>.EvaluateActions()` generator method.
  -  Added `Transaction<T>.EvaluateActions()` method.
+ -  Added `Block<T>.EvaluateActions()` generator method.
+ -  A nullary overload of `Block<T>.Validate()` method was gone
+    so that the block validation API is always time-wise.
+    Instead, `Block<T>.Validate()` method now has only one overload:
+    `Validate(DateTimeOffset, AccountStateGetter)` returning
+    `IAccountStateDelta`.
+ -  Added `InvalidTxUpdatedAddressesException` exception class.
+ -  `Block<T>.Validate()` and `BlockChain<T>.Validate()` methods now can
+    throw an `InvalidTxUpdateAddressesException`.
  -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,

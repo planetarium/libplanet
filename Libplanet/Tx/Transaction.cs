@@ -331,32 +331,37 @@ namespace Libplanet.Tx
         /// cref="Libplanet.Blocks.Block{T}.Index"/> of
         /// <see cref="Libplanet.Blocks.Block{T}"/> that this
         /// <see cref="Transaction{T}"/> will belong to.</param>
-        /// <param name="previousState">The states immediately before
-        /// <see cref="Actions"/> being executed.</param>
+        /// <param name="previousStates">The states immediately before
+        /// <see cref="Actions"/> being executed.  Note that its
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
+        /// to the returned next states.</param>
         /// <returns>The states immediately after <see cref="Actions"/>
-        /// being executed.</returns>
+        /// being executed.  Note that it maintains
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
+        /// <paramref name="previousStates"/> as well.</returns>
         [Pure]
         public IAccountStateDelta EvaluateActions(
             HashDigest<SHA256> blockHash,
             long blockIndex,
-            IAccountStateDelta previousState
+            IAccountStateDelta previousStates
         )
         {
             int seed =
                 BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
                 BitConverter.ToInt32(Signature, 0);
+            IAccountStateDelta states = previousStates;
             foreach (T action in Actions)
             {
                 var context = new ActionContext(
                     signer: Signer,
                     blockIndex: blockIndex,
-                    previousStates: previousState,
+                    previousStates: states,
                     randomSeed: unchecked(seed++)
                 );
-                previousState = action.Execute(context);
+                states = action.Execute(context);
             }
 
-            return previousState;
+            return states;
         }
 
         /// <summary>

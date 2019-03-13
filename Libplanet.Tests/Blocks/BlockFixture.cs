@@ -17,13 +17,17 @@ namespace Libplanet.Tests.Blocks
                 Genesis,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 }
             );
+            byte[] hasTxNonce =
+            {
+                0x5c, 0x77, 0x74, 0xc2, 0x39, 0x69, 0x37, 0x51, 0x87, 0xa5,
+            };
             HasTx = TestUtils.MineNext(
                 Next,
                 new List<Transaction<BaseAction>>
                 {
                     TxFixture.TxWithActions,
                 },
-                new byte[] { 0x02, 0x00, 0x00, 0x00 }
+                hasTxNonce
             );
         }
 

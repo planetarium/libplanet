@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -107,15 +106,21 @@ namespace Libplanet.Blockchain
         }
 
         public void Validate(
-            IEnumerable<Block<T>> blocks, DateTimeOffset currentTime)
+            IEnumerable<Block<T>> blocks,
+            DateTimeOffset currentTime,
+            AccountStateGetter accountStateGetter
+        )
         {
-            foreach (Block<T> block in blocks)
+            ImmutableArray<Block<T>> blocksArray = blocks.ToImmutableArray();
+            IAccountStateDelta delta =
+                new AccountStateDeltaImpl(accountStateGetter);
+            foreach (Block<T> block in blocksArray)
             {
-                block.Validate(currentTime);
+                delta = block.Validate(currentTime, delta.GetState);
             }
 
             InvalidBlockException e =
-                Policy.ValidateBlocks(blocks, currentTime);
+                Policy.ValidateBlocks(blocksArray, currentTime);
 
             if (e != null)
             {
@@ -190,7 +195,13 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
-                Validate(Enumerable.Append(this, block), currentTime);
+                HashDigest<SHA256>? tip =
+                    Store.IndexBlockHash(Id.ToString(), -1);
+                Validate(
+                    Enumerable.Append(this, block),
+                    currentTime,
+                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
+
                 Blocks[block.Hash] = block;
                 EvaluateActions(block);
 

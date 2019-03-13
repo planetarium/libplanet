@@ -175,15 +175,114 @@ namespace Libplanet.Blocks
             {
                 delta = tx.EvaluateActions(Hash, Index, delta);
                 yield return delta;
+                delta = new AccountStateDeltaImpl(delta.GetState);
             }
         }
 
-        public void Validate()
+        /// <summary>
+        /// Validates the integrity of the <see cref="Block{T}"/>.
+        /// <para>It throws an <see cref="InvalidBlockException"/> or
+        /// an <see cref="InvalidTxUpdatedAddressesException"/>
+        /// if there is any integrity error.</para>
+        /// <para>Otherwise it returns an <see cref="IAccountStateDelta"/>
+        /// which represents the final states and maintains the changes
+        /// from the states of the previous <see cref="Block{T}"/>.</para>
+        /// </summary>
+        /// <param name="currentTime">The current time to validate
+        /// time-wise conditions.</param>
+        /// <param name="accountStateGetter">The getter of previous states.
+        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <returns>An <see cref="IAccountStateDelta"/> of the states
+        /// right after all <see cref="Transaction{T}.Actions"/> of
+        /// <see cref="Transactions"/>, which maintains the changes from
+        /// the states of the previous <see cref="Block{T}"/>.</returns>
+        /// <exception cref="InvalidBlockTimestampException">Thrown when
+        /// the <see cref="Timestamp"/> is invalid, for example, it is the far
+        /// future than the given <paramref name="currentTime"/>.</exception>
+        /// <exception cref="InvalidBlockIndexException">Thrown when
+        /// the <see cref="Index"/>is invalid, for example, it is a negative
+        /// integer.</exception>
+        /// <exception cref="InvalidBlockDifficultyException">Thrown when
+        /// the <see cref="Difficulty"/> is not properly configured,
+        /// for example, it is too easy.</exception>
+        /// <exception cref="InvalidBlockPreviousHashException">Thrown when
+        /// <see cref="PreviousHash"/> is invalid so that
+        /// the <see cref="Block{T}"/>s are not continuous.</exception>
+        /// <exception cref="InvalidBlockNonceException">Thrown when
+        /// the <see cref="Nonce"/> does not satisfy its
+        /// <see cref="Difficulty"/> level.</exception>
+        /// <exception cref="InvalidTxUpdatedAddressesException">Thrown when
+        /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
+        /// to update the states of <see cref="Address"/>es not included
+        /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        public IAccountStateDelta Validate(
+            DateTimeOffset currentTime,
+            AccountStateGetter accountStateGetter
+        )
         {
-            Validate(DateTimeOffset.UtcNow);
+            Validate(currentTime);
+            IEnumerable<IAccountStateDelta> deltas =
+                EvaluateActions(accountStateGetter);
+            IAccountStateDelta result = new AccountStateDeltaImpl(
+                accountStateGetter
+            );
+
+            var txUpdatedAddressesPairs = Transactions.Zip(
+                deltas,
+                (tx, d) => (tx, d)
+            );
+
+            foreach (var (tx, delta) in txUpdatedAddressesPairs)
+            {
+                IImmutableSet<Address> updatedAddresses =
+                    delta.UpdatedAddresses;
+
+                if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
+                {
+                    var msg =
+                        "Actions in the transaction try to update " +
+                        "the addresses not granted.";
+                    throw new InvalidTxUpdatedAddressesException(
+                        tx.Id,
+                        tx.UpdatedAddresses,
+                        updatedAddresses,
+                        msg
+                    );
+                }
+
+                foreach (var pair in delta.GetUpdatedStates())
+                {
+                    result = result.SetState(pair.Key, pair.Value);
+                }
+            }
+
+            return result;
         }
 
-        public void Validate(DateTimeOffset currentTime)
+        public override string ToString()
+        {
+            return Hash.ToString();
+        }
+
+        public void GetObjectData(
+            SerializationInfo info,
+            StreamingContext context
+        )
+        {
+            bool includeHash = false;
+            bool includeTransactionData = false;
+            if (context.Context is BlockSerializationContext serialCtx)
+            {
+                includeHash = serialCtx.IncludeHash;
+                includeTransactionData = serialCtx.IncludeTransactionData;
+            }
+
+            RawBlock rawBlock = ToRawBlock(includeHash, includeTransactionData);
+            rawBlock.GetObjectData(info, context);
+        }
+
+        internal void Validate(DateTimeOffset currentTime)
         {
             if (currentTime + TimestampThreshold < Timestamp)
             {
@@ -245,28 +344,6 @@ namespace Libplanet.Blocks
                     $"satisfy its difficulty level {Difficulty}."
                 );
             }
-        }
-
-        public override string ToString()
-        {
-            return Hash.ToString();
-        }
-
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context
-        )
-        {
-            bool includeHash = false;
-            bool includeTransactionData = false;
-            if (context.Context is BlockSerializationContext serialCtx)
-            {
-                includeHash = serialCtx.IncludeHash;
-                includeTransactionData = serialCtx.IncludeTransactionData;
-            }
-
-            RawBlock rawBlock = ToRawBlock(includeHash, includeTransactionData);
-            rawBlock.GetObjectData(info, context);
         }
 
         internal RawBlock ToRawBlock(

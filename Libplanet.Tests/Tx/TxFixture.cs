@@ -53,6 +53,10 @@ namespace Libplanet.Tests.Tx
 
         public PrivateKey PrivateKey { get; }
 
+        public PublicKey PublicKey => PrivateKey.PublicKey;
+
+        public Address Address => PublicKey.ToAddress();
+
         public Transaction<BaseAction> Tx { get; }
 
         public Transaction<BaseAction> TxWithActions { get; }
