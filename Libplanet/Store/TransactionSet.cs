@@ -61,7 +61,8 @@ namespace Libplanet.Store
                 if (value.Id != key)
                 {
                     throw new InvalidTxIdException(
-                        $"{value}.id does not match to {key}"
+                        value.Id,
+                        $"{value}.id does not match to {key}."
                     );
                 }
 

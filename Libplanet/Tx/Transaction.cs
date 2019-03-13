@@ -379,18 +379,18 @@ namespace Libplanet.Tx
         {
             if (!PublicKey.Verify(ToBencodex(false), Signature))
             {
-                throw new InvalidTxSignatureException(
+                string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +
-                    "to verify."
-                );
+                    "to verify.";
+                throw new InvalidTxSignatureException(Id, message);
             }
 
             if (!new Address(PublicKey).Equals(Signer))
             {
-                throw new InvalidTxPublicKeyException(
+                string message =
                     $"The public key ({ByteUtil.Hex(PublicKey.Format(true))} " +
-                    $"is not matched to the address ({Signer})."
-                );
+                    $"is not matched to the address ({Signer}).";
+                throw new InvalidTxPublicKeyException(Id, message);
             }
         }
 

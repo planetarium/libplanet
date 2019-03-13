@@ -13,10 +13,13 @@ namespace Libplanet.Tx
         /// <summary>
         /// Creates a new <see cref="InvalidTxPublicKeyException"/> object.
         /// </summary>
+        /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
+        /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
+        /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.
         /// </param>
-        public InvalidTxPublicKeyException(string message)
-            : base(message)
+        public InvalidTxPublicKeyException(TxId txid, string message)
+            : base(txid, message)
         {
         }
     }

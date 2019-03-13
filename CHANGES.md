@@ -56,6 +56,9 @@ To be released.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
  -  `Address` and `TxId` are now serializable.
     [[#99], [#124] by Qria]
+ -  `InvalidTxException` and its subclasses became to have `TxId` property
+    and the corresponding constructor parameter.  This can be useful when
+    multiple `Transaction<T>` objects are validated at once.
  -  Added `Address.Size` constant, which is fixed to the `Int32` 20.
  -  `Swarm.AddPeersAsync()` was fixed so that unreachable `Peer`s are ignored.
     [[#128]]
