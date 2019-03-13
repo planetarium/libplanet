@@ -32,18 +32,13 @@ namespace Libplanet.Tests.Net.Stun
 
             _fx = new FileStoreFixture();
 
-            string turnUrl = Environment.GetEnvironmentVariable(
-                FactOnlyTurnAvailable.TurnUrlVarName);
-
-            if (!string.IsNullOrEmpty(turnUrl))
+            if (FactOnlyTurnAvailable.TurnUri != null)
             {
-                var uri = new Uri(turnUrl);
-                string[] userInfos = uri.UserInfo.Split(':');
                 _turnClient = new TurnClient(
-                    uri.Host,
-                    userInfos[0],
-                    userInfos[1],
-                    uri.Port);
+                    FactOnlyTurnAvailable.TurnUri.Host,
+                    FactOnlyTurnAvailable.Username,
+                    FactOnlyTurnAvailable.Password,
+                    FactOnlyTurnAvailable.TurnUri.Port);
             }
         }
 
