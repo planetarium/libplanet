@@ -51,7 +51,9 @@ namespace Libplanet.Tests.Net.Stun
         [FactOnlyTurnAvailable]
         public async Task WorkAsExpected()
         {
-            Swarm s1 = new Swarm(new PrivateKey());
+            Swarm s1 = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback);
 
             BlockChain<BaseAction> chain = new BlockChain<BaseAction>(
                 new BlockPolicy<BaseAction>(), _fx.Store);

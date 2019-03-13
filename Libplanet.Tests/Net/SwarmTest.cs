@@ -13,7 +13,9 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Stun;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Net.Stun;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using Serilog;
@@ -610,11 +612,33 @@ namespace Libplanet.Tests.Net
         [Fact]
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
-            Swarm swarm = new Swarm(new PrivateKey());
+            Swarm swarm =
+                new Swarm(new PrivateKey(), ipAddress: IPAddress.Loopback);
             Assert.Throws<SwarmException>(() => swarm.AsPeer);
 
             await StartAsync(swarm, _blockchains[0]);
             Assert.Equal(swarm.EndPoint, swarm.AsPeer.EndPoint);
+        }
+
+        [FactOnlyTurnAvailable]
+        public async Task StartWithIceServers()
+        {
+            Uri turnUrl = FactOnlyTurnAvailable.TurnUri;
+            string username = FactOnlyTurnAvailable.Username;
+            string password = FactOnlyTurnAvailable.Password;
+
+            IEnumerable<IceServer> iceServers = new[]
+            {
+                new IceServer(
+                    urls: new[] { turnUrl },
+                    username: username,
+                    credential: password),
+            };
+            Swarm swarm = new Swarm(
+                new PrivateKey(),
+                iceServers: iceServers);
+            await StartAsync(swarm, _blockchains[0]);
+            Assert.NotNull(swarm.EndPoint);
         }
 
         private async Task<Task> StartAsync<T>(
