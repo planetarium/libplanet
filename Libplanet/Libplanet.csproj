@@ -86,4 +86,8 @@ https://docs.libplanet.io/</Description>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+  </ItemGroup>
 </Project>

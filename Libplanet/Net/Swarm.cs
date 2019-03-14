@@ -17,7 +17,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Stun;
+using Libplanet.Stun;
 using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;

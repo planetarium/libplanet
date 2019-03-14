@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Libplanet.Stun</RootNamespace>
+    <AssemblyName>Libplanet.Stun</AssemblyName>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>false</IsTestProject>
+    <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
+    <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
+      <Link>Menees.Analyzers.Settings.xml</Link>
+    </AdditionalFiles>
+  </ItemGroup>
+</Project>

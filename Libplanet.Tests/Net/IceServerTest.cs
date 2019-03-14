@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Libplanet.Net;
-using Libplanet.Tests.Net.Stun;
 using Xunit;
 
 namespace Libplanet.Tests.Net
