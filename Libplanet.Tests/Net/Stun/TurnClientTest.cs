@@ -59,7 +59,9 @@ namespace Libplanet.Tests.Net.Stun
             Task s1RunningTask = s1.StartAsync(chain);
             await s1.WaitForRunningAsync();
 
-            IPEndPoint relayAddr = await _turnClient.AllocateRequestAsync(777);
+            TimeSpan lifetime = TimeSpan.FromSeconds(777);
+            IPEndPoint relayAddr =
+                await _turnClient.AllocateRequestAsync(lifetime);
             Swarm s2 = new Swarm(
                 new PrivateKey(),
                 ipAddress: relayAddr.Address,

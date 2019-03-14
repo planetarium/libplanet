@@ -42,14 +42,14 @@ namespace Libplanet.Net.Stun
 
         public byte[] Nonce { get; private set; }
 
-        public async Task<IPEndPoint> AllocateRequestAsync(int lifetime)
+        public async Task<IPEndPoint> AllocateRequestAsync(TimeSpan lifetime)
         {
             NetworkStream stream = _control.GetStream();
             StunMessage response;
             int retry = 0;
             do
             {
-                var request = new AllocateRequest(lifetime);
+                var request = new AllocateRequest((int)lifetime.TotalSeconds);
                 await SendMessageAsync(stream, request);
                 response = await StunMessage.Parse(stream);
 
@@ -135,19 +135,19 @@ namespace Libplanet.Net.Stun
                 response);
         }
 
-        public async Task RefreshAllocation(int lifetime)
+        public async Task<TimeSpan> RefreshAllocationAsync(TimeSpan lifetime)
         {
             NetworkStream stream = _control.GetStream();
-            var request = new RefreshRequest(lifetime);
+            var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request);
 
             var response = await StunMessage.Parse(stream);
-            if (!(response is RefreshSuccessResponse))
+            if (response is RefreshSuccessResponse success)
             {
-                throw new TurnClientException(
-                    "RefreshRequest failed.",
-                    response);
+                return TimeSpan.FromSeconds(success.Lifetime);
             }
+
+            throw new TurnClientException("RefreshRequest failed.", response);
         }
 
         public async Task<bool> IsBehindNAT()
