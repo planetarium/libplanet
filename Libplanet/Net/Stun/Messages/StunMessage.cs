@@ -91,6 +91,9 @@ namespace Libplanet.Net.Stun.Messages
                         case MessageMethod.CreatePermission:
                             rv = new CreatePermissionSuccessResponse();
                             break;
+                        case MessageMethod.Refresh:
+                            rv = new RefreshSuccessResponse();
+                            break;
                     }
 
                     break;
@@ -103,6 +106,9 @@ namespace Libplanet.Net.Stun.Messages
                             break;
                         case MessageMethod.CreatePermission:
                             rv = new CreatePermissionErrorResponse();
+                            break;
+                        case MessageMethod.Refresh:
+                            rv = new RefreshErrorResponse();
                             break;
                     }
 
@@ -176,6 +182,9 @@ namespace Libplanet.Net.Stun.Messages
                         break;
                     case Attribute.AttributeType.ConnectionId:
                         yield return new ConnectionId(payload);
+                        break;
+                    case Attribute.AttributeType.Lifetime:
+                        yield return new Lifetime((int)payload.ToUInt());
                         break;
                 }
 

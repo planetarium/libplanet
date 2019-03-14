@@ -135,6 +135,21 @@ namespace Libplanet.Net.Stun
                 response);
         }
 
+        public async Task RefreshAllocation(int lifetime)
+        {
+            NetworkStream stream = _control.GetStream();
+            var request = new RefreshRequest(lifetime);
+            await SendMessageAsync(stream, request);
+
+            var response = await StunMessage.Parse(stream);
+            if (!(response is RefreshSuccessResponse))
+            {
+                throw new TurnClientException(
+                    "RefreshRequest failed.",
+                    response);
+            }
+        }
+
         public async Task<bool> IsBehindNAT()
         {
             IPEndPoint mapped = await GetMappedAddressAsync();
