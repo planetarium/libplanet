@@ -60,6 +60,8 @@ To be released.
     and the corresponding constructor parameter.  This can be useful when
     multiple `Transaction<T>` objects are validated at once.
  -  Added `Address.Size` constant, which is fixed to the `Int32` 20.
+ -  Fixed a bug that `Block<T>.Validate()` had not thrown `InvalidTxException`
+    even if there is any integrity error on its `Transactions`.
  -  `Swarm.AddPeersAsync()` was fixed so that unreachable `Peer`s are ignored.
     [[#128]]
 

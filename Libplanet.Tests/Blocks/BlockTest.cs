@@ -289,6 +289,60 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void ValidateInvalidTxSignature()
+        {
+            RawTransaction rawTx = new RawTransaction(
+                _fx.TxFixture.Address.ToByteArray(),
+                new byte[][] { },
+                _fx.TxFixture.PublicKey.Format(false),
+                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                new IDictionary<string, object>[0],
+                new byte[10]
+            );
+            var invalidTx = new Transaction<BaseAction>(rawTx);
+            Block<BaseAction> invalidBlock = MineNext(
+                _fx.Next,
+                new List<Transaction<BaseAction>> { invalidTx }
+            );
+            Assert.Throws<InvalidTxSignatureException>(() =>
+                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
+            );
+        }
+
+        [Fact]
+        public void ValidateInvalidTxPublicKey()
+        {
+            RawTransaction rawTxWithoutSig = new RawTransaction(
+                new PrivateKey().PublicKey.ToAddress().ToByteArray(),
+                new byte[][] { },
+                _fx.TxFixture.PublicKey.Format(false),
+                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                new IDictionary<string, object>[0],
+                new byte[0]
+            );
+            byte[] sig = _fx.TxFixture.PrivateKey.Sign(
+                new Transaction<BaseAction>(rawTxWithoutSig).ToBencodex(false)
+            );
+            var invalidTx = new Transaction<BaseAction>(
+                new RawTransaction(
+                    rawTxWithoutSig.Signer,
+                    rawTxWithoutSig.UpdatedAddresses,
+                    rawTxWithoutSig.PublicKey,
+                    rawTxWithoutSig.Timestamp,
+                    rawTxWithoutSig.Actions,
+                    sig
+                )
+            );
+            Block<BaseAction> invalidBlock = MineNext(
+                _fx.Next,
+                new List<Transaction<BaseAction>> { invalidTx }
+            );
+            Assert.Throws<InvalidTxPublicKeyException>(() =>
+                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
+            );
+        }
+
+        [Fact]
         public void ValidateInvalidTxUpdatedAddresses()
         {
             Transaction<BaseAction> invalidTx = Transaction<BaseAction>.Make(
