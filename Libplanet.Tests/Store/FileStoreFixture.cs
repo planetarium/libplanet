@@ -130,10 +130,10 @@ namespace Libplanet.Tests.Store
             var privateKey = new PrivateKey();
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            return Transaction<BaseAction>.Make(
+            return Transaction<BaseAction>.Create(
                 privateKey,
-                updatedAddresses ?? ImmutableHashSet<Address>.Empty,
                 actions ?? new BaseAction[0],
+                updatedAddresses,
                 timestamp
             );
         }

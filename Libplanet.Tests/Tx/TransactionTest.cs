@@ -22,7 +22,7 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void Make()
+        public void Create()
         {
             var privateKey = new PrivateKey(
                 new byte[]
@@ -33,11 +33,12 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             );
-            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            var timestamp =
+                new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 privateKey,
-                ImmutableHashSet<Address>.Empty,
                 new BaseAction[0],
+                ImmutableHashSet<Address>.Empty,
                 timestamp
             );
 
@@ -73,24 +74,72 @@ namespace Libplanet.Tests.Tx
                 ),
                 tx.Id
             );
+        }
 
+        [Fact]
+        public void CreateWithDefaultUpdatedAddresses()
+        {
+            Transaction<BaseAction> emptyTx = Transaction<BaseAction>.Create(
+                _fx.PrivateKey,
+                new BaseAction[0]
+            );
+            Assert.Empty(emptyTx.UpdatedAddresses);
+
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+                _fx.PrivateKey,
+                _fx.TxWithActions.Actions
+            );
+            Assert.Equal(
+                new[] { _fx.Address }.ToImmutableHashSet(),
+                tx.UpdatedAddresses
+            );
+
+            Address additionalAddr = new PrivateKey().PublicKey.ToAddress();
+            Transaction<BaseAction> txWithAddr = Transaction<BaseAction>.Create(
+                _fx.PrivateKey,
+                _fx.TxWithActions.Actions,
+                new[] { additionalAddr }.ToImmutableHashSet()
+            );
+            Assert.Equal(
+                new[] { _fx.Address, additionalAddr }.ToHashSet(),
+                txWithAddr.UpdatedAddresses.ToHashSet()
+            );
+        }
+
+        [Fact]
+        public void CreateWithDefaultTimestamp()
+        {
+            DateTimeOffset rightBefore = DateTimeOffset.UtcNow;
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+                _fx.PrivateKey,
+                new BaseAction[0],
+                ImmutableHashSet<Address>.Empty
+            );
+            DateTimeOffset rightAfter = DateTimeOffset.UtcNow;
+
+            Assert.InRange(tx.Timestamp, rightBefore, rightAfter);
+        }
+
+        [Fact]
+        public void CreateWithMissingRequiredArguments()
+        {
             // The privateKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction<BaseAction>.Make(
+                Transaction<BaseAction>.Create(
                     null,
-                    ImmutableHashSet<Address>.Empty,
                     new BaseAction[0],
-                    timestamp
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow
                 )
             );
 
             // The actions parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction<BaseAction>.Make(
-                    privateKey,
-                    ImmutableHashSet<Address>.Empty,
+                Transaction<BaseAction>.Create(
+                    _fx.PrivateKey,
                     null,
-                    timestamp
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow
                 )
             );
         }
@@ -214,7 +263,7 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ToBencodex()
         {
-            var expected = new byte[]
+            byte[] expected =
             {
                 0x64, 0x37, 0x3a, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x73,
                 0x6c, 0x65, 0x31, 0x30, 0x3a, 0x70, 0x75, 0x62, 0x6c, 0x69,
@@ -513,9 +562,8 @@ namespace Libplanet.Tests.Tx
                 new PrivateKey().PublicKey.ToAddress(),
                 new PrivateKey().PublicKey.ToAddress(),
             };
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 _fx.PrivateKey,
-                ImmutableHashSet<Address>.Empty,
                 new BaseAction[]
                 {
                     new Attack
@@ -536,8 +584,7 @@ namespace Libplanet.Tests.Tx
                         Target = "t2",
                         TargetAddress = addresses[0],
                     },
-                },
-                DateTimeOffset.UtcNow
+                }
             );
             IAccountStateDelta delta = tx.EvaluateActions(
                 default,
@@ -573,11 +620,10 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 privateKey,
-                ImmutableHashSet<Address>.Empty,
                 new BaseAction[0],
-                timestamp
+                timestamp: timestamp
             );
 
             tx.Validate();
@@ -646,11 +692,10 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 privateKey,
-                ImmutableHashSet<Address>.Empty,
                 new BaseAction[0],
-                timestamp
+                timestamp: timestamp
             );
 
             Assert.Equal(
@@ -706,11 +751,9 @@ namespace Libplanet.Tests.Tx
         public void ActionsAreIsolatedFromOutside()
         {
             var actions = new List<BaseAction>();
-            Transaction<BaseAction> t1 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> t1 = Transaction<BaseAction>.Create(
                 _fx.PrivateKey,
-                ImmutableHashSet<Address>.Empty,
-                actions,
-                DateTimeOffset.UtcNow
+                actions
             );
             var t2 = new Transaction<BaseAction>(
                 _fx.PrivateKey.PublicKey.ToAddress(),

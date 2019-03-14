@@ -24,11 +24,10 @@ namespace Libplanet.Tests.Tx
             var recipient = new Address(PrivateKey.PublicKey);
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
-            Tx = Transaction<BaseAction>.Make(
+            Tx = Transaction<BaseAction>.Create(
                 PrivateKey,
-                ImmutableHashSet<Address>.Empty,
                 new BaseAction[0],
-                timestamp
+                timestamp: timestamp
             );
             BaseAction[] actions =
             {
@@ -43,11 +42,10 @@ namespace Libplanet.Tests.Tx
                     ZoneId = 10,
                 },
             };
-            TxWithActions = Transaction<BaseAction>.Make(
+            TxWithActions = Transaction<BaseAction>.Create(
                 PrivateKey,
-                ImmutableHashSet.Create(recipient),
                 actions,
-                timestamp
+                timestamp: timestamp
             );
         }
 

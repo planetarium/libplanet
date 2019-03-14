@@ -26,7 +26,11 @@ namespace Libplanet.Tests.Common.Action
         public override void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue)
         {
-            ZoneId = (int)(BigInteger)plainValue["zone_id"];
+            object serialized = plainValue["zone_id"];
+
+            // FIXME: The reason why the type of the serialized value is not
+            // consistent should be analyzed.
+            ZoneId = serialized is BigInteger v ? (int)v : (int)serialized;
         }
     }
 }

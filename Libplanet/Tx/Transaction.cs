@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
+using Uno.Extensions;
 
 namespace Libplanet.Tx
 {
@@ -40,6 +41,14 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
+        /// <para>This constructor takes all required and only required values
+        /// for a <see cref="Transaction{T}"/>, so gives you full control of
+        /// creating a <see cref="Transaction{T}"/>, and in other words,
+        /// this constructor is only useful when all details of
+        /// a <see cref="Transaction{T}"/> need to be manually adjusted.
+        /// For the most cases, the fa&#xe7;ade factory <see
+        /// cref="Create(PrivateKey, IEnumerable{T}, IImmutableSet{Address},
+        /// DateTimeOffset?)"/> is more useful.</para>
         /// </summary>
         /// <param name="signer">An <see cref="Address"/> of the account
         /// who signs this transaction.  If this is not derived from <paramref
@@ -229,40 +238,87 @@ namespace Libplanet.Tx
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
         /// Unlike the <see cref="Transaction(Address, PublicKey,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
-        /// constructor, it automatically signs,
-        /// and fills the appropriate <see cref="Signer"/> and
-        /// <see cref="PublicKey"/> properties using the given
-        /// <paramref name="privateKey"/>.  However, the <paramref
-        /// name="privateKey"/> in itself is not included in the created
-        /// <see cref="Transaction{T}"/>.
+        /// constructor, it automatically fills the following values from:
+        /// <list type="table">
+        /// <listheader>
+        /// <term>Property</term>
+        /// <description>Parameter the filled value derived from</description>
+        /// </listheader>
+        /// <item>
+        /// <term><see cref="Signer"/></term>
+        /// <description><paramref name="privateKey"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="PublicKey"/></term>
+        /// <description><paramref name="privateKey"/></description>
+        /// </item>
+        /// <item>
+        /// <term><see cref="UpdatedAddresses"/></term>
+        /// <description><paramref name="actions"/> and
+        /// <paramref name="updatedAddresses"/></description>
+        /// </item>
+        /// </list>
+        /// <para>Note that the <paramref name="privateKey"/> in itself is not
+        /// included in the created <see cref="Transaction{T}"/>.</para>
         /// </summary>
+        /// <remarks>
+        /// This factory method tries its best to fill the <see
+        /// cref="UpdatedAddresses"/> property by actually evaluating
+        /// the given <paramref name="actions"/>, but remember that its result
+        /// is approximated in some degree, because the result of
+        /// <paramref name="actions"/> are not deterministic until
+        /// the <see cref="Transaction{T}"/> belongs to a <see
+        /// cref="Libplanet.Blocks.Block{T}"/>.
+        /// <para>If an <see cref="IAction"/> depends on previous states or
+        /// some randomness to determine what <see cref="Address"/> to update,
+        /// the automatically filled <see cref="UpdatedAddresses"/> became
+        /// mismatched from the <see cref="Address"/>es
+        /// <paramref name="actions"/> actually update after
+        /// a <see cref="Libplanet.Blocks.Block{T}"/> is mined.
+        /// Although such case would be rare, a programmer could manually give
+        /// the <paramref name="updatedAddresses"/> parameter
+        /// the <see cref="Address"/>es they predict to be updated.</para>
+        /// <para>If an <see cref="IAction"/> oversimplifies the assumption
+        /// about the <see cref="Libplanet.Blocks.Block{T}"/> it belongs to,
+        /// runtime exceptions could be thrown from this factory method.
+        /// Only solution to that is not to oversimplify things.</para>
+        /// </remarks>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
-        /// <param name="updatedAddresses"><see cref="Address"/>es whose
-        /// states affected by <paramref name="actions"/>.  This goes to
-        /// the <see cref="UpdatedAddresses"/> property.</param>
         /// <param name="actions">A list of <see cref="IAction"/>s.  This
         /// can be empty, but cannot be <c>null</c>.  This goes to
-        /// the <see cref="Actions"/> property.</param>
+        /// the <see cref="Actions"/> property, and <see cref="IAction"/>s
+        /// are evaluated before a <see cref="Transaction{T}"/> is created
+        /// in order to fill the <see cref="UpdatedAddresses"/>.  See also
+        /// <em>Remarks</em> section.</param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose
+        /// states affected by <paramref name="actions"/>.
+        /// These <see cref="Address"/>es are also included in
+        /// the <see cref="UpdatedAddresses"/> property, besides
+        /// <see cref="Address"/>es projected by evaluating
+        /// <paramref name="actions"/>.  See also <em>Remarks</em> section.
+        /// </param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/>
         /// is created and signed.  This goes to the <see cref="Timestamp"/>
-        /// property.</param>
+        /// property.  If <c>null</c> (which is default) is passed this will
+        /// be the current time.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by
         /// the given <paramref name="privateKey"/>.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <c>null</c>
         /// is passed to <paramref name="privateKey"/> or
         /// or <paramref name="actions"/>.
         /// </exception>
-        public static Transaction<T> Make(
+        public static Transaction<T> Create(
             PrivateKey privateKey,
-            IImmutableSet<Address> updatedAddresses,
             IEnumerable<T> actions,
-            DateTimeOffset timestamp)
+            IImmutableSet<Address> updatedAddresses = null,
+            DateTimeOffset? timestamp = null
+        )
         {
-            if (privateKey == null)
+            if (ReferenceEquals(privateKey, null))
             {
                 throw new ArgumentNullException(nameof(privateKey));
             }
@@ -270,20 +326,57 @@ namespace Libplanet.Tx
             PublicKey publicKey = privateKey.PublicKey;
             var signer = new Address(publicKey);
 
-            var tx = new Transaction<T>(
+            if (ReferenceEquals(updatedAddresses, null))
+            {
+                updatedAddresses = ImmutableHashSet<Address>.Empty;
+            }
+
+            DateTimeOffset ts = timestamp ?? DateTimeOffset.UtcNow;
+
+            ImmutableArray<T> actionsArray = actions.ToImmutableArray();
+            byte[] payload = new Transaction<T>(
                 signer,
                 publicKey,
                 updatedAddresses,
-                timestamp,
-                actions
-            );
+                ts,
+                actionsArray
+            ).ToBencodex(false);
+
+            if (!actionsArray.IsEmpty)
+            {
+                IAccountStateDelta delta = new Transaction<T>(
+                    signer,
+                    publicKey,
+                    updatedAddresses,
+                    ts,
+                    actionsArray
+                ).EvaluateActions(
+                    default(HashDigest<SHA256>),
+                    0,
+                    new AccountStateDeltaImpl(_ => null)
+                );
+                if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
+                {
+                    updatedAddresses =
+                        updatedAddresses.Union(delta.UpdatedAddresses);
+                    payload = new Transaction<T>(
+                        signer,
+                        publicKey,
+                        updatedAddresses,
+                        ts,
+                        actionsArray
+                    ).ToBencodex(false);
+                }
+            }
+
+            byte[] sig = privateKey.Sign(payload);
             return new Transaction<T>(
                 signer,
                 publicKey,
                 updatedAddresses,
-                timestamp,
-                actions,
-                privateKey.Sign(tx.ToBencodex(false))
+                ts,
+                actionsArray,
+                sig
             );
         }
 
@@ -348,7 +441,7 @@ namespace Libplanet.Tx
         {
             int seed =
                 BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                BitConverter.ToInt32(Signature, 0);
+                (Signature.Empty() ? 0 : BitConverter.ToInt32(Signature, 0));
             IAccountStateDelta states = previousStates;
             foreach (T action in Actions)
             {

@@ -186,21 +186,17 @@ namespace Libplanet.Tests.Blocks
                 genesis,
                 new[]
                 {
-                    Transaction<BaseAction>.Make(
+                    Transaction<BaseAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        ImmutableHashSet<Address>.Empty,
                         new BaseAction[]
                         {
                             MakeAction(addresses[0], 'A'),
                             MakeAction(addresses[1], 'B'),
-                        },
-                        DateTimeOffset.UtcNow
+                        }
                     ),
-                    Transaction<BaseAction>.Make(
+                    Transaction<BaseAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        ImmutableHashSet<Address>.Empty,
-                        new BaseAction[] { MakeAction(addresses[2], 'C') },
-                        DateTimeOffset.UtcNow
+                        new BaseAction[] { MakeAction(addresses[2], 'C') }
                     ),
                 }
             );
@@ -233,17 +229,13 @@ namespace Libplanet.Tests.Blocks
                 blockIdx1,
                 new[]
                 {
-                    Transaction<BaseAction>.Make(
+                    Transaction<BaseAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        ImmutableHashSet<Address>.Empty,
-                        new BaseAction[] { MakeAction(addresses[0], 'D') },
-                        DateTimeOffset.UtcNow
+                        new BaseAction[] { MakeAction(addresses[0], 'D') }
                     ),
-                    Transaction<BaseAction>.Make(
+                    Transaction<BaseAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        ImmutableHashSet<Address>.Empty,
-                        new BaseAction[] { MakeAction(addresses[3], 'E') },
-                        DateTimeOffset.UtcNow
+                        new BaseAction[] { MakeAction(addresses[3], 'E') }
                     ),
                 }
             );
@@ -345,11 +337,29 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void ValidateInvalidTxUpdatedAddresses()
         {
-            Transaction<BaseAction> invalidTx = Transaction<BaseAction>.Make(
-                _fx.TxFixture.PrivateKey,
-                ImmutableHashSet<Address>.Empty,
-                _fx.TxFixture.TxWithActions.Actions,
-                DateTimeOffset.UtcNow
+            ImmutableArray<IDictionary<string, object>> rawActions =
+                _fx.TxFixture.TxWithActions
+                    .ToRawTransaction(false).Actions.ToImmutableArray();
+            RawTransaction rawTxWithoutSig = new RawTransaction(
+                _fx.TxFixture.Address.ToByteArray(),
+                new byte[][] { },
+                _fx.TxFixture.PublicKey.Format(false),
+                DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
+                rawActions,
+                new byte[0]
+            );
+            byte[] sig = _fx.TxFixture.PrivateKey.Sign(
+                new Transaction<BaseAction>(rawTxWithoutSig).ToBencodex(false)
+            );
+            var invalidTx = new Transaction<BaseAction>(
+                new RawTransaction(
+                    rawTxWithoutSig.Signer,
+                    rawTxWithoutSig.UpdatedAddresses,
+                    rawTxWithoutSig.PublicKey,
+                    rawTxWithoutSig.Timestamp,
+                    rawTxWithoutSig.Actions,
+                    sig
+                )
             );
             Block<BaseAction> invalidBlock = MineNext(
                 _fx.Next,

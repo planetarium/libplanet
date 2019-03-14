@@ -10,6 +10,10 @@ To be released.
     `IActionContext.From` properties to `Signer`.
     The corresponding parameter names on constructors and
     methods were also renamed too.
+ -  Old `Transaction<T>.Make()` factory method is replaced by
+    new `Transaction<T>.Create()` factory method.  The `timestamp` parameter
+    became optional, and the new optional `updatedAddresses` parameter was
+    added.
  -  Removed `IActionContext.To` property.
  -  Added `AccountStateGetter` delegate to provide a read-only view to
     account states.

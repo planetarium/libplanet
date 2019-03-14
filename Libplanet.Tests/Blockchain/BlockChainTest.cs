@@ -106,11 +106,9 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                ImmutableHashSet.Create(_fx.Address1),
-                actions1,
-                DateTimeOffset.UtcNow
+                actions1
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
@@ -134,11 +132,9 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                ImmutableHashSet.Create(_fx.Address1),
-                actions2,
-                DateTimeOffset.UtcNow
+                actions2
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
@@ -263,15 +259,9 @@ namespace Libplanet.Tests.Blockchain
             long blockIndex = 0;
 
             TestEvaluateAction action = new TestEvaluateAction();
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
                 fromPrivateKey,
-                new[]
-                {
-                    TestEvaluateAction.SignerKey,
-                    TestEvaluateAction.BlockIndexKey,
-                }.ToImmutableHashSet(),
-                new[] { action },
-                DateTimeOffset.UtcNow
+                new[] { action }
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
