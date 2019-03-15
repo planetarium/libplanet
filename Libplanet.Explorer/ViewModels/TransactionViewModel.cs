@@ -10,8 +10,8 @@ namespace Libplanet.Explorer.ViewModels
         public string Id { get; set; }
         public byte[] Signature { get; set; }
         public DateTimeOffset Timestamp { get; set; }
-        public string Sender { get; set; }
-        public string Recipient { get; set; }
+        public string Signer { get; set; }
+        public string[] UpdatedAddresses { get; set; }
         public IEnumerable<Dictionary<string, object>> Actions { get; set; }
     }
 }
