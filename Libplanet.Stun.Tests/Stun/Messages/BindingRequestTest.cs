@@ -8,11 +8,13 @@ namespace Libplanet.Tests.Stun.Messages
         [Fact]
         public void EncodeToBytes()
         {
-            var request = new BindingRequest();
-            var transactionId = new byte[]
+            var request = new BindingRequest()
             {
-                0xb9, 0x5e, 0x6c, 0xcd, 0xa3, 0x84, 0x74, 0xfb, 0x43, 0xe9,
-                0xae, 0xb1,
+                TransactionId = new byte[]
+                {
+                    0xb9, 0x5e, 0x6c, 0xcd, 0xa3, 0x84, 0x74, 0xfb, 0x43, 0xe9,
+                    0xae, 0xb1,
+                }
             };
             Assert.Equal(
                 new byte[]
@@ -21,7 +23,7 @@ namespace Libplanet.Tests.Stun.Messages
                     0x6c, 0xcd, 0xa3, 0x84, 0x74, 0xfb, 0x43, 0xe9, 0xae, 0xb1,
                     0x80, 0x28, 0x00, 0x04, 0xa7, 0xca, 0x62, 0xd4,
                 },
-                request.Encode(new TestStunContext(), transactionId));
+                request.Encode(new TestStunContext()));
         }
     }
 }

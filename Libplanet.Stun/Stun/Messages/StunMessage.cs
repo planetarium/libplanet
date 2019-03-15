@@ -13,6 +13,17 @@ namespace Libplanet.Stun.Messages
         private const int MessageIntegrityBytes = 24;
         private const int FingerprintBytes = 8;
 
+        protected StunMessage()
+        {
+            var transactionId = new byte[12];
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(transactionId);
+            }
+
+            TransactionId = transactionId;
+        }
+
         // TODO Should document following STUN / TURN RFC
         #pragma warning disable SA1602
         public enum MessageClass : byte
@@ -41,6 +52,8 @@ namespace Libplanet.Stun.Messages
         public abstract MessageClass Class { get; }
 
         public abstract MessageMethod Method { get; }
+
+        public byte[] TransactionId { get; internal set; }
 
         internal static byte[] MagicCookie => new byte[]
         {
@@ -127,6 +140,7 @@ namespace Libplanet.Stun.Messages
 
             if (rv != null)
             {
+                rv.TransactionId = transactionId;
                 rv.Attributes = attributes;
             }
 
@@ -135,13 +149,89 @@ namespace Libplanet.Stun.Messages
 
         public byte[] Encode(IStunContext ctx)
         {
-            var transactionId = new byte[12];
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(transactionId);
-            }
+            bool useMessageIntegrity =
+                !string.IsNullOrEmpty(ctx?.Username) &&
+                !string.IsNullOrEmpty(ctx?.Password) &&
+                !string.IsNullOrEmpty(ctx?.Realm);
 
-            return Encode(ctx, transactionId);
+            var c = (ushort)Class;
+            var m = (ushort)Method;
+            int type =
+                (m & 0x0f80) << 2 |
+                (m & 0x0070) << 1 |
+                (m & 0x000f) << 0 |
+                (c & 0x2) << 7 |
+                (c & 0x1) << 4;
+
+            using (var ms = new MemoryStream())
+            {
+                List<Attribute> attrs = Attributes.ToList();
+
+                if (!string.IsNullOrEmpty(ctx?.Username))
+                {
+                    attrs.Add(new Username(ctx.Username));
+                }
+
+                if (ctx?.Nonce != null)
+                {
+                    attrs.Add(new Attributes.Nonce(ctx.Nonce));
+                }
+
+                if (!string.IsNullOrEmpty(ctx?.Realm))
+                {
+                    attrs.Add(new Realm(ctx.Realm));
+                }
+
+                byte[] encodedAttrs;
+                using (var ams = new MemoryStream())
+                {
+                    foreach (Attribute attr in attrs)
+                    {
+                        byte[] asBytes = attr.ToByteArray(TransactionId);
+                        ams.Write(asBytes, 0, asBytes.Length);
+                    }
+
+                    encodedAttrs = ams.ToArray();
+                }
+
+                // 8 bytes for Fingerprint
+                var messageLength =
+                    (ushort)(encodedAttrs.Length + FingerprintBytes);
+
+                if (useMessageIntegrity)
+                {
+                    messageLength += MessageIntegrityBytes;
+                }
+
+                ms.Write(((ushort)type).ToBytes(), 0, 2);
+                ms.Write(messageLength.ToBytes(), 0, 2);
+                ms.Write(MagicCookie, 0, MagicCookie.Length);
+                ms.Write(TransactionId, 0, TransactionId.Length);
+                ms.Write(encodedAttrs, 0, encodedAttrs.Length);
+
+                if (useMessageIntegrity)
+                {
+                    var lengthWithoutFingerprint =
+                        (ushort)(messageLength - FingerprintBytes);
+                    byte[] toCalc = ms.ToArray();
+                    lengthWithoutFingerprint.ToBytes().CopyTo(toCalc, 2);
+
+                    MessageIntegrity mi =
+                        MessageIntegrity.Calculate(
+                            ctx?.Username,
+                            ctx?.Password,
+                            ctx?.Realm,
+                            toCalc);
+                    ms.Write(mi.ToByteArray(), 0, MessageIntegrityBytes);
+                }
+
+                Fingerprint fingerprint = Fingerprint.FromMessage(
+                    ms.ToArray()
+                );
+                ms.Write(fingerprint.ToByteArray(), 0, FingerprintBytes);
+
+                return ms.ToArray();
+            }
         }
 
         internal static IEnumerable<Attribute> ParseAttributes(
@@ -216,93 +306,6 @@ namespace Libplanet.Stun.Messages
 
             return (MessageMethod)(
                 (type & 0x3e00) >> 2 | (type & 0x00e0) >> 1 | (type & 0x000f));
-        }
-
-        internal byte[] Encode(IStunContext ctx, byte[] transactionId)
-        {
-            bool useMessageIntegrity =
-                !string.IsNullOrEmpty(ctx?.Username) &&
-                !string.IsNullOrEmpty(ctx?.Password) &&
-                !string.IsNullOrEmpty(ctx?.Realm);
-
-            var c = (ushort)Class;
-            var m = (ushort)Method;
-            int type =
-                (m & 0x0f80) << 2 |
-                (m & 0x0070) << 1 |
-                (m & 0x000f) << 0 |
-                (c & 0x2) << 7 |
-                (c & 0x1) << 4;
-
-            using (var ms = new MemoryStream())
-            {
-                List<Attribute> attrs = Attributes.ToList();
-
-                if (!string.IsNullOrEmpty(ctx?.Username))
-                {
-                    attrs.Add(new Username(ctx.Username));
-                }
-
-                if (ctx?.Nonce != null)
-                {
-                    attrs.Add(new Attributes.Nonce(ctx.Nonce));
-                }
-
-                if (!string.IsNullOrEmpty(ctx?.Realm))
-                {
-                    attrs.Add(new Realm(ctx.Realm));
-                }
-
-                byte[] encodedAttrs;
-                using (var ams = new MemoryStream())
-                {
-                    foreach (Attribute attr in attrs)
-                    {
-                        byte[] asBytes = attr.ToByteArray(transactionId);
-                        ams.Write(asBytes, 0, asBytes.Length);
-                    }
-
-                    encodedAttrs = ams.ToArray();
-                }
-
-                // 8 bytes for Fingerprint
-                var messageLength =
-                    (ushort)(encodedAttrs.Length + FingerprintBytes);
-
-                if (useMessageIntegrity)
-                {
-                    messageLength += MessageIntegrityBytes;
-                }
-
-                ms.Write(((ushort)type).ToBytes(), 0, 2);
-                ms.Write(messageLength.ToBytes(), 0, 2);
-                ms.Write(MagicCookie, 0, MagicCookie.Length);
-                ms.Write(transactionId, 0, transactionId.Length);
-                ms.Write(encodedAttrs, 0, encodedAttrs.Length);
-
-                if (useMessageIntegrity)
-                {
-                    var lengthWithoutFingerprint =
-                        (ushort)(messageLength - FingerprintBytes);
-                    byte[] toCalc = ms.ToArray();
-                    lengthWithoutFingerprint.ToBytes().CopyTo(toCalc, 2);
-
-                    MessageIntegrity mi =
-                        MessageIntegrity.Calculate(
-                            ctx?.Username,
-                            ctx?.Password,
-                            ctx?.Realm,
-                            toCalc);
-                    ms.Write(mi.ToByteArray(), 0, MessageIntegrityBytes);
-                }
-
-                Fingerprint fingerprint = Fingerprint.FromMessage(
-                    ms.ToArray()
-                );
-                ms.Write(fingerprint.ToByteArray(), 0, FingerprintBytes);
-
-                return ms.ToArray();
-            }
         }
 
         protected T GetAttribute<T>()

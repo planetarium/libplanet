@@ -24,6 +24,13 @@ namespace Libplanet.Tests.Stun.Messages
             using (var stream = new MemoryStream(bytes))
             {
                 var response = await StunMessage.Parse(stream);
+                Assert.Equal(
+                    new byte[]
+                    {
+                        0x0c, 0x85, 0x2c, 0x24, 0x1a, 0x87, 0x02, 0xc9, 0xa8, 0x2c,
+                        0x0b, 0xad,
+                    },
+                    response.TransactionId);
                 Assert.IsType<RefreshErrorResponse>(response);
             }
         }

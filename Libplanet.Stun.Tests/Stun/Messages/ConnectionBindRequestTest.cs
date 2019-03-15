@@ -9,11 +9,13 @@ namespace Libplanet.Tests.Stun.Messages
         public void EncodeToBytes()
         {
             var connectionId = new byte[] { 0x1e, 0xe2, 0x38, 0x02 };
-            var request = new ConnectionBindRequest(connectionId);
-            var transactionId = new byte[]
+            var request = new ConnectionBindRequest(connectionId)
             {
-                0x3d, 0x29, 0x0c, 0x81, 0x83, 0x69, 0xa5, 0x48, 0x36, 0xfa,
-                0x52, 0x6c,
+                TransactionId = new byte[]
+                {
+                    0x3d, 0x29, 0x0c, 0x81, 0x83, 0x69, 0xa5, 0x48, 0x36, 0xfa,
+                    0x52, 0x6c,
+                }
             };
             var ctx = new TestStunContext()
             {
@@ -48,7 +50,7 @@ namespace Libplanet.Tests.Stun.Messages
                     0x0f, 0x4b, 0x5f, 0xe3, 0x09, 0x63, 0x80, 0x28, 0x00, 0x04,
                     0x22, 0x0e, 0x0e, 0x02,
                 },
-                request.Encode(ctx, transactionId));
+                request.Encode(ctx));
         }
     }
 }

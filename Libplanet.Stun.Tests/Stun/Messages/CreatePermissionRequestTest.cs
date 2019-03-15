@@ -11,11 +11,13 @@ namespace Libplanet.Tests.Stun.Messages
         {
             var request = new CreatePermissionRequest(
                 new IPEndPoint(IPAddress.Parse("54.65.63.212"), 37005)
-            );
-            var transactionId = new byte[]
+            )
             {
-                0xf8, 0x57, 0xe3, 0x50, 0x4c, 0x8f, 0xd3, 0x9d, 0xb8, 0xca,
-                0x69, 0x83,
+                TransactionId = new byte[]
+                {
+                    0xf8, 0x57, 0xe3, 0x50, 0x4c, 0x8f, 0xd3, 0x9d, 0xb8, 0xca,
+                    0x69, 0x83,
+                }
             };
             var ctx = new TestStunContext()
             {
@@ -50,7 +52,7 @@ namespace Libplanet.Tests.Stun.Messages
                     0xd7, 0xfd, 0x21, 0xeb, 0x0c, 0xd4, 0x2f, 0x6c, 0x8d, 0x40,
                     0x80, 0x28, 0x00, 0x04, 0x31, 0x5b, 0x2f, 0x0e,
                 },
-                request.Encode(ctx, transactionId));
+                request.Encode(ctx));
         }
     }
 }

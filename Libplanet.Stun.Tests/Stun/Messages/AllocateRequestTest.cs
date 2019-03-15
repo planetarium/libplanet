@@ -8,11 +8,13 @@ namespace Libplanet.Tests.Stun.Messages
         [Fact]
         public void EncodeToBytes()
         {
-            var request = new AllocateRequest(777);
-            var transactionId = new byte[]
+            var request = new AllocateRequest(777)
             {
-                0xee, 0x29, 0xdd, 0x2d, 0x7a, 0xe9, 0x9c, 0xf4, 0x00, 0x82,
-                0xf2, 0x5e,
+                TransactionId = new byte[]
+                {
+                    0xee, 0x29, 0xdd, 0x2d, 0x7a, 0xe9, 0x9c, 0xf4, 0x00, 0x82,
+                    0xf2, 0x5e,
+                }
             };
             Assert.Equal(
                 new byte[]
@@ -23,18 +25,20 @@ namespace Libplanet.Tests.Stun.Messages
                     0x00, 0x04, 0x00, 0x00, 0x03, 0x09, 0x80, 0x28, 0x00, 0x04,
                     0x3d, 0xbe, 0x42, 0x75,
                 },
-                request.Encode(new TestStunContext(), transactionId)
+                request.Encode(new TestStunContext())
             );
         }
 
         [Fact]
         public void EncodeToBytesWithCredential()
         {
-            var request = new AllocateRequest(777);
-            var transactionId = new byte[]
+            var request = new AllocateRequest(777)
             {
-                0xf5, 0xdb, 0xe7, 0xc1, 0x2a, 0x74, 0xbe, 0xf9, 0x8b, 0x16,
-                0x56, 0x3e,
+                TransactionId = new byte[]
+                {
+                    0xf5, 0xdb, 0xe7, 0xc1, 0x2a, 0x74, 0xbe, 0xf9, 0x8b, 0x16,
+                    0x56, 0x3e,
+                }
             };
             var ctx = new TestStunContext()
             {
@@ -70,7 +74,7 @@ namespace Libplanet.Tests.Stun.Messages
                     0x30, 0xfc, 0xbc, 0xf4, 0x80, 0x28, 0x00, 0x04, 0x98, 0x46,
                     0x9c, 0x07,
                 },
-                request.Encode(ctx, transactionId));
+                request.Encode(ctx));
         }
     }
 }

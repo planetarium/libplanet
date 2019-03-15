@@ -30,6 +30,13 @@ namespace Libplanet.Tests.Stun.Messages
                 var response =
                     (AllocateSuccessResponse)await StunMessage.Parse(stream);
                 Assert.Equal(
+                    new byte[]
+                    {
+                        0xf5, 0xdb, 0xe7, 0xc1, 0x2a, 0x74, 0xbe, 0xf9, 0x8b, 0x16,
+                        0x56, 0x3e,
+                    },
+                    response.TransactionId);
+                Assert.Equal(
                     new IPEndPoint(IPAddress.Parse("54.65.63.212"), 57484),
                     response.RelayedEndPoint);
             }

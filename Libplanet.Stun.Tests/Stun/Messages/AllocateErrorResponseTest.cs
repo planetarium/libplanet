@@ -28,6 +28,13 @@ namespace Libplanet.Tests.Stun.Messages
             {
                 var response =
                     (AllocateErrorResponse)await StunMessage.Parse(stream);
+                Assert.Equal(
+                    new byte[]
+                    {
+                        0xee, 0x29, 0xdd, 0x2d, 0x7a, 0xe9, 0x9c, 0xf4, 0x00, 0x82,
+                        0xf2, 0x5e,
+                    },
+                    response.TransactionId);
                 Assert.Equal(401, response.ErrorCode);
                 Assert.Equal("twilio.com", response.Realm);
                 Assert.Equal(
