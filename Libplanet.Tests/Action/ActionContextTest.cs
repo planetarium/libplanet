@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Libplanet.Action;
 using Xunit;
 
@@ -16,14 +17,29 @@ namespace Libplanet.Tests.Action
             foreach (var (seed, expected) in testCases)
             {
                 var context = new ActionContext(
-                    from: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                    to: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                    signer: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                     blockIndex: 1,
-                    previousStates: new AddressStateMap(),
+                    previousStates: new DumbAccountStateDelta(),
                     randomSeed: seed
                 );
                 IRandom random = context.Random;
                 Assert.Equal(expected, random.Next());
+            }
+        }
+
+        private class DumbAccountStateDelta : IAccountStateDelta
+        {
+            public IImmutableSet<Address> UpdatedAddresses =>
+                ImmutableHashSet<Address>.Empty;
+
+            public object GetState(Address address)
+            {
+                return null;
+            }
+
+            public IAccountStateDelta SetState(Address address, object state)
+            {
+                return this;
             }
         }
     }

@@ -106,15 +106,21 @@ namespace Libplanet.Blockchain
         }
 
         public void Validate(
-            IEnumerable<Block<T>> blocks, DateTimeOffset currentTime)
+            IEnumerable<Block<T>> blocks,
+            DateTimeOffset currentTime,
+            AccountStateGetter accountStateGetter
+        )
         {
-            foreach (Block<T> block in blocks)
+            ImmutableArray<Block<T>> blocksArray = blocks.ToImmutableArray();
+            IAccountStateDelta delta =
+                new AccountStateDeltaImpl(accountStateGetter);
+            foreach (Block<T> block in blocksArray)
             {
-                block.Validate(currentTime);
+                delta = block.Validate(currentTime, delta.GetState);
             }
 
             InvalidBlockException e =
-                Policy.ValidateBlocks(blocks, currentTime);
+                Policy.ValidateBlocks(blocksArray, currentTime);
 
             if (e != null)
             {
@@ -189,11 +195,17 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
-                Validate(Enumerable.Append(this, block), currentTime);
+                HashDigest<SHA256>? tip =
+                    Store.IndexBlockHash(Id.ToString(), -1);
+                Validate(
+                    Enumerable.Append(this, block),
+                    currentTime,
+                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
+
                 Blocks[block.Hash] = block;
                 EvaluateActions(block);
 
-                long index = Store.AppendIndex(Id.ToString(), block.Hash);
+                Store.AppendIndex(Id.ToString(), block.Hash);
                 ISet<TxId> txIds = block.Transactions
                     .Select(t => t.Id)
                     .ToImmutableHashSet();
@@ -201,9 +213,14 @@ namespace Libplanet.Blockchain
                 Store.UnstageTransactionIds(Id.ToString(), txIds);
                 foreach (Transaction<T> tx in block.Transactions)
                 {
-                    Store.AppendAddressTransactionId(
-                        Id.ToString(), tx.Recipient, tx.Id
-                    );
+                    foreach (Address address in tx.UpdatedAddresses)
+                    {
+                        Store.AppendAddressTransactionId(
+                            Id.ToString(),
+                            address,
+                            tx.Id
+                        );
+                    }
                 }
             }
             finally
@@ -426,37 +443,39 @@ namespace Libplanet.Blockchain
         private void EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            var states = new AddressStateMap();
-
-            int seed = BitConverter.ToInt32(block.Hash.ToByteArray(), 0);
-            foreach (Transaction<T> tx in block.Transactions)
+            IAccountStateDelta[] deltas = block.EvaluateActions(address =>
             {
-                int txSeed = seed ^ BitConverter.ToInt32(tx.Signature, 0);
-                foreach (T action in tx.Actions)
+                IImmutableDictionary<Address, object> result =
+                    GetStates(new[] { address }, prevHash);
+                try
                 {
-                    IEnumerable<Address> requestedAddresses =
-                        action.RequestStates(tx.Sender, tx.Recipient);
-                    AddressStateMap requested = GetStates(
-                        requestedAddresses.Except(states.Keys),
-                        prevHash);
-                    states = (AddressStateMap)requested.SetItems(states);
-                    var prevState = new AddressStateMap(
-                        requestedAddresses
-                        .Where(states.ContainsKey)
-                        .ToImmutableDictionary(a => a, a => states[a]));
-                    var context = new ActionContext(
-                        @from: tx.Sender,
-                        to: tx.Recipient,
-                        blockIndex: block.Index,
-                        previousStates: prevState,
-                        randomSeed: unchecked(txSeed++)
-                    );
-                    AddressStateMap changes = action.Execute(context);
-                    states = (AddressStateMap)states.SetItems(changes);
+                    return result[address];
                 }
-            }
+                catch (KeyNotFoundException)
+                {
+                    return null;
+                }
+            }).ToArray();
+            IAccountStateDelta lastStates = deltas.LastOrDefault();
 
-            Store.SetBlockStates(Id.ToString(), block.Hash, states);
+            ImmutableHashSet<Address> updatedAddresses =
+                deltas.Select(d => d.UpdatedAddresses).Aggregate(
+                    ImmutableHashSet<Address>.Empty,
+                    (a, b) => a.Union(b)
+                );
+            IImmutableDictionary<Address, object> totalDelta =
+                updatedAddresses.Select(
+                    a => new KeyValuePair<Address, object>(
+                        a,
+                        lastStates?.GetState(a)
+                    )
+                ).ToImmutableDictionary();
+
+            Store.SetBlockStates(
+                Id.ToString(),
+                block.Hash,
+                new AddressStateMap(totalDelta)
+            );
         }
     }
 }

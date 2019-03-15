@@ -413,7 +413,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public async Task CanGetTx()
+        public async Task GetTx()
         {
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
@@ -421,11 +421,9 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chainA = _blockchains[0];
             BlockChain<BaseAction> chainB = _blockchains[1];
 
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                new PrivateKey().PublicKey.ToAddress(),
-                new BaseAction[] { },
-                DateTimeOffset.UtcNow
+                new BaseAction[0]
             );
             chainB.StageTransactions(new[] { tx }.ToHashSet());
             chainB.MineBlock(_fx1.Address1);
@@ -457,7 +455,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public async Task CanBroadcastTx()
+        public async Task BroadcastTx()
         {
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
@@ -467,11 +465,9 @@ namespace Libplanet.Tests.Net
             BlockChain<BaseAction> chainB = _blockchains[1];
             BlockChain<BaseAction> chainC = _blockchains[2];
 
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                new PrivateKey().PublicKey.ToAddress(),
-                new BaseAction[] { },
-                DateTimeOffset.UtcNow
+                new BaseAction[] { }
             );
 
             chainA.StageTransactions(new[] { tx }.ToHashSet());

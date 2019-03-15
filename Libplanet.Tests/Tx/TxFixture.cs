@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Net.Http.Headers;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -10,36 +12,48 @@ namespace Libplanet.Tests.Tx
     {
         public TxFixture()
         {
-            var privateKey = new PrivateKey(
-                ByteUtil.ParseHex(
-                    "cf36ecf9e47c879a0dbf46b2ecd83fd276182ade0265825e3b8c6ba214467b76"));
-            var recipient = new Address(privateKey.PublicKey);
+            PrivateKey = new PrivateKey(
+                new byte[]
+                {
+                    0xcf, 0x36, 0xec, 0xf9, 0xe4, 0x7c, 0x87, 0x9a, 0x0d, 0xbf,
+                    0x46, 0xb2, 0xec, 0xd8, 0x3f, 0xd2, 0x76, 0x18, 0x2a, 0xde,
+                    0x02, 0x65, 0x82, 0x5e, 0x3b, 0x8c, 0x6b, 0xa2, 0x14, 0x46,
+                    0x7b, 0x76,
+                }
+            );
+            var recipient = new Address(PrivateKey.PublicKey);
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
-            Tx = Transaction<BaseAction>.Make(
-                privateKey,
-                recipient,
-                new List<BaseAction>(),
-                timestamp
+            Tx = Transaction<BaseAction>.Create(
+                PrivateKey,
+                new BaseAction[0],
+                timestamp: timestamp
             );
-            TxWithActions = Transaction<BaseAction>.Make(
-                privateKey,
-                recipient,
-                new List<BaseAction>
+            BaseAction[] actions =
+            {
+                new Attack
                 {
-                    new Attack
-                    {
-                        Weapon = "wand",
-                        Target = "orc",
-                    },
-                    new Sleep
-                    {
-                        ZoneId = 10,
-                    },
+                    Weapon = "wand",
+                    Target = "orc",
+                    TargetAddress = recipient,
                 },
-                timestamp
+                new Sleep
+                {
+                    ZoneId = 10,
+                },
+            };
+            TxWithActions = Transaction<BaseAction>.Create(
+                PrivateKey,
+                actions,
+                timestamp: timestamp
             );
         }
+
+        public PrivateKey PrivateKey { get; }
+
+        public PublicKey PublicKey => PrivateKey.PublicKey;
+
+        public Address Address => PublicKey.ToAddress();
 
         public Transaction<BaseAction> Tx { get; }
 

@@ -10,13 +10,7 @@ namespace Libplanet.Action
         /// <see cref="Address"/> of an account who made and signed
         /// a transaction that an executed <see cref="IAction"/> belongs to.
         /// </summary>
-        Address From { get; }
-
-        /// <summary>
-        /// <see cref="Address"/> of an account who receives a transaction that
-        /// an executed <see cref="IAction"/> belongs to.
-        /// </summary>
-        Address To { get; }
+        Address Signer { get; }
 
         /// <summary>
         /// Block index of a transaction that an executed <see cref="IAction"/>
@@ -25,12 +19,16 @@ namespace Libplanet.Action
         long BlockIndex { get; }
 
         /// <summary>
-        /// The state of accounts related to query before <see cref="IAction"/>
-        /// executes.  Those addresses are determined by
-        /// <see cref="IAction.RequestStates(Address, Address)"/> method.
+        /// A null delta of states, which means it represents the states
+        /// before <see cref="IAction"/> executes.
+        /// <para>Although a <see cref="IAccountStateDelta"/> instance is
+        /// immutable, it has several manipulative methods that returns
+        /// new <see cref="IAccountStateDelta"/> instances with some "dirty"
+        /// states.  These kinds of dirty <see cref="IAccountStateDelta"/>
+        /// instances can be returned by <see
+        /// cref="IAction.Execute(IActionContext)"/> method.</para>
         /// </summary>
-        /// <seealso cref="IAction.RequestStates(Address, Address)"/>
-        AddressStateMap PreviousStates { get; }
+        IAccountStateDelta PreviousStates { get; }
 
         /// <summary>
         /// An initialized pseudorandom number generator.  Its seed (state)

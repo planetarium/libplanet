@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace Libplanet.Store
                 }
 
                 Trace.Assert(block.Hash == key);
-                block.Validate();
+                block.Validate(DateTimeOffset.UtcNow);
                 return block;
             }
 
@@ -61,7 +62,7 @@ namespace Libplanet.Store
                         $"{value}.hash does not match to {key}");
                 }
 
-                value.Validate();
+                value.Validate(DateTimeOffset.UtcNow);
                 Store.PutBlock(StoreNamespace, value);
             }
         }

@@ -17,15 +17,20 @@ namespace Libplanet.Tests.Common.Action
                 { "zone_id", ZoneId },
             }.ToImmutableDictionary();
 
-        public override AddressStateMap Execute(IActionContext context)
+        public override IAccountStateDelta Execute(IActionContext context)
         {
-            throw new NotSupportedException();
+            // No-op.
+            return context.PreviousStates;
         }
 
         public override void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue)
         {
-            ZoneId = (int)(BigInteger)plainValue["zone_id"];
+            object serialized = plainValue["zone_id"];
+
+            // FIXME: The reason why the type of the serialized value is not
+            // consistent should be analyzed.
+            ZoneId = serialized is BigInteger v ? (int)v : (int)serialized;
         }
     }
 }

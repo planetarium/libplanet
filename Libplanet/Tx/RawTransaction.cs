@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
+using Uno.Extensions;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
@@ -13,9 +14,11 @@ namespace Libplanet.Tx
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
-                sender: info.GetValue<byte[]>("sender"),
+
+                signer: info.GetValue<byte[]>("signer"),
                 publicKey: info.GetValue<byte[]>("public_key"),
-                recipient: info.GetValue<byte[]>("recipient"),
+                updatedAddresses: info.GetValue<byte[]>("updated_addresses")
+                    .GroupBy(Address.Size).Select(a => a.ToArray()).ToArray(),
                 timestamp: info.GetString("timestamp"),
                 signature: info.GetValue<byte[]>("signature"),
                 actions: info.GetValue<IEnumerable>(
@@ -25,27 +28,34 @@ namespace Libplanet.Tx
         }
 
         public RawTransaction(
-            byte[] sender,
-            byte[] recipient,
+            byte[] signer,
+            byte[][] updatedAddresses,
             byte[] publicKey,
             string timestamp,
             IEnumerable<IDictionary<string, object>> actions
         )
-            : this(sender, recipient, publicKey, timestamp, actions, null)
+            : this(
+                signer,
+                updatedAddresses,
+                publicKey,
+                timestamp,
+                actions,
+                null
+            )
         {
         }
 
         public RawTransaction(
-            byte[] sender,
-            byte[] recipient,
+            byte[] signer,
+            byte[][] updatedAddresses,
             byte[] publicKey,
             string timestamp,
             IEnumerable<IDictionary<string, object>> actions,
             byte[] signature
         )
         {
-            Sender = sender;
-            Recipient = recipient;
+            Signer = signer;
+            UpdatedAddresses = updatedAddresses;
             PublicKey = publicKey;
             Timestamp = timestamp;
             Actions = actions;
@@ -54,8 +64,9 @@ namespace Libplanet.Tx
 
         public RawTransaction(Dictionary<string, object> dict)
         {
-            Sender = (byte[])dict["sender"];
-            Recipient = (byte[])dict["recipient"];
+            Signer = (byte[])dict["signer"];
+            UpdatedAddresses = ((byte[])dict["updated_addresses"])
+                .GroupBy(Address.Size).Select(a => a.ToArray()).ToArray();
             PublicKey = (byte[])dict["public_key"];
             Timestamp = (string)dict["timestamp"];
             Actions = ((IEnumerable)dict["actions"])
@@ -71,11 +82,11 @@ namespace Libplanet.Tx
             }
         }
 
-        public byte[] Sender { get; }
+        public byte[] Signer { get; }
 
         public byte[] PublicKey { get; }
 
-        public byte[] Recipient { get; }
+        public byte[][] UpdatedAddresses { get; }
 
         public string Timestamp { get; }
 
@@ -98,8 +109,22 @@ namespace Libplanet.Tx
             StreamingContext context
         )
         {
-            info.AddValue("sender", Sender);
-            info.AddValue("recipient", Recipient);
+            info.AddValue("signer", Signer);
+
+            // SerializationInfo.AddValue() doesn't seem to work well with
+            // 2d arrays.  Concat addresses before encode them (fortunately,
+            // addresses all have 20 bytes, fixed-length).
+            var updatedAddresses =
+                new byte[UpdatedAddresses.Length * Address.Size];
+            int i = 0;
+            foreach (byte[] address in UpdatedAddresses)
+            {
+                address.CopyTo(updatedAddresses, i);
+                i += Address.Size;
+            }
+
+            info.AddValue("updated_addresses", updatedAddresses);
+
             info.AddValue("public_key", PublicKey);
             info.AddValue("timestamp", Timestamp);
             info.AddValue("actions", Actions);
@@ -113,8 +138,8 @@ namespace Libplanet.Tx
         public RawTransaction AddSignature(byte[] signature)
         {
             return new RawTransaction(
-                Sender,
-                Recipient,
+                Signer,
+                UpdatedAddresses,
                 PublicKey,
                 Timestamp,
                 Actions,
@@ -129,9 +154,9 @@ namespace Libplanet.Tx
 
         public bool Equals(RawTransaction other)
         {
-            bool eq = Sender.SequenceEqual(other.Sender) &&
+            bool eq = Signer.SequenceEqual(other.Signer) &&
                 PublicKey.SequenceEqual(other.PublicKey) &&
-                Recipient.SequenceEqual(other.Recipient) &&
+                UpdatedAddresses.SequenceEqual(other.UpdatedAddresses) &&
                 Timestamp == other.Timestamp &&
                 Actions.SequenceEqual(other.Actions);
             if (Signature == null)
@@ -147,6 +172,20 @@ namespace Libplanet.Tx
         public override int GetHashCode()
         {
             return ByteUtil.CalculateHashCode(Signature);
+        }
+
+        public override string ToString()
+        {
+            string updatedAddresses = string.Join(
+                string.Empty,
+                UpdatedAddresses.Select(a => "\n    " + ByteUtil.Hex(a))
+            );
+            return $@"{nameof(RawTransaction)}
+  {nameof(Signer)} = {ByteUtil.Hex(Signer)}
+  {nameof(PublicKey)} = {ByteUtil.Hex(PublicKey)}
+  {nameof(UpdatedAddresses)} = {updatedAddresses}
+  {nameof(Timestamp)} = {Timestamp}
+  {nameof(Signature)} = {ByteUtil.Hex(Signature)}";
         }
     }
 }

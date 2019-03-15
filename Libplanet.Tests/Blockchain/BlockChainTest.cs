@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Drawing.Design;
 using System.Linq;
-using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -39,11 +37,11 @@ namespace Libplanet.Tests.Blockchain
         public void CanMineBlock()
         {
             Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
-            block.Validate();
+            block.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(block, _blockChain);
 
             Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
-            anotherBlock.Validate();
+            anotherBlock.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(anotherBlock, _blockChain);
         }
 
@@ -85,7 +83,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanProcessActions()
+        public void ProcessActions()
         {
             var actions1 = new List<BaseAction>()
             {
@@ -93,27 +91,28 @@ namespace Libplanet.Tests.Blockchain
                 {
                     Weapon = "sword",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
                 new Attack()
                 {
                     Weapon = "sword",
                     Target = "orc",
+                    TargetAddress = _fx.Address1,
                 },
                 new Attack()
                 {
                     Weapon = "staff",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                _fx.Address1,
-                actions1,
-                DateTimeOffset.UtcNow
+                actions1
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
-            _blockChain.MineBlock(_fx.Address1);
+            var lastBlock = _blockChain.MineBlock(_fx.Address1);
 
             AddressStateMap states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
             Assert.NotEmpty(states);
@@ -124,23 +123,22 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
 
-            var actions2 = new List<BaseAction>()
+            BaseAction[] actions2 =
             {
                 new Attack()
                 {
                     Weapon = "bow",
                     Target = "goblin",
+                    TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Create(
                 new PrivateKey(),
-                _fx.Address1,
-                actions2,
-                DateTimeOffset.UtcNow
+                actions2
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
-            _blockChain.MineBlock(_fx.Address1);
+            lastBlock = _blockChain.MineBlock(_fx.Address1);
 
             states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
@@ -163,13 +161,31 @@ namespace Libplanet.Tests.Blockchain
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new Attack
+                        {
+                            Weapon = "sword",
+                            Target = "goblin",
+                            TargetAddress = _fx.Address1,
+                        },
+                    },
+                    new[] { _fx.Address1 }.ToImmutableHashSet()
+                ),
             };
             _blockChain.StageTransactions(txs);
             _blockChain.MineBlock(_fx.Address1);
 
-            Assert.NotEmpty(_blockChain.Addresses);
-            Assert.Contains(_fx.Transaction1, _blockChain.Addresses[_fx.Transaction1.Recipient]);
-            Assert.DoesNotContain(_fx.Transaction2, _blockChain.Addresses[_fx.Transaction1.Recipient]);
+            Assert.Contains(_fx.Address1, _blockChain.Addresses);
+            foreach (Address a in _fx.Transaction1.UpdatedAddresses)
+            {
+                Assert.Contains(_fx.Transaction1, _blockChain.Addresses[a]);
+                Assert.DoesNotContain(
+                    _fx.Transaction2,
+                    _blockChain.Addresses[a]
+                );
+            }
         }
 
         [Fact]
@@ -236,42 +252,37 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanEvaluateActions()
+        public void EvaluateActions()
         {
             PrivateKey fromPrivateKey = new PrivateKey();
             Address fromAddress = fromPrivateKey.PublicKey.ToAddress();
-            Address toAddress = _fx.Address1;
             long blockIndex = 0;
 
             TestEvaluateAction action = new TestEvaluateAction();
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Make(
+            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
                 fromPrivateKey,
-                toAddress,
-                new List<BaseAction> { action },
-                DateTimeOffset.UtcNow
+                new[] { action }
             );
 
             _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
             _blockChain.MineBlock(_fx.Address1);
             var states = _blockChain.GetStates(new[]
             {
-                TestEvaluateAction.FromKey,
-                TestEvaluateAction.ToKey,
+                TestEvaluateAction.SignerKey,
                 TestEvaluateAction.BlockIndexKey,
             });
 
-            Assert.Equal(states[TestEvaluateAction.FromKey], fromAddress.ToHex());
-            Assert.Equal(states[TestEvaluateAction.ToKey], toAddress.ToHex());
+            Assert.Equal(
+                states[TestEvaluateAction.SignerKey],
+                fromAddress.ToHex()
+            );
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
 
         [ActionType("test")]
         private class TestEvaluateAction : BaseAction
         {
-            public static readonly Address FromKey =
-                new PrivateKey().PublicKey.ToAddress();
-
-            public static readonly Address ToKey =
+            public static readonly Address SignerKey =
                 new PrivateKey().PublicKey.ToAddress();
 
             public static readonly Address BlockIndexKey =
@@ -285,12 +296,11 @@ namespace Libplanet.Tests.Blockchain
             {
             }
 
-            public override AddressStateMap Execute(IActionContext context)
+            public override IAccountStateDelta Execute(IActionContext context)
             {
-                return (AddressStateMap)context.PreviousStates
-                    .SetItem(FromKey, context.From.ToHex())
-                    .SetItem(ToKey, context.To.ToHex())
-                    .SetItem(BlockIndexKey, context.BlockIndex);
+                return context.PreviousStates
+                    .SetState(SignerKey, context.Signer.ToHex())
+                    .SetState(BlockIndexKey, context.BlockIndex);
             }
         }
     }

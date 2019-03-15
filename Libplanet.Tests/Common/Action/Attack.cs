@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Text;
 using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
@@ -14,36 +12,42 @@ namespace Libplanet.Tests.Common.Action
             {
                 { "weapon", Weapon },
                 { "target", Target },
+                { "target_address", TargetAddress.ToByteArray() },
             }.ToImmutableDictionary();
 
         public string Weapon { get; set; }
 
         public string Target { get; set; }
 
+        public Address TargetAddress { get; set; }
+
         public override void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue)
         {
             Weapon = (string)plainValue["weapon"];
             Target = (string)plainValue["target"];
+            TargetAddress = new Address((byte[])plainValue["target_address"]);
         }
 
-        public override AddressStateMap Execute(IActionContext context)
+        public override IAccountStateDelta Execute(IActionContext context)
         {
-            var result = new BattleResult();
-            AddressStateMap previousStates = context.PreviousStates;
-            Address to = context.To;
+            IImmutableSet<string> usedWeapons = ImmutableHashSet<string>.Empty;
+            IImmutableSet<string> targets = ImmutableHashSet<string>.Empty;
+            IAccountStateDelta previousStates = context.PreviousStates;
 
-            if (previousStates.TryGetValue(to, out object value))
+            object value = previousStates.GetState(TargetAddress);
+            if (!ReferenceEquals(value, null))
             {
                 var previousResult = (BattleResult)value;
-                result.UsedWeapons = previousResult.UsedWeapons;
-                result.Targets = previousResult.Targets;
+                usedWeapons = previousResult.UsedWeapons;
+                targets = previousResult.Targets;
             }
 
-            result.UsedWeapons.Add(Weapon);
-            result.Targets.Add(Target);
+            usedWeapons = usedWeapons.Add(Weapon);
+            targets = targets.Add(Target);
+            var result = new BattleResult(usedWeapons, targets);
 
-            return (AddressStateMap)previousStates.SetItem(to, result);
+            return previousStates.SetState(TargetAddress, result);
         }
     }
 }

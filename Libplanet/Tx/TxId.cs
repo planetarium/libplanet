@@ -23,7 +23,7 @@ namespace Libplanet.Tx
     #pragma warning restore CS0282
     {
         /// <summary>
-        /// The <see cref="byte"/> size that each <see cref="TxId"/> takes.
+        /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
         /// <para>As a txid is a SHA-256 digest, it is 32 <see cref="byte"/>s.
         /// </para>
         /// </summary>

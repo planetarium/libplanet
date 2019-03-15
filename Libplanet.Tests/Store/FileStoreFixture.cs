@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
@@ -77,8 +78,8 @@ namespace Libplanet.Tests.Store
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
 
-            Transaction1 = MakeTransaction();
-            Transaction2 = MakeTransaction();
+            Transaction1 = MakeTransaction(new List<BaseAction>(), ImmutableHashSet<Address>.Empty);
+            Transaction2 = MakeTransaction(new List<BaseAction>(), ImmutableHashSet<Address>.Empty);
         }
 
         public string Path { get; }
@@ -121,15 +122,18 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        private Transaction<BaseAction> MakeTransaction()
+        public Transaction<BaseAction> MakeTransaction(
+            IEnumerable<BaseAction> actions = null,
+            ImmutableHashSet<Address> updatedAddresses = null
+        )
         {
             var privateKey = new PrivateKey();
-            Address recipient = privateKey.PublicKey.ToAddress();
-            var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            return Transaction<BaseAction>.Make(
+            var timestamp =
+                new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
+            return Transaction<BaseAction>.Create(
                 privateKey,
-                recipient,
-                new List<BaseAction>(),
+                actions ?? new BaseAction[0],
+                updatedAddresses,
                 timestamp
             );
         }

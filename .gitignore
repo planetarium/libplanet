@@ -27,6 +27,7 @@
 [Oo]bj/
 _UpgradeReport_Files/
 [Pp]ackages/
+mono_crash.*.json
 
 Thumbs.db
 Desktop.ini

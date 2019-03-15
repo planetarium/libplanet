@@ -12,7 +12,17 @@ namespace Libplanet.Serialization
 
         public object Convert(object value, Type type)
         {
-            return _impl.Convert(value, type);
+            try
+            {
+                return _impl.Convert(value, type);
+            }
+            catch (InvalidCastException e)
+            {
+                throw new InvalidCastException(
+                    $"Failed to convert the object {value} to {type}.",
+                    e
+                );
+            }
         }
 
         public object Convert(object value, TypeCode typeCode)

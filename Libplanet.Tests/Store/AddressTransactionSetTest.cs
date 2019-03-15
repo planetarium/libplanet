@@ -56,26 +56,33 @@ namespace Libplanet.Tests.Store
             Assert.Empty(_set.Keys);
             Assert.Empty(_set.Values);
 
-            _fx.Store.AppendAddressTransactionId(
-                _fx.StoreNamespace,
-                _fx.Transaction1.Recipient,
-                _fx.Transaction1.Id
-            );
-            _fx.Store.AppendAddressTransactionId(
-                _fx.StoreNamespace,
-                _fx.Transaction2.Recipient,
-                _fx.Transaction2.Id
-            );
+            foreach (Address a in _fx.Transaction1.UpdatedAddresses)
+            {
+                _fx.Store.AppendAddressTransactionId(
+                    _fx.StoreNamespace,
+                    a,
+                    _fx.Transaction1.Id
+                );
+            }
+
+            foreach (Address a in _fx.Transaction2.UpdatedAddresses)
+            {
+                _fx.Store.AppendAddressTransactionId(
+                    _fx.StoreNamespace,
+                    a,
+                    _fx.Transaction2.Id
+                );
+            }
+
             _fx.Store.PutTransaction(_fx.StoreNamespace, _fx.Transaction1);
             _fx.Store.PutTransaction(_fx.StoreNamespace, _fx.Transaction2);
 
             Assert.Equal(
-                new HashSet<Address>()
-                {
-                    _fx.Transaction1.Recipient,
-                    _fx.Transaction2.Recipient,
-                },
-                _set.Keys.ToHashSet());
+                _fx.Transaction1.UpdatedAddresses.Union(
+                    _fx.Transaction2.UpdatedAddresses
+                ),
+                _set.Keys.ToHashSet()
+            );
         }
 
         [Fact]
