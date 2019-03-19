@@ -71,12 +71,6 @@ To be released.
     `IList<T>` to `IImmutableList<T>`.  The corresponding parameters on
     constructors and factory methods also were changed to take
     `IEnumerable<T>` instead of `IList<T>`.
- -  The type of `Peer.Urls` property was changed from `Uri` to `IPEndPoint`.
- -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
-    work around NAT so that `Peer`'s endpoints don't have to be multiple,
-    `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
-    from `IImmutableList<Uri>` to `IPEndPoint`.
-    [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
  -  `Address` and `TxId` are now serializable.
     [[#99], [#124] by Qria]
  -  `InvalidTxException` and its subclasses became to have `TxId` property
@@ -87,6 +81,14 @@ To be released.
     even if there is any integrity error on its `Transactions`.
  -  `Swarm.AddPeersAsync()` was fixed so that unreachable `Peer`s are ignored.
     [[#128]]
+ -  `Swarm` became able to relay their connection via TURN ([RFC 5766])
+    to NAT traversal. To enable this, its constructor (`Swarm()`) takes the
+    newly added `IceServer`s as configuration.
+ -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
+    work around NAT so that `Peer`'s endpoints don't have to be multiple,
+    `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
+    from `IImmutableList<Uri>` to `IPEndPoint`.
+    [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
 
 [#99]: https://github.com/planetarium/libplanet/issues/99
 [#120]: https://github.com/planetarium/libplanet/issues/120
