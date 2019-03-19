@@ -17,6 +17,7 @@ To be released.
     have `Transaction<T>.UpdatedAddresses` (which is plural) instead.
     As there is no more asset to transfer, the term `Sender` was also
     renamed to `Signer`, which fits more to the new perspective.
+    [[#121]]
 
      -  Renamed `Transaction<T>.Sender`, `RawTransaction.Signer`, and
         `IActionContext.From` properties to `Signer`.
@@ -47,16 +48,20 @@ To be released.
 
  -  The `Address`es `IAction` tries to update no more need to be manually
     coded using `IAction.RequestStates()` method.  That method was
-    removed at all, and updated `Address`es became automatically scanned
-    using dirty-tracking for the most cases.
+    removed at all, and updated `Address`es became automatically determined
+    (for the most cases) by track "dirties" on <dfn>rehearsal mode<dfn>.
+    This mode dry-runs `IAction`s with empty `IActionContext.PreviousStates`.
+    [[#121]]
 
      -  Added `AccountStateGetter` delegate to provide a read-only view to
         account states.
      -  Added `IAccountStateDelta` interface to replace `AddressStateMap`.
         The interface purposes to provide a read-write view to account states
         with maintaining `UpdatedAddresses` (so-called "dirty").
+        [[#98]]
      -  The type of `IActionContext.PreviousStates` property was changed from
         `AddressStateMap` to `IAccountStateDelta`.
+     -  Added `IActionContext.Rehearsal` property.  [[#131]]
      -  The return type of `IAction.Execute()` method was changed from
         `AddressStateMap` to `IAccountStateDelta`.
      -  Removed `IAction.RequestStates()` method because there is no need for it
@@ -90,13 +95,16 @@ To be released.
     from `IImmutableList<Uri>` to `IPEndPoint`.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
 
+[#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
 [#120]: https://github.com/planetarium/libplanet/issues/120
+[#121]: https://github.com/planetarium/libplanet/pull/121
 [#123]: https://github.com/planetarium/libplanet/pull/123
 [#124]: https://github.com/planetarium/libplanet/pull/124
 [#126]: https://github.com/planetarium/libplanet/issues/126
 [#127]: https://github.com/planetarium/libplanet/pull/127
 [#128]: https://github.com/planetarium/libplanet/pull/128
+[#131]: https://github.com/planetarium/libplanet/issues/131
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 

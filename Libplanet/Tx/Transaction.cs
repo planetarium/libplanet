@@ -264,7 +264,8 @@ namespace Libplanet.Tx
         /// <remarks>
         /// This factory method tries its best to fill the <see
         /// cref="UpdatedAddresses"/> property by actually evaluating
-        /// the given <paramref name="actions"/>, but remember that its result
+        /// the given <paramref name="actions"/> (we call it &#x201c;rehearsal
+        /// mode&#x201d;), but remember that its result
         /// is approximated in some degree, because the result of
         /// <paramref name="actions"/> are not deterministic until
         /// the <see cref="Transaction{T}"/> belongs to a <see
@@ -281,7 +282,10 @@ namespace Libplanet.Tx
         /// <para>If an <see cref="IAction"/> oversimplifies the assumption
         /// about the <see cref="Libplanet.Blocks.Block{T}"/> it belongs to,
         /// runtime exceptions could be thrown from this factory method.
-        /// Only solution to that is not to oversimplify things.</para>
+        /// The best solution to that is not to oversimplify things,
+        /// there is an option to check <see cref="IActionContext"/>'s
+        /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
+        /// a conditional logic for the case.</para>
         /// </remarks>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
@@ -353,7 +357,8 @@ namespace Libplanet.Tx
                 ).EvaluateActions(
                     default(HashDigest<SHA256>),
                     0,
-                    new AccountStateDeltaImpl(_ => null)
+                    new AccountStateDeltaImpl(_ => null),
+                    rehearsal: true
                 );
                 if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
                 {
@@ -428,6 +433,9 @@ namespace Libplanet.Tx
         /// <see cref="Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
         /// <returns>The states immediately after <see cref="Actions"/>
         /// being executed.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
@@ -436,7 +444,8 @@ namespace Libplanet.Tx
         public IAccountStateDelta EvaluateActions(
             HashDigest<SHA256> blockHash,
             long blockIndex,
-            IAccountStateDelta previousStates
+            IAccountStateDelta previousStates,
+            bool rehearsal = false
         )
         {
             int seed =
@@ -449,7 +458,8 @@ namespace Libplanet.Tx
                     signer: Signer,
                     blockIndex: blockIndex,
                     previousStates: states,
-                    randomSeed: unchecked(seed++)
+                    randomSeed: unchecked(seed++),
+                    rehearsal: rehearsal
                 );
                 states = action.Execute(context);
             }

@@ -35,9 +35,17 @@ namespace Libplanet.Tests.Tx
             );
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
+            Address stateStore = new Address(
+                new byte[]
+                {
+                    0xe6, 0x95, 0x1c, 0x43, 0x02, 0xdf, 0x13, 0xf9, 0x29, 0xfc,
+                    0xdb, 0xc5, 0x56, 0xd9, 0xac, 0x20, 0x41, 0xfe, 0xf9, 0x5f,
+                }
+            );
+            var action = new DetectRehearsal { TargetAddress = stateStore };
             Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
                 privateKey,
-                new BaseAction[0],
+                new BaseAction[] { action },
                 ImmutableHashSet<Address>.Empty,
                 timestamp
             );
@@ -46,19 +54,23 @@ namespace Libplanet.Tests.Tx
                 new Address(privateKey.PublicKey),
                 tx.Signer
             );
-            Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
+            Assert.Equal(
+                new[] { stateStore }.ToImmutableHashSet(),
+                tx.UpdatedAddresses
+            );
             Assert.Equal(privateKey.PublicKey, tx.PublicKey);
             Assert.Equal(timestamp, tx.Timestamp);
             AssertBytesEqual(
                 new byte[]
                 {
-                    0x30, 0x44, 0x02, 0x20, 0x0e, 0xec, 0x2a, 0x53, 0xba, 0x8e,
-                    0xb0, 0x6f, 0x09, 0x71, 0x00, 0x49, 0xf0, 0xc9, 0x75, 0x71,
-                    0x70, 0xcf, 0xda, 0x5d, 0xe5, 0xab, 0xd9, 0xd3, 0xfb, 0xa2,
-                    0xca, 0xa1, 0x30, 0x35, 0x93, 0x70, 0x02, 0x20, 0x7a, 0x4b,
-                    0xda, 0x5e, 0x6c, 0x5e, 0x3a, 0x4f, 0x5b, 0x6e, 0x5b, 0x54,
-                    0x9f, 0xf6, 0x99, 0x2d, 0xd0, 0x9a, 0x0d, 0xac, 0xec, 0x83,
-                    0x20, 0x2b, 0x82, 0x40, 0x0d, 0x6e, 0x5e, 0x9f, 0xbd, 0x2b,
+                    0x30, 0x45, 0x02, 0x21, 0x00, 0xb5, 0x9c, 0xc8, 0x81, 0x84,
+                    0xd7, 0x34, 0x3e, 0x66, 0xe2, 0x15, 0xe7, 0x9e, 0x8a, 0x76,
+                    0x3c, 0xa3, 0xb8, 0xc1, 0xcf, 0xaa, 0x31, 0x1a, 0xb2, 0x30,
+                    0x34, 0x68, 0xcd, 0xf4, 0x31, 0x9c, 0x20, 0x02, 0x20, 0x5b,
+                    0x38, 0xf4, 0xf8, 0x65, 0xdb, 0xed, 0xaa, 0x3a, 0xdc, 0xa9,
+                    0x6d, 0x04, 0xa1, 0x4f, 0x48, 0x35, 0xca, 0xca, 0x2c, 0xac,
+                    0x25, 0x28, 0xb0, 0x5c, 0xea, 0xa2, 0x78, 0x4d, 0x4b, 0x7a,
+                    0xf7,
                 },
                 tx.Signature
             );
@@ -66,14 +78,15 @@ namespace Libplanet.Tests.Tx
                 new TxId(
                     new byte[]
                     {
-                        0x0b, 0xa2, 0x25, 0x37, 0xb0, 0x07, 0xcf, 0xe8, 0x5c,
-                        0xaa, 0x30, 0x39, 0x0d, 0xc3, 0xad, 0xa8, 0x80, 0xed,
-                        0xd3, 0x19, 0xcc, 0x85, 0xaa, 0x45, 0x52, 0x57, 0x29,
-                        0xf4, 0x74, 0x87, 0x67, 0xfb,
+                        0x77, 0x3d, 0x27, 0x6f, 0x2d, 0x26, 0x95, 0xaf, 0xf7,
+                        0xdb, 0xd4, 0x89, 0x7d, 0x51, 0x15, 0xf9, 0xbd, 0x9a,
+                        0x03, 0x92, 0xbc, 0xb8, 0x3a, 0x8b, 0x7c, 0xf0, 0x93,
+                        0x5a, 0x0d, 0xe0, 0x57, 0xdf,
                     }
                 ),
                 tx.Id
             );
+            Assert.True(action.ResultState);
         }
 
         [Fact]
@@ -555,10 +568,11 @@ namespace Libplanet.Tests.Tx
             "SA1118",
             Justification = "Long array literals should be multiline.")]
         [Fact]
-        public void Evaluate()
+        public void EvaluateActions()
         {
             Address[] addresses =
             {
+                new PrivateKey().PublicKey.ToAddress(),
                 new PrivateKey().PublicKey.ToAddress(),
                 new PrivateKey().PublicKey.ToAddress(),
             };
@@ -584,27 +598,36 @@ namespace Libplanet.Tests.Tx
                         Target = "t2",
                         TargetAddress = addresses[0],
                     },
+                    new DetectRehearsal
+                    {
+                        TargetAddress = addresses[2],
+                    },
                 }
             );
-            IAccountStateDelta delta = tx.EvaluateActions(
-                default,
-                1,
-                new AccountStateDeltaImpl(address => null)
-            );
-            Assert.Equal(
-                new Dictionary<Address, object>
-                {
-                    [addresses[0]] = new BattleResult(
-                        usedWeapons: new[] { "w0", "w2" },
-                        targets: new[] { "t0", "t2" }
-                    ),
-                    [addresses[1]] = new BattleResult(
-                        usedWeapons: new[] { "w1" },
-                        targets: new[] { "t1" }
-                    ),
-                }.ToImmutableDictionary(),
-                delta.GetUpdatedStates()
-            );
+            foreach (bool rehearsal in new[] { false, true })
+            {
+                IAccountStateDelta delta = tx.EvaluateActions(
+                    default,
+                    1,
+                    new AccountStateDeltaImpl(address => null),
+                    rehearsal: rehearsal
+                );
+                Assert.Equal(
+                    new Dictionary<Address, object>
+                    {
+                        [addresses[0]] = new BattleResult(
+                            usedWeapons: new[] { "w0", "w2" },
+                            targets: new[] { "t0", "t2" }
+                        ),
+                        [addresses[1]] = new BattleResult(
+                            usedWeapons: new[] { "w1" },
+                            targets: new[] { "t1" }
+                        ),
+                        [addresses[2]] = rehearsal,
+                    }.ToImmutableDictionary(),
+                    delta.GetUpdatedStates()
+                );
+            }
         }
 
         [Fact]
