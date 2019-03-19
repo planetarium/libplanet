@@ -1,0 +1,30 @@
+using Libplanet.Stun.Messages;
+using Xunit;
+
+namespace Libplanet.Tests.Stun.Messages
+{
+    public class RefreshRequestTest
+    {
+        [Fact]
+        public void EncodeToBytes()
+        {
+            var request = new RefreshRequest(777)
+            {
+                TransactionId = new byte[]
+                {
+                    0xaf, 0x9d, 0x6b, 0xa5, 0x71, 0x17, 0xd7, 0xf2, 0x0a, 0x3a,
+                    0x94, 0x7b,
+                }
+            };
+            Assert.Equal(
+                new byte[]
+                {
+                    0x00, 0x04, 0x00, 0x10, 0x21, 0x12, 0xa4, 0x42, 0xaf, 0x9d, 0x6b,
+                    0xa5, 0x71, 0x17, 0xd7, 0xf2, 0x0a, 0x3a, 0x94, 0x7b, 0x00, 0x0d,
+                    0x00, 0x04, 0x00, 0x00, 0x03, 0x09, 0x80, 0x28, 0x00, 0x04, 0x72,
+                    0x1c, 0x63, 0x88,
+                },
+                request.Encode(new TestStunContext()));
+        }
+    }
+}

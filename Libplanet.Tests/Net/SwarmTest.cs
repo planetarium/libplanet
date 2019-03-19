@@ -610,11 +610,56 @@ namespace Libplanet.Tests.Net
         [Fact]
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
-            Swarm swarm = new Swarm(new PrivateKey());
+            Swarm swarm =
+                new Swarm(new PrivateKey(), ipAddress: IPAddress.Loopback);
             Assert.Throws<SwarmException>(() => swarm.AsPeer);
 
             await StartAsync(swarm, _blockchains[0]);
             Assert.Equal(swarm.EndPoint, swarm.AsPeer.EndPoint);
+        }
+
+        [FactOnlyTurnAvailable]
+        public async Task ExchangeWithIceServer()
+        {
+            Uri turnUrl = FactOnlyTurnAvailable.TurnUri;
+            string username = FactOnlyTurnAvailable.Username;
+            string password = FactOnlyTurnAvailable.Password;
+
+            IEnumerable<IceServer> iceServers = new[]
+            {
+                new IceServer(
+                    urls: new[] { turnUrl },
+                    username: username,
+                    credential: password),
+            };
+
+            var seed = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback);
+            var swarmA = new Swarm(new PrivateKey(), iceServers: iceServers);
+            var swarmB = new Swarm(new PrivateKey(), iceServers: iceServers);
+
+            try
+            {
+                await StartAsync(seed, _blockchains[0]);
+                await StartAsync(swarmA, _blockchains[1]);
+                await StartAsync(swarmB, _blockchains[2]);
+
+                await swarmA.AddPeersAsync(new[] { seed.AsPeer });
+                await swarmB.AddPeersAsync(new[] { seed.AsPeer });
+
+                await EnsureExchange(swarmA, swarmB);
+
+                Assert.Contains(swarmA.AsPeer, swarmB);
+                Assert.Contains(swarmB.AsPeer, swarmA);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    seed.StopAsync(),
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
+            }
         }
 
         private async Task<Task> StartAsync<T>(

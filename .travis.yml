@@ -162,14 +162,19 @@ script:
     else
       appended_version="$version.$TRAVIS_BUILD_NUMBER+$(date +%Y%m%d)"
     fi
-    msbuild \
-      /p:Configuration=Release \
-      /p:NoPackageAnalysis=true \
-      /p:PackageVersion="$appended_version" \
-      /t:pack \
+    nuget pack -Properties \
+      Configuration=Release \
+      NoPackageAnalysis=true \
+      PackageVersion="$appended_version" \
+      -IncludeReferencedProjects \
+      -OutputDirectory Libplanet/bin/Release \
       Libplanet
   else
-    msbuild /p:Configuration=Release /t:pack Libplanet
+    nuget pack -Properties \
+      Configuration=Release \
+      -IncludeReferencedProjects \
+      -OutputDirectory Libplanet/bin/Release \
+      Libplanet
   fi
 
 # Build docs using DocFX

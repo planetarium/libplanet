@@ -17,6 +17,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Stun;
 using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
@@ -29,6 +30,9 @@ namespace Libplanet.Net
     [Uno.GeneratedEquality]
     public partial class Swarm : ICollection<Peer>, IDisposable
     {
+        private static readonly TimeSpan TurnAllocationLifetime =
+            TimeSpan.FromSeconds(777);
+
         private readonly IDictionary<Peer, DateTimeOffset> _peers;
         private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
@@ -42,6 +46,7 @@ namespace Libplanet.Net
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly IPAddress _ipAddress;
+        private readonly TurnClient _turnClient;
 
         private readonly ILogger _logger;
 
@@ -53,13 +58,15 @@ namespace Libplanet.Net
             int millisecondsDialTimeout = 15000,
             IPAddress ipAddress = null,
             int? listenPort = null,
-            DateTimeOffset? createdAt = null)
+            DateTimeOffset? createdAt = null,
+            IEnumerable<IceServer> iceServers = null)
             : this(
                   privateKey,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                   ipAddress,
                   listenPort,
-                  createdAt)
+                  createdAt,
+                  iceServers)
         {
         }
 
@@ -68,7 +75,8 @@ namespace Libplanet.Net
             TimeSpan dialTimeout,
             IPAddress ipAddress = null,
             int? listenPort = null,
-            DateTimeOffset? createdAt = null)
+            DateTimeOffset? createdAt = null,
+            IEnumerable<IceServer> iceServers = null)
         {
             Running = false;
 
@@ -96,8 +104,24 @@ namespace Libplanet.Net
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
 
-            _ipAddress = ipAddress ?? GetLocalIPAddress();
+            _ipAddress = ipAddress;
             _listenPort = listenPort;
+
+            if (_ipAddress != null && _listenPort != null)
+            {
+                EndPoint = new IPEndPoint(_ipAddress, listenPort.Value);
+            }
+
+            if (iceServers != null)
+            {
+                _turnClient = IceServer.CreateTurnClient(iceServers).Result;
+            }
+
+            if (ipAddress == null && _turnClient == null)
+            {
+                throw new ArgumentException(
+                    $"Swarm needs {nameof(ipAddress)} or {iceServers}.");
+            }
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
@@ -118,20 +142,7 @@ namespace Libplanet.Net
 
         public bool IsReadOnly => false;
 
-        public IPEndPoint EndPoint
-        {
-            get
-            {
-                if (_ipAddress != null && _listenPort is int port)
-                {
-                    return new IPEndPoint(_ipAddress, port);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public IPEndPoint EndPoint { get; private set; }
 
         [Uno.EqualityKey]
         public Address Address => _privateKey.PublicKey.ToAddress();
@@ -232,6 +243,20 @@ namespace Libplanet.Net
                 {
                     try
                     {
+                        if (_turnClient != null)
+                        {
+                            var ep = peer.EndPoint;
+                            if (IPAddress.IsLoopback(ep.Address))
+                            {
+                                // This translation is only used in test case
+                                // because a seed node exposes loopback address
+                                // as public address to other node in test case
+                                ep = await _turnClient.GetMappedAddressAsync();
+                            }
+
+                            await _turnClient.CreatePermissionAsync(ep);
+                        }
+
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
                         await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
@@ -391,6 +416,19 @@ namespace Libplanet.Net
 
             _logger.Information($"Listen on {_listenPort}");
 
+            bool behindNAT =
+                _turnClient != null && await _turnClient.IsBehindNAT();
+
+            if (behindNAT)
+            {
+                EndPoint = await _turnClient.AllocateRequestAsync(
+                    TurnAllocationLifetime);
+            }
+            else
+            {
+                EndPoint = new IPEndPoint(_ipAddress, _listenPort.Value);
+            }
+
             try
             {
                 using (await _runningMutex.LockAsync())
@@ -429,10 +467,20 @@ namespace Libplanet.Net
                     }
                 }
 
-                await Task.WhenAll(
+                var tasks = new List<Task>
+                {
                     RepeatDeltaDistributionAsync(
                         distributeInterval, cancellationToken),
-                    ReceiveMessageAsync(blockChain, cancellationToken));
+                    ReceiveMessageAsync(blockChain, cancellationToken),
+                };
+
+                if (behindNAT)
+                {
+                    tasks.Add(BindingProxies());
+                    tasks.Add(RefreshAllocate());
+                }
+
+                await Task.WhenAll(tasks);
             }
             catch (Exception e)
             {
@@ -609,22 +657,6 @@ namespace Libplanet.Net
             });
         }
 
-        private static IPAddress GetLocalIPAddress()
-        {
-            using (var socket = new Socket(
-                AddressFamily.InterNetwork,
-                SocketType.Dgram,
-                0))
-            {
-                // it's a workaround for checking the IP on the activated NIC.
-                // we don't need to make sure the endpoint is reachable
-                // because it doesn't connect.
-                socket.Connect("8.8.8.8", 65530);
-                var endPoint = socket.LocalEndPoint as IPEndPoint;
-                return endPoint.Address;
-            }
-        }
-
         private static IEnumerable<Peer> FilterPeers(
             IDictionary<Peer, DateTimeOffset> peers,
             DateTimeOffset before,
@@ -647,6 +679,37 @@ namespace Libplanet.Net
 
                     yield return kv.Key;
                 }
+            }
+        }
+
+        private async Task BindingProxies()
+        {
+            while (Running)
+            {
+                NetworkStream stream =
+                    await _turnClient.AcceptRelayedStreamAsync();
+
+                #pragma warning disable CS4014
+                Task.Run(async () =>
+                {
+                    using (var proxy = new NetworkStreamProxy(stream))
+                    {
+                        await proxy.StartAsync(
+                            IPAddress.Loopback,
+                            _listenPort.Value);
+                    }
+                });
+                #pragma warning restore CS4014
+            }
+        }
+
+        private async Task RefreshAllocate()
+        {
+            TimeSpan lifetime = TurnAllocationLifetime;
+            while (Running)
+            {
+                await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
+                lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
             }
         }
 
@@ -1276,6 +1339,7 @@ namespace Libplanet.Net
                     dealer,
                     cancellationToken);
                 _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
+
                 _dealers[peer.Address] = dealer;
             }
             catch (IOException e)

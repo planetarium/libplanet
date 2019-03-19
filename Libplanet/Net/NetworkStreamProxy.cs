@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -17,7 +18,18 @@ namespace Libplanet.Net
 
         public async Task StartAsync(string hostname, int port)
         {
-            _targetClient = new TcpClient(hostname, port);
+            await StartAsync(IPAddress.Parse(hostname), port);
+        }
+
+        public async Task StartAsync(IPAddress address, int port)
+        {
+            await StartAsync(new IPEndPoint(address, port));
+        }
+
+        public async Task StartAsync(IPEndPoint endPoint)
+        {
+            _targetClient = new TcpClient();
+            _targetClient.Connect(endPoint);
             NetworkStream target = _targetClient.GetStream();
             await Task.WhenAll(
                 Proxy(_source, target),
