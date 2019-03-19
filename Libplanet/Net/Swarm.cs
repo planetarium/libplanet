@@ -243,6 +243,20 @@ namespace Libplanet.Net
                 {
                     try
                     {
+                        if (_turnClient != null)
+                        {
+                            var ep = peer.EndPoint;
+                            if (IPAddress.IsLoopback(ep.Address))
+                            {
+                                // This translation is only used in test case
+                                // because a seed node exposes loopback address
+                                // as public address to other node in test case
+                                ep = await _turnClient.GetMappedAddressAsync();
+                            }
+
+                            await _turnClient.CreatePermissionAsync(ep);
+                        }
+
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
                         await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
@@ -1325,11 +1339,6 @@ namespace Libplanet.Net
                     dealer,
                     cancellationToken);
                 _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
-
-                if (_turnClient != null)
-                {
-                    await _turnClient.CreatePermissionAsync(peer.EndPoint);
-                }
 
                 _dealers[peer.Address] = dealer;
             }

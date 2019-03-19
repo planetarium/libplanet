@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
-using Libplanet.Stun;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -621,7 +619,7 @@ namespace Libplanet.Tests.Net
         }
 
         [FactOnlyTurnAvailable]
-        public async Task StartWithIceServers()
+        public async Task ExchangeWithIceServer()
         {
             Uri turnUrl = FactOnlyTurnAvailable.TurnUri;
             string username = FactOnlyTurnAvailable.Username;
@@ -634,11 +632,34 @@ namespace Libplanet.Tests.Net
                     username: username,
                     credential: password),
             };
-            Swarm swarm = new Swarm(
+
+            var seed = new Swarm(
                 new PrivateKey(),
-                iceServers: iceServers);
-            await StartAsync(swarm, _blockchains[0]);
-            Assert.NotNull(swarm.EndPoint);
+                ipAddress: IPAddress.Loopback);
+            var swarmA = new Swarm(new PrivateKey(), iceServers: iceServers);
+            var swarmB = new Swarm(new PrivateKey(), iceServers: iceServers);
+
+            try
+            {
+                await StartAsync(seed, _blockchains[0]);
+                await StartAsync(swarmA, _blockchains[1]);
+                await StartAsync(swarmB, _blockchains[2]);
+
+                await swarmA.AddPeersAsync(new[] { seed.AsPeer });
+                await swarmB.AddPeersAsync(new[] { seed.AsPeer });
+
+                await EnsureExchange(swarmA, swarmB);
+
+                Assert.Contains(swarmA.AsPeer, swarmB);
+                Assert.Contains(swarmB.AsPeer, swarmA);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    seed.StopAsync(),
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
+            }
         }
 
         private async Task<Task> StartAsync<T>(

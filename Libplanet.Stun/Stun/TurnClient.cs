@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Stun.Messages;
 
@@ -16,8 +19,12 @@ namespace Libplanet.Stun
         private readonly string _host;
         private readonly int _port;
         private readonly IList<TcpClient> _relayedClients;
+        private readonly IDictionary<byte[], TaskCompletionSource<StunMessage>>
+            _responses;
 
+        private readonly Task _messageProcessor;
         private TcpClient _control;
+        private TaskCompletionSource<ConnectionAttempt> _connectAttempted;
 
         public TurnClient(
             string host,
@@ -33,7 +40,12 @@ namespace Libplanet.Stun
             _relayedClients = new List<TcpClient>();
 
             _control = new TcpClient();
-            _control.Connect(_host, port);
+            _control.Connect(_host, _port);
+
+            _responses =
+                new Dictionary<byte[], TaskCompletionSource<StunMessage>>(
+                    new ByteArrayComparer());
+            _messageProcessor = ProcessMessage();
         }
 
         public string Username { get; }
@@ -53,7 +65,7 @@ namespace Libplanet.Stun
             {
                 var request = new AllocateRequest((int)lifetime.TotalSeconds);
                 await SendMessageAsync(stream, request);
-                response = await StunMessage.Parse(stream);
+                response = await _responses[request.TransactionId].Task;
 
                 if (response is AllocateErrorResponse allocError)
                 {
@@ -80,7 +92,8 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request);
-            StunMessage response = await StunMessage.Parse(stream);
+            StunMessage response =
+                await _responses[request.TransactionId].Task;
 
             if (response is CreatePermissionErrorResponse)
             {
@@ -95,28 +108,28 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             while (true)
             {
-                StunMessage received = await StunMessage.Parse(stream);
-                if (received is ConnectionAttempt attempt)
+                _connectAttempted =
+                    new TaskCompletionSource<ConnectionAttempt>();
+                ConnectionAttempt attempt = await _connectAttempted.Task;
+
+                byte[] id = attempt.ConnectionId;
+                var relayedClient = new TcpClient(_host, _port);
+                NetworkStream relayedStream = relayedClient.GetStream();
+
+                var bindRequest = new ConnectionBindRequest(id);
+                await SendMessageAsync(relayedStream, bindRequest);
+                StunMessage bindResponse =
+                    await StunMessage.Parse(relayedStream);
+
+                if (bindResponse is ConnectionBindSuccessResponse)
                 {
-                    byte[] id = attempt.ConnectionId;
-                    var relayedClient = new TcpClient(_host, _port);
-                    NetworkStream relayedStream = relayedClient.GetStream();
+                    _relayedClients.Add(relayedClient);
+                    return relayedStream;
+                }
 
-                    var bindRequest = new ConnectionBindRequest(id);
-                    await SendMessageAsync(relayedStream, bindRequest);
-                    StunMessage bindResponse =
-                        await StunMessage.Parse(relayedStream);
-
-                    if (bindResponse is ConnectionBindSuccessResponse)
-                    {
-                        _relayedClients.Add(relayedClient);
-                        return relayedStream;
-                    }
-
-                    throw new TurnClientException(
+                throw new TurnClientException(
                         "ConnectionBind failed.",
                         bindResponse);
-                }
             }
         }
 
@@ -125,7 +138,8 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request);
-            var response = await StunMessage.Parse(stream);
+            StunMessage response =
+                await _responses[request.TransactionId].Task;
 
             if (response is BindingSuccessResponse success)
             {
@@ -143,7 +157,8 @@ namespace Libplanet.Stun
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request);
 
-            var response = await StunMessage.Parse(stream);
+            StunMessage response =
+                await _responses[request.TransactionId].Task;
             if (response is RefreshSuccessResponse success)
             {
                 return TimeSpan.FromSeconds(success.Lifetime);
@@ -165,14 +180,69 @@ namespace Libplanet.Stun
             {
                 c.Dispose();
             }
+
+            try
+            {
+                _messageProcessor.GetAwaiter().GetResult();
+            }
+            catch (IOException)
+            {
+            }
         }
 
         private async Task SendMessageAsync(
             NetworkStream stream,
             StunMessage message)
         {
+            _responses[message.TransactionId] =
+                new TaskCompletionSource<StunMessage>();
             var asBytes = message.Encode(this);
             await stream.WriteAsync(asBytes, 0, asBytes.Length);
+        }
+
+        private async Task ProcessMessage()
+        {
+            NetworkStream stream = _control.GetStream();
+            while (true)
+            {
+                StunMessage message = await StunMessage.Parse(stream);
+
+                if (_connectAttempted != null &&
+                    message is ConnectionAttempt attempt)
+                {
+                    _connectAttempted.SetResult(attempt);
+                }
+                else if (_responses.TryGetValue(
+                    message.TransactionId,
+                    out TaskCompletionSource<StunMessage> tcs))
+                {
+                    tcs.SetResult(message);
+                    _responses.Remove(message.TransactionId);
+                }
+            }
+        }
+
+        private class ByteArrayComparer : IEqualityComparer<byte[]>
+        {
+            public bool Equals(byte[] left, byte[] right)
+            {
+                if (left == null || right == null)
+                {
+                    return left == right;
+                }
+
+                return left.SequenceEqual(right);
+            }
+
+            public int GetHashCode(byte[] key)
+            {
+                if (key == null)
+                {
+                    throw new ArgumentNullException(nameof(key));
+                }
+
+                return key.Sum(b => b);
+            }
         }
     }
 }
