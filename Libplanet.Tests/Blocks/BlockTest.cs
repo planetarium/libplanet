@@ -170,7 +170,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void EvaluateActions()
         {
-            ImmutableArray<Address> addresses = Enumerable.Range(0, 4)
+            ImmutableArray<Address> addresses = Enumerable.Range(0, 5)
                 .Select(_ => new Address(new PrivateKey().PublicKey))
                 .ToImmutableArray();
             Attack MakeAction(Address address, char identifier) =>
@@ -237,6 +237,16 @@ namespace Libplanet.Tests.Blocks
                         _fx.TxFixture.PrivateKey,
                         new BaseAction[] { MakeAction(addresses[3], 'E') }
                     ),
+                    Transaction<BaseAction>.Create(
+                        _fx.TxFixture.PrivateKey,
+                        new[]
+                        {
+                            new DetectRehearsal
+                            {
+                                TargetAddress = addresses[4],
+                            },
+                        }
+                    ),
                 }
             );
             IImmutableDictionary<Address, object> dirty2 = blockIdx2
@@ -256,6 +266,7 @@ namespace Libplanet.Tests.Blocks
                         usedWeapons: new[] { "wE" },
                         targets: new[] { "tE" }
                     ),
+                    [addresses[4]] = false,
                 }.ToImmutableDictionary(),
                 dirty2
             );
