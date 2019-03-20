@@ -56,6 +56,18 @@ namespace Libplanet.Tests.Serialization.Bencode
         }
 
         [Fact]
+        public void SerializeOnlyTakesISerializable()
+        {
+            var formatter = new BencodexFormatter<string>();
+
+            using (var stream = new MemoryStream())
+            {
+                Assert.Throws<SerializationException>(() =>
+                    formatter.Serialize(stream, "Test"));
+            }
+        }
+
+        [Fact]
         public void Deserialize()
         {
             byte[] serialized = new byte[]
