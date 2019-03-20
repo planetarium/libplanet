@@ -158,6 +158,20 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
+        public void CreateWithActionsThrowingException()
+        {
+            var action = new ThrowException { Throw = true };
+            Assert.Throws<UnexpectedlyTerminatedTxRehearsalException>(() =>
+                Transaction<BaseAction>.Create(
+                    _fx.PrivateKey,
+                    new BaseAction[] { action },
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow
+                )
+            );
+        }
+
+        [Fact]
         public void MakeWithSignature()
         {
             var privateKey = new PrivateKey(

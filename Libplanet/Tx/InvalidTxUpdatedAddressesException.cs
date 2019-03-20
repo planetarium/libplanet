@@ -28,7 +28,7 @@ namespace Libplanet.Tx
         /// <see cref="UpdatableAddresses"/>.</param>
         /// <param name="updatedAddresses">Specified the
         /// <see cref="UpdatedAddresses"/>.</param>
-        /// <param name="message">Specified a <see cref="Exception.Message"/>.
+        /// <param name="message">Specifies a <see cref="Exception.Message"/>.
         /// </param>
         [SuppressMessage(
             "Microsoft.StyleCop.CSharp.ReadabilityRules",

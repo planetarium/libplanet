@@ -315,6 +315,19 @@ namespace Libplanet.Tx
         /// is passed to <paramref name="privateKey"/> or
         /// or <paramref name="actions"/>.
         /// </exception>
+        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// Thrown when one of <paramref name="actions"/> throws some
+        /// exception during their rehearsal.
+        /// <para>This exception is thrown probably because the logic of some of
+        /// the <paramref name="actions"/> is not enough generic so that
+        /// it can cover every case including &#x201c;rehearsal mode.&#x201d;
+        /// The <see cref="IActionContext.Rehearsal"/> property also might be
+        /// useful to make the <see cref="IAction"/> can deal with the case of
+        /// rehearsal mode.</para>
+        /// <para>The actual exception that an <see cref="IAction"/> threw
+        /// is stored in its <see cref="Exception.InnerException"/> property.
+        /// </para>
+        /// </exception>
         public static Transaction<T> Create(
             PrivateKey privateKey,
             IEnumerable<T> actions,
@@ -440,6 +453,14 @@ namespace Libplanet.Tx
         /// being executed.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
         /// <paramref name="previousStates"/> as well.</returns>
+        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// Thrown when one of <see cref="Actions"/> throws some
+        /// exception during <paramref name="rehearsal"/> mode.
+        /// The actual exception that an <see cref="IAction"/> threw
+        /// is stored in its <see cref="Exception.InnerException"/> property.
+        /// It is never thrown if the <paramref name="rehearsal"/> option is
+        /// <c>false</c>.
+        /// </exception>
         [Pure]
         public IAccountStateDelta EvaluateActions(
             HashDigest<SHA256> blockHash,
@@ -461,7 +482,30 @@ namespace Libplanet.Tx
                     randomSeed: unchecked(seed++),
                     rehearsal: rehearsal
                 );
-                states = action.Execute(context);
+                try
+                {
+                    states = action.Execute(context);
+                }
+                catch (Exception e)
+                {
+                    if (!rehearsal)
+                    {
+                        throw;
+                    }
+
+                    var msg =
+                        $"The action {action} threw an exception during its " +
+                        "rehearsal.  It is probably because the logic of the " +
+                        $"action {action} is not enough generic so that it " +
+                        "can cover every case including rehearsal mode.\n" +
+                        "The IActionContext.Rehearsal property also might be " +
+                        "useful to make the action can deal with the case of " +
+                        "rehearsal mode.\n" +
+                        "See also this exception's InnerException property.";
+                    throw new UnexpectedlyTerminatedTxRehearsalException(
+                        action, msg, e
+                    );
+                }
             }
 
             return states;
