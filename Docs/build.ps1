@@ -50,7 +50,7 @@ function Download-File ($From, $To) {
 # Download docfx if not exist yet.
 if (-not (Test-Path "$BaseDir/docfx")) {
   Download-File `
-    "https://github.com/dotnet/docfx/releases/download/v2.40.7/docfx.zip" `
+    "https://github.com/dotnet/docfx/releases/download/v2.40.12/docfx.zip" `
     -To "$BaseDir/docfx.zip"
   New-Item -ItemType directory -Path "$BaseDir/docfx"
   [System.IO.Compression.ZipFile]::ExtractToDirectory(
@@ -58,22 +58,6 @@ if (-not (Test-Path "$BaseDir/docfx")) {
     "$BaseDir/docfx"
   )
   Remove-Item "$BaseDir/docfx.zip"
-}
-
-# Workaround a bug on Mono 5.16 + docfx.
-# https://github.com/dotnet/docfx/issues/3389
-if (-not (Test-Path "$BaseDir/docfx/SQLitePCLRaw.core.dll")) {
-  Download-File `
-    -From "https://www.nuget.org/api/v2/package/SQLitePCLRaw.core/1.1.12" `
-    -To "$BaseDir/sqlitepclraw.core.1.1.12.nuget"
-  New-Item -ItemType directory -Path "$BaseDir/sqlitepclraw.core"
-  [System.IO.Compression.ZipFile]::ExtractToDirectory(
-    "$BaseDir/sqlitepclraw.core.1.1.12.nuget", "$BaseDir/sqlitepclraw.core"
-  )
-  Move-Item `
-    "$BaseDir/sqlitepclraw.core/lib/net45/SQLitePCLRaw.core.dll" `
-    "$BaseDir/docfx/SQLitePCLRaw.core.dll"
-  Remove-Item "$BaseDir/sqlitepclraw.core" -Force -Recurse
 }
 
 # Invoke docfx.exe which is a .NET application.  While it can be run in
