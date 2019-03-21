@@ -190,9 +190,9 @@ namespace Libplanet.Crypto
         /// </summary>
         /// <param name="ciphertext">The encrypted data.</param>
         /// <returns>The plain data the <paramref name="ciphertext"/> encrypted.
-        /// It returns <c>null</c> if the <paramref name="ciphertext"/> is
-        /// invalid (this behavior will be eventually changed in the future to
-        /// throw an exception instead).</returns>
+        /// </returns>
+        /// <exception cref="InvalidCiphertextException">Thrown when the given
+        /// <paramref name="ciphertext"/> is invalid.</exception>
         /// <remarks>
         /// Although the parameter name <paramref name="ciphertext"/> has the
         /// word &#x201c;text&#x201d;, both a <paramref name="ciphertext"/>
@@ -206,11 +206,6 @@ namespace Libplanet.Crypto
             PublicKey pubKey = new PublicKey(ciphertext.Take(33).ToArray());
             SymmetricKey aes = ExchangeKey(pubKey);
 
-            // FIXME: This merely returns null when the given ciphertext is
-            // invalid (which means it is not encrypted with the corresponding
-            // public key for the most part).  This should become to throw
-            // an appropriate exception instead and also reflected to docs
-            // comment (to add <exception> tag) as well.
             return aes.Decrypt(ciphertext, 33);
         }
 
