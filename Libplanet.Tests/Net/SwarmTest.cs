@@ -687,11 +687,6 @@ namespace Libplanet.Tests.Net
             {
                 await swarm.DeltaReceived.WaitAsync();
 
-                if (lastReceived == null)
-                {
-                    break;
-                }
-
                 DateTimeOffset? lastSeen = null;
                 if (peer == null)
                 {
@@ -716,7 +711,10 @@ namespace Libplanet.Tests.Net
                     }
                 }
 
-                if ((lastSeen != null) && (lastSeen >= lastReceived))
+                bool seenLater =
+                    (lastReceived is null) || (lastSeen >= lastReceived);
+
+                if (!(lastSeen is null) && seenLater)
                 {
                     break;
                 }
