@@ -9,6 +9,8 @@ namespace Libplanet.Store
 {
     public abstract class BaseStore : IStore
     {
+        public abstract IEnumerable<string> ListNamespaces();
+
         public abstract long CountIndex(string @namespace);
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex(

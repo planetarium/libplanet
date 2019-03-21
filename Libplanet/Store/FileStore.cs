@@ -15,7 +15,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public class FileStore : BaseStore, IStore
+    public class FileStore : BaseStore
     {
         private const string _transactionsDir = "tx";
         private const string _blocksDir = "blocks";
@@ -151,6 +151,18 @@ namespace Libplanet.Store
                 @namespace,
                 _indexFile
             );
+        }
+
+        /// <inheritdoc/>
+        public override IEnumerable<string> ListNamespaces()
+        {
+            if (Directory.Exists(_path))
+            {
+                foreach (string p in Directory.EnumerateDirectories(_path))
+                {
+                    yield return Path.GetFileName(p);
+                }
+            }
         }
 
         public override long AppendAddressTransactionId(

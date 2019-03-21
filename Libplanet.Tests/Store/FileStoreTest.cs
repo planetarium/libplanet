@@ -22,6 +22,24 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void ListNamespaces()
+        {
+            Assert.Empty(_fx.Store.ListNamespaces());
+
+            _fx.Store.PutBlock(_ns, _fx.Block1);
+            Assert.Equal(
+                new[] { _ns }.ToImmutableHashSet(),
+                _fx.Store.ListNamespaces().ToImmutableHashSet()
+            );
+
+            _fx.Store.PutBlock("asdf", _fx.Block1);
+            Assert.Equal(
+                new[] { _ns, "asdf" }.ToImmutableHashSet(),
+                _fx.Store.ListNamespaces().ToImmutableHashSet()
+            );
+        }
+
+        [Fact]
         public void CanReturnTransactionPath()
         {
             Assert.Equal(
