@@ -61,7 +61,9 @@ To be released.
         [[#98]]
      -  The type of `IActionContext.PreviousStates` property was changed from
         `AddressStateMap` to `IAccountStateDelta`.
-     -  Added `IActionContext.Rehearsal` property.  [[#131]]
+     -  Added `IActionContext.Rehearsal` property.  [[#131], [#135]]
+     -  Added `UnexpectedlyTerminatedTxRehearsalException` class.
+        [[#132], [#136]]
      -  The return type of `IAction.Execute()` method was changed from
         `AddressStateMap` to `IAccountStateDelta`.
      -  Removed `IAction.RequestStates()` method because there is no need for it
@@ -105,6 +107,9 @@ To be released.
 [#127]: https://github.com/planetarium/libplanet/pull/127
 [#128]: https://github.com/planetarium/libplanet/pull/128
 [#131]: https://github.com/planetarium/libplanet/issues/131
+[#132]: https://github.com/planetarium/libplanet/issues/132
+[#135]: https://github.com/planetarium/libplanet/pull/135
+[#136]: https://github.com/planetarium/libplanet/pull/136
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 
