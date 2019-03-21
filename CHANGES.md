@@ -98,6 +98,7 @@ To be released.
     `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
     from `IImmutableList<Uri>` to `IPEndPoint`.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
+ -  Added `IStore.ListNamespaces()` method.
 
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99

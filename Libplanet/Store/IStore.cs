@@ -8,6 +8,12 @@ namespace Libplanet.Store
 {
     public interface IStore
     {
+        /// <summary>
+        /// Lists existing namespaces.
+        /// </summary>
+        /// <returns>Existing namespaces.</returns>
+        IEnumerable<string> ListNamespaces();
+
         long CountIndex(string @namespace);
 
         IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);
