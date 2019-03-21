@@ -184,8 +184,10 @@ namespace Libplanet.Crypto
                 }
                 catch (InvalidCipherTextException)
                 {
-                    // FIXME
-                    return null;
+                    throw new InvalidCiphertextException(
+                        "The ciphertext is invalid. " +
+                        "Ciphertext may not have been encrypted with " +
+                        "the corresponding public key");
                 }
             }
         }

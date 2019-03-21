@@ -6,6 +6,8 @@ Version 0.2.0
 
 To be released.
 
+ -  `PrivateKey.Decrypt()` now throws an `InvalidCiphertextException`
+    instead of returning `null` when `cipherText` is invalid.  [[#140]]
  -  `Transaction<T>`'s `Sender`–`Recipient` model was replaced by
     `Signer`–`UpdatedAddresses` model.   Unlike cryptocurrencies,
     transactions in games are not necessarily a transfer of assets,

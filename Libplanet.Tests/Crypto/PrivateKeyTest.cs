@@ -150,6 +150,34 @@ namespace Libplanet.Tests.Crypto
         }
 
         [Fact]
+        public void DecryptDetectInvalidCipherText()
+        {
+            var key1 = new PrivateKey(
+                new byte[]
+                {
+                    0xfb, 0xc2, 0x00, 0x42, 0xb3, 0xa7, 0x07, 0xa7, 0xd5, 0xa1,
+                    0xfa, 0x57, 0x71, 0x71, 0xf4, 0x9c, 0xd3, 0xa9, 0xe6, 0x7a,
+                    0xb9, 0x29, 0x57, 0x57, 0xc7, 0x14, 0xe3, 0xf2, 0xf8, 0xc2,
+                    0xd5, 0x73,
+                }
+            );
+            var key2 = new PrivateKey(
+                new byte[]
+                {
+                    0xfb, 0xc2, 0x00, 0x42, 0xb3, 0xa7, 0x07, 0xa7, 0xd5, 0xa1,
+                    0xfa, 0x57, 0x71, 0x71, 0xf4, 0x9c, 0xd3, 0xa9, 0xe6, 0x7a,
+                    0xb9, 0x29, 0x57, 0x57, 0xc7, 0x14, 0xe3, 0xf2, 0xf8, 0xc2,
+                    0xd5, 0x37,
+                }
+            );
+            var message = Encoding.ASCII.GetBytes("test message");
+            var cipherText = key1.PublicKey.Encrypt(message);
+
+            Assert.Throws<InvalidCiphertextException>(
+                () => key2.Decrypt(cipherText));
+        }
+
+        [Fact]
         public void EqualsTest()
         {
             var key1 = new PrivateKey(
