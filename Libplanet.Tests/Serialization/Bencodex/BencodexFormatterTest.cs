@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using Libplanet.Serialization;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 
-namespace Libplanet.Tests.Serialization.Bencode
+namespace Libplanet.Tests.Serialization.Bencodex
 {
-    // FIXME: This class should be renamed to BencodexFormatterTest.
-    public class BencodeFormatterTest
+    public class BencodexFormatterTest
     {
         [Fact]
         public void Serialize()
