@@ -153,7 +153,6 @@ script:
 
 # Build Libplanet.*.nupkg
 - |
-  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
   nuget_props=('Configuration=Release' 'Platform=AnyCPU')
   if [[ "$TRAVIS_TAG" = "" && "$version" = *-dev ]]; then
     # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
@@ -171,6 +170,7 @@ script:
     -IncludeReferencedProjects \
     -OutputDirectory Libplanet/bin/Release \
     -Properties "$(IFS=';'; echo "${nuget_props[*]}")"
+  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
 
 # Build docs using DocFX
 - |
