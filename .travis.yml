@@ -58,7 +58,7 @@ install:
     # MSBuild
     {
       echo "#!/bin/bash"
-      echo "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe' $@"
+      echo "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe'" '"$@"'
     } > /usr/bin/msbuild
     chmod +x /usr/bin/msbuild
 
@@ -129,16 +129,16 @@ script:
 - hooks/check-bom
 
 # Build the whole solution
-- msbuild /p:Configuration=Release /r
+- msbuild -p:Configuration=Release -r
 
 # Run unit tests
-- msbuild /p:Configuration=Release /t:XunitTest Libplanet.Tests
+- msbuild -p:Configuration=Release -t:XunitTest Libplanet.Tests
 
 # Run unit tests with coverage report
 - cat codecov.yml | curl --data-binary @- https://codecov.io/validate
 - |
   if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
-    msbuild /p:Configuration=Debug /p:DebugType=full /p:DebugSymbols:true /r
+    msbuild -p:Configuration=Debug -p:DebugType=full -r
     for assembly in Libplanet.Tests/bin/Debug/*/Libplanet.Tests.dll; do
       echo "$assembly:"
       dotCover_config="$(cat .travis.dotCover.xml)"
@@ -153,23 +153,36 @@ script:
 
 # Build Libplanet.*.nupkg
 - |
-  nuget_props=('Configuration=Release' 'Platform=AnyCPU')
+  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  nuget_props=('Configuration=Release')
   if [[ "$TRAVIS_TAG" = "" && "$version" = *-dev ]]; then
     # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
     # if it's not a tag push.
     if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
       appended_version="${version/-dev/-nightly}.$(date +%Y%m%d)"
+      nupkg_version="$appended_version"
     else
-      appended_version="$version.$TRAVIS_BUILD_NUMBER+$(date +%Y%m%d)"
+      nupkg_version="$version.$TRAVIS_BUILD_NUMBER"
+      appended_version="$nupkg_version+$(date +%Y%m%d)"
     fi
-    nuget_props+=('NoPackageAnalysis=true')
     nuget_props+=("PackageVersion=$appended_version")
+    nuget_props+=('NoPackageAnalysis=true')
+    msbuild -r "${nuget_props[@]/#/-p:}"
+  else
+    nupkg_version="$version"
+    appended_version="$version"
   fi
-  nuget pack Libplanet \
-    -Build \
+  nuget pack Libplanet/Libplanet.csproj \
+    -Verbosity detailed \
     -IncludeReferencedProjects \
     -OutputDirectory Libplanet/bin/Release \
-    -Properties "$(IFS=';'; echo "${nuget_props[*]}")"
+    -Properties "$(IFS=';'; echo "${nuget_props[*]}")" \
+    -Version "$appended_version"
+  unzip -l "Libplanet/bin/Release/Libplanet.$nupkg_version.nupkg" \
+    > /tmp/nupkgfiles
+  cat /tmp/nupkgfiles
+  grep -i Libplanet.dll /tmp/nupkgfiles
+  grep -i Libplanet.Stun.dll /tmp/nupkgfiles
   rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
 
 # Build docs using DocFX
