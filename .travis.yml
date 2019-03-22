@@ -154,6 +154,7 @@ script:
 # Build Libplanet.*.nupkg
 - |
   rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  nuget_props=('Configuration=Release')
   if [[ "$TRAVIS_TAG" = "" && "$version" = *-dev ]]; then
     # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
     # if it's not a tag push.
@@ -162,20 +163,13 @@ script:
     else
       appended_version="$version.$TRAVIS_BUILD_NUMBER+$(date +%Y%m%d)"
     fi
-    nuget pack -Properties \
-      Configuration=Release \
-      NoPackageAnalysis=true \
-      PackageVersion="$appended_version" \
-      -IncludeReferencedProjects \
-      -OutputDirectory Libplanet/bin/Release \
-      Libplanet
-  else
-    nuget pack -Properties \
-      Configuration=Release \
-      -IncludeReferencedProjects \
-      -OutputDirectory Libplanet/bin/Release \
-      Libplanet
+    nuget_props+=('NoPackageAnalysis=true')
+    nuget_props+=("PackageVersion=$appended_version")
   fi
+  nuget pack Libplanet \
+    -IncludeReferencedProjects \
+    -OutputDirectory Libplanet/bin/Release \
+    -Properties "$(IFS=';'; echo "${nuget_props[*]}")"
 
 # Build docs using DocFX
 - |
