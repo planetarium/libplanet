@@ -167,6 +167,7 @@ script:
     nuget_props+=("PackageVersion=$appended_version")
   fi
   nuget pack Libplanet \
+    -Build \
     -IncludeReferencedProjects \
     -OutputDirectory Libplanet/bin/Release \
     -Properties "$(IFS=';'; echo "${nuget_props[*]}")"
