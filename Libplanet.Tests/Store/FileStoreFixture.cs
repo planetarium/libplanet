@@ -118,24 +118,7 @@ namespace Libplanet.Tests.Store
         {
             if (Directory.Exists(Path))
             {
-                try
-                {
-                    Directory.Delete(Path, true);
-                }
-                catch (IOException e)
-                {
-                    if (e.Message.Contains("being used by another process"))
-                    {
-                        /*
-                        FIXME: This is an ad-hoc workaround to
-                        <https://github.com/planetarium/libplanet/issues/148>.
-                        This should be properly fixed.
-                        */
-                        return;
-                    }
-
-                    throw;
-                }
+                Directory.Delete(Path, true);
             }
         }
 
