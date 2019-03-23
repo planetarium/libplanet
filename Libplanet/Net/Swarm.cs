@@ -904,7 +904,7 @@ namespace Libplanet.Net
             Block<T> latest = blocks.Last();
             Block<T> tip = blockChain.Tip;
 
-            if (tip == null || latest.Index >= tip.Index)
+            if (tip == null || latest.Index > tip.Index)
             {
                 using (await _blockSyncMutex.LockAsync())
                 {
