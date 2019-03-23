@@ -279,6 +279,17 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
 
+        [Fact]
+        public void DetectInvalidActionType()
+        {
+            var privateKey = new PrivateKey();
+            var action = new ActionNotAttributeAnnotated();
+
+            Assert.Throws<InvalidActionTypeException>(
+                () => Transaction<BaseAction>.Create(
+                privateKey, new[] { action }));
+        }
+
         [ActionType("test")]
         private class TestEvaluateAction : BaseAction
         {
@@ -301,6 +312,22 @@ namespace Libplanet.Tests.Blockchain
                 return context.PreviousStates
                     .SetState(SignerKey, context.Signer.ToHex())
                     .SetState(BlockIndexKey, context.BlockIndex);
+            }
+        }
+
+        private class ActionNotAttributeAnnotated : BaseAction
+        {
+            public override IImmutableDictionary<string, object> PlainValue =>
+                new Dictionary<string, object>().ToImmutableDictionary();
+
+            public override void LoadPlainValue(
+                IImmutableDictionary<string, object> plainValue)
+            {
+            }
+
+            public override IAccountStateDelta Execute(IActionContext context)
+            {
+                return context.PreviousStates;
             }
         }
     }

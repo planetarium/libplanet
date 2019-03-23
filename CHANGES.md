@@ -99,6 +99,8 @@ To be released.
     from `IImmutableList<Uri>` to `IPEndPoint`.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
  -  Added `IStore.ListNamespaces()` method.
+ -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
+    is not annotated with `ActionTypeAttribute`.  [#144]
 
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
@@ -113,6 +115,7 @@ To be released.
 [#132]: https://github.com/planetarium/libplanet/issues/132
 [#135]: https://github.com/planetarium/libplanet/pull/135
 [#136]: https://github.com/planetarium/libplanet/pull/136
+[#144]: https://github.com/planetarium/libplanet/pull/144
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 
