@@ -107,17 +107,10 @@ namespace Libplanet.Blockchain
 
         public void Validate(
             IEnumerable<Block<T>> blocks,
-            DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter
+            DateTimeOffset currentTime
         )
         {
             ImmutableArray<Block<T>> blocksArray = blocks.ToImmutableArray();
-            IAccountStateDelta delta =
-                new AccountStateDeltaImpl(accountStateGetter);
-            foreach (Block<T> block in blocksArray)
-            {
-                delta = block.Validate(currentTime, delta.GetState);
-            }
 
             InvalidBlockException e =
                 Policy.ValidateBlocks(blocksArray, currentTime);
@@ -197,10 +190,11 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256>? tip =
                     Store.IndexBlockHash(Id.ToString(), -1);
-                Validate(
-                    Enumerable.Append(this, block),
+
+                block.Validate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
+                Validate(Enumerable.Append(this, block), currentTime);
 
                 Blocks[block.Hash] = block;
                 EvaluateActions(block);
