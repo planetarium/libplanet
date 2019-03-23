@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var a = new BlockPolicy<BaseAction>(tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<BaseAction>(65);
+            var b = new BlockPolicy<BaseAction>(65000);
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval
