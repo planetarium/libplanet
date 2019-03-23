@@ -585,8 +585,10 @@ namespace Libplanet.Net
                         cancellationToken: token);
 
                     int hashCount = blockHashes.Count();
+                    _logger.Debug($"Required block count: {hashCount}.");
                     while (hashCount > 0)
                     {
+                        _logger.Debug("Receiving block...");
                         NetMQMessage response =
                         await socket.ReceiveMultipartMessageAsync(
                             cancellationToken: token);
@@ -633,8 +635,10 @@ namespace Libplanet.Net
                         cancellationToken: cancellationToken);
 
                     int hashCount = txIds.Count();
+                    _logger.Debug($"Required tx count: {hashCount}.");
                     while (hashCount > 0)
                     {
+                        _logger.Debug("Receiving tx...");
                         NetMQMessage response =
                         await socket.ReceiveMultipartMessageAsync(
                             cancellationToken: cancellationToken);
@@ -866,7 +870,7 @@ namespace Libplanet.Net
 
             _logger.Debug(
                 $"Trying to GetBlocksAsync() " +
-                $"(using {message.Hashes.Count()} hashes");
+                $"(using {message.Hashes.Count()} hashes)");
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
                 peer, message.Hashes, cancellationToken);
 
@@ -906,6 +910,7 @@ namespace Libplanet.Net
                 {
                     _logger.Debug("Trying to find branchpoint...");
                     BlockLocator locator = blockChain.GetBlockLocator();
+                    _logger.Debug($"Locator's count: {locator.Count()}");
                     IEnumerable<HashDigest<SHA256>> hashes =
                         await GetBlockHashesAsync(
                             peer, locator, oldest.Hash, cancellationToken);
@@ -1020,7 +1025,7 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug(
-                    $"Required hashes are {string.Join(",", hashes)}. " +
+                    $"Required hashes (count: {hashes.Count()}). " +
                     $"(tip: {blockChain.Tip?.Hash})"
                 );
 
@@ -1030,7 +1035,9 @@ namespace Libplanet.Net
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
+                    _logger.Debug($"Trying to append block[{block.Hash}]...");
                     blockChain.Append(block);
+                    _logger.Debug($"Block[{block.Hash}] is appended.");
                 });
             }
         }
