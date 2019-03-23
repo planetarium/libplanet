@@ -700,7 +700,9 @@ namespace Libplanet.Tests.Net
                     }
                     else
                     {
-                        foreach (KeyValuePair<Peer, DateTimeOffset> kv in swarm.LastSeenTimestamps)
+                        IEnumerable<KeyValuePair<Peer, DateTimeOffset>> pairs =
+                            swarm.LastSeenTimestamps.ToArray();
+                        foreach (KeyValuePair<Peer, DateTimeOffset> kv in pairs)
                         {
                             if (peer.PublicKey == kv.Key.PublicKey)
                             {
