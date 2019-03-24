@@ -18,14 +18,15 @@ namespace Libplanet.Blockchain.Policies
     {
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/> in seconds.
+        /// <see cref="BlockInterval"/> in milliseconds.
         /// </summary>
-        /// <param name="blockIntervalSeconds">Configures
-        /// <see cref="BlockInterval"/> in seconds.  5 seconds by default.
+        /// <param name="blockIntervalMilliseconds">Configures
+        /// <see cref="BlockInterval"/> in milliseconds.
+        /// 5000 milliseconds by default.
         /// </param>
-        public BlockPolicy(int blockIntervalSeconds = 5)
+        public BlockPolicy(int blockIntervalMilliseconds = 5000)
             : this(
-                TimeSpan.FromSeconds(blockIntervalSeconds)
+                TimeSpan.FromMilliseconds(blockIntervalMilliseconds)
             )
         {
         }
