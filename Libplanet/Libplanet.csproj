@@ -88,7 +88,23 @@ https://docs.libplanet.io/</Description>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+  <!-- The above hacky trick is borrowed from the following Stack Overflow
+  answer: https://stackoverflow.com/a/45004898/383405 (see #2). -->
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+    <ProjectReference
+      Include="..\Libplanet.Stun\Libplanet.Stun.csproj"
+      PrivateAssets="All" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>
+      $(TargetsForTfmSpecificBuildOutput);IncludeP2PAssets
+    </TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="IncludeP2PAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Libplanet.Stun.dll" />
+    </ItemGroup>
+  </Target>
 </Project>

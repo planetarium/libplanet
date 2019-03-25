@@ -64,9 +64,9 @@ Build
 -----
 
 The following command installs dependencies (required library packages) and
-builds the whole Libplanet solution:
+builds the *Libplanet* project:
 
-    msbuild -r
+    msbuild -r Libplanet
 
 
 Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=master)][Travis CI] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][2]

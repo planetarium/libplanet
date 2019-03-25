@@ -1,11 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <IsTestProject>true</IsTestProject>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.msbuild" Version="2.4.1">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -16,4 +24,14 @@
     <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
+    <!--
+    As Mono has no proper AppDomain, we prevent it on Mono.
+    This works around Xunit's fatal error on Mono.
+    -->
+    <Content Include="xunit.runner.mono.json">
+      <Link>xunit.runner.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
