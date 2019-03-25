@@ -31,6 +31,9 @@ matrix:
       - $HOME/AppData/Local/NuGet/v3-cache
     filter_secrets: false  # https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
 
+env:
+  - PROJECTS="Libplanet.Stun Libplanet"
+
 solution: Libplanet.sln
 install:
 - |
@@ -129,10 +132,16 @@ script:
 - hooks/check-bom
 
 # Build the whole solution
-- msbuild -p:Configuration=Release -r Libplanet
+- |
+  for project in $PROJECTS; do
+    msbuild -p:Configuration=Release -r $project
+  done
 
 # Run unit tests
-- msbuild -p:Configuration=Release -t:XunitTest Libplanet.Tests
+- |
+  for project in $PROJECTS; do
+    msbuild -p:Configuration=Release -t:build,XunitTest $project.Tests
+  done
 
 # Run unit tests with coverage report
 - cat codecov.yml | curl --data-binary @- https://codecov.io/validate

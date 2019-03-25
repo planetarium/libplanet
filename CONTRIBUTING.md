@@ -75,23 +75,21 @@ Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=ma
 We write as complete tests as possible to the corresponding implementation code.
 Going near to the [code coverage][2] 100% is one of our goals.
 
-The *Libplanet* solution consists of two projects.  *Libplanet* is an actual
-implementation.  It is built to a *Libplanet.dll* assembly and packed as
-a NuGet package.
+The *Libplanet* solution consists of 4 projects.  *Libplanet* and
+*Libplanet.Stun* are actual implementations.  These are built to *Libplanet.dll*
+and *Libplanet.Stun.dll* assemblies and packed into one NuGet package.
 
-*Libplanet.Tests* is a test suite for the *Libplanet.dll* assembly.
-It depends on [Xunit], and every namespace and class in it corresponds to
-one in *Libplanet* project.  If there's *Libplanet.Foo.Bar* class there also
-should be *Libplanet.Tests.Foo.BarTest* to test it.
+*Libplanet.Tests* is a test suite for the *Libplanet.dll* assembly, and
+*Libplanet.Stun.Tests* is a test suite for the *Libplanet.Stun.dll* assembly.
+Both depend on [Xunit], and every namespace and class in it corresponds to
+one in *Libplanet* and *Libplanet.Stun* projects.
+If there's *Libplanet.Foo.Bar* class there also should be
+*Libplanet.Tests.Foo.BarTest* to test it.
 
-To build and run unit tests at a time execute the below command:
+To build and run unit tests at a time execute the below commands:
 
-    msbuild -r -t:'Build;XunitTest' Libplanet.Tests
-
-It's okay to omit `-r` and `Build` task if you've already run `msbuild -r`
-right before:
-
-    msbuild -t:XunitTest Libplanet.Tests
+    msbuild -r -t:Build,XunitTest Libplanet.Tests
+    msbuild -r -t:Build,XunitTest Libplanet.Stun.Tests
 
 [Travis CI]: https://travis-ci.com/planetarium/libplanet
 [2]: https://codecov.io/gh/planetarium/libplanet
