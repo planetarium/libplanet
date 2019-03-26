@@ -76,7 +76,7 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanReturnStatesPath()
+        public void ReturnStatesPath()
         {
             var hash = new HashDigest<SHA256>(new byte[]
             {
@@ -86,8 +86,8 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xcc,
             });
             Assert.Equal(
-                Path.Combine(_fx.Path, _ns, "states", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
-                _fx.Store.GetStatesPath(_ns, hash)
+                Path.Combine(_fx.Path, "states", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                _fx.Store.GetStatesPath(hash)
             );
         }
 
@@ -323,9 +323,9 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanStoreBlockState()
+        public void StoreBlockState()
         {
-            Assert.Empty(_fx.Store.GetBlockStates(_ns, _fx.Hash1));
+            Assert.Empty(_fx.Store.GetBlockStates(_fx.Hash1));
             AddressStateMap states = new AddressStateMap(
                 new Dictionary<Address, object>()
                 {
@@ -339,9 +339,9 @@ namespace Libplanet.Tests.Store
                     },
                 }.ToImmutableDictionary()
             );
-            _fx.Store.SetBlockStates(_ns, _fx.Hash1, states);
+            _fx.Store.SetBlockStates(_fx.Hash1, states);
 
-            AddressStateMap actual = _fx.Store.GetBlockStates(_ns, _fx.Hash1);
+            AddressStateMap actual = _fx.Store.GetBlockStates(_fx.Hash1);
             Assert.Equal(states[_fx.Address1], actual[_fx.Address1]);
             Assert.Equal(states[_fx.Address2], actual[_fx.Address2]);
         }

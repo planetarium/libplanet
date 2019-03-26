@@ -92,12 +92,10 @@ namespace Libplanet.Store
         );
 
         public abstract AddressStateMap GetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash
         );
 
         public abstract void SetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );

@@ -66,13 +66,9 @@ namespace Libplanet.Store
 
         bool DeleteBlock(string @namespace, HashDigest<SHA256> blockHash);
 
-        AddressStateMap GetBlockStates(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        );
+        AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
 
         void SetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );

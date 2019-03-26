@@ -159,7 +159,7 @@ namespace Libplanet.Blockchain
                 while (offset != null)
                 {
                     states = (AddressStateMap)states.SetItems(
-                        Store.GetBlockStates(Id.ToString(), offset.Value)
+                        Store.GetBlockStates(offset.Value)
                         .Where(
                             kv => addresses.Contains(kv.Key) &&
                             !states.ContainsKey(kv.Key))
@@ -463,7 +463,6 @@ namespace Libplanet.Blockchain
                 ).ToImmutableDictionary();
 
             Store.SetBlockStates(
-                Id.ToString(),
                 block.Hash,
                 new AddressStateMap(totalDelta)
             );

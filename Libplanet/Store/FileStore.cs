@@ -118,24 +118,19 @@ namespace Libplanet.Store
                 _addressesDir);
         }
 
-        public string GetStatesPath(string @namespace, HashDigest<SHA256> key)
+        public string GetStatesPath(HashDigest<SHA256> key)
         {
-            EnsureNamespace(@namespace);
-
             var keyHex = key.ToString();
             return Path.Combine(
-                GetStatesPath(@namespace),
+                GetStatesPath(),
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
         }
 
-        public string GetStatesPath(string @namespace)
+        public string GetStatesPath()
         {
-            EnsureNamespace(@namespace);
-
             return Path.Combine(
                 _path,
-                @namespace,
                 _statesDir);
         }
 
@@ -601,13 +596,10 @@ namespace Libplanet.Store
         }
 
         public override AddressStateMap GetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash
         )
         {
-            var statesFile = new FileInfo(
-                GetStatesPath(@namespace, blockHash)
-            );
+            var statesFile = new FileInfo(GetStatesPath(blockHash));
 
             if (!statesFile.Exists)
             {
@@ -622,14 +614,11 @@ namespace Libplanet.Store
         }
 
         public override void SetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         )
         {
-            var statesFile = new FileInfo(
-                GetStatesPath(@namespace, blockHash)
-            );
+            var statesFile = new FileInfo(GetStatesPath(blockHash));
             if (!statesFile.Directory.Exists)
             {
                 statesFile.Directory.Create();
