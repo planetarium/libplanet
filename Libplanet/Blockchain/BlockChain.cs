@@ -334,26 +334,33 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
+            return Fork(point, DateTimeOffset.UtcNow);
+        }
+
+        internal BlockChain<T> Fork(
+            HashDigest<SHA256> point,
+            DateTimeOffset currentTime)
+        {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             try
             {
                 _rwlock.EnterReadLock();
                 foreach (var index in Store.IterateIndex(Id.ToString()))
                 {
-                    forked.Append(Blocks[index]);
-
+                    Store.AppendIndex(forked.Id.ToString(), index);
                     if (index == point)
                     {
                         break;
                     }
                 }
-
-                return forked;
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
+
+            forked.Validate(forked, currentTime);
+            return forked;
         }
 
         internal BlockLocator GetBlockLocator(int threshold = 10)
