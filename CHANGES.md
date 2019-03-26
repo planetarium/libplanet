@@ -103,6 +103,8 @@ To be released.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
     same time.
  -  Added `IStore.ListNamespaces()` method.
+ -  `IStore.CountIndex()` became to return `int` as same as
+    `IStore.CountBlockHashes()`.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [#144]
  - Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [#151]
