@@ -1324,7 +1324,6 @@ namespace Libplanet.Net
         private async Task<Peer> DialPeerAsync(
             Peer peer, CancellationToken cancellationToken)
         {
-            Peer original = peer;
             var dealer = new DealerSocket();
             dealer.Options.Identity =
                 _privateKey.PublicKey.ToAddress().ToByteArray();
