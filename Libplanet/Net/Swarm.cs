@@ -53,6 +53,8 @@ namespace Libplanet.Net
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
 
+        private NetMQQueue<Message> _replyQueue;
+
         public Swarm(
             PrivateKey privateKey,
             int millisecondsDialTimeout = 15000,
@@ -98,6 +100,7 @@ namespace Libplanet.Net
 
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
+            _replyQueue = new NetMQQueue<Message>();
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
@@ -472,6 +475,7 @@ namespace Libplanet.Net
                     RepeatDeltaDistributionAsync(
                         distributeInterval, cancellationToken),
                     ReceiveMessageAsync(blockChain, cancellationToken),
+                    RepeatReplyAsync(cancellationToken),
                 };
 
                 if (behindNAT)
@@ -787,8 +791,8 @@ namespace Libplanet.Net
                         {
                             Identity = ping.Identity,
                         };
-                        await ReplyAsync(reply, cancellationToken);
-                        _logger.Debug($"Pong sent.");
+                        _replyQueue.Enqueue(reply);
+                        _logger.Debug($"Pong was queued.");
                         break;
                     }
 
@@ -810,21 +814,19 @@ namespace Libplanet.Net
                         {
                             Identity = getBlockHashes.Identity,
                         };
-                        await ReplyAsync(reply, cancellationToken);
+                        _replyQueue.Enqueue(reply);
                         break;
                     }
 
                 case GetBlocks getBlocks:
                     {
-                        await TransferBlocks(
-                            blockChain, getBlocks, cancellationToken);
+                        TransferBlocks(blockChain, getBlocks);
                         break;
                     }
 
                 case GetTxs getTxs:
                     {
-                        await TransferTxs(
-                            blockChain, getTxs, cancellationToken);
+                        TransferTxs(blockChain, getTxs);
                         break;
                     }
 
@@ -1042,10 +1044,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task TransferTxs<T>(
-            BlockChain<T> blockChain,
-            GetTxs getTxs,
-            CancellationToken cancellationToken)
+        private void TransferTxs<T>(BlockChain<T> blockChain, GetTxs getTxs)
             where T : IAction
         {
             IDictionary<TxId, Transaction<T>> txs = blockChain.Transactions;
@@ -1057,7 +1056,7 @@ namespace Libplanet.Net
                     {
                         Identity = getTxs.Identity,
                     };
-                    await ReplyAsync(response, cancellationToken);
+                    _replyQueue.Enqueue(response);
                 }
             }
         }
@@ -1097,18 +1096,9 @@ namespace Libplanet.Net
             _logger.Debug("Txs staged successfully.");
         }
 
-        private async Task ReplyAsync(Message message, CancellationToken token)
-        {
-            NetMQMessage netMQMessage = message.ToNetMQMessage(_privateKey);
-            await _router.SendMultipartMessageAsync(
-                netMQMessage,
-                cancellationToken: token);
-        }
-
-        private async Task TransferBlocks<T>(
+        private void TransferBlocks<T>(
             BlockChain<T> blockChain,
-            GetBlocks getData,
-            CancellationToken cancellationToken)
+            GetBlocks getData)
             where T : IAction
         {
             _logger.Debug("Trying to transfer blocks...");
@@ -1120,7 +1110,7 @@ namespace Libplanet.Net
                     {
                         Identity = getData.Identity,
                     };
-                    await ReplyAsync(response, cancellationToken);
+                    _replyQueue.Enqueue(response);
                 }
             }
 
@@ -1447,6 +1437,26 @@ namespace Libplanet.Net
                 await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
                 await Task.Delay(interval, cancellationToken);
                 i = (i + 1) % 10;
+            }
+        }
+
+        private async Task RepeatReplyAsync(CancellationToken token)
+        {
+            TimeSpan interval = TimeSpan.FromMilliseconds(100);
+            while (Running)
+            {
+                if (_replyQueue.TryDequeue(out Message reply, interval))
+                {
+                    _logger.Debug(
+                        $"Reply {reply} to {ByteUtil.Hex(reply.Identity)}...");
+                    NetMQMessage netMQMessage =
+                        reply.ToNetMQMessage(_privateKey);
+                    await _router.SendMultipartMessageAsync(
+                        netMQMessage, cancellationToken: token);
+                    _logger.Debug($"Replied.");
+                }
+
+                await Task.Delay(interval, token);
             }
         }
 

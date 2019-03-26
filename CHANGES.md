@@ -100,6 +100,8 @@ To be released.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
  -  `Swarm` now ignores the blocks that are same index as tip it have, but
     processes only the longer blocks.
+ -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
+    same time.
  -  Added `IStore.ListNamespaces()` method.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [#144]
