@@ -140,7 +140,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public async Task CanBroadcastWhileMining()
+        public async Task BroadcastWhileMining()
         {
             Swarm a = _swarms[0];
             Swarm b = _swarms[1];
