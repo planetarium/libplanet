@@ -33,10 +33,10 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanGetItem()
+        public void GetItem()
         {
             Assert.Throws<KeyNotFoundException>(() => { var x = _set[_fx.Address1]; });
-            _fx.Store.PutTransaction(_fx.StoreNamespace, _fx.Transaction1);
+            _fx.Store.PutTransaction(_fx.Transaction1);
             _fx.Store.AppendAddressTransactionId(
                 _fx.StoreNamespace,
                 _fx.Address1,
@@ -50,7 +50,7 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanIterateItems()
+        public void IterateItems()
         {
             Assert.Empty(_set);
             Assert.Empty(_set.Keys);
@@ -74,8 +74,8 @@ namespace Libplanet.Tests.Store
                 );
             }
 
-            _fx.Store.PutTransaction(_fx.StoreNamespace, _fx.Transaction1);
-            _fx.Store.PutTransaction(_fx.StoreNamespace, _fx.Transaction2);
+            _fx.Store.PutTransaction(_fx.Transaction1);
+            _fx.Store.PutTransaction(_fx.Transaction2);
 
             Assert.Equal(
                 _fx.Transaction1.UpdatedAddresses.Union(

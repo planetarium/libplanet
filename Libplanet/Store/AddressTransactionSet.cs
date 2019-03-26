@@ -48,7 +48,7 @@ namespace Libplanet.Store
                 }
 
                 return txIds
-                    .Select(id => Store.GetTransaction<T>(StoreNamespace, id))
+                    .Select(Store.GetTransaction<T>)
                     .OfType<Transaction<T>>();
             }
 

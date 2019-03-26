@@ -24,6 +24,13 @@ namespace Libplanet.Store
         private const string _statesDir = "states";
         private const string _indexFile = "index";
 
+        private static readonly string[] BuiltinDirs =
+        {
+            _transactionsDir,
+            _stagedTransactionsDir,
+            _statesDir,
+        };
+
         private readonly string _path;
 
         public FileStore(string path)
@@ -37,24 +44,26 @@ namespace Libplanet.Store
             }
 
             _path = path;
+
+            foreach (string dir in BuiltinDirs)
+            {
+                Directory.CreateDirectory(Path.Combine(_path, dir));
+            }
         }
 
-        public string GetTransactionPath(string @namespace, TxId txid)
+        public string GetTransactionPath(TxId txid)
         {
             var txidHex = txid.ToString();
             return Path.Combine(
-                GetTransactionPath(@namespace),
+                GetTransactionPath(),
                 txidHex.Substring(0, 4),
                 txidHex.Substring(4));
         }
 
-        public string GetTransactionPath(string @namespace)
+        public string GetTransactionPath()
         {
-            EnsureNamespace(@namespace);
-
             return Path.Combine(
                 _path,
-                @namespace,
                 _transactionsDir);
         }
 
@@ -152,7 +161,11 @@ namespace Libplanet.Store
             {
                 foreach (string p in Directory.EnumerateDirectories(_path))
                 {
-                    yield return Path.GetFileName(p);
+                    string fileName = Path.GetFileName(p);
+                    if (!BuiltinDirs.Contains(fileName))
+                    {
+                        yield return fileName;
+                    }
                 }
             }
         }
@@ -258,9 +271,9 @@ namespace Libplanet.Store
             return false;
         }
 
-        public override bool DeleteTransaction(string @namespace, TxId txid)
+        public override bool DeleteTransaction(TxId txid)
         {
-            var txFile = new FileInfo(GetTransactionPath(@namespace, txid));
+            var txFile = new FileInfo(GetTransactionPath(txid));
             if (!txFile.Exists)
             {
                 return false;
@@ -338,12 +351,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override Transaction<T> GetTransaction<T>(
-            string @namespace,
-            TxId txid
-        )
+        public override Transaction<T> GetTransaction<T>(TxId txid)
         {
-            var txFile = new FileInfo(GetTransactionPath(@namespace, txid));
+            var txFile = new FileInfo(GetTransactionPath(txid));
             if (!txFile.Exists)
             {
                 return null;
@@ -506,9 +516,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<TxId> IterateTransactionIds(
-            string @namespace
-        )
+        public override IEnumerable<TxId> IterateTransactionIds()
         {
             // TODO: refactor
             var prefixRegex = new Regex(
@@ -519,7 +527,7 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var rootDir = new DirectoryInfo(GetTransactionPath(@namespace));
+            var rootDir = new DirectoryInfo(GetTransactionPath());
             foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
             {
                 if (!prefixRegex.IsMatch(prefix.Name))
@@ -545,7 +553,7 @@ namespace Libplanet.Store
         {
             foreach (var tx in block.Transactions)
             {
-                PutTransaction(@namespace, tx);
+                PutTransaction(tx);
             }
 
             var blockFile = new FileInfo(GetBlockPath(@namespace, block.Hash));
@@ -561,12 +569,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutTransaction<T>(
-            string @namespace,
-            Transaction<T> tx
-        )
+        public override void PutTransaction<T>(Transaction<T> tx)
         {
-            var txFile = new FileInfo(GetTransactionPath(@namespace, tx.Id));
+            var txFile = new FileInfo(GetTransactionPath(tx.Id));
             txFile.Directory.Create();
             using (Stream stream = txFile.Open(
                 FileMode.OpenOrCreate, FileAccess.Write))
@@ -657,7 +662,7 @@ namespace Libplanet.Store
         {
             return transactions
                 .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(@namespace, new TxId(bytes)))
+                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 .Where(tx => tx != null);
         }
 

@@ -43,15 +43,15 @@ namespace Libplanet.Store
 
         IEnumerable<TxId> IterateStagedTransactionIds();
 
-        IEnumerable<TxId> IterateTransactionIds(string @namespace);
+        IEnumerable<TxId> IterateTransactionIds();
 
-        Transaction<T> GetTransaction<T>(string @namespace, TxId txid)
+        Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
-        void PutTransaction<T>(string @namespace, Transaction<T> tx)
+        void PutTransaction<T>(Transaction<T> tx)
             where T : IAction;
 
-        bool DeleteTransaction(string @namespace, TxId txid);
+        bool DeleteTransaction(TxId txid);
 
         IEnumerable<HashDigest<SHA256>> IterateBlockHashes(string @namespace);
 
@@ -73,7 +73,7 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
-        int CountTransactions(string @namespace);
+        int CountTransactions();
 
         int CountBlocks(string @namespace);
 

@@ -263,7 +263,7 @@ namespace Libplanet.Blockchain
                 );
                 List<Transaction<T>> transactions = Store
                     .IterateStagedTransactionIds()
-                    .Select(txId => Store.GetTransaction<T>(@namespace, txId))
+                    .Select(Store.GetTransaction<T>)
                     .OfType<Transaction<T>>()
                     .ToList();
 

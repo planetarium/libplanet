@@ -43,8 +43,8 @@ namespace Libplanet.Tests.Store
         public void CanReturnTransactionPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, _ns, "tx", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
-                _fx.Store.GetTransactionPath(_ns, _fx.TxId1)
+                Path.Combine(_fx.Path, "tx", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                _fx.Store.GetTransactionPath(_fx.TxId1)
             );
         }
 
@@ -147,60 +147,60 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanStoreTx()
+        public void StoreTx()
         {
-            Assert.Equal(0, _fx.Store.CountTransactions(_ns));
-            Assert.Empty(_fx.Store.IterateTransactionIds(_ns));
-            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction1.Id));
-            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction2.Id));
-            Assert.False(_fx.Store.DeleteTransaction(_ns, _fx.Transaction1.Id));
+            Assert.Equal(0, _fx.Store.CountTransactions());
+            Assert.Empty(_fx.Store.IterateTransactionIds());
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
+            Assert.False(_fx.Store.DeleteTransaction(_fx.Transaction1.Id));
 
-            _fx.Store.PutTransaction(_ns, _fx.Transaction1);
-            Assert.Equal(1, _fx.Store.CountTransactions(_ns));
+            _fx.Store.PutTransaction(_fx.Transaction1);
+            Assert.Equal(1, _fx.Store.CountTransactions());
             Assert.Equal(
                 new HashSet<TxId>
                 {
                     _fx.Transaction1.Id,
                 },
-                _fx.Store.IterateTransactionIds(_ns)
+                _fx.Store.IterateTransactionIds()
             );
             Assert.Equal(
                 _fx.Transaction1,
-                _fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction1.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id)
             );
-            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction2.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
 
-            _fx.Store.PutTransaction(_ns, _fx.Transaction2);
-            Assert.Equal(2, _fx.Store.CountTransactions(_ns));
+            _fx.Store.PutTransaction(_fx.Transaction2);
+            Assert.Equal(2, _fx.Store.CountTransactions());
             Assert.Equal(
                 new HashSet<TxId>
                 {
                     _fx.Transaction1.Id,
                     _fx.Transaction2.Id,
                 },
-                _fx.Store.IterateTransactionIds(_ns).ToHashSet()
+                _fx.Store.IterateTransactionIds().ToHashSet()
             );
             Assert.Equal(
                 _fx.Transaction1,
-                _fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction1.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id)
             );
             Assert.Equal(
                 _fx.Transaction2,
-                _fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction2.Id));
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id));
 
-            Assert.True(_fx.Store.DeleteTransaction(_ns, _fx.Transaction1.Id));
-            Assert.Equal(1, _fx.Store.CountTransactions(_ns));
+            Assert.True(_fx.Store.DeleteTransaction(_fx.Transaction1.Id));
+            Assert.Equal(1, _fx.Store.CountTransactions());
             Assert.Equal(
                 new HashSet<TxId>
                 {
                     _fx.Transaction2.Id,
                 },
-                _fx.Store.IterateTransactionIds(_ns)
+                _fx.Store.IterateTransactionIds()
             );
-            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction1.Id));
+            Assert.Null(_fx.Store.GetTransaction<BaseAction>(_fx.Transaction1.Id));
             Assert.Equal(
                 _fx.Transaction2,
-                _fx.Store.GetTransaction<BaseAction>(_ns, _fx.Transaction2.Id)
+                _fx.Store.GetTransaction<BaseAction>(_fx.Transaction2.Id)
             );
         }
 
@@ -241,8 +241,8 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void StoreStage()
         {
-            _fx.Store.PutTransaction(_ns, _fx.Transaction1);
-            _fx.Store.PutTransaction(_ns, _fx.Transaction2);
+            _fx.Store.PutTransaction(_fx.Transaction1);
+            _fx.Store.PutTransaction(_fx.Transaction2);
             Assert.Empty(_fx.Store.IterateStagedTransactionIds());
 
             _fx.Store.StageTransactionIds(
