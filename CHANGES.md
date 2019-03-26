@@ -98,8 +98,8 @@ To be released.
     `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
     from `IImmutableList<Uri>` to `IPEndPoint`.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
- -  `Swarm` now ignores the blocks that are same index as tip it have, but
-    processes only the longer blocks.
+ -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
+    already has and deal with only longer (higher) blocks.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
     same time.
  -  Added `IStore.ListNamespaces()` method.
