@@ -98,6 +98,10 @@ To be released.
     `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
     from `IImmutableList<Uri>` to `IPEndPoint`.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
+ -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
+    already has and deal with only longer (higher) blocks.
+ -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
+    same time.
  -  Added `IStore.ListNamespaces()` method.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [#144]
