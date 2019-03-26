@@ -105,6 +105,9 @@ To be released.
  -  Added `IStore.ListNamespaces()` method.
  -  `IStore.CountIndex()` became to return `int` as same as
     `IStore.CountBlockHashes()`.
+ -  Block/tx-related methods in `IStore` and `BaseIndex<T>` no longer
+    accepts `@namespace` parameter.  It means that even if a forking occurs, the
+    same block/tx files are shared.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [#144]
  - Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [#151]

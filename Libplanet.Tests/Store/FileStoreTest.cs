@@ -26,13 +26,14 @@ namespace Libplanet.Tests.Store
         {
             Assert.Empty(_fx.Store.ListNamespaces());
 
-            _fx.Store.PutBlock(_ns, _fx.Block1);
+            _fx.Store.PutBlock(_fx.Block1);
+            _fx.Store.AppendIndex(_ns, _fx.Block1.Hash);
             Assert.Equal(
                 new[] { _ns }.ToImmutableHashSet(),
                 _fx.Store.ListNamespaces().ToImmutableHashSet()
             );
 
-            _fx.Store.PutBlock("asdf", _fx.Block1);
+            _fx.Store.AppendIndex("asdf", _fx.Block1.Hash);
             Assert.Equal(
                 new[] { _ns, "asdf" }.ToImmutableHashSet(),
                 _fx.Store.ListNamespaces().ToImmutableHashSet()
@@ -52,8 +53,8 @@ namespace Libplanet.Tests.Store
         public void CanReturnBlockPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, _ns, "blocks", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
-                _fx.Store.GetBlockPath(_ns, _fx.Hash1)
+                Path.Combine(_fx.Path, "blocks", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                _fx.Store.GetBlockPath(_fx.Hash1)
             );
         }
 
@@ -92,58 +93,58 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanStoreBlock()
+        public void StoreBlock()
         {
-            Assert.Empty(_fx.Store.IterateBlockHashes(_ns));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block1.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block3.Hash));
-            Assert.False(_fx.Store.DeleteBlock(_ns, _fx.Block1.Hash));
+            Assert.Empty(_fx.Store.IterateBlockHashes());
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
+            Assert.False(_fx.Store.DeleteBlock(_fx.Block1.Hash));
 
-            _fx.Store.PutBlock(_ns, _fx.Block1);
-            Assert.Equal(1, _fx.Store.CountBlocks(_ns));
+            _fx.Store.PutBlock(_fx.Block1);
+            Assert.Equal(1, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
                 {
                     _fx.Block1.Hash,
                 },
-                _fx.Store.IterateBlockHashes(_ns).ToHashSet());
+                _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-                _fx.Store.GetBlock<BaseAction>(_ns, _fx.Block1.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
 
-            _fx.Store.PutBlock(_ns, _fx.Block2);
-            Assert.Equal(2, _fx.Store.CountBlocks(_ns));
+            _fx.Store.PutBlock(_fx.Block2);
+            Assert.Equal(2, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
                 {
                     _fx.Block1.Hash,
                     _fx.Block2.Hash,
                 },
-                _fx.Store.IterateBlockHashes(_ns).ToHashSet());
+                _fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 _fx.Block1,
-                _fx.Store.GetBlock<BaseAction>(_ns, _fx.Block1.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
             Assert.Equal(
                 _fx.Block2,
-                _fx.Store.GetBlock<BaseAction>(_ns, _fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
 
-            Assert.True(_fx.Store.DeleteBlock(_ns, _fx.Block1.Hash));
-            Assert.Equal(1, _fx.Store.CountBlocks(_ns));
+            Assert.True(_fx.Store.DeleteBlock(_fx.Block1.Hash));
+            Assert.Equal(1, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
                 {
                     _fx.Block2.Hash,
                 },
-                _fx.Store.IterateBlockHashes(_ns).ToHashSet());
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block1.Hash));
+                _fx.Store.IterateBlockHashes().ToHashSet());
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block1.Hash));
             Assert.Equal(
                 _fx.Block2,
-                _fx.Store.GetBlock<BaseAction>(_ns, _fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetBlock<BaseAction>(_ns, _fx.Block3.Hash));
+                _fx.Store.GetBlock<BaseAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetBlock<BaseAction>(_fx.Block3.Hash));
         }
 
         [Fact]

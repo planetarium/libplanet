@@ -26,6 +26,7 @@ namespace Libplanet.Store
 
         private static readonly string[] BuiltinDirs =
         {
+            _blocksDir,
             _transactionsDir,
             _stagedTransactionsDir,
             _statesDir,
@@ -67,25 +68,19 @@ namespace Libplanet.Store
                 _transactionsDir);
         }
 
-        public string GetBlockPath(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        )
+        public string GetBlockPath(HashDigest<SHA256> blockHash)
         {
             var keyHex = blockHash.ToString();
             return Path.Combine(
-                GetBlockPath(@namespace),
+                GetBlockPath(),
                 keyHex.Substring(0, 4),
                 keyHex.Substring(4));
         }
 
-        public string GetBlockPath(string @namespace)
+        public string GetBlockPath()
         {
-            EnsureNamespace(@namespace);
-
             return Path.Combine(
                 _path,
-                @namespace,
                 _blocksDir);
         }
 
@@ -256,12 +251,9 @@ namespace Libplanet.Store
             return 0;
         }
 
-        public override bool DeleteBlock(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        )
+        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            var blockFile = new FileInfo(GetBlockPath(@namespace, blockHash));
+            var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (blockFile.Exists)
             {
                 blockFile.Delete();
@@ -308,12 +300,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override Block<T> GetBlock<T>(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        )
+        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
         {
-            var blockFile = new FileInfo(GetBlockPath(@namespace, blockHash));
+            var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (!blockFile.Exists)
             {
                 return null;
@@ -343,10 +332,7 @@ namespace Libplanet.Store
                         Block<T>.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(
-                        @namespace,
-                        rawBlock.Transactions
-                    )
+                    transactions: GetTransactions<T>(rawBlock.Transactions)
                 );
             }
         }
@@ -437,9 +423,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes(
-            string @namespace
-        )
+        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
             var prefixRegex = new Regex(
                 @"^[a-f0-9]{4}$",
@@ -449,7 +433,7 @@ namespace Libplanet.Store
                 @"^[a-f0-9]{60}$",
                 RegexOptions.IgnoreCase
             );
-            var rootDir = new DirectoryInfo(GetBlockPath(@namespace));
+            var rootDir = new DirectoryInfo(GetBlockPath());
             var prefixes = rootDir.EnumerateDirectories();
             foreach (DirectoryInfo prefix in prefixes)
             {
@@ -549,14 +533,14 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutBlock<T>(string @namespace, Block<T> block)
+        public override void PutBlock<T>(Block<T> block)
         {
             foreach (var tx in block.Transactions)
             {
                 PutTransaction(tx);
             }
 
-            var blockFile = new FileInfo(GetBlockPath(@namespace, block.Hash));
+            var blockFile = new FileInfo(GetBlockPath(block.Hash));
             blockFile.Directory.Create();
             using (Stream stream = blockFile.Open(
                 FileMode.OpenOrCreate, FileAccess.Write))
@@ -655,7 +639,6 @@ namespace Libplanet.Store
         }
 
         private IEnumerable<Transaction<T>> GetTransactions<T>(
-            string @namespace,
             IEnumerable transactions
         )
             where T : IAction

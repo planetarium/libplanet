@@ -62,26 +62,15 @@ namespace Libplanet.Store
 
         public abstract bool DeleteTransaction(TxId txid);
 
-        public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes(
-            string @namespace
-        );
+        public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        public abstract Block<T> GetBlock<T>(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        )
+        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
-        public abstract void PutBlock<T>(
-            string @namespace,
-            Block<T> block
-        )
+        public abstract void PutBlock<T>(Block<T> block)
             where T : IAction;
 
-        public abstract bool DeleteBlock(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        );
+        public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
 
         public abstract AddressStateMap GetBlockStates(
             HashDigest<SHA256> blockHash
@@ -97,9 +86,9 @@ namespace Libplanet.Store
             return IterateTransactionIds().Count();
         }
 
-        public int CountBlocks(string @namespace)
+        public int CountBlocks()
         {
-            return IterateBlockHashes(@namespace).Count();
+            return IterateBlockHashes().Count();
         }
 
         public int CountAddresses(string @namespace)
