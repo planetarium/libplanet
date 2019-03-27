@@ -110,10 +110,8 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime
         )
         {
-            ImmutableArray<Block<T>> blocksArray = blocks.ToImmutableArray();
-
             InvalidBlockException e =
-                Policy.ValidateBlocks(blocksArray, currentTime);
+                Policy.ValidateBlocks(blocks, currentTime);
 
             if (e != null)
             {
