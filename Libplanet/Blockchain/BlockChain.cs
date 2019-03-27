@@ -202,7 +202,7 @@ namespace Libplanet.Blockchain
                     .Select(t => t.Id)
                     .ToImmutableHashSet();
 
-                Store.UnstageTransactionIds(Id.ToString(), txIds);
+                Store.UnstageTransactionIds(txIds);
                 foreach (Transaction<T> tx in block.Transactions)
                 {
                     foreach (Address address in tx.UpdatedAddresses)
@@ -236,7 +236,6 @@ namespace Libplanet.Blockchain
                 }
 
                 Store.StageTransactionIds(
-                    Id.ToString(),
                     txs.Select(tx => tx.Id).ToImmutableHashSet()
                 );
             }
@@ -263,7 +262,7 @@ namespace Libplanet.Blockchain
                     index - 1
                 );
                 List<Transaction<T>> transactions = Store
-                    .IterateStagedTransactionIds(@namespace)
+                    .IterateStagedTransactionIds()
                     .Select(txId => Store.GetTransaction<T>(@namespace, txId))
                     .OfType<Transaction<T>>()
                     .ToList();

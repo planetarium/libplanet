@@ -80,21 +80,18 @@ namespace Libplanet.Store
                 _blocksDir);
         }
 
-        public string GetStagedTransactionPath(string @namespace, TxId txid)
+        public string GetStagedTransactionPath(TxId txid)
         {
             return Path.Combine(
-                GetStagedTransactionPath(@namespace),
+                GetStagedTransactionPath(),
                 txid.ToString()
             );
         }
 
-        public string GetStagedTransactionPath(string @namespace)
+        public string GetStagedTransactionPath()
         {
-            EnsureNamespace(@namespace);
-
             return Path.Combine(
                 _path,
-                @namespace,
                 _stagedTransactionsDir);
         }
 
@@ -500,11 +497,9 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<TxId> IterateStagedTransactionIds(
-            string @namespace
-        )
+        public override IEnumerable<TxId> IterateStagedTransactionIds()
         {
-            string stagedTxPath = GetStagedTransactionPath(@namespace);
+            string stagedTxPath = GetStagedTransactionPath();
             var stagingDirectory = new DirectoryInfo(stagedTxPath);
             if (stagingDirectory.Exists)
             {
@@ -586,28 +581,22 @@ namespace Libplanet.Store
             }
         }
 
-        public override void StageTransactionIds(
-            string @namespace,
-            ISet<TxId> txids
-        )
+        public override void StageTransactionIds(ISet<TxId> txids)
         {
             foreach (var txid in txids)
             {
-                string stagedPath = GetStagedTransactionPath(@namespace, txid);
+                string stagedPath = GetStagedTransactionPath(txid);
                 var stagedFile = new FileInfo(stagedPath);
                 stagedFile.Directory.Create();
                 stagedFile.Create().Close();
             }
         }
 
-        public override void UnstageTransactionIds(
-            string @namespace,
-            ISet<TxId> txids
-        )
+        public override void UnstageTransactionIds(ISet<TxId> txids)
         {
             foreach (TxId txid in txids)
             {
-                File.Delete(GetStagedTransactionPath(@namespace, txid));
+                File.Delete(GetStagedTransactionPath(txid));
             }
         }
 

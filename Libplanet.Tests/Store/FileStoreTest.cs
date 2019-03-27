@@ -58,11 +58,11 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanReturnStagedTransactionPath()
+        public void ReturnStagedTransactionPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, _ns, "stage", "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
-                _fx.Store.GetStagedTransactionPath(_ns, _fx.TxId1)
+                Path.Combine(_fx.Path, "stage", "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                _fx.Store.GetStagedTransactionPath(_fx.TxId1)
             );
         }
 
@@ -239,14 +239,13 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanStoreStage()
+        public void StoreStage()
         {
             _fx.Store.PutTransaction(_ns, _fx.Transaction1);
             _fx.Store.PutTransaction(_ns, _fx.Transaction2);
-            Assert.Empty(_fx.Store.IterateStagedTransactionIds(_ns));
+            Assert.Empty(_fx.Store.IterateStagedTransactionIds());
 
             _fx.Store.StageTransactionIds(
-                _ns,
                 new HashSet<TxId>()
                 {
                     _fx.Transaction1.Id,
@@ -258,10 +257,9 @@ namespace Libplanet.Tests.Store
                     _fx.Transaction1.Id,
                     _fx.Transaction2.Id,
                 },
-                _fx.Store.IterateStagedTransactionIds(_ns).ToHashSet());
+                _fx.Store.IterateStagedTransactionIds().ToHashSet());
 
             _fx.Store.UnstageTransactionIds(
-                _ns,
                 new HashSet<TxId>
                 {
                     _fx.Transaction1.Id,
@@ -271,7 +269,7 @@ namespace Libplanet.Tests.Store
                 {
                     _fx.Transaction2.Id,
                 },
-                _fx.Store.IterateStagedTransactionIds(_ns).ToHashSet());
+                _fx.Store.IterateStagedTransactionIds().ToHashSet());
         }
 
         [Fact]

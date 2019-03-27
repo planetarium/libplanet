@@ -37,11 +37,11 @@ namespace Libplanet.Store
             TxId txId
         );
 
-        void StageTransactionIds(string @namespace, ISet<TxId> txids);
+        void StageTransactionIds(ISet<TxId> txids);
 
-        void UnstageTransactionIds(string @namespace, ISet<TxId> txids);
+        void UnstageTransactionIds(ISet<TxId> txids);
 
-        IEnumerable<TxId> IterateStagedTransactionIds(string @namespace);
+        IEnumerable<TxId> IterateStagedTransactionIds();
 
         IEnumerable<TxId> IterateTransactionIds(string @namespace);
 
