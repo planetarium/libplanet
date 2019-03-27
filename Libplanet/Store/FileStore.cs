@@ -21,7 +21,7 @@ namespace Libplanet.Store
         private const string _blocksDir = "blocks";
         private const string _stagedTransactionsDir = "stage";
         private const string _statesDir = "states";
-        private const string _indexFile = "index";
+        private const string _indicesDir = "indices";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -29,6 +29,7 @@ namespace Libplanet.Store
             _transactionsDir,
             _stagedTransactionsDir,
             _statesDir,
+            _indicesDir,
         };
 
         private readonly string _path;
@@ -116,28 +117,21 @@ namespace Libplanet.Store
 
         public string GetIndexPath(string @namespace)
         {
-            EnsureNamespace(@namespace);
-
             return Path.Combine(
                 _path,
-                @namespace,
-                _indexFile
+                _indicesDir,
+                @namespace
             );
         }
 
         /// <inheritdoc/>
         public override IEnumerable<string> ListNamespaces()
         {
-            if (Directory.Exists(_path))
+            var indicesPath =
+                new DirectoryInfo(Path.Combine(_path, _indicesDir));
+            foreach (FileInfo p in indicesPath.EnumerateFiles())
             {
-                foreach (string p in Directory.EnumerateDirectories(_path))
-                {
-                    string fileName = Path.GetFileName(p);
-                    if (!BuiltinDirs.Contains(fileName))
-                    {
-                        yield return fileName;
-                    }
-                }
+                yield return p.Name;
             }
         }
 
@@ -147,10 +141,6 @@ namespace Libplanet.Store
         )
         {
             var indexFile = new FileInfo(GetIndexPath(@namespace));
-            if (!indexFile.Directory.Exists)
-            {
-                indexFile.Directory.Create();
-            }
 
             using (Stream stream = indexFile.Open(
                 FileMode.Append, FileAccess.Write))
