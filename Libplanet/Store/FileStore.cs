@@ -179,7 +179,7 @@ namespace Libplanet.Store
             return found;
         }
 
-        public override int CountIndex(string @namespace)
+        public override long CountIndex(string @namespace)
         {
             var indexFile = new FileInfo(GetIndexPath(@namespace));
             if (indexFile.Exists)
@@ -193,7 +193,7 @@ namespace Libplanet.Store
                     );
                 }
 
-                return (int)(indexSize / HashDigest<SHA256>.Size);
+                return indexSize / HashDigest<SHA256>.Size;
             }
 
             return 0;

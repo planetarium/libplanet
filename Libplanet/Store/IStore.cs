@@ -14,7 +14,7 @@ namespace Libplanet.Store
         /// <returns>Existing namespaces.</returns>
         IEnumerable<string> ListNamespaces();
 
-        int CountIndex(string @namespace);
+        long CountIndex(string @namespace);
 
         IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);
 
@@ -57,8 +57,8 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
-        int CountTransactions();
+        long CountTransactions();
 
-        int CountBlocks();
+        long CountBlocks();
     }
 }

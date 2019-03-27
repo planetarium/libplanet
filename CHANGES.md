@@ -109,8 +109,8 @@ To be released.
      -  `IStore.AppendAddressTransactionId()`
      -  `IStore.CountAddresses()`
  -  Added `IStore.ListNamespaces()` method.
- -  `IStore.CountIndex()` became to return `int` as same as
-    `IStore.CountBlockHashes()`.
+ -  `IStore.CountBlocks()` and `IStore.CountTransactions()` became to return
+    `long`
  -  Block/tx-related methods in `IStore` and `BaseIndex<T>` no longer
     accepts `@namespace` parameter.  It means that even if a forking occurs, the
     same block/tx files are shared.

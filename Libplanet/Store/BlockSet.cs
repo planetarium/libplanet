@@ -35,7 +35,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override int Count => Store.CountBlocks();
+        public override int Count => (int)Store.CountBlocks();
 
         public override bool IsReadOnly => false;
 

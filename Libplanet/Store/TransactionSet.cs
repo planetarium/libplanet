@@ -33,7 +33,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override int Count => Store.CountTransactions();
+        public override int Count => (int)Store.CountTransactions();
 
         public override bool IsReadOnly => true;
 

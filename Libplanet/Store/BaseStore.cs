@@ -11,7 +11,7 @@ namespace Libplanet.Store
     {
         public abstract IEnumerable<string> ListNamespaces();
 
-        public abstract int CountIndex(string @namespace);
+        public abstract long CountIndex(string @namespace);
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex(
             string @namespace
@@ -66,14 +66,14 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
-        public int CountTransactions()
+        public long CountTransactions()
         {
-            return IterateTransactionIds().Count();
+            return IterateTransactionIds().LongCount();
         }
 
-        public int CountBlocks()
+        public long CountBlocks()
         {
-            return IterateBlockHashes().Count();
+            return IterateBlockHashes().LongCount();
         }
 
         public abstract bool DeleteIndex(
