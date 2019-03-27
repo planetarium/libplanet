@@ -69,7 +69,7 @@ https://docs.libplanet.io/</Description>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-    <PackageReference Include="Uno.SourceGenerationTasks" Version="1.29.0-dev.195">
+    <PackageReference Include="Uno.SourceGenerationTasks" Version="1.29.0">
       <!-- Note that this is actually not necessarily a direct dependency,
       but an indirect dependency of Uno.CodeGen.  This item purposes to merely
       ignore NU1701 warnings during restoring Uno.CodeGen package.
@@ -79,15 +79,32 @@ https://docs.libplanet.io/</Description>
       <NoWarn>NU1701</NoWarn>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Uno.CodeGen" Version="1.30.0-dev.102" />
-    <PackageReference Include="Uno.Core" Version="1.25.0" />
+    <PackageReference Include="Uno.CodeGen" Version="1.30.0" />
+    <PackageReference Include="Uno.Core" Version="1.26.0" />
+    <PackageReference Include="Uno.Equality" Version="1.30.0" />
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+  <!-- The above hacky trick is borrowed from the following Stack Overflow
+  answer: https://stackoverflow.com/a/45004898/383405 (see #2). -->
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
+    <ProjectReference
+      Include="..\Libplanet.Stun\Libplanet.Stun.csproj"
+      PrivateAssets="All" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>
+      $(TargetsForTfmSpecificBuildOutput);IncludeP2PAssets
+    </TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="IncludeP2PAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Libplanet.Stun.dll" />
+    </ItemGroup>
+  </Target>
 </Project>

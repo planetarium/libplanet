@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Stun", "Libplanet.Stun\Libplanet.Stun.csproj", "{4F5DB8F5-D0F4-454C-95A7-87F53E5D5E36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Stun.Tests", "Libplanet.Stun.Tests\Libplanet.Stun.Tests.csproj", "{5C2B23E2-C286-412D-ADE1-F6796B7083DE}"
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet", "Libplanet\Libplanet.csproj", "{50E14C9A-3C2F-4A51-971F-6143952D0F1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Tests", "Libplanet.Tests\Libplanet.Tests.csproj", "{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Explorer", "Libplanet.Explorer\Libplanet.Explorer.csproj", "{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Stun", "Libplanet.Stun\Libplanet.Stun.csproj", "{4F5DB8F5-D0F4-454C-95A7-87F53E5D5E36}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Stun.Tests", "Libplanet.Stun.Tests\Libplanet.Stun.Tests.csproj", "{5C2B23E2-C286-412D-ADE1-F6796B7083DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
