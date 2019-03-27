@@ -33,7 +33,6 @@ namespace Libplanet.Blockchain
             Store = store;
             Blocks = new BlockSet<T>(store, Id.ToString());
             Transactions = new TransactionSet<T>(store, Id.ToString());
-            Addresses = new AddressTransactionSet<T>(store, Id.ToString());
 
             _rwlock = new ReaderWriterLockSlim(
                 LockRecursionPolicy.SupportsRecursion);
@@ -69,11 +68,6 @@ namespace Libplanet.Blockchain
         }
 
         internal IDictionary<TxId, Transaction<T>> Transactions
-        {
-            get; private set;
-        }
-
-        internal IDictionary<Address, IEnumerable<Transaction<T>>> Addresses
         {
             get; private set;
         }
@@ -203,17 +197,6 @@ namespace Libplanet.Blockchain
                     .ToImmutableHashSet();
 
                 Store.UnstageTransactionIds(txIds);
-                foreach (Transaction<T> tx in block.Transactions)
-                {
-                    foreach (Address address in tx.UpdatedAddresses)
-                    {
-                        Store.AppendAddressTransactionId(
-                            Id.ToString(),
-                            address,
-                            tx.Id
-                        );
-                    }
-                }
             }
             finally
             {
@@ -423,7 +406,6 @@ namespace Libplanet.Blockchain
                 Id = other.Id;
                 Blocks = new BlockSet<T>(Store, Id.ToString());
                 Transactions = new TransactionSet<T>(Store, Id.ToString());
-                Addresses = new AddressTransactionSet<T>(Store, Id.ToString());
             }
             finally
             {

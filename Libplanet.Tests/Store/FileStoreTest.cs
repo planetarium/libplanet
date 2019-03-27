@@ -68,15 +68,6 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void CanReturnAddressPath()
-        {
-            Assert.Equal(
-                Path.Combine(_fx.Path, _ns, "addr", "45a2", "2187e2D8850bb357886958bC3E8560929ccc"),
-                _fx.Store.GetAddressPath(_ns, _fx.Address1)
-            );
-        }
-
-        [Fact]
         public void ReturnStatesPath()
         {
             var hash = new HashDigest<SHA256>(new byte[]
@@ -271,56 +262,6 @@ namespace Libplanet.Tests.Store
                     _fx.Transaction2.Id,
                 },
                 _fx.Store.IterateStagedTransactionIds().ToHashSet());
-        }
-
-        [Fact]
-        public void CanStoreAddress()
-        {
-            Assert.Equal(0, _fx.Store.CountAddresses(_ns));
-            Assert.Empty(_fx.Store.IterateAddresses(_ns));
-            Assert.Empty(_fx.Store.GetAddressTransactionIds(_ns, _fx.Address1));
-            Assert.Empty(_fx.Store.GetAddressTransactionIds(_ns, _fx.Address2));
-
-            // Add TxId1 to Address1
-            Assert.Equal(
-                0,
-                _fx.Store.AppendAddressTransactionId(_ns, _fx.Address1, _fx.TxId1));
-            Assert.Equal(1, _fx.Store.CountAddresses(_ns));
-            Assert.Equal(
-                new List<Address>() { _fx.Address1 },
-                _fx.Store.IterateAddresses(_ns));
-            Assert.Equal(
-                new List<TxId>() { _fx.TxId1 },
-                _fx.Store.GetAddressTransactionIds(_ns, _fx.Address1));
-            Assert.Empty(_fx.Store.GetAddressTransactionIds(_ns, _fx.Address2));
-
-            // Add TxId2 to Address1
-            Assert.Equal(
-                1,
-                _fx.Store.AppendAddressTransactionId(_ns, _fx.Address1, _fx.TxId2));
-            Assert.Equal(1, _fx.Store.CountAddresses(_ns));
-            Assert.Equal(
-                new List<Address>() { _fx.Address1 },
-                _fx.Store.IterateAddresses(_ns));
-            Assert.Equal(
-                new List<TxId>() { _fx.TxId1, _fx.TxId2 },
-                _fx.Store.GetAddressTransactionIds(_ns, _fx.Address1));
-            Assert.Empty(_fx.Store.GetAddressTransactionIds(_ns, _fx.Address2));
-
-            // Add TxId3 to Address2
-            Assert.Equal(
-                0,
-                _fx.Store.AppendAddressTransactionId(_ns, _fx.Address2, _fx.TxId3));
-            Assert.Equal(2, _fx.Store.CountAddresses(_ns));
-            Assert.Equal(
-                new List<Address>() { _fx.Address1, _fx.Address2 },
-                _fx.Store.IterateAddresses(_ns));
-            Assert.Equal(
-                new List<TxId>() { _fx.TxId1, _fx.TxId2 },
-                _fx.Store.GetAddressTransactionIds(_ns, _fx.Address1));
-            Assert.Equal(
-                new List<TxId>() { _fx.TxId3 },
-                _fx.Store.GetAddressTransactionIds(_ns, _fx.Address2));
         }
 
         [Fact]

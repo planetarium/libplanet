@@ -20,7 +20,6 @@ namespace Libplanet.Store
         private const string _transactionsDir = "tx";
         private const string _blocksDir = "blocks";
         private const string _stagedTransactionsDir = "stage";
-        private const string _addressesDir = "addr";
         private const string _statesDir = "states";
         private const string _indexFile = "index";
 
@@ -99,29 +98,6 @@ namespace Libplanet.Store
                 _stagedTransactionsDir);
         }
 
-        public string GetAddressPath(string @namespace, Address address)
-        {
-            EnsureNamespace(@namespace);
-
-            var addrHex = address.ToHex();
-            return Path.Combine(
-                _path,
-                @namespace,
-                _addressesDir,
-                addrHex.Substring(0, 4),
-                addrHex.Substring(4));
-        }
-
-        public string GetAddressPath(string @namespace)
-        {
-            EnsureNamespace(@namespace);
-
-            return Path.Combine(
-                _path,
-                @namespace,
-                _addressesDir);
-        }
-
         public string GetStatesPath(HashDigest<SHA256> key)
         {
             var keyHex = key.ToString();
@@ -162,24 +138,6 @@ namespace Libplanet.Store
                         yield return fileName;
                     }
                 }
-            }
-        }
-
-        public override long AppendAddressTransactionId(
-            string @namespace,
-            Address address,
-            TxId txId
-        )
-        {
-            var addrFile = new FileInfo(GetAddressPath(@namespace, address));
-            addrFile.Directory.Create();
-
-            using (Stream stream = addrFile.Open(
-                FileMode.Append, FileAccess.Write))
-            {
-                var offset = stream.Position;
-                stream.Write(txId.ToByteArray(), 0, TxId.Size);
-                return Convert.ToInt64(offset / (float)TxId.Size);
             }
         }
 
@@ -275,31 +233,6 @@ namespace Libplanet.Store
             return true;
         }
 
-        public override IEnumerable<TxId> GetAddressTransactionIds(
-            string @namespace,
-            Address address
-        )
-        {
-            var addrFile = new FileInfo(GetAddressPath(@namespace, address));
-            if (addrFile.Exists)
-            {
-                using (var f = addrFile.OpenRead())
-                {
-                    while (true)
-                    {
-                        var txIdBytes = new byte[TxId.Size];
-                        var length = f.Read(txIdBytes, 0, TxId.Size);
-                        if (length == 0)
-                        {
-                            break;
-                        }
-
-                        yield return new TxId(txIdBytes);
-                    }
-                }
-            }
-        }
-
         public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
         {
             var blockFile = new FileInfo(GetBlockPath(blockHash));
@@ -387,39 +320,6 @@ namespace Libplanet.Store
                 Trace.Assert(bytesRead == HashDigest<SHA256>.Size);
 
                 return new HashDigest<SHA256>(blockHash);
-            }
-        }
-
-        public override IEnumerable<Address> IterateAddresses(
-            string @namespace
-        )
-        {
-            var prefixRegex = new Regex(
-                @"^[a-f0-9]{4}$",
-                RegexOptions.IgnoreCase
-            );
-            var restRegex = new Regex(
-                @"^[a-f0-9]{36}$",
-                RegexOptions.IgnoreCase
-            );
-            var addressesRoot = new DirectoryInfo(GetAddressPath(@namespace));
-            var prefixes = addressesRoot.EnumerateDirectories();
-            foreach (DirectoryInfo prefix in prefixes)
-            {
-                if (!prefixRegex.IsMatch(prefix.Name))
-                {
-                    continue;
-                }
-
-                foreach (FileInfo rest in prefix.EnumerateFiles())
-                {
-                    if (!restRegex.IsMatch(rest.Name))
-                    {
-                        continue;
-                    }
-
-                    yield return new Address(prefix.Name + rest.Name);
-                }
             }
         }
 
@@ -647,34 +547,6 @@ namespace Libplanet.Store
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 .Where(tx => tx != null);
-        }
-
-        private void EnsureNamespace(string @namespace)
-        {
-            string namespacePath = Path.Combine(_path, @namespace);
-
-            if (!Directory.Exists(namespacePath))
-            {
-                Directory.CreateDirectory(namespacePath);
-
-                var dirPaths = new string[]
-                {
-                    _transactionsDir,
-                    _blocksDir,
-                    _stagedTransactionsDir,
-                    _addressesDir,
-                    _statesDir,
-                };
-
-                foreach (var dir in dirPaths)
-                {
-                    string path = Path.Combine(namespacePath, dir);
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
-                    }
-                }
-            }
         }
     }
 }

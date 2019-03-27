@@ -102,6 +102,12 @@ To be released.
     already has and deal with only longer (higher) blocks.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
     same time.
+ -  Removed `AddressTransactionSet` which handles handle `Address` to
+    `IEnumerable<TxId>` indices, and the following methods in `IStore`:
+     -  `IStore.IterateAddresses()`
+     -  `IStore.GetAddressTransactionIds()`
+     -  `IStore.AppendAddressTransactionId()`
+     -  `IStore.CountAddresses()`
  -  Added `IStore.ListNamespaces()` method.
  -  `IStore.CountIndex()` became to return `int` as same as
     `IStore.CountBlockHashes()`.

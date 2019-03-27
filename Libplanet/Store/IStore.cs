@@ -24,19 +24,6 @@ namespace Libplanet.Store
 
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
-        IEnumerable<Address> IterateAddresses(string @namespace);
-
-        IEnumerable<TxId> GetAddressTransactionIds(
-            string @namespace,
-            Address address
-        );
-
-        long AppendAddressTransactionId(
-            string @namespace,
-            Address address,
-            TxId txId
-        );
-
         void StageTransactionIds(ISet<TxId> txids);
 
         void UnstageTransactionIds(ISet<TxId> txids);
@@ -73,7 +60,5 @@ namespace Libplanet.Store
         int CountTransactions();
 
         int CountBlocks();
-
-        int CountAddresses(string @namespace);
     }
 }

@@ -27,21 +27,6 @@ namespace Libplanet.Store
             HashDigest<SHA256> hash
         );
 
-        public abstract IEnumerable<Address> IterateAddresses(
-            string @namespace
-        );
-
-        public abstract IEnumerable<TxId> GetAddressTransactionIds(
-            string @namespace,
-            Address address
-        );
-
-        public abstract long AppendAddressTransactionId(
-            string @namespace,
-            Address address,
-            TxId txId
-        );
-
         public abstract void StageTransactionIds(
             ISet<TxId> txids
         );
@@ -89,11 +74,6 @@ namespace Libplanet.Store
         public int CountBlocks()
         {
             return IterateBlockHashes().Count();
-        }
-
-        public int CountAddresses(string @namespace)
-        {
-            return IterateAddresses(@namespace).Count();
         }
 
         public abstract bool DeleteIndex(
