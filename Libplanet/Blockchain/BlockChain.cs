@@ -31,8 +31,8 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
-            Blocks = new BlockSet<T>(store, Id.ToString());
-            Transactions = new TransactionSet<T>(store, Id.ToString());
+            Blocks = new BlockSet<T>(store);
+            Transactions = new TransactionSet<T>(store);
 
             _rwlock = new ReaderWriterLockSlim(
                 LockRecursionPolicy.SupportsRecursion);
@@ -404,8 +404,8 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
 
                 Id = other.Id;
-                Blocks = new BlockSet<T>(Store, Id.ToString());
-                Transactions = new TransactionSet<T>(Store, Id.ToString());
+                Blocks = new BlockSet<T>(Store);
+                Transactions = new TransactionSet<T>(Store);
             }
             finally
             {

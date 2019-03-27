@@ -15,10 +15,7 @@ namespace Libplanet.Tests.Store
         public TransactionSetTest()
         {
             _fx = new FileStoreFixture();
-            _set = new TransactionSet<BaseAction>(
-                _fx.Store,
-                _fx.StoreNamespace
-            );
+            _set = new TransactionSet<BaseAction>(_fx.Store);
         }
 
         [Fact]

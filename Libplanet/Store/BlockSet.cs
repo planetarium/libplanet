@@ -11,8 +11,8 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction
     {
-        public BlockSet(IStore store, string @namespace)
-            : base(store, @namespace)
+        public BlockSet(IStore store)
+            : base(store)
         {
         }
 

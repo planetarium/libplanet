@@ -9,8 +9,8 @@ namespace Libplanet.Store
     public class TransactionSet<T> : BaseIndex<TxId, Transaction<T>>
         where T : IAction
     {
-        public TransactionSet(IStore store, string @namespace)
-            : base(store, @namespace)
+        public TransactionSet(IStore store)
+            : base(store)
         {
         }
 

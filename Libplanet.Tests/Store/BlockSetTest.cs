@@ -16,10 +16,7 @@ namespace Libplanet.Tests.Store
         public BlockSetTest()
         {
             _fx = new FileStoreFixture();
-            _set = new BlockSet<BaseAction>(
-                _fx.Store,
-                _fx.StoreNamespace
-            );
+            _set = new BlockSet<BaseAction>(_fx.Store);
         }
 
         [Fact]
