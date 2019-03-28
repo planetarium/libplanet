@@ -116,13 +116,12 @@ namespace Libplanet.Tests.Serialization.Bencodex
         {
             Name = info.GetString("Name");
             Age = (int)info.GetInt64("Age");
-            Names =
-                ((List<object>)info.GetValue("Names", typeof(List<object>)))
+            Names = info.GetValue<List<object>>("Names")
                 .Select(s => (string)s)
                 .ToList();
             Secret = info.GetString("Secret");
             IsStudent = info.GetBoolean("IsStudent");
-            Assets = (BigInteger)info.GetValue("Assets", typeof(BigInteger));
+            Assets = info.GetValue<BigInteger>("Assets");
         }
 
         public string Name { get; internal set; }
