@@ -31,9 +31,8 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
-            Blocks = new BlockSet<T>(store, Id.ToString());
-            Transactions = new TransactionSet<T>(store, Id.ToString());
-            Addresses = new AddressTransactionSet<T>(store, Id.ToString());
+            Blocks = new BlockSet<T>(store);
+            Transactions = new TransactionSet<T>(store);
 
             _rwlock = new ReaderWriterLockSlim(
                 LockRecursionPolicy.SupportsRecursion);
@@ -73,11 +72,6 @@ namespace Libplanet.Blockchain
             get; private set;
         }
 
-        internal IDictionary<Address, IEnumerable<Transaction<T>>> Addresses
-        {
-            get; private set;
-        }
-
         internal IStore Store { get; }
 
         public Block<T> this[long index]
@@ -110,10 +104,8 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime
         )
         {
-            ImmutableArray<Block<T>> blocksArray = blocks.ToImmutableArray();
-
             InvalidBlockException e =
-                Policy.ValidateBlocks(blocksArray, currentTime);
+                Policy.ValidateBlocks(blocks, currentTime);
 
             if (e != null)
             {
@@ -161,7 +153,7 @@ namespace Libplanet.Blockchain
                 while (offset != null)
                 {
                     states = (AddressStateMap)states.SetItems(
-                        Store.GetBlockStates(Id.ToString(), offset.Value)
+                        Store.GetBlockStates(offset.Value)
                         .Where(
                             kv => addresses.Contains(kv.Key) &&
                             !states.ContainsKey(kv.Key))
@@ -204,18 +196,7 @@ namespace Libplanet.Blockchain
                     .Select(t => t.Id)
                     .ToImmutableHashSet();
 
-                Store.UnstageTransactionIds(Id.ToString(), txIds);
-                foreach (Transaction<T> tx in block.Transactions)
-                {
-                    foreach (Address address in tx.UpdatedAddresses)
-                    {
-                        Store.AppendAddressTransactionId(
-                            Id.ToString(),
-                            address,
-                            tx.Id
-                        );
-                    }
-                }
+                Store.UnstageTransactionIds(txIds);
             }
             finally
             {
@@ -238,7 +219,6 @@ namespace Libplanet.Blockchain
                 }
 
                 Store.StageTransactionIds(
-                    Id.ToString(),
                     txs.Select(tx => tx.Id).ToImmutableHashSet()
                 );
             }
@@ -265,8 +245,8 @@ namespace Libplanet.Blockchain
                     index - 1
                 );
                 List<Transaction<T>> transactions = Store
-                    .IterateStagedTransactionIds(@namespace)
-                    .Select(txId => Store.GetTransaction<T>(@namespace, txId))
+                    .IterateStagedTransactionIds()
+                    .Select(Store.GetTransaction<T>)
                     .OfType<Transaction<T>>()
                     .ToList();
 
@@ -354,26 +334,33 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
+            return Fork(point, DateTimeOffset.UtcNow);
+        }
+
+        internal BlockChain<T> Fork(
+            HashDigest<SHA256> point,
+            DateTimeOffset currentTime)
+        {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             try
             {
                 _rwlock.EnterReadLock();
                 foreach (var index in Store.IterateIndex(Id.ToString()))
                 {
-                    forked.Append(Blocks[index]);
-
+                    Store.AppendIndex(forked.Id.ToString(), index);
                     if (index == point)
                     {
                         break;
                     }
                 }
-
-                return forked;
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
+
+            forked.Validate(forked, currentTime);
+            return forked;
         }
 
         internal BlockLocator GetBlockLocator(int threshold = 10)
@@ -424,9 +411,8 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
 
                 Id = other.Id;
-                Blocks = new BlockSet<T>(Store, Id.ToString());
-                Transactions = new TransactionSet<T>(Store, Id.ToString());
-                Addresses = new AddressTransactionSet<T>(Store, Id.ToString());
+                Blocks = new BlockSet<T>(Store);
+                Transactions = new TransactionSet<T>(Store);
             }
             finally
             {
@@ -466,7 +452,6 @@ namespace Libplanet.Blockchain
                 ).ToImmutableDictionary();
 
             Store.SetBlockStates(
-                Id.ToString(),
                 block.Hash,
                 new AddressStateMap(totalDelta)
             );

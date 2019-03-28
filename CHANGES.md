@@ -102,7 +102,18 @@ To be released.
     already has and deal with only longer (higher) blocks.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
     same time.
+ -  Removed `AddressTransactionSet` which handles handle `Address` to
+    `IEnumerable<TxId>` indices, and the following methods in `IStore`:
+     -  `IStore.IterateAddresses()`
+     -  `IStore.GetAddressTransactionIds()`
+     -  `IStore.AppendAddressTransactionId()`
+     -  `IStore.CountAddresses()`
  -  Added `IStore.ListNamespaces()` method.
+ -  `IStore.CountBlocks()` and `IStore.CountTransactions()` became to return
+    `long`
+ -  Block/tx-related methods in `IStore` and `BaseIndex<T>` no longer
+    accepts `@namespace` parameter.  It means that even if a forking occurs, the
+    same block/tx files are shared.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [#144]
  - Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [#151]

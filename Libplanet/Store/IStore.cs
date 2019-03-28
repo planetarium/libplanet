@@ -24,63 +24,41 @@ namespace Libplanet.Store
 
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
-        IEnumerable<Address> IterateAddresses(string @namespace);
+        void StageTransactionIds(ISet<TxId> txids);
 
-        IEnumerable<TxId> GetAddressTransactionIds(
-            string @namespace,
-            Address address
-        );
+        void UnstageTransactionIds(ISet<TxId> txids);
 
-        long AppendAddressTransactionId(
-            string @namespace,
-            Address address,
-            TxId txId
-        );
+        IEnumerable<TxId> IterateStagedTransactionIds();
 
-        void StageTransactionIds(string @namespace, ISet<TxId> txids);
+        IEnumerable<TxId> IterateTransactionIds();
 
-        void UnstageTransactionIds(string @namespace, ISet<TxId> txids);
-
-        IEnumerable<TxId> IterateStagedTransactionIds(string @namespace);
-
-        IEnumerable<TxId> IterateTransactionIds(string @namespace);
-
-        Transaction<T> GetTransaction<T>(string @namespace, TxId txid)
+        Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction;
 
-        void PutTransaction<T>(string @namespace, Transaction<T> tx)
+        void PutTransaction<T>(Transaction<T> tx)
             where T : IAction;
 
-        bool DeleteTransaction(string @namespace, TxId txid);
+        bool DeleteTransaction(TxId txid);
 
-        IEnumerable<HashDigest<SHA256>> IterateBlockHashes(string @namespace);
+        IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        Block<T> GetBlock<T>(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        )
+        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction;
 
-        void PutBlock<T>(string @namespace, Block<T> block)
+        void PutBlock<T>(Block<T> block)
             where T : IAction;
 
-        bool DeleteBlock(string @namespace, HashDigest<SHA256> blockHash);
+        bool DeleteBlock(HashDigest<SHA256> blockHash);
 
-        AddressStateMap GetBlockStates(
-            string @namespace,
-            HashDigest<SHA256> blockHash
-        );
+        AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
 
         void SetBlockStates(
-            string @namespace,
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );
 
-        int CountTransactions(string @namespace);
+        long CountTransactions();
 
-        int CountBlocks(string @namespace);
-
-        int CountAddresses(string @namespace);
+        long CountBlocks();
     }
 }

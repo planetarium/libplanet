@@ -154,41 +154,6 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanStoreAddresses()
-        {
-            Assert.Empty(_blockChain.Addresses);
-            var txs = new HashSet<Transaction<BaseAction>>()
-            {
-                _fx.Transaction1,
-                _fx.Transaction2,
-                _fx.MakeTransaction(
-                    new[]
-                    {
-                        new Attack
-                        {
-                            Weapon = "sword",
-                            Target = "goblin",
-                            TargetAddress = _fx.Address1,
-                        },
-                    },
-                    new[] { _fx.Address1 }.ToImmutableHashSet()
-                ),
-            };
-            _blockChain.StageTransactions(txs);
-            _blockChain.MineBlock(_fx.Address1);
-
-            Assert.Contains(_fx.Address1, _blockChain.Addresses);
-            foreach (Address a in _fx.Transaction1.UpdatedAddresses)
-            {
-                Assert.Contains(_fx.Transaction1, _blockChain.Addresses[a]);
-                Assert.DoesNotContain(
-                    _fx.Transaction2,
-                    _blockChain.Addresses[a]
-                );
-            }
-        }
-
-        [Fact]
         public void CanFindNextHashes()
         {
             _blockChain.Append(_fx.Block1);
