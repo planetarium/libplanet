@@ -114,6 +114,8 @@ To be released.
  -  Block/tx-related methods in `IStore` and `BaseIndex<T>` no longer
     accepts `@namespace` parameter.  It means that even if a forking occurs, the
     same block/tx files are shared.
+ -  Fixed a bug that made unnecessary fork when receiving blocks from other
+    peer.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
     is not annotated with `ActionTypeAttribute`.  [[#144]]
  -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
