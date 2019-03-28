@@ -52,12 +52,10 @@ the latter is the store getter class which is added on step 1.
 Endpoints
 ---------
 
-- `/blocks/`: Show a list of blocks. It contains the hash of block and
-the creation timestamp.
-- `/blocks/{hashString}/`: Show the details of the block that includes index,
+- `/blocks/{guid}`: Show a list of blocks. It contains the hash of block and
+the creation timestamp. `{guid}` is a GUID of blockchain.
+- `/blocks/{guid}/{hashString}/`: Show the details of the block that includes index,
 difficulty, nonce, the hash of the previous block, reward beneficiary,
 creation timestamp, and transaction ids. `{hashString}` is
-- `/tx/{txIdString}/`: Show the details of the transaction that includes id,
+- `/blocks/{guid}/tx/{txIdString}/`: Show the details of the transaction that includes id,
 signature, creation timestamp, signer address, recipient address, and actions.
-- `/address/{addressIdString}/`: Show the details of address. The list of
-transactions sent/received and state of it.

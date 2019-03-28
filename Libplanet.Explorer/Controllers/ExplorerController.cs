@@ -25,18 +25,19 @@ namespace Libplanet.Explorer.Controllers
             Store = store;
         }
 
-        public BlockChain<T> GetBlockChain()
+        public BlockChain<T> GetBlockChain(string guid)
         {
             // FIXME: policy should be configurable
-            var chain = new BlockChain<T>(new BlockPolicy<T>(), Store.Store);
+            var chain = new BlockChain<T>(
+                new BlockPolicy<T>(), Store.Store, Guid.Parse(guid));
 
             return chain;
         }
 
-        [HttpGet("/blocks/")]
-        public List<Dictionary<string, string>> Index()
+        [HttpGet("/blocks/{guid}")]
+        public List<Dictionary<string, string>> Index(string guid)
         {
-            BlockChain<T> chain = GetBlockChain();
+            BlockChain<T> chain = GetBlockChain(guid);
 
             return chain.Select(block => new Dictionary<string, string>
                 {
@@ -46,12 +47,12 @@ namespace Libplanet.Explorer.Controllers
                 .ToList();
         }
 
-        [HttpGet("/blocks/{hash}/")]
-        public IActionResult getBlock(string hash)
+        [HttpGet("/blocks/{guid}/{hash}/")]
+        public IActionResult getBlock(string guid, string hash)
         {
             Block<T> block;
             HashDigest<SHA256> blockHash;
-            BlockChain<T> chain = GetBlockChain();
+            BlockChain<T> chain = GetBlockChain(guid);
 
             try
             {
@@ -96,12 +97,12 @@ namespace Libplanet.Explorer.Controllers
             return Ok(model);
         }
 
-        [HttpGet("/tx/{txIdString}/")]
-        public IActionResult getTransaction(string txIdString)
+        [HttpGet("/blocks/{guid}/tx/{txIdString}/")]
+        public IActionResult getTransaction(string guid, string txIdString)
         {
             Transaction<T> tx;
             TxId txId;
-            BlockChain<T> chain = GetBlockChain();
+            BlockChain<T> chain = GetBlockChain(guid);
 
             try
             {
