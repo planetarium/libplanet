@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -187,6 +188,8 @@ namespace Libplanet.Serialization
                     return new Integer(checked((long)ul));
                 case int i:
                     return new Integer(i);
+                case BigInteger bi:
+                    return new Integer(bi);
                 case byte[] byteArray:
                     return ToBencodexKey(byteArray);
                 case IDictionary d:
