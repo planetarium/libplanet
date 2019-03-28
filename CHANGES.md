@@ -115,8 +115,8 @@ To be released.
     accepts `@namespace` parameter.  It means that even if a forking occurs, the
     same block/tx files are shared.
  -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
-    is not annotated with `ActionTypeAttribute`.  [#144]
- - Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [#151]
+    is not annotated with `ActionTypeAttribute`.  [[#144]]
+ -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
 
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
@@ -131,6 +131,7 @@ To be released.
 [#132]: https://github.com/planetarium/libplanet/issues/132
 [#135]: https://github.com/planetarium/libplanet/pull/135
 [#136]: https://github.com/planetarium/libplanet/pull/136
+[#140]: https://github.com/planetarium/libplanet/pull/140
 [#144]: https://github.com/planetarium/libplanet/pull/144
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
