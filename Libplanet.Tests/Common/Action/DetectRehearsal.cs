@@ -11,6 +11,7 @@ namespace Libplanet.Tests.Common.Action
             new Dictionary<string, object>()
             {
                 { "target_address", TargetAddress.ToByteArray() },
+                { "result_state", ResultState },
             }.ToImmutableDictionary();
 
         public bool ResultState { get; set; }
@@ -21,6 +22,7 @@ namespace Libplanet.Tests.Common.Action
             IImmutableDictionary<string, object> plainValue)
         {
             TargetAddress = new Address((byte[])plainValue["target_address"]);
+            ResultState = (bool)plainValue["result_state"];
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

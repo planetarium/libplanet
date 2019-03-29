@@ -39,6 +39,8 @@ namespace Libplanet.Tx
 
         private byte[] _signature;
 
+        private ImmutableArray<ImmutableDictionary<string, object>> _actions;
+
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/>.
         /// <para>This constructor takes all required and only required values
@@ -99,8 +101,13 @@ namespace Libplanet.Tx
             Signature = signature ??
                 throw new ArgumentNullException(nameof(signature));
             Timestamp = timestamp;
-            Actions = actions?.ToImmutableList() ??
+
+            if (actions is null)
+            {
                 throw new ArgumentNullException(nameof(actions));
+            }
+
+            _actions = ToSerializedActions(actions);
             PublicKey = publicKey ??
                 throw new ArgumentNullException(nameof(publicKey));
 
@@ -117,7 +124,8 @@ namespace Libplanet.Tx
                 rawTx.Timestamp,
                 TimestampFormat,
                 CultureInfo.InvariantCulture).ToUniversalTime();
-            Actions = rawTx.Actions.Select(ToAction).ToImmutableList();
+            _actions = rawTx.Actions.Select(a => a.ToImmutableDictionary())
+                .ToImmutableArray();
             Signature = rawTx.Signature;
         }
 
@@ -138,7 +146,7 @@ namespace Libplanet.Tx
             PublicKey = publicKey;
             UpdatedAddresses = updatedAddresses;
             Timestamp = timestamp;
-            Actions = actions.ToImmutableList();
+            _actions = ToSerializedActions(actions);
             Signature = new byte[0];
         }
 
@@ -201,7 +209,8 @@ namespace Libplanet.Tx
         /// A list of <see cref="IAction"/>s.  These are executed in the order.
         /// This can be empty, but cannot be <c>null</c>.
         /// </summary>
-        public IImmutableList<T> Actions { get; }
+        public IImmutableList<T> Actions => _actions
+            .Select(ToAction).ToImmutableList();
 
         /// <summary>
         /// The time this <see cref="Transaction{T}"/> is created and signed.
@@ -351,39 +360,39 @@ namespace Libplanet.Tx
             DateTimeOffset ts = timestamp ?? DateTimeOffset.UtcNow;
 
             ImmutableArray<T> actionsArray = actions.ToImmutableArray();
-            byte[] payload = new Transaction<T>(
+            var tx = new Transaction<T>(
                 signer,
                 publicKey,
                 updatedAddresses,
                 ts,
-                actionsArray
-            ).ToBencodex(false);
+                actionsArray);
+            byte[] payload = tx.ToBencodex(false);
 
             if (!actionsArray.IsEmpty)
             {
-                IAccountStateDelta delta = new Transaction<T>(
+                tx = new Transaction<T>(
                     signer,
                     publicKey,
                     updatedAddresses,
                     ts,
-                    actionsArray
-                ).EvaluateActions(
+                    actionsArray);
+                IAccountStateDelta delta = tx.EvaluateActions(
                     default(HashDigest<SHA256>),
                     0,
                     new AccountStateDeltaImpl(_ => null),
-                    rehearsal: true
-                );
+                    rehearsal: true);
+                actionsArray = tx.Actions.ToImmutableArray();
                 if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
                 {
                     updatedAddresses =
                         updatedAddresses.Union(delta.UpdatedAddresses);
-                    payload = new Transaction<T>(
+                    tx = new Transaction<T>(
                         signer,
                         publicKey,
                         updatedAddresses,
                         ts,
-                        actionsArray
-                    ).ToBencodex(false);
+                        actionsArray);
+                    payload = tx.ToBencodex(false);
                 }
             }
 
@@ -473,7 +482,8 @@ namespace Libplanet.Tx
                 BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
                 (Signature.Empty() ? 0 : BitConverter.ToInt32(Signature, 0));
             IAccountStateDelta states = previousStates;
-            foreach (T action in Actions)
+            ImmutableArray<T> actions = Actions.ToImmutableArray();
+            foreach (T action in actions)
             {
                 var context = new ActionContext(
                     signer: Signer,
@@ -507,6 +517,8 @@ namespace Libplanet.Tx
                     );
                 }
             }
+
+            _actions = ToSerializedActions(actions);
 
             return states;
         }
@@ -584,12 +596,7 @@ namespace Libplanet.Tx
                     a.ToByteArray()).ToArray(),
                 publicKey: PublicKey.Format(false),
                 timestamp: Timestamp.ToString(TimestampFormat),
-                actions: Actions.Select(a => new Dictionary<string, object>
-                {
-                    { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
-                    { "values", a.PlainValue },
-                })
-            );
+                actions: _actions);
 
             if (includeSign)
             {
@@ -597,6 +604,16 @@ namespace Libplanet.Tx
             }
 
             return rawTx;
+        }
+
+        private static ImmutableArray<ImmutableDictionary<string, object>>
+            ToSerializedActions(IEnumerable<T> actions)
+        {
+            return actions.Select(a => new Dictionary<string, object>
+            {
+                { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
+                { "values", a.PlainValue },
+            }.ToImmutableDictionary()).ToImmutableArray();
         }
 
         private static T ToAction(IDictionary<string, object> arg)
