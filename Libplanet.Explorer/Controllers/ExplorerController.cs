@@ -17,18 +17,21 @@ namespace Libplanet.Explorer.Controllers
     public class ExplorerController<T> : Controller where T : IAction
     {
         private readonly IBlockchainStore Store;
+        private readonly Guid _chainId;
 
         public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
         public ExplorerController(IBlockchainStore store)
         {
             Store = store;
+            _chainId = store.ChainId;
         }
 
         public BlockChain<T> GetBlockChain()
         {
             // FIXME: policy should be configurable
-            var chain = new BlockChain<T>(new BlockPolicy<T>(), Store.Store);
+            var chain = new BlockChain<T>(
+                new BlockPolicy<T>(), Store.Store, _chainId);
 
             return chain;
         }
