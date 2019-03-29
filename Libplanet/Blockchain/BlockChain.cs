@@ -141,37 +141,38 @@ namespace Libplanet.Blockchain
         public AddressStateMap GetStates(
             IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
         {
+            _rwlock.EnterReadLock();
             try
             {
-                _rwlock.EnterReadLock();
                 if (offset == null)
                 {
                     offset = Store.IndexBlockHash(Id.ToString(), -1);
                 }
-
-                var states = new AddressStateMap();
-                while (offset != null)
-                {
-                    states = (AddressStateMap)states.SetItems(
-                        Store.GetBlockStates(offset.Value)
-                        .Where(
-                            kv => addresses.Contains(kv.Key) &&
-                            !states.ContainsKey(kv.Key))
-                     );
-                    if (states.Keys.SequenceEqual(addresses))
-                    {
-                        break;
-                    }
-
-                    offset = Blocks[offset.Value].PreviousHash;
-                }
-
-                return states;
             }
             finally
             {
                 _rwlock.ExitReadLock();
             }
+
+            var states = new AddressStateMap();
+            while (offset != null)
+            {
+                states = (AddressStateMap)states.SetItems(
+                    Store.GetBlockStates(offset.Value)
+                    .Where(
+                        kv => addresses.Contains(kv.Key) &&
+                        !states.ContainsKey(kv.Key))
+                    );
+
+                if (states.Keys.SequenceEqual(addresses))
+                {
+                    break;
+                }
+
+                offset = Blocks[offset.Value].PreviousHash;
+            }
+
+            return states;
         }
 
         public void Append(Block<T> block, DateTimeOffset currentTime)

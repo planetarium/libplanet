@@ -88,6 +88,8 @@ To be released.
  -  Added `Address.Size` constant, which is fixed to the `Int32` 20.
  -  Fixed a bug that `Block<T>.Validate()` had not thrown `InvalidTxException`
     even if there is any integrity error on its `Transactions`.
+ -  Improved the write throughput of `BlockChain<T>` while polling
+    `BlockChain<T>.GetStates()`
  -  `Swarm.AddPeersAsync()` was fixed so that unreachable `Peer`s are ignored.
     [[#128]]
  -  `Swarm` became able to relay their connection via TURN ([RFC 5766])
