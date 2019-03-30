@@ -27,7 +27,7 @@ Prerequisites
 
 If you use Linux or macOS you need [Mono], which provides C# compiler and
 .NET VM.  You could install it by `sudo apt install mono-devel` command
-if you use Ubuntu Linux.  If you use macOS and [Homebrew], You can install
+if you use Ubuntu Linux.  If you use macOS and [Homebrew], you can install
 it by `brew cask install mono-mdk` command.
 
 If you are on Windows you need things like C# compiler included in
@@ -81,8 +81,8 @@ and *Libplanet.Stun.dll* assemblies and packed into one NuGet package.
 
 *Libplanet.Tests* is a test suite for the *Libplanet.dll* assembly, and
 *Libplanet.Stun.Tests* is a test suite for the *Libplanet.Stun.dll* assembly.
-Both depend on [Xunit], and every namespace and class in it corresponds to
-one in *Libplanet* and *Libplanet.Stun* projects.
+Both depend on [Xunit], and every namespace and class in these corresponds to
+one in *Libplanet* or *Libplanet.Stun* projects.
 If there's *Libplanet.Foo.Bar* class there also should be
 *Libplanet.Tests.Foo.BarTest* to test it.
 
