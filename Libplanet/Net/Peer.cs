@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using Libplanet.Crypto;
@@ -15,7 +12,7 @@ namespace Libplanet.Net
     [GeneratedEquality]
     public partial class Peer : ISerializable
     {
-        public Peer(PublicKey publicKey, IPEndPoint endPoint)
+        public Peer(PublicKey publicKey, DnsEndPoint endPoint)
         {
             if (publicKey == null)
             {
@@ -33,7 +30,9 @@ namespace Libplanet.Net
         protected Peer(SerializationInfo info, StreamingContext context)
         {
             PublicKey = new PublicKey(info.GetValue<byte[]>("public_key"));
-            EndPoint = info.GetValue<IPEndPoint>("end_point");
+            EndPoint = new DnsEndPoint(
+                info.GetString("end_point_host"),
+                info.GetInt32("end_point_port"));
         }
 
         [EqualityKey]
@@ -42,7 +41,7 @@ namespace Libplanet.Net
 
         [EqualityKey]
         [Pure]
-        public IPEndPoint EndPoint { get; }
+        public DnsEndPoint EndPoint { get; }
 
         [Pure]
         public Address Address => new Address(PublicKey);
@@ -53,7 +52,8 @@ namespace Libplanet.Net
         )
         {
             info.AddValue("public_key", PublicKey.Format(true));
-            info.AddValue("end_point", EndPoint);
+            info.AddValue("end_point_host", EndPoint.Host);
+            info.AddValue("end_point_port", EndPoint.Port);
         }
 
         public override string ToString()

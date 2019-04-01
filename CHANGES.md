@@ -149,8 +149,8 @@ To be released.
  -  Since we decided to depend on TURN ([RFC 5766]) and STUN ([RFC 5389]) to
     work around NAT so that `Peer`'s endpoints don't have to be multiple,
     `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
-    from `IImmutableList<Uri>` to `IPEndPoint`.
-    [[#120], [#123] by Yang Chun Ung, [#126], [#127]]
+    from `IImmutableList<Uri>` to `DnsEndPoint`.
+    [[#120], [#123] by Yang Chun Ung, [#126], [#127], [#165]]
  -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
     already has and deal with only longer (higher) blocks.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
@@ -181,7 +181,6 @@ To be released.
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
 [#120]: https://github.com/planetarium/libplanet/issues/120
-[#167]: https://github.com/planetarium/libplanet/issues/167
 [#121]: https://github.com/planetarium/libplanet/pull/121
 [#123]: https://github.com/planetarium/libplanet/pull/123
 [#124]: https://github.com/planetarium/libplanet/pull/124
@@ -196,6 +195,8 @@ To be released.
 [#144]: https://github.com/planetarium/libplanet/pull/144
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
+[#165]: https://github.com/planetarium/libplanet/issues/165
+[#167]: https://github.com/planetarium/libplanet/issues/167
 [#169]: https://github.com/planetarium/libplanet/pull/169
 [#170]: https://github.com/planetarium/libplanet/pull/170
 [RFC 5389]: https://tools.ietf.org/html/rfc5389

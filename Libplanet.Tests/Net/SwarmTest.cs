@@ -56,16 +56,16 @@ namespace Libplanet.Tests.Net
             {
                 new Swarm(
                     new PrivateKey(),
-                    1,
-                    ipAddress: IPAddress.Loopback),
+                    appProtocolVersion: 1,
+                    host: IPAddress.Loopback.ToString()),
                 new Swarm(
                     new PrivateKey(),
-                    1,
-                    ipAddress: IPAddress.Loopback),
+                    appProtocolVersion: 1,
+                    host: IPAddress.Loopback.ToString()),
                 new Swarm(
                     new PrivateKey(),
-                    1,
-                    ipAddress: IPAddress.Loopback),
+                    appProtocolVersion: 1,
+                    host: IPAddress.Loopback.ToString()),
             };
         }
 
@@ -313,20 +313,20 @@ namespace Libplanet.Tests.Net
         {
             var a = new Swarm(
                 new PrivateKey(),
-                ipAddress: IPAddress.Loopback,
+                host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var b = new Swarm(
                 new PrivateKey(),
-                ipAddress: IPAddress.Loopback,
+                host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
 
             var c = new Swarm(
                 new PrivateKey(),
-                ipAddress: IPAddress.Loopback,
+                host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var d = new Swarm(
                 new PrivateKey(),
-                ipAddress: IPAddress.Loopback,
+                host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
 
             BlockChain<DumbAction> chain = _blockchains[0];
@@ -364,18 +364,18 @@ namespace Libplanet.Tests.Net
             var a = new Swarm(
                 pk1,
                 1,
-                ipAddress: IPAddress.Parse("0.0.0.0"),
+                host: "0.0.0.0",
                 listenPort: 5555);
             var b = new Swarm(
                 pk1,
                 1,
-                ipAddress: IPAddress.Parse("0.0.0.0"),
+                host: "0.0.0.0",
                 listenPort: 5555,
                 createdAt: a.LastDistributed);
             var c = new Swarm(
                 pk2,
                 1,
-                ipAddress: IPAddress.Parse("0.0.0.0"),
+                host: "0.0.0.0",
                 listenPort: 5555);
 
             Assert.Equal(a, b);
@@ -638,11 +638,11 @@ namespace Libplanet.Tests.Net
         [Fact]
         public void CanResolveEndPoint()
         {
-            var expected = new IPEndPoint(IPAddress.Parse("1.2.3.4"), 5678);
+            var expected = new DnsEndPoint("1.2.3.4", 5678);
             Swarm s = new Swarm(
                 new PrivateKey(),
                 1,
-                ipAddress: IPAddress.Parse("1.2.3.4"),
+                host: "1.2.3.4",
                 listenPort: 5678);
 
             Assert.Equal(expected, s.EndPoint);
@@ -665,8 +665,11 @@ namespace Libplanet.Tests.Net
         [Fact]
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
-            Swarm swarm =
-                new Swarm(new PrivateKey(), 1, ipAddress: IPAddress.Loopback);
+            Swarm swarm = new Swarm(
+                new PrivateKey(),
+                1,
+                host: IPAddress.Loopback.ToString()
+            );
             Assert.Throws<SwarmException>(() => swarm.AsPeer);
 
             await StartAsync(swarm, _blockchains[0]);
@@ -688,10 +691,7 @@ namespace Libplanet.Tests.Net
                     credential: password),
             };
 
-            var seed = new Swarm(
-                new PrivateKey(),
-                1,
-                ipAddress: IPAddress.Loopback);
+            var seed = new Swarm(new PrivateKey(), 1, host: "localhost");
             var swarmA = new Swarm(new PrivateKey(), 1, iceServers: iceServers);
             var swarmB = new Swarm(new PrivateKey(), 1, iceServers: iceServers);
 

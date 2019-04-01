@@ -46,7 +46,7 @@ namespace Libplanet.Net
         private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
-        private readonly IPAddress _ipAddress;
+        private readonly string _host;
         private readonly TurnClient _turnClient;
 
         private readonly ILogger _logger;
@@ -60,7 +60,7 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
-            IPAddress ipAddress = null,
+            string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null)
@@ -68,7 +68,7 @@ namespace Libplanet.Net
                   privateKey,
                   appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
-                  ipAddress,
+                  host,
                   listenPort,
                   createdAt,
                   iceServers)
@@ -79,7 +79,7 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             int appProtocolVersion,
             TimeSpan dialTimeout,
-            IPAddress ipAddress = null,
+            string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null)
@@ -111,13 +111,13 @@ namespace Libplanet.Net
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
 
-            _ipAddress = ipAddress;
+            _host = host;
             _listenPort = listenPort;
             _appProtocolVersion = appProtocolVersion;
 
-            if (_ipAddress != null && _listenPort != null)
+            if (_host != null && _listenPort != null)
             {
-                EndPoint = new IPEndPoint(_ipAddress, listenPort.Value);
+                EndPoint = new DnsEndPoint(_host, listenPort.Value);
             }
 
             if (iceServers != null)
@@ -125,10 +125,10 @@ namespace Libplanet.Net
                 _turnClient = IceServer.CreateTurnClient(iceServers).Result;
             }
 
-            if (ipAddress == null && _turnClient == null)
+            if (_host == null && _turnClient == null)
             {
                 throw new ArgumentException(
-                    $"Swarm needs {nameof(ipAddress)} or {iceServers}.");
+                    $"Swarm needs {nameof(host)} or {iceServers}.");
             }
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
@@ -150,7 +150,7 @@ namespace Libplanet.Net
 
         public bool IsReadOnly => false;
 
-        public IPEndPoint EndPoint { get; private set; }
+        public DnsEndPoint EndPoint { get; private set; }
 
         [Uno.EqualityKey]
         public Address Address => _privateKey.PublicKey.ToAddress();
@@ -253,16 +253,7 @@ namespace Libplanet.Net
                     {
                         if (_turnClient != null)
                         {
-                            var ep = peer.EndPoint;
-                            if (IPAddress.IsLoopback(ep.Address))
-                            {
-                                // This translation is only used in test case
-                                // because a seed node exposes loopback address
-                                // as public address to other node in test case
-                                ep = await _turnClient.GetMappedAddressAsync();
-                            }
-
-                            await _turnClient.CreatePermissionAsync(ep);
+                            await CreatePermission(peer);
                         }
 
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
@@ -455,12 +446,15 @@ namespace Libplanet.Net
 
             if (behindNAT)
             {
-                EndPoint = await _turnClient.AllocateRequestAsync(
-                    TurnAllocationLifetime);
+                IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
+                    TurnAllocationLifetime
+                );
+                EndPoint = new DnsEndPoint(
+                    turnEp.Address.ToString(), turnEp.Port);
             }
             else
             {
-                EndPoint = new IPEndPoint(_ipAddress, _listenPort.Value);
+                EndPoint = new DnsEndPoint(_host, _listenPort.Value);
             }
 
             try
@@ -1527,7 +1521,35 @@ namespace Libplanet.Net
                 throw new ArgumentNullException(nameof(peer));
             }
 
-            return $"tcp://{peer.EndPoint}";
+            return $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
+        }
+
+        private async Task CreatePermission(Peer peer)
+        {
+            var peerHost = peer.EndPoint.Host;
+            IPAddress[] ips;
+            if (IPAddress.TryParse(peerHost, out IPAddress asIp))
+            {
+                ips = new[] { asIp };
+            }
+            else
+            {
+                ips = await Dns.GetHostAddressesAsync(peerHost);
+            }
+
+            foreach (IPAddress ip in ips)
+            {
+                var ep = new IPEndPoint(ip, peer.EndPoint.Port);
+                if (IPAddress.IsLoopback(ip))
+                {
+                    // This translation is only used in test case because a
+                    // seed node exposes loopback address as public address to
+                    // other node in test case
+                    ep = await _turnClient.GetMappedAddressAsync();
+                }
+
+                await _turnClient.CreatePermissionAsync(ep);
+            }
         }
     }
 }
