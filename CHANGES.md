@@ -150,11 +150,13 @@ To be released.
     work around NAT so that `Peer`'s endpoints don't have to be multiple,
     `Peer.Urls` was renamed to `Peer.EndPoint` and its type also was changed
     from `IImmutableList<Uri>` to `DnsEndPoint`.
-    [[#120], [#123] by Yang Chun Ung, [#126], [#127], [#165]]
+    [[#120], [#123] by Yang Chun Ung, [#126], [#127], [#165], [#166]]
  -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
     already has and deal with only longer (higher) blocks.
  -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
     same time.
+ -  Fixed a bug that the `Swarm` constructor had hanged in certain runtimes
+    like Unity engine.
  -  Removed `AddressTransactionSet` which handles handle `Address` to
     `IEnumerable<TxId>` indices, and the following methods in `IStore`:
      -  `IStore.IterateAddresses()`

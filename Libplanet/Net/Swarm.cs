@@ -47,12 +47,13 @@ namespace Libplanet.Net
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly string _host;
-        private readonly TurnClient _turnClient;
+        private readonly IList<IceServer> _iceServers;
 
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
+        private TurnClient _turnClient;
 
         private NetMQQueue<Message> _replyQueue;
 
@@ -120,15 +121,13 @@ namespace Libplanet.Net
                 EndPoint = new DnsEndPoint(_host, listenPort.Value);
             }
 
-            if (iceServers != null)
-            {
-                _turnClient = IceServer.CreateTurnClient(iceServers).Result;
-            }
-
-            if (_host == null && _turnClient == null)
+            _iceServers = iceServers?.ToList();
+            if (_host == null && (_iceServers == null || !_iceServers.Any()))
             {
                 throw new ArgumentException(
-                    $"Swarm needs {nameof(host)} or {iceServers}.");
+                    $"Swarm requires either {nameof(host)} or " +
+                    $"{nameof(iceServers)}."
+                );
             }
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
@@ -428,6 +427,11 @@ namespace Libplanet.Net
             if (Running)
             {
                 throw new SwarmException("Swarm is already running.");
+            }
+
+            if (_iceServers != null)
+            {
+                _turnClient = await IceServer.CreateTurnClient(_iceServers);
             }
 
             if (_listenPort == null)

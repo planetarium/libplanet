@@ -627,11 +627,26 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public void CanDenyNullParams()
+        public void ThrowArgumentExceptionInConstructor()
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
                 new Swarm(null, 1);
+            });
+
+            // Swarm needs host or iceServers.
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Swarm(new PrivateKey(), 1);
+            });
+
+            // Swarm needs host or iceServers.
+            Assert.Throws<ArgumentException>(() =>
+            {
+                new Swarm(
+                    new PrivateKey(),
+                    1,
+                    iceServers: new IceServer[] { });
             });
         }
 
