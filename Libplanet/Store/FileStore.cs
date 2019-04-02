@@ -531,7 +531,7 @@ namespace Libplanet.Store
         private IEnumerable<Transaction<T>> GetTransactions<T>(
             IEnumerable transactions
         )
-            where T : IAction
+            where T : IAction, new()
         {
             return transactions
                 .Cast<byte[]>()

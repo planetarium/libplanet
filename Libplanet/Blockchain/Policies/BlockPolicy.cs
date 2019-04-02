@@ -14,7 +14,7 @@ namespace Libplanet.Blockchain.Policies
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
     public class BlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction
+        where T : IAction, new()
     {
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring

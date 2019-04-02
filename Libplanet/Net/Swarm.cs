@@ -388,7 +388,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             int millisecondsDistributeInterval = 1500,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             await StartAsync(
                 blockChain,
@@ -401,7 +401,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             TimeSpan distributeInterval,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             if (Running)
             {
@@ -500,7 +500,7 @@ namespace Libplanet.Net
         public async Task BroadcastBlocksAsync<T>(
             IEnumerable<Block<T>> blocks,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             _logger.Debug("Trying to broadcast blocks...");
             var message = new BlockHashes(
@@ -517,7 +517,7 @@ namespace Libplanet.Net
         public async Task BroadcastTxsAsync<T>(
             IEnumerable<Transaction<T>> txs,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             _logger.Debug("Broadcast Txs.");
             var message = new TxIds(Address, txs.Select(tx => tx.Id));
@@ -569,7 +569,7 @@ namespace Libplanet.Net
             Peer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes,
             CancellationToken token = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             CheckStarted();
 
@@ -619,7 +619,7 @@ namespace Libplanet.Net
             Peer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             CheckStarted();
 
@@ -723,7 +723,7 @@ namespace Libplanet.Net
 
         private async Task ReceiveMessageAsync<T>(
             BlockChain<T> blockChain, CancellationToken cancellationToken)
-            where T : IAction
+            where T : IAction, new()
         {
             while (Running)
             {
@@ -780,7 +780,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             Message message,
             CancellationToken cancellationToken)
-            where T : IAction
+            where T : IAction, new()
         {
             switch (message)
             {
@@ -854,7 +854,7 @@ namespace Libplanet.Net
             BlockHashes message,
             BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             if (!(message.Sender is Address from))
             {
@@ -902,7 +902,7 @@ namespace Libplanet.Net
             List<Block<T>> blocks,
             CancellationToken cancellationToken
         )
-            where T : IAction
+            where T : IAction, new()
         {
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
@@ -1012,7 +1012,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             CancellationToken cancellationToken)
-            where T : IAction
+            where T : IAction, new()
         {
             while (blockChain.Tip?.Hash != stop)
             {
@@ -1045,7 +1045,7 @@ namespace Libplanet.Net
         }
 
         private void TransferTxs<T>(BlockChain<T> blockChain, GetTxs getTxs)
-            where T : IAction
+            where T : IAction, new()
         {
             IDictionary<TxId, Transaction<T>> txs = blockChain.Transactions;
             foreach (var txid in getTxs.TxIds)
@@ -1065,7 +1065,7 @@ namespace Libplanet.Net
             TxIds message,
             BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction
+            where T : IAction, new()
         {
             _logger.Debug("Trying to fetch txs...");
 
@@ -1099,7 +1099,7 @@ namespace Libplanet.Net
         private void TransferBlocks<T>(
             BlockChain<T> blockChain,
             GetBlocks getData)
-            where T : IAction
+            where T : IAction, new()
         {
             _logger.Debug("Trying to transfer blocks...");
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)

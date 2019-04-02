@@ -16,7 +16,7 @@ namespace Libplanet.Blocks
 {
     [Uno.GeneratedEquality]
     public partial class Block<T> : ISerializable
-        where T : IAction
+        where T : IAction, new()
     {
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 

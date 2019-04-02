@@ -27,7 +27,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     public class Transaction<T> : ISerializable, IEquatable<Transaction<T>>
-        where T : IAction
+        where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 

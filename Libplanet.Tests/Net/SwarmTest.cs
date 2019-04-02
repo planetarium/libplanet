@@ -667,7 +667,7 @@ namespace Libplanet.Tests.Net
             BlockChain<T> blockChain,
             CancellationToken cancellationToken = default
         )
-            where T : IAction
+            where T : IAction, new()
         {
             Task task = Task.Run(
                 async () => await swarm.StartAsync(

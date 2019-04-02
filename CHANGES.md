@@ -73,6 +73,12 @@ To be released.
      -  Added `Transaction<T>.EvaluateActions()` method.
      -  Added `Block<T>.EvaluateActions()` generator method.
 
+ -  The type parameter `T` of `Transaction<T>`, `Block<T>`, and
+    `BlockChain<T>` became to require having a parameterless constructor
+    (i.e., `new()`) besides implementing `IAction` interface.
+    This means an abstract class or an interface no more can be passed
+    to `T`, but only a concrete class or a struct can be passed.
+    [[#168]]
  -  Fixed a bug that mutating a collection of `IAction`s passed to
     constructors or factory methods of `Transaction<T>` had affected
     made instances as well.
@@ -140,6 +146,7 @@ To be released.
 [#144]: https://github.com/planetarium/libplanet/pull/144
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
+[#168]: https://github.com/planetarium/libplanet/pull/168
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 

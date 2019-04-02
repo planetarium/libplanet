@@ -76,7 +76,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         }
 
         internal static Block<T> MineGenesis<T>()
-            where T : IAction
+            where T : IAction, new()
         {
             var rewardBeneficiary = new Address(
                 "21744f4f08db23e044178dafb8273aeb5ebe6644"
@@ -98,7 +98,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             IEnumerable<Transaction<T>> txs = null,
             byte[] nonce = null
         )
-            where T : IAction
+            where T : IAction, new()
         {
             if (txs == null)
             {

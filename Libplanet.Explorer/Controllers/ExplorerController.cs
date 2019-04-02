@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Libplanet.Explorer.Controllers
 {
     [GenericControllerNameConvention]
-    public class ExplorerController<T> : Controller where T : IAction
+    public class ExplorerController<T> : Controller where T : IAction, new()
     {
         private readonly IBlockchainStore Store;
         private readonly Guid _chainId;
