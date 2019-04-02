@@ -223,19 +223,12 @@ deploy:
   file: Libplanet/bin/Release/Libplanet.*.nupkg
   name: "Libplanet $TRAVIS_TAG"
 
-# Upload a .nupkg file to NuGet
+# Upload a .nupkg file to NuGet and publish docs to GitHub Pages
 - provider: script
   on:
     all_branches: true
   skip_cleanup: true
-  script: bash publish.sh
-
-# Publish docs to GitHub Pages
-- provider: script
-  on:
-    all_branches: true
-  skip_cleanup: true
-  script: bash Docs/publish.sh
+  script: bash publish.sh && bash Docs/publish.sh
 
 # Adjust the release note on GitHub releases
 after_deploy: |
