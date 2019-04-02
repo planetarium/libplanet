@@ -39,6 +39,7 @@ namespace Libplanet.Net
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
+        private readonly int _protocolVersion;
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
@@ -61,14 +62,16 @@ namespace Libplanet.Net
             IPAddress ipAddress = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            int protocolVersion = 1)
             : this(
                   privateKey,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                   ipAddress,
                   listenPort,
                   createdAt,
-                  iceServers)
+                  iceServers,
+                  protocolVersion)
         {
         }
 
@@ -78,7 +81,8 @@ namespace Libplanet.Net
             IPAddress ipAddress = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            int protocolVersion = 1)
         {
             Running = false;
 
@@ -109,6 +113,7 @@ namespace Libplanet.Net
 
             _ipAddress = ipAddress;
             _listenPort = listenPort;
+            _protocolVersion = protocolVersion;
 
             if (_ipAddress != null && _listenPort != null)
             {
@@ -787,7 +792,7 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        var reply = new Pong
+                        var reply = new Pong(_protocolVersion)
                         {
                             Identity = ping.Identity,
                         };
