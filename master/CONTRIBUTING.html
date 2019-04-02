@@ -8,7 +8,7 @@
     <title>Contributor guide | Libplanet </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Contributor guide | Libplanet ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -79,7 +79,7 @@ except you can speak Korean instead English here.</li>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>If you use Linux or macOS you need <a href="https://www.mono-project.com/">Mono</a>, which provides C# compiler and
 .NET VM.  You could install it by <code>sudo apt install mono-devel</code> command
-if you use Ubuntu Linux.  If you use macOS and <a href="https://brew.sh/">Homebrew</a>, You can install
+if you use Ubuntu Linux.  If you use macOS and <a href="https://brew.sh/">Homebrew</a>, you can install
 it by <code>brew cask install mono-mdk</code> command.</p>
 <p>If you are on Windows you need things like C# compiler included in
 <a href="https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017">Build Tools for Visual Studio 2017</a>.  Choose the following workloads
@@ -102,25 +102,24 @@ made .NET as well.  So Visual Studio Code has a <a href="https://marketplace.vis
 which works well together.</p>
 <h2 id="build">Build</h2>
 <p>The following command installs dependencies (required library packages) and
-builds the whole Libplanet solution:</p>
-<pre><code>msbuild -r
+builds the <em>Libplanet</em> project:</p>
+<pre><code>msbuild -r Libplanet
 </code></pre>
-<h2 id="tests-build-status-codecov">Tests <a href="https://travis-ci.com/planetarium/libplanet.net"><img src="https://travis-ci.com/planetarium/libplanet.net.svg?branch=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
+<h2 id="tests-build-status-codecov">Tests <a href="https://travis-ci.com/planetarium/libplanet"><img src="https://travis-ci.com/planetarium/libplanet.svg?branch=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
 Going near to the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp">code coverage</a> 100% is one of our goals.</p>
-<p>The <em>Libplanet</em> solution consists of two projects.  <em>Libplanet</em> is an actual
-implementation.  It is built to a <em>Libplanet.dll</em> assembly and packed as
-a NuGet package.</p>
-<p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly.
-It depends on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in it corresponds to
-one in <em>Libplanet</em> project.  If there's <em>Libplanet.Foo.Bar</em> class there also
-should be <em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
-<p>To build and run unit tests at a time execute the below command:</p>
-<pre><code>msbuild -r -t:'Build;XunitTest' Libplanet.Tests
-</code></pre>
-<p>It's okay to omit <code>-r</code> and <code>Build</code> task if you've already run <code>msbuild -r</code>
-right before:</p>
-<pre><code>msbuild -t:XunitTest Libplanet.Tests
+<p>The <em>Libplanet</em> solution consists of 4 projects.  <em>Libplanet</em> and
+<em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
+and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
+<p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly, and
+<em>Libplanet.Stun.Tests</em> is a test suite for the <em>Libplanet.Stun.dll</em> assembly.
+Both depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in these corresponds to
+one in <em>Libplanet</em> or <em>Libplanet.Stun</em> projects.
+If there's <em>Libplanet.Foo.Bar</em> class there also should be
+<em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
+<p>To build and run unit tests at a time execute the below commands:</p>
+<pre><code>msbuild -r -t:Build,XunitTest Libplanet.Tests
+msbuild -r -t:Build,XunitTest Libplanet.Stun.Tests
 </code></pre>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
@@ -141,7 +140,7 @@ support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

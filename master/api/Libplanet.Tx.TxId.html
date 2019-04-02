@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Struct TxId
    | Libplanet ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,6 +83,7 @@ and 64 characters in hexadecimal.
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</div>
     <div><span class="xref">Uno.Equality.IKeyEquatable</span>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</div>
     <div><span class="xref">Uno.Equality.IKeyEquatable</span></div>
@@ -103,17 +104,18 @@ and 64 characters in hexadecimal.
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxId_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[GeneratedEquality]
-public struct TxId : IEquatable&lt;TxId&gt;, IKeyEquatable&lt;TxId&gt;, IKeyEquatable</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+[GeneratedEquality]
+public struct TxId : ISerializable, IEquatable&lt;TxId&gt;, IKeyEquatable&lt;TxId&gt;, IKeyEquatable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L43">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L46">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId__ctor_" data-uid="Libplanet.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxId__ctor_System_Byte___" data-uid="Libplanet.Tx.TxId.#ctor(System.Byte[])">TxId(Byte[])</h4>
@@ -169,17 +171,54 @@ the same to the required <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L72">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxId__ctor_" data-uid="Libplanet.Tx.TxId.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxId.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">TxId(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxId(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_Size.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_Size.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L30">View Source</a>
   </span>
   <h4 id="Libplanet_Tx_TxId_Size" data-uid="Libplanet.Tx.TxId.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> size that each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> takes.</p>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> takes.</p>
 <p>As a txid is a SHA-256 digest, it is 32 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s.
 </p>
 </div>
@@ -207,10 +246,10 @@ the same to the required <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L76">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L86">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_ByteArray_" data-uid="Libplanet.Tx.TxId.ByteArray*"></a>
   <h4 id="Libplanet_Tx_TxId_ByteArray" data-uid="Libplanet.Tx.TxId.ByteArray">ByteArray</h4>
@@ -250,10 +289,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L25">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L25">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_Equals_" data-uid="Libplanet.Tx.TxId.Equals*"></a>
   <h4 id="Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_" data-uid="Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId)">Equals(TxId)</h4>
@@ -297,10 +336,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L19">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L19">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_Equals_" data-uid="Libplanet.Tx.TxId.Equals*"></a>
   <h4 id="Libplanet_Tx_TxId_Equals_Libplanet_Tx_TxId_Libplanet_Tx_TxId_" data-uid="Libplanet.Tx.TxId.Equals(Libplanet.Tx.TxId,Libplanet.Tx.TxId)">Equals(TxId, TxId)</h4>
@@ -353,10 +392,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_Equals_" data-uid="Libplanet.Tx.TxId.Equals*"></a>
   <h4 id="Libplanet_Tx_TxId_Equals_System_Object_" data-uid="Libplanet.Tx.TxId.Equals(System.Object)">Equals(Object)</h4>
@@ -402,10 +441,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L66">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L66">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_GetHashCode_" data-uid="Libplanet.Tx.TxId.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_TxId_GetHashCode" data-uid="Libplanet.Tx.TxId.GetHashCode">GetHashCode()</h4>
@@ -434,10 +473,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_GetKeyHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetKeyHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_GetKeyHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetKeyHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L117">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_GetKeyHashCode_" data-uid="Libplanet.Tx.TxId.GetKeyHashCode*"></a>
   <h4 id="Libplanet_Tx_TxId_GetKeyHashCode" data-uid="Libplanet.Tx.TxId.GetKeyHashCode">GetKeyHashCode()</h4>
@@ -464,10 +503,47 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_KeyEquals_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.KeyEquals(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L97">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L130">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxId_GetObjectData_" data-uid="Libplanet.Tx.TxId.GetObjectData*"></a>
+  <h4 id="Libplanet_Tx_TxId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxId.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_KeyEquals_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.KeyEquals(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_KeyEquals_" data-uid="Libplanet.Tx.TxId.KeyEquals*"></a>
   <h4 id="Libplanet_Tx_TxId_KeyEquals_Libplanet_Tx_TxId_" data-uid="Libplanet.Tx.TxId.KeyEquals(Libplanet.Tx.TxId)">KeyEquals(TxId)</h4>
@@ -511,10 +587,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_KeyEquals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.KeyEquals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_KeyEquals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.KeyEquals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_KeyEquals_" data-uid="Libplanet.Tx.TxId.KeyEquals*"></a>
   <h4 id="Libplanet_Tx_TxId_KeyEquals_System_Object_" data-uid="Libplanet.Tx.TxId.KeyEquals(System.Object)">KeyEquals(Object)</h4>
@@ -558,10 +634,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L101">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L111">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_ToByteArray_" data-uid="Libplanet.Tx.TxId.ToByteArray*"></a>
   <h4 id="Libplanet_Tx_TxId_ToByteArray" data-uid="Libplanet.Tx.TxId.ToByteArray">ToByteArray()</h4>
@@ -600,10 +676,10 @@ the <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> object.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToHex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToHex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L118">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_ToHex_" data-uid="Libplanet.Tx.TxId.ToHex*"></a>
   <h4 id="Libplanet_Tx_TxId_ToHex" data-uid="Libplanet.Tx.TxId.ToHex">ToHex()</h4>
@@ -633,10 +709,10 @@ public string ToHex()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/Tx/TxId.cs/#L116">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Tx/TxId.cs/#L126">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_ToString_" data-uid="Libplanet.Tx.TxId.ToString*"></a>
   <h4 id="Libplanet_Tx_TxId_ToString" data-uid="Libplanet.Tx.TxId.ToString">ToString()</h4>
@@ -670,10 +746,10 @@ public override string ToString()</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_op_Equality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.op_Equality(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_op_Equality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.op_Equality(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L53">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_op_Equality_" data-uid="Libplanet.Tx.TxId.op_Equality*"></a>
   <h4 id="Libplanet_Tx_TxId_op_Equality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_" data-uid="Libplanet.Tx.TxId.op_Equality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)">Equality(TxId, TxId)</h4>
@@ -722,10 +798,10 @@ public override string ToString()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_op_Inequality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.op_Inequality(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId_op_Inequality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.op_Inequality(Libplanet.Tx.TxId%2CLibplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L59">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_op_Inequality_" data-uid="Libplanet.Tx.TxId.op_Inequality*"></a>
   <h4 id="Libplanet_Tx_TxId_op_Inequality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_" data-uid="Libplanet.Tx.TxId.op_Inequality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)">Inequality(TxId, TxId)</h4>
@@ -774,6 +850,9 @@ public override string ToString()</code></pre>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+  </div>
+  <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
   </div>
   <div>
@@ -794,10 +873,10 @@ public override string ToString()</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/new/master/apiSpec/new?filename=Libplanet_Tx_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Tx_TxId.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/TxId_51480BD7.g.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

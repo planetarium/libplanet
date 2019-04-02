@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace Libplanet.Serialization
+    <title>Delegate AccountStateGetter
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace Libplanet.Serialization
+    <meta name="title" content="Delegate AccountStateGetter
    | Libplanet ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,19 +68,60 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Serialization">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.AccountStateGetter">
   
-  <h1 id="Libplanet_Serialization" data-uid="Libplanet.Serialization" class="text-break">Namespace Libplanet.Serialization
+  
+  <h1 id="Libplanet_Action_AccountStateGetter" data-uid="Libplanet.Action.AccountStateGetter" class="text-break">Delegate AccountStateGetter
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>An delegate to provide read-only view of account states.</p>
+<p>Gets an account state of the given
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
+its account status, returns <code>null</code> instead of throwing
+any exception.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
-  </h3>
-      <h4><a class="xref" href="Libplanet.Serialization.BencodexFormatter-1.html">BencodexFormatter&lt;T&gt;</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Libplanet.Serialization.SerializationInfoExtension.html">SerializationInfoExtension</a></h4>
-      <section></section>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_AccountStateGetter_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public delegate object AccountStateGetter(Address address);</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>An address of the account to read
+its state.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><p>The account state if exists.  Otherwise <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -88,6 +129,12 @@
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Action_AccountStateGetter.md&amp;value=---%0Auid%3A%20Libplanet.Action.AccountStateGetter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Action/AccountStateGetter.cs/#L15" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

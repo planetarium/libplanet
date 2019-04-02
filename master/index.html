@@ -8,7 +8,7 @@
     <title>Libplanet | Libplanet </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Libplanet | Libplanet ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="images/favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -63,8 +63,8 @@
 <h1 id="libplanet">Libplanet</h1>
 
 <p><a href="https://discord.gg/ue9fgc3"><img src="https://img.shields.io/discord/539405872346955788.svg?color=7289da&amp;logo=discord&amp;logoColor=white" alt="Discord"></a>
-<a href="https://travis-ci.com/planetarium/libplanet.net"><img src="https://travis-ci.com/planetarium/libplanet.net.svg?branch=master" alt="Build Status"></a>
-<a href="https://codecov.io/gh/planetarium/libplanet.net"><img src="https://codecov.io/gh/planetarium/libplanet.net/branch/master/graph/badge.svg" alt="Codecov"></a>
+<a href="https://travis-ci.com/planetarium/libplanet"><img src="https://travis-ci.com/planetarium/libplanet.svg?branch=master" alt="Build Status"></a>
+<a href="https://codecov.io/gh/planetarium/libplanet"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a>
 <a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/v/Libplanet.svg?style=flat" alt="NuGet"></a>
 <a href="https://www.nuget.org/packages/Libplanet/"><img src="https://img.shields.io/nuget/vpre/Libplanet.svg?style=flat" alt="NuGet (prerelease)"></a></p>
 <p>Libplanet is a .NET library for creating multiplayer online game in
@@ -73,13 +73,31 @@ peer-to-peer network among equal nodes rather than an authorized central
 server.  Under the hood, it incorporates many features (e.g.,
 <a href="https://en.wikipedia.org/wiki/Digital_signature">digital signature</a>, <a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance">BFT</a> consensus, data replication) of a <a href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>.</p>
 <h2 id="nuget">NuGet</h2>
-<p>Although this project has never released any version, for everyday and every
-merge commit, it is packed into a <em>.nupkg</em> and uploaded to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> with
-a hyphen-suffixed version name.</p>
+<p>For every stable release, we pack Libplanet into a <em>.nupkg</em> and
+upload it to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> and GitHub <a href="https://github.com/planetarium/libplanet/releases">releases</a> page.
+(You can find changelog for versions from <a href="https://github.com/planetarium/libplanet/releases">releases</a> page.)
+To use Libplanet in your game, your project needs to add a dependency
+to <em>Libplanet</em> package.  On Visual Studio IDE, run the following command
+in Package Manager Console:</p>
+<pre><code>Install-Package Libplanet
+</code></pre>
+<p>If you prefer <code>dotnet</code> CLI run the following command instead:</p>
+<pre><code class="lang-bash">dotnet add package Libplanet
+</code></pre>
+<p>See also Microsoft's docs on <a href="https://docs.microsoft.com/nuget/consume-packages/ways-to-install-a-package">different ways to install NuGet package</a>.</p>
+<p>In addition to stable releases, we also provide pre-release packages.
+For everyday and every merge commit, it is packed into a <em>.nupkg</em>
+and uploaded to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> with a hyphen-suffixed version name.</p>
 <p>For a merge commit build, a version name is like <code>0.1.0-dev.123+20181231</code> where
 <code>123</code> is a build number in our CI system and <code>20181231</code> is a date of the build.
 For a daily build, a version name is like <code>0.1.0-nightly.20181231</code>.</p>
-<p>In the near future, we are going to submit it to <a href="https://assetstore.unity.com/">Unity Asset Store</a> too.</p>
+<p>Unfortuneatly, Unity currently does not support NuGet.  There are some Unity
+plug-ins to deal with NuGet package system, and these seem immature at present.
+To use Libplanet on Unity, you need to manually extract <em>Libplanet.dll</em>
+from <em>Libplanet.*.nupkg</em> file and place it inside of your Unity project.
+We are acknowledging the fact Libplanet is currently not very usable together
+with Unity, and promise to make it better in next few minor releases.
+In the near future, we are going to submit it to <a href="https://assetstore.unity.com/">Unity Asset Store</a> too.</p>
 <h2 id="build">Build</h2>
 <p>You could build a <em>Libplanet.dll</em> assembly from the source code.</p>
 <p>The following command installs dependencies (required library packages) and
@@ -98,7 +116,7 @@ please read our <a href="CONTRIBUTING.html">contributor guide</a>.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet.net/blob/master/Docs/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Docs/index.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

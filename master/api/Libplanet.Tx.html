@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace Libplanet.Tx
    | Libplanet ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -77,9 +77,11 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Libplanet.Tx.InvalidActionTypeException.html">InvalidActionTypeException</a></h4>
+      <section></section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a></h4>
-      <section><p>Serves as the base class for exceptions relevent to
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+      <section><p>Serves as the base class for exceptions thrown by
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Validate">Validate()</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxIdException.html">InvalidTxIdException</a></h4>
       <section><p>The exception that is thrown when a given <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> cannot be
@@ -87,16 +89,32 @@ found.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxPublicKeyException.html">InvalidTxPublicKeyException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Sender">Sender</a> is not derived from its
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> is not derived from its
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> is invalid.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html">InvalidTxUpdatedAddressesException</a></h4>
+      <section><p>The exception that is thrown when a given
+<a class="xref" href="Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException_TxId">TxId</a> cannot be found.
+The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a> try to update any
+<a class="xref" href="Libplanet.Address.html">Address</a>es that are not included in
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses">UpdatedAddresses</a> (i.e., <a class="xref" href="Libplanet.Address.html">Address</a>es that <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> granted to update.)</p>
+</section>
       <h4><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a></h4>
       <section><p>Consists of <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> and is signed to be included in
 a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and transmitted over the network.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html">UnexpectedlyTerminatedTxRehearsalException</a></h4>
+      <section><p>The exception that is thrown during a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
+is being created when one of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>
+throws some exception during rehearsal mode.</p>
+<p>The actual exception that the <a class="xref" href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html#Libplanet_Tx_UnexpectedlyTerminatedTxRehearsalException_Action">Action</a> threw
+is stored in the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.innerexception#System_Exception_InnerException">InnerException</a> property.</p>
 </section>
     <h3 id="structs">Structs
   </h3>

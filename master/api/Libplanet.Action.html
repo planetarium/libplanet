@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace Libplanet.Action
    | Libplanet ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -92,6 +92,19 @@ interface, the usage is same.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
+      <h4><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></h4>
+      <section><p>An interface to manipulate account states with
+maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a>.</p>
+<p>It is like a map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
+is mapped to <code>null</code>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
+but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
+<code>null</code> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</section>
       <h4><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></h4>
       <section><p>An in-game action.  Every action should be replayable, because
 multiple nodes in a network should execute an action and get the same
@@ -116,6 +129,16 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></h4>
+      <section><p>An delegate to provide read-only view of account states.</p>
+<p>Gets an account state of the given
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
+its account status, returns <code>null</code> instead of throwing
+any exception.</p>
 </section>
 </article>
           </div>
