@@ -41,20 +41,11 @@ namespace Libplanet.Action
         /// <c>null</c>.</returns>
         public static string ValueOf(Type actionType)
         {
-            string typeIdentifier = actionType
+            return actionType
                 .GetCustomAttributes()
                 .OfType<ActionTypeAttribute>()
                 .Select(attr => attr.TypeIdentifier)
                 .FirstOrDefault();
-
-            if (typeIdentifier is null)
-            {
-                throw new InvalidActionTypeException(
-                    "Action type should be annotated with ActionTypeAttribute."
-                );
-            }
-
-            return typeIdentifier;
         }
     }
 }

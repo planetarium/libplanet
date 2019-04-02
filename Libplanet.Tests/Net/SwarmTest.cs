@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Net
         private readonly FileStoreFixture _fx2;
         private readonly FileStoreFixture _fx3;
 
-        private readonly List<BlockChain<BaseAction>> _blockchains;
+        private readonly List<BlockChain<DumbAction>> _blockchains;
         private readonly List<Swarm> _swarms;
 
         public SwarmTest(ITestOutputHelper output)
@@ -40,16 +40,16 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
-            var policy = new BlockPolicy<BaseAction>();
+            var policy = new BlockPolicy<DumbAction>();
             _fx1 = new FileStoreFixture();
             _fx2 = new FileStoreFixture();
             _fx3 = new FileStoreFixture();
 
-            _blockchains = new List<BlockChain<BaseAction>>
+            _blockchains = new List<BlockChain<DumbAction>>
             {
-                new BlockChain<BaseAction>(policy, _fx1.Store),
-                new BlockChain<BaseAction>(policy, _fx2.Store),
-                new BlockChain<BaseAction>(policy, _fx3.Store),
+                new BlockChain<DumbAction>(policy, _fx1.Store),
+                new BlockChain<DumbAction>(policy, _fx2.Store),
+                new BlockChain<DumbAction>(policy, _fx3.Store),
             };
 
             _swarms = new List<Swarm>
@@ -82,7 +82,7 @@ namespace Libplanet.Tests.Net
         public async Task CanNotStartTwice()
         {
             Swarm swarm = _swarms[0];
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
 
             Task t = await Task.WhenAny(
                 swarm.StartAsync(chain),
@@ -99,7 +99,7 @@ namespace Libplanet.Tests.Net
         public async Task CanStop()
         {
             Swarm swarm = _swarms[0];
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
             Task task = await StartAsync(swarm, chain);
@@ -115,7 +115,7 @@ namespace Libplanet.Tests.Net
         public async Task CanWaitForRunning()
         {
             Swarm swarm = _swarms[0];
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
 
             Assert.False(swarm.Running);
 
@@ -145,12 +145,12 @@ namespace Libplanet.Tests.Net
             Swarm a = _swarms[0];
             Swarm b = _swarms[1];
 
-            BlockChain<BaseAction> chainA = _blockchains[0];
-            BlockChain<BaseAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
 
             Task CreateMiner(
                 Swarm swarm,
-                BlockChain<BaseAction> chain,
+                BlockChain<DumbAction> chain,
                 int delay,
                 CancellationToken cancellationToken
             )
@@ -212,7 +212,7 @@ namespace Libplanet.Tests.Net
             Swarm b = _swarms[1];
             Swarm c = _swarms[2];
 
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
 
             DateTimeOffset lastDistA;
             Peer aAsPeer;
@@ -336,7 +336,7 @@ namespace Libplanet.Tests.Net
         public async Task CanBeCancelled()
         {
             Swarm swarm = _swarms[0];
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
             var cts = new CancellationTokenSource();
 
             Task task = await StartAsync(
@@ -356,13 +356,13 @@ namespace Libplanet.Tests.Net
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
 
-            BlockChain<BaseAction> chainA = _blockchains[0];
-            BlockChain<BaseAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
 
-            Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
-            Block<BaseAction> block1 = chainA.MineBlock(_fx1.Address1);
-            Block<BaseAction> block2 = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> block1 = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> block2 = chainA.MineBlock(_fx1.Address1);
 
             try
             {
@@ -395,8 +395,8 @@ namespace Libplanet.Tests.Net
                     new[] { genesis.Hash, block1.Hash },
                     inventories2);
 
-                List<Block<BaseAction>> receivedBlocks =
-                    await swarmB.GetBlocksAsync<BaseAction>(
+                List<Block<DumbAction>> receivedBlocks =
+                    await swarmB.GetBlocksAsync<DumbAction>(
                         swarmA.AsPeer, inventories1
                     ).ToListAsync();
 
@@ -418,12 +418,12 @@ namespace Libplanet.Tests.Net
             Swarm swarmA = _swarms[0];
             Swarm swarmB = _swarms[1];
 
-            BlockChain<BaseAction> chainA = _blockchains[0];
-            BlockChain<BaseAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
 
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 new PrivateKey(),
-                new BaseAction[0]
+                new DumbAction[0]
             );
             chainB.StageTransactions(new[] { tx }.ToHashSet());
             chainB.MineBlock(_fx1.Address1);
@@ -434,13 +434,13 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB, chainB);
 
                 Assert.Throws<PeerNotFoundException>(
-                    () => swarmB.GetTxsAsync<BaseAction>(
+                    () => swarmB.GetTxsAsync<DumbAction>(
                         swarmA.AsPeer, new[] { tx.Id }));
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
 
-                List<Transaction<BaseAction>> txs =
-                    await swarmA.GetTxsAsync<BaseAction>(
+                List<Transaction<DumbAction>> txs =
+                    await swarmA.GetTxsAsync<DumbAction>(
                         swarmB.AsPeer, new[] { tx.Id }
                     ).ToListAsync();
 
@@ -461,13 +461,13 @@ namespace Libplanet.Tests.Net
             Swarm swarmB = _swarms[1];
             Swarm swarmC = _swarms[2];
 
-            BlockChain<BaseAction> chainA = _blockchains[0];
-            BlockChain<BaseAction> chainB = _blockchains[1];
-            BlockChain<BaseAction> chainC = _blockchains[2];
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainC = _blockchains[2];
 
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 new PrivateKey(),
-                new BaseAction[] { }
+                new DumbAction[] { }
             );
 
             chainA.StageTransactions(new[] { tx }.ToHashSet());
@@ -510,12 +510,12 @@ namespace Libplanet.Tests.Net
             Swarm swarmB = _swarms[1];
             Swarm swarmC = _swarms[2];
 
-            BlockChain<BaseAction> chainA = _blockchains[0];
-            BlockChain<BaseAction> chainB = _blockchains[1];
-            BlockChain<BaseAction> chainC = _blockchains[2];
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainC = _blockchains[2];
 
             // chainA, chainB and chainC shares genesis block.
-            Block<BaseAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
             chainC.Append(genesis);
 

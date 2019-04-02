@@ -14,128 +14,116 @@ namespace Libplanet.Action
     /// represented as fields or properties in an action class, and bound
     /// argument values to these parameters should be received through
     /// a constructor parameters of that class.</para>
-    /// <para>By convention, action classes are named with verb phrases, e.g.,
-    /// <c>Heal</c>, <c>Sell</c>.</para>
     /// </summary>
     /// <example>
-    /// The following example shows how to implement an action of a character
-    /// healing someone:
+    /// The following example shows how to implement an action of three types
+    /// of in-game logic:
     /// <code><![CDATA[
     /// using System;
-    /// using System.Collections.Generic;
+    /// using System.Collections.Immutable;
+    /// using Libplanet;
     /// using Libplanet.Action;
     ///
-    /// // Declare the unique identifier of an action type by marking
-    /// // it with ActionTypeAttribute.
-    /// [ActionType("heal")]
-    /// public class Heal : IAction
+    /// public class MyAction : IAction
     /// {
-    ///     const int RequiredMana = 10;
-    ///     const int HealedHealthMin = 10;
-    ///     const int HealedHealthMAx = 15;
+    ///     // Declare an enum type to distinguish types of in-game logic.
+    ///     public enum ActType { CreateCharacter, Attack, Heal }
     ///
     ///     // Declare properties (or fields) to store "bound" argument values.
-    ///     public CharacterId HealerId { get; private set; }
+    ///     public ActType Type { get; private set; }
     ///     public Address TargetAddress { get; private set; }
-    ///     public CharacterId TargetId { get; private set; }
+    ///
+    ///     // Action must has a public parameterless constructor.
+    ///     // Usually this is used only by Libplanet's internals.
+    ///     public MyAction() {}
     ///
     ///     // Take argument values to "bind" through constructor parameters.
-    ///     public Heal(CharacterId healerId,
-    ///                 TargetAddress tagetAddress,
-    ///                 CharacterId targetId)
+    ///     public MyAction(ActType type, Address targetAddress)
     ///     {
-    ///         HealerId = healerId;
+    ///         Type = type;
     ///         TargetAddress = targetAddress;
-    ///         TargetId = targetId;
     ///     }
     ///
     ///     // The main game logic belongs to here.  It takes the
     ///     // previous states through its parameter named context,
     ///     // and is offered "bound" argument values through
     ///     // its own properties (or fields).
-    ///     public AddressStateMap Execute(IActionContext context)
+    ///     IAccountStateDelta IAction.Execute(IActionContext context)
     ///     {
-    ///         // Gets the states immediately before this action is executed.
-    ///         // It is merely a null delta.
-    ///         IAccountStateDelta states = context.PreviousStates;
+    ///         // Gets the state immediately before this action is executed.
+    ///         // ImmutableDictionary<string, uint> is just for example,
+    ///         // As far as it is serializable, you can store any types.
+    ///         // (We recommend to use immutable types though.)
+    ///         var state = (ImmutableDictionary<string, uint>)
+    ///             context.PreviousStates.GetState(TargetAddress);
     ///
-    ///         // Suppose we already declared below in-game objects "Player"
-    ///         // and "Character".  These are immutable (as we highly
-    ///         // recommend) and methods like ".WithFoo(bar)" mean it copies
-    ///         // a game object and set new object's "Foo" property with "bar".
-    ///         Player signer = states.GetState(context.Signer) as Player;
-    ///         if (signer == null)
-    ///             throw new Exception("Signer's player was not made.");
+    ///         // This variable purposes to store the state
+    ///         // right after this action finishes.
+    ///         ImmutableDictionary<string, uint> nextState;
     ///
-    ///         Character healerPrev = signer.Characters[HealerId];
-    ///         if (healerPrev.Mana < RequiredMana)
-    ///             throw new Exception("The healer doesn't have enough mana.");
+    ///         // Does different things depending on the action's type.
+    ///         // This way is against the common principals of programming
+    ///         // as it is just an example.  You could compare this with
+    ///         // a better example of PolymorphicAction<T> class.
+    ///         switch (Type)
+    ///         {
+    ///             case ActType.CreateCharacter:
+    ///                 if (!TargetAddress.Equals(context.Signer))
+    ///                     throw new Exception(
+    ///                         "TargetAddress of CreateCharacter action " +
+    ///                         "only can be the same address to the " +
+    ///                         "Transaction<T>.Signer.");
+    ///                 else if (!(state is null))
+    ///                     throw new Exception(
+    ///                         "Character was already created.");
     ///
-    ///         Player receiver = states.GetState(TargetAddress) as Player;
-    ///         if (receiver == null)
-    ///             throw new Exception("Receiver's player was not made.");
+    ///                 nextState = ImmutableDictionary<string, uint>.Empty
+    ///                     .Add("hp", 20);
+    ///                 break;
     ///
-    ///         // The amount of health to be healed is randomly determined
-    ///         // in a range from 10 to 15 (see HealedHealthMin and
-    ///         // HealedHealthMax).  Note that it does not use System.Random.
-    ///         int healedHealth = context.Random.Next(
-    ///             HealedHealthMin,
-    ///             HealedHealthMax + 1  // As this is exclusive bound, add 1.
-    ///         );
+    ///             case ActType.Attack:
+    ///                 nextState =
+    ///                     state.SetItem("hp", Math.Max(state["hp"] - 5, 0));
+    ///                 break;
     ///
-    ///         // Prepares new game objects that represent states after
-    ///         // this action executes.  Note that Character objects are
-    ///         // immutable, so their properties do not have setter but
-    ///         // WithPropName() methods instead.
-    ///         Character targetPrev = receiver.Characters[TargetId];
-    ///         Character healerNext =
-    ///             healerPrev.WithMana(healerPrev.Mana - RequiredMana);
-    ///         Character targetNext = targetPrev.WithHealth(
-    ///             Math.Min(
-    ///                 targetPrev.Health + healedHealth,
-    ///                 targetPrev.MaxHealth
-    ///             )
-    ///         );
+    ///             case ActType.Heal:
+    ///                 nextState =
+    ///                     state.SetItem("hp", Math.Min(state["hp"] + 5, 20));
+    ///                 break;
+    ///
+    ///             default:
+    ///                 throw new Exception(
+    ///                     "Properties are not properly initialized.");
+    ///         }
     ///
     ///         // Builds a delta (dirty) from previous to next states, and
     ///         // returns it.
-    ///         return states.SetState(
-    ///             context.Signer,
-    ///             signer.WithCharacters(HealerId, healerNext)
-    ///         ).SetState(
-    ///             TargetAddress,
-    ///             receiver.WithCharacters(TargetId, targetNext)
-    ///         );
+    ///         return context.PreviousStates.SetState(TargetAddress,
+    ///             nextState);
     ///     }
     ///
     ///     // Serializes its "bound arguments" so that they are transmitted
     ///     // over network or stored to the persistent storage.
     ///     // It uses .NET's built-in serialization mechanism.
-    ///     public IImmutableDictionary<string, object> PlainValue =>
-    ///         new Dictionary<string, object>
-    ///         {
-    ///             {"healer_id", HealerId.ToInt()},
-    ///             {"target_address", TargetAddress.ToByteArray()},
-    ///             {"target_id", TargetId.ToInt()},
-    ///         }
+    ///     IImmutableDictionary<string, object> IAction.PlainValue =>
+    ///         ImmutableDictionary<string, object>.Empty
+    ///             .Add("type", Type)
+    ///             .Add("target_address", TargetAddress);
     ///
     ///     // Deserializes "bound arguments".  That is, it is inverse
     ///     // of PlainValue property.
-    ///     public void LoadPlainValue(
+    ///     void IAction.LoadPlainValue(
     ///         IImmutableDictionary<string, object> plainValue)
     ///     {
-    ///         HealerId = CharacterId.FromInt(plainValue["healer_id"] as int);
-    ///         TargetAddress = new Address(
-    ///             plainValue["target_address'] as byte[]
-    ///         );
-    ///         TargetId = CharacterId.FromInt(plainValue["target_id"] as int);
+    ///         Type = (ActType)plainValue["type"];
+    ///         TargetAddress = (Address)plainValue["target_address"];
     ///     }
     /// }
-    /// ]]></code></example>
-    /// <remarks>Every action class should be marked with the
-    /// <see cref="ActionTypeAttribute"/>.  Even if a superclass is marked
-    /// with the <see cref="ActionTypeAttribute"/> its subclass also should be
-    /// marked with the <see cref="ActionTypeAttribute"/>.</remarks>
+    /// ]]></code>
+    /// <para>Note that the above example has several bad practices.
+    /// Compare this example with <see cref="PolymorphicAction{T}"/>'s
+    /// example.</para>
+    /// </example>
     public interface IAction
     {
         /// <summary>

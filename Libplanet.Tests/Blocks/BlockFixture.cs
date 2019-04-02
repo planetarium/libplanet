@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Tx;
@@ -12,7 +13,7 @@ namespace Libplanet.Tests.Blocks
         {
             TxFixture = new TxFixture();
 
-            Genesis = TestUtils.MineGenesis<BaseAction>();
+            Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
             Next = TestUtils.MineNext(
                 Genesis,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 }
@@ -23,7 +24,7 @@ namespace Libplanet.Tests.Blocks
             };
             HasTx = TestUtils.MineNext(
                 Next,
-                new List<Transaction<BaseAction>>
+                new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
                     TxFixture.TxWithActions,
                 },
@@ -33,10 +34,10 @@ namespace Libplanet.Tests.Blocks
 
         internal TxFixture TxFixture { get; }
 
-        internal Block<BaseAction> Genesis { get; }
+        internal Block<PolymorphicAction<BaseAction>> Genesis { get; }
 
-        internal Block<BaseAction> Next { get; }
+        internal Block<PolymorphicAction<BaseAction>> Next { get; }
 
-        internal Block<BaseAction> HasTx { get; }
+        internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
     }
 }

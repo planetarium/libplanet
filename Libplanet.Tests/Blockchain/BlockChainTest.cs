@@ -17,13 +17,13 @@ namespace Libplanet.Tests.Blockchain
     public class BlockChainTest : IDisposable
     {
         private FileStoreFixture _fx;
-        private BlockChain<BaseAction> _blockChain;
+        private BlockChain<DumbAction> _blockChain;
 
         public BlockChainTest()
         {
             _fx = new FileStoreFixture();
-            _blockChain = new BlockChain<BaseAction>(
-                new BlockPolicy<BaseAction>(),
+            _blockChain = new BlockChain<DumbAction>(
+                new BlockPolicy<DumbAction>(),
                 _fx.Store
             );
         }
@@ -36,11 +36,11 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void CanMineBlock()
         {
-            Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(block, _blockChain);
 
-            Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
+            Block<DumbAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
             Assert.Contains(anotherBlock, _blockChain);
         }
@@ -50,10 +50,10 @@ namespace Libplanet.Tests.Blockchain
         {
             // use assignment to snooze compiler error (CS0201)
             Assert.Throws<IndexOutOfRangeException>(() => { var x = _blockChain[0]; });
-            Block<BaseAction> block = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
 
-            Block<BaseAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
+            Block<DumbAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
             Assert.Equal(anotherBlock, _blockChain[1]);
         }
 
@@ -70,7 +70,7 @@ namespace Libplanet.Tests.Blockchain
         public void CanStateTransactions()
         {
             Assert.Empty(_blockChain.Transactions);
-            var txs = new HashSet<Transaction<BaseAction>>()
+            var txs = new HashSet<Transaction<DumbAction>>()
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
@@ -106,15 +106,23 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
+            var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 new PrivateKey(),
-                actions1
+                actions1.Select(a => new PolymorphicAction<BaseAction>(a))
             );
 
-            _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
-            var lastBlock = _blockChain.MineBlock(_fx.Address1);
+            var chain = new BlockChain<PolymorphicAction<BaseAction>>(
+                new BlockPolicy<PolymorphicAction<BaseAction>>(),
+                _fx.Store
+            );
+            chain.StageTransactions(
+                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx1 }
+            );
+            var lastBlock = chain.MineBlock(_fx.Address1);
 
-            AddressStateMap states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
+            AddressStateMap states = chain.GetStates(
+                new List<Address> { _fx.Address1 }
+            );
             Assert.NotEmpty(states);
 
             var result = (BattleResult)states[_fx.Address1];
@@ -132,15 +140,17 @@ namespace Libplanet.Tests.Blockchain
                     TargetAddress = _fx.Address1,
                 },
             };
-            Transaction<BaseAction> tx2 = Transaction<BaseAction>.Create(
+            var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 new PrivateKey(),
-                actions2
+                actions2.Select(a => new PolymorphicAction<BaseAction>(a))
             );
 
-            _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx2 });
-            lastBlock = _blockChain.MineBlock(_fx.Address1);
+            chain.StageTransactions(
+                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx2 }
+            );
+            chain.MineBlock(_fx.Address1);
 
-            states = _blockChain.GetStates(new List<Address> { _fx.Address1 });
+            states = chain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
         }
@@ -189,7 +199,7 @@ namespace Libplanet.Tests.Blockchain
             var block2 = _blockChain.MineBlock(_fx.Address1);
             var block3 = _blockChain.MineBlock(_fx.Address1);
 
-            BlockChain<BaseAction> forked = _blockChain.Fork(block2.Hash);
+            BlockChain<DumbAction> forked = _blockChain.Fork(block2.Hash);
 
             Assert.Equal(new[] { block1, block2, block3 }, _blockChain);
             Assert.Equal(new[] { block1, block2 }, forked);
@@ -198,7 +208,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void CanGetBlockLocator()
         {
-            List<Block<BaseAction>> blocks = Enumerable.Range(0, 10)
+            List<Block<DumbAction>> blocks = Enumerable.Range(0, 10)
                 .Select(_ => _blockChain.MineBlock(_fx.Address1))
                 .ToList();
 
@@ -224,14 +234,20 @@ namespace Libplanet.Tests.Blockchain
             long blockIndex = 0;
 
             TestEvaluateAction action = new TestEvaluateAction();
-            Transaction<BaseAction> tx1 = Transaction<BaseAction>.Create(
+            var tx1 = Transaction<TestEvaluateAction>.Create(
                 fromPrivateKey,
                 new[] { action }
             );
 
-            _blockChain.StageTransactions(new HashSet<Transaction<BaseAction>> { tx1 });
-            _blockChain.MineBlock(_fx.Address1);
-            var states = _blockChain.GetStates(new[]
+            var chain = new BlockChain<TestEvaluateAction>(
+                new BlockPolicy<TestEvaluateAction>(),
+                _fx.Store
+            );
+            chain.StageTransactions(
+                new HashSet<Transaction<TestEvaluateAction>> { tx1 }
+            );
+            chain.MineBlock(_fx.Address1);
+            var states = chain.GetStates(new[]
             {
                 TestEvaluateAction.SignerKey,
                 TestEvaluateAction.BlockIndexKey,
@@ -244,19 +260,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
 
-        [Fact]
-        public void DetectInvalidActionType()
-        {
-            var privateKey = new PrivateKey();
-            var action = new ActionNotAttributeAnnotated();
-
-            Assert.Throws<InvalidActionTypeException>(
-                () => Transaction<BaseAction>.Create(
-                privateKey, new[] { action }));
-        }
-
-        [ActionType("test")]
-        private class TestEvaluateAction : BaseAction
+        private sealed class TestEvaluateAction : IAction
         {
             public static readonly Address SignerKey =
                 new PrivateKey().PublicKey.ToAddress();
@@ -264,35 +268,23 @@ namespace Libplanet.Tests.Blockchain
             public static readonly Address BlockIndexKey =
                 new PrivateKey().PublicKey.ToAddress();
 
-            public override IImmutableDictionary<string, object> PlainValue =>
+            public TestEvaluateAction()
+            {
+            }
+
+            public IImmutableDictionary<string, object> PlainValue =>
                 new Dictionary<string, object>().ToImmutableDictionary();
 
-            public override void LoadPlainValue(
+            public void LoadPlainValue(
                 IImmutableDictionary<string, object> plainValue)
             {
             }
 
-            public override IAccountStateDelta Execute(IActionContext context)
+            public IAccountStateDelta Execute(IActionContext context)
             {
                 return context.PreviousStates
                     .SetState(SignerKey, context.Signer.ToHex())
                     .SetState(BlockIndexKey, context.BlockIndex);
-            }
-        }
-
-        private class ActionNotAttributeAnnotated : BaseAction
-        {
-            public override IImmutableDictionary<string, object> PlainValue =>
-                new Dictionary<string, object>().ToImmutableDictionary();
-
-            public override void LoadPlainValue(
-                IImmutableDictionary<string, object> plainValue)
-            {
-            }
-
-            public override IAccountStateDelta Execute(IActionContext context)
-            {
-                return context.PreviousStates;
             }
         }
     }

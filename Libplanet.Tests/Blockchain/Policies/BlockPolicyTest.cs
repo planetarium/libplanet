@@ -29,34 +29,34 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<BaseAction>(tenSec);
+            var a = new BlockPolicy<DumbAction>(tenSec);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<BaseAction>(65000);
+            var b = new BlockPolicy<DumbAction>(65000);
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval
             );
 
-            var c = new BlockPolicy<BaseAction>();
+            var c = new BlockPolicy<DumbAction>();
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval
             );
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<BaseAction>(tenSec.Negate())
+                () => new BlockPolicy<DumbAction>(tenSec.Negate())
             );
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<BaseAction>(-5)
+                () => new BlockPolicy<DumbAction>(-5)
             );
         }
 
         [Fact]
         public void GetNextBlockDifficulty()
         {
-            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3, 0, 0));
-            Block<BaseAction>[] blocks = MineBlocks(
+            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0));
+            Block<DumbAction>[] blocks = MineBlocks(
                 new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2), (13, 3) }
             ).ToArray();
 
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateBlocks()
         {
-            var policy = new BlockPolicy<BaseAction>(new TimeSpan(3, 0, 0));
+            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0));
 
             // The genesis block must has the index #0.
             Assert.IsType<InvalidBlockIndexException>(
@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             );
         }
 
-        private IEnumerable<Block<BaseAction>> MineBlocks(
+        private IEnumerable<Block<DumbAction>> MineBlocks(
             (int, int)[] blockArgs,
             Func<BlockFields, BlockFields> interprocess = null
         )
@@ -251,13 +251,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                     timestamp = fields.Timestamp;
                 }
 
-                Block<BaseAction> block = Block<BaseAction>.Mine(
+                Block<DumbAction> block = Block<DumbAction>.Mine(
                     i,
                     difficulty,
                     miner,
                     previousHash,
                     timestamp,
-                    new Transaction<BaseAction>[0]
+                    new Transaction<DumbAction>[0]
                 );
                 _output.WriteLine(
                     $"#{i}: {block.Hash}, difficulty={block.Difficulty}, " +

@@ -10,12 +10,12 @@ namespace Libplanet.Tests.Store
     public class TransactionSetTest : IDisposable
     {
         private readonly FileStoreFixture _fx;
-        private readonly TransactionSet<BaseAction> _set;
+        private readonly TransactionSet<DumbAction> _set;
 
         public TransactionSetTest()
         {
             _fx = new FileStoreFixture();
-            _set = new TransactionSet<BaseAction>(_fx.Store);
+            _set = new TransactionSet<DumbAction>(_fx.Store);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Store
                 _set.Keys.ToHashSet());
 
             Assert.Equal(
-                new HashSet<Transaction<BaseAction>>()
+                new HashSet<Transaction<DumbAction>>()
                 {
                     _fx.Transaction1,
                     _fx.Transaction2,
