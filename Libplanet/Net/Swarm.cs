@@ -288,6 +288,14 @@ namespace Libplanet.Net
                         );
                         continue;
                     }
+                    catch (DifferentProtocolVersionException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"DialPeerAsync({peer}) failed. ignored."
+                        );
+                        continue;
+                    }
                 }
             }
 
@@ -298,9 +306,27 @@ namespace Libplanet.Net
         {
             if (Running)
             {
-                var task = DialPeerAsync(item, CancellationToken.None);
-                Peer dialed = task.Result;
-                _peers[dialed] = DateTimeOffset.UtcNow;
+                try
+                {
+                    var task = DialPeerAsync(item, CancellationToken.None);
+                    Peer dialed = task.Result;
+                    _peers[dialed] = DateTimeOffset.UtcNow;
+                }
+                catch (AggregateException e)
+                {
+                    e.Handle((x) =>
+                    {
+                        if (!(x is DifferentProtocolVersionException))
+                        {
+                            return false;
+                        }
+
+                        _logger.Error(
+                            e,
+                            $"Protocol Version is different ({item}).");
+                        return true;
+                    });
+                }
             }
             else
             {
@@ -471,6 +497,12 @@ namespace Libplanet.Net
                                 $"IOException occured ({peer})."
                             );
                             continue;
+                        }
+                        catch (DifferentProtocolVersionException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"Protocol Version is different ({peer}).");
                         }
                     }
                 }
@@ -1300,7 +1332,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<DealerSocket> DialAsync(
+        private async Task<Pong> DialAsync(
             string address,
             DealerSocket dealer,
             CancellationToken cancellationToken
@@ -1317,13 +1349,20 @@ namespace Libplanet.Net
                 cancellationToken: cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
-            await dealer.ReceiveMultipartMessageAsync(
+            NetMQMessage message = await dealer.ReceiveMultipartMessageAsync(
                 timeout: _dialTimeout,
                 cancellationToken: cancellationToken);
 
-            _logger.Debug($"Pong received.");
+            Message parsedMessage = Message.Parse(message, true);
+            if (parsedMessage is Pong pong)
+            {
+                _logger.Debug($"Pong received.");
+                return pong;
+            }
 
-            return dealer;
+            throw new InvalidMessageException(
+                $"The response of Ping isn't Pong. " +
+                $"but {parsedMessage}");
         }
 
         private async Task<Peer> DialPeerAsync(
@@ -1335,11 +1374,19 @@ namespace Libplanet.Net
             try
             {
                 _logger.Debug($"Trying to DialAsync({peer.EndPoint})...");
-                await DialAsync(
+                Pong pong = await DialAsync(
                     ToNetMQAddress(peer),
                     dealer,
                     cancellationToken);
                 _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
+
+                if (pong.ProtocolVersion != _protocolVersion)
+                {
+                    dealer.Dispose();
+                    throw new DifferentProtocolVersionException(
+                        $"Peer protocol version({pong.ProtocolVersion}) is " +
+                        "different.");
+                }
 
                 _dealers[peer.Address] = dealer;
             }

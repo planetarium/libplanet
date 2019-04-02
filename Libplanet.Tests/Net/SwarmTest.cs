@@ -306,6 +306,54 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
+        public async Task DetectProtocolVersion()
+        {
+            var a = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback,
+                protocolVersion: 2);
+            var b = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback,
+                protocolVersion: 3);
+
+            var c = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback,
+                protocolVersion: 2);
+            var d = new Swarm(
+                new PrivateKey(),
+                ipAddress: IPAddress.Loopback,
+                protocolVersion: 3);
+
+            BlockChain<BaseAction> chain = _blockchains[0];
+
+            try
+            {
+                await StartAsync(a, chain);
+                await StartAsync(b, chain);
+                await StartAsync(c, chain);
+                await StartAsync(d, chain);
+
+                var peers = new[] { c.AsPeer, d.AsPeer };
+
+                foreach (var peer in peers)
+                {
+                    a.Add(peer);
+                    b.Add(peer);
+                }
+
+                Assert.Equal(new[] { c.AsPeer }, a.ToArray());
+                Assert.Equal(new[] { d.AsPeer }, b.ToArray());
+            }
+            finally
+            {
+                await a.StopAsync();
+                await b.StopAsync();
+            }
+        }
+
+        [Fact]
         public void BeComparedProperly()
         {
             var pk1 = new PrivateKey();
