@@ -94,12 +94,15 @@ can be used by Libplanet-backed games/apps too.</p>
   <div classs="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
-    <div><span class="xref">Uno.Equality.IKeyEquatable</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</div>
-    <div><span class="xref">Uno.Equality.IKeyEquatable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a>
+    </div>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
     </div>
@@ -116,7 +119,7 @@ can be used by Libplanet-backed games/apps too.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
 [GeneratedEquality]
-public struct Address : ISerializable, IEquatable&lt;Address&gt;, IKeyEquatable&lt;Address&gt;, IKeyEquatable</code></pre>
+public struct Address : ISerializable</code></pre>
   </div>
   <h5 id="Libplanet_Address_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
@@ -125,10 +128,10 @@ public struct Address : ISerializable, IEquatable&lt;Address&gt;, IKeyEquatable&
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L110">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)">Address(PublicKey)</h4>
@@ -168,10 +171,10 @@ the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L69">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L69">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_Byte___" data-uid="Libplanet.Address.#ctor(System.Byte[])">Address(Byte[])</h4>
@@ -233,10 +236,10 @@ passed to <code data-dev-comment-type="paramref" class="paramref">address</code>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L92">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L92">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">Address(SerializationInfo, StreamingContext)</h4>
@@ -270,10 +273,10 @@ passed to <code data-dev-comment-type="paramref" class="paramref">address</code>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L132">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L132">View Source</a>
   </span>
   <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
   <h4 id="Libplanet_Address__ctor_System_String_" data-uid="Libplanet.Address.#ctor(System.String)">Address(String)</h4>
@@ -341,10 +344,10 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_Size.md&amp;value=---%0Auid%3A%20Libplanet.Address.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_Size.md&amp;value=---%0Auid%3A%20Libplanet.Address.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L50">View Source</a>
   </span>
   <h4 id="Libplanet_Address_Size" data-uid="Libplanet.Address.Size">Size</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Address.html">Address</a> takes.</p>
@@ -374,10 +377,10 @@ passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L144">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Address_ByteArray_" data-uid="Libplanet.Address.ByteArray*"></a>
   <h4 id="Libplanet_Address_ByteArray" data-uid="Libplanet.Address.ByteArray">ByteArray</h4>
@@ -416,224 +419,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_Equals_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.Equals(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L25">View Source</a>
-  </span>
-  <a id="Libplanet_Address_Equals_" data-uid="Libplanet.Address.Equals*"></a>
-  <h4 id="Libplanet_Address_Equals_Libplanet_Address_" data-uid="Libplanet.Address.Equals(Libplanet.Address)">Equals(Address)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(Address other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_Equals_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.Equals(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L19">View Source</a>
-  </span>
-  <a id="Libplanet_Address_Equals_" data-uid="Libplanet.Address.Equals*"></a>
-  <h4 id="Libplanet_Address_Equals_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Address.Equals(Libplanet.Address,Libplanet.Address)">Equals(Address, Address)</h4>
-  <div class="markdown level1 summary"><p>Checks two instances of Address for equality.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool Equals(Address a, Address b)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">a</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">b</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_Address_Equals_Libplanet_Address_Libplanet_Address__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>You can also simply use the overriden '==' and '!=' operators.</p>
-</div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Address.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L31">View Source</a>
-  </span>
-  <a id="Libplanet_Address_Equals_" data-uid="Libplanet.Address.Equals*"></a>
-  <h4 id="Libplanet_Address_Equals_System_Object_" data-uid="Libplanet.Address.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L66">View Source</a>
-  </span>
-  <a id="Libplanet_Address_GetHashCode_" data-uid="Libplanet.Address.GetHashCode*"></a>
-  <h4 id="Libplanet_Address_GetHashCode" data-uid="Libplanet.Address.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_GetKeyHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetKeyHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L119">View Source</a>
-  </span>
-  <a id="Libplanet_Address_GetKeyHashCode_" data-uid="Libplanet.Address.GetKeyHashCode*"></a>
-  <h4 id="Libplanet_Address_GetKeyHashCode" data-uid="Libplanet.Address.GetKeyHashCode">GetKeyHashCode()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetKeyHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L217">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L217">View Source</a>
   </span>
   <a id="Libplanet_Address_GetObjectData_" data-uid="Libplanet.Address.GetObjectData*"></a>
   <h4 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -667,104 +456,10 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_KeyEquals_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.KeyEquals(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L99">View Source</a>
-  </span>
-  <a id="Libplanet_Address_KeyEquals_" data-uid="Libplanet.Address.KeyEquals*"></a>
-  <h4 id="Libplanet_Address_KeyEquals_Libplanet_Address_" data-uid="Libplanet.Address.KeyEquals(Libplanet.Address)">KeyEquals(Address)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool KeyEquals(Address other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_KeyEquals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Address.KeyEquals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L94">View Source</a>
-  </span>
-  <a id="Libplanet_Address_KeyEquals_" data-uid="Libplanet.Address.KeyEquals*"></a>
-  <h4 id="Libplanet_Address_KeyEquals_System_Object_" data-uid="Libplanet.Address.KeyEquals(System.Object)">KeyEquals(Object)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool KeyEquals(object other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L168">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L168">View Source</a>
   </span>
   <a id="Libplanet_Address_ToByteArray_" data-uid="Libplanet.Address.ToByteArray*"></a>
   <h4 id="Libplanet_Address_ToByteArray" data-uid="Libplanet.Address.ToByteArray">ToByteArray()</h4>
@@ -803,10 +498,10 @@ this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToHex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToHex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L187">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L187">View Source</a>
   </span>
   <a id="Libplanet_Address_ToHex_" data-uid="Libplanet.Address.ToHex*"></a>
   <h4 id="Libplanet_Address_ToHex" data-uid="Libplanet.Address.ToHex">ToHex()</h4>
@@ -853,10 +548,10 @@ method instead.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/Address.cs/#L210">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L210">View Source</a>
   </span>
   <a id="Libplanet_Address_ToString_" data-uid="Libplanet.Address.ToString*"></a>
   <h4 id="Libplanet_Address_ToString" data-uid="Libplanet.Address.ToString">ToString()</h4>
@@ -903,124 +598,9 @@ instead.</p>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToHex">ToHex()</a></div>
   </div>
-  <h3 id="operators">Operators
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.op_Equality(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L53">View Source</a>
-  </span>
-  <a id="Libplanet_Address_op_Equality_" data-uid="Libplanet.Address.op_Equality*"></a>
-  <h4 id="Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)">Equality(Address, Address)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(Address a, Address b)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">a</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">b</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address_op_Inequality_Libplanet_Address_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Address.op_Inequality(Libplanet.Address%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L59">View Source</a>
-  </span>
-  <a id="Libplanet_Address_op_Inequality_" data-uid="Libplanet.Address.op_Inequality*"></a>
-  <h4 id="Libplanet_Address_op_Inequality_Libplanet_Address_Libplanet_Address_" data-uid="Libplanet.Address.op_Inequality(Libplanet.Address,Libplanet.Address)">Inequality(Address, Address)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(Address a, Address b)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">a</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
-        <td><span class="parametername">b</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
-  </div>
-  <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
-  </div>
-  <div>
-      <span class="xref">Uno.Equality.IKeyEquatable&lt;T&gt;</span>
-  </div>
-  <div>
-      <span class="xref">Uno.Equality.IKeyEquatable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">
@@ -1034,10 +614,10 @@ instead.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/578beed6e0b895dcc8629fa91efd716c25a2a6b3/apiSpec/new?filename=Libplanet_Address.md&amp;value=---%0Auid%3A%20Libplanet.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Address.md&amp;value=---%0Auid%3A%20Libplanet.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/578beed6e0b895dcc8629fa91efd716c25a2a6b3/Libplanet/obj/Release/netstandard2.0/g/EqualityGenerator/Address_17837EF5.g.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Address.cs/#L41" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
