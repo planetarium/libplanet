@@ -39,6 +39,7 @@ namespace Libplanet.Net
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
+        private readonly int _appProtocolVersion;
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
@@ -57,6 +58,7 @@ namespace Libplanet.Net
 
         public Swarm(
             PrivateKey privateKey,
+            int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
             IPAddress ipAddress = null,
             int? listenPort = null,
@@ -64,6 +66,7 @@ namespace Libplanet.Net
             IEnumerable<IceServer> iceServers = null)
             : this(
                   privateKey,
+                  appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                   ipAddress,
                   listenPort,
@@ -74,6 +77,7 @@ namespace Libplanet.Net
 
         public Swarm(
             PrivateKey privateKey,
+            int appProtocolVersion,
             TimeSpan dialTimeout,
             IPAddress ipAddress = null,
             int? listenPort = null,
@@ -109,6 +113,7 @@ namespace Libplanet.Net
 
             _ipAddress = ipAddress;
             _listenPort = listenPort;
+            _appProtocolVersion = appProtocolVersion;
 
             if (_ipAddress != null && _listenPort != null)
             {
@@ -283,6 +288,14 @@ namespace Libplanet.Net
                         );
                         continue;
                     }
+                    catch (DifferentAppProtocolVersionException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"DialPeerAsync({peer}) failed. ignored."
+                        );
+                        continue;
+                    }
                 }
             }
 
@@ -293,9 +306,27 @@ namespace Libplanet.Net
         {
             if (Running)
             {
-                var task = DialPeerAsync(item, CancellationToken.None);
-                Peer dialed = task.Result;
-                _peers[dialed] = DateTimeOffset.UtcNow;
+                try
+                {
+                    var task = DialPeerAsync(item, CancellationToken.None);
+                    Peer dialed = task.Result;
+                    _peers[dialed] = DateTimeOffset.UtcNow;
+                }
+                catch (AggregateException e)
+                {
+                    e.Handle((x) =>
+                    {
+                        if (!(x is DifferentAppProtocolVersionException))
+                        {
+                            return false;
+                        }
+
+                        _logger.Error(
+                            e,
+                            $"Protocol Version is different ({item}).");
+                        return true;
+                    });
+                }
             }
             else
             {
@@ -466,6 +497,12 @@ namespace Libplanet.Net
                                 $"IOException occured ({peer})."
                             );
                             continue;
+                        }
+                        catch (DifferentAppProtocolVersionException e)
+                        {
+                            _logger.Error(
+                                e,
+                                $"Protocol Version is different ({peer}).");
                         }
                     }
                 }
@@ -787,7 +824,7 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        var reply = new Pong
+                        var reply = new Pong(_appProtocolVersion)
                         {
                             Identity = ping.Identity,
                         };
@@ -1295,7 +1332,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<DealerSocket> DialAsync(
+        private async Task<Pong> DialAsync(
             string address,
             DealerSocket dealer,
             CancellationToken cancellationToken
@@ -1312,13 +1349,20 @@ namespace Libplanet.Net
                 cancellationToken: cancellationToken);
 
             _logger.Debug($"Waiting for Pong from [{address}]...");
-            await dealer.ReceiveMultipartMessageAsync(
+            NetMQMessage message = await dealer.ReceiveMultipartMessageAsync(
                 timeout: _dialTimeout,
                 cancellationToken: cancellationToken);
 
-            _logger.Debug($"Pong received.");
+            Message parsedMessage = Message.Parse(message, true);
+            if (parsedMessage is Pong pong)
+            {
+                _logger.Debug($"Pong received.");
+                return pong;
+            }
 
-            return dealer;
+            throw new InvalidMessageException(
+                $"The response of Ping isn't Pong. " +
+                $"but {parsedMessage}");
         }
 
         private async Task<Peer> DialPeerAsync(
@@ -1330,11 +1374,20 @@ namespace Libplanet.Net
             try
             {
                 _logger.Debug($"Trying to DialAsync({peer.EndPoint})...");
-                await DialAsync(
+                Pong pong = await DialAsync(
                     ToNetMQAddress(peer),
                     dealer,
                     cancellationToken);
                 _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
+
+                if (pong.AppProtocolVersion != _appProtocolVersion)
+                {
+                    dealer.Dispose();
+                    throw new DifferentAppProtocolVersionException(
+                        $"Peer protocol version is different.",
+                        _appProtocolVersion,
+                        pong.AppProtocolVersion);
+                }
 
                 _dealers[peer.Address] = dealer;
             }

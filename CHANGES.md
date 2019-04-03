@@ -174,11 +174,14 @@ To be released.
     `MissingActionTypeException` at runtime.  [[#28], [#144], [#169]]
  -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
+ -  Made `Swarm` possible to configure its network `appProtocolVersion` and,
+    to ignore peers if their version is different.  [[#167]], [[#170]]
 
 [#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
 [#120]: https://github.com/planetarium/libplanet/issues/120
+[#167]: https://github.com/planetarium/libplanet/issues/167
 [#121]: https://github.com/planetarium/libplanet/pull/121
 [#123]: https://github.com/planetarium/libplanet/pull/123
 [#124]: https://github.com/planetarium/libplanet/pull/124
@@ -194,6 +197,7 @@ To be released.
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
 [#169]: https://github.com/planetarium/libplanet/pull/169
+[#170]: https://github.com/planetarium/libplanet/pull/170
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 
