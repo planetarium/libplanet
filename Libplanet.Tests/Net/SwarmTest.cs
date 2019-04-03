@@ -326,7 +326,7 @@ namespace Libplanet.Tests.Net
                 ipAddress: IPAddress.Loopback,
                 protocolVersion: 3);
 
-            BlockChain<BaseAction> chain = _blockchains[0];
+            BlockChain<DumbAction> chain = _blockchains[0];
 
             try
             {
