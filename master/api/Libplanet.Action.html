@@ -90,6 +90,20 @@ and values are their state.</p>
 <p>Since this implements <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary&lt;TKey,TValue&gt;</a>
 interface, the usage is same.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
+      <section><p>The exception that is thrown when an action class without
+<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> is tried to used with
+<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a></h4>
+      <section><p>A decorator to enable subtype polymorphism for action classes.</p>
+<p>By convention, concrete action subclasses are named with verb
+phrases, e.g., <code>Heal</code>, <code>Sell</code>.</p>
+<p>One downside of this compared to the vanilla <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+is the fact that it uses reflection under the hood.  This may cause
+compatibility issues on certain platforms, and is slightly slower.
+</p>
+</section>
     <h3 id="interfaces">Interfaces
   </h3>
       <h4><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></h4>
@@ -117,8 +131,6 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
-<p>By convention, action classes are named with verb phrases, e.g.,
-<code>Heal</code>, <code>Sell</code>.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
       <section><p>Contextual data determined by a transaction and a block.

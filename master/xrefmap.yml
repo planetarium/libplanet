@@ -581,6 +581,160 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IRandom.NextDouble
   nameWithType: IRandom.NextDouble
+- uid: Libplanet.Action.MissingActionTypeException
+  name: MissingActionTypeException
+  href: api/Libplanet.Action.MissingActionTypeException.html
+  commentId: T:Libplanet.Action.MissingActionTypeException
+  fullName: Libplanet.Action.MissingActionTypeException
+  nameWithType: MissingActionTypeException
+- uid: Libplanet.Action.MissingActionTypeException.#ctor(System.Type,System.String)
+  name: MissingActionTypeException(Type, String)
+  href: api/Libplanet.Action.MissingActionTypeException.html#Libplanet_Action_MissingActionTypeException__ctor_System_Type_System_String_
+  commentId: M:Libplanet.Action.MissingActionTypeException.#ctor(System.Type,System.String)
+  fullName: Libplanet.Action.MissingActionTypeException.MissingActionTypeException(System.Type, System.String)
+  nameWithType: MissingActionTypeException.MissingActionTypeException(Type, String)
+- uid: Libplanet.Action.MissingActionTypeException.#ctor*
+  name: MissingActionTypeException
+  href: api/Libplanet.Action.MissingActionTypeException.html#Libplanet_Action_MissingActionTypeException__ctor_
+  commentId: Overload:Libplanet.Action.MissingActionTypeException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.MissingActionTypeException.MissingActionTypeException
+  nameWithType: MissingActionTypeException.MissingActionTypeException
+- uid: Libplanet.Action.MissingActionTypeException.ActionType
+  name: ActionType
+  href: api/Libplanet.Action.MissingActionTypeException.html#Libplanet_Action_MissingActionTypeException_ActionType
+  commentId: P:Libplanet.Action.MissingActionTypeException.ActionType
+  fullName: Libplanet.Action.MissingActionTypeException.ActionType
+  nameWithType: MissingActionTypeException.ActionType
+- uid: Libplanet.Action.MissingActionTypeException.ActionType*
+  name: ActionType
+  href: api/Libplanet.Action.MissingActionTypeException.html#Libplanet_Action_MissingActionTypeException_ActionType_
+  commentId: Overload:Libplanet.Action.MissingActionTypeException.ActionType
+  isSpec: "True"
+  fullName: Libplanet.Action.MissingActionTypeException.ActionType
+  nameWithType: MissingActionTypeException.ActionType
+- uid: Libplanet.Action.PolymorphicAction`1
+  name: PolymorphicAction<T>
+  href: api/Libplanet.Action.PolymorphicAction-1.html
+  commentId: T:Libplanet.Action.PolymorphicAction`1
+  name.vb: PolymorphicAction(Of T)
+  fullName: Libplanet.Action.PolymorphicAction<T>
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T)
+  nameWithType: PolymorphicAction<T>
+  nameWithType.vb: PolymorphicAction(Of T)
+- uid: Libplanet.Action.PolymorphicAction`1.#ctor
+  name: PolymorphicAction()
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1__ctor
+  commentId: M:Libplanet.Action.PolymorphicAction`1.#ctor
+  fullName: Libplanet.Action.PolymorphicAction<T>.PolymorphicAction()
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PolymorphicAction()
+  nameWithType: PolymorphicAction<T>.PolymorphicAction()
+  nameWithType.vb: PolymorphicAction(Of T).PolymorphicAction()
+- uid: Libplanet.Action.PolymorphicAction`1.#ctor(`0)
+  name: PolymorphicAction(T)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1__ctor__0_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.#ctor(`0)
+  fullName: Libplanet.Action.PolymorphicAction<T>.PolymorphicAction(T)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PolymorphicAction(T)
+  nameWithType: PolymorphicAction<T>.PolymorphicAction(T)
+  nameWithType.vb: PolymorphicAction(Of T).PolymorphicAction(T)
+- uid: Libplanet.Action.PolymorphicAction`1.#ctor*
+  name: PolymorphicAction
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1__ctor_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.PolymorphicAction
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PolymorphicAction
+  nameWithType: PolymorphicAction<T>.PolymorphicAction
+  nameWithType.vb: PolymorphicAction(Of T).PolymorphicAction
+- uid: Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)
+  name: Execute(IActionContext)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)
+  fullName: Libplanet.Action.PolymorphicAction<T>.Execute(Libplanet.Action.IActionContext)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Execute(Libplanet.Action.IActionContext)
+  nameWithType: PolymorphicAction<T>.Execute(IActionContext)
+  nameWithType.vb: PolymorphicAction(Of T).Execute(IActionContext)
+- uid: Libplanet.Action.PolymorphicAction`1.Execute*
+  name: Execute
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Execute_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.Execute
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.Execute
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Execute
+  nameWithType: PolymorphicAction<T>.Execute
+  nameWithType.vb: PolymorphicAction(Of T).Execute
+- uid: Libplanet.Action.PolymorphicAction`1.InnerAction
+  name: InnerAction
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction
+  commentId: P:Libplanet.Action.PolymorphicAction`1.InnerAction
+  fullName: Libplanet.Action.PolymorphicAction<T>.InnerAction
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).InnerAction
+  nameWithType: PolymorphicAction<T>.InnerAction
+  nameWithType.vb: PolymorphicAction(Of T).InnerAction
+- uid: Libplanet.Action.PolymorphicAction`1.InnerAction*
+  name: InnerAction
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_InnerAction_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.InnerAction
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.InnerAction
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).InnerAction
+  nameWithType: PolymorphicAction<T>.InnerAction
+  nameWithType.vb: PolymorphicAction(Of T).InnerAction
+- uid: Libplanet.Action.PolymorphicAction`1.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})
+  name: LoadPlainValue(IImmutableDictionary<String, Object>)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__
+  commentId: M:Libplanet.Action.PolymorphicAction`1.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})
+  name.vb: LoadPlainValue(IImmutableDictionary(Of String, Object))
+  fullName: Libplanet.Action.PolymorphicAction<T>.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary<System.String, System.Object>)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).LoadPlainValue(System.Collections.Immutable.IImmutableDictionary(Of System.String, System.Object))
+  nameWithType: PolymorphicAction<T>.LoadPlainValue(IImmutableDictionary<String, Object>)
+  nameWithType.vb: PolymorphicAction(Of T).LoadPlainValue(IImmutableDictionary(Of String, Object))
+- uid: Libplanet.Action.PolymorphicAction`1.LoadPlainValue*
+  name: LoadPlainValue
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_LoadPlainValue_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.LoadPlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.LoadPlainValue
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).LoadPlainValue
+  nameWithType: PolymorphicAction<T>.LoadPlainValue
+  nameWithType.vb: PolymorphicAction(Of T).LoadPlainValue
+- uid: Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}
+  name: Implicit(T to PolymorphicAction<T>)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}
+  name.vb: Widening(T to PolymorphicAction(Of T))
+  fullName: Libplanet.Action.PolymorphicAction<T>.Implicit(T to Libplanet.Action.PolymorphicAction<T>)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Widening(T to Libplanet.Action.PolymorphicAction(Of T))
+  nameWithType: PolymorphicAction<T>.Implicit(T to PolymorphicAction<T>)
+  nameWithType.vb: PolymorphicAction(Of T).Widening(T to PolymorphicAction(Of T))
+- uid: Libplanet.Action.PolymorphicAction`1.op_Implicit*
+  name: Implicit
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_op_Implicit_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.op_Implicit
+  isSpec: "True"
+  name.vb: Widening
+  fullName: Libplanet.Action.PolymorphicAction<T>.Implicit
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Widening
+  nameWithType: PolymorphicAction<T>.Implicit
+  nameWithType.vb: PolymorphicAction(Of T).Widening
+- uid: Libplanet.Action.PolymorphicAction`1.PlainValue
+  name: PlainValue
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_PlainValue
+  commentId: P:Libplanet.Action.PolymorphicAction`1.PlainValue
+  fullName: Libplanet.Action.PolymorphicAction<T>.PlainValue
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PlainValue
+  nameWithType: PolymorphicAction<T>.PlainValue
+  nameWithType.vb: PolymorphicAction(Of T).PlainValue
+- uid: Libplanet.Action.PolymorphicAction`1.PlainValue*
+  name: PlainValue
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_PlainValue_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.PlainValue
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.PlainValue
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PlainValue
+  nameWithType: PolymorphicAction<T>.PlainValue
+  nameWithType.vb: PolymorphicAction(Of T).PlainValue
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
@@ -4756,37 +4910,6 @@ references:
   commentId: N:Libplanet.Tx
   fullName: Libplanet.Tx
   nameWithType: Libplanet.Tx
-- uid: Libplanet.Tx.InvalidActionTypeException
-  name: InvalidActionTypeException
-  href: api/Libplanet.Tx.InvalidActionTypeException.html
-  commentId: T:Libplanet.Tx.InvalidActionTypeException
-  fullName: Libplanet.Tx.InvalidActionTypeException
-  nameWithType: InvalidActionTypeException
-- uid: Libplanet.Tx.InvalidActionTypeException.#ctor
-  name: InvalidActionTypeException()
-  href: api/Libplanet.Tx.InvalidActionTypeException.html#Libplanet_Tx_InvalidActionTypeException__ctor
-  commentId: M:Libplanet.Tx.InvalidActionTypeException.#ctor
-  fullName: Libplanet.Tx.InvalidActionTypeException.InvalidActionTypeException()
-  nameWithType: InvalidActionTypeException.InvalidActionTypeException()
-- uid: Libplanet.Tx.InvalidActionTypeException.#ctor(System.String)
-  name: InvalidActionTypeException(String)
-  href: api/Libplanet.Tx.InvalidActionTypeException.html#Libplanet_Tx_InvalidActionTypeException__ctor_System_String_
-  commentId: M:Libplanet.Tx.InvalidActionTypeException.#ctor(System.String)
-  fullName: Libplanet.Tx.InvalidActionTypeException.InvalidActionTypeException(System.String)
-  nameWithType: InvalidActionTypeException.InvalidActionTypeException(String)
-- uid: Libplanet.Tx.InvalidActionTypeException.#ctor(System.String,System.Exception)
-  name: InvalidActionTypeException(String, Exception)
-  href: api/Libplanet.Tx.InvalidActionTypeException.html#Libplanet_Tx_InvalidActionTypeException__ctor_System_String_System_Exception_
-  commentId: M:Libplanet.Tx.InvalidActionTypeException.#ctor(System.String,System.Exception)
-  fullName: Libplanet.Tx.InvalidActionTypeException.InvalidActionTypeException(System.String, System.Exception)
-  nameWithType: InvalidActionTypeException.InvalidActionTypeException(String, Exception)
-- uid: Libplanet.Tx.InvalidActionTypeException.#ctor*
-  name: InvalidActionTypeException
-  href: api/Libplanet.Tx.InvalidActionTypeException.html#Libplanet_Tx_InvalidActionTypeException__ctor_
-  commentId: Overload:Libplanet.Tx.InvalidActionTypeException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Tx.InvalidActionTypeException.InvalidActionTypeException
-  nameWithType: InvalidActionTypeException.InvalidActionTypeException
 - uid: Libplanet.Tx.InvalidTxException
   name: InvalidTxException
   href: api/Libplanet.Tx.InvalidTxException.html

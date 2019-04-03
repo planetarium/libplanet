@@ -135,6 +135,47 @@ and thus it is not used anymore.</li>
 <li>Added <code>Block&lt;T&gt;.EvaluateActions()</code> generator method.</li>
 </ul>
 </dfn></dfn></li>
+<li><p>The built-in subtype polymorphism of <code>IAction</code> and <code>Transaction&lt;T&gt;</code> was
+moved to a separated new <code>PolymorphicAction&lt;T&gt;</code> abstract class.
+Polymorphic actions now should be wrapped by <code>PolymorphicAction&lt;T&gt;</code>.
+For example, the following code:</p>
+<pre><code class="lang-csharp">public abstract class AbstractAction : IAction { ... }
+
+[ActionType(&quot;attack&quot;)]
+public sealed class Attack : AbstractAction { ... }
+
+[ActionType(&quot;sleep&quot;)]
+public sealed class Sleep : AbstractAction { ... }
+</code></pre>
+<pre><code class="lang-csharp">var tx = Transaction&lt;AbstractAction&gt;.Create(
+    ...,
+    actions: new[] { new Attack(...), ... }
+);
+</code></pre>
+<p>should be changed to like:</p>
+<pre><code class="lang-csharp">var tx = Transaction&lt;PolymorphicAction&lt;AbstractAction&gt;&gt;.Create(
+    ...,
+    actions: new[] {
+        new PolymorphicAction&lt;AbstractAction&gt;(new Attack(...)),
+        ...
+    }
+);
+</code></pre>
+<p>It can be simpler by implicit casting:</p>
+<pre><code class="lang-csharp">var tx = Transaction&lt;PolymorphicAction&lt;AbstractAction&gt;&gt;.Create(
+    ...,
+    actions: new PolymorphicAction&lt;AbstractAction&gt;[] { new Attack(...), }
+);
+</code></pre>
+<p>[<a href="https://github.com/planetarium/libplanet/pull/169">#169</a>]</p>
+<ul>
+<li>The type parameter <code>T</code> of <code>Transaction&lt;T&gt;</code>, <code>Block&lt;T&gt;</code>, and
+<code>BlockChain&lt;T&gt;</code> became to require having a <code>public</code> parameterless
+constructor (i.e., <code>new()</code>) besides implementing <code>IAction</code> interface.
+This means an <code>abstract class</code> or an <code>interface</code> no more can be passed
+to <code>T</code>, but only a concrete <code>class</code> or a <code>struct</code> can be passed.</li>
+</ul>
+</li>
 <li><p>Fixed a bug that mutating a collection of <code>IAction</code>s passed to
 constructors or factory methods of <code>Transaction&lt;T&gt;</code> had affected
 made instances as well.
@@ -189,7 +230,7 @@ same time.</p>
 <li><p>Added <code>IStore.ListNamespaces()</code> method.</p>
 </li>
 <li><p><code>IStore.CountBlocks()</code> and <code>IStore.CountTransactions()</code> became to return
-<code>long</code></p>
+<code>long</code>.</p>
 </li>
 <li><p>Block/tx-related methods in <code>IStore</code> and <code>BaseIndex&lt;T&gt;</code> no longer
 accepts <code>@namespace</code> parameter.  It means that even if a forking occurs, the
@@ -198,8 +239,9 @@ same block/tx files are shared.</p>
 <li><p>Fixed a bug that made unnecessary fork when receiving blocks from other
 peer.</p>
 </li>
-<li><p><code>Transaction&lt;T&gt;</code> now throws an <code>InvalidActionTypeException</code> if an action type
-is not annotated with <code>ActionTypeAttribute</code>.  [<a href="https://github.com/planetarium/libplanet/pull/144">#144</a>]</p>
+<li><p>Action classes that implement <code>IAction</code> but lack <code>ActionTypeAttribute</code>
+became reported by <code>PolymorphicAction&lt;T&gt;</code> throwing
+<code>MissingActionTypeException</code> at runtime.  [<a href="https://github.com/planetarium/libplanet/issues/28">#28</a>, <a href="https://github.com/planetarium/libplanet/pull/144">#144</a>, <a href="https://github.com/planetarium/libplanet/pull/169">#169</a>]</p>
 </li>
 <li><p>Turn into parameter in <code>BlockPolicy</code>'s constructor to milliseconds. [<a href="https://github.com/planetarium/libplanet/pull/151">#151</a>]</p>
 </li>
@@ -221,7 +263,7 @@ is not annotated with <code>ActionTypeAttribute</code>.  [<a href="https://githu
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/8abbb26e674b06c462c3e3ff25a6915ba817cc20/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

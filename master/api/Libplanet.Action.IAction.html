@@ -84,8 +84,6 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
-<p>By convention, action classes are named with verb phrases, e.g.,
-<code>Heal</code>, <code>Sell</code>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
@@ -94,134 +92,121 @@ a constructor parameters of that class.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public interface IAction</code></pre>
   </div>
-  <h5 id="Libplanet_Action_IAction_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>Every action class should be marked with the
-<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  Even if a superclass is marked
-with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> its subclass also should be
-marked with the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
-</div>
   <h5 id="Libplanet_Action_IAction_examples"><strong>Examples</strong></h5>
-  <p>The following example shows how to implement an action of a character
-healing someone:</p>
+  <p>The following example shows how to implement an action of three types
+of in-game logic:</p>
 <pre><code>using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
+using Libplanet;
 using Libplanet.Action;
 
-// Declare the unique identifier of an action type by marking
-// it with ActionTypeAttribute.
-[ActionType(&quot;heal&quot;)]
-public class Heal : IAction
+public class MyAction : IAction
 {
-    const int RequiredMana = 10;
-    const int HealedHealthMin = 10;
-    const int HealedHealthMAx = 15;
+    // Declare an enum type to distinguish types of in-game logic.
+    public enum ActType { CreateCharacter, Attack, Heal }
 
     // Declare properties (or fields) to store &quot;bound&quot; argument values.
-    public CharacterId HealerId { get; private set; }
+    public ActType Type { get; private set; }
     public Address TargetAddress { get; private set; }
-    public CharacterId TargetId { get; private set; }
+
+    // Action must has a public parameterless constructor.
+    // Usually this is used only by Libplanet&apos;s internals.
+    public MyAction() {}
 
     // Take argument values to &quot;bind&quot; through constructor parameters.
-    public Heal(CharacterId healerId,
-                TargetAddress tagetAddress,
-                CharacterId targetId)
+    public MyAction(ActType type, Address targetAddress)
     {
-        HealerId = healerId;
+        Type = type;
         TargetAddress = targetAddress;
-        TargetId = targetId;
     }
 
     // The main game logic belongs to here.  It takes the
     // previous states through its parameter named context,
     // and is offered &quot;bound&quot; argument values through
     // its own properties (or fields).
-    public AddressStateMap Execute(IActionContext context)
+    IAccountStateDelta IAction.Execute(IActionContext context)
     {
-        // Gets the states immediately before this action is executed.
-        // It is merely a null delta.
-        IAccountStateDelta states = context.PreviousStates;
+        // Gets the state immediately before this action is executed.
+        // ImmutableDictionary&lt;string, uint> is just for example,
+        // As far as it is serializable, you can store any types.
+        // (We recommend to use immutable types though.)
+        var state = (ImmutableDictionary&lt;string, uint>)
+            context.PreviousStates.GetState(TargetAddress);
 
-        // Suppose we already declared below in-game objects &quot;Player&quot;
-        // and &quot;Character&quot;.  These are immutable (as we highly
-        // recommend) and methods like &quot;.WithFoo(bar)&quot; mean it copies
-        // a game object and set new object&apos;s &quot;Foo&quot; property with &quot;bar&quot;.
-        Player signer = states.GetState(context.Signer) as Player;
-        if (signer == null)
-            throw new Exception(&quot;Signer&apos;s player was not made.&quot;);
+        // This variable purposes to store the state
+        // right after this action finishes.
+        ImmutableDictionary&lt;string, uint> nextState;
 
-        Character healerPrev = signer.Characters[HealerId];
-        if (healerPrev.Mana &lt; RequiredMana)
-            throw new Exception(&quot;The healer doesn&apos;t have enough mana.&quot;);
+        // Does different things depending on the action&apos;s type.
+        // This way is against the common principals of programming
+        // as it is just an example.  You could compare this with
+        // a better example of PolymorphicAction&lt;T> class.
+        switch (Type)
+        {
+            case ActType.CreateCharacter:
+                if (!TargetAddress.Equals(context.Signer))
+                    throw new Exception(
+                        &quot;TargetAddress of CreateCharacter action &quot; +
+                        &quot;only can be the same address to the &quot; +
+                        &quot;Transaction&lt;T>.Signer.&quot;);
+                else if (!(state is null))
+                    throw new Exception(
+                        &quot;Character was already created.&quot;);
 
-        Player receiver = states.GetState(TargetAddress) as Player;
-        if (receiver == null)
-            throw new Exception(&quot;Receiver&apos;s player was not made.&quot;);
+                nextState = ImmutableDictionary&lt;string, uint>.Empty
+                    .Add(&quot;hp&quot;, 20);
+                break;
 
-        // The amount of health to be healed is randomly determined
-        // in a range from 10 to 15 (see HealedHealthMin and
-        // HealedHealthMax).  Note that it does not use System.Random.
-        int healedHealth = context.Random.Next(
-            HealedHealthMin,
-            HealedHealthMax + 1  // As this is exclusive bound, add 1.
-        );
+            case ActType.Attack:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Max(state[&quot;hp&quot;] - 5, 0));
+                break;
 
-        // Prepares new game objects that represent states after
-        // this action executes.  Note that Character objects are
-        // immutable, so their properties do not have setter but
-        // WithPropName() methods instead.
-        Character targetPrev = receiver.Characters[TargetId];
-        Character healerNext =
-            healerPrev.WithMana(healerPrev.Mana - RequiredMana);
-        Character targetNext = targetPrev.WithHealth(
-            Math.Min(
-                targetPrev.Health + healedHealth,
-                targetPrev.MaxHealth
-            )
-        );
+            case ActType.Heal:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Min(state[&quot;hp&quot;] + 5, 20));
+                break;
+
+            default:
+                throw new Exception(
+                    &quot;Properties are not properly initialized.&quot;);
+        }
 
         // Builds a delta (dirty) from previous to next states, and
         // returns it.
-        return states.SetState(
-            context.Signer,
-            signer.WithCharacters(HealerId, healerNext)
-        ).SetState(
-            TargetAddress,
-            receiver.WithCharacters(TargetId, targetNext)
-        );
+        return context.PreviousStates.SetState(TargetAddress,
+            nextState);
     }
 
     // Serializes its &quot;bound arguments&quot; so that they are transmitted
     // over network or stored to the persistent storage.
     // It uses .NET&apos;s built-in serialization mechanism.
-    public IImmutableDictionary&lt;string, object> PlainValue =>
-        new Dictionary&lt;string, object>
-        {
-            {&quot;healer_id&quot;, HealerId.ToInt()},
-            {&quot;target_address&quot;, TargetAddress.ToByteArray()},
-            {&quot;target_id&quot;, TargetId.ToInt()},
-        }
+    IImmutableDictionary&lt;string, object> IAction.PlainValue =>
+        ImmutableDictionary&lt;string, object>.Empty
+            .Add(&quot;type&quot;, Type)
+            .Add(&quot;target_address&quot;, TargetAddress);
 
     // Deserializes &quot;bound arguments&quot;.  That is, it is inverse
     // of PlainValue property.
-    public void LoadPlainValue(
+    void IAction.LoadPlainValue(
         IImmutableDictionary&lt;string, object> plainValue)
     {
-        HealerId = CharacterId.FromInt(plainValue[&quot;healer_id&quot;] as int);
-        TargetAddress = new Address(
-            plainValue[&quot;target_address&apos;] as byte[]
-        );
-        TargetId = CharacterId.FromInt(plainValue[&quot;target_id&quot;] as int);
+        Type = (ActType)plainValue[&quot;type&quot;];
+        TargetAddress = (Address)plainValue[&quot;target_address&quot;];
     }
 }</code></pre>
+<p>Note that the above example has several bad practices.
+Compare this example with <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>&apos;s
+example.</p>
 
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/8abbb26e674b06c462c3e3ff25a6915ba817cc20/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Action/IAction.cs/#L158">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/8abbb26e674b06c462c3e3ff25a6915ba817cc20/Libplanet/Action/IAction.cs/#L146">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
@@ -262,10 +247,10 @@ by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-u
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/8abbb26e674b06c462c3e3ff25a6915ba817cc20/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Action/IAction.cs/#L198">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/8abbb26e674b06c462c3e3ff25a6915ba817cc20/Libplanet/Action/IAction.cs/#L186">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -337,10 +322,10 @@ or networking.  These bring an action indeterministic.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/8abbb26e674b06c462c3e3ff25a6915ba817cc20/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Action/IAction.cs/#L169">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/8abbb26e674b06c462c3e3ff25a6915ba817cc20/Libplanet/Action/IAction.cs/#L157">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
@@ -385,10 +370,10 @@ properties (or fields).</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/8abbb26e674b06c462c3e3ff25a6915ba817cc20/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/049a2f8a9d3286b8baa1c93b3ff968f0ef25b9e3/Libplanet/Action/IAction.cs/#L139" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/8abbb26e674b06c462c3e3ff25a6915ba817cc20/Libplanet/Action/IAction.cs/#L127" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
