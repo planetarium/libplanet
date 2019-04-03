@@ -39,7 +39,7 @@ namespace Libplanet.Net
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
-        private readonly int _protocolVersion;
+        private readonly int _appProtocolVersion;
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
@@ -63,7 +63,7 @@ namespace Libplanet.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            int protocolVersion = 1)
+            int appProtocolVersion = 1)
             : this(
                   privateKey,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
@@ -71,7 +71,7 @@ namespace Libplanet.Net
                   listenPort,
                   createdAt,
                   iceServers,
-                  protocolVersion)
+                  appProtocolVersion)
         {
         }
 
@@ -82,7 +82,7 @@ namespace Libplanet.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            int protocolVersion = 1)
+            int appProtocolVersion = 1)
         {
             Running = false;
 
@@ -113,7 +113,7 @@ namespace Libplanet.Net
 
             _ipAddress = ipAddress;
             _listenPort = listenPort;
-            _protocolVersion = protocolVersion;
+            _appProtocolVersion = appProtocolVersion;
 
             if (_ipAddress != null && _listenPort != null)
             {
@@ -288,7 +288,7 @@ namespace Libplanet.Net
                         );
                         continue;
                     }
-                    catch (DifferentProtocolVersionException e)
+                    catch (DifferentAppProtocolVersionException e)
                     {
                         _logger.Error(
                             e,
@@ -316,7 +316,7 @@ namespace Libplanet.Net
                 {
                     e.Handle((x) =>
                     {
-                        if (!(x is DifferentProtocolVersionException))
+                        if (!(x is DifferentAppProtocolVersionException))
                         {
                             return false;
                         }
@@ -498,7 +498,7 @@ namespace Libplanet.Net
                             );
                             continue;
                         }
-                        catch (DifferentProtocolVersionException e)
+                        catch (DifferentAppProtocolVersionException e)
                         {
                             _logger.Error(
                                 e,
@@ -824,7 +824,7 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        var reply = new Pong(_protocolVersion)
+                        var reply = new Pong(_appProtocolVersion)
                         {
                             Identity = ping.Identity,
                         };
@@ -1380,13 +1380,13 @@ namespace Libplanet.Net
                     cancellationToken);
                 _logger.Debug($"DialAsync({peer.EndPoint}) is complete.");
 
-                if (pong.ProtocolVersion != _protocolVersion)
+                if (pong.AppProtocolVersion != _appProtocolVersion)
                 {
                     dealer.Dispose();
-                    throw new DifferentProtocolVersionException(
+                    throw new DifferentAppProtocolVersionException(
                         $"Peer protocol version is different.",
-                        _protocolVersion,
-                        pong.ProtocolVersion);
+                        _appProtocolVersion,
+                        pong.AppProtocolVersion);
                 }
 
                 _dealers[peer.Address] = dealer;

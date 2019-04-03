@@ -5,17 +5,17 @@ namespace Libplanet.Net.Messages
 {
     internal class Pong : Message
     {
-        public Pong(int protocolVersion)
+        public Pong(int appProtocolVersion)
         {
-            this.ProtocolVersion = protocolVersion;
+            this.AppProtocolVersion = appProtocolVersion;
         }
 
         public Pong(NetMQFrame[] body)
         {
-            ProtocolVersion = body[0].ConvertToInt32();
+            AppProtocolVersion = body[0].ConvertToInt32();
         }
 
-        public int ProtocolVersion { get; }
+        public int AppProtocolVersion { get; }
 
         protected override MessageType Type => MessageType.Pong;
 
@@ -24,7 +24,7 @@ namespace Libplanet.Net.Messages
             get
             {
                 yield return new NetMQFrame(
-                    NetworkOrderBitsConverter.GetBytes(ProtocolVersion));
+                    NetworkOrderBitsConverter.GetBytes(AppProtocolVersion));
             }
         }
     }

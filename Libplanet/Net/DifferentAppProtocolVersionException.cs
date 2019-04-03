@@ -8,11 +8,11 @@ namespace Libplanet.Net
     /// to is different.
     /// </summary>
     [Serializable]
-    public sealed class DifferentProtocolVersionException : Exception
+    public sealed class DifferentAppProtocolVersionException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="DifferentProtocolVersionException"/> class.
+        /// <see cref="DifferentAppProtocolVersionException"/> class.
         /// </summary>
         /// <param name="expectedVersion">The protocol version of the current
         /// <see cref="Swarm"/>.</param>
@@ -21,7 +21,7 @@ namespace Libplanet.Net
         /// to.</param>
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.
         /// </param>
-        public DifferentProtocolVersionException(
+        public DifferentAppProtocolVersionException(
             string message,
             int expectedVersion,
             int actualVersion)

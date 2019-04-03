@@ -306,25 +306,25 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public async Task DetectProtocolVersion()
+        public async Task DetectAppProtocolVersion()
         {
             var a = new Swarm(
                 new PrivateKey(),
                 ipAddress: IPAddress.Loopback,
-                protocolVersion: 2);
+                appProtocolVersion: 2);
             var b = new Swarm(
                 new PrivateKey(),
                 ipAddress: IPAddress.Loopback,
-                protocolVersion: 3);
+                appProtocolVersion: 3);
 
             var c = new Swarm(
                 new PrivateKey(),
                 ipAddress: IPAddress.Loopback,
-                protocolVersion: 2);
+                appProtocolVersion: 2);
             var d = new Swarm(
                 new PrivateKey(),
                 ipAddress: IPAddress.Loopback,
-                protocolVersion: 3);
+                appProtocolVersion: 3);
 
             BlockChain<DumbAction> chain = _blockchains[0];
 
