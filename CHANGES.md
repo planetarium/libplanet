@@ -114,10 +114,10 @@ To be released.
     [[#169]]
 
      -  The type parameter `T` of `Transaction<T>`, `Block<T>`, and
-        `BlockChain<T>` became to require having a parameterless constructor
-        (i.e., `new()`) besides implementing `IAction` interface.
-        This means an abstract class or an interface no more can be passed
-        to `T`, but only a concrete class or a struct can be passed.
+        `BlockChain<T>` became to require having a `public` parameterless
+        constructor (i.e., `new()`) besides implementing `IAction` interface.
+        This means an `abstract class` or an `interface` no more can be passed
+        to `T`, but only a concrete `class` or a `struct` can be passed.
 
  -  Fixed a bug that mutating a collection of `IAction`s passed to
     constructors or factory methods of `Transaction<T>` had affected
