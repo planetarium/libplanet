@@ -17,7 +17,7 @@ using Libplanet.Tx;
 namespace Libplanet.Blockchain
 {
     public class BlockChain<T> : IEnumerable<Block<T>>
-        where T : IAction
+        where T : IAction, new()
     {
         private readonly ReaderWriterLockSlim _rwlock;
 

@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Net.Http.Headers;
+using System.Linq;
+using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -24,12 +23,12 @@ namespace Libplanet.Tests.Tx
             var recipient = new Address(PrivateKey.PublicKey);
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
-            Tx = Transaction<BaseAction>.Create(
+            Tx = Transaction<PolymorphicAction<BaseAction>>.Create(
                 PrivateKey,
-                new BaseAction[0],
+                new PolymorphicAction<BaseAction>[0],
                 timestamp: timestamp
             );
-            BaseAction[] actions =
+            PolymorphicAction<BaseAction>[] actions =
             {
                 new Attack
                 {
@@ -42,7 +41,7 @@ namespace Libplanet.Tests.Tx
                     ZoneId = 10,
                 },
             };
-            TxWithActions = Transaction<BaseAction>.Create(
+            TxWithActions = Transaction<PolymorphicAction<BaseAction>>.Create(
                 PrivateKey,
                 actions,
                 timestamp: timestamp
@@ -55,8 +54,8 @@ namespace Libplanet.Tests.Tx
 
         public Address Address => PublicKey.ToAddress();
 
-        public Transaction<BaseAction> Tx { get; }
+        public Transaction<PolymorphicAction<BaseAction>> Tx { get; }
 
-        public Transaction<BaseAction> TxWithActions { get; }
+        public Transaction<PolymorphicAction<BaseAction>> TxWithActions { get; }
     }
 }

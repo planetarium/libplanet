@@ -74,12 +74,12 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            Block1 = TestUtils.MineGenesis<BaseAction>();
+            Block1 = TestUtils.MineGenesis<DumbAction>();
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
 
-            Transaction1 = MakeTransaction(new List<BaseAction>(), ImmutableHashSet<Address>.Empty);
-            Transaction2 = MakeTransaction(new List<BaseAction>(), ImmutableHashSet<Address>.Empty);
+            Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
+            Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
         }
 
         public string Path { get; }
@@ -104,15 +104,15 @@ namespace Libplanet.Tests.Store
 
         public HashDigest<SHA256> Hash3 { get; }
 
-        public Block<BaseAction> Block1 { get; }
+        public Block<DumbAction> Block1 { get; }
 
-        public Block<BaseAction> Block2 { get; }
+        public Block<DumbAction> Block2 { get; }
 
-        public Block<BaseAction> Block3 { get; }
+        public Block<DumbAction> Block3 { get; }
 
-        public Transaction<BaseAction> Transaction1 { get; }
+        public Transaction<DumbAction> Transaction1 { get; }
 
-        public Transaction<BaseAction> Transaction2 { get; }
+        public Transaction<DumbAction> Transaction2 { get; }
 
         public void Dispose()
         {
@@ -122,17 +122,17 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        public Transaction<BaseAction> MakeTransaction(
-            IEnumerable<BaseAction> actions = null,
+        public Transaction<DumbAction> MakeTransaction(
+            IEnumerable<DumbAction> actions = null,
             ImmutableHashSet<Address> updatedAddresses = null
         )
         {
             var privateKey = new PrivateKey();
             var timestamp =
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            return Transaction<BaseAction>.Create(
+            return Transaction<DumbAction>.Create(
                 privateKey,
-                actions ?? new BaseAction[0],
+                actions ?? new DumbAction[0],
                 updatedAddresses,
                 timestamp
             );

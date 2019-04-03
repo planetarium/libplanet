@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<BaseAction> next = MineNext(_fx.Genesis);
+            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
@@ -159,7 +159,8 @@ namespace Libplanet.Tests.Blocks
                 0x2a, 0x4a, 0x9b, 0xfc, 0xf9, 0xcb, 0x54, 0x26, 0x3d, 0xfa,
                 0x4f, 0x5c, 0xbc, 0x65, 0x65, 0x65,
             };
-            Block<BaseAction> actual = Block<BaseAction>.FromBencodex(encoded);
+            Block<PolymorphicAction<BaseAction>> actual =
+                Block<PolymorphicAction<BaseAction>>.FromBencodex(encoded);
             Assert.Equal(_fx.HasTx, actual);
         }
 
@@ -173,30 +174,25 @@ namespace Libplanet.Tests.Blocks
             ImmutableArray<Address> addresses = Enumerable.Range(0, 5)
                 .Select(_ => new Address(new PrivateKey().PublicKey))
                 .ToImmutableArray();
-            Attack MakeAction(Address address, char identifier) =>
-                new Attack
-                {
-                    Weapon = $"w{identifier}",
-                    Target = $"t{identifier}",
-                    TargetAddress = address,
-                };
+            DumbAction MakeAction(Address address, char identifier) =>
+                new DumbAction(address, identifier.ToString());
 
-            Block<BaseAction> genesis = MineGenesis<BaseAction>();
-            Block<BaseAction> blockIdx1 = MineNext(
+            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            Block<DumbAction> blockIdx1 = MineNext(
                 genesis,
                 new[]
                 {
-                    Transaction<BaseAction>.Create(
+                    Transaction<DumbAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        new BaseAction[]
+                        new[]
                         {
                             MakeAction(addresses[0], 'A'),
                             MakeAction(addresses[1], 'B'),
                         }
                     ),
-                    Transaction<BaseAction>.Create(
+                    Transaction<DumbAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        new BaseAction[] { MakeAction(addresses[2], 'C') }
+                        new[] { MakeAction(addresses[2], 'C') }
                     ),
                 }
             );
@@ -209,42 +205,34 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(
                 new Dictionary<Address, object>
                 {
-                    [addresses[0]] = new BattleResult(
-                        usedWeapons: new[] { "wA" },
-                        targets: new[] { "tA" }
-                    ),
-                    [addresses[1]] = new BattleResult(
-                        usedWeapons: new[] { "wB" },
-                        targets: new[] { "tB" }
-                    ),
-                    [addresses[2]] = new BattleResult(
-                        usedWeapons: new[] { "wC" },
-                        targets: new[] { "tC" }
-                    ),
+                    [addresses[0]] = "A",
+                    [addresses[1]] = "B",
+                    [addresses[2]] = "C",
                 }.ToImmutableDictionary(),
                 dirty1
             );
 
-            Block<BaseAction> blockIdx2 = MineNext(
+            Block<DumbAction> blockIdx2 = MineNext(
                 blockIdx1,
                 new[]
                 {
-                    Transaction<BaseAction>.Create(
+                    Transaction<DumbAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        new BaseAction[] { MakeAction(addresses[0], 'D') }
+                        new[] { MakeAction(addresses[0], 'D') }
                     ),
-                    Transaction<BaseAction>.Create(
+                    Transaction<DumbAction>.Create(
                         _fx.TxFixture.PrivateKey,
-                        new BaseAction[] { MakeAction(addresses[3], 'E') }
+                        new[] { MakeAction(addresses[3], 'E') }
                     ),
-                    Transaction<BaseAction>.Create(
+                    Transaction<DumbAction>.Create(
                         _fx.TxFixture.PrivateKey,
                         new[]
                         {
-                            new DetectRehearsal
-                            {
-                                TargetAddress = addresses[4],
-                            },
+                            new DumbAction(
+                                addresses[4],
+                                "RecordRehearsal",
+                                recordRehearsal: true
+                            ),
                         }
                     ),
                 }
@@ -258,15 +246,9 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(
                 new Dictionary<Address, object>
                 {
-                    [addresses[0]] = new BattleResult(
-                        usedWeapons: new[] { "wA", "wD" },
-                        targets: new[] { "tA", "tD" }
-                    ),
-                    [addresses[3]] = new BattleResult(
-                        usedWeapons: new[] { "wE" },
-                        targets: new[] { "tE" }
-                    ),
-                    [addresses[4]] = false,
+                    [addresses[0]] = "A,D",
+                    [addresses[3]] = "E",
+                    [addresses[4]] = "RecordRehearsal:False",
                 }.ToImmutableDictionary(),
                 dirty2
             );
@@ -302,10 +284,10 @@ namespace Libplanet.Tests.Blocks
                 new IDictionary<string, object>[0],
                 new byte[10]
             );
-            var invalidTx = new Transaction<BaseAction>(rawTx);
-            Block<BaseAction> invalidBlock = MineNext(
-                _fx.Next,
-                new List<Transaction<BaseAction>> { invalidTx }
+            var invalidTx = new Transaction<DumbAction>(rawTx);
+            Block<DumbAction> invalidBlock = MineNext(
+                MineGenesis<DumbAction>(),
+                new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
                 invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
@@ -324,9 +306,9 @@ namespace Libplanet.Tests.Blocks
                 new byte[0]
             );
             byte[] sig = _fx.TxFixture.PrivateKey.Sign(
-                new Transaction<BaseAction>(rawTxWithoutSig).ToBencodex(false)
+                new Transaction<DumbAction>(rawTxWithoutSig).ToBencodex(false)
             );
-            var invalidTx = new Transaction<BaseAction>(
+            var invalidTx = new Transaction<DumbAction>(
                 new RawTransaction(
                     rawTxWithoutSig.Signer,
                     rawTxWithoutSig.UpdatedAddresses,
@@ -336,9 +318,9 @@ namespace Libplanet.Tests.Blocks
                     sig
                 )
             );
-            Block<BaseAction> invalidBlock = MineNext(
-                _fx.Next,
-                new List<Transaction<BaseAction>> { invalidTx }
+            Block<DumbAction> invalidBlock = MineNext(
+                MineGenesis<DumbAction>(),
+                new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
                 invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
@@ -360,9 +342,11 @@ namespace Libplanet.Tests.Blocks
                 new byte[0]
             );
             byte[] sig = _fx.TxFixture.PrivateKey.Sign(
-                new Transaction<BaseAction>(rawTxWithoutSig).ToBencodex(false)
+                new Transaction<PolymorphicAction<BaseAction>>(
+                    rawTxWithoutSig
+                ).ToBencodex(false)
             );
-            var invalidTx = new Transaction<BaseAction>(
+            var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
                 new RawTransaction(
                     rawTxWithoutSig.Signer,
                     rawTxWithoutSig.UpdatedAddresses,
@@ -372,9 +356,12 @@ namespace Libplanet.Tests.Blocks
                     sig
                 )
             );
-            Block<BaseAction> invalidBlock = MineNext(
-                _fx.Next,
-                new List<Transaction<BaseAction>> { invalidTx }
+            Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
+                _fx.Genesis,
+                new List<Transaction<PolymorphicAction<BaseAction>>>
+                {
+                    invalidTx,
+                }
             );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
                 invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
@@ -385,13 +372,13 @@ namespace Libplanet.Tests.Blocks
         public void CanDetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            var block = Block<BaseAction>.Mine(
+            var block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
                 _fx.Next.Difficulty,
                 _fx.Next.RewardBeneficiary.Value,
                 _fx.Genesis.Hash,
                 now + TimeSpan.FromSeconds(901),
-                new Transaction<BaseAction>[] { }
+                new Transaction<DumbAction>[] { }
             );
 
             Assert.Throws<InvalidBlockTimestampException>(
@@ -404,7 +391,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidNonce()
         {
-            var invalidBlock = new Block<BaseAction>(
+            var invalidBlock = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: new Nonce(new byte[] { 0x00 }),
@@ -422,20 +409,20 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidDifficulty()
         {
-            var invalidGenesis = new Block<BaseAction>(
+            var invalidGenesis = new Block<DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: 1, // invalid
                 nonce: _fx.Genesis.Nonce,
                 rewardBeneficiary: _fx.Genesis.RewardBeneficiary,
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: _fx.Genesis.Transactions
+                transactions: MineGenesis<DumbAction>().Transactions
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                 invalidGenesis.Validate(DateTimeOffset.UtcNow)
             );
 
-            var invalidNext = new Block<BaseAction>(
+            var invalidNext = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: 0, // invalid
                 nonce: _fx.Next.Nonce,
@@ -452,21 +439,21 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidPreviousHash()
         {
-            var invalidGenesis = new Block<BaseAction>(
+            var invalidGenesis = new Block<DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: _fx.Genesis.Difficulty,
                 nonce: _fx.Genesis.Nonce,
                 rewardBeneficiary: _fx.Genesis.RewardBeneficiary,
                 previousHash: new HashDigest<SHA256>(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: _fx.Genesis.Transactions
+                transactions: MineGenesis<DumbAction>().Transactions
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 invalidGenesis.Validate(DateTimeOffset.UtcNow)
             );
 
-            var invalidNext = new Block<BaseAction>(
+            var invalidNext = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: _fx.Next.Nonce,
@@ -523,8 +510,8 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanCompareToOtherBlock()
         {
-            Block<BaseAction> sameBlock1 = _fx.Genesis;
-            var sameBlock2 = new Block<BaseAction>(
+            Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
+            var sameBlock2 = new Block<PolymorphicAction<BaseAction>>(
                 index: sameBlock1.Index,
                 difficulty: sameBlock1.Difficulty,
                 nonce: sameBlock1.Nonce,
@@ -533,7 +520,7 @@ namespace Libplanet.Tests.Blocks
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions
             );
-            Block<BaseAction> differentBlock = _fx.Next;
+            Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
 
             Assert.Equal(sameBlock1, sameBlock2);
             Assert.NotEqual(sameBlock2, differentBlock);

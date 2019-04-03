@@ -9,7 +9,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Store
 {
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
-        where T : IAction
+        where T : IAction, new()
     {
         public BlockSet(IStore store)
             : base(store)

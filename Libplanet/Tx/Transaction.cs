@@ -19,23 +19,19 @@ namespace Libplanet.Tx
     /// Consists of <see cref="IAction"/> and is signed to be included in
     /// a <see cref="Blocks.Block{T}"/> and transmitted over the network.
     /// </summary>
-    /// <typeparam name="T">A subtype of <see cref="IAction"/> to include.
-    /// Each game usually defines its own abstact base class which implements
+    /// <typeparam name="T">A class implementing <see cref="IAction"/> to
+    /// include.
+    /// Each game usually defines its own concrete class which implements
     /// <see cref="IAction"/>, and uses it for this type parameter.
     /// This type parameter is aligned with <see cref="Blocks.Block{T}"/>'s
     /// and <see cref="Blockchain.BlockChain{T}"/>'s type parameters.
     /// </typeparam>
     /// <seealso cref="IAction"/>
+    /// <seealso cref="PolymorphicAction{T}"/>
     public class Transaction<T> : ISerializable, IEquatable<Transaction<T>>
-        where T : IAction
+        where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
-        private static readonly IDictionary<string, Type> Types = typeof(T)
-            .Assembly
-            .GetTypes()
-            .Where(t => t.IsDefined(typeof(ActionTypeAttribute)))
-            .ToDictionary(ActionTypeAttribute.ValueOf, t => t);
 
         private byte[] _signature;
 
@@ -584,11 +580,12 @@ namespace Libplanet.Tx
                     a.ToByteArray()).ToArray(),
                 publicKey: PublicKey.Format(false),
                 timestamp: Timestamp.ToString(TimestampFormat),
-                actions: Actions.Select(a => new Dictionary<string, object>
-                {
-                    { "type_id", ActionTypeAttribute.ValueOf(a.GetType()) },
-                    { "values", a.PlainValue },
-                })
+                actions: Actions.Select(a =>
+                    a.PlainValue.ToDictionary(
+                        kv => kv.Key,
+                        kv => kv.Value
+                    )
+                )
             );
 
             if (includeSign)
@@ -601,10 +598,8 @@ namespace Libplanet.Tx
 
         private static T ToAction(IDictionary<string, object> arg)
         {
-            var typeStr = (string)arg["type_id"];
-            var action = (T)Activator.CreateInstance(Types[typeStr]);
-            var values = (IDictionary<string, object>)arg["values"];
-            action.LoadPlainValue(values.ToImmutableDictionary());
+            var action = new T();
+            action.LoadPlainValue(arg.ToImmutableDictionary());
             return action;
         }
 

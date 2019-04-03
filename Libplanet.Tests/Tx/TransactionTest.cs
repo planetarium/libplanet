@@ -7,6 +7,7 @@ using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
+using Uno.Disposables;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 
@@ -42,10 +43,11 @@ namespace Libplanet.Tests.Tx
                     0xdb, 0xc5, 0x56, 0xd9, 0xac, 0x20, 0x41, 0xfe, 0xf9, 0x5f,
                 }
             );
-            var action = new DetectRehearsal { TargetAddress = stateStore };
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            DumbAction.RehearsalRecords.Value =
+                ImmutableList<(Address, string)>.Empty;
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 privateKey,
-                new BaseAction[] { action },
+                new[] { new DumbAction(stateStore, "RecordRehearsal", true) },
                 ImmutableHashSet<Address>.Empty,
                 timestamp
             );
@@ -63,14 +65,14 @@ namespace Libplanet.Tests.Tx
             AssertBytesEqual(
                 new byte[]
                 {
-                    0x30, 0x45, 0x02, 0x21, 0x00, 0xb5, 0x9c, 0xc8, 0x81, 0x84,
-                    0xd7, 0x34, 0x3e, 0x66, 0xe2, 0x15, 0xe7, 0x9e, 0x8a, 0x76,
-                    0x3c, 0xa3, 0xb8, 0xc1, 0xcf, 0xaa, 0x31, 0x1a, 0xb2, 0x30,
-                    0x34, 0x68, 0xcd, 0xf4, 0x31, 0x9c, 0x20, 0x02, 0x20, 0x5b,
-                    0x38, 0xf4, 0xf8, 0x65, 0xdb, 0xed, 0xaa, 0x3a, 0xdc, 0xa9,
-                    0x6d, 0x04, 0xa1, 0x4f, 0x48, 0x35, 0xca, 0xca, 0x2c, 0xac,
-                    0x25, 0x28, 0xb0, 0x5c, 0xea, 0xa2, 0x78, 0x4d, 0x4b, 0x7a,
-                    0xf7,
+                    0x30, 0x45, 0x02, 0x21, 0x00, 0xba, 0xc1, 0x7f, 0x21, 0x0a,
+                    0x15, 0xdd, 0x99, 0x6b, 0xda, 0x34, 0x2c, 0x8c, 0x39, 0x21,
+                    0xd1, 0x27, 0xec, 0x22, 0xf7, 0xea, 0xaf, 0x8b, 0xc4, 0xd7,
+                    0x82, 0x6e, 0xfb, 0x5a, 0xdd, 0xb6, 0xb5, 0x02, 0x20, 0x7c,
+                    0x0a, 0x3b, 0x5c, 0x4d, 0x83, 0xa1, 0xa3, 0xfc, 0x1b, 0xf8,
+                    0xdd, 0xbc, 0xbc, 0x78, 0x60, 0x46, 0xf9, 0x61, 0xdd, 0x5a,
+                    0x35, 0xab, 0xb1, 0x61, 0x84, 0x32, 0x89, 0x2e, 0x3d, 0xb4,
+                    0xdc,
                 },
                 tx.Signature
             );
@@ -78,27 +80,30 @@ namespace Libplanet.Tests.Tx
                 new TxId(
                     new byte[]
                     {
-                        0x77, 0x3d, 0x27, 0x6f, 0x2d, 0x26, 0x95, 0xaf, 0xf7,
-                        0xdb, 0xd4, 0x89, 0x7d, 0x51, 0x15, 0xf9, 0xbd, 0x9a,
-                        0x03, 0x92, 0xbc, 0xb8, 0x3a, 0x8b, 0x7c, 0xf0, 0x93,
-                        0x5a, 0x0d, 0xe0, 0x57, 0xdf,
+                        0xe0, 0xd3, 0xa8, 0xf4, 0x28, 0x22, 0xab, 0x58, 0x4e,
+                        0x04, 0x3f, 0x97, 0x07, 0xac, 0xb5, 0x77, 0x72, 0x13,
+                        0x3f, 0xb2, 0xd9, 0x07, 0x4a, 0xc3, 0x79, 0xcc, 0xbc,
+                        0xae, 0x74, 0x12, 0x60, 0x95,
                     }
                 ),
                 tx.Id
             );
-            Assert.True(action.ResultState);
+            Assert.Contains(
+                (stateStore, "RecordRehearsal"),
+                DumbAction.RehearsalRecords.Value
+            );
         }
 
         [Fact]
         public void CreateWithDefaultUpdatedAddresses()
         {
-            Transaction<BaseAction> emptyTx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> emptyTx = Transaction<DumbAction>.Create(
                 _fx.PrivateKey,
-                new BaseAction[0]
+                new DumbAction[0]
             );
             Assert.Empty(emptyTx.UpdatedAddresses);
 
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            var tx = Transaction<PolymorphicAction<BaseAction>>.Create(
                 _fx.PrivateKey,
                 _fx.TxWithActions.Actions
             );
@@ -108,7 +113,7 @@ namespace Libplanet.Tests.Tx
             );
 
             Address additionalAddr = new PrivateKey().PublicKey.ToAddress();
-            Transaction<BaseAction> txWithAddr = Transaction<BaseAction>.Create(
+            var txWithAddr = Transaction<PolymorphicAction<BaseAction>>.Create(
                 _fx.PrivateKey,
                 _fx.TxWithActions.Actions,
                 new[] { additionalAddr }.ToImmutableHashSet()
@@ -123,9 +128,9 @@ namespace Libplanet.Tests.Tx
         public void CreateWithDefaultTimestamp()
         {
             DateTimeOffset rightBefore = DateTimeOffset.UtcNow;
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 _fx.PrivateKey,
-                new BaseAction[0],
+                new DumbAction[0],
                 ImmutableHashSet<Address>.Empty
             );
             DateTimeOffset rightAfter = DateTimeOffset.UtcNow;
@@ -138,9 +143,9 @@ namespace Libplanet.Tests.Tx
         {
             // The privateKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction<BaseAction>.Create(
+                Transaction<DumbAction>.Create(
                     null,
-                    new BaseAction[0],
+                    new DumbAction[0],
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 )
@@ -148,7 +153,7 @@ namespace Libplanet.Tests.Tx
 
             // The actions parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                Transaction<BaseAction>.Create(
+                Transaction<DumbAction>.Create(
                     _fx.PrivateKey,
                     null,
                     ImmutableHashSet<Address>.Empty,
@@ -162,9 +167,9 @@ namespace Libplanet.Tests.Tx
         {
             var action = new ThrowException { Throw = true };
             Assert.Throws<UnexpectedlyTerminatedTxRehearsalException>(() =>
-                Transaction<BaseAction>.Create(
+                Transaction<ThrowException>.Create(
                     _fx.PrivateKey,
-                    new BaseAction[] { action },
+                    new[] { action },
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
                 )
@@ -194,12 +199,12 @@ namespace Libplanet.Tests.Tx
                 0x9f, 0xf6, 0x99, 0x2d, 0xd0, 0x9a, 0x0d, 0xac, 0xec, 0x83,
                 0x20, 0x2b, 0x82, 0x40, 0x0d, 0x6e, 0x5e, 0x9f, 0xbd, 0x2b,
             };
-            var tx = new Transaction<BaseAction>(
+            var tx = new Transaction<DumbAction>(
                 privateKey.PublicKey.ToAddress(),
                 privateKey.PublicKey,
                 ImmutableHashSet<Address>.Empty,
                 timestamp,
-                new BaseAction[0],
+                new DumbAction[0],
                 signature
             );
 
@@ -241,19 +246,19 @@ namespace Libplanet.Tests.Tx
 
             // The publicKey parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<BaseAction>(
+                new Transaction<DumbAction>(
                     privateKey.PublicKey.ToAddress(),
                     null,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new BaseAction[0],
+                    new DumbAction[0],
                     signature
                 )
             );
 
             // The actions parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<BaseAction>(
+                new Transaction<DumbAction>(
                     privateKey.PublicKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
@@ -265,23 +270,23 @@ namespace Libplanet.Tests.Tx
 
             // The signature parameter cannot be null.
             Assert.Throws<ArgumentNullException>(() =>
-                new Transaction<BaseAction>(
+                new Transaction<DumbAction>(
                     privateKey.PublicKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new BaseAction[0],
+                    new DumbAction[0],
                     null
                 )
             );
 
             Assert.Throws<InvalidTxSignatureException>(() =>
-                new Transaction<BaseAction>(
+                new Transaction<DumbAction>(
                     privateKey.PublicKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
-                    new BaseAction[0],
+                    new DumbAction[0],
                     invalidSignature
                 )
             );
@@ -423,7 +428,7 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<BaseAction> tx = Transaction<BaseAction>.FromBencodex(bytes);
+            Transaction<DumbAction> tx = Transaction<DumbAction>.FromBencodex(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
@@ -516,8 +521,8 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<BaseAction> tx =
-                Transaction<BaseAction>.FromBencodex(bytes);
+            Transaction<PolymorphicAction<BaseAction>> tx =
+                Transaction<PolymorphicAction<BaseAction>>.FromBencodex(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(
@@ -553,10 +558,10 @@ namespace Libplanet.Tests.Tx
             );
 
             Assert.Equal(2, tx.Actions.Count());
-            Assert.IsType<Attack>(tx.Actions[0]);
+            Assert.IsType<Attack>(tx.Actions[0].InnerAction);
             AssertBytesEqual(
                 new Address(publicKey).ToByteArray(),
-                (byte[])tx.Actions[0].PlainValue["target_address"]
+                (byte[])tx.Actions[0].InnerAction.PlainValue["target_address"]
             );
             Assert.Equal(
                 new Dictionary<string, object>()
@@ -565,15 +570,15 @@ namespace Libplanet.Tests.Tx
                     { "target", "orc" },
                     { "target_address", new Address(publicKey).ToByteArray() },
                 },
-                tx.Actions[0].PlainValue
+                tx.Actions[0].InnerAction.PlainValue
             );
-            Assert.IsType<Sleep>(tx.Actions[1]);
+            Assert.IsType<Sleep>(tx.Actions[1].InnerAction);
             Assert.Equal(
                 new Dictionary<string, object>()
                 {
                     { "zone_id", 10 },
                 },
-                tx.Actions[1].PlainValue
+                tx.Actions[1].InnerAction.PlainValue
             );
         }
 
@@ -590,36 +595,20 @@ namespace Libplanet.Tests.Tx
                 new PrivateKey().PublicKey.ToAddress(),
                 new PrivateKey().PublicKey.ToAddress(),
             };
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 _fx.PrivateKey,
-                new BaseAction[]
+                new[]
                 {
-                    new Attack
-                    {
-                        Weapon = "w0",
-                        Target = "t0",
-                        TargetAddress = addresses[0],
-                    },
-                    new Attack
-                    {
-                        Weapon = "w1",
-                        Target = "t1",
-                        TargetAddress = addresses[1],
-                    },
-                    new Attack
-                    {
-                        Weapon = "w2",
-                        Target = "t2",
-                        TargetAddress = addresses[0],
-                    },
-                    new DetectRehearsal
-                    {
-                        TargetAddress = addresses[2],
-                    },
+                    new DumbAction(addresses[0], "0"),
+                    new DumbAction(addresses[1], "1"),
+                    new DumbAction(addresses[0], "2"),
+                    new DumbAction(addresses[2], "R", true),
                 }
             );
             foreach (bool rehearsal in new[] { false, true })
             {
+                DumbAction.RehearsalRecords.Value =
+                    ImmutableList<(Address, string)>.Empty;
                 IAccountStateDelta delta = tx.EvaluateActions(
                     default,
                     1,
@@ -629,18 +618,27 @@ namespace Libplanet.Tests.Tx
                 Assert.Equal(
                     new Dictionary<Address, object>
                     {
-                        [addresses[0]] = new BattleResult(
-                            usedWeapons: new[] { "w0", "w2" },
-                            targets: new[] { "t0", "t2" }
-                        ),
-                        [addresses[1]] = new BattleResult(
-                            usedWeapons: new[] { "w1" },
-                            targets: new[] { "t1" }
-                        ),
-                        [addresses[2]] = rehearsal,
+                        [addresses[0]] = "0,2",
+                        [addresses[1]] = "1",
+                        [addresses[2]] = $"R:{rehearsal}",
                     }.ToImmutableDictionary(),
                     delta.GetUpdatedStates()
                 );
+
+                if (rehearsal)
+                {
+                    Assert.Contains(
+                        (addresses[2], "R"),
+                        DumbAction.RehearsalRecords.Value
+                    );
+                }
+                else
+                {
+                    Assert.DoesNotContain(
+                        (addresses[2], "R"),
+                        DumbAction.RehearsalRecords.Value
+                    );
+                }
             }
         }
 
@@ -657,9 +655,9 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 privateKey,
-                new BaseAction[0],
+                new DumbAction[0],
                 timestamp: timestamp
             );
 
@@ -670,7 +668,7 @@ namespace Libplanet.Tests.Tx
         public void DetectBadSignature()
         {
             var rawTx = _fx.Tx.ToRawTransaction(true);
-            Transaction<BaseAction> tx = new Transaction<BaseAction>(
+            Transaction<DumbAction> tx = new Transaction<DumbAction>(
                 new RawTransaction(
                     rawTx.Signer,
                     rawTx.UpdatedAddresses,
@@ -711,7 +709,7 @@ namespace Libplanet.Tests.Tx
                 actions: rawTx.Actions,
                 signature: signature
             );
-            var tx = new Transaction<BaseAction>(rawTxWithMismatchedAddress);
+            var tx = new Transaction<DumbAction>(rawTxWithMismatchedAddress);
 
             Assert.Throws<InvalidTxPublicKeyException>(() => tx.Validate());
         }
@@ -729,9 +727,9 @@ namespace Libplanet.Tests.Tx
                 }
             );
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
-            Transaction<BaseAction> tx = Transaction<BaseAction>.Create(
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 privateKey,
-                new BaseAction[0],
+                new DumbAction[0],
                 timestamp: timestamp
             );
 
@@ -749,14 +747,14 @@ namespace Libplanet.Tests.Tx
         public void ConvertFromRawTransaction()
         {
             RawTransaction rawTx = GetExpectedRawTransaction(true);
-            var tx = new Transaction<BaseAction>(rawTx);
+            var tx = new Transaction<DumbAction>(rawTx);
             tx.Validate();
         }
 
         [Fact]
         public void SignatureBufferIsIsolated()
         {
-            Transaction<BaseAction> tx = _fx.Tx;
+            Transaction<PolymorphicAction<BaseAction>> tx = _fx.Tx;
             byte[] sig = tx.Signature;
             for (int i = 0; i < sig.Length; i++)
             {
@@ -767,7 +765,7 @@ namespace Libplanet.Tests.Tx
 
             var sig2 = new byte[tx.Signature.Length];
             Array.Copy(tx.Signature, sig2, sig2.Length);
-            var tx2 = new Transaction<BaseAction>(
+            var tx2 = new Transaction<PolymorphicAction<BaseAction>>(
                 tx.Signer,
                 tx.PublicKey,
                 tx.UpdatedAddresses,
@@ -787,12 +785,12 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void ActionsAreIsolatedFromOutside()
         {
-            var actions = new List<BaseAction>();
-            Transaction<BaseAction> t1 = Transaction<BaseAction>.Create(
+            var actions = new List<DumbAction>();
+            Transaction<DumbAction> t1 = Transaction<DumbAction>.Create(
                 _fx.PrivateKey,
                 actions
             );
-            var t2 = new Transaction<BaseAction>(
+            var t2 = new Transaction<DumbAction>(
                 _fx.PrivateKey.PublicKey.ToAddress(),
                 _fx.PrivateKey.PublicKey,
                 ImmutableHashSet<Address>.Empty,
@@ -800,7 +798,7 @@ namespace Libplanet.Tests.Tx
                 actions,
                 t1.Signature
             );
-            actions.Add(new Sleep());
+            actions.Add(new DumbAction());
             Assert.Empty(t1.Actions);
             Assert.Empty(t2.Actions);
         }

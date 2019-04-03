@@ -11,12 +11,12 @@ namespace Libplanet.Tests.Store
     public class BlockSetTest : IDisposable
     {
         private readonly FileStoreFixture _fx;
-        private readonly BlockSet<BaseAction> _set;
+        private readonly BlockSet<DumbAction> _set;
 
         public BlockSetTest()
         {
             _fx = new FileStoreFixture();
-            _set = new BlockSet<BaseAction>(_fx.Store);
+            _set = new BlockSet<DumbAction>(_fx.Store);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Store
                 _set.Keys.ToHashSet());
 
             Assert.Equal(
-                new HashSet<Block<BaseAction>>()
+                new HashSet<Block<DumbAction>>()
                 {
                     _fx.Block1,
                     _fx.Block2,

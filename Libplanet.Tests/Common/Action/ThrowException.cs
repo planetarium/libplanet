@@ -5,23 +5,26 @@ using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
 {
-    [ActionType("throw_exception")]
-    public class ThrowException : BaseAction
+    public class ThrowException : IAction
     {
+        public ThrowException()
+        {
+        }
+
         public bool Throw { get; set; } = false;
 
-        public override IImmutableDictionary<string, object> PlainValue =>
+        public IImmutableDictionary<string, object> PlainValue =>
             new Dictionary<string, object>()
             {
                 { "throw", Throw },
             }.ToImmutableDictionary();
 
-        public override void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+        public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
         {
             Throw = (bool)plainValue["throw"];
         }
 
-        public override IAccountStateDelta Execute(IActionContext context)
+        public IAccountStateDelta Execute(IActionContext context)
         {
             if (Throw)
             {

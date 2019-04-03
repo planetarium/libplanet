@@ -73,6 +73,57 @@ To be released.
      -  Added `Transaction<T>.EvaluateActions()` method.
      -  Added `Block<T>.EvaluateActions()` generator method.
 
+ -  The built-in subtype polymorphism of `IAction` and `Transaction<T>` was
+    moved to a separated new `PolymorphicAction<T>` abstract class.
+    Polymorphic actions now should be wrapped by `PolymorphicAction<T>`.
+    For example, the following code:
+
+    ~~~~ csharp
+    public abstract class AbstractAction : IAction { ... }
+
+    [ActionType("attack")]
+    public sealed class Attack : AbstractAction { ... }
+
+    [ActionType("sleep")]
+    public sealed class Sleep : AbstractAction { ... }
+    ~~~~
+
+    ~~~~ csharp
+    var tx = Transaction<AbstractAction>.Create(
+        ...,
+        actions: new[] { new Attack(...), ... }
+    );
+    ~~~~
+
+    should be changed to like:
+
+    ~~~~ csharp
+    var tx = Transaction<PolymorphicAction<AbstractAction>>.Create(
+        ...,
+        actions: new[] {
+            new PolymorphicAction<AbstractAction>(new Attack(...)),
+            ...
+        }
+    );
+    ~~~~
+
+    It can be simpler by implicit casting:
+
+    ~~~~ csharp
+    var tx = Transaction<PolymorphicAction<AbstractAction>>.Create(
+        ...,
+        actions: new PolymorphicAction<AbstractAction>[] { new Attack(...), }
+    );
+    ~~~~
+
+    [[#169]]
+
+     -  The type parameter `T` of `Transaction<T>`, `Block<T>`, and
+        `BlockChain<T>` became to require having a `public` parameterless
+        constructor (i.e., `new()`) besides implementing `IAction` interface.
+        This means an `abstract class` or an `interface` no more can be passed
+        to `T`, but only a concrete `class` or a `struct` can be passed.
+
  -  Fixed a bug that mutating a collection of `IAction`s passed to
     constructors or factory methods of `Transaction<T>` had affected
     made instances as well.
@@ -112,17 +163,19 @@ To be released.
      -  `IStore.CountAddresses()`
  -  Added `IStore.ListNamespaces()` method.
  -  `IStore.CountBlocks()` and `IStore.CountTransactions()` became to return
-    `long`
+    `long`.
  -  Block/tx-related methods in `IStore` and `BaseIndex<T>` no longer
     accepts `@namespace` parameter.  It means that even if a forking occurs, the
     same block/tx files are shared.
  -  Fixed a bug that made unnecessary fork when receiving blocks from other
     peer.
- -  `Transaction<T>` now throws an `InvalidActionTypeException` if an action type
-    is not annotated with `ActionTypeAttribute`.  [[#144]]
+ -  Action classes that implement `IAction` but lack `ActionTypeAttribute`
+    became reported by `PolymorphicAction<T>` throwing
+    `MissingActionTypeException` at runtime.  [[#28], [#144], [#169]]
  -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
 
+[#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
 [#99]: https://github.com/planetarium/libplanet/issues/99
 [#120]: https://github.com/planetarium/libplanet/issues/120
@@ -140,6 +193,7 @@ To be released.
 [#144]: https://github.com/planetarium/libplanet/pull/144
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
+[#169]: https://github.com/planetarium/libplanet/pull/169
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 

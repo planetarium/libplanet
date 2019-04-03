@@ -7,7 +7,7 @@ using Libplanet.Tx;
 namespace Libplanet.Store
 {
     public class TransactionSet<T> : BaseIndex<TxId, Transaction<T>>
-        where T : IAction
+        where T : IAction, new()
     {
         public TransactionSet(IStore store)
             : base(store)
