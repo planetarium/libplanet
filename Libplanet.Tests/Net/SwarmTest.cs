@@ -56,12 +56,15 @@ namespace Libplanet.Tests.Net
             {
                 new Swarm(
                     new PrivateKey(),
+                    1,
                     ipAddress: IPAddress.Loopback),
                 new Swarm(
                     new PrivateKey(),
+                    1,
                     ipAddress: IPAddress.Loopback),
                 new Swarm(
                     new PrivateKey(),
+                    1,
                     ipAddress: IPAddress.Loopback),
             };
         }
@@ -360,15 +363,18 @@ namespace Libplanet.Tests.Net
             var pk2 = new PrivateKey();
             var a = new Swarm(
                 pk1,
+                1,
                 ipAddress: IPAddress.Parse("0.0.0.0"),
                 listenPort: 5555);
             var b = new Swarm(
                 pk1,
+                1,
                 ipAddress: IPAddress.Parse("0.0.0.0"),
                 listenPort: 5555,
                 createdAt: a.LastDistributed);
             var c = new Swarm(
                 pk2,
+                1,
                 ipAddress: IPAddress.Parse("0.0.0.0"),
                 listenPort: 5555);
 
@@ -625,7 +631,7 @@ namespace Libplanet.Tests.Net
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm(null);
+                new Swarm(null, 1);
             });
         }
 
@@ -635,6 +641,7 @@ namespace Libplanet.Tests.Net
             var expected = new IPEndPoint(IPAddress.Parse("1.2.3.4"), 5678);
             Swarm s = new Swarm(
                 new PrivateKey(),
+                1,
                 ipAddress: IPAddress.Parse("1.2.3.4"),
                 listenPort: 5678);
 
@@ -659,7 +666,7 @@ namespace Libplanet.Tests.Net
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
             Swarm swarm =
-                new Swarm(new PrivateKey(), ipAddress: IPAddress.Loopback);
+                new Swarm(new PrivateKey(), 1, ipAddress: IPAddress.Loopback);
             Assert.Throws<SwarmException>(() => swarm.AsPeer);
 
             await StartAsync(swarm, _blockchains[0]);
@@ -683,9 +690,10 @@ namespace Libplanet.Tests.Net
 
             var seed = new Swarm(
                 new PrivateKey(),
+                1,
                 ipAddress: IPAddress.Loopback);
-            var swarmA = new Swarm(new PrivateKey(), iceServers: iceServers);
-            var swarmB = new Swarm(new PrivateKey(), iceServers: iceServers);
+            var swarmA = new Swarm(new PrivateKey(), 1, iceServers: iceServers);
+            var swarmB = new Swarm(new PrivateKey(), 1, iceServers: iceServers);
 
             try
             {

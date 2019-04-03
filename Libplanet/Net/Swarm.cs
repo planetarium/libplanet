@@ -58,31 +58,31 @@ namespace Libplanet.Net
 
         public Swarm(
             PrivateKey privateKey,
+            int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
             IPAddress ipAddress = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null,
-            int appProtocolVersion = 1)
+            IEnumerable<IceServer> iceServers = null)
             : this(
                   privateKey,
+                  appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                   ipAddress,
                   listenPort,
                   createdAt,
-                  iceServers,
-                  appProtocolVersion)
+                  iceServers)
         {
         }
 
         public Swarm(
             PrivateKey privateKey,
+            int appProtocolVersion,
             TimeSpan dialTimeout,
             IPAddress ipAddress = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null,
-            int appProtocolVersion = 1)
+            IEnumerable<IceServer> iceServers = null)
         {
             Running = false;
 
