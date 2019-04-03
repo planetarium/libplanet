@@ -21,9 +21,9 @@ namespace Libplanet.Tests.Common.Action
             RecordRehearsal = recordRehearsal;
         }
 
-        public static ThreadLocal<ImmutableList<(Address, string)>>
+        public static AsyncLocal<ImmutableList<(Address, string)>>
             RehearsalRecords { get; } =
-                new ThreadLocal<ImmutableList<(Address, string)>>();
+                new AsyncLocal<ImmutableList<(Address, string)>>();
 
         public Address TargetAddress { get; private set; }
 
