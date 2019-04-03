@@ -2214,6 +2214,51 @@ references:
   commentId: N:Libplanet.Net
   fullName: Libplanet.Net
   nameWithType: Libplanet.Net
+- uid: Libplanet.Net.DifferentAppProtocolVersionException
+  name: DifferentAppProtocolVersionException
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html
+  commentId: T:Libplanet.Net.DifferentAppProtocolVersionException
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException
+  nameWithType: DifferentAppProtocolVersionException
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,System.Int32,System.Int32)
+  name: DifferentAppProtocolVersionException(String, Int32, Int32)
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_System_Int32_System_Int32_
+  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,System.Int32,System.Int32)
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, System.Int32, System.Int32)
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, Int32, Int32)
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor*
+  name: DifferentAppProtocolVersionException
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_
+  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion
+  name: ActualVersion
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ActualVersion
+  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion
+  nameWithType: DifferentAppProtocolVersionException.ActualVersion
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion*
+  name: ActualVersion
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ActualVersion_
+  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ActualVersion
+  nameWithType: DifferentAppProtocolVersionException.ActualVersion
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
+  name: ExpectedVersion
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ExpectedVersion
+  commentId: P:Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
+  nameWithType: DifferentAppProtocolVersionException.ExpectedVersion
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion*
+  name: ExpectedVersion
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException_ExpectedVersion_
+  commentId: Overload:Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
+  nameWithType: DifferentAppProtocolVersionException.ExpectedVersion
 - uid: Libplanet.Net.IceServer
   name: IceServer
   href: api/Libplanet.Net.IceServer.html
@@ -2629,24 +2674,24 @@ references:
   commentId: T:Libplanet.Net.Swarm
   fullName: Libplanet.Net.Swarm
   nameWithType: Swarm
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name: Swarm(PrivateKey, Int32, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Net_IPAddress_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name.vb: Swarm(PrivateKey, Int32, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Net.IPAddress, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Net.IPAddress, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
-  nameWithType: Swarm.Swarm(PrivateKey, Int32, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.TimeSpan,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name: Swarm(PrivateKey, TimeSpan, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_TimeSpan_System_Net_IPAddress_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.TimeSpan,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name.vb: Swarm(PrivateKey, TimeSpan, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.TimeSpan, System.Net.IPAddress, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.TimeSpan, System.Net.IPAddress, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
-  nameWithType: Swarm.Swarm(PrivateKey, TimeSpan, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, TimeSpan, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
+- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
+  name: Swarm(PrivateKey, Int32, Int32, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Net_IPAddress_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
+  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
+  name.vb: Swarm(PrivateKey, Int32, Int32, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
+  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Net.IPAddress, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
+  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Net.IPAddress, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
+  nameWithType: Swarm.Swarm(PrivateKey, Int32, Int32, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
+  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, Int32, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
+- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
+  name: Swarm(PrivateKey, Int32, TimeSpan, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_Net_IPAddress_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
+  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.Net.IPAddress,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
+  name.vb: Swarm(PrivateKey, Int32, TimeSpan, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
+  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.Net.IPAddress, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
+  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.Net.IPAddress, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
+  nameWithType: Swarm.Swarm(PrivateKey, Int32, TimeSpan, IPAddress, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
+  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, TimeSpan, IPAddress, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
 - uid: Libplanet.Net.Swarm.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_
