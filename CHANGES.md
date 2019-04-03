@@ -79,34 +79,41 @@ To be released.
     For example, the following code:
 
     ~~~~ csharp
-    public abstract class BaseAction : IAction { ... }
-    public sealed class Attack : BaseAction { ... }
-    public sealed class Sleep : BaseAction { ... }
+    public abstract class AbstractAction : IAction { ... }
+
+    [ActionType("attack")]
+    public sealed class Attack : AbstractAction { ... }
+
+    [ActionType("sleep")]
+    public sealed class Sleep : AbstractAction { ... }
     ~~~~
 
     ~~~~ csharp
-    var tx = Transaction<BaseAction>.Create(
+    var tx = Transaction<AbstractAction>.Create(
         ...,
-        actions: new[] { new Attack(...) }
+        actions: new[] { new Attack(...), ... }
     );
     ~~~~
 
     should be changed to like:
 
     ~~~~ csharp
-    var tx = Transaction<PolymorphicAction<BaseAction>>.Create(
+    var tx = Transaction<PolymorphicAction<AbstractAction>>.Create(
         ...,
-        actions: new[] { new PolymorphicAction<BaseAction>(new Attack(...)) }
+        actions: new[] {
+            new PolymorphicAction<AbstractAction>(new Attack(...)),
+            ...
+        }
     );
     ~~~~
 
     or more simply:
 
     ~~~~ csharp
-    var tx = Transaction<PolymorphicAction<BaseAction>>.Create(
+    var tx = Transaction<PolymorphicAction<AbstractAction>>.Create(
         ...,
-        actions: new[] { new Attack(...) }.Select(
-            a => new PolymorphicAction<BaseAction>(a)
+        actions: new[] { new Attack(...), }.Select(
+            a => new PolymorphicAction<AbstractAction>(a)
         )
     );
     ~~~~
