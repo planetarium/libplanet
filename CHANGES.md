@@ -174,9 +174,8 @@ To be released.
     `MissingActionTypeException` at runtime.  [[#28], [#144], [#169]]
  -  Turn into parameter in `BlockPolicy`'s constructor to milliseconds. [[#151]]
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
- -  Made `Swarm` possible to configure its (application-specific)
-    network `protocolVersion` and, to ignore peers if their
-    version is different.  [[#167]], [[#170]]
+ -  Made `Swarm` possible to configure its network `appProtocolVersion` and,
+    to ignore peers if their version is different.  [[#167]], [[#170]]
 
 [#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
