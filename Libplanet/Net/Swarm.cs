@@ -1385,7 +1385,8 @@ namespace Libplanet.Net
                     dealer.Dispose();
                     throw new DifferentProtocolVersionException(
                         $"Peer protocol version({pong.ProtocolVersion}) is " +
-                        "different.");
+                        "different. The current version is " +
+                        $"({_protocolVersion})");
                 }
 
                 _dealers[peer.Address] = dealer;
