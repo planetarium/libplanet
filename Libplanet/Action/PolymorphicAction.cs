@@ -188,6 +188,22 @@ namespace Libplanet.Action
                 },
             }.ToImmutableDictionary();
 
+        /// <summary>
+        /// For convenience, an inner action <typeparamref name="T"/> can be
+        /// implicitly casted to <see cref="PolymorphicAction{T}"/>.
+        /// </summary>
+        /// <param name="innerAction">An instance of <typeparamref name="T"/>
+        /// (or one of its subtypes) to wrap.</param>
+        /// <returns>A <see cref="PolymorphicAction{T}"/> wrapping the given
+        /// <paramref name="innerAction"/>.</returns>
+        /// <exception cref="MissingActionTypeException">Thrown
+        /// when the class of the given <paramref name="innerAction"/>
+        /// is not annotated with <see cref="ActionTypeAttribute"/>.</exception>
+        public static implicit operator PolymorphicAction<T>(T innerAction)
+        {
+            return new PolymorphicAction<T>(innerAction);
+        }
+
         /// <inheritdoc/>
         public void LoadPlainValue(
             IImmutableDictionary<string, object> plainValue

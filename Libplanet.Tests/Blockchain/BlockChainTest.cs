@@ -85,21 +85,21 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ProcessActions()
         {
-            var actions1 = new List<BaseAction>()
+            var actions1 = new List<PolymorphicAction<BaseAction>>()
             {
-                new Attack()
+                new Attack
                 {
                     Weapon = "sword",
                     Target = "goblin",
                     TargetAddress = _fx.Address1,
                 },
-                new Attack()
+                new Attack
                 {
                     Weapon = "sword",
                     Target = "orc",
                     TargetAddress = _fx.Address1,
                 },
-                new Attack()
+                new Attack
                 {
                     Weapon = "staff",
                     Target = "goblin",
@@ -108,7 +108,7 @@ namespace Libplanet.Tests.Blockchain
             };
             var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 new PrivateKey(),
-                actions1.Select(a => new PolymorphicAction<BaseAction>(a))
+                actions1
             );
 
             var chain = new BlockChain<PolymorphicAction<BaseAction>>(
@@ -131,9 +131,9 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("orc", result.Targets);
             Assert.Contains("goblin", result.Targets);
 
-            BaseAction[] actions2 =
+            PolymorphicAction<BaseAction>[] actions2 =
             {
-                new Attack()
+                new Attack
                 {
                     Weapon = "bow",
                     Target = "goblin",
@@ -142,7 +142,7 @@ namespace Libplanet.Tests.Blockchain
             };
             var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 new PrivateKey(),
-                actions2.Select(a => new PolymorphicAction<BaseAction>(a))
+                actions2
             );
 
             chain.StageTransactions(

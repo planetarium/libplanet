@@ -107,14 +107,12 @@ To be released.
     );
     ~~~~
 
-    or more simply:
+    It can be simpler by implicit casting:
 
     ~~~~ csharp
     var tx = Transaction<PolymorphicAction<AbstractAction>>.Create(
         ...,
-        actions: new[] { new Attack(...), }.Select(
-            a => new PolymorphicAction<AbstractAction>(a)
-        )
+        actions: new PolymorphicAction<AbstractAction>[] { new Attack(...), }
     );
     ~~~~
 

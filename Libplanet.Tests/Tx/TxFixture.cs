@@ -28,7 +28,7 @@ namespace Libplanet.Tests.Tx
                 new PolymorphicAction<BaseAction>[0],
                 timestamp: timestamp
             );
-            BaseAction[] actions =
+            PolymorphicAction<BaseAction>[] actions =
             {
                 new Attack
                 {
@@ -43,7 +43,7 @@ namespace Libplanet.Tests.Tx
             };
             TxWithActions = Transaction<PolymorphicAction<BaseAction>>.Create(
                 PrivateKey,
-                actions.Select(a => new PolymorphicAction<BaseAction>(a)),
+                actions,
                 timestamp: timestamp
             );
         }

@@ -71,6 +71,20 @@ namespace Libplanet.Tests.Action
         }
 
         [Fact]
+        public void ImplicitlyCastFromInnerActionType()
+        {
+            var addr = new PrivateKey().PublicKey.ToAddress();
+            var a = new Attack
+            {
+                Weapon = "frying pan",
+                Target = "mosquito",
+                TargetAddress = addr,
+            };
+            var actions = new PolymorphicAction<BaseAction>[] { a };
+            Assert.Equal(a, actions[0].InnerAction);
+        }
+
+        [Fact]
         public void DetectLackOfActionType()
         {
             var action = new ActionNotAttributeAnnotated();
