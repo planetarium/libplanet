@@ -1,18 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Libplanet.Explorer</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <IsTestProject>false</IsTestProject>
+    <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Libplanet" Version="0.2.0-nightly.20190404" />
+    <PackageReference
+      Include="Microsoft.AspNetCore.All"
+      Version="2.2.3"
+      AllowExplicitVersion="true" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
     <EmbeddedResource Include="Views\**" />
   </ItemGroup>
 </Project>
