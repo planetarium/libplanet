@@ -230,7 +230,7 @@ namespace Libplanet.Blockchain
         }
 
         public Block<T> MineBlock(
-            Address rewardBeneficiary,
+            Address miner,
             DateTimeOffset currentTime
         )
         {
@@ -254,7 +254,7 @@ namespace Libplanet.Blockchain
                 Block<T> block = Block<T>.Mine(
                     index: index,
                     difficulty: difficulty,
-                    rewardBeneficiary: rewardBeneficiary,
+                    miner: miner,
                     previousHash: prevHash,
                     timestamp: currentTime,
                     transactions: transactions
@@ -269,8 +269,8 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public Block<T> MineBlock(Address rewardBeneficiary) =>
-            MineBlock(rewardBeneficiary, DateTimeOffset.UtcNow);
+        public Block<T> MineBlock(Address miner) =>
+            MineBlock(miner, DateTimeOffset.UtcNow);
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
         {
