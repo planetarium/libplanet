@@ -613,6 +613,7 @@ namespace Libplanet.Tests.Tx
                     default,
                     1,
                     new AccountStateDeltaImpl(address => null),
+                    addresses[0],
                     rehearsal: rehearsal
                 );
                 Assert.Equal(

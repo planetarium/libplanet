@@ -14,10 +14,12 @@ namespace Libplanet.Tests.Action
                 (0, 1559595546),
                 (1, 534011718),
             };
+            var address = new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
             foreach (var (seed, expected) in testCases)
             {
                 var context = new ActionContext(
-                    signer: new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
+                    signer: address,
+                    miner: address,
                     blockIndex: 1,
                     previousStates: new DumbAccountStateDelta(),
                     randomSeed: seed

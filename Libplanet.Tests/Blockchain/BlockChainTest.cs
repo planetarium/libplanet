@@ -250,6 +250,7 @@ namespace Libplanet.Tests.Blockchain
             var states = chain.GetStates(new[]
             {
                 TestEvaluateAction.SignerKey,
+                TestEvaluateAction.MinerKey,
                 TestEvaluateAction.BlockIndexKey,
             });
 
@@ -257,12 +258,18 @@ namespace Libplanet.Tests.Blockchain
                 states[TestEvaluateAction.SignerKey],
                 fromAddress.ToHex()
             );
+            Assert.Equal(
+                states[TestEvaluateAction.MinerKey],
+                _fx.Address1.ToHex());
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
         }
 
         private sealed class TestEvaluateAction : IAction
         {
             public static readonly Address SignerKey =
+                new PrivateKey().PublicKey.ToAddress();
+
+            public static readonly Address MinerKey =
                 new PrivateKey().PublicKey.ToAddress();
 
             public static readonly Address BlockIndexKey =
@@ -284,6 +291,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 return context.PreviousStates
                     .SetState(SignerKey, context.Signer.ToHex())
+                    .SetState(MinerKey, context.Miner.ToHex())
                     .SetState(BlockIndexKey, context.BlockIndex);
             }
         }

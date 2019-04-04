@@ -27,7 +27,7 @@ namespace Libplanet.Blocks
             long index,
             int difficulty,
             Nonce nonce,
-            Address? rewardBeneficiary,
+            Address? miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
@@ -35,7 +35,7 @@ namespace Libplanet.Blocks
             Index = index;
             Difficulty = difficulty;
             Nonce = nonce;
-            RewardBeneficiary = rewardBeneficiary;
+            Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions;
@@ -51,8 +51,8 @@ namespace Libplanet.Blocks
             Index = rawBlock.Index;
             Difficulty = rawBlock.Difficulty;
             Nonce = new Nonce(rawBlock.Nonce);
-            RewardBeneficiary = (rawBlock.RewardBeneficiary != null)
-                ? new Address(rawBlock.RewardBeneficiary)
+            Miner = (rawBlock.Miner != null)
+                ? new Address(rawBlock.Miner)
                 : default(Address?);
             PreviousHash = (rawBlock.PreviousHash != null)
                 ? new HashDigest<SHA256>(rawBlock.PreviousHash)
@@ -90,7 +90,7 @@ namespace Libplanet.Blocks
         public Nonce Nonce { get; }
 
         [Uno.EqualityIgnore]
-        public Address? RewardBeneficiary { get; }
+        public Address? Miner { get; }
 
         [Uno.EqualityIgnore]
         public HashDigest<SHA256>? PreviousHash { get; }
@@ -104,7 +104,7 @@ namespace Libplanet.Blocks
         public static Block<T> Mine(
             long index,
             int difficulty,
-            Address rewardBeneficiary,
+            Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
@@ -113,7 +113,7 @@ namespace Libplanet.Blocks
                 index,
                 difficulty,
                 n,
-                rewardBeneficiary,
+                miner,
                 previousHash,
                 timestamp,
                 transactions
@@ -173,7 +173,8 @@ namespace Libplanet.Blocks
                 );
             foreach (Transaction<T> tx in Transactions)
             {
-                delta = tx.EvaluateActions(Hash, Index, delta);
+                delta = tx.EvaluateActions(
+                    Hash, Index, delta, Miner.Value);
                 yield return delta;
                 delta = new AccountStateDeltaImpl(delta.GetState);
             }
@@ -373,7 +374,7 @@ namespace Libplanet.Blocks
                 index: Index,
                 timestamp: Timestamp.ToString(TimestampFormat),
                 nonce: Nonce.ToByteArray(),
-                rewardBeneficiary: RewardBeneficiary?.ToByteArray(),
+                miner: Miner?.ToByteArray(),
                 difficulty: Difficulty,
                 transactions: transactions,
                 previousHash: PreviousHash?.ToByteArray()

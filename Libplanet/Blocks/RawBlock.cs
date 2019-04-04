@@ -10,7 +10,7 @@ namespace Libplanet.Blocks
             long index,
             string timestamp,
             byte[] nonce,
-            byte[] rewardBeneficiary,
+            byte[] miner,
             int difficulty,
             byte[] previousHash,
             IEnumerable transactions)
@@ -18,7 +18,7 @@ namespace Libplanet.Blocks
                 index,
                 timestamp,
                 nonce,
-                rewardBeneficiary,
+                miner,
                 difficulty,
                 previousHash,
                 transactions,
@@ -31,7 +31,7 @@ namespace Libplanet.Blocks
             long index,
             string timestamp,
             byte[] nonce,
-            byte[] rewardBeneficiary,
+            byte[] miner,
             int difficulty,
             byte[] previousHash,
             IEnumerable transactions,
@@ -40,7 +40,7 @@ namespace Libplanet.Blocks
             Index = index;
             Timestamp = timestamp;
             Nonce = nonce;
-            RewardBeneficiary = rewardBeneficiary;
+            Miner = miner;
             Difficulty = difficulty;
             PreviousHash = previousHash;
             Transactions = transactions;
@@ -52,7 +52,7 @@ namespace Libplanet.Blocks
                 index: info.GetInt64("index"),
                 timestamp: info.GetString("timestamp"),
                 nonce: info.GetValue<byte[]>("nonce"),
-                rewardBeneficiary: info.GetValue<byte[]>("reward_beneficiary"),
+                miner: info.GetValue<byte[]>("reward_beneficiary"),
                 difficulty: info.GetInt32("difficulty"),
                 previousHash: info.GetValueOrDefault<byte[]>(
                     "previous_hash",
@@ -70,7 +70,7 @@ namespace Libplanet.Blocks
 
         public byte[] Nonce { get; }
 
-        public byte[] RewardBeneficiary { get; }
+        public byte[] Miner { get; }
 
         public int Difficulty { get; }
 
@@ -87,7 +87,7 @@ namespace Libplanet.Blocks
         {
             info.AddValue("index", Index);
             info.AddValue("timestamp", Timestamp);
-            info.AddValue("reward_beneficiary", RewardBeneficiary);
+            info.AddValue("reward_beneficiary", Miner);
             info.AddValue("difficulty", Difficulty);
             info.AddValue("transactions", Transactions);
             info.AddValue("nonce", Nonce);
@@ -108,7 +108,7 @@ namespace Libplanet.Blocks
             return new RawBlock(
                 index: Index,
                 timestamp: Timestamp,
-                rewardBeneficiary: RewardBeneficiary,
+                miner: Miner,
                 difficulty: Difficulty,
                 nonce: Nonce,
                 previousHash: PreviousHash,

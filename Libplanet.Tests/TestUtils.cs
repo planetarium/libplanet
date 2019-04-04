@@ -78,7 +78,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         internal static Block<T> MineGenesis<T>()
             where T : IAction, new()
         {
-            var rewardBeneficiary = new Address(
+            var miner = new Address(
                 "21744f4f08db23e044178dafb8273aeb5ebe6644"
             );
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
@@ -86,7 +86,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 index: 0,
                 difficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                rewardBeneficiary: rewardBeneficiary,
+                miner: miner,
                 previousHash: null,
                 timestamp: timestamp,
                 transactions: new List<Transaction<T>>()
@@ -109,14 +109,14 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             const int difficulty = 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
-            Address rewardBeneficiary = previousBlock.RewardBeneficiary.Value;
+            Address miner = previousBlock.Miner.Value;
 
             if (nonce == null)
             {
                 return Block<T>.Mine(
                     index: index,
                     difficulty: difficulty,
-                    rewardBeneficiary: rewardBeneficiary,
+                    miner: miner,
                     previousHash: previousHash,
                     timestamp: timestamp,
                     transactions: txs
@@ -127,7 +127,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 index: index,
                 difficulty: difficulty,
                 nonce: new Nonce(nonce),
-                rewardBeneficiary: rewardBeneficiary,
+                miner: miner,
                 previousHash: previousHash,
                 timestamp: timestamp,
                 transactions: txs

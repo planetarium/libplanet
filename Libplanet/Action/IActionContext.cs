@@ -13,6 +13,11 @@ namespace Libplanet.Action
         Address Signer { get; }
 
         /// <summary>
+        /// <see cref="Address"/> of a block miner account.
+        /// </summary>
+        Address Miner { get; }
+
+        /// <summary>
         /// Block index of a transaction that an executed <see cref="IAction"/>
         /// belongs to.
         /// </summary>

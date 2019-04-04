@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero), _fx.Genesis.Timestamp);
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                _fx.Genesis.RewardBeneficiary);
+                _fx.Genesis.Miner);
             Assert.Equal(new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }), _fx.Genesis.Nonce);
             AssertBytesEqual(
                 new HashDigest<SHA256>(
@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(new DateTimeOffset(2018, 11, 30, 0, 0, 0, TimeSpan.Zero), _fx.Next.Timestamp);
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                _fx.Next.RewardBeneficiary);
+                _fx.Next.Miner);
         }
 
         [Fact]
@@ -375,7 +375,7 @@ namespace Libplanet.Tests.Blocks
             var block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
                 _fx.Next.Difficulty,
-                _fx.Next.RewardBeneficiary.Value,
+                _fx.Next.Miner.Value,
                 _fx.Genesis.Hash,
                 now + TimeSpan.FromSeconds(901),
                 new Transaction<DumbAction>[] { }
@@ -395,7 +395,7 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: new Nonce(new byte[] { 0x00 }),
-                rewardBeneficiary: _fx.Next.RewardBeneficiary,
+                miner: _fx.Next.Miner,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions
@@ -413,7 +413,7 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Genesis.Index,
                 difficulty: 1, // invalid
                 nonce: _fx.Genesis.Nonce,
-                rewardBeneficiary: _fx.Genesis.RewardBeneficiary,
+                miner: _fx.Genesis.Miner,
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
                 transactions: MineGenesis<DumbAction>().Transactions
@@ -426,7 +426,7 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: 0, // invalid
                 nonce: _fx.Next.Nonce,
-                rewardBeneficiary: _fx.Next.RewardBeneficiary,
+                miner: _fx.Next.Miner,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions
@@ -443,7 +443,7 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Genesis.Index,
                 difficulty: _fx.Genesis.Difficulty,
                 nonce: _fx.Genesis.Nonce,
-                rewardBeneficiary: _fx.Genesis.RewardBeneficiary,
+                miner: _fx.Genesis.Miner,
                 previousHash: new HashDigest<SHA256>(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
                 transactions: MineGenesis<DumbAction>().Transactions
@@ -457,7 +457,7 @@ namespace Libplanet.Tests.Blocks
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: _fx.Next.Nonce,
-                rewardBeneficiary: _fx.Next.RewardBeneficiary,
+                miner: _fx.Next.Miner,
                 previousHash: null,
                 timestamp: _fx.Next.Timestamp,
                 transactions: _fx.Next.Transactions
@@ -478,7 +478,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal("2018-11-29T00:00:00.000000Z", rawGenesis.Timestamp);
             Assert.Equal(
                 ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                rawGenesis.RewardBeneficiary
+                rawGenesis.Miner
             );
             Assert.Equal(
                 new byte[] { 0x01, 0x00, 0x00, 0x00 },
@@ -503,7 +503,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal("2018-11-30T00:00:00.000000Z", rawNext.Timestamp);
             Assert.Equal(
                 ByteUtil.ParseHex("21744f4f08db23e044178dafb8273aeb5ebe6644"),
-                rawNext.RewardBeneficiary
+                rawNext.Miner
              );
         }
 
@@ -515,7 +515,7 @@ namespace Libplanet.Tests.Blocks
                 index: sameBlock1.Index,
                 difficulty: sameBlock1.Difficulty,
                 nonce: sameBlock1.Nonce,
-                rewardBeneficiary: sameBlock1.RewardBeneficiary,
+                miner: sameBlock1.Miner,
                 previousHash: null,
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions

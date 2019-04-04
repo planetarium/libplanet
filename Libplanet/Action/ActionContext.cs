@@ -4,6 +4,7 @@ namespace Libplanet.Action
     {
         public ActionContext(
             Address signer,
+            Address miner,
             long blockIndex,
             IAccountStateDelta previousStates,
             int randomSeed,
@@ -11,6 +12,7 @@ namespace Libplanet.Action
         )
         {
             Signer = signer;
+            Miner = miner;
             BlockIndex = blockIndex;
             Rehearsal = rehearsal;
             PreviousStates = previousStates;
@@ -18,6 +20,8 @@ namespace Libplanet.Action
         }
 
         public Address Signer { get; }
+
+        public Address Miner { get; }
 
         public long BlockIndex { get; }
 

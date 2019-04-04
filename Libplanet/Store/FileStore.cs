@@ -248,7 +248,7 @@ namespace Libplanet.Store
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
                     nonce: new Nonce(rawBlock.Nonce),
-                    rewardBeneficiary: new Address(rawBlock.RewardBeneficiary),
+                    miner: new Address(rawBlock.Miner),
                     previousHash: previousHash,
                     timestamp: DateTimeOffset.ParseExact(
                         rawBlock.Timestamp,
