@@ -209,14 +209,17 @@ newly added <code>IceServer</code>s as configuration.</p>
 <li><p>Since we decided to depend on TURN (<a href="https://tools.ietf.org/html/rfc5766">RFC 5766</a>) and STUN (<a href="https://tools.ietf.org/html/rfc5389">RFC 5389</a>) to
 work around NAT so that <code>Peer</code>'s endpoints don't have to be multiple,
 <code>Peer.Urls</code> was renamed to <code>Peer.EndPoint</code> and its type also was changed
-from <code>IImmutableList&lt;Uri&gt;</code> to <code>IPEndPoint</code>.
-[<a href="https://github.com/planetarium/libplanet/issues/120">#120</a>, <a href="https://github.com/planetarium/libplanet/pull/123">#123</a> by Yang Chun Ung, <a href="https://github.com/planetarium/libplanet/issues/126">#126</a>, <a href="https://github.com/planetarium/libplanet/pull/127">#127</a>]</p>
+from <code>IImmutableList&lt;Uri&gt;</code> to <code>DnsEndPoint</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/120">#120</a>, <a href="https://github.com/planetarium/libplanet/pull/123">#123</a> by Yang Chun Ung, <a href="https://github.com/planetarium/libplanet/issues/126">#126</a>, <a href="https://github.com/planetarium/libplanet/pull/127">#127</a>, <a href="https://github.com/planetarium/libplanet/issues/165">#165</a>, [#166]]</p>
 </li>
 <li><p><code>Swarm</code> became to ignore tip blocks of the same height (<code>Index</code>) that it
 already has and deal with only longer (higher) blocks.</p>
 </li>
 <li><p>Fixed a bug that occured when <code>Swarm</code> was handling multiple responses at the
 same time.</p>
+</li>
+<li><p>Fixed a bug that the <code>Swarm</code> constructor had hanged in certain runtimes
+like Unity engine.</p>
 </li>
 <li><p>Removed <code>AddressTransactionSet</code> which handles handle <code>Address</code> to
 <code>IEnumerable&lt;TxId&gt;</code> indices, and the following methods in <code>IStore</code>:</p>
@@ -266,7 +269,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/89319176c72121ba8e75e48056a884864f2a6fb5/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/790fcc89ad691dfda2c085f8644864b512c28354/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
