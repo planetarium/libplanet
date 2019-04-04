@@ -178,6 +178,7 @@ To be released.
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
  -  Made `Swarm` possible to configure its network `appProtocolVersion` and,
     to ignore peers if their version is different.  [[#167]], [[#170]]
+ -  Added `IActionContext.Miner` property.  [[#173]], [[#174]]
 
 [#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
@@ -201,6 +202,8 @@ To be released.
 [#167]: https://github.com/planetarium/libplanet/issues/167
 [#169]: https://github.com/planetarium/libplanet/pull/169
 [#170]: https://github.com/planetarium/libplanet/pull/170
+[#173]: https://github.com/planetarium/libplanet/issues/173
+[#174]: https://github.com/planetarium/libplanet/pull/174
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 

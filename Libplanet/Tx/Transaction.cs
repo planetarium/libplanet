@@ -367,6 +367,7 @@ namespace Libplanet.Tx
                     default(HashDigest<SHA256>),
                     0,
                     new AccountStateDeltaImpl(_ => null),
+                    signer,
                     rehearsal: true
                 );
                 if (!updatedAddresses.IsSupersetOf(delta.UpdatedAddresses))
@@ -442,6 +443,7 @@ namespace Libplanet.Tx
         /// <see cref="Actions"/> being executed.  Note that its
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
         /// to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
@@ -462,6 +464,7 @@ namespace Libplanet.Tx
             HashDigest<SHA256> blockHash,
             long blockIndex,
             IAccountStateDelta previousStates,
+            Address minerAddress,
             bool rehearsal = false
         )
         {
@@ -473,6 +476,7 @@ namespace Libplanet.Tx
             {
                 var context = new ActionContext(
                     signer: Signer,
+                    miner: minerAddress,
                     blockIndex: blockIndex,
                     previousStates: states,
                     randomSeed: unchecked(seed++),

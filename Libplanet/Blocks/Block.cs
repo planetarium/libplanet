@@ -173,7 +173,8 @@ namespace Libplanet.Blocks
                 );
             foreach (Transaction<T> tx in Transactions)
             {
-                delta = tx.EvaluateActions(Hash, Index, delta);
+                delta = tx.EvaluateActions(
+                    Hash, Index, delta, RewardBeneficiary.Value);
                 yield return delta;
                 delta = new AccountStateDeltaImpl(delta.GetState);
             }
