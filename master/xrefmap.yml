@@ -469,6 +469,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IActionContext.BlockIndex
   nameWithType: IActionContext.BlockIndex
+- uid: Libplanet.Action.IActionContext.Miner
+  name: Miner
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Miner
+  commentId: P:Libplanet.Action.IActionContext.Miner
+  fullName: Libplanet.Action.IActionContext.Miner
+  nameWithType: IActionContext.Miner
+- uid: Libplanet.Action.IActionContext.Miner*
+  name: Miner
+  href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Miner_
+  commentId: Overload:Libplanet.Action.IActionContext.Miner
+  isSpec: "True"
+  fullName: Libplanet.Action.IActionContext.Miner
+  nameWithType: IActionContext.Miner
 - uid: Libplanet.Action.IActionContext.PreviousStates
   name: PreviousStates
   href: api/Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates
@@ -1435,6 +1448,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Mine
   nameWithType: Block<T>.Mine
   nameWithType.vb: Block(Of T).Mine
+- uid: Libplanet.Blocks.Block`1.Miner
+  name: Miner
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Miner
+  commentId: P:Libplanet.Blocks.Block`1.Miner
+  fullName: Libplanet.Blocks.Block<T>.Miner
+  fullName.vb: Libplanet.Blocks.Block(Of T).Miner
+  nameWithType: Block<T>.Miner
+  nameWithType.vb: Block(Of T).Miner
+- uid: Libplanet.Blocks.Block`1.Miner*
+  name: Miner
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Miner_
+  commentId: Overload:Libplanet.Blocks.Block`1.Miner
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Miner
+  fullName.vb: Libplanet.Blocks.Block(Of T).Miner
+  nameWithType: Block<T>.Miner
+  nameWithType.vb: Block(Of T).Miner
 - uid: Libplanet.Blocks.Block`1.Nonce
   name: Nonce
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Nonce
@@ -1469,23 +1499,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).PreviousHash
   nameWithType: Block<T>.PreviousHash
   nameWithType.vb: Block(Of T).PreviousHash
-- uid: Libplanet.Blocks.Block`1.RewardBeneficiary
-  name: RewardBeneficiary
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_RewardBeneficiary
-  commentId: P:Libplanet.Blocks.Block`1.RewardBeneficiary
-  fullName: Libplanet.Blocks.Block<T>.RewardBeneficiary
-  fullName.vb: Libplanet.Blocks.Block(Of T).RewardBeneficiary
-  nameWithType: Block<T>.RewardBeneficiary
-  nameWithType.vb: Block(Of T).RewardBeneficiary
-- uid: Libplanet.Blocks.Block`1.RewardBeneficiary*
-  name: RewardBeneficiary
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_RewardBeneficiary_
-  commentId: Overload:Libplanet.Blocks.Block`1.RewardBeneficiary
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.RewardBeneficiary
-  fullName.vb: Libplanet.Blocks.Block(Of T).RewardBeneficiary
-  nameWithType: Block<T>.RewardBeneficiary
-  nameWithType.vb: Block(Of T).RewardBeneficiary
 - uid: Libplanet.Blocks.Block`1.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp
@@ -5180,15 +5193,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Equals
   nameWithType: Transaction<T>.Equals
   nameWithType.vb: Transaction(Of T).Equals
-- uid: Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,System.Boolean)
-  name: EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Boolean)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_System_Boolean_
-  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,System.Boolean)
-  name.vb: EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Boolean)
-  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, System.Boolean)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, System.Boolean)
-  nameWithType: Transaction<T>.EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Boolean)
-  nameWithType.vb: Transaction(Of T).EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Boolean)
+- uid: Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  name: EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  name.vb: EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActions(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  nameWithType: Transaction<T>.EvaluateActions(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
+  nameWithType.vb: Transaction(Of T).EvaluateActions(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
 - uid: Libplanet.Tx.Transaction`1.EvaluateActions*
   name: EvaluateActions
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_
