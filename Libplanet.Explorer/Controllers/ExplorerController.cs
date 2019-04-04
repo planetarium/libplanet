@@ -86,7 +86,7 @@ namespace Libplanet.Explorer.Controllers
                 Difficulty = block.Difficulty,
                 Nonce = block.Nonce.ToString(),
                 PreviousHash = block.PreviousHash.ToString(),
-                RewardBeneficiary = block.RewardBeneficiary?.ToHex(),
+                Miner = block.Miner?.ToHex(),
                 Timestamp = block.Timestamp.ToString(TimestampFormat),
                 TxIds = (block.Transactions
                     .OrderByDescending(tx => tx.Timestamp)
