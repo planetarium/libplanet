@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <Version>0.2.0</Version>
+    <Version>0.2.1-dev</Version>
     <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
     <Description>A .NET library for creating multiplayer online game in decentralized fashion.
 See also the docs for details:
