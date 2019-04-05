@@ -180,6 +180,7 @@ To be released.
     to ignore peers if their version is different.  [[#167]], [[#170]]
  -  Added `IActionContext.Miner` property.  [[#173]], [[#174]]
  -  Renamed `Block<T>.RewardBeneficiary` to `Block<T>.Miner`.  [[#174]]
+ -  Added `BlockChain<T>.Blocks` property.  [[#176]]
 
 [#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
@@ -205,6 +206,7 @@ To be released.
 [#170]: https://github.com/planetarium/libplanet/pull/170
 [#173]: https://github.com/planetarium/libplanet/issues/173
 [#174]: https://github.com/planetarium/libplanet/pull/174
+[#176]: https://github.com/planetarium/libplanet/pull/176
 [RFC 5389]: https://tools.ietf.org/html/rfc5389
 [RFC 5766]: https://tools.ietf.org/html/rfc5766
 

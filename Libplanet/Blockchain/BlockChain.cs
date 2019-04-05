@@ -62,7 +62,13 @@ namespace Libplanet.Blockchain
 
         public Guid Id { get; private set; }
 
-        internal IDictionary<HashDigest<SHA256>, Block<T>> Blocks
+        /// <summary>
+        /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Block{T}"/>s.
+        /// Keys are <see cref="Block{T}.Hash"/>es and values are
+        /// their corresponding <see cref="Block{T}"/>s.
+        /// </summary>
+        public IDictionary<HashDigest<SHA256>, Block<T>> Blocks
         {
             get; private set;
         }
