@@ -12,7 +12,6 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 
-[assembly: InternalsVisibleTo("Libplanet.Explorer")]
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
