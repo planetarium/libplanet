@@ -947,6 +947,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Append
   nameWithType: BlockChain<T>.Append
   nameWithType.vb: BlockChain(Of T).Append
+- uid: Libplanet.Blockchain.BlockChain`1.Blocks
+  name: Blocks
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Blocks
+  commentId: P:Libplanet.Blockchain.BlockChain`1.Blocks
+  fullName: Libplanet.Blockchain.BlockChain<T>.Blocks
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Blocks
+  nameWithType: BlockChain<T>.Blocks
+  nameWithType.vb: BlockChain(Of T).Blocks
+- uid: Libplanet.Blockchain.BlockChain`1.Blocks*
+  name: Blocks
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Blocks_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Blocks
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.Blocks
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Blocks
+  nameWithType: BlockChain<T>.Blocks
+  nameWithType.vb: BlockChain(Of T).Blocks
 - uid: Libplanet.Blockchain.BlockChain`1.Finalize
   name: Finalize()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize
@@ -1130,6 +1147,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Tip
   nameWithType: BlockChain<T>.Tip
   nameWithType.vb: BlockChain(Of T).Tip
+- uid: Libplanet.Blockchain.BlockChain`1.Transactions
+  name: Transactions
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Transactions
+  commentId: P:Libplanet.Blockchain.BlockChain`1.Transactions
+  fullName: Libplanet.Blockchain.BlockChain<T>.Transactions
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Transactions
+  nameWithType: BlockChain<T>.Transactions
+  nameWithType.vb: BlockChain(Of T).Transactions
+- uid: Libplanet.Blockchain.BlockChain`1.Transactions*
+  name: Transactions
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Transactions_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Transactions
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.Transactions
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Transactions
+  nameWithType: BlockChain<T>.Transactions
+  nameWithType.vb: BlockChain(Of T).Transactions
 - uid: Libplanet.Blockchain.BlockChain`1.Validate(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}},System.DateTimeOffset)
   name: Validate(IEnumerable<Block<T>>, DateTimeOffset)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Validate_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___System_DateTimeOffset_
