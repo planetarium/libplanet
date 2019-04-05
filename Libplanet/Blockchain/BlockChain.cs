@@ -12,7 +12,6 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 
-[assembly: InternalsVisibleTo("Libplanet.Explorer")]
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
@@ -62,12 +61,24 @@ namespace Libplanet.Blockchain
 
         public Guid Id { get; private set; }
 
-        internal IDictionary<HashDigest<SHA256>, Block<T>> Blocks
+        /// <summary>
+        /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Block{T}"/>s.
+        /// Keys are <see cref="Block{T}.Hash"/>es and values are
+        /// their corresponding <see cref="Block{T}"/>s.
+        /// </summary>
+        public IDictionary<HashDigest<SHA256>, Block<T>> Blocks
         {
             get; private set;
         }
 
-        internal IDictionary<TxId, Transaction<T>> Transactions
+        /// <summary>
+        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Transaction{T}"/>s.
+        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
+        /// their corresponding <see cref="Transaction{T}"/>s.
+        /// </summary>
+        public IDictionary<TxId, Transaction<T>> Transactions
         {
             get; private set;
         }

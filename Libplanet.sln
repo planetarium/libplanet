@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet", "Libplanet\Libp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Tests", "Libplanet.Tests\Libplanet.Tests.csproj", "{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Explorer", "Libplanet.Explorer\Libplanet.Explorer.csproj", "{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,18 +45,6 @@ Global
 		{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}.Release|x64.Build.0 = Release|Any CPU
 		{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}.Release|x86.ActiveCfg = Release|Any CPU
 		{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}.Release|x86.Build.0 = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|x64.Build.0 = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Debug|x86.Build.0 = Debug|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|x64.ActiveCfg = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|x64.Build.0 = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|x86.ActiveCfg = Release|Any CPU
-		{CC035C07-8D2B-4608-BA09-3FBB290A3EA6}.Release|x86.Build.0 = Release|Any CPU
 		{4F5DB8F5-D0F4-454C-95A7-87F53E5D5E36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F5DB8F5-D0F4-454C-95A7-87F53E5D5E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F5DB8F5-D0F4-454C-95A7-87F53E5D5E36}.Debug|x64.ActiveCfg = Debug|Any CPU
