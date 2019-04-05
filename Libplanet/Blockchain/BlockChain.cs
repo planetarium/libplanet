@@ -73,7 +73,13 @@ namespace Libplanet.Blockchain
             get; private set;
         }
 
-        internal IDictionary<TxId, Transaction<T>> Transactions
+        /// <summary>
+        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Transaction{T}"/>s.
+        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
+        /// their corresponding <see cref="Transaction{T}"/>s.
+        /// </summary>
+        public IDictionary<TxId, Transaction<T>> Transactions
         {
             get; private set;
         }

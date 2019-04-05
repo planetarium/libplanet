@@ -181,6 +181,7 @@ To be released.
  -  Added `IActionContext.Miner` property.  [[#173]], [[#174]]
  -  Renamed `Block<T>.RewardBeneficiary` to `Block<T>.Miner`.  [[#174]]
  -  Added `BlockChain<T>.Blocks` property.  [[#176]]
+ -  Added `BlockChain<T>.Transactions` property.  [[#176]]
 
 [#28]: https://github.com/planetarium/libplanet/issues/28
 [#98]: https://github.com/planetarium/libplanet/issues/98
