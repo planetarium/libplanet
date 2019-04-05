@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.2.0
 -------------
 
-To be released.
+Released on April 5, 2019.
 
  -  `PrivateKey.Decrypt()` now throws an `InvalidCiphertextException`
     instead of returning `null` when `cipherText` is invalid.  [[#140]]
