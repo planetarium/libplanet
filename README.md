@@ -18,8 +18,9 @@ How to run
 Endpoints
 ---------
 
-- `/blocks/`: Show a list of blocks. It contains the hash of block and
-the creation timestamp.
+- `/blocks/`: Show a list of blocks. It contains block hashes and
+their creation timestamp.  `?hide-empty-blocks=true` option shows only blocks
+having any transactions.
 - `/blocks/{hashString}/`: Show the details of the block that includes index,
 difficulty, nonce, the hash of the previous block, reward beneficiary,
 creation timestamp, and transaction ids. `{hashString}` is

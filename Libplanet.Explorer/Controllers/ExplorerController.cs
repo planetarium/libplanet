@@ -37,14 +37,23 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpGet("/blocks/")]
-        public List<Dictionary<string, string>> Index()
+        public List<Dictionary<string, string>> Index(
+            [FromQuery(Name = "hide-empty-blocks")] bool HideEmptyBlocks
+        )
         {
-            BlockChain<T> chain = GetBlockChain();
+            IEnumerable<Block<T>> chain = GetBlockChain();
+            Console.WriteLine("options: hide " + HideEmptyBlocks.ToString());
+
+            if (HideEmptyBlocks)
+            {
+                chain = chain.Where(b => b.Transactions.Any());
+            }
 
             return chain.Select(block => new Dictionary<string, string>
                 {
                     { "hash", block.Hash.ToString() },
-                    { "timestamp", block.Timestamp.ToString(TimestampFormat) }
+                    { "timestamp", block.Timestamp.ToString(TimestampFormat) },
+                    { "tx_count", block.Transactions.Count().ToString() },
                 })
                 .ToList();
         }
