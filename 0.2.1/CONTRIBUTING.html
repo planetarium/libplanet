@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Contributor guide | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Contributor guide | Libplanet ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="contributor-guide">Contributor guide</h1>
+
+<p>Note: This document at present is for only code contributors.
+We should expand it so that it covers reporting bugs, filing issues,
+and writing docs.</p>
+<h2 id="questions--online-chat--discord">Questions &amp; online chat  <a href="https://discord.gg/ue9fgc3"><img src="https://img.shields.io/discord/539405872346955788.svg?color=7289da&amp;logo=discord&amp;logoColor=white" alt="Discord"></a></h2>
+<p>We have a <a href="https://discord.gg/ue9fgc3">Discord server</a> to discuss Libplanet.  There are some channels
+for purposes:</p>
+<ul>
+<li><em>#libplanet-users</em>: Chat with game programmers who use Libplanet.
+Ask questions to <em>use</em> Libplanet for your games.</li>
+<li><em>#libplanet-dev</em>: Chat with maintainers and contributors of Libplanet.
+Ask questions to <em>hack</em> Libplanet and to make a patch for it.</li>
+<li><em>#libplanet-users-kr</em>: The same purpose to <em>#libplanet-users</em>,
+except you can speak Korean instead English here.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>If you use Linux or macOS you need <a href="https://www.mono-project.com/">Mono</a>, which provides C# compiler and
+.NET VM.  You could install it by <code>sudo apt install mono-devel</code> command
+if you use Ubuntu Linux.  If you use macOS and <a href="https://brew.sh/">Homebrew</a>, you can install
+it by <code>brew cask install mono-mdk</code> command.</p>
+<p>If you are on Windows you need things like C# compiler included in
+<a href="https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017">Build Tools for Visual Studio 2017</a>.  Choose the following workloads
+during installation:</p>
+<ul>
+<li><q>Windows</q> → <q>.NET desktop build tools</q></li>
+<li><q>Other Toolsets</q> → <q>.NET Core build tools</q></li>
+</ul>
+<p>These tools should bring MSBuild, the Libplanet project uses to build, as well.
+Check if <code>msbuild</code> is available on the shell or Command Prompt.  If it fails
+to find command named <code>msbuild</code> it might be not installed correctly or its
+directory might be missing in the <code>PATH</code> environment.</p>
+<p>Although it is not necessary, you should install a proper IDE for .NET
+(or an <a href="http://www.omnisharp.net/">OmniSharp</a> extension for your favorite editor — except it takes
+hours to properly configure and integrate with your editor).
+C# is not like JavaScript or Python; it is painful to code in C# without IDE.</p>
+<p>Unless you already have your favorite setup, we recommend you to use
+<a href="https://code.visualstudio.com/">Visual Studio Code</a>.  It is free, open source, and made by Microsoft, which
+made .NET as well.  So Visual Studio Code has a <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp">first-party C# extension</a>
+which works well together.</p>
+<h2 id="build">Build</h2>
+<p>The following command installs dependencies (required library packages) and
+builds the <em>Libplanet</em> project:</p>
+<pre><code>msbuild -r Libplanet
+</code></pre>
+<h2 id="tests-build-status-codecov">Tests <a href="https://travis-ci.com/planetarium/libplanet"><img src="https://travis-ci.com/planetarium/libplanet.svg?branch=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
+<p>We write as complete tests as possible to the corresponding implementation code.
+Going near to the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp">code coverage</a> 100% is one of our goals.</p>
+<p>The <em>Libplanet</em> solution consists of 4 projects.  <em>Libplanet</em> and
+<em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
+and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
+<p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly, and
+<em>Libplanet.Stun.Tests</em> is a test suite for the <em>Libplanet.Stun.dll</em> assembly.
+Both depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in these corresponds to
+one in <em>Libplanet</em> or <em>Libplanet.Stun</em> projects.
+If there's <em>Libplanet.Foo.Bar</em> class there also should be
+<em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
+<p>To build and run unit tests at a time execute the below commands:</p>
+<pre><code>msbuild -r -t:Build,XunitTest Libplanet.Tests
+msbuild -r -t:Build,XunitTest Libplanet.Stun.Tests
+</code></pre>
+<h2 id="style-convention">Style convention</h2>
+<p>Please follow the existing coding convention.  We are already using several
+static analyzers.  They are automatically executed together with <code>msbuild</code>,
+and will warn you if there are any style errors.</p>
+<p>You should also register Git hooks we commonly use:</p>
+<pre><code>git config core.hooksPath hooks
+</code></pre>
+<p>We highly recommend you to install an extension for <a href="https://editorconfig.org/">EditorConfig</a> in your
+favorite editor.  Some recent editors have built-in support for EditorConfig,
+e.g., Rider (IntelliJ IDEA), Visual Studio.  Many editors have an extension to
+support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom</a>, <a href="https://github.com/editorconfig/editorconfig-emacs">Emacs</a>, <a href="https://github.com/editorconfig/editorconfig-vim">Vim</a>, <a href="https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig">VS Code</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

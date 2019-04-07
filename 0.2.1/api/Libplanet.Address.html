@@ -1,0 +1,650 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct Address
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct Address
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Address">
+  
+  
+  <h1 id="Libplanet_Address" data-uid="Libplanet.Address" class="text-break">Struct Address
+  </h1>
+  <div class="markdown level0 summary"><p>An identifier of 20 bytes (or 40 letters in hexadecimal, commonly with
+a prefix <code>0x</code>) that refers to a unique account.</p>
+<p>It is derived from the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>
+of an account, but as a derivation loses information, it is always
+unidirectional.</p>
+<p>The address derivation from a public key is as follows:</p>
+<ol><li>Calculates the Keccak-256, which is a previous form
+of SHA-3 before NIST standardized it and does not follow
+<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">FIPS-202</a>, of the corresponding <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.
+</li><li>Takes only the last 20 bytes of the calculated
+Keccak-256 hash.</li><li>When the address needs to be shown to end users,
+displays these 20 bytes in hexadecimal, with a prefix <code>0x</code>.
+</li></ol>
+<p>Since the scheme of the address derivation and the <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>/<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> is the same to
+<a href="https://www.ethereum.org/">Ethereum</a>, Ethereum addresses
+can be used by Libplanet-backed games/apps too.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Address_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+[GeneratedEquality]
+public struct Address : ISerializable</code></pre>
+  </div>
+  <h5 id="Libplanet_Address_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Address.html">Address</a> value is immutable.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L110">View Source</a>
+  </span>
+  <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
+  <h4 id="Libplanet_Address__ctor_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Address.#ctor(Libplanet.Crypto.PublicKey)">Address(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>Derives the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
+<p>Note that there is an equivalent extension method
+<a class="xref" href="Libplanet.AddressExtension.html#Libplanet_AddressExtension_ToAddress_Libplanet_Crypto_PublicKey_">ToAddress(PublicKey)</a>, which enables
+a code like <code>publicKey.ToAddress()</code> instead of
+<code>new Address(publicKey)</code>, for convenience.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address(PublicKey publicKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>A <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> to derive
+the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address__ctor_Libplanet_Crypto_PublicKey__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.AddressExtension.html#Libplanet_AddressExtension_ToAddress_Libplanet_Crypto_PublicKey_">ToAddress</a>(<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L69">View Source</a>
+  </span>
+  <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
+  <h4 id="Libplanet_Address__ctor_System_Byte___" data-uid="Libplanet.Address.#ctor(System.Byte[])">Address(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Address.html">Address</a> instance from the given <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">address</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address(byte[] address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">address</span></td>
+        <td><p>An array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s which
+represents an <a class="xref" href="Libplanet.Address.html">Address</a>.  This must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address__ctor_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which represents an
+<a class="xref" href="Libplanet.Address.html">Address</a> can be gotten using <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a> method.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullreferenceexception">NullReferenceException</a></td>
+        <td><p>Thrown when <code>null</code> was
+passed to <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">address</code> array did not lengthen 20 bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address__ctor_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
+  <h4 id="Libplanet_Address__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">Address(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Address.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L132">View Source</a>
+  </span>
+  <a id="Libplanet_Address__ctor_" data-uid="Libplanet.Address.#ctor*"></a>
+  <h4 id="Libplanet_Address__ctor_System_String_" data-uid="Libplanet.Address.#ctor(System.String)">Address(String)</h4>
+  <div class="markdown level1 summary"><p>Derives the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from a hexadecimal
+address string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Address(string hex)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">hex</span></td>
+        <td><p>A 40 characters hexadecimal address string to
+derive the corresponding <a class="xref" href="Libplanet.Address.html">Address</a> from. The string
+should be all lower-case or mixed-case which follows <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md">EIP 55</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code>null</code> was
+passed to <code data-dev-comment-type="paramref" class="paramref">hex</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> did not lengthen 40 characters.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> is mixed-case and the checksum is invalid.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></td>
+        <td><p>Thrown when the given <code data-dev-comment-type="paramref" class="paramref">hex</code> does not consist of ASCII characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_Size.md&amp;value=---%0Auid%3A%20Libplanet.Address.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L50">View Source</a>
+  </span>
+  <h4 id="Libplanet_Address_Size" data-uid="Libplanet.Address.Size">Size</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Address.html">Address</a> takes.</p>
+<p>It is 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int Size = 20</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_ByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L144">View Source</a>
+  </span>
+  <a id="Libplanet_Address_ByteArray_" data-uid="Libplanet.Address.ByteArray*"></a>
+  <h4 id="Libplanet_Address_ByteArray" data-uid="Libplanet.Address.ByteArray">ByteArray</h4>
+  <div class="markdown level1 summary"><p>An immutable array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that represent this
+<a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[EqualityKey(KeyEqualityMode.Auto)]
+public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address_ByteArray_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is immutable.  For a mutable array, call <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a> method.</p>
+</div>
+  <h5 id="Libplanet_Address_ByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToByteArray">ToByteArray()</a></div>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L217">View Source</a>
+  </span>
+  <a id="Libplanet_Address_GetObjectData_" data-uid="Libplanet.Address.GetObjectData*"></a>
+  <h4 id="Libplanet_Address_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Address.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_ToByteArray.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L168">View Source</a>
+  </span>
+  <a id="Libplanet_Address_ToByteArray_" data-uid="Libplanet.Address.ToByteArray*"></a>
+  <h4 id="Libplanet_Address_ToByteArray" data-uid="Libplanet.Address.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Gets a mutable array of 20 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that represent
+this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>A new mutable array which represents this
+<a class="xref" href="Libplanet.Address.html">Address</a>.  Since it is created every time the method
+is called, any mutation on that does not affect internal states of
+this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address_ToByteArray_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ByteArray">ByteArray</a></div>
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address__ctor_System_Byte___">Address(Byte[])</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_ToHex.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToHex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L187">View Source</a>
+  </span>
+  <a id="Libplanet_Address_ToHex_" data-uid="Libplanet.Address.ToHex*"></a>
+  <h4 id="Libplanet_Address_ToHex" data-uid="Libplanet.Address.ToHex">ToHex()</h4>
+  <div class="markdown level1 summary"><p>Gets a mixed-case hexadecimal string of 40 letters that represent
+this <a class="xref" href="Libplanet.Address.html">Address</a>. The returned hexadecimal string follows
+<a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md">EIP 55</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public string ToHex()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A hexadecimal string of 40 letters that represent
+this <a class="xref" href="Libplanet.Address.html">Address</a>.  Note that it does not start with
+a prefix.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Address_ToHex_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the returned string has no prefix, for
+<code>0x</code>-prefixed hexadecimal, call <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToString">ToString()</a>
+method instead.</p>
+</div>
+  <h5 id="Libplanet_Address_ToHex_examples">Examples</h5>
+  <p>A returned string looks like
+<code>87Ae4774E20963fd6caC967CF47aDCF880C3e89B</code>.</p>
+
+  <h5 id="Libplanet_Address_ToHex_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToString">ToString()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Address.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L210">View Source</a>
+  </span>
+  <a id="Libplanet_Address_ToString_" data-uid="Libplanet.Address.ToString*"></a>
+  <h4 id="Libplanet_Address_ToString" data-uid="Libplanet.Address.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets a <code>0x</code>-prefixed mixed-case hexadecimal string of
+42 letters that represent this <a class="xref" href="Libplanet.Address.html">Address</a>. The returned
+hexadecimal string follows
+<a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md">EIP 55</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Pure]
+public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>A <code>0x</code>-hexadecimal string of 42 letters that represent
+this <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
+  <h5 id="Libplanet_Address_ToString_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As the returned string is <code>0x</code>-prefixed, for
+hexadecimal without prefix, call <a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToHex">ToHex()</a> method
+instead.</p>
+</div>
+  <h5 id="Libplanet_Address_ToString_examples">Examples</h5>
+  <p>A returned string looks like
+<code>0x87Ae4774E20963fd6caC967CF47aDCF880C3e89B</code>.</p>
+
+  <h5 id="Libplanet_Address_ToString_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Address.html#Libplanet_Address_ToHex">ToHex()</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Address.md&amp;value=---%0Auid%3A%20Libplanet.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Address.cs/#L41" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

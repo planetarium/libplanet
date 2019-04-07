@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IAction
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IAction
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.IAction">
+  
+  
+  <h1 id="Libplanet_Action_IAction" data-uid="Libplanet.Action.IAction" class="text-break">Interface IAction
+  </h1>
+  <div class="markdown level0 summary"><p>An in-game action.  Every action should be replayable, because
+multiple nodes in a network should execute an action and get the same
+result.</p>
+<p>A “class” which implements this interface is
+analogous to a function, and its instance is analogous to a
+<a href="https://en.wikipedia.org/wiki/Partial_application">partial
+function application</a>, in other words, a function with some bound
+arguments.  Those parameters that will be bound at runtime should be
+represented as fields or properties in an action class, and bound
+argument values to these parameters should be received through
+a constructor parameters of that class.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_IAction_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IAction</code></pre>
+  </div>
+  <h5 id="Libplanet_Action_IAction_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how to implement an action of three types
+of in-game logic:</p>
+<pre><code>using System;
+using System.Collections.Immutable;
+using Libplanet;
+using Libplanet.Action;
+
+public class MyAction : IAction
+{
+    // Declare an enum type to distinguish types of in-game logic.
+    public enum ActType { CreateCharacter, Attack, Heal }
+
+    // Declare properties (or fields) to store &quot;bound&quot; argument values.
+    public ActType Type { get; private set; }
+    public Address TargetAddress { get; private set; }
+
+    // Action must has a public parameterless constructor.
+    // Usually this is used only by Libplanet&apos;s internals.
+    public MyAction() {}
+
+    // Take argument values to &quot;bind&quot; through constructor parameters.
+    public MyAction(ActType type, Address targetAddress)
+    {
+        Type = type;
+        TargetAddress = targetAddress;
+    }
+
+    // The main game logic belongs to here.  It takes the
+    // previous states through its parameter named context,
+    // and is offered &quot;bound&quot; argument values through
+    // its own properties (or fields).
+    IAccountStateDelta IAction.Execute(IActionContext context)
+    {
+        // Gets the state immediately before this action is executed.
+        // ImmutableDictionary&lt;string, uint> is just for example,
+        // As far as it is serializable, you can store any types.
+        // (We recommend to use immutable types though.)
+        var state = (ImmutableDictionary&lt;string, uint>)
+            context.PreviousStates.GetState(TargetAddress);
+
+        // This variable purposes to store the state
+        // right after this action finishes.
+        ImmutableDictionary&lt;string, uint> nextState;
+
+        // Does different things depending on the action&apos;s type.
+        // This way is against the common principals of programming
+        // as it is just an example.  You could compare this with
+        // a better example of PolymorphicAction&lt;T> class.
+        switch (Type)
+        {
+            case ActType.CreateCharacter:
+                if (!TargetAddress.Equals(context.Signer))
+                    throw new Exception(
+                        &quot;TargetAddress of CreateCharacter action &quot; +
+                        &quot;only can be the same address to the &quot; +
+                        &quot;Transaction&lt;T>.Signer.&quot;);
+                else if (!(state is null))
+                    throw new Exception(
+                        &quot;Character was already created.&quot;);
+
+                nextState = ImmutableDictionary&lt;string, uint>.Empty
+                    .Add(&quot;hp&quot;, 20);
+                break;
+
+            case ActType.Attack:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Max(state[&quot;hp&quot;] - 5, 0));
+                break;
+
+            case ActType.Heal:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Min(state[&quot;hp&quot;] + 5, 20));
+                break;
+
+            default:
+                throw new Exception(
+                    &quot;Properties are not properly initialized.&quot;);
+        }
+
+        // Builds a delta (dirty) from previous to next states, and
+        // returns it.
+        return context.PreviousStates.SetState(TargetAddress,
+            nextState);
+    }
+
+    // Serializes its &quot;bound arguments&quot; so that they are transmitted
+    // over network or stored to the persistent storage.
+    // It uses .NET&apos;s built-in serialization mechanism.
+    IImmutableDictionary&lt;string, object> IAction.PlainValue =>
+        ImmutableDictionary&lt;string, object>.Empty
+            .Add(&quot;type&quot;, Type)
+            .Add(&quot;target_address&quot;, TargetAddress);
+
+    // Deserializes &quot;bound arguments&quot;.  That is, it is inverse
+    // of PlainValue property.
+    void IAction.LoadPlainValue(
+        IImmutableDictionary&lt;string, object> plainValue)
+    {
+        Type = (ActType)plainValue[&quot;type&quot;];
+        TargetAddress = (Address)plainValue[&quot;target_address&quot;];
+    }
+}</code></pre>
+<p>Note that the above example has several bad practices.
+Compare this example with <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>&apos;s
+example.</p>
+
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Action/IAction.cs/#L146">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
+  <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
+  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
+(or fields) of an action, so that they can be transmitted over
+network or saved to persistent storage.</p>
+<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
+later.</p>
+<p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IImmutableDictionary&lt;string, object&gt; PlainValue { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><p>A value which encodes this action's bound values (held
+by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">serializable</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_PlainValue_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a></div>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Action/IAction.cs/#L186">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
+  <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
+  <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
+<em>deterministic</em>.</p>
+<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
+it receives information such as a transaction signer,
+its states immediately before the execution,
+and a deterministic random seed.</p>
+<p>Other “bound” information resides in the action
+object in itself, as its properties (or fields).</p>
+<p>A returned <a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a> object functions as
+a delta which shifts from previous states to next states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAccountStateDelta Execute(IActionContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A context object containing addresses that
+signed the transaction, states immediately before the execution,
+and a PRNG object which produces deterministic random numbers.
+See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method should be deterministic:
+for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
+nor any other PRNGs provided by other than Libplanet.
+Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
+<p>Also do not perform I/O operations such as file system access
+or networking.  These bring an action indeterministic.</p>
+</div>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Action/IAction.cs/#L157">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
+  <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void LoadPlainValue(IImmutableDictionary&lt;string, object&gt; plainValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">plainValue</span></td>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/cf33da2519dc24fb74a874862c050e854796664f/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/cf33da2519dc24fb74a874862c050e854796664f/Libplanet/Action/IAction.cs/#L127" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
