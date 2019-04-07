@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Libplanet" Version="0.2.0-nightly.20190404" />
+    <PackageReference Include="Libplanet" Version="0.2.1" />
     <PackageReference
       Include="Microsoft.AspNetCore.All"
       Version="2.2.3"

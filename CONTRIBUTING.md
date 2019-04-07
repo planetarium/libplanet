@@ -25,7 +25,7 @@ for purposes:
 Prerequisites
 -------------
 
-*Libplanet.Explorer* requires [.NET Core] 2.0 or higher.  If you use macOS and
+*Libplanet.Explorer* requires [.NET Core] 2.2 or higher.  If you use macOS and
 [Homebrew], you can install it by `brew cask install dotnet-sdk` command.
 
 Although it is not necessary, you should install a proper IDE for .NET
