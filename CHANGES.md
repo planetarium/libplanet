@@ -4,7 +4,11 @@ Libplanet changelog
 Version 0.2.1
 -------------
 
-To be released.
+Released on April 7, 2019.
+
+This version purposes to entirely replace *0.2.0*, because a wrong *.nupkg*
+file was uploaded to *0.2.0* on NuGet Gallery.  Note that *0.2.0* on NuGet
+Gallery was unlisted.
 
 
 Version 0.2.0
