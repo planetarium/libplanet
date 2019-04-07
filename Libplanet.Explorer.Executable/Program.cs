@@ -30,7 +30,14 @@ namespace Libplanet.Explorer.Executable
                 "The chain ID to view.  Omittable if there is only one ID.",
                 v => chainId = v
             },
+            {
+                "h|help",
+                "Show this message and exit.",
+                v => showHelp = !(v is null)
+            },
         };
+
+        private static bool showHelp;
 
         private static string storeTypeName;
 
@@ -41,7 +48,7 @@ namespace Libplanet.Explorer.Executable
             int code = Parse(args);
             if (code != 0)
             {
-                return code;
+                return Math.Max(code, 0);
             }
 
             BuildWebHost().Run();
@@ -72,13 +79,27 @@ namespace Libplanet.Explorer.Executable
                 return 1;
             }
 
+            if (showHelp)
+            {
+                Console.WriteLine(
+                    "Usage: {0} [options] STORE_LOCATOR",
+                    programName
+                );
+                Console.WriteLine();
+                Console.WriteLine("Options:");
+                options.WriteOptionDescriptions(Console.Out);
+                return -1;
+            }
+
             if (extra.Count > 1)
             {
                 stderr.WriteLine("error: Too many arguments.");
+                return 1;
             }
             else if (extra.Count < 1)
             {
                 stderr.WriteLine("error: Too few arguments.");
+                return 1;
             }
 
             IStore store;
