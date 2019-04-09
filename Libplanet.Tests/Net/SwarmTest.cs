@@ -359,6 +359,45 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
+        public async Task HandleDifferentAppProtocolVersion()
+        {
+            var isCalled = false;
+
+            void GameHandler(object sender, DifferentProtocolVersionEventArgs e)
+            {
+                isCalled = true;
+            }
+
+            var a = new Swarm(
+                new PrivateKey(),
+                host: IPAddress.Loopback.ToString(),
+                appProtocolVersion: 2);
+            var b = new Swarm(
+                new PrivateKey(),
+                host: IPAddress.Loopback.ToString(),
+                appProtocolVersion: 3);
+
+            a.DifferentVersionPeerEncountered += GameHandler;
+
+            BlockChain<DumbAction> chain = _blockchains[0];
+
+            try
+            {
+                await StartAsync(a, chain);
+                await StartAsync(b, chain);
+
+                a.Add(b.AsPeer);
+
+                Assert.True(isCalled);
+            }
+            finally
+            {
+                await a.StopAsync();
+                await b.StopAsync();
+            }
+        }
+
+        [Fact]
         public void BeComparedProperly()
         {
             var pk1 = new PrivateKey();

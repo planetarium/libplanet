@@ -145,6 +145,13 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// The <see cref="EventHandler" /> called when the different version of
+        /// <see cref="Peer" /> is discovered.
+        /// </summary>
+        public event EventHandler<DifferentProtocolVersionEventArgs>
+            DifferentVersionPeerEncountered;
+
         public int Count => _peers.Count;
 
         public bool IsReadOnly => false;
@@ -1163,6 +1170,12 @@ namespace Libplanet.Net
             {
                 if (IsDifferentProtocolVersion(sender))
                 {
+                    var args = new DifferentProtocolVersionEventArgs
+                        {
+                            ExpectedVersion = _appProtocolVersion,
+                            ActualVersion = sender.AppProtocolVersion,
+                        };
+                    DifferentVersionPeerEncountered?.Invoke(this, args);
                     return;
                 }
 
@@ -1401,6 +1414,16 @@ namespace Libplanet.Net
                 if (pong.AppProtocolVersion != _appProtocolVersion)
                 {
                     dealer.Dispose();
+
+                    DifferentProtocolVersionEventArgs args =
+                        new DifferentProtocolVersionEventArgs
+                        {
+                            ExpectedVersion = _appProtocolVersion,
+                            ActualVersion = pong.AppProtocolVersion,
+                        };
+
+                    DifferentVersionPeerEncountered?.Invoke(this, args);
+
                     throw new DifferentAppProtocolVersionException(
                         $"Peer protocol version is different.",
                         _appProtocolVersion,

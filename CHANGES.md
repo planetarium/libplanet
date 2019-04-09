@@ -6,6 +6,12 @@ Version 0.3.0
 
 To be released.
 
+ - Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
+   events when a different version of a peer is discovered.  [[#167]], [[#185]]
+ - Added `Peer.AppProtocolVersion` property.  [[#185]]
+
+[#185]: https://github.com/planetarium/libplanet/pull/185
+
 
 Version 0.2.1
 -------------
