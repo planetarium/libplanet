@@ -1161,6 +1161,11 @@ namespace Libplanet.Net
 
             if (IsUnknownPeer(sender))
             {
+                if (IsDifferentProtocolVersion(sender))
+                {
+                    return;
+                }
+
                 delta = new PeerSetDelta(
                     delta.Sender,
                     delta.Timestamp,
@@ -1168,6 +1173,16 @@ namespace Libplanet.Net
                     delta.RemovedPeers,
                     delta.ExistingPeers
                 );
+            }
+
+            if (IsDifferentProtocolVersion(sender))
+            {
+                delta = new PeerSetDelta(
+                    delta.Sender,
+                    delta.Timestamp,
+                    new Peer[] { }.ToImmutableHashSet(),
+                    delta.RemovedPeers,
+                    new Peer[] { }.ToImmutableHashSet());
             }
 
             _logger.Debug($"Received the delta[{delta}].");
@@ -1199,6 +1214,11 @@ namespace Libplanet.Net
             }
 
             return false;
+        }
+
+        private bool IsDifferentProtocolVersion(Peer sender)
+        {
+            return sender.AppProtocolVersion != _appProtocolVersion;
         }
 
         private async Task ApplyDelta(
