@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Net
                     "7ca8dbad5e1c8c9b130a9d39171a44134"
                     ));
             var endPoint = new DnsEndPoint("0.0.0.0", 1234);
-            var peer = new Peer(key, endPoint);
+            var peer = new Peer(key, endPoint, 1);
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
             {

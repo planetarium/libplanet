@@ -17,20 +17,23 @@ namespace Libplanet.Tests.Net
             var peerSetDelta = new PeerSetDelta(
                 new Peer(
                     new PrivateKey().PublicKey,
-                    new DnsEndPoint("0.0.0.0", 1234)
+                    new DnsEndPoint("0.0.0.0", 1234),
+                    1
                 ),
                 DateTimeOffset.UtcNow,
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new DnsEndPoint("1.2.3.4", 1234)),
+                        new DnsEndPoint("1.2.3.4", 1234),
+                        1),
                 }.ToImmutableHashSet(),
                 new[]
                 {
                     new Peer(
                         new PrivateKey().PublicKey,
-                        new DnsEndPoint("2.3.4.5", 1234)),
+                        new DnsEndPoint("2.3.4.5", 1234),
+                        1),
                 }.ToImmutableHashSet(),
                 null
             );

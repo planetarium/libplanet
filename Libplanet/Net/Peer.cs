@@ -12,7 +12,8 @@ namespace Libplanet.Net
     [GeneratedEquality]
     public partial class Peer : ISerializable
     {
-        public Peer(PublicKey publicKey, DnsEndPoint endPoint)
+        public Peer(
+            PublicKey publicKey, DnsEndPoint endPoint, int appProtocolVersion)
         {
             if (publicKey == null)
             {
@@ -25,6 +26,7 @@ namespace Libplanet.Net
 
             PublicKey = publicKey;
             EndPoint = endPoint;
+            AppProtocolVersion = appProtocolVersion;
         }
 
         protected Peer(SerializationInfo info, StreamingContext context)
@@ -33,6 +35,7 @@ namespace Libplanet.Net
             EndPoint = new DnsEndPoint(
                 info.GetString("end_point_host"),
                 info.GetInt32("end_point_port"));
+            AppProtocolVersion = info.GetInt32("app_protocol_version");
         }
 
         [EqualityKey]
@@ -42,6 +45,9 @@ namespace Libplanet.Net
         [EqualityKey]
         [Pure]
         public DnsEndPoint EndPoint { get; }
+
+        [Pure]
+        public int AppProtocolVersion { get; }
 
         [Pure]
         public Address Address => new Address(PublicKey);
@@ -54,11 +60,12 @@ namespace Libplanet.Net
             info.AddValue("public_key", PublicKey.Format(true));
             info.AddValue("end_point_host", EndPoint.Host);
             info.AddValue("end_point_port", EndPoint.Port);
+            info.AddValue("app_protocol_version", AppProtocolVersion);
         }
 
         public override string ToString()
         {
-            return $"{Address}.{EndPoint}";
+            return $"{Address}.{EndPoint}.{AppProtocolVersion}";
         }
     }
 }

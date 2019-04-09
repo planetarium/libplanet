@@ -156,7 +156,7 @@ namespace Libplanet.Net
 
         public Peer AsPeer =>
             EndPoint != null
-            ? new Peer(_privateKey.PublicKey, EndPoint)
+            ? new Peer(_privateKey.PublicKey, EndPoint, _appProtocolVersion)
             : throw new SwarmException(
                 "Can't translate unbound Swarm to Peer.");
 
