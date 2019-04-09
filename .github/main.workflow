@@ -3,6 +3,11 @@ workflow "on push" {
   resolves = ["share"]
 }
 
+workflow "on pull request" {
+  on = "pull_request"
+  resolves = ["share"]
+}
+
 action "build" {
   uses = "docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8"
   args = ["dotnet", "build"]
