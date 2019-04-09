@@ -353,6 +353,8 @@ namespace Libplanet.Tests.Net
             {
                 await a.StopAsync();
                 await b.StopAsync();
+                await c.StopAsync();
+                await d.StopAsync();
             }
         }
 
