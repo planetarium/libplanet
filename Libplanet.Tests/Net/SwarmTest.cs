@@ -371,13 +371,12 @@ namespace Libplanet.Tests.Net
             var a = new Swarm(
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 2);
+                appProtocolVersion: 2,
+                differentVersionPeerEncountered: GameHandler);
             var b = new Swarm(
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
-
-            a.DifferentVersionPeerEncountered += GameHandler;
 
             BlockChain<DumbAction> chain = _blockchains[0];
 

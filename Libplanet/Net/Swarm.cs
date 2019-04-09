@@ -64,7 +64,9 @@ namespace Libplanet.Net
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs>
+                differentVersionPeerEncountered = null)
             : this(
                   privateKey,
                   appProtocolVersion,
@@ -72,7 +74,8 @@ namespace Libplanet.Net
                   host,
                   listenPort,
                   createdAt,
-                  iceServers)
+                  iceServers,
+                  differentVersionPeerEncountered)
         {
         }
 
@@ -83,7 +86,9 @@ namespace Libplanet.Net
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs>
+                differentVersionPeerEncountered = null)
         {
             Running = false;
 
@@ -102,6 +107,7 @@ namespace Libplanet.Net
             DeltaReceived = new AsyncAutoResetEvent();
             TxReceived = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
+            DifferentVersionPeerEncountered = differentVersionPeerEncountered;
 
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
