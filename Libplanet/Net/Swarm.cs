@@ -478,15 +478,7 @@ namespace Libplanet.Net
                     {
                         try
                         {
-                            Peer replacedPeer = await DialPeerAsync(
-                                peer,
-                                cancellationToken
-                            );
-                            if (replacedPeer != peer)
-                            {
-                                _peers[replacedPeer] = _peers[peer];
-                                _peers.Remove(peer);
-                            }
+                            await DialPeerAsync(peer, cancellationToken);
                         }
                         catch (TimeoutException e)
                         {
