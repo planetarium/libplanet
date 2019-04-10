@@ -931,6 +931,85 @@ namespace Libplanet.Net
             }
         }
 
+        private async Task<BlockChain<T>> SyncPreviousBlocksAsync<T>(
+            BlockChain<T> blockChain,
+            Peer peer,
+            HashDigest<SHA256>? stop,
+            CancellationToken cancellationToken)
+            where T : IAction, new()
+        {
+            // Fix the tip here because it may change while receiving the block
+            // hashes.
+            Block<T> tip = blockChain.Tip;
+
+            _logger.Debug("Trying to find branchpoint...");
+            BlockLocator locator = blockChain.GetBlockLocator();
+            _logger.Debug($"Locator's count: {locator.Count()}");
+            IEnumerable<HashDigest<SHA256>> hashes =
+                await GetBlockHashesAsync(
+                    peer, locator, stop, cancellationToken);
+            HashDigest<SHA256> branchPoint = hashes.First();
+
+            _logger.Debug(
+                $"Branchpoint is " +
+                $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
+            );
+
+            BlockChain<T> synced;
+            if (tip == null || branchPoint == tip.Hash)
+            {
+                _logger.Debug("it doesn't need fork.");
+                synced = blockChain;
+            }
+
+            // FIXME BlockChain.Blocks.ContainsKey() can be very
+            // expensive.
+            // we can omit this clause if assume every chain shares
+            // same genesis block...
+            else if (!blockChain.Blocks.ContainsKey(branchPoint))
+            {
+                synced = new BlockChain<T>(
+                    blockChain.Policy,
+                    blockChain.Store);
+            }
+            else
+            {
+                _logger.Debug("Forking needed. trying to fork...");
+                synced = blockChain.Fork(branchPoint);
+                _logger.Debug("Forking complete. ");
+            }
+
+            _logger.Debug("Trying to fill up previous blocks...");
+
+            int retry = 3;
+            while (true)
+            {
+                try
+                {
+                    await FillBlocksAsync(
+                        peer, synced, stop, cancellationToken);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (retry > 0)
+                    {
+                        _logger.Error(
+                            e,
+                            "FillBlockAsync() failed. retrying..."
+                        );
+                        retry--;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return synced;
+        }
+
         private async Task AppendBlocksAsync<T>(
             BlockChain<T> blockChain,
             Peer peer,
@@ -946,89 +1025,24 @@ namespace Libplanet.Net
 
             if (tip == null || latest.Index > tip.Index)
             {
-                _logger.Debug("Trying to find branchpoint...");
-                BlockLocator locator = blockChain.GetBlockLocator();
-                _logger.Debug($"Locator's count: {locator.Count()}");
-                IEnumerable<HashDigest<SHA256>> hashes =
-                    await GetBlockHashesAsync(
-                        peer, locator, oldest.Hash, cancellationToken);
-                HashDigest<SHA256> branchPoint = hashes.First();
-
-                _logger.Debug(
-                    $"Branchpoint is " +
-                    $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
-                );
-
-                BlockChain<T> toSync;
-
-                if (tip == null || branchPoint == tip.Hash)
-                {
-                    _logger.Debug("it doesn't need fork.");
-                    toSync = blockChain;
-                }
-
-                // FIXME BlockChain.Blocks.ContainsKey() can be very
-                // expensive.
-                // we can omit this clause if assume every chain shares
-                // same genesis block...
-                else if (!blockChain.Blocks.ContainsKey(branchPoint))
-                {
-                    toSync = new BlockChain<T>(
-                        blockChain.Policy,
-                        blockChain.Store);
-                }
-                else
-                {
-                    _logger.Debug("Forking needed. trying to fork...");
-                    toSync = blockChain.Fork(branchPoint);
-                    _logger.Debug("Forking complete. ");
-                }
-
                 _logger.Debug("Trying to fill up previous blocks...");
-
-                int retry = 3;
-                while (true)
-                {
-                    try
-                    {
-                        await FillBlocksAsync(
-                            peer,
-                            toSync,
-                            oldest.PreviousHash,
-                            cancellationToken
-                        );
-
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        if (retry > 0)
-                        {
-                            _logger.Error(
-                                e,
-                                "FillBlockAsync() failed. retrying..."
-                            );
-                            retry--;
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                }
-
+                BlockChain<T> toAppend = await SyncPreviousBlocksAsync(
+                    blockChain,
+                    peer,
+                    oldest.PreviousHash,
+                    cancellationToken);
                 _logger.Debug("Filled up. trying to concatenation...");
 
                 foreach (Block<T> block in blocks)
                 {
-                    toSync.Append(block);
+                    toAppend.Append(block);
                 }
 
                 _logger.Debug("Sync is done.");
-                if (!toSync.Id.Equals(blockChain.Id))
+                if (!toAppend.Id.Equals(blockChain.Id))
                 {
                     _logger.Debug("trying to swapping chain...");
-                    blockChain.Swap(toSync);
+                    blockChain.Swap(toAppend);
                     _logger.Debug("Swapping complete");
                 }
             }
