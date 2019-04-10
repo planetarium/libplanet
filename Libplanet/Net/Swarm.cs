@@ -263,11 +263,6 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        if (_turnClient != null)
-                        {
-                            await CreatePermission(peer);
-                        }
-
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
                         await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
@@ -1405,6 +1400,11 @@ namespace Libplanet.Net
         private async Task<Peer> DialPeerAsync(
             Peer peer, CancellationToken cancellationToken)
         {
+            if (_turnClient != null)
+            {
+                await CreatePermission(peer);
+            }
+
             var dealer = new DealerSocket();
             dealer.Options.Identity =
                 _privateKey.PublicKey.ToAddress().ToByteArray();
