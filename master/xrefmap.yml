@@ -2306,6 +2306,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
   nameWithType: DifferentAppProtocolVersionException.ExpectedVersion
+- uid: Libplanet.Net.DifferentProtocolVersionEventArgs
+  name: DifferentProtocolVersionEventArgs
+  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html
+  commentId: T:Libplanet.Net.DifferentProtocolVersionEventArgs
+  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs
+  nameWithType: DifferentProtocolVersionEventArgs
+- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
+  name: ActualVersion
+  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion
+  commentId: P:Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
+  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
+  nameWithType: DifferentProtocolVersionEventArgs.ActualVersion
+- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion*
+  name: ActualVersion
+  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion_
+  commentId: Overload:Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
+  nameWithType: DifferentProtocolVersionEventArgs.ActualVersion
+- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
+  name: ExpectedVersion
+  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion
+  commentId: P:Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
+  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
+  nameWithType: DifferentProtocolVersionEventArgs.ExpectedVersion
+- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion*
+  name: ExpectedVersion
+  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion_
+  commentId: Overload:Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
+  nameWithType: DifferentProtocolVersionEventArgs.ExpectedVersion
 - uid: Libplanet.Net.IceServer
   name: IceServer
   href: api/Libplanet.Net.IceServer.html
@@ -2475,12 +2507,12 @@ references:
   commentId: T:Libplanet.Net.Peer
   fullName: Libplanet.Net.Peer
   nameWithType: Peer
-- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
-  name: Peer(PublicKey, DnsEndPoint)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_
-  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
-  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint)
-  nameWithType: Peer.Peer(PublicKey, DnsEndPoint)
+- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Int32)
+  name: Peer(PublicKey, DnsEndPoint, Int32)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_System_Int32_
+  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Int32)
+  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint, System.Int32)
+  nameWithType: Peer.Peer(PublicKey, DnsEndPoint, Int32)
 - uid: Libplanet.Net.Peer.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: Peer(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
@@ -2507,6 +2539,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.Address
   nameWithType: Peer.Address
+- uid: Libplanet.Net.Peer.AppProtocolVersion
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_AppProtocolVersion
+  commentId: P:Libplanet.Net.Peer.AppProtocolVersion
+  fullName: Libplanet.Net.Peer.AppProtocolVersion
+  nameWithType: Peer.AppProtocolVersion
+- uid: Libplanet.Net.Peer.AppProtocolVersion*
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_AppProtocolVersion_
+  commentId: Overload:Libplanet.Net.Peer.AppProtocolVersion
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.AppProtocolVersion
+  nameWithType: Peer.AppProtocolVersion
 - uid: Libplanet.Net.Peer.EndPoint
   name: EndPoint
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_EndPoint
@@ -2721,24 +2766,24 @@ references:
   commentId: T:Libplanet.Net.Swarm
   fullName: Libplanet.Net.Swarm
   nameWithType: Swarm
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name: Swarm(PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name.vb: Swarm(PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
-  nameWithType: Swarm.Swarm(PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name: Swarm(PrivateKey, Int32, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer})
-  name.vb: Swarm(PrivateKey, Int32, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer))
-  nameWithType: Swarm.Swarm(PrivateKey, Int32, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer))
+- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name: Swarm(PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
+  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name.vb: Swarm(PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
+  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
+  nameWithType: Swarm.Swarm(PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name: Swarm(PrivateKey, Int32, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
+  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name.vb: Swarm(PrivateKey, Int32, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
+  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
+  nameWithType: Swarm.Swarm(PrivateKey, Int32, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
 - uid: Libplanet.Net.Swarm.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_
@@ -2927,6 +2972,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.DeltaReceived
   nameWithType: Swarm.DeltaReceived
+- uid: Libplanet.Net.Swarm.DifferentVersionPeerEncountered
+  name: DifferentVersionPeerEncountered
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DifferentVersionPeerEncountered
+  commentId: E:Libplanet.Net.Swarm.DifferentVersionPeerEncountered
+  fullName: Libplanet.Net.Swarm.DifferentVersionPeerEncountered
+  nameWithType: Swarm.DifferentVersionPeerEncountered
 - uid: Libplanet.Net.Swarm.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Dispose
