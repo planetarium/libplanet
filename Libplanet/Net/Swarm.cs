@@ -306,9 +306,8 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    var task = DialPeerAsync(item, CancellationToken.None);
-                    Peer dialed = task.Result;
-                    _peers[dialed] = DateTimeOffset.UtcNow;
+                    DialPeerAsync(item, CancellationToken.None).Wait();
+                    _peers[item] = DateTimeOffset.UtcNow;
                 }
                 catch (AggregateException e)
                 {
@@ -822,7 +821,9 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        var reply = new Pong(_appProtocolVersion)
+                        var reply = new Pong(
+                            _appProtocolVersion,
+                            blockChain.Tip?.Index)
                         {
                             Identity = ping.Identity,
                         };
@@ -1403,7 +1404,7 @@ namespace Libplanet.Net
                 $"but {parsedMessage}");
         }
 
-        private async Task<Peer> DialPeerAsync(
+        private async Task<Pong> DialPeerAsync(
             Peer peer, CancellationToken cancellationToken)
         {
             if (_turnClient != null)
@@ -1443,6 +1444,8 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+
+                return pong;
             }
             catch (IOException e)
             {
@@ -1454,8 +1457,6 @@ namespace Libplanet.Net
                 dealer.Dispose();
                 throw e;
             }
-
-            return peer;
         }
 
         private async Task DistributeDeltaAsync(
