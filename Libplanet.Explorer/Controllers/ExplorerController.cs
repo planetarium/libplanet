@@ -42,7 +42,6 @@ namespace Libplanet.Explorer.Controllers
         )
         {
             IEnumerable<Block<T>> chain = GetBlockChain();
-            Console.WriteLine("options: hide " + HideEmptyBlocks.ToString());
 
             if (HideEmptyBlocks)
             {
