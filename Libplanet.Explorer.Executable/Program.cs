@@ -17,6 +17,9 @@ namespace Libplanet.Explorer.Executable
     /// </summary>
     public class Program
     {
+        private const string DefaultHost = "0.0.0.0";
+        private const int DefaultPort = 5000;
+
         private static OptionSet options = new OptionSet
         {
             {
@@ -31,6 +34,16 @@ namespace Libplanet.Explorer.Executable
                 v => chainId = v
             },
             {
+                "H|host=",
+                $"The host address to listen. [{DefaultHost}]",
+                v => host = v
+            },
+            {
+                "p|port=",
+                $"The port number to listen. [{DefaultPort}]",
+                v => portString = v
+            },
+            {
                 "h|help",
                 "Show this message and exit.",
                 v => showHelp = !(v is null)
@@ -42,6 +55,12 @@ namespace Libplanet.Explorer.Executable
         private static string storeTypeName;
 
         private static string chainId;
+
+        private static string host = DefaultHost;
+
+        private static string portString;
+
+        private static int port = DefaultPort;
 
         public static int Main(string[] args)
         {
@@ -58,6 +77,7 @@ namespace Libplanet.Explorer.Executable
         public static IWebHost BuildWebHost() =>
             WebHost.CreateDefaultBuilder()
                 .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
+                .UseUrls($"http://{host}:{port}/")
                 .Build();
 
         internal static int Parse(string[] args)
@@ -94,11 +114,19 @@ namespace Libplanet.Explorer.Executable
             if (extra.Count > 1)
             {
                 stderr.WriteLine("error: Too many arguments.");
+                stderr.WriteLine(
+                    "Try `{0}' --help' for more information.",
+                    programName
+                );
                 return 1;
             }
             else if (extra.Count < 1)
             {
                 stderr.WriteLine("error: Too few arguments.");
+                stderr.WriteLine(
+                    "Try `{0}' --help' for more information.",
+                    programName
+                );
                 return 1;
             }
 
@@ -150,6 +178,17 @@ namespace Libplanet.Explorer.Executable
             }
 
             Startup.StoreState = store;
+
+            if (portString is null)
+            {
+                port = DefaultPort;
+            }
+            else if (!int.TryParse(portString, out port) || port < 0 || port > 0xffff)
+            {
+                stderr.WriteLine("error: {0} is not a valid port number.", portString);
+                return 1;
+            }
+
             return 0;
         }
 
