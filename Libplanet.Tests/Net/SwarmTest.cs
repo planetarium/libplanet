@@ -353,6 +353,46 @@ namespace Libplanet.Tests.Net
             {
                 await a.StopAsync();
                 await b.StopAsync();
+                await c.StopAsync();
+                await d.StopAsync();
+            }
+        }
+
+        [Fact]
+        public async Task HandleDifferentAppProtocolVersion()
+        {
+            var isCalled = false;
+
+            void GameHandler(object sender, DifferentProtocolVersionEventArgs e)
+            {
+                isCalled = true;
+            }
+
+            var a = new Swarm(
+                new PrivateKey(),
+                host: IPAddress.Loopback.ToString(),
+                appProtocolVersion: 2,
+                differentVersionPeerEncountered: GameHandler);
+            var b = new Swarm(
+                new PrivateKey(),
+                host: IPAddress.Loopback.ToString(),
+                appProtocolVersion: 3);
+
+            BlockChain<DumbAction> chain = _blockchains[0];
+
+            try
+            {
+                await StartAsync(a, chain);
+                await StartAsync(b, chain);
+
+                a.Add(b.AsPeer);
+
+                Assert.True(isCalled);
+            }
+            finally
+            {
+                await a.StopAsync();
+                await b.StopAsync();
             }
         }
 

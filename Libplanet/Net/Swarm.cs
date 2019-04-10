@@ -64,7 +64,9 @@ namespace Libplanet.Net
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs>
+                differentVersionPeerEncountered = null)
             : this(
                   privateKey,
                   appProtocolVersion,
@@ -72,7 +74,8 @@ namespace Libplanet.Net
                   host,
                   listenPort,
                   createdAt,
-                  iceServers)
+                  iceServers,
+                  differentVersionPeerEncountered)
         {
         }
 
@@ -83,7 +86,9 @@ namespace Libplanet.Net
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null)
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs>
+                differentVersionPeerEncountered = null)
         {
             Running = false;
 
@@ -102,6 +107,7 @@ namespace Libplanet.Net
             DeltaReceived = new AsyncAutoResetEvent();
             TxReceived = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
+            DifferentVersionPeerEncountered = differentVersionPeerEncountered;
 
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
@@ -145,6 +151,13 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// The <see cref="EventHandler" /> called when the different version of
+        /// <see cref="Peer" /> is discovered.
+        /// </summary>
+        public event EventHandler<DifferentProtocolVersionEventArgs>
+            DifferentVersionPeerEncountered;
+
         public int Count => _peers.Count;
 
         public bool IsReadOnly => false;
@@ -156,7 +169,7 @@ namespace Libplanet.Net
 
         public Peer AsPeer =>
             EndPoint != null
-            ? new Peer(_privateKey.PublicKey, EndPoint)
+            ? new Peer(_privateKey.PublicKey, EndPoint, _appProtocolVersion)
             : throw new SwarmException(
                 "Can't translate unbound Swarm to Peer.");
 
@@ -1161,6 +1174,17 @@ namespace Libplanet.Net
 
             if (IsUnknownPeer(sender))
             {
+                if (IsDifferentProtocolVersion(sender))
+                {
+                    var args = new DifferentProtocolVersionEventArgs
+                        {
+                            ExpectedVersion = _appProtocolVersion,
+                            ActualVersion = sender.AppProtocolVersion,
+                        };
+                    DifferentVersionPeerEncountered?.Invoke(this, args);
+                    return;
+                }
+
                 delta = new PeerSetDelta(
                     delta.Sender,
                     delta.Timestamp,
@@ -1168,6 +1192,16 @@ namespace Libplanet.Net
                     delta.RemovedPeers,
                     delta.ExistingPeers
                 );
+            }
+
+            if (IsDifferentProtocolVersion(sender))
+            {
+                delta = new PeerSetDelta(
+                    delta.Sender,
+                    delta.Timestamp,
+                    new Peer[] { }.ToImmutableHashSet(),
+                    delta.RemovedPeers,
+                    new Peer[] { }.ToImmutableHashSet());
             }
 
             _logger.Debug($"Received the delta[{delta}].");
@@ -1199,6 +1233,11 @@ namespace Libplanet.Net
             }
 
             return false;
+        }
+
+        private bool IsDifferentProtocolVersion(Peer sender)
+        {
+            return sender.AppProtocolVersion != _appProtocolVersion;
         }
 
         private async Task ApplyDelta(
@@ -1381,6 +1420,16 @@ namespace Libplanet.Net
                 if (pong.AppProtocolVersion != _appProtocolVersion)
                 {
                     dealer.Dispose();
+
+                    DifferentProtocolVersionEventArgs args =
+                        new DifferentProtocolVersionEventArgs
+                        {
+                            ExpectedVersion = _appProtocolVersion,
+                            ActualVersion = pong.AppProtocolVersion,
+                        };
+
+                    DifferentVersionPeerEncountered?.Invoke(this, args);
+
                     throw new DifferentAppProtocolVersionException(
                         $"Peer protocol version is different.",
                         _appProtocolVersion,
