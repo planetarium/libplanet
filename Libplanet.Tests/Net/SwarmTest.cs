@@ -773,6 +773,39 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task InitialBlockDownload()
+        {
+            Swarm minerSwarm = _swarms[0];
+            Swarm receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            foreach (int i in Enumerable.Range(0, 10))
+            {
+                minerChain.MineBlock(_fx1.Address1);
+            }
+
+            try
+            {
+                await StartAsync(minerSwarm, minerChain);
+                receiverSwarm.Add(minerSwarm.AsPeer);
+
+                await StartAsync(receiverSwarm, receiverChain);
+
+                await Task.Delay(TimeSpan.FromSeconds(10));
+
+                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    minerSwarm.StopAsync(),
+                    receiverSwarm.StopAsync());
+            }
+        }
+
         private async Task<Task> StartAsync<T>(
             Swarm swarm,
             BlockChain<T> blockChain,

@@ -9,8 +9,14 @@ To be released.
  - Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
    events when a different version of a peer is discovered.  [[#167]], [[#185]]
  - Added `Peer.AppProtocolVersion` property.  [[#185]]
+ - `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
+   other known peers and synchronizes the blocks if necessary
+   before propagating/receiving pinpointed recent blocks to prevent inefficient
+   round-trips.  [[#187], [#190]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
+[#187]: https://github.com/planetarium/libplanet/issues/187
+[#190]: https://github.com/planetarium/libplanet/pull/190
 
 
 Version 0.2.1

@@ -263,11 +263,6 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        if (_turnClient != null)
-                        {
-                            await CreatePermission(peer);
-                        }
-
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
                         await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
@@ -311,9 +306,8 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    var task = DialPeerAsync(item, CancellationToken.None);
-                    Peer dialed = task.Result;
-                    _peers[dialed] = DateTimeOffset.UtcNow;
+                    DialPeerAsync(item, CancellationToken.None).Wait();
+                    _peers[item] = DateTimeOffset.UtcNow;
                 }
                 catch (AggregateException e)
                 {
@@ -479,43 +473,13 @@ namespace Libplanet.Net
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
-                    foreach (Peer peer in _peers.Keys)
-                    {
-                        try
-                        {
-                            Peer replacedPeer = await DialPeerAsync(
-                                peer,
-                                cancellationToken
-                            );
-                            if (replacedPeer != peer)
-                            {
-                                _peers[replacedPeer] = _peers[peer];
-                                _peers.Remove(peer);
-                            }
-                        }
-                        catch (TimeoutException e)
-                        {
-                            _logger.Error(
-                                e,
-                                $"TimeoutException occured ({peer})."
-                            );
-                            continue;
-                        }
-                        catch (IOException e)
-                        {
-                            _logger.Error(
-                                e,
-                                $"IOException occured ({peer})."
-                            );
-                            continue;
-                        }
-                        catch (DifferentAppProtocolVersionException e)
-                        {
-                            _logger.Error(
-                                e,
-                                $"Protocol Version is different ({peer}).");
-                        }
-                    }
+                    IAsyncEnumerable<(Peer, long?)> peersWithLength =
+                        DialToExistingPeers(cancellationToken).Select(
+                            pp => (pp.Item1, pp.Item2.TipIndex));
+                    await SyncBehindsBlocksFromPeersAsync(
+                        blockChain,
+                        peersWithLength,
+                        cancellationToken);
                 }
 
                 var tasks = new List<Task>
@@ -759,6 +723,74 @@ namespace Libplanet.Net
             }
         }
 
+        private IAsyncEnumerable<(Peer, Pong)> DialToExistingPeers(
+            CancellationToken cancellationToken)
+        {
+            return new AsyncEnumerable<(Peer, Pong)>(async yield =>
+            {
+                foreach (Peer peer in _peers.Keys)
+                {
+                    try
+                    {
+                        await yield.ReturnAsync(
+                            (peer, await DialPeerAsync(peer, cancellationToken))
+                        );
+                    }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"TimeoutException occured ({peer})."
+                        );
+                        continue;
+                    }
+                    catch (IOException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"IOException occured ({peer})."
+                        );
+                        continue;
+                    }
+                    catch (DifferentAppProtocolVersionException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"Protocol Version is different ({peer}).");
+                    }
+                }
+            });
+        }
+
+        private async Task SyncBehindsBlocksFromPeersAsync<T>(
+            BlockChain<T> blockChain,
+            IAsyncEnumerable<(Peer, long?)> peersWithLength,
+            CancellationToken cancellationToken)
+            where T : IAction, new()
+        {
+            // Implement it directly with AggreateAsync()
+            // because there is no IAsyncEnumerable<T>.MaxAsync().
+            (Peer, long?)? longestPeerWithLength =
+                await peersWithLength.AggregateAsync(
+                    default((Peer, long?)?),
+                    (p, c) => (p?.Item2 > c.Item2) ? p : c,
+                    cancellationToken);
+
+            if (longestPeerWithLength != null &&
+                !(blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
+            {
+                BlockChain<T> synced = await SyncPreviousBlocksAsync(
+                    blockChain,
+                    longestPeerWithLength?.Item1,
+                    null,
+                    cancellationToken);
+                if (!synced.Id.Equals(blockChain.Id))
+                {
+                    blockChain.Swap(synced);
+                }
+            }
+        }
+
         private async Task RefreshAllocate()
         {
             TimeSpan lifetime = TurnAllocationLifetime;
@@ -835,7 +867,9 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        var reply = new Pong(_appProtocolVersion)
+                        var reply = new Pong(
+                            _appProtocolVersion,
+                            blockChain.Tip?.Index)
                         {
                             Identity = ping.Identity,
                         };
@@ -944,6 +978,85 @@ namespace Libplanet.Net
             }
         }
 
+        private async Task<BlockChain<T>> SyncPreviousBlocksAsync<T>(
+            BlockChain<T> blockChain,
+            Peer peer,
+            HashDigest<SHA256>? stop,
+            CancellationToken cancellationToken)
+            where T : IAction, new()
+        {
+            // Fix the tip here because it may change while receiving the block
+            // hashes.
+            Block<T> tip = blockChain.Tip;
+
+            _logger.Debug("Trying to find branchpoint...");
+            BlockLocator locator = blockChain.GetBlockLocator();
+            _logger.Debug($"Locator's count: {locator.Count()}");
+            IEnumerable<HashDigest<SHA256>> hashes =
+                await GetBlockHashesAsync(
+                    peer, locator, stop, cancellationToken);
+            HashDigest<SHA256> branchPoint = hashes.First();
+
+            _logger.Debug(
+                $"Branchpoint is " +
+                $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
+            );
+
+            BlockChain<T> synced;
+            if (tip is null || branchPoint == tip.Hash)
+            {
+                _logger.Debug("it doesn't need fork.");
+                synced = blockChain;
+            }
+
+            // FIXME BlockChain.Blocks.ContainsKey() can be very
+            // expensive.
+            // we can omit this clause if assume every chain shares
+            // same genesis block...
+            else if (!blockChain.Blocks.ContainsKey(branchPoint))
+            {
+                synced = new BlockChain<T>(
+                    blockChain.Policy,
+                    blockChain.Store);
+            }
+            else
+            {
+                _logger.Debug("Forking needed. trying to fork...");
+                synced = blockChain.Fork(branchPoint);
+                _logger.Debug("Forking complete. ");
+            }
+
+            _logger.Debug("Trying to fill up previous blocks...");
+
+            int retry = 3;
+            while (true)
+            {
+                try
+                {
+                    await FillBlocksAsync(
+                        peer, synced, stop, cancellationToken);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (retry > 0)
+                    {
+                        _logger.Error(
+                            e,
+                            "FillBlockAsync() failed. retrying..."
+                        );
+                        retry--;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return synced;
+        }
+
         private async Task AppendBlocksAsync<T>(
             BlockChain<T> blockChain,
             Peer peer,
@@ -957,91 +1070,26 @@ namespace Libplanet.Net
             Block<T> latest = blocks.Last();
             Block<T> tip = blockChain.Tip;
 
-            if (tip == null || latest.Index > tip.Index)
+            if (tip is null || latest.Index > tip.Index)
             {
-                _logger.Debug("Trying to find branchpoint...");
-                BlockLocator locator = blockChain.GetBlockLocator();
-                _logger.Debug($"Locator's count: {locator.Count()}");
-                IEnumerable<HashDigest<SHA256>> hashes =
-                    await GetBlockHashesAsync(
-                        peer, locator, oldest.Hash, cancellationToken);
-                HashDigest<SHA256> branchPoint = hashes.First();
-
-                _logger.Debug(
-                    $"Branchpoint is " +
-                    $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
-                );
-
-                BlockChain<T> toSync;
-
-                if (tip == null || branchPoint == tip.Hash)
-                {
-                    _logger.Debug("it doesn't need fork.");
-                    toSync = blockChain;
-                }
-
-                // FIXME BlockChain.Blocks.ContainsKey() can be very
-                // expensive.
-                // we can omit this clause if assume every chain shares
-                // same genesis block...
-                else if (!blockChain.Blocks.ContainsKey(branchPoint))
-                {
-                    toSync = new BlockChain<T>(
-                        blockChain.Policy,
-                        blockChain.Store);
-                }
-                else
-                {
-                    _logger.Debug("Forking needed. trying to fork...");
-                    toSync = blockChain.Fork(branchPoint);
-                    _logger.Debug("Forking complete. ");
-                }
-
                 _logger.Debug("Trying to fill up previous blocks...");
-
-                int retry = 3;
-                while (true)
-                {
-                    try
-                    {
-                        await FillBlocksAsync(
-                            peer,
-                            toSync,
-                            oldest.PreviousHash,
-                            cancellationToken
-                        );
-
-                        break;
-                    }
-                    catch (Exception e)
-                    {
-                        if (retry > 0)
-                        {
-                            _logger.Error(
-                                e,
-                                "FillBlockAsync() failed. retrying..."
-                            );
-                            retry--;
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
-                }
-
+                BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
+                    blockChain,
+                    peer,
+                    oldest.PreviousHash,
+                    cancellationToken);
                 _logger.Debug("Filled up. trying to concatenation...");
 
                 foreach (Block<T> block in blocks)
                 {
-                    toSync.Append(block);
+                    previousBlocks.Append(block);
                 }
 
                 _logger.Debug("Sync is done.");
-                if (!toSync.Id.Equals(blockChain.Id))
+                if (!previousBlocks.Id.Equals(blockChain.Id))
                 {
                     _logger.Debug("trying to swapping chain...");
-                    blockChain.Swap(toSync);
+                    blockChain.Swap(previousBlocks);
                     _logger.Debug("Swapping complete");
                 }
             }
@@ -1062,7 +1110,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
             where T : IAction, new()
         {
-            while (blockChain.Tip?.Hash != stop)
+            while (true)
             {
                 BlockLocator locator = blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
@@ -1072,6 +1120,11 @@ namespace Libplanet.Net
                 if (blockChain.Tip != null)
                 {
                     hashes = hashes.Skip(1);
+                }
+
+                if (!hashes.Any())
+                {
+                    break;
                 }
 
                 _logger.Debug(
@@ -1402,9 +1455,14 @@ namespace Libplanet.Net
                 $"but {parsedMessage}");
         }
 
-        private async Task<Peer> DialPeerAsync(
+        private async Task<Pong> DialPeerAsync(
             Peer peer, CancellationToken cancellationToken)
         {
+            if (_turnClient != null)
+            {
+                await CreatePermission(peer);
+            }
+
             var dealer = new DealerSocket();
             dealer.Options.Identity =
                 _privateKey.PublicKey.ToAddress().ToByteArray();
@@ -1437,6 +1495,8 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+
+                return pong;
             }
             catch (IOException e)
             {
@@ -1448,8 +1508,6 @@ namespace Libplanet.Net
                 dealer.Dispose();
                 throw e;
             }
-
-            return peer;
         }
 
         private async Task DistributeDeltaAsync(
