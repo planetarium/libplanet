@@ -13,6 +13,8 @@ To be released.
    other known peers and synchronizes the blocks if necessary
    before propagating/receiving pinpointed recent blocks to prevent inefficient
    round-trips.  [[#187], [#190]]
+ - Improved the read throughput of `BlockChain<T>` while mining through
+   `BlockChain<T>.MineBlock()`
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187

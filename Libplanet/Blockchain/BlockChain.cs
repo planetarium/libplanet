@@ -245,39 +245,30 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime
         )
         {
-            try
-            {
-                _rwlock.EnterWriteLock();
+            string @namespace = Id.ToString();
+            long index = Store.CountIndex(@namespace);
+            int difficulty = Policy.GetNextBlockDifficulty(this);
+            HashDigest<SHA256>? prevHash = Store.IndexBlockHash(
+                @namespace,
+                index - 1
+            );
+            List<Transaction<T>> transactions = Store
+                .IterateStagedTransactionIds()
+                .Select(Store.GetTransaction<T>)
+                .OfType<Transaction<T>>()
+                .ToList();
 
-                string @namespace = Id.ToString();
-                long index = Store.CountIndex(@namespace);
-                int difficulty = Policy.GetNextBlockDifficulty(this);
-                HashDigest<SHA256>? prevHash = Store.IndexBlockHash(
-                    @namespace,
-                    index - 1
-                );
-                List<Transaction<T>> transactions = Store
-                    .IterateStagedTransactionIds()
-                    .Select(Store.GetTransaction<T>)
-                    .OfType<Transaction<T>>()
-                    .ToList();
+            Block<T> block = Block<T>.Mine(
+                index: index,
+                difficulty: difficulty,
+                miner: miner,
+                previousHash: prevHash,
+                timestamp: currentTime,
+                transactions: transactions
+            );
+            Append(block, currentTime);
 
-                Block<T> block = Block<T>.Mine(
-                    index: index,
-                    difficulty: difficulty,
-                    miner: miner,
-                    previousHash: prevHash,
-                    timestamp: currentTime,
-                    transactions: transactions
-                );
-                Append(block, currentTime);
-
-                return block;
-            }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
+            return block;
         }
 
         public Block<T> MineBlock(Address miner) =>
