@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Stun.Messages
 
             using (var stream = new MemoryStream(bytes))
             {
-                var response = await StunMessage.Parse(stream);
+                var response = (RefreshErrorResponse) await StunMessage.Parse(stream);
                 Assert.Equal(
                     new byte[]
                     {
@@ -31,7 +31,7 @@ namespace Libplanet.Tests.Stun.Messages
                         0x0b, 0xad,
                     },
                     response.TransactionId);
-                Assert.IsType<RefreshErrorResponse>(response);
+                Assert.Equal(437, response.ErrorCode);
             }
         }
     }
