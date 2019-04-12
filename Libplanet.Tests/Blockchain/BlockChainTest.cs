@@ -267,15 +267,50 @@ namespace Libplanet.Tests.Blockchain
                 Math.Min(10, addresses.Length - testingDepth - 1)
             ).Select(i => addresses[i]).ToArray();
             AddressStateMap result = chain.GetStates(targetAddresses);
+            string resultString = string.Join(", ", result.Keys);
+            string targetString = string.Join(", ", targetAddresses);
+            string message =
+                $"The result dictionary ({resultString}) does not " +
+                $"cover all requested addresses ({targetString}).";
             foreach (Address targetAddress in targetAddresses)
             {
-                Assert.True(result.ContainsKey(targetAddress));
+                Assert.True(result.ContainsKey(targetAddress), message);
             }
 
             var callCount = tracker.Logs.Where(
                 triple => triple.Item1.Equals("GetBlockStates")
             ).Select(triple => triple.Item2).Count();
             Assert.True(testingDepth >= callCount);
+        }
+
+        [Fact]
+        public void GetStatesReturnsEarlyForNonexistentAccount()
+        {
+            var tracker = new StoreTracker(_fx.Store);
+            var chain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                tracker
+            );
+
+            Block<DumbAction> b = TestUtils.MineGenesis<DumbAction>();
+            chain.Append(b);
+            for (int i = 0; i < 20; ++i)
+            {
+                b = TestUtils.MineNext(b);
+                chain.Append(b);
+            }
+
+            tracker.ClearLogs();
+            Address nonexistent = new PrivateKey().PublicKey.ToAddress();
+            AddressStateMap result = chain.GetStates(new[] { nonexistent });
+            Assert.False(result.ContainsKey(nonexistent));
+            var callCount = tracker.Logs.Where(
+                triple => triple.Item1.Equals("GetBlockStates")
+            ).Select(triple => triple.Item2).Count();
+            Assert.True(
+                callCount <= 1,
+                $"GetBlocksStates() was called {callCount} times"
+            );
         }
 
         [Fact]

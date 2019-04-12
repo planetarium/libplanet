@@ -165,19 +165,56 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            ImmutableHashSet<Address> requestedAddresses =
-                addresses.ToImmutableHashSet();
+            ImmutableDictionary<Address, BitArray> requestedAddresses =
+                addresses.Select(addr =>
+                    new KeyValuePair<Address, BitArray>(
+                        addr,
+                        new BitArray(addr.ToByteArray())
+                    )
+                ).ToImmutableDictionary();
+            ImmutableHashSet<Address> requestedAddressSet =
+                requestedAddresses.Keys.ToImmutableHashSet();
+
+            bool IsPossiblyIn(BitArray addr, BitArray maskPattern)
+            {
+                var match = (BitArray)maskPattern.Clone();
+                match.And(addr);
+                return match.OfType<bool>().Any(bit => bit);
+            }
+
+            var coveredAddresses = new HashSet<Address>();
             var states = new AddressStateMap();
+
             while (offset != null)
             {
                 states = (AddressStateMap)states.SetItems(
                     Store.GetBlockStates(offset.Value)
                     .Where(
-                        kv => requestedAddresses.Contains(kv.Key) &&
+                        kv => requestedAddresses.ContainsKey(kv.Key) &&
                         !states.ContainsKey(kv.Key))
                     );
 
-                if (requestedAddresses.SetEquals(states.Keys))
+                // If there is no mask for the offset (the store made in
+                // the older versions of Libplanet may lack mask files),
+                // make the mask to match to all possible addresses.
+                var mask = new BitArray(
+                    offset is HashDigest<SHA256> hash &&
+                        Store.GetAddressesMask(hash) is Address a
+                        ? a.ToByteArray()
+                        : Enumerable.Repeat((byte)0xff, Address.Size).ToArray()
+                );
+
+                // Addresses that are definitely not existent.
+                coveredAddresses.UnionWith(
+                    requestedAddresses.Where(
+                        pair => !IsPossiblyIn(pair.Value, mask)
+                    ).Select(pair => pair.Key)
+                );
+
+                // Already gethered addresses.
+                coveredAddresses.UnionWith(states.Keys);
+
+                if (requestedAddressSet.SetEquals(coveredAddresses))
                 {
                     break;
                 }
