@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Libplanet.Action;
@@ -34,7 +35,7 @@ namespace Libplanet.Tests.Common.Action
         public IImmutableDictionary<string, object> PlainValue =>
             ImmutableDictionary<string, object>.Empty
                 .Add("item", Item)
-                .Add("target_address", TargetAddress)
+                .Add("target_address", TargetAddress.ToByteArray())
                 .Add("record_rehearsal", RecordRehearsal);
 
         public IAccountStateDelta Execute(IActionContext context)
@@ -69,7 +70,7 @@ namespace Libplanet.Tests.Common.Action
         )
         {
             Item = (string)plainValue["item"];
-            TargetAddress = (Address)plainValue["target_address"];
+            TargetAddress = new Address((byte[])plainValue["target_address"]);
             RecordRehearsal = (bool)plainValue["record_rehearsal"];
         }
     }

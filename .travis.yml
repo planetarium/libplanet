@@ -201,7 +201,9 @@ script:
   cat /tmp/nupkgfiles
   grep -i Libplanet.dll /tmp/nupkgfiles
   grep -i Libplanet.Stun.dll /tmp/nupkgfiles
-  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  if [[ "$nupkg_version" != "$version" ]]; then
+    rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  fi
 
 # Turn off "set -e" option
 - set +e
@@ -217,6 +219,7 @@ deploy:
 - provider: releases
   on:
     tags: true
+    condition: '"$TRAVIS_OS_NAME" = "linux"'
   skip_cleanup: true
   api_key: "$GITHUB_TOKEN"
   file_glob: yes
