@@ -165,17 +165,19 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
+            ImmutableHashSet<Address> requestedAddresses =
+                addresses.ToImmutableHashSet();
             var states = new AddressStateMap();
             while (offset != null)
             {
                 states = (AddressStateMap)states.SetItems(
                     Store.GetBlockStates(offset.Value)
                     .Where(
-                        kv => addresses.Contains(kv.Key) &&
+                        kv => requestedAddresses.Contains(kv.Key) &&
                         !states.ContainsKey(kv.Key))
                     );
 
-                if (states.Keys.SequenceEqual(addresses))
+                if (requestedAddresses.SetEquals(states.Keys))
                 {
                     break;
                 }

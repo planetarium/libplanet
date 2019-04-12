@@ -16,10 +16,16 @@ b64d() {
   fi
 }
 
+if [[ "$TRAVIS_JOB_NUMBER" != *.1 ]]; then
+  echo "This script is executed by only the first job so that" \
+       "it is run only once." > /dev/stderr
+  exit 0
+fi
+
 if [[ "$TRAVIS_SECURE_ENV_VARS" = "false" ]]; then
   echo "The secure envrionment variables are disallowed or not configured." \
     > /dev/stderr
-  exit 1
+  exit 0
 fi
 
 if [[ "$GITHUB_SSH_KEY" = "" ]]; then
@@ -27,8 +33,10 @@ if [[ "$GITHUB_SSH_KEY" = "" ]]; then
     echo "The environment variable GITHUB_SSH_KEY is not configured."
     echo "Configure the secure variable from Travis CI repository settings."
     echo "https://docs.travis-ci.com/user/environment-variables/#defining-variables-in-repository-settings"
+    echo "GITHUB_SSH_KEY has to contain a base64-encoded private key without" \
+         "new lines."
   } > /dev/stderr
-  exit 1
+  exit 0
 fi
 
 echo "$GITHUB_SSH_KEY" | b64d > /tmp/github_id
