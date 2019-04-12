@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.2.2
 -------------
 
-To be released.
+Released on April 12, 2019.
 
  -  Fixed a bug that `BlockChain<T>.GetStates()` had returned slower than
     necessary for many addresses.  [[#189], [#192]]
