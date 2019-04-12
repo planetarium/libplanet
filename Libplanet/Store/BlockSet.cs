@@ -51,14 +51,14 @@ namespace Libplanet.Store
                     throw new KeyNotFoundException();
                 }
 
-                Trace.Assert(block.Hash == key);
+                Trace.Assert(block.Hash.Equals(key));
                 block.Validate(DateTimeOffset.UtcNow);
                 return block;
             }
 
             set
             {
-                if (value.Hash != key)
+                if (!value.Hash.Equals(key))
                 {
                     throw new InvalidBlockHashException(
                         $"{value}.hash does not match to {key}");
