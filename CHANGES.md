@@ -17,6 +17,10 @@ To be released.
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
     nonce is stale.  [[#193]]
+ -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
+    and its all implementations.  [[#189]]
+ -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
+    `PutBlock<T>(Block<T>, Address)`.  [[#189]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187

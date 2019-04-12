@@ -22,6 +22,7 @@ namespace Libplanet.Store
         private const string _stagedTransactionsDir = "stage";
         private const string _statesDir = "states";
         private const string _indicesDir = "indices";
+        private const string _addressesMaskDir = "masks";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -82,6 +83,16 @@ namespace Libplanet.Store
             return Path.Combine(
                 _path,
                 _blocksDir);
+        }
+
+        public string GetAddressesMaskPath(HashDigest<SHA256> blockHash)
+        {
+            var keyHex = blockHash.ToString();
+            return Path.Combine(
+                _path,
+                _addressesMaskDir,
+                keyHex.Substring(0, 4),
+                keyHex.Substring(4));
         }
 
         public string GetStagedTransactionPath(TxId txid)
@@ -260,6 +271,22 @@ namespace Libplanet.Store
             }
         }
 
+        public override Address? GetAddressesMask(HashDigest<SHA256> blockHash)
+        {
+            var blockFile = new FileInfo(GetAddressesMaskPath(blockHash));
+            if (!blockFile.Exists)
+            {
+                return null;
+            }
+
+            using (Stream stream = blockFile.OpenRead())
+            {
+                var buffer = new byte[Address.Size];
+                stream.Read(buffer, 0, buffer.Length);
+                return new Address(buffer);
+            }
+        }
+
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             var txFile = new FileInfo(GetTransactionPath(txid));
@@ -423,7 +450,7 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutBlock<T>(Block<T> block)
+        public override void PutBlock<T>(Block<T> block, Address addressesMask)
         {
             foreach (var tx in block.Transactions)
             {
@@ -440,6 +467,14 @@ namespace Libplanet.Store
                     transactionData: false
                 );
                 stream.Write(blockBytes, 0, blockBytes.Length);
+            }
+
+            var maskFile = new FileInfo(GetAddressesMaskPath(block.Hash));
+            maskFile.Directory.Create();
+            using (Stream stream = maskFile.Open(
+                FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                stream.Write(addressesMask.ToByteArray(), 0, Address.Size);
             }
         }
 

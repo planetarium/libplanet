@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -26,7 +27,7 @@ namespace Libplanet.Tests.Store
         {
             Assert.Empty(_fx.Store.ListNamespaces());
 
-            _fx.Store.PutBlock(_fx.Block1);
+            _fx.Store.PutBlock(_fx.Block1, default);
             _fx.Store.AppendIndex(_ns, _fx.Block1.Hash);
             Assert.Equal(
                 new[] { _ns }.ToImmutableHashSet(),
@@ -92,7 +93,8 @@ namespace Libplanet.Tests.Store
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
             Assert.False(_fx.Store.DeleteBlock(_fx.Block1.Hash));
 
-            _fx.Store.PutBlock(_fx.Block1);
+            Address arbitraryMask = new PrivateKey().PublicKey.ToAddress();
+            _fx.Store.PutBlock(_fx.Block1, arbitraryMask);
             Assert.Equal(1, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
@@ -103,10 +105,17 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 _fx.Block1,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block1.Hash));
+            Assert.Equal(
+                arbitraryMask,
+                _fx.Store.GetAddressesMask(_fx.Block1.Hash)
+            );
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block2.Hash));
+            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block2.Hash));
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
+            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block3.Hash));
 
-            _fx.Store.PutBlock(_fx.Block2);
+            Address arbitraryMask2 = new PrivateKey().PublicKey.ToAddress();
+            _fx.Store.PutBlock(_fx.Block2, arbitraryMask2);
             Assert.Equal(2, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
@@ -119,9 +128,18 @@ namespace Libplanet.Tests.Store
                 _fx.Block1,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block1.Hash));
             Assert.Equal(
+                arbitraryMask,
+                _fx.Store.GetAddressesMask(_fx.Block1.Hash)
+            );
+            Assert.Equal(
                 _fx.Block2,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block2.Hash));
+            Assert.Equal(
+                arbitraryMask2,
+                _fx.Store.GetAddressesMask(_fx.Block2.Hash)
+            );
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
+            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block3.Hash));
 
             Assert.True(_fx.Store.DeleteBlock(_fx.Block1.Hash));
             Assert.Equal(1, _fx.Store.CountBlocks());

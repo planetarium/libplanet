@@ -63,7 +63,9 @@ namespace Libplanet.Store
                 }
 
                 value.Validate(DateTimeOffset.UtcNow);
-                Store.PutBlock(value);
+
+                // FIXME: A proper mask should be passed.
+                Store.PutBlock(value, default(Address));
             }
         }
 
