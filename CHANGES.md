@@ -6,6 +6,12 @@ Version 0.2.2
 
 To be released.
 
+ -  Fixed a bug that `BlockChain<T>.GetStates()` had returned slower than
+    necessary for many addresses.  [[#189], [#192]]
+
+[#189]: https://github.com/planetarium/libplanet/issues/189
+[#192]: https://github.com/planetarium/libplanet/pull/192
+
 
 Version 0.2.1
 -------------

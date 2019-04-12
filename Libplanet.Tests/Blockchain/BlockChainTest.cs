@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Xml.Schema;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -226,6 +228,56 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(expected, actual);
         }
 
+        // This is a regression test for:
+        // https://github.com/planetarium/libplanet/issues/189#issuecomment-482443607.
+        [Fact]
+        public void GetStatesOnlyDrillsDownUntilRequestedAddressesAreFound()
+        {
+            var tracker = new StoreTracker(_fx.Store);
+            var chain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                tracker
+            );
+
+            Block<DumbAction> b = TestUtils.MineGenesis<DumbAction>();
+            chain.Append(b);
+            Address[] addresses = new Address[30];
+            for (int i = 0; i < addresses.Length; ++i)
+            {
+                var privateKey = new PrivateKey();
+                Address address = privateKey.PublicKey.ToAddress();
+                addresses[i] = address;
+                DumbAction[] actions =
+                {
+                    new DumbAction(address, "foo"),
+                    new DumbAction(i < 1 ? address : addresses[i - 1], "bar"),
+                };
+                Transaction<DumbAction>[] txs =
+                {
+                    Transaction<DumbAction>.Create(privateKey, actions),
+                };
+                b = TestUtils.MineNext(b, txs);
+                chain.Append(b);
+            }
+
+            tracker.ClearLogs();
+            int testingDepth = addresses.Length / 2;
+            Address[] targetAddresses = Enumerable.Range(
+                testingDepth,
+                Math.Min(10, addresses.Length - testingDepth - 1)
+            ).Select(i => addresses[i]).ToArray();
+            AddressStateMap result = chain.GetStates(targetAddresses);
+            foreach (Address targetAddress in targetAddresses)
+            {
+                Assert.True(result.ContainsKey(targetAddress));
+            }
+
+            var callCount = tracker.Logs.Where(
+                triple => triple.Item1.Equals("GetBlockStates")
+            ).Select(triple => triple.Item2).Count();
+            Assert.True(testingDepth >= callCount);
+        }
+
         [Fact]
         public void EvaluateActions()
         {
@@ -262,6 +314,18 @@ namespace Libplanet.Tests.Blockchain
                 states[TestEvaluateAction.MinerKey],
                 _fx.Address1.ToHex());
             Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
+        }
+
+        private sealed class NullPolicy<T> : IBlockPolicy<T>
+            where T : IAction, new()
+        {
+            public int GetNextBlockDifficulty(IEnumerable<Block<T>> blocks) =>
+                blocks.Any() ? 1 : 0;
+
+            public InvalidBlockException ValidateBlocks(
+                IEnumerable<Block<T>> blocks,
+                DateTimeOffset currentTime
+            ) => null;
         }
 
         private sealed class TestEvaluateAction : IAction
