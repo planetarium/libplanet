@@ -6,19 +6,22 @@ Version 0.3.0
 
 To be released.
 
- - Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
-   events when a different version of a peer is discovered.  [[#167]], [[#185]]
- - Added `Peer.AppProtocolVersion` property.  [[#185]]
- - `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
-   other known peers and synchronizes the blocks if necessary
-   before propagating/receiving pinpointed recent blocks to prevent inefficient
-   round-trips.  [[#187], [#190]]
- - Improved the read throughput of `BlockChain<T>` while mining through
-   `BlockChain<T>.MineBlock()`
+ -  Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
+    events when a different version of a peer is discovered.  [[#167]], [[#185]]
+ -  Added `Peer.AppProtocolVersion` property.  [[#185]]
+ -  `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
+    other known peers and synchronizes the blocks if necessary
+    before propagating/receiving pinpointed recent blocks to prevent inefficient
+    round-trips.  [[#187], [#190]]
+ -  Improved overall read throughput of `BlockChain<T>` while blocks are being
+    mined by `BlockChain<T>.MineBlock()`.
+ -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
+    nonce is stale.  [[#193]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
+[#193]: https://github.com/planetarium/libplanet/pull/193
 
 
 Version 0.2.2
