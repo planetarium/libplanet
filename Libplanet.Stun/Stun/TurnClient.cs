@@ -163,6 +163,14 @@ namespace Libplanet.Stun
             {
                 return TimeSpan.FromSeconds(success.Lifetime);
             }
+            else if (
+                response is RefreshErrorResponse error &&
+                error.ErrorCode == 438)
+            {
+                // Retry refreshing when stale nonce error(438) occured.
+                Nonce = error.Nonce;
+                return await RefreshAllocationAsync(lifetime);
+            }
 
             throw new TurnClientException("RefreshRequest failed.", response);
         }
