@@ -26,6 +26,8 @@ To be released.
     `PutBlock<T>(Block<T>, Address)`.  [[#189]]
  -  Improved the read throughput of `BlockChain<T>` when calling
     `BlockChain<T>.Append()`.
+ -  Fixed a bug that `Swarm` attempted to use TURN relay even though `_host` was
+    given.
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187

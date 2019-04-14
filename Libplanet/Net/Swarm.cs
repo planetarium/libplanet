@@ -436,7 +436,7 @@ namespace Libplanet.Net
                 throw new SwarmException("Swarm is already running.");
             }
 
-            if (_iceServers != null)
+            if (_host is null && _iceServers != null)
             {
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
             }
