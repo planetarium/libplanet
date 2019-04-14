@@ -227,10 +227,9 @@ namespace Libplanet.Blockchain
 
         public void Append(Block<T> block, DateTimeOffset currentTime)
         {
+            _rwlock.EnterUpgradeableReadLock();
             try
             {
-                _rwlock.EnterWriteLock();
-
                 HashDigest<SHA256>? tip =
                     Store.IndexBlockHash(Id.ToString(), -1);
 
@@ -239,19 +238,27 @@ namespace Libplanet.Blockchain
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
                 Validate(Enumerable.Append(this, block), currentTime);
 
-                Blocks[block.Hash] = block;
-                EvaluateActions(block);
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    Blocks[block.Hash] = block;
+                    EvaluateActions(block);
 
-                Store.AppendIndex(Id.ToString(), block.Hash);
-                ISet<TxId> txIds = block.Transactions
-                    .Select(t => t.Id)
-                    .ToImmutableHashSet();
+                    Store.AppendIndex(Id.ToString(), block.Hash);
+                    ISet<TxId> txIds = block.Transactions
+                        .Select(t => t.Id)
+                        .ToImmutableHashSet();
 
-                Store.UnstageTransactionIds(txIds);
+                    Store.UnstageTransactionIds(txIds);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
             }
             finally
             {
-                _rwlock.ExitWriteLock();
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 
