@@ -33,6 +33,11 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
 
+        // TURN Permission lifetime was defined in RFC 5766
+        // see also https://tools.ietf.org/html/rfc5766#section-8
+        private static readonly TimeSpan TurnPermissionLifetime =
+            TimeSpan.FromMinutes(5);
+
         private readonly IDictionary<Peer, DateTimeOffset> _peers;
         private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
@@ -494,6 +499,7 @@ namespace Libplanet.Net
                 {
                     tasks.Add(BindingProxies());
                     tasks.Add(RefreshAllocate());
+                    tasks.Add(RefreshPermissions());
                 }
 
                 await Task.WhenAll(tasks);
@@ -798,6 +804,17 @@ namespace Libplanet.Net
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
+            }
+        }
+
+        private async Task RefreshPermissions()
+        {
+            TimeSpan lifetime = TurnPermissionLifetime;
+            while (Running)
+            {
+                await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
+                await Task.WhenAll(
+                    _peers.Keys.Select(p => CreatePermission(p)));
             }
         }
 

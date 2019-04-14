@@ -28,6 +28,8 @@ To be released.
     `BlockChain<T>.Append()`.
  -  Fixed a bug that `Swarm` attempted to use TURN relay even though `_host` was
     given.
+ -  Fixed a bug that TURN relay was disconnected when connecting for more than 5
+    minutes.
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
