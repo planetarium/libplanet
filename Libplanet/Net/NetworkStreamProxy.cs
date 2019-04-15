@@ -43,7 +43,7 @@ namespace Libplanet.Net
 
         private async Task Proxy(NetworkStream source, NetworkStream target)
         {
-            while (true)
+            while (source.CanRead && target.CanWrite)
             {
                 var buf = new byte[_bufferSize];
                 int read = await source.ReadAsync(buf, 0, buf.Length);

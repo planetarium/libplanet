@@ -24,6 +24,11 @@ To be released.
     and its all implementations.  [[#189]]
  -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
     `PutBlock<T>(Block<T>, Address)`.  [[#189]]
+ -  Improved the read throughput of `BlockChain<T>.Append()`.
+ -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host` argument was
+    given.
+ -  Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
+    minutes.
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
