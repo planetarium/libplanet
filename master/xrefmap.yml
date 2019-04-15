@@ -3876,6 +3876,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteTransaction
   nameWithType: BaseStore.DeleteTransaction
+- uid: Libplanet.Store.BaseStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetAddressesMask(HashDigest<SHA256>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetAddressesMask_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.BaseStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetAddressesMask(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.BaseStore.GetAddressesMask(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.BaseStore.GetAddressesMask(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: BaseStore.GetAddressesMask(HashDigest<SHA256>)
+  nameWithType.vb: BaseStore.GetAddressesMask(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.GetAddressesMask*
+  name: GetAddressesMask
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetAddressesMask_
+  commentId: Overload:Libplanet.Store.BaseStore.GetAddressesMask
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.GetAddressesMask
+  nameWithType: BaseStore.GetAddressesMask
 - uid: Libplanet.Store.BaseStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock_
@@ -4009,15 +4025,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.PutBlock
   nameWithType: BaseStore.PutBlock
-- uid: Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name: PutBlock<T>(Block<T>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name.vb: PutBlock(Of T)(Block(Of T))
-  fullName: Libplanet.Store.BaseStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.BaseStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
-  nameWithType: BaseStore.PutBlock<T>(Block<T>)
-  nameWithType.vb: BaseStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name: PutBlock<T>(Block<T>, Address)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__Libplanet_Address_
+  commentId: M:Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name.vb: PutBlock(Of T)(Block(Of T), Address)
+  fullName: Libplanet.Store.BaseStore.PutBlock<T>(Libplanet.Blocks.Block<T>, Libplanet.Address)
+  fullName.vb: Libplanet.Store.BaseStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T), Libplanet.Address)
+  nameWithType: BaseStore.PutBlock<T>(Block<T>, Address)
+  nameWithType.vb: BaseStore.PutBlock(Of T)(Block(Of T), Address)
 - uid: Libplanet.Store.BaseStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutTransaction_
@@ -4305,6 +4321,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.DeleteTransaction
   nameWithType: FileStore.DeleteTransaction
+- uid: Libplanet.Store.FileStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetAddressesMask(HashDigest<SHA256>)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressesMask_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.FileStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetAddressesMask(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.FileStore.GetAddressesMask(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.FileStore.GetAddressesMask(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: FileStore.GetAddressesMask(HashDigest<SHA256>)
+  nameWithType.vb: FileStore.GetAddressesMask(HashDigest(Of SHA256))
+- uid: Libplanet.Store.FileStore.GetAddressesMask*
+  name: GetAddressesMask
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressesMask_
+  commentId: Overload:Libplanet.Store.FileStore.GetAddressesMask
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.GetAddressesMask
+  nameWithType: FileStore.GetAddressesMask
+- uid: Libplanet.Store.FileStore.GetAddressesMaskPath(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetAddressesMaskPath(HashDigest<SHA256>)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressesMaskPath_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.FileStore.GetAddressesMaskPath(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetAddressesMaskPath(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.FileStore.GetAddressesMaskPath(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.FileStore.GetAddressesMaskPath(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: FileStore.GetAddressesMaskPath(HashDigest<SHA256>)
+  nameWithType.vb: FileStore.GetAddressesMaskPath(HashDigest(Of SHA256))
+- uid: Libplanet.Store.FileStore.GetAddressesMaskPath*
+  name: GetAddressesMaskPath
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetAddressesMaskPath_
+  commentId: Overload:Libplanet.Store.FileStore.GetAddressesMaskPath
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.GetAddressesMaskPath
+  nameWithType: FileStore.GetAddressesMaskPath
 - uid: Libplanet.Store.FileStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetBlock_
@@ -4533,15 +4581,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.PutBlock
   nameWithType: FileStore.PutBlock
-- uid: Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name: PutBlock<T>(Block<T>)
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name.vb: PutBlock(Of T)(Block(Of T))
-  fullName: Libplanet.Store.FileStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.FileStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
-  nameWithType: FileStore.PutBlock<T>(Block<T>)
-  nameWithType.vb: FileStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name: PutBlock<T>(Block<T>, Address)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__Libplanet_Address_
+  commentId: M:Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name.vb: PutBlock(Of T)(Block(Of T), Address)
+  fullName: Libplanet.Store.FileStore.PutBlock<T>(Libplanet.Blocks.Block<T>, Libplanet.Address)
+  fullName.vb: Libplanet.Store.FileStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T), Libplanet.Address)
+  nameWithType: FileStore.PutBlock<T>(Block<T>, Address)
+  nameWithType.vb: FileStore.PutBlock(Of T)(Block(Of T), Address)
 - uid: Libplanet.Store.FileStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_PutTransaction_
@@ -4712,6 +4760,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteTransaction
   nameWithType: IStore.DeleteTransaction
+- uid: Libplanet.Store.IStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetAddressesMask(HashDigest<SHA256>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetAddressesMask_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.IStore.GetAddressesMask(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetAddressesMask(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.IStore.GetAddressesMask(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.IStore.GetAddressesMask(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: IStore.GetAddressesMask(HashDigest<SHA256>)
+  nameWithType.vb: IStore.GetAddressesMask(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.GetAddressesMask*
+  name: GetAddressesMask
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetAddressesMask_
+  commentId: Overload:Libplanet.Store.IStore.GetAddressesMask
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.GetAddressesMask
+  nameWithType: IStore.GetAddressesMask
 - uid: Libplanet.Store.IStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock_
@@ -4845,15 +4909,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.PutBlock
   nameWithType: IStore.PutBlock
-- uid: Libplanet.Store.IStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name: PutBlock<T>(Block<T>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock__1_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.IStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name.vb: PutBlock(Of T)(Block(Of T))
-  fullName: Libplanet.Store.IStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.IStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
-  nameWithType: IStore.PutBlock<T>(Block<T>)
-  nameWithType.vb: IStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.IStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name: PutBlock<T>(Block<T>, Address)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock__1_Libplanet_Blocks_Block___0__Libplanet_Address_
+  commentId: M:Libplanet.Store.IStore.PutBlock``1(Libplanet.Blocks.Block{``0},Libplanet.Address)
+  name.vb: PutBlock(Of T)(Block(Of T), Address)
+  fullName: Libplanet.Store.IStore.PutBlock<T>(Libplanet.Blocks.Block<T>, Libplanet.Address)
+  fullName.vb: Libplanet.Store.IStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T), Libplanet.Address)
+  nameWithType: IStore.PutBlock<T>(Block<T>, Address)
+  nameWithType.vb: IStore.PutBlock(Of T)(Block(Of T), Address)
 - uid: Libplanet.Store.IStore.PutTransaction*
   name: PutTransaction
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutTransaction_
