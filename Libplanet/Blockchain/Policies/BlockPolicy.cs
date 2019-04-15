@@ -131,9 +131,20 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc />
         public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
-            return ExpectDifficulties(blocks, yieldNext: true)
-                .First(t => t.Block == null)
-                .Difficulty;
+            int blockCount = blocks.Count;
+
+            if (blockCount <= 1)
+            {
+                return blockCount;
+            }
+
+            Block<T> prevPrevBlock = blocks[blockCount - 2];
+            Block<T> prevBlock = blocks[blockCount - 1];
+
+            return GetNextDifficultyFromPrevTimestamp(
+                prevPrevBlock.Timestamp,
+                prevBlock.Timestamp,
+                prevBlock.Difficulty);
         }
 
         private IEnumerable<DifficultyExpectation> ExpectDifficulties(
@@ -165,16 +176,9 @@ namespace Libplanet.Blockchain.Policies
                     continue;
                 }
 
-                bool needMore =
-                    prevPrevTimestamp != null &&
-                    (
-                        prevPrevTimestamp == null ||
-                        prevTimestamp - prevPrevTimestamp < BlockInterval
-                    );
-                difficulty = Math.Max(
-                    needMore ? difficulty + 1 : difficulty - 1,
-                    1
-                );
+                difficulty = GetNextDifficultyFromPrevTimestamp(
+                    prevPrevTimestamp, prevTimestamp, difficulty);
+
                 yield return new DifficultyExpectation
                 {
                     Difficulty = difficulty,
@@ -187,6 +191,17 @@ namespace Libplanet.Blockchain.Policies
                     prevTimestamp = block.Timestamp;
                 }
             }
+        }
+
+        private int GetNextDifficultyFromPrevTimestamp(
+            DateTimeOffset? prevPrevTimestamp,
+            DateTimeOffset? prevTimestamp,
+            int prevDifficulty)
+        {
+            bool needMore = prevTimestamp - prevPrevTimestamp < BlockInterval;
+            return Math.Max(
+                needMore ? prevDifficulty + 1 : prevDifficulty - 1,
+                1);
         }
 
         private struct DifficultyExpectation
