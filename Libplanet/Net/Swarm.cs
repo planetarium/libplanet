@@ -441,7 +441,7 @@ namespace Libplanet.Net
                 throw new SwarmException("Swarm is already running.");
             }
 
-            if (_host is null && _iceServers != null)
+            if (_host is null && !(_iceServers is null))
             {
                 _turnClient = await IceServer.CreateTurnClient(_iceServers);
             }
@@ -814,7 +814,7 @@ namespace Libplanet.Net
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 await Task.WhenAll(
-                    _peers.Keys.Select(p => CreatePermission(p)));
+                    _peers.Keys.Select(CreatePermission));
             }
         }
 
