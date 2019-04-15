@@ -230,6 +230,7 @@ Released on April 5, 2019.
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
 [#165]: https://github.com/planetarium/libplanet/issues/165
+[#166]: https://github.com/planetarium/libplanet/pull/166
 [#167]: https://github.com/planetarium/libplanet/issues/167
 [#169]: https://github.com/planetarium/libplanet/pull/169
 [#170]: https://github.com/planetarium/libplanet/pull/170
