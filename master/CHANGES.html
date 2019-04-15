@@ -83,6 +83,11 @@ a nonexistent account (i.e., never used before).  [<a href="https://github.com/p
 and its all implementations.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>]</li>
 <li>The signature of <code>IStore.PutBlock&lt;T&gt;(Block&lt;T&gt;)</code> method was changed to
 <code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>]</li>
+<li>Improved the read throughput of <code>BlockChain&lt;T&gt;.Append()</code>.</li>
+<li>Fixed a bug that <code>Swarm</code> had attempted to use TURN relay even if the <code>host</code> argument was
+given.</li>
+<li>Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
+minutes.</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
@@ -310,7 +315,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/d1383884238441d1d9a964be225994f835018461/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/920c7ea8cb6b2f9bbdee63027d59fa63f7964b35/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
