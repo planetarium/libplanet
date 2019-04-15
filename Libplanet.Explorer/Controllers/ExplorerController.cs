@@ -52,7 +52,9 @@ namespace Libplanet.Explorer.Controllers
                 {
                     { "hash", block.Hash.ToString() },
                     { "timestamp", block.Timestamp.ToString(TimestampFormat) },
+                    { "miner", block.Miner.ToString() },
                     { "tx_count", block.Transactions.Count().ToString() },
+                    { "difficulty", block.Difficulty.ToString() },
                 })
                 .ToList();
         }
