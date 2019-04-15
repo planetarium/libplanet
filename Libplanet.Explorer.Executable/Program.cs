@@ -177,6 +177,12 @@ namespace Libplanet.Explorer.Executable
                 return 1;
             }
 
+            if (!store.ListNamespaces().Contains(chainId))
+            {
+                stderr.WriteLine("error: {0} was not found.", chainId);
+                return 1;
+            }
+
             Startup.StoreState = store;
 
             if (portString is null)
