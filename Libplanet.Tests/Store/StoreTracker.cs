@@ -74,6 +74,12 @@ namespace Libplanet.Tests.Store
             return _store.GetBlock<T>(blockHash);
         }
 
+        public Address? GetAddressesMask(HashDigest<SHA256> blockHash)
+        {
+            _logs.Add((nameof(GetAddressesMask), blockHash, null));
+            return _store.GetAddressesMask(blockHash);
+        }
+
         public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
         {
             _logs.Add((nameof(GetBlockStates), blockHash, null));
@@ -123,11 +129,11 @@ namespace Libplanet.Tests.Store
             return _store.ListNamespaces();
         }
 
-        public void PutBlock<T>(Block<T> block)
+        public void PutBlock<T>(Block<T> block, Address addressesMask)
             where T : IAction, new()
         {
-            _logs.Add((nameof(PutBlock), block, null));
-            _store.PutBlock<T>(block);
+            _logs.Add((nameof(PutBlock), block, addressesMask));
+            _store.PutBlock<T>(block, addressesMask);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)

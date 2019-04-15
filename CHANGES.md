@@ -6,19 +6,29 @@ Version 0.3.0
 
 To be released.
 
- - Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
-   events when a different version of a peer is discovered.  [[#167]], [[#185]]
- - Added `Peer.AppProtocolVersion` property.  [[#185]]
- - `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
-   other known peers and synchronizes the blocks if necessary
-   before propagating/receiving pinpointed recent blocks to prevent inefficient
-   round-trips.  [[#187], [#190]]
- - Improved the read throughput of `BlockChain<T>` while mining through
-   `BlockChain<T>.MineBlock()`
+ -  Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
+    events when a different version of a peer is discovered.  [[#167]], [[#185]]
+ -  Added `Peer.AppProtocolVersion` property.  [[#185]]
+ -  `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
+    other known peers and synchronizes the blocks if necessary
+    before propagating/receiving pinpointed recent blocks to prevent inefficient
+    round-trips.  [[#187], [#190]]
+ -  Improved overall read throughput of `BlockChain<T>` while blocks are being
+    mined by `BlockChain<T>.MineBlock()`.
+ -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
+    nonce is stale.  [[#193]]
+ -  Fixed `BlockChain<T>.GetStates()` had descended to the bottom
+    (i.e., the genesis block) where a given `Address` referes to
+    a nonexistent account (i.e., never used before).  [[#189]]
+ -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
+    and its all implementations.  [[#189]]
+ -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
+    `PutBlock<T>(Block<T>, Address)`.  [[#189]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
+[#193]: https://github.com/planetarium/libplanet/pull/193
 
 
 Version 0.2.2

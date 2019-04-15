@@ -1,16 +1,22 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction, new()
     {
+        // TODO: We should have a distinct type like AddressMask in the future.
+        internal static readonly byte[] WildcardMask =
+            Enumerable.Repeat((byte)0xff, Address.Size).ToArray();
+
         public BlockSet(IStore store)
             : base(store)
         {
@@ -49,21 +55,56 @@ namespace Libplanet.Store
                     throw new KeyNotFoundException();
                 }
 
-                Trace.Assert(block.Hash == key);
+                Trace.Assert(block.Hash.Equals(key));
                 block.Validate(DateTimeOffset.UtcNow);
                 return block;
             }
 
             set
             {
-                if (value.Hash != key)
+                if (!value.Hash.Equals(key))
                 {
                     throw new InvalidBlockHashException(
                         $"{value}.hash does not match to {key}");
                 }
 
                 value.Validate(DateTimeOffset.UtcNow);
-                Store.PutBlock(value);
+
+                byte[] prevMask;
+                if (value.PreviousHash is HashDigest<SHA256> prevHash)
+                {
+                    if (Store.GetAddressesMask(prevHash) is Address maskAddr)
+                    {
+                        prevMask = maskAddr.ToByteArray();
+                    }
+                    else
+                    {
+                        // If there is no mask for the previous hash
+                        // (the store made in the older versions of Libplanet
+                        // may lack mask files), make the mask to match to
+                        // all possible addresses.
+                        prevMask = WildcardMask;
+                    }
+                }
+                else
+                {
+                    prevMask = new byte[Address.Size];
+                }
+
+                // Create a next mask.
+                var mask = new BitArray(prevMask);
+                foreach (Transaction<T> tx in value.Transactions)
+                {
+                    foreach (Address address in tx.UpdatedAddresses)
+                    {
+                        // BitArray.Or() manipulates itself.
+                        mask.Or(new BitArray(address.ToByteArray()));
+                    }
+                }
+
+                var maskBuffer = new byte[Address.Size];
+                mask.CopyTo(maskBuffer, 0);
+                Store.PutBlock(value, new Address(maskBuffer));
             }
         }
 
