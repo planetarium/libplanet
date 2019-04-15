@@ -201,7 +201,7 @@ namespace Libplanet.Blockchain
                     offset is HashDigest<SHA256> hash &&
                         Store.GetAddressesMask(hash) is Address a
                         ? a.ToByteArray()
-                        : Enumerable.Repeat((byte)0xff, Address.Size).ToArray()
+                        : BlockSet<T>.WildcardMask
                 );
 
                 // Addresses that are definitely not existent.

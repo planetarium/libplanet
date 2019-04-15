@@ -13,6 +13,10 @@ namespace Libplanet.Store
     public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
         where T : IAction, new()
     {
+        // TODO: We should have a distinct type like AddressMask in the future.
+        internal static readonly byte[] WildcardMask =
+            Enumerable.Repeat((byte)0xff, Address.Size).ToArray();
+
         public BlockSet(IStore store)
             : base(store)
         {
@@ -79,8 +83,7 @@ namespace Libplanet.Store
                         // (the store made in the older versions of Libplanet
                         // may lack mask files), make the mask to match to
                         // all possible addresses.
-                        prevMask = Enumerable.Repeat((byte)0xff, Address.Size)
-                            .ToArray();
+                        prevMask = WildcardMask;
                     }
                 }
                 else
