@@ -15,7 +15,7 @@ using Libplanet.Tx;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
-    public class BlockChain<T> : IEnumerable<Block<T>>
+    public class BlockChain<T> : IReadOnlyList<Block<T>>
         where T : IAction, new()
     {
         private readonly ReaderWriterLockSlim _rwlock;
@@ -83,7 +83,14 @@ namespace Libplanet.Blockchain
             get; private set;
         }
 
+        /// <inheritdoc/>
+        int IReadOnlyCollection<Block<T>>.Count =>
+            checked((int)Store.CountIndex(Id.ToString()));
+
         internal IStore Store { get; }
+
+        /// <inheritdoc/>
+        public Block<T> this[int index] => this[(long)index];
 
         public Block<T> this[long index]
         {
@@ -111,7 +118,7 @@ namespace Libplanet.Blockchain
         }
 
         public void Validate(
-            IEnumerable<Block<T>> blocks,
+            IReadOnlyList<Block<T>> blocks,
             DateTimeOffset currentTime
         )
         {
@@ -236,8 +243,9 @@ namespace Libplanet.Blockchain
                 block.Validate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
-                Validate(Enumerable.Append(this, block), currentTime);
+                Enumerable.Append(this, block);
 
+                Validate(this, currentTime);
                 _rwlock.EnterWriteLock();
                 try
                 {

@@ -354,11 +354,11 @@ namespace Libplanet.Tests.Blockchain
         private sealed class NullPolicy<T> : IBlockPolicy<T>
             where T : IAction, new()
         {
-            public int GetNextBlockDifficulty(IEnumerable<Block<T>> blocks) =>
+            public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
                 blocks.Any() ? 1 : 0;
 
             public InvalidBlockException ValidateBlocks(
-                IEnumerable<Block<T>> blocks,
+                IReadOnlyList<Block<T>> blocks,
                 DateTimeOffset currentTime
             ) => null;
         }

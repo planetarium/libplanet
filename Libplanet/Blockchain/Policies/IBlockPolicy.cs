@@ -30,7 +30,7 @@ namespace Libplanet.Blockchain.Policies
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
         InvalidBlockException ValidateBlocks(
-            IEnumerable<Block<T>> blocks,
+            IReadOnlyList<Block<T>> blocks,
             DateTimeOffset currentTime
         );
 
@@ -43,6 +43,6 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        int GetNextBlockDifficulty(IEnumerable<Block<T>> blocks);
+        int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks);
     }
 }
