@@ -22,41 +22,40 @@ To be released.
  -  Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
     events when a different version of a peer is discovered.  [[#167]], [[#185]]
  -  Added `Peer.AppProtocolVersion` property.  [[#185]]
- -  `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
-    other known peers and synchronizes the blocks if necessary
-    before propagating/receiving pinpointed recent blocks to prevent inefficient
-    round-trips.  [[#187], [#190]]
+ -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
+    and its all implementations.  [[#189], [#197]]
+ -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
+    `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
     initial blocks before `Swarm.StartAsync<T>()` being called.
     [[#204]], [[#206]]
  -  Added `BlockDownloadState` class to represent a block downloading state.
     [[#204]], [[#206]]
- -  Removed `KeyEquals()` methods from all classes and structs.
+ -  Added `Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, long,
+    IAccountStateDelta, Address, bool)` method.
+ -  Added `Block<T>.EvaluateActionsPerTx(AccountStateGetter)` method.
+ -  Removed `KeyEquals()` methods from all classes and structs.  [[#216]]
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
-    default behavior of `object` class.
+    default behavior of `object` class.  [[#216]]
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
     related classes method parameters and field types have changed accordingly.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
  -  Added `HashDigest.Satisfies()` method.  [[#213]]
  -  `BlockPolicy<T>` constructor became to receive the `minimumDifficulty`
     and the mining `difficultyBoundDivisor`.  [[#213]]
+ -  `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
+    other known peers and synchronizes the blocks if necessary
+    before propagating/receiving pinpointed recent blocks to prevent inefficient
+    round-trips.  [[#187], [#190]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
-    mined by `BlockChain<T>.MineBlock()`.
+    mined by `BlockChain<T>.MineBlock()`.  [[#191]]
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
     nonce is stale.  [[#193]]
  -  Fixed `BlockChain<T>.GetStates()` had descended to the bottom
-    (i.e., the genesis block) where a given `Address` referes to
-    a nonexistent account (i.e., never used before).  [[#189]]
- -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
-    and its all implementations.  [[#189]]
- -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
-    `PutBlock<T>(Block<T>, Address)`.  [[#189]]
+    (i.e., the genesis block) where a given `Address` refers to
+    a nonexistent account (i.e., never used before).  [[#189], [#192]]
  -  Improved the read throughput of `BlockChain<T>.Append()`.
- -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host` argument was
-    given.
- -  Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
-    minutes.
  -  Fixed a bug that a TURN connection had turned unavailable after
     it once failed to parse a message (due to a corrupted packet).
     [[#215]]
@@ -70,18 +69,27 @@ To be released.
  -  The difficulty was changed from representing the number of leading zeros of
     target number to representing a divisor to obtain the target number.
     [[#213]]
+ -  Fixed a bug that TURN relay had been disconnected when being connected for
+    longer than 5 minutes.  [[#198]]
+ -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host`
+    argument was given.  [[#198]]
 
+[Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
+[#191]: https://github.com/planetarium/libplanet/pull/191
+[#192]: https://github.com/planetarium/libplanet/pull/192
 [#193]: https://github.com/planetarium/libplanet/pull/193
+[#197]: https://github.com/planetarium/libplanet/pull/197
+[#198]: https://github.com/planetarium/libplanet/pull/198
 [#204]: https://github.com/planetarium/libplanet/issues/204
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
 [#210]: https://github.com/planetarium/libplanet/pull/210
 [#213]: https://github.com/planetarium/libplanet/pull/213
 [#215]: https://github.com/planetarium/libplanet/pull/215
-[Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
+[#216]: https://github.com/planetarium/libplanet/pull/216
 
 
 Version 0.2.2
@@ -307,6 +315,7 @@ Released on April 5, 2019.
 [#151]: https://github.com/planetarium/libplanet/pull/151
 [#159]: https://github.com/planetarium/libplanet/pull/159
 [#165]: https://github.com/planetarium/libplanet/issues/165
+[#166]: https://github.com/planetarium/libplanet/pull/166
 [#167]: https://github.com/planetarium/libplanet/issues/167
 [#169]: https://github.com/planetarium/libplanet/pull/169
 [#170]: https://github.com/planetarium/libplanet/pull/170
