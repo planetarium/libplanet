@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Blockchain.Policies;
@@ -62,27 +61,27 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             Assert.Equal(
                 0,
-                policy.GetNextBlockDifficulty(blocks.Take(0))
+                policy.GetNextBlockDifficulty(blocks.Take(0).ToList())
             );
             Assert.Equal(
                 1,
-                policy.GetNextBlockDifficulty(blocks.Take(1))
+                policy.GetNextBlockDifficulty(blocks.Take(1).ToList())
             );
             Assert.Equal(
                 2,
-                policy.GetNextBlockDifficulty(blocks.Take(2))
+                policy.GetNextBlockDifficulty(blocks.Take(2).ToList())
             );
             Assert.Equal(
                 3,
-                policy.GetNextBlockDifficulty(blocks.Take(3))
+                policy.GetNextBlockDifficulty(blocks.Take(3).ToList())
             );
             Assert.Equal(
                 2,
-                policy.GetNextBlockDifficulty(blocks.Take(4))
+                policy.GetNextBlockDifficulty(blocks.Take(4).ToList())
             );
             Assert.Equal(
                 3,
-                policy.GetNextBlockDifficulty(blocks.Take(5))
+                policy.GetNextBlockDifficulty(blocks.Take(5).ToList())
             );
             Assert.Equal(
                 2,
@@ -104,8 +103,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                         {
                             fields.Index = 1;
                             return fields;
-                        }
-                    ),
+                        }).ToList(),
                     FixtureEpoch + new TimeSpan(0, 1, 0)
                 )
             );
@@ -119,8 +117,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                         {
                             fields.PreviousHash = default(HashDigest<SHA256>);
                             return fields;
-                        }
-                    ),
+                        }).ToList(),
                     FixtureEpoch + new TimeSpan(0, 1, 0)
                 )
             );
@@ -134,8 +131,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                         {
                             fields.Index = fields.Index == 0 ? 0 : 2;
                             return fields;
-                        }
-                    ),
+                        }).ToList(),
                     FixtureEpoch + new TimeSpan(1, 1, 0)
                 )
             );
@@ -148,32 +144,28 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 2) }
-                    ),
+                        new[] { (0, 0), (1, 1), (3, 2) }).ToList(),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
             );
             Assert.IsType<InvalidBlockDifficultyException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 1) }
-                    ),
+                        new[] { (0, 0), (1, 1), (3, 1) }).ToList(),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
             );
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (5, 2), (9, 1) }
-                    ),
+                        new[] { (0, 0), (1, 1), (5, 2), (9, 1) }).ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
             );
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (5, 2), (9, 5) }
-                    ),
+                        new[] { (0, 0), (1, 1), (5, 2), (9, 5) }).ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
             );
@@ -193,8 +185,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                             }
 
                             return fields;
-                        }
-                    ),
+                        }).ToList(),
                     FixtureEpoch + new TimeSpan(5, 1, 0)
                 )
             );
@@ -203,8 +194,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockTimestampException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (2, 1), (1, 2) }
-                    ),
+                        new[] { (0, 0), (2, 1), (1, 2) }).ToList(),
                     FixtureEpoch + new TimeSpan(2, 1, 0)
                 )
             );
@@ -213,8 +203,8 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2) }
-                    ),
+                        new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2) })
+                    .ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
             );

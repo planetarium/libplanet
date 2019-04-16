@@ -29,11 +29,18 @@ To be released.
     given.
  -  Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
     minutes.
+ -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
+ -  `BlockChain<T>.Validate()` became to receive `IReadOnlyList<Block<<T>>`
+    instead of `IEnumerable<Block<T>>`.  [[#205]]
+ -  `IBlockPolicy<T>.ValidateBlocks()` and
+    `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
+    `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
 [#193]: https://github.com/planetarium/libplanet/pull/193
+[#205]: https://github.com/planetarium/libplanet/pull/205
 
 
 Version 0.2.2
