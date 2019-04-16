@@ -88,6 +88,12 @@ and its all implementations.  [<a href="https://github.com/planetarium/libplanet
 given.</li>
 <li>Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
 minutes.</li>
+<li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Validate()</code> became to receive <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>
+instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li><code>IBlockPolicy&lt;T&gt;.ValidateBlocks()</code> and
+<code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> became to receive
+<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
@@ -315,7 +321,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/920c7ea8cb6b2f9bbdee63027d59fa63f7964b35/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/b84b302bf103a61248c661c238b12c04360b8117/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
