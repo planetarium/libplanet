@@ -15,7 +15,7 @@ To be released.
     round-trips.  [[#187], [#190]]
  -  Added `Swarm.PreloadAsync()` that explicitly synchronizes the blocks before
     starting and `BlockDownloadState` that represents downloading states.
-    [[#204]] [[#206]]
+    [[#204]], [[#206]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
