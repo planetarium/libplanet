@@ -557,7 +557,8 @@ namespace Libplanet.Net
         /// <typeparam name="T">An <see cref="IAction"/> type. It should match
         /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
         /// <returns>
-        /// No object or value is returned by this method when it completes.
+        /// A task without value.
+        /// You only can <c>await</c> until the method is completed.
         /// </returns>
         public async Task PreloadAsync<T>(
             BlockChain<T> blockChain,

@@ -16,7 +16,7 @@ To be released.
  -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
     initial blocks before `Swarm.StartAsync<T>()` being called.
     [[#204]], [[#206]]
- -  Added `BlockDownloadState` class to represents a block downloading state.
+ -  Added `BlockDownloadState` class to represent a block downloading state.
     [[#204]], [[#206]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
