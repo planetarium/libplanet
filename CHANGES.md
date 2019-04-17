@@ -13,8 +13,10 @@ To be released.
     other known peers and synchronizes the blocks if necessary
     before propagating/receiving pinpointed recent blocks to prevent inefficient
     round-trips.  [[#187], [#190]]
- -  Added `Swarm.PreloadAsync()` that explicitly synchronizes the blocks before
-    starting and `BlockDownloadState` that represents downloading states.
+ -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
+    initial blocks before `Swarm.StartAsync<T>()` being called.
+    [[#204]] [[#206]]
+ -  Added `BlockDownloadState` class to represents a block downloading state.
     [[#204]], [[#206]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.

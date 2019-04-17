@@ -542,7 +542,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Synchronizes the blocks with other registerd <see cref="Peer"/>s.
+        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
         /// <param name="blockChain">
         /// A <see cref="BlockChain{T}"/> instance to synchronize.
