@@ -15,7 +15,7 @@ To be released.
     round-trips.  [[#187], [#190]]
  -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
     initial blocks before `Swarm.StartAsync<T>()` being called.
-    [[#204]] [[#206]]
+    [[#204]], [[#206]]
  -  Added `BlockDownloadState` class to represents a block downloading state.
     [[#204]], [[#206]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
