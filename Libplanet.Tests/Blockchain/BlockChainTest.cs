@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blockchain
         public void CanFindBlockByIndex()
         {
             // use assignment to snooze compiler error (CS0201)
-            Assert.Throws<IndexOutOfRangeException>(() => { var x = _blockChain[0]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[0]; });
             Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
 

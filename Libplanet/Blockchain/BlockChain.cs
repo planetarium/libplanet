@@ -52,7 +52,7 @@ namespace Libplanet.Blockchain
                 {
                     return this[-1];
                 }
-                catch (IndexOutOfRangeException)
+                catch (ArgumentOutOfRangeException)
                 {
                     return null;
                 }
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain
                     );
                     if (blockHash == null)
                     {
-                        throw new IndexOutOfRangeException();
+                        throw new ArgumentOutOfRangeException();
                     }
 
                     return Blocks[blockHash.Value];
