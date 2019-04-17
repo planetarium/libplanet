@@ -40,6 +40,10 @@ To be released.
  -  `IBlockPolicy<T>.ValidateBlocks()` and
     `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
+ -  Added `ValidateBlockToAppend(IReadOnlyList<Block<T>>, Block<T>)` to
+    `IBlockPolicy<T>`.  [[#210]]
+ -  Instead of validating the entire blocks, `BlockChain<T>.Append()` became
+    to validate only the next block to be appended.  [[#210]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
@@ -48,6 +52,7 @@ To be released.
 [#204]: https://github.com/planetarium/libplanet/issues/204
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
+[#210]: https://github.com/planetarium/libplanet/pull/210
 
 
 Version 0.2.2

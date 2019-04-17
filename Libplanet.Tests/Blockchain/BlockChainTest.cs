@@ -361,6 +361,9 @@ namespace Libplanet.Tests.Blockchain
                 IReadOnlyList<Block<T>> blocks,
                 DateTimeOffset currentTime
             ) => null;
+
+            public InvalidBlockException ValidateBlockToAppend(
+                IReadOnlyList<Block<T>> blocks, Block<T> blockToAppend) => null;
         }
 
         private sealed class TestEvaluateAction : IAction

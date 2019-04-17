@@ -243,9 +243,10 @@ namespace Libplanet.Blockchain
                 block.Validate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
+                Policy.ValidateBlockToAppend(this, block);
+
                 Enumerable.Append(this, block);
 
-                Validate(this, currentTime);
                 _rwlock.EnterWriteLock();
                 try
                 {

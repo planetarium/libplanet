@@ -128,6 +128,62 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
+        /// <inheritdoc/>
+        public InvalidBlockException ValidateBlockToAppend(
+            IReadOnlyList<Block<T>> blocks,
+            Block<T> blockToAppend)
+        {
+            int blockCount = blocks.Count;
+            Block<T> lastBlock =
+                blockCount > 0 ? blocks[blockCount - 1] : null;
+
+            int index = blockCount;
+            int difficulty = GetNextBlockDifficulty(blocks);
+            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
+            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+
+            if (blockToAppend.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"the expected block index is {index}, but its index" +
+                    $" is {blockToAppend.Index}'");
+            }
+
+            if (blockToAppend.Difficulty < difficulty)
+            {
+                return new InvalidBlockDifficultyException(
+                    $"the expected difficulty of the block #{index} " +
+                    $"is {difficulty}, but its difficulty is " +
+                    $"{blockToAppend.Difficulty}'");
+            }
+
+            if (!blockToAppend.PreviousHash.Equals(prevHash))
+            {
+                if (prevHash == null)
+                {
+                    return new InvalidBlockPreviousHashException(
+                        "the genesis block must have not previous block");
+                }
+
+                return new InvalidBlockPreviousHashException(
+                    $"the block #{index} is not continuous from the " +
+                    $"block #{index - 1}; while previous block's hash is " +
+                    $"{prevHash}, the block #{index}'s pointer to " +
+                    "the previous hash refers to " +
+                    (blockToAppend.PreviousHash?.ToString() ?? "nothing"));
+            }
+
+            if (blockToAppend.Timestamp < prevTimestamp)
+            {
+                return new InvalidBlockTimestampException(
+                    $"the block #{index}'s timestamp " +
+                    $"({blockToAppend.Timestamp}) is earlier than" +
+                    $" the block #{index - 1}'s ({prevTimestamp})");
+            }
+
+            return null;
+        }
+
         /// <inheritdoc />
         public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {

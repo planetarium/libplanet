@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -19,9 +20,31 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         private readonly ITestOutputHelper _output;
 
+        private FileStoreFixture _fx;
+        private BlockChain<DumbAction> _blockChain;
+        private IBlockPolicy<DumbAction> _policy;
+        private List<Transaction<DumbAction>> _emptyTransaction;
+        private Block<DumbAction> _genesis;
+        private Block<DumbAction> _validNext;
+
         public BlockPolicyTest(ITestOutputHelper output)
         {
             _output = output;
+            _fx = new FileStoreFixture();
+            _blockChain = new BlockChain<DumbAction>(
+                new BlockPolicy<DumbAction>(),
+                _fx.Store
+            );
+            _policy = _blockChain.Policy;
+            _emptyTransaction = new List<Transaction<DumbAction>>();
+            _genesis = TestUtils.MineGenesis<DumbAction>();
+            _validNext = Block<DumbAction>.Mine(
+                1,
+                1,
+                _genesis.Miner.Value,
+                _genesis.Hash,
+                _genesis.Timestamp.AddSeconds(1),
+                _emptyTransaction);
         }
 
         [Fact]
@@ -87,6 +110,123 @@ namespace Libplanet.Tests.Blockchain.Policies
                 2,
                 policy.GetNextBlockDifficulty(blocks)
             );
+        }
+
+        [Fact]
+        public void ValidateBlockToAppend()
+        {
+            _blockChain.Append(_genesis);
+
+            var validNextBlock = Block<DumbAction>.Mine(
+                1,
+                1,
+                _genesis.Miner.Value,
+                _genesis.Hash,
+                _genesis.Timestamp.AddDays(1),
+                _emptyTransaction);
+            _policy.ValidateBlockToAppend(_blockChain, validNextBlock);
+            _blockChain.Append(validNextBlock);
+        }
+
+        [Fact]
+        public void ValidateBlockToAppendGenesis()
+        {
+            var policy = _blockChain.Policy;
+
+            var validGenesis = TestUtils.MineGenesis<DumbAction>();
+            Assert.Null(
+                policy.ValidateBlockToAppend(_blockChain, validGenesis));
+
+            var invalidIndexGenesis = TestUtils.MineNext(validGenesis);
+            Assert.IsType<InvalidBlockIndexException>(
+                policy.ValidateBlockToAppend(_blockChain, invalidIndexGenesis));
+
+            var invalidPreviousHashGenesis = new Block<DumbAction>(
+                 0,
+                 0,
+                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
+                 _genesis.Miner,
+                 new HashDigest<SHA256>(new byte[32]),
+                 _genesis.Timestamp,
+                 _emptyTransaction);
+            Assert.IsType<InvalidBlockPreviousHashException>(
+                policy.ValidateBlockToAppend(
+                    _blockChain,
+                    invalidPreviousHashGenesis));
+        }
+
+        [Fact]
+        public void ValidateBlockToAppendInvalidIndex()
+        {
+            _blockChain.Append(_genesis);
+            _blockChain.Append(_validNext);
+
+            var invalidIndexBlock = Block<DumbAction>.Mine(
+                1,
+                1,
+                _genesis.Miner.Value,
+                _validNext.Hash,
+                _validNext.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            Assert.IsType<InvalidBlockIndexException>(
+                _policy.ValidateBlockToAppend(_blockChain, invalidIndexBlock));
+        }
+
+        [Fact]
+        public void ValidateBlockToAppendInvalidDifficulty()
+        {
+            _blockChain.Append(_genesis);
+            _blockChain.Append(_validNext);
+
+            var invalidDifficultyBlock = Block<DumbAction>.Mine(
+                2,
+                1,
+                _genesis.Miner.Value,
+                _validNext.Hash,
+                _validNext.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            Assert.IsType<InvalidBlockDifficultyException>(
+                _policy.ValidateBlockToAppend(
+                    _blockChain,
+                    invalidDifficultyBlock));
+        }
+
+        [Fact]
+        public void ValidateBlockToAppendInvalidPreviousHash()
+        {
+            _blockChain.Append(_genesis);
+            _blockChain.Append(_validNext);
+
+            var invalidPreviousHashBlock = Block<DumbAction>.Mine(
+                2,
+                2,
+                _genesis.Miner.Value,
+                new HashDigest<SHA256>(new byte[32]),
+                _validNext.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            Assert.IsType<InvalidBlockPreviousHashException>(
+                _policy.ValidateBlockToAppend(
+                    _blockChain,
+                    invalidPreviousHashBlock));
+        }
+
+        [Fact]
+        public void ValidateBlockToAppendInvalidTimestamp()
+        {
+            _blockChain.Append(_genesis);
+            _blockChain.Append(_validNext);
+
+            var invalidPreviousTimestamp = Block<DumbAction>.Mine(
+                2,
+                2,
+                _genesis.Miner.Value,
+                _validNext.Hash,
+                _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
+                _emptyTransaction);
+            Assert.IsType<InvalidBlockTimestampException>(
+                _policy.ValidateBlockToAppend(
+                    _blockChain,
+                    invalidPreviousTimestamp));
         }
 
         [Fact]

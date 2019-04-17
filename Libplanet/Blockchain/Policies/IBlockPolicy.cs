@@ -35,6 +35,23 @@ namespace Libplanet.Blockchain.Policies
         );
 
         /// <summary>
+        /// Checks if <paramref name="blockToAppend"/> is invalid, and if that
+        /// returns the reason.
+        /// <para>Note that it returns <c>null</c> when
+        /// <paramref name="blockToAppend"/> is <em>valid</em>.</para>
+        /// </summary>
+        /// <param name="blocks">Consecutive <see cref="Block{T}"/>s to
+        /// append <paramref name="blockToAppend"/>.</param>
+        /// <param name="blockToAppend">The next block to append to
+        /// <paramref name="blocks"/>.</param>
+        /// <returns>The reason why the given <paramref name="blocks"/> are
+        /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
+        /// <em>valid</em>.</returns>
+        InvalidBlockException ValidateBlockToAppend(
+            IReadOnlyList<Block<T>> blocks,
+            Block<T> blockToAppend);
+
+        /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined
         /// right after the given <paramref name="blocks"/>.
