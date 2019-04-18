@@ -133,16 +133,16 @@ namespace Libplanet.Blockchain.Policies
             int index = blockCount;
             int difficulty = 0;
 
-            if (lastBlock is Block<T> block)
+            if (lastBlock is null)
             {
-                difficulty = GetNextDifficultyFromPrevTimestamp(
-                    secondLastBlock?.Timestamp,
-                    block.Timestamp,
-                    block.Difficulty);
+                difficulty = 0;
             }
             else
             {
-                difficulty = 0;
+                difficulty = GetNextDifficultyFromPrevTimestamp(
+                    secondLastBlock?.Timestamp,
+                    lastBlock.Timestamp,
+                    lastBlock.Difficulty);
             }
 
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -165,7 +165,7 @@ namespace Libplanet.Blockchain.Policies
 
             if (!blockToAppend.PreviousHash.Equals(prevHash))
             {
-                if (prevHash == null)
+                if (prevHash is null)
                 {
                     return new InvalidBlockPreviousHashException(
                         "the genesis block must have not previous block");
