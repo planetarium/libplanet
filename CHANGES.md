@@ -13,6 +13,11 @@ To be released.
     other known peers and synchronizes the blocks if necessary
     before propagating/receiving pinpointed recent blocks to prevent inefficient
     round-trips.  [[#187], [#190]]
+ -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
+    initial blocks before `Swarm.StartAsync<T>()` being called.
+    [[#204]], [[#206]]
+ -  Added `BlockDownloadState` class to represent a block downloading state.
+    [[#204]], [[#206]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
@@ -40,7 +45,9 @@ To be released.
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
 [#193]: https://github.com/planetarium/libplanet/pull/193
+[#204]: https://github.com/planetarium/libplanet/issues/204
 [#205]: https://github.com/planetarium/libplanet/pull/205
+[#206]: https://github.com/planetarium/libplanet/pull/206
 
 
 Version 0.2.2

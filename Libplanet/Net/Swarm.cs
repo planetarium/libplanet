@@ -478,13 +478,9 @@ namespace Libplanet.Net
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
-                    IAsyncEnumerable<(Peer, long?)> peersWithLength =
-                        DialToExistingPeers(cancellationToken).Select(
-                            pp => (pp.Item1, pp.Item2.TipIndex));
-                    await SyncBehindsBlocksFromPeersAsync(
+                    await PreloadAsync(
                         blockChain,
-                        peersWithLength,
-                        cancellationToken);
+                        cancellationToken: cancellationToken);
                 }
 
                 var tasks = new List<Task>
@@ -545,6 +541,41 @@ namespace Libplanet.Net
                 cancellationToken);
         }
 
+        /// <summary>
+        /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
+        /// </summary>
+        /// <param name="blockChain">
+        /// A <see cref="BlockChain{T}"/> instance to synchronize.
+        /// </param>
+        /// <param name="progress">
+        /// An instance that receives progress updates for block downloads.
+        /// </param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <typeparam name="T">An <see cref="IAction"/> type. It should match
+        /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
+        /// <returns>
+        /// A task without value.
+        /// You only can <c>await</c> until the method is completed.
+        /// </returns>
+        public async Task PreloadAsync<T>(
+            BlockChain<T> blockChain,
+            IProgress<BlockDownloadState> progress = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+            where T : IAction, new()
+        {
+            IAsyncEnumerable<(Peer, long?)> peersWithLength =
+                DialToExistingPeers(cancellationToken).Select(
+                    pp => (pp.Item1, pp.Item2.TipIndex));
+            await SyncBehindsBlocksFromPeersAsync(
+                blockChain,
+                peersWithLength,
+                progress,
+                cancellationToken);
+        }
+
         internal async Task<IEnumerable<HashDigest<SHA256>>>
             GetBlockHashesAsync(
                 Peer peer,
@@ -553,8 +584,6 @@ namespace Libplanet.Net
                 CancellationToken token = default(CancellationToken)
             )
         {
-            CheckStarted();
-
             if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
@@ -589,8 +618,6 @@ namespace Libplanet.Net
             CancellationToken token = default(CancellationToken))
             where T : IAction, new()
         {
-            CheckStarted();
-
             if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
@@ -639,8 +666,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction, new()
         {
-            CheckStarted();
-
             if (!_peers.ContainsKey(peer))
             {
                 throw new PeerNotFoundException(
@@ -771,6 +796,7 @@ namespace Libplanet.Net
         private async Task SyncBehindsBlocksFromPeersAsync<T>(
             BlockChain<T> blockChain,
             IAsyncEnumerable<(Peer, long?)> peersWithLength,
+            IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
             where T : IAction, new()
         {
@@ -789,6 +815,7 @@ namespace Libplanet.Net
                     blockChain,
                     longestPeerWithLength?.Item1,
                     null,
+                    progress,
                     cancellationToken);
                 if (!synced.Id.Equals(blockChain.Id))
                 {
@@ -999,6 +1026,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             Peer peer,
             HashDigest<SHA256>? stop,
+            IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
             where T : IAction, new()
         {
@@ -1051,7 +1079,7 @@ namespace Libplanet.Net
                 try
                 {
                     await FillBlocksAsync(
-                        peer, synced, stop, cancellationToken);
+                        peer, synced, stop, progress, cancellationToken);
                     break;
                 }
                 catch (Exception e)
@@ -1094,6 +1122,7 @@ namespace Libplanet.Net
                     blockChain,
                     peer,
                     oldest.PreviousHash,
+                    null,
                     cancellationToken);
                 _logger.Debug("Filled up. trying to concatenation...");
 
@@ -1124,6 +1153,7 @@ namespace Libplanet.Net
             Peer peer,
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
+            IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
             where T : IAction, new()
         {
@@ -1144,8 +1174,10 @@ namespace Libplanet.Net
                     break;
                 }
 
+                int hashCount = hashes.Count();
+                int received = 0;
                 _logger.Debug(
-                    $"Required hashes (count: {hashes.Count()}). " +
+                    $"Required hashes (count: {hashCount}). " +
                     $"(tip: {blockChain.Tip?.Hash})"
                 );
 
@@ -1157,6 +1189,13 @@ namespace Libplanet.Net
                 {
                     _logger.Debug($"Trying to append block[{block.Hash}]...");
                     blockChain.Append(block);
+                    received++;
+                    progress?.Report(new BlockDownloadState()
+                    {
+                        TotalBlockCount = hashCount,
+                        ReceivedBlockCount = received,
+                        ReceivedBlockHash = block.Hash,
+                    });
                     _logger.Debug($"Block[{block.Hash}] is appended.");
                 });
             }
@@ -1445,8 +1484,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            CheckStarted();
-
             dealer.Connect(address);
 
             _logger.Debug($"Trying to Ping to [{address}]...");
