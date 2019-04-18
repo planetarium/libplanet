@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -66,63 +64,22 @@ namespace Libplanet.Blockchain.Policies
             DateTimeOffset currentTime
         )
         {
-            HashDigest<SHA256>? prevHash = null;
-            DateTimeOffset? prevTimestamp = null;
-            IEnumerable<(long i, DifficultyExpectation)> indexedDifficulties =
-                ExpectDifficulties(blocks).Select(
-                    (exp, i) => { return ((long)i, exp); }
-                ).ToArray();
+            Block<T> secondLastBlock = null;
+            Block<T> lastBlock = null;
 
-            foreach (var (i, exp) in indexedDifficulties)
+            for (var i = 0; i < blocks.Count; i++)
             {
-                Trace.Assert(exp.Block != null);
-                Block<T> block = exp.Block;
+                Block<T> block = blocks[i];
+                InvalidBlockException exception = ValidateBlockToAppend(
+                    i, secondLastBlock, lastBlock, block);
 
-                if (i != block.Index)
+                if (!(exception is null))
                 {
-                    return new InvalidBlockIndexException(
-                        $"the expected block index is {i}, but its index is" +
-                        $" {block.Index}'"
-                    );
+                    return exception;
                 }
 
-                if (block.Difficulty < exp.Difficulty)
-                {
-                    return new InvalidBlockDifficultyException(
-                        $"the expected difficulty of the block #{i} " +
-                        $"is {exp.Difficulty}, but its difficulty is " +
-                        $"{block.Difficulty}'"
-                    );
-                }
-
-                if (block.PreviousHash != prevHash)
-                {
-                    if (prevHash == null)
-                    {
-                        return new InvalidBlockPreviousHashException(
-                            "the genesis block must have not previous block"
-                        );
-                    }
-
-                    return new InvalidBlockPreviousHashException(
-                        $"the block #{i} is not continuous from the " +
-                        $"block #{i - 1}; while previous block's hash is " +
-                        $"{prevHash}, the block #{i}'s pointer to " +
-                        "the previous hash refers to " +
-                        (block.PreviousHash?.ToString() ?? "nothing")
-                    );
-                }
-
-                if (block.Timestamp < prevTimestamp)
-                {
-                    return new InvalidBlockTimestampException(
-                        $"the block #{i}'s timestamp ({block.Timestamp}) is " +
-                        $"earlier than the block #{i - 1}'s ({prevTimestamp})"
-                    );
-                }
-
-                prevHash = block.Hash;
-                prevTimestamp = block.Timestamp;
+                secondLastBlock = lastBlock;
+                lastBlock = block;
             }
 
             return null;
@@ -134,11 +91,60 @@ namespace Libplanet.Blockchain.Policies
             Block<T> blockToAppend)
         {
             int blockCount = blocks.Count;
-            Block<T> lastBlock =
-                blockCount > 0 ? blocks[blockCount - 1] : null;
+            Block<T> secondLastBlock = blockCount >= 2
+                ? blocks[blockCount - 2]
+                : null;
+            Block<T> lastBlock = blockCount >= 1
+                ? blocks[blockCount - 1]
+                : null;
 
+            return ValidateBlockToAppend(
+                blocks.Count,
+                secondLastBlock,
+                lastBlock,
+                blockToAppend);
+        }
+
+        /// <inheritdoc />
+        public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
+        {
+            int blockCount = blocks.Count;
+
+            if (blockCount <= 1)
+            {
+                return blockCount;
+            }
+
+            Block<T> prevPrevBlock = blocks[blockCount - 2];
+            Block<T> prevBlock = blocks[blockCount - 1];
+
+            return GetNextDifficultyFromPrevTimestamp(
+                prevPrevBlock.Timestamp,
+                prevBlock.Timestamp,
+                prevBlock.Difficulty);
+        }
+
+        private InvalidBlockException ValidateBlockToAppend(
+            int blockCount,
+            Block<T> secondLastBlock,
+            Block<T> lastBlock,
+            Block<T> blockToAppend)
+        {
             int index = blockCount;
-            int difficulty = GetNextBlockDifficulty(blocks);
+            int difficulty = 0;
+
+            if (lastBlock is Block<T> block)
+            {
+                difficulty = GetNextDifficultyFromPrevTimestamp(
+                    secondLastBlock?.Timestamp,
+                    block.Timestamp,
+                    block.Difficulty);
+            }
+            else
+            {
+                difficulty = 0;
+            }
+
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
@@ -184,71 +190,6 @@ namespace Libplanet.Blockchain.Policies
             return null;
         }
 
-        /// <inheritdoc />
-        public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
-        {
-            int blockCount = blocks.Count;
-
-            if (blockCount <= 1)
-            {
-                return blockCount;
-            }
-
-            Block<T> prevPrevBlock = blocks[blockCount - 2];
-            Block<T> prevBlock = blocks[blockCount - 1];
-
-            return GetNextDifficultyFromPrevTimestamp(
-                prevPrevBlock.Timestamp,
-                prevBlock.Timestamp,
-                prevBlock.Difficulty);
-        }
-
-        private IEnumerable<DifficultyExpectation> ExpectDifficulties(
-            IEnumerable<Block<T>> blocks, bool yieldNext = false)
-        {
-            DateTimeOffset? prevTimestamp = null;
-            DateTimeOffset? prevPrevTimestamp = null;
-
-            if (yieldNext)
-            {
-                blocks = blocks.Append(null);
-            }
-
-            bool genesis = true;
-            int difficulty = 1;
-            prevTimestamp = blocks.FirstOrDefault()?.Timestamp;
-
-            foreach (Block<T> block in blocks)
-            {
-                if (genesis)
-                {
-                    // genesis block's difficulty is 0
-                    yield return new DifficultyExpectation
-                    {
-                        Difficulty = 0,
-                        Block = block,
-                    };
-                    genesis = false;
-                    continue;
-                }
-
-                difficulty = GetNextDifficultyFromPrevTimestamp(
-                    prevPrevTimestamp, prevTimestamp, difficulty);
-
-                yield return new DifficultyExpectation
-                {
-                    Difficulty = difficulty,
-                    Block = block,
-                };
-
-                if (block != null)
-                {
-                    prevPrevTimestamp = prevTimestamp;
-                    prevTimestamp = block.Timestamp;
-                }
-            }
-        }
-
         private int GetNextDifficultyFromPrevTimestamp(
             DateTimeOffset? prevPrevTimestamp,
             DateTimeOffset? prevTimestamp,
@@ -258,13 +199,6 @@ namespace Libplanet.Blockchain.Policies
             return Math.Max(
                 needMore ? prevDifficulty + 1 : prevDifficulty - 1,
                 1);
-        }
-
-        private struct DifficultyExpectation
-        {
-            internal Block<T> Block;
-
-            internal int Difficulty;
         }
     }
 }
