@@ -70,7 +70,7 @@ namespace Libplanet.Blockchain.Policies
             for (var i = 0; i < blocks.Count; i++)
             {
                 Block<T> block = blocks[i];
-                InvalidBlockException exception = ValidateBlockToAppend(
+                InvalidBlockException exception = ValidateNextBlock(
                     i, secondLastBlock, lastBlock, block);
 
                 if (!(exception is null))
@@ -86,9 +86,9 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc/>
-        public InvalidBlockException ValidateBlockToAppend(
+        public InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks,
-            Block<T> blockToAppend)
+            Block<T> nextBlock)
         {
             int blockCount = blocks.Count;
             Block<T> secondLastBlock = blockCount >= 2
@@ -98,11 +98,11 @@ namespace Libplanet.Blockchain.Policies
                 ? blocks[blockCount - 1]
                 : null;
 
-            return ValidateBlockToAppend(
+            return ValidateNextBlock(
                 blocks.Count,
                 secondLastBlock,
                 lastBlock,
-                blockToAppend);
+                nextBlock);
         }
 
         /// <inheritdoc />
@@ -124,7 +124,7 @@ namespace Libplanet.Blockchain.Policies
                 prevBlock.Difficulty);
         }
 
-        private InvalidBlockException ValidateBlockToAppend(
+        private InvalidBlockException ValidateNextBlock(
             int blockCount,
             Block<T> secondLastBlock,
             Block<T> lastBlock,

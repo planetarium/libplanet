@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void ValidateBlockToAppend()
+        public void ValidateNextBlock()
         {
             _blockChain.Append(_genesis);
 
@@ -124,22 +124,22 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _genesis.Hash,
                 _genesis.Timestamp.AddDays(1),
                 _emptyTransaction);
-            _policy.ValidateBlockToAppend(_blockChain, validNextBlock);
+            _policy.ValidateNextBlock(_blockChain, validNextBlock);
             _blockChain.Append(validNextBlock);
         }
 
         [Fact]
-        public void ValidateBlockToAppendGenesis()
+        public void ValidateNextBlockGenesis()
         {
             var policy = _blockChain.Policy;
 
             var validGenesis = TestUtils.MineGenesis<DumbAction>();
             Assert.Null(
-                policy.ValidateBlockToAppend(_blockChain, validGenesis));
+                policy.ValidateNextBlock(_blockChain, validGenesis));
 
             var invalidIndexGenesis = TestUtils.MineNext(validGenesis);
             Assert.IsType<InvalidBlockIndexException>(
-                policy.ValidateBlockToAppend(_blockChain, invalidIndexGenesis));
+                policy.ValidateNextBlock(_blockChain, invalidIndexGenesis));
 
             var invalidPreviousHashGenesis = new Block<DumbAction>(
                  0,
@@ -150,13 +150,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                  _genesis.Timestamp,
                  _emptyTransaction);
             Assert.IsType<InvalidBlockPreviousHashException>(
-                policy.ValidateBlockToAppend(
+                policy.ValidateNextBlock(
                     _blockChain,
                     invalidPreviousHashGenesis));
         }
 
         [Fact]
-        public void ValidateBlockToAppendInvalidIndex()
+        public void ValidateNextBlockInvalidIndex()
         {
             _blockChain.Append(_genesis);
             _blockChain.Append(_validNext);
@@ -169,11 +169,11 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
             Assert.IsType<InvalidBlockIndexException>(
-                _policy.ValidateBlockToAppend(_blockChain, invalidIndexBlock));
+                _policy.ValidateNextBlock(_blockChain, invalidIndexBlock));
         }
 
         [Fact]
-        public void ValidateBlockToAppendInvalidDifficulty()
+        public void ValidateNextBlockInvalidDifficulty()
         {
             _blockChain.Append(_genesis);
             _blockChain.Append(_validNext);
@@ -186,13 +186,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
             Assert.IsType<InvalidBlockDifficultyException>(
-                _policy.ValidateBlockToAppend(
+                _policy.ValidateNextBlock(
                     _blockChain,
                     invalidDifficultyBlock));
         }
 
         [Fact]
-        public void ValidateBlockToAppendInvalidPreviousHash()
+        public void ValidateNextBlockInvalidPreviousHash()
         {
             _blockChain.Append(_genesis);
             _blockChain.Append(_validNext);
@@ -205,13 +205,13 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
             Assert.IsType<InvalidBlockPreviousHashException>(
-                _policy.ValidateBlockToAppend(
+                _policy.ValidateNextBlock(
                     _blockChain,
                     invalidPreviousHashBlock));
         }
 
         [Fact]
-        public void ValidateBlockToAppendInvalidTimestamp()
+        public void ValidateNextBlockInvalidTimestamp()
         {
             _blockChain.Append(_genesis);
             _blockChain.Append(_validNext);
@@ -224,7 +224,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
                 _emptyTransaction);
             Assert.IsType<InvalidBlockTimestampException>(
-                _policy.ValidateBlockToAppend(
+                _policy.ValidateNextBlock(
                     _blockChain,
                     invalidPreviousTimestamp));
         }

@@ -40,7 +40,7 @@ To be released.
  -  `IBlockPolicy<T>.ValidateBlocks()` and
     `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
- -  Added `ValidateBlockToAppend(IReadOnlyList<Block<T>>, Block<T>)` to
+ -  Added `ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)` to
     `IBlockPolicy<T>`.  [[#210]]
  -  Instead of validating the entire blocks, `BlockChain<T>.Append()` became
     to validate only the next block to be appended.  [[#210]]
