@@ -2289,6 +2289,51 @@ references:
   commentId: N:Libplanet.Net
   fullName: Libplanet.Net
   nameWithType: Libplanet.Net
+- uid: Libplanet.Net.BlockDownloadState
+  name: BlockDownloadState
+  href: api/Libplanet.Net.BlockDownloadState.html
+  commentId: T:Libplanet.Net.BlockDownloadState
+  fullName: Libplanet.Net.BlockDownloadState
+  nameWithType: BlockDownloadState
+- uid: Libplanet.Net.BlockDownloadState.ReceivedBlockCount
+  name: ReceivedBlockCount
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_ReceivedBlockCount
+  commentId: P:Libplanet.Net.BlockDownloadState.ReceivedBlockCount
+  fullName: Libplanet.Net.BlockDownloadState.ReceivedBlockCount
+  nameWithType: BlockDownloadState.ReceivedBlockCount
+- uid: Libplanet.Net.BlockDownloadState.ReceivedBlockCount*
+  name: ReceivedBlockCount
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_ReceivedBlockCount_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.ReceivedBlockCount
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.ReceivedBlockCount
+  nameWithType: BlockDownloadState.ReceivedBlockCount
+- uid: Libplanet.Net.BlockDownloadState.ReceivedBlockHash
+  name: ReceivedBlockHash
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_ReceivedBlockHash
+  commentId: P:Libplanet.Net.BlockDownloadState.ReceivedBlockHash
+  fullName: Libplanet.Net.BlockDownloadState.ReceivedBlockHash
+  nameWithType: BlockDownloadState.ReceivedBlockHash
+- uid: Libplanet.Net.BlockDownloadState.ReceivedBlockHash*
+  name: ReceivedBlockHash
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_ReceivedBlockHash_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.ReceivedBlockHash
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.ReceivedBlockHash
+  nameWithType: BlockDownloadState.ReceivedBlockHash
+- uid: Libplanet.Net.BlockDownloadState.TotalBlockCount
+  name: TotalBlockCount
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_TotalBlockCount
+  commentId: P:Libplanet.Net.BlockDownloadState.TotalBlockCount
+  fullName: Libplanet.Net.BlockDownloadState.TotalBlockCount
+  nameWithType: BlockDownloadState.TotalBlockCount
+- uid: Libplanet.Net.BlockDownloadState.TotalBlockCount*
+  name: TotalBlockCount
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_TotalBlockCount_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.TotalBlockCount
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.TotalBlockCount
+  nameWithType: BlockDownloadState.TotalBlockCount
 - uid: Libplanet.Net.DifferentAppProtocolVersionException
   name: DifferentAppProtocolVersionException
   href: api/Libplanet.Net.DifferentAppProtocolVersionException.html
@@ -3110,6 +3155,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.LastSeenTimestamps
   nameWithType: Swarm.LastSeenTimestamps
+- uid: Libplanet.Net.Swarm.PreloadAsync*
+  name: PreloadAsync
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_PreloadAsync_
+  commentId: Overload:Libplanet.Net.Swarm.PreloadAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm.PreloadAsync
+  nameWithType: Swarm.PreloadAsync
+- uid: Libplanet.Net.Swarm.PreloadAsync``1(Libplanet.Blockchain.BlockChain{``0},System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
+  name: PreloadAsync<T>(BlockChain<T>, IProgress<BlockDownloadState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_PreloadAsync__1_Libplanet_Blockchain_BlockChain___0__System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.PreloadAsync``1(Libplanet.Blockchain.BlockChain{``0},System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(Of T)(BlockChain(Of T), IProgress(Of BlockDownloadState), CancellationToken)
+  fullName: Libplanet.Net.Swarm.PreloadAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.IProgress<Libplanet.Net.BlockDownloadState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.PreloadAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.IProgress(Of Libplanet.Net.BlockDownloadState), System.Threading.CancellationToken)
+  nameWithType: Swarm.PreloadAsync<T>(BlockChain<T>, IProgress<BlockDownloadState>, CancellationToken)
+  nameWithType.vb: Swarm.PreloadAsync(Of T)(BlockChain(Of T), IProgress(Of BlockDownloadState), CancellationToken)
 - uid: Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)
   name: Remove(Peer)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Remove_Libplanet_Net_Peer_

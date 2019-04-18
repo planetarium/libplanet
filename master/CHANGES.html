@@ -72,6 +72,11 @@ events when a different version of a peer is discovered.  [<a href="https://gith
 other known peers and synchronizes the blocks if necessary
 before propagating/receiving pinpointed recent blocks to prevent inefficient
 round-trips.  [<a href="https://github.com/planetarium/libplanet/issues/187">#187</a>, <a href="https://github.com/planetarium/libplanet/pull/190">#190</a>]</li>
+<li>Added <code>Swarm.PreloadAsync()</code> method to explicitly and preemptively download
+initial blocks before <code>Swarm.StartAsync&lt;T&gt;()</code> being called.
+[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
+<li>Added <code>BlockDownloadState</code> class to represent a block downloading state.
+[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
 <li>Improved overall read throughput of <code>BlockChain&lt;T&gt;</code> while blocks are being
 mined by <code>BlockChain&lt;T&gt;.MineBlock()</code>.</li>
 <li>Fixed a bug that <code>TurnClientException</code> had been thrown by Swarm when a STUN
@@ -321,7 +326,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/b84b302bf103a61248c661c238b12c04360b8117/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/8b4f1fec49cb3d2b8c366a90d1359d5878557f83/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
