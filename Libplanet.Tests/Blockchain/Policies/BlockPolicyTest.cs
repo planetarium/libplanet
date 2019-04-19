@@ -20,8 +20,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         private readonly ITestOutputHelper _output;
 
-        private FileStoreFixture _fx;
-        private BlockChain<DumbAction> _blockChain;
+        private List<Block<DumbAction>> _blocks;
         private IBlockPolicy<DumbAction> _policy;
         private List<Transaction<DumbAction>> _emptyTransaction;
         private Block<DumbAction> _genesis;
@@ -30,12 +29,8 @@ namespace Libplanet.Tests.Blockchain.Policies
         public BlockPolicyTest(ITestOutputHelper output)
         {
             _output = output;
-            _fx = new FileStoreFixture();
-            _blockChain = new BlockChain<DumbAction>(
-                new BlockPolicy<DumbAction>(),
-                _fx.Store
-            );
-            _policy = _blockChain.Policy;
+            _blocks = new List<Block<DumbAction>>();
+            _policy = new BlockPolicy<DumbAction>();
             _emptyTransaction = new List<Transaction<DumbAction>>();
             _genesis = TestUtils.MineGenesis<DumbAction>();
             _validNext = Block<DumbAction>.Mine(
@@ -115,7 +110,8 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateNextBlock()
         {
-            _blockChain.Append(_genesis);
+            _policy.ValidateNextBlock(_blocks, _genesis);
+            _blocks.Add(_genesis);
 
             var validNextBlock = Block<DumbAction>.Mine(
                 1,
@@ -124,22 +120,19 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _genesis.Hash,
                 _genesis.Timestamp.AddDays(1),
                 _emptyTransaction);
-            _policy.ValidateNextBlock(_blockChain, validNextBlock);
-            _blockChain.Append(validNextBlock);
+            _policy.ValidateNextBlock(_blocks, validNextBlock);
         }
 
         [Fact]
         public void ValidateNextBlockGenesis()
         {
-            var policy = _blockChain.Policy;
-
             var validGenesis = TestUtils.MineGenesis<DumbAction>();
             Assert.Null(
-                policy.ValidateNextBlock(_blockChain, validGenesis));
+                _policy.ValidateNextBlock(_blocks, validGenesis));
 
             var invalidIndexGenesis = TestUtils.MineNext(validGenesis);
             Assert.IsType<InvalidBlockIndexException>(
-                policy.ValidateNextBlock(_blockChain, invalidIndexGenesis));
+                _policy.ValidateNextBlock(_blocks, invalidIndexGenesis));
 
             var invalidPreviousHashGenesis = new Block<DumbAction>(
                  0,
@@ -150,16 +143,16 @@ namespace Libplanet.Tests.Blockchain.Policies
                  _genesis.Timestamp,
                  _emptyTransaction);
             Assert.IsType<InvalidBlockPreviousHashException>(
-                policy.ValidateNextBlock(
-                    _blockChain,
+                _policy.ValidateNextBlock(
+                    _blocks,
                     invalidPreviousHashGenesis));
         }
 
         [Fact]
         public void ValidateNextBlockInvalidIndex()
         {
-            _blockChain.Append(_genesis);
-            _blockChain.Append(_validNext);
+            _blocks.Add(_genesis);
+            _blocks.Add(_validNext);
 
             var invalidIndexBlock = Block<DumbAction>.Mine(
                 1,
@@ -169,14 +162,14 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _validNext.Timestamp.AddSeconds(1),
                 _emptyTransaction);
             Assert.IsType<InvalidBlockIndexException>(
-                _policy.ValidateNextBlock(_blockChain, invalidIndexBlock));
+                _policy.ValidateNextBlock(_blocks, invalidIndexBlock));
         }
 
         [Fact]
         public void ValidateNextBlockInvalidDifficulty()
         {
-            _blockChain.Append(_genesis);
-            _blockChain.Append(_validNext);
+            _blocks.Add(_genesis);
+            _blocks.Add(_validNext);
 
             var invalidDifficultyBlock = Block<DumbAction>.Mine(
                 2,
@@ -187,15 +180,15 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _emptyTransaction);
             Assert.IsType<InvalidBlockDifficultyException>(
                 _policy.ValidateNextBlock(
-                    _blockChain,
+                    _blocks,
                     invalidDifficultyBlock));
         }
 
         [Fact]
         public void ValidateNextBlockInvalidPreviousHash()
         {
-            _blockChain.Append(_genesis);
-            _blockChain.Append(_validNext);
+            _blocks.Add(_genesis);
+            _blocks.Add(_validNext);
 
             var invalidPreviousHashBlock = Block<DumbAction>.Mine(
                 2,
@@ -206,15 +199,15 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _emptyTransaction);
             Assert.IsType<InvalidBlockPreviousHashException>(
                 _policy.ValidateNextBlock(
-                    _blockChain,
+                    _blocks,
                     invalidPreviousHashBlock));
         }
 
         [Fact]
         public void ValidateNextBlockInvalidTimestamp()
         {
-            _blockChain.Append(_genesis);
-            _blockChain.Append(_validNext);
+            _blocks.Add(_genesis);
+            _blocks.Add(_validNext);
 
             var invalidPreviousTimestamp = Block<DumbAction>.Mine(
                 2,
@@ -225,7 +218,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 _emptyTransaction);
             Assert.IsType<InvalidBlockTimestampException>(
                 _policy.ValidateNextBlock(
-                    _blockChain,
+                    _blocks,
                     invalidPreviousTimestamp));
         }
 
