@@ -64,15 +64,7 @@ namespace Libplanet.Blockchain.Policies
             Block<T> nextBlock)
         {
             int index = blocks.Count;
-            int difficulty = 0;
-
-            if (index >= 2)
-            {
-                difficulty = GetNextDifficultyFromPrevTimestamp(
-                    blocks[index - 2].Timestamp,
-                    blocks[index - 1].Timestamp,
-                    blocks[index - 1].Difficulty);
-            }
+            int difficulty = index < 2 ? index : GetNextBlockDifficulty(blocks);
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -123,28 +115,19 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc />
         public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
-            int blockCount = blocks.Count;
+            int index = blocks.Count;
 
-            if (blockCount <= 1)
+            if (index <= 1)
             {
-                return blockCount;
+                return index;
             }
 
-            Block<T> prevPrevBlock = blocks[blockCount - 2];
-            Block<T> prevBlock = blocks[blockCount - 1];
+            DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
+            DateTimeOffset prevTimestamp = blocks[index - 1].Timestamp;
+            int prevDifficulty = blocks[index - 1].Difficulty;
 
-            return GetNextDifficultyFromPrevTimestamp(
-                prevPrevBlock.Timestamp,
-                prevBlock.Timestamp,
-                prevBlock.Difficulty);
-        }
-
-        private int GetNextDifficultyFromPrevTimestamp(
-            DateTimeOffset? prevPrevTimestamp,
-            DateTimeOffset? prevTimestamp,
-            int prevDifficulty)
-        {
             bool needMore = prevTimestamp - prevPrevTimestamp < BlockInterval;
+
             return Math.Max(
                 needMore ? prevDifficulty + 1 : prevDifficulty - 1,
                 1);
