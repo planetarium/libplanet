@@ -37,15 +37,18 @@ To be released.
  -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
  -  `BlockChain<T>.Validate()` became to receive `IReadOnlyList<Block<<T>>`
     instead of `IEnumerable<Block<T>>`.  [[#205]]
- -  `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
+ -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
- -  Added `ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)` to
-    `IBlockPolicy<T>`.  [[#210]]
- -  `IBlockPolicy<T>.ValidateBlocks()` is removed.  [[#210]]
+ -  Added
+    `IBlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)`
+    method.  [[#210]]
+ -  Removed `IBlockPolicy<T>.ValidateBlocks()` method.  [[#210]]
  -  Added `IBlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>,
-    IReadOnlyList<Block<T>>, DateTimeOffset)`.  [[#210]]
- -  Instead of validating the entire blocks, `BlockChain<T>.Append()` became
-    to validate only the next block to be appended.  [[#210]]
+    IReadOnlyList<Block<T>>, DateTimeOffset)` method.  [[#210]]
+ -  `BlockChain<T>[int]` became to throw `ArgumentOutOfRangeException` instead
+    of `IndexOutOfRangeException`.  [[#210]]
+ -  Instead of validating the entire blocks, `BlockChain<T>.Append()` method
+    became to validate only the next block to be appended.  [[#210]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
