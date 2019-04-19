@@ -37,11 +37,13 @@ To be released.
  -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
  -  `BlockChain<T>.Validate()` became to receive `IReadOnlyList<Block<<T>>`
     instead of `IEnumerable<Block<T>>`.  [[#205]]
- -  `IBlockPolicy<T>.ValidateBlocks()` and
-    `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
+ -  `IBlockPolicy<T>.GetNextBlockDifficulty()` became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
  -  Added `ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)` to
     `IBlockPolicy<T>`.  [[#210]]
+ -  `IBlockPolicy<T>.ValidateBlocks()` is removed.  [[#210]]
+ -  Added `IBlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>,
+    IReadOnlyList<Block<T>>, DateTimeOffset)`.  [[#210]]
  -  Instead of validating the entire blocks, `BlockChain<T>.Append()` became
     to validate only the next block to be appended.  [[#210]]
 

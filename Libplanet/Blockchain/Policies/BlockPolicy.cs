@@ -58,33 +58,6 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
-        /// <inheritdoc />
-        public InvalidBlockException ValidateBlocks(
-            IReadOnlyList<Block<T>> blocks,
-            DateTimeOffset currentTime
-        )
-        {
-            Block<T> secondLastBlock = null;
-            Block<T> lastBlock = null;
-
-            for (var i = 0; i < blocks.Count; i++)
-            {
-                Block<T> block = blocks[i];
-                InvalidBlockException exception = ValidateNextBlock(
-                    i, secondLastBlock, lastBlock, block);
-
-                if (!(exception is null))
-                {
-                    return exception;
-                }
-
-                secondLastBlock = lastBlock;
-                lastBlock = block;
-            }
-
-            return null;
-        }
-
         /// <inheritdoc/>
         public InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks,

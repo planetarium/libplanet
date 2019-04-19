@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Xml.Schema;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -356,11 +354,6 @@ namespace Libplanet.Tests.Blockchain
         {
             public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
                 blocks.Any() ? 1 : 0;
-
-            public InvalidBlockException ValidateBlocks(
-                IReadOnlyList<Block<T>> blocks,
-                DateTimeOffset currentTime
-            ) => null;
 
             public InvalidBlockException ValidateNextBlock(
                 IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) => null;
