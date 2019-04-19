@@ -218,7 +218,7 @@ namespace Libplanet.Blockchain
                     ).Select(pair => pair.Key)
                 );
 
-                // Already gethered addresses.
+                // Already gathered addresses.
                 coveredAddresses.UnionWith(states.Keys);
 
                 if (requestedAddressSet.SetEquals(coveredAddresses))
