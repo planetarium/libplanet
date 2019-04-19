@@ -245,8 +245,6 @@ namespace Libplanet.Blockchain
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
                 Policy.ValidateNextBlock(this, block);
 
-                Enumerable.Append(this, block);
-
                 _rwlock.EnterWriteLock();
                 try
                 {
