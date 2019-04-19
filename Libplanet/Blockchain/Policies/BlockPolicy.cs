@@ -63,19 +63,61 @@ namespace Libplanet.Blockchain.Policies
             IReadOnlyList<Block<T>> blocks,
             Block<T> nextBlock)
         {
-            int blockCount = blocks.Count;
-            Block<T> secondLastBlock = blockCount >= 2
-                ? blocks[blockCount - 2]
-                : null;
-            Block<T> lastBlock = blockCount >= 1
-                ? blocks[blockCount - 1]
-                : null;
+            int index = blocks.Count;
+            int difficulty = 0;
 
-            return ValidateNextBlock(
-                blocks.Count,
-                secondLastBlock,
-                lastBlock,
-                nextBlock);
+            if (index >= 2)
+            {
+                difficulty = GetNextDifficultyFromPrevTimestamp(
+                    blocks[index - 2].Timestamp,
+                    blocks[index - 1].Timestamp,
+                    blocks[index - 1].Difficulty);
+            }
+
+            Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
+            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
+            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+
+            if (nextBlock.Index != index)
+            {
+                return new InvalidBlockIndexException(
+                    $"the expected block index is {index}, but its index" +
+                    $" is {nextBlock.Index}'");
+            }
+
+            if (nextBlock.Difficulty < difficulty)
+            {
+                return new InvalidBlockDifficultyException(
+                    $"the expected difficulty of the block #{index} " +
+                    $"is {difficulty}, but its difficulty is " +
+                    $"{nextBlock.Difficulty}'");
+            }
+
+            if (!nextBlock.PreviousHash.Equals(prevHash))
+            {
+                if (prevHash is null)
+                {
+                    return new InvalidBlockPreviousHashException(
+                        "the genesis block must have not previous block");
+                }
+
+                return new InvalidBlockPreviousHashException(
+                    $"the block #{index} is not continuous from the " +
+                    $"block #{index - 1}; while previous block's hash is " +
+                    $"{prevHash}, the block #{index}'s pointer to " +
+                    "the previous hash refers to " +
+                    (nextBlock.PreviousHash?.ToString() ?? "nothing"));
+            }
+
+            if (nextBlock.Timestamp < prevTimestamp)
+            {
+                return new InvalidBlockTimestampException(
+                    $"the block #{index}'s timestamp " +
+                    $"({nextBlock.Timestamp}) is earlier than" +
+                    $" the block #{index - 1}'s ({prevTimestamp})");
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
@@ -95,72 +137,6 @@ namespace Libplanet.Blockchain.Policies
                 prevPrevBlock.Timestamp,
                 prevBlock.Timestamp,
                 prevBlock.Difficulty);
-        }
-
-        private InvalidBlockException ValidateNextBlock(
-            int blockCount,
-            Block<T> secondLastBlock,
-            Block<T> lastBlock,
-            Block<T> blockToAppend)
-        {
-            int index = blockCount;
-            int difficulty = 0;
-
-            if (lastBlock is null)
-            {
-                difficulty = 0;
-            }
-            else
-            {
-                difficulty = GetNextDifficultyFromPrevTimestamp(
-                    secondLastBlock?.Timestamp,
-                    lastBlock.Timestamp,
-                    lastBlock.Difficulty);
-            }
-
-            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
-            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
-
-            if (blockToAppend.Index != index)
-            {
-                return new InvalidBlockIndexException(
-                    $"the expected block index is {index}, but its index" +
-                    $" is {blockToAppend.Index}'");
-            }
-
-            if (blockToAppend.Difficulty < difficulty)
-            {
-                return new InvalidBlockDifficultyException(
-                    $"the expected difficulty of the block #{index} " +
-                    $"is {difficulty}, but its difficulty is " +
-                    $"{blockToAppend.Difficulty}'");
-            }
-
-            if (!blockToAppend.PreviousHash.Equals(prevHash))
-            {
-                if (prevHash is null)
-                {
-                    return new InvalidBlockPreviousHashException(
-                        "the genesis block must have not previous block");
-                }
-
-                return new InvalidBlockPreviousHashException(
-                    $"the block #{index} is not continuous from the " +
-                    $"block #{index - 1}; while previous block's hash is " +
-                    $"{prevHash}, the block #{index}'s pointer to " +
-                    "the previous hash refers to " +
-                    (blockToAppend.PreviousHash?.ToString() ?? "nothing"));
-            }
-
-            if (blockToAppend.Timestamp < prevTimestamp)
-            {
-                return new InvalidBlockTimestampException(
-                    $"the block #{index}'s timestamp " +
-                    $"({blockToAppend.Timestamp}) is earlier than" +
-                    $" the block #{index - 1}'s ({prevTimestamp})");
-            }
-
-            return null;
         }
 
         private int GetNextDifficultyFromPrevTimestamp(
