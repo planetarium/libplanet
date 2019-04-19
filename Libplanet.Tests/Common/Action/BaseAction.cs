@@ -9,6 +9,12 @@ namespace Libplanet.Tests.Common.Action
 
         public abstract IAccountStateDelta Execute(IActionContext context);
 
+        public virtual void Render(
+            IActionContext context,
+            IAccountStateDelta nextStates)
+        {
+        }
+
         public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
     }
 }

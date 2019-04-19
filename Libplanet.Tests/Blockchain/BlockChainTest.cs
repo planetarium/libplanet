@@ -156,11 +156,91 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanAppendBlock()
+        public void Append()
         {
+            DumbAction.RenderRecords.Value = ImmutableList<
+                (DumbAction, IActionContext, IAccountStateDelta)
+            >.Empty;
+
+            Address[] addresses = Enumerable.Repeat(0, 4)
+                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .ToArray();
+
             Assert.Empty(_blockChain.Blocks);
-            _blockChain.Append(_fx.Block1);
-            Assert.Contains(_fx.Block1, _blockChain);
+            try
+            {
+                Block<DumbAction> b0 = TestUtils.MineGenesis<DumbAction>();
+                _blockChain.Append(b0);
+                Assert.Contains(b0, _blockChain);
+                Assert.Equal(new[] { b0 }, _blockChain.ToArray());
+                Assert.Empty(DumbAction.RenderRecords.Value);
+
+                Transaction<DumbAction>[] txs =
+                {
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[0], "foo"),
+                        new DumbAction(addresses[1], "bar"),
+                    }),
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[2], "baz"),
+                        new DumbAction(addresses[3], "qux"),
+                    }),
+                };
+                Block<DumbAction> b1 = TestUtils.MineNext(b0, txs);
+                _blockChain.Append(b1);
+                Assert.Contains(b1, _blockChain);
+                Assert.Equal(new[] { b0, b1 }, _blockChain.ToArray());
+                var renders = DumbAction.RenderRecords.Value;
+                Assert.Equal(4, renders.Count);
+                Assert.Equal("foo", renders[0].Item1.Item);
+                Assert.Equal(1, renders[0].Item2.BlockIndex);
+                Assert.Equal(
+                    new string[] { null, null, null, null },
+                    addresses.Select(renders[0].Item2.PreviousStates.GetState)
+                );
+                Assert.Equal(
+                    new[] { "foo", null, null, null },
+                    addresses.Select(renders[0].Item3.GetState)
+                );
+                Assert.Equal("bar", renders[1].Item1.Item);
+                Assert.Equal(1, renders[1].Item2.BlockIndex);
+                Assert.Equal(
+                    addresses.Select(renders[0].Item3.GetState),
+                    addresses.Select(renders[1].Item2.PreviousStates.GetState)
+                );
+                Assert.Equal(
+                    new[] { "foo", "bar", null, null },
+                    addresses.Select(renders[1].Item3.GetState)
+                );
+                Assert.Equal("baz", renders[2].Item1.Item);
+                Assert.Equal(1, renders[2].Item2.BlockIndex);
+                Assert.Equal(
+                    addresses.Select(renders[1].Item3.GetState),
+                    addresses.Select(renders[2].Item2.PreviousStates.GetState)
+                );
+                Assert.Equal(
+                    new[] { "foo", "bar", "baz", null },
+                    addresses.Select(renders[2].Item3.GetState)
+                );
+                Assert.Equal("qux", renders[3].Item1.Item);
+                Assert.Equal(1, renders[3].Item2.BlockIndex);
+                Assert.Equal(
+                    addresses.Select(renders[2].Item3.GetState),
+                    addresses.Select(renders[3].Item2.PreviousStates.GetState)
+                );
+                Assert.Equal(
+                    new[] { "foo", "bar", "baz", "qux" },
+                    addresses.Select(renders[3].Item3.GetState)
+                );
+            }
+            finally
+            {
+                DumbAction.RenderRecords.Value = ImmutableList<
+                    (DumbAction, IActionContext, IAccountStateDelta)
+                >.Empty;
+            }
         }
 
         [Fact]
@@ -407,6 +487,12 @@ namespace Libplanet.Tests.Blockchain
                     .SetState(SignerKey, context.Signer.ToHex())
                     .SetState(MinerKey, context.Miner.ToHex())
                     .SetState(BlockIndexKey, context.BlockIndex);
+            }
+
+            public void Render(
+                IActionContext context,
+                IAccountStateDelta nextStates)
+            {
             }
         }
     }

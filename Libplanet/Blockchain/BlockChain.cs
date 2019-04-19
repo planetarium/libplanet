@@ -232,9 +232,24 @@ namespace Libplanet.Blockchain
             return states;
         }
 
+        /// <summary>
+        /// Adds a <paramref name="block"/> to the end of this chain.
+        /// <para>Note that <see cref="IAction.Render"/> methods of
+        /// all <see cref="IAction"/> objects that belong
+        /// to the <paramref name="block"/> are called right after
+        /// the <paramref name="block"/> is confirmed (and thus all states
+        /// reflect changes in the <paramref name="block"/>).</para>
+        /// </summary>
+        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
+        /// to add.</param>
+        /// <param name="currentTime">The current time.</param>
+        /// <exception cref="InvalidBlockException">Thrown when the given
+        /// <paramref name="block"/> is invalid, in itself or according to
+        /// the <see cref="Policy"/>.</exception>
         public void Append(Block<T> block, DateTimeOffset currentTime)
         {
             _rwlock.EnterUpgradeableReadLock();
+            IEnumerable<(T, IActionContext, IAccountStateDelta)> evaledActions;
             try
             {
                 HashDigest<SHA256>? tip =
@@ -255,7 +270,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    EvaluateActions(block);
+                    evaledActions = EvaluateActions(block);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -273,8 +288,26 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+
+            foreach (var (action, ctx, nextStates) in evaledActions)
+            {
+                action.Render(ctx, nextStates);
+            }
         }
 
+        /// <summary>
+        /// Adds a <paramref name="block"/> to the end of this chain.
+        /// <para>Note that <see cref="IAction.Render"/> methods of
+        /// all <see cref="IAction"/> objects that belong
+        /// to the <paramref name="block"/> are called right after
+        /// the <paramref name="block"/> is confirmed (and thus all states
+        /// reflect changes in the <paramref name="block"/>).</para>
+        /// </summary>
+        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
+        /// to add.</param>
+        /// <exception cref="InvalidBlockException">Thrown when the given
+        /// <paramref name="block"/> is invalid, in itself or according to
+        /// the <see cref="Policy"/>.</exception>
         public void Append(Block<T> block) => Append(
             block, DateTimeOffset.UtcNow);
 
@@ -481,10 +514,11 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private void EvaluateActions(Block<T> block)
+        private IEnumerable<(T, IActionContext, IAccountStateDelta)>
+        EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            IAccountStateDelta[] deltas = block.EvaluateActions(address =>
+            var tuples = block.EvaluateActionsPerTx(address =>
             {
                 IImmutableDictionary<Address, object> result =
                     GetStates(new[] { address }, prevHash);
@@ -497,10 +531,12 @@ namespace Libplanet.Blockchain
                     return null;
                 }
             }).ToArray();
-            IAccountStateDelta lastStates = deltas.LastOrDefault();
+            IAccountStateDelta lastStates = tuples.Any()
+                ? tuples[tuples.Length - 1].Item4
+                : null;
 
             ImmutableHashSet<Address> updatedAddresses =
-                deltas.Select(d => d.UpdatedAddresses).Aggregate(
+                tuples.Select(t => t.Item4.UpdatedAddresses).Aggregate(
                     ImmutableHashSet<Address>.Empty,
                     (a, b) => a.Union(b)
                 );
@@ -516,6 +552,8 @@ namespace Libplanet.Blockchain
                 block.Hash,
                 new AddressStateMap(totalDelta)
             );
+
+            return tuples.Select(t => (t.Item2, t.Item3, t.Item4));
         }
     }
 }

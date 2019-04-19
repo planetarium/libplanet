@@ -102,6 +102,39 @@ namespace Libplanet.Action
     ///             nextState);
     ///     }
     ///
+    ///     // Side effects, i.e., any effects on other than states, are
+    ///     // done here.
+    ///     void IAction.Render(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c;
+    ///
+    ///         // You could compare this with a better example of
+    ///         // PolymorphicAction<T> class.
+    ///         switch (Type)
+    ///         {
+    ///             case ActType.CreateCharacter:
+    ///                 c = new Character
+    ///                 {
+    ///                     Address = TargetAddress,
+    ///                     Hp = 0,
+    ///                 };
+    ///                 break;
+    ///
+    ///             case ActType.Attack:
+    ///             case ActType.Heal:
+    ///                 c = Character.GetByAddress(TargetAddress);
+    ///                 break;
+    ///
+    ///             default:
+    ///                 break;
+    ///         }
+    ///
+    ///         c?.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         c?.Draw();
+    ///     }
+    ///
     ///     // Serializes its "bound arguments" so that they are transmitted
     ///     // over network or stored to the persistent storage.
     ///     // It uses .NET's built-in serialization mechanism.
@@ -176,13 +209,48 @@ namespace Libplanet.Action
         /// <remarks>This method should be deterministic:
         /// for structurally (member-wise) equal actions and <see
         /// cref="IActionContext"/>s, the same result should be returned.
+        /// Side effects should be avoided, because an action's
+        /// <see cref="Execute(IActionContext)"/> method can be called more
+        /// than once, the time it's called is difficult to predict.
+        /// <para>For changing in-memory game states or drawing graphics,
+        /// write such code in the <see
+        /// cref="Render(IActionContext, IAccountStateDelta)"/> method instead.
+        /// The <see cref="Render(IActionContext, IAccountStateDelta)"/> method
+        /// is guaranteed to be called only once, and only after an action is
+        /// transmitted to other nodes in the network.</para>
         /// <para>For randomness, <em>never</em> use <see cref="System.Random"/>
         /// nor any other PRNGs provided by other than Libplanet.
-        /// Use <see cref="IActionContext.Random"/> instead.</para>
+        /// Use <see cref="IActionContext.Random"/> instead.
+        /// <see cref="IActionContext.Random"/> guarantees the same action
+        /// has the consistent result for every node in the network.</para>
         /// <para>Also do not perform I/O operations such as file system access
-        /// or networking.  These bring an action indeterministic.</para>
+        /// or networking.  These bring an action indeterministic.  You maybe
+        /// fine to log messages for debugging purpose, but equivalent messages
+        /// could be logged multiple times.</para>
         /// </remarks>
         /// <seealso cref="IActionContext"/>
         IAccountStateDelta Execute(IActionContext context);
+
+        /// <summary>
+        /// Does things that should be done right after this action is
+        /// spread to the network or is &#x201c;confirmed&#x201d; (kind of)
+        /// by each peer node.
+        /// <para>Usually, this method updates the in-memory game states
+        /// (if exist), and then sends a signal to the UI thread (usually
+        /// the main thread) so that the graphics on the display is redrawn.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The equivalent context object to
+        /// what <see cref="Execute(IActionContext)"/> method had received.
+        /// That means <see cref="IActionContext.PreviousStates"/> are
+        /// the states right <em>before</em> this action executed.
+        /// For the states after this action executed,
+        /// use the <paramref name="nextStates"/> argument instead.
+        /// </param>
+        /// <param name="nextStates">The states right <em>after</em> this action
+        /// executed, which means it is equivalent to what <see
+        /// cref="Execute(IActionContext)"/> method returned.
+        /// </param>
+        void Render(IActionContext context, IAccountStateDelta nextStates);
     }
 }

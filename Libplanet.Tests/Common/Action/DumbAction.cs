@@ -27,6 +27,12 @@ namespace Libplanet.Tests.Common.Action
             RecordRandom = recordRandom;
         }
 
+        public static AsyncLocal<
+            ImmutableList<(DumbAction, IActionContext, IAccountStateDelta)>
+        > RenderRecords { get; } = new AsyncLocal<
+            ImmutableList<(DumbAction, IActionContext, IAccountStateDelta)>
+        >();
+
         public static AsyncLocal<ImmutableList<(Address, string)>>
             RehearsalRecords { get; } =
                 new AsyncLocal<ImmutableList<(Address, string)>>();
@@ -98,6 +104,15 @@ namespace Libplanet.Tests.Common.Action
             IActionContext context,
             IAccountStateDelta nextStates)
         {
+            if (RenderRecords.Value is null)
+            {
+                RenderRecords.Value = ImmutableList<
+                    (DumbAction, IActionContext, IAccountStateDelta)
+                >.Empty;
+            }
+
+            RenderRecords.Value =
+                RenderRecords.Value.Add((this, context, nextStates));
         }
 
         public void Unrender(

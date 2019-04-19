@@ -6,6 +6,7 @@ Version 0.3.0
 
 To be released.
 
+ -  Added `IAction.Render(IActionContext, IAccountStateDelta)` method.
  -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
  -  `BlockChain<T>.Validate()` method became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
