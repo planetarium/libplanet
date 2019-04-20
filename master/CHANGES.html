@@ -65,6 +65,18 @@
 <h2 id="version-030">Version 0.3.0</h2>
 <p>To be released.</p>
 <ul>
+<li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Validate()</code> method became to receive
+<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li><code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> method became to receive
+<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li>Added
+<code>IBlockPolicy&lt;T&gt;.ValidateNextBlock(IReadOnlyList&lt;Block&lt;T&gt;&gt;, Block&lt;T&gt;)</code>
+method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
+<li>Removed <code>IBlockPolicy&lt;T&gt;.ValidateBlocks()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
+<li>Added <code>IBlockPolicyExtension.ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
+<li><code>BlockChain&lt;T&gt;[int]</code> became to throw <code>ArgumentOutOfRangeException</code> instead
+of <code>IndexOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Added <code>Swarm.DifferentVersionPeerEncountered</code> event handler that can handle
 events when a different version of a peer is discovered.  [<a href="https://github.com/planetarium/libplanet/issues/167">#167</a>], [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
 <li>Added <code>Peer.AppProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
@@ -93,12 +105,8 @@ and its all implementations.  [<a href="https://github.com/planetarium/libplanet
 given.</li>
 <li>Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
 minutes.</li>
-<li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
-<li><code>BlockChain&lt;T&gt;.Validate()</code> became to receive <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>
-instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
-<li><code>IBlockPolicy&lt;T&gt;.ValidateBlocks()</code> and
-<code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> became to receive
-<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li>Instead of validating the entire blocks, <code>BlockChain&lt;T&gt;.Append()</code> method
+became to validate only the next block to be appended.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
@@ -326,7 +334,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/8b4f1fec49cb3d2b8c366a90d1359d5878557f83/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/fed58580915cf49076c65b56edde9fe045f8d55d/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

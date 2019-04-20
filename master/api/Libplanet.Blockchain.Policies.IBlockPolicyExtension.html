@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class HashDigestExtension
+    <title>Class IBlockPolicyExtension
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class HashDigestExtension
+    <meta name="title" content="Class IBlockPolicyExtension
    | Libplanet ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,19 +68,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.HashDigestExtension">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Policies.IBlockPolicyExtension">
   
   
-  <h1 id="Libplanet_HashDigestExtension" data-uid="Libplanet.HashDigestExtension" class="text-break">Class HashDigestExtension
+  <h1 id="Libplanet_Blockchain_Policies_IBlockPolicyExtension" data-uid="Libplanet.Blockchain.Policies.IBlockPolicyExtension" class="text-break">Class IBlockPolicyExtension
   </h1>
-  <div class="markdown level0 summary"><p>Augments types to have some shortcut methods dealing with
-<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> values.</p>
+  <div class="markdown level0 summary"><p>This extension class enables some convenient methods (sugar for
+the most part) to deal with <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">HashDigestExtension</span></div>
+    <div class="level1"><span class="xref">IBlockPolicyExtension</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -106,35 +106,33 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_HashDigestExtension_syntax">Syntax</h5>
+  <h5 id="Libplanet_Blockchain_Policies_IBlockPolicyExtension_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class HashDigestExtension</code></pre>
+    <pre><code class="lang-csharp hljs">public static class IBlockPolicyExtension</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/fed58580915cf49076c65b56edde9fe045f8d55d/apiSpec/new?filename=Libplanet_HashDigestExtension_ToHashDigest__1_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.HashDigestExtension.ToHashDigest%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/fed58580915cf49076c65b56edde9fe045f8d55d/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks%60%601(Libplanet.Blockchain.Policies.IBlockPolicy%7B%60%600%7D%2CSystem.Collections.Generic.IReadOnlyList%7BLibplanet.Blocks.Block%7B%60%600%7D%7D%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/fed58580915cf49076c65b56edde9fe045f8d55d/Libplanet/HashDigest.cs/#L238">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/fed58580915cf49076c65b56edde9fe045f8d55d/Libplanet/Blockchain/Policies/IBlockPolicyExtension.cs/#L35">View Source</a>
   </span>
-  <a id="Libplanet_HashDigestExtension_ToHashDigest_" data-uid="Libplanet.HashDigestExtension.ToHashDigest*"></a>
-  <h4 id="Libplanet_HashDigestExtension_ToHashDigest__1_System_String_" data-uid="Libplanet.HashDigestExtension.ToHashDigest``1(System.String)">ToHashDigest&lt;T&gt;(String)</h4>
-  <div class="markdown level1 summary"><p>Converts a given hexadecimal representation of a digest into
-a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> object.</p>
-<p>This is a shortcut of
-<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a> method.</p>
-<p>This is an inverse function of
-<a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a> method.</p>
+  <a id="Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset_" data-uid="Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},System.Collections.Generic.IReadOnlyList{Libplanet.Blocks.Block{``0}},System.DateTimeOffset)">ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Checks if <code data-dev-comment-type="paramref" class="paramref">blocks</code> are invalid, and if that
+returns the reason.</p>
+<p>Note that it returns <code>null</code> when blocks are
+<em>valid</em>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static HashDigest&lt;T&gt; ToHashDigest&lt;T&gt;(this string hexDigest)
-    where T : HashAlgorithm</code></pre>
+    <pre><code class="lang-csharp hljs">public static InvalidBlockException ValidateBlocks&lt;T&gt;(this IBlockPolicy&lt;T&gt; policy, IReadOnlyList&lt;Block&lt;T&gt;&gt; blocks, DateTimeOffset currentTime)
+    where T : IAction, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -147,10 +145,25 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> obj
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">hexDigest</span></td>
-        <td><p>A hexadecimal representation of
-a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">policy</span></td>
+        <td><p><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a> to used for
+validation <code data-dev-comment-type="paramref" class="paramref">blocks</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">blocks</span></td>
+        <td><p>Consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s to
+validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td><p>The current time to be used to validate
+of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp">Timestamp</a>s.
+Usually <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset.utcnow#System_DateTimeOffset_UtcNow">UtcNow</a> is used.</p>
 </td>
       </tr>
     </tbody>
@@ -165,8 +178,10 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;T&gt;</td>
-        <td><p>A corresponding <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> value.</p>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></td>
+        <td><p>The reason why the given <code data-dev-comment-type="paramref" class="paramref">blocks</code> are
+<em>invalid</em>, or <code>null</code> if <code data-dev-comment-type="paramref" class="paramref">blocks</code> are
+<em>valid</em>.</p>
 </td>
       </tr>
     </tbody>
@@ -182,41 +197,20 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> which corresponds
-to a digest.</p>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
+to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <code>null</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
-the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>, the hash algorithm
-(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Libplanet_HashDigestExtension_ToHashDigest__1_System_String__seealso">See Also</h5>
+  <h5 id="Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset__seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_FromString_System_String_">FromString(String)</a></div>
-      <div><a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_ToString">ToString()</a></div>
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__">ValidateNextBlock</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;)</div>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
   </div>
 </article>
           </div>
@@ -226,10 +220,10 @@ the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Siz
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/fed58580915cf49076c65b56edde9fe045f8d55d/apiSpec/new?filename=Libplanet_HashDigestExtension.md&amp;value=---%0Auid%3A%20Libplanet.HashDigestExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/fed58580915cf49076c65b56edde9fe045f8d55d/apiSpec/new?filename=Libplanet_Blockchain_Policies_IBlockPolicyExtension.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.IBlockPolicyExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/fed58580915cf49076c65b56edde9fe045f8d55d/Libplanet/HashDigest.cs/#L214" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/fed58580915cf49076c65b56edde9fe045f8d55d/Libplanet/Blockchain/Policies/IBlockPolicyExtension.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
