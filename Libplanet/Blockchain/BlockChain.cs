@@ -243,7 +243,13 @@ namespace Libplanet.Blockchain
                 block.Validate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
-                Policy.ValidateNextBlock(this, block);
+                InvalidBlockException e =
+                    Policy.ValidateNextBlock(this, block);
+
+                if (!(e is null))
+                {
+                    throw e;
+                }
 
                 _rwlock.EnterWriteLock();
                 try

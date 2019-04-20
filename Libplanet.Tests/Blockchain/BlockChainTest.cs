@@ -164,6 +164,17 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void AppendValidatesBlock()
+        {
+            var blockChain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(
+                    new InvalidBlockDifficultyException(string.Empty)),
+                _fx.Store);
+            Assert.Throws<InvalidBlockDifficultyException>(
+                () => blockChain.Append(_fx.Block1));
+        }
+
+        [Fact]
         public void CanFindNextHashes()
         {
             _blockChain.Append(_fx.Block1);
@@ -352,11 +363,19 @@ namespace Libplanet.Tests.Blockchain
         private sealed class NullPolicy<T> : IBlockPolicy<T>
             where T : IAction, new()
         {
+            private readonly InvalidBlockException _exceptionToThrow;
+
+            public NullPolicy(InvalidBlockException exceptionToThrow = null)
+            {
+                _exceptionToThrow = exceptionToThrow;
+            }
+
             public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
                 blocks.Any() ? 1 : 0;
 
             public InvalidBlockException ValidateNextBlock(
-                IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) => null;
+                IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) =>
+                _exceptionToThrow;
         }
 
         private sealed class TestEvaluateAction : IAction
