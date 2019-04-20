@@ -118,6 +118,12 @@ namespace Libplanet.Tests.Action
                 IAccountStateDelta nextStates)
             {
             }
+
+            public void Unrender(
+                IActionContext context,
+                IAccountStateDelta nextStates)
+            {
+            }
         }
     }
 }

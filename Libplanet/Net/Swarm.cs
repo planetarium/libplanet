@@ -1194,7 +1194,15 @@ namespace Libplanet.Net
                 ).ForEachAsync(block =>
                 {
                     _logger.Debug($"Trying to append block[{block.Hash}]...");
-                    blockChain.Append(block);
+
+                    // As actions in this block should be rendered
+                    // after actions in stale blocks are unrendered,
+                    // given the `render: false` option here.
+                    blockChain.Append(
+                        block,
+                        DateTimeOffset.UtcNow,
+                        render: false
+                    );
                     received++;
                     progress?.Report(new BlockDownloadState()
                     {

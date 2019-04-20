@@ -242,58 +242,11 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
-        /// <param name="currentTime">The current time.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
-        public void Append(Block<T> block, DateTimeOffset currentTime)
-        {
-            _rwlock.EnterUpgradeableReadLock();
-            IEnumerable<(T, IActionContext, IAccountStateDelta)> evaledActions;
-            try
-            {
-                HashDigest<SHA256>? tip =
-                    Store.IndexBlockHash(Id.ToString(), -1);
-
-                block.Validate(
-                    currentTime,
-                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
-                InvalidBlockException e =
-                    Policy.ValidateNextBlock(this, block);
-
-                if (!(e is null))
-                {
-                    throw e;
-                }
-
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    Blocks[block.Hash] = block;
-                    evaledActions = EvaluateActions(block);
-
-                    Store.AppendIndex(Id.ToString(), block.Hash);
-                    ISet<TxId> txIds = block.Transactions
-                        .Select(t => t.Id)
-                        .ToImmutableHashSet();
-
-                    Store.UnstageTransactionIds(txIds);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
-            }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
-            }
-
-            foreach (var (action, ctx, nextStates) in evaledActions)
-            {
-                action.Render(ctx, nextStates);
-            }
-        }
+        public void Append(Block<T> block) =>
+            Append(block, DateTimeOffset.UtcNow);
 
         /// <summary>
         /// Adds a <paramref name="block"/> to the end of this chain.
@@ -305,11 +258,12 @@ namespace Libplanet.Blockchain
         /// </summary>
         /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
         /// to add.</param>
+        /// <param name="currentTime">The current time.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
-        public void Append(Block<T> block) => Append(
-            block, DateTimeOffset.UtcNow);
+        public void Append(Block<T> block, DateTimeOffset currentTime) =>
+            Append(block, currentTime, render: true);
 
         public void StageTransactions(ISet<Transaction<T>> txs)
         {
@@ -365,6 +319,62 @@ namespace Libplanet.Blockchain
 
         public Block<T> MineBlock(Address miner) =>
             MineBlock(miner, DateTimeOffset.UtcNow);
+
+        internal void Append(
+            Block<T> block,
+            DateTimeOffset currentTime,
+            bool render
+        )
+        {
+            _rwlock.EnterUpgradeableReadLock();
+            IEnumerable<(T, IActionContext, IAccountStateDelta)> evaledActions;
+            try
+            {
+                HashDigest<SHA256>? tip =
+                    Store.IndexBlockHash(Id.ToString(), -1);
+
+                block.Validate(
+                    currentTime,
+                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
+                InvalidBlockException e =
+                    Policy.ValidateNextBlock(this, block);
+
+                if (!(e is null))
+                {
+                    throw e;
+                }
+
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    Blocks[block.Hash] = block;
+                    evaledActions = EvaluateActions(block);
+
+                    Store.AppendIndex(Id.ToString(), block.Hash);
+                    ISet<TxId> txIds = block.Transactions
+                        .Select(t => t.Id)
+                        .ToImmutableHashSet();
+
+                    Store.UnstageTransactionIds(txIds);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                _rwlock.ExitUpgradeableReadLock();
+            }
+
+            if (render)
+            {
+                foreach (var (action, ctx, nextStates) in evaledActions)
+                {
+                    action.Render(ctx, nextStates);
+                }
+            }
+        }
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
         {
@@ -500,6 +510,30 @@ namespace Libplanet.Blockchain
         // we need to add a synchronization mechanism to handle this correctly.
         internal void Swap(BlockChain<T> other)
         {
+            // Finds the branch point.
+            Block<T> topmostCommon = null;
+            for (long i = Math.Min(other.Tip.Index, Tip.Index); i >= 0; i--)
+            {
+                if (other[i].Equals(this[i]))
+                {
+                    topmostCommon = this[i];
+                    break;
+                }
+            }
+
+            // Unrender stale actions.
+            for (long i = Tip.Index; i > (topmostCommon?.Index ?? -1); i--)
+            {
+                Block<T> b = this[i];
+                var actions = b.EvaluateActionsPerTx(a =>
+                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
+                ).Reverse();
+                foreach (var (_, action, ctx, states) in actions)
+                {
+                    action.Unrender(ctx, states);
+                }
+            }
+
             try
             {
                 _rwlock.EnterWriteLock();
@@ -511,6 +545,19 @@ namespace Libplanet.Blockchain
             finally
             {
                 _rwlock.ExitWriteLock();
+            }
+
+            // Render actions that had been behind.
+            for (long i = topmostCommon.Index + 1; i <= Tip.Index; i++)
+            {
+                Block<T> b = this[i];
+                var actions = b.EvaluateActionsPerTx(a =>
+                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
+                );
+                foreach (var (_, action, ctx, states) in actions)
+                {
+                    action.Render(ctx, states);
+                }
             }
         }
 

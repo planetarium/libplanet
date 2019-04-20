@@ -53,6 +53,14 @@ namespace Libplanet.Action
     ///     {
     ///     }
     ///
+    ///     // Makes Unrender() no-op by default,
+    ///     // but overrideable by subclasses.
+    ///     public virtual void Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///     }
+    ///
     ///     IImmutableDictionary<string, object> IAction.PlainValue =>
     ///         ImmutableDictionary<string, object>.Empty
     ///             .Add("target_address", TargetAddress);
@@ -101,6 +109,14 @@ namespace Libplanet.Action
     ///         c.Draw();
     ///         break;
     ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hide();
+    ///     }
     /// }
     ///
     /// [ActionType("attack")]
@@ -124,6 +140,15 @@ namespace Libplanet.Action
     ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
     ///         c.Draw();
     ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
+    ///     }
     /// }
     ///
     /// [ActionType("heal")]
@@ -145,6 +170,15 @@ namespace Libplanet.Action
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
     ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
+    ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
     ///         c.Draw();
     ///     }
     /// }
@@ -264,5 +298,12 @@ namespace Libplanet.Action
             IAccountStateDelta nextStates
         ) =>
             InnerAction.Render(context, nextStates);
+
+        /// <inheritdoc/>
+        public void Unrender(
+            IActionContext context,
+            IAccountStateDelta nextStates
+        ) =>
+            InnerAction.Unrender(context, nextStates);
     }
 }

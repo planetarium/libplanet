@@ -40,6 +40,12 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
+        public void Unrender(
+            IActionContext context,
+            IAccountStateDelta nextStates)
+        {
+        }
+
         public class SomeException : Exception
         {
             public SomeException(string message)

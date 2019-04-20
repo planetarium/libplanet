@@ -15,6 +15,12 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
+        public virtual void Unrender(
+            IActionContext context,
+            IAccountStateDelta nextStates)
+        {
+        }
+
         public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
     }
 }

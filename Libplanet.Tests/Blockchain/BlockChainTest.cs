@@ -158,9 +158,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void Append()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<
-                (DumbAction, IActionContext, IAccountStateDelta)
-            >.Empty;
+            DumbAction.RenderRecords.Value =
+                ImmutableList<DumbAction.RenderRecord>.Empty;
 
             Address[] addresses = Enumerable.Repeat(0, 4)
                 .Select(_ => new PrivateKey().PublicKey.ToAddress())
@@ -199,52 +198,52 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(new[] { b0, b1 }, _blockChain.ToArray());
                 var renders = DumbAction.RenderRecords.Value;
                 Assert.Equal(4, renders.Count);
-                Assert.Equal("foo", renders[0].Item1.Item);
-                Assert.Equal(1, renders[0].Item2.BlockIndex);
+                Assert.True(renders.All(r => r.Render));
+                Assert.Equal("foo", renders[0].Action.Item);
+                Assert.Equal(1, renders[0].Context.BlockIndex);
                 Assert.Equal(
                     new string[] { null, null, null, null },
-                    addresses.Select(renders[0].Item2.PreviousStates.GetState)
+                    addresses.Select(renders[0].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
                     new[] { "foo", null, null, null },
-                    addresses.Select(renders[0].Item3.GetState)
+                    addresses.Select(renders[0].NextStates.GetState)
                 );
-                Assert.Equal("bar", renders[1].Item1.Item);
-                Assert.Equal(1, renders[1].Item2.BlockIndex);
+                Assert.Equal("bar", renders[1].Action.Item);
+                Assert.Equal(1, renders[1].Context.BlockIndex);
                 Assert.Equal(
-                    addresses.Select(renders[0].Item3.GetState),
-                    addresses.Select(renders[1].Item2.PreviousStates.GetState)
+                    addresses.Select(renders[0].NextStates.GetState),
+                    addresses.Select(renders[1].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
                     new[] { "foo", "bar", null, null },
-                    addresses.Select(renders[1].Item3.GetState)
+                    addresses.Select(renders[1].NextStates.GetState)
                 );
-                Assert.Equal("baz", renders[2].Item1.Item);
-                Assert.Equal(1, renders[2].Item2.BlockIndex);
+                Assert.Equal("baz", renders[2].Action.Item);
+                Assert.Equal(1, renders[2].Context.BlockIndex);
                 Assert.Equal(
-                    addresses.Select(renders[1].Item3.GetState),
-                    addresses.Select(renders[2].Item2.PreviousStates.GetState)
+                    addresses.Select(renders[1].NextStates.GetState),
+                    addresses.Select(renders[2].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
                     new[] { "foo", "bar", "baz", null },
-                    addresses.Select(renders[2].Item3.GetState)
+                    addresses.Select(renders[2].NextStates.GetState)
                 );
-                Assert.Equal("qux", renders[3].Item1.Item);
-                Assert.Equal(1, renders[3].Item2.BlockIndex);
+                Assert.Equal("qux", renders[3].Action.Item);
+                Assert.Equal(1, renders[3].Context.BlockIndex);
                 Assert.Equal(
-                    addresses.Select(renders[2].Item3.GetState),
-                    addresses.Select(renders[3].Item2.PreviousStates.GetState)
+                    addresses.Select(renders[2].NextStates.GetState),
+                    addresses.Select(renders[3].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
                     new[] { "foo", "bar", "baz", "qux" },
-                    addresses.Select(renders[3].Item3.GetState)
+                    addresses.Select(renders[3].NextStates.GetState)
                 );
             }
             finally
             {
-                DumbAction.RenderRecords.Value = ImmutableList<
-                    (DumbAction, IActionContext, IAccountStateDelta)
-                >.Empty;
+                DumbAction.RenderRecords.Value =
+                    ImmutableList<DumbAction.RenderRecord>.Empty;
             }
         }
 
@@ -320,6 +319,109 @@ namespace Libplanet.Tests.Blockchain
             });
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void Swap()
+        {
+            // FIXME: Poor man's fixture --- should make a proper fixture.
+            Append();
+
+            BlockChain<DumbAction> fork =
+                _blockChain.Fork(_blockChain.Tip.Hash);
+
+            Address[] addresses = Enumerable.Repeat(0, 4)
+                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .ToArray();
+
+            Transaction<DumbAction>[][] txsA =
+            {
+                new[]
+                {
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[0], "foo"),
+                    }),
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[1], "bar"),
+                    }),
+                },
+                new[]
+                {
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[2], "baz"),
+                    }),
+                    _fx.MakeTransaction(new[]
+                    {
+                        new DumbAction(addresses[3], "qux"),
+                    }),
+                },
+            };
+
+            foreach (Transaction<DumbAction>[] txs in txsA)
+            {
+                Block<DumbAction> b = TestUtils.MineNext(
+                    _blockChain.Tip,
+                    txs,
+                    null,
+                    _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+                );
+                _blockChain.Append(b);
+            }
+
+            Transaction<DumbAction>[] txsB =
+            {
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(addresses[0], "fork-foo"),
+                }),
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(addresses[1], "fork-bar"),
+                    new DumbAction(addresses[2], "fork-baz"),
+                }),
+            };
+
+            try
+            {
+                DumbAction.RenderRecords.Value =
+                    ImmutableList<DumbAction.RenderRecord>.Empty;
+
+                Block<DumbAction> forkTip = TestUtils.MineNext(
+                    fork.Tip,
+                    txsB,
+                    null,
+                    _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+                );
+                fork.Append(forkTip, DateTimeOffset.UtcNow, render: false);
+
+                _blockChain.Swap(fork);
+                var renders = DumbAction.RenderRecords.Value;
+
+                int actionsCountA = txsA.Sum(
+                    a => a.Sum(tx => tx.Actions.Count)
+                );
+                int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
+
+                Assert.Equal(actionsCountB + actionsCountA, renders.Count);
+                Assert.True(renders.Take(actionsCountA).All(r => r.Unrender));
+                Assert.True(renders.Skip(actionsCountA).All(r => r.Render));
+
+                Assert.Equal("qux", renders[0].Action.Item);
+                Assert.Equal("baz", renders[1].Action.Item);
+                Assert.Equal("bar", renders[2].Action.Item);
+                Assert.Equal("foo", renders[3].Action.Item);
+                Assert.Equal("fork-foo", renders[4].Action.Item);
+                Assert.Equal("fork-bar", renders[5].Action.Item);
+                Assert.Equal("fork-baz", renders[6].Action.Item);
+            }
+            finally
+            {
+                DumbAction.RenderRecords.Value =
+                    ImmutableList<DumbAction.RenderRecord>.Empty;
+            }
         }
 
         // This is a regression test for:
@@ -495,6 +597,12 @@ namespace Libplanet.Tests.Blockchain
             }
 
             public void Render(
+                IActionContext context,
+                IAccountStateDelta nextStates)
+            {
+            }
+
+            public void Unrender(
                 IActionContext context,
                 IAccountStateDelta nextStates)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 
@@ -27,11 +28,9 @@ namespace Libplanet.Tests.Common.Action
             RecordRandom = recordRandom;
         }
 
-        public static AsyncLocal<
-            ImmutableList<(DumbAction, IActionContext, IAccountStateDelta)>
-        > RenderRecords { get; } = new AsyncLocal<
-            ImmutableList<(DumbAction, IActionContext, IAccountStateDelta)>
-        >();
+        public static AsyncLocal<ImmutableList<RenderRecord>>
+            RenderRecords { get; } =
+                new AsyncLocal<ImmutableList<RenderRecord>>();
 
         public static AsyncLocal<ImmutableList<(Address, string)>>
             RehearsalRecords { get; } =
@@ -106,19 +105,34 @@ namespace Libplanet.Tests.Common.Action
         {
             if (RenderRecords.Value is null)
             {
-                RenderRecords.Value = ImmutableList<
-                    (DumbAction, IActionContext, IAccountStateDelta)
-                >.Empty;
+                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
 
-            RenderRecords.Value =
-                RenderRecords.Value.Add((this, context, nextStates));
+            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
+            {
+                Render = true,
+                Action = this,
+                Context = context,
+                NextStates = nextStates,
+            });
         }
 
         public void Unrender(
             IActionContext context,
             IAccountStateDelta nextStates)
         {
+            if (RenderRecords.Value is null)
+            {
+                RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            }
+
+            RenderRecords.Value = RenderRecords.Value.Add(new RenderRecord()
+            {
+                Unrender = true,
+                Action = this,
+                Context = context,
+                NextStates = nextStates,
+            });
         }
 
         public void LoadPlainValue(
@@ -163,6 +177,23 @@ namespace Libplanet.Tests.Common.Action
                 hashCode = (hashCode * 397) ^ RecordRehearsal.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public struct RenderRecord
+        {
+            public bool Render { get; set; }
+
+            public bool Unrender
+            {
+                get => !Render;
+                set => Render = !value;
+            }
+
+            public DumbAction Action { get; set; }
+
+            public IActionContext Context { get; set; }
+
+            public IAccountStateDelta NextStates { get; set; }
         }
     }
 }

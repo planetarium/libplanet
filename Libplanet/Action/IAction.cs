@@ -135,6 +135,35 @@ namespace Libplanet.Action
     ///         c?.Draw();
     ///     }
     ///
+    ///     // Sometimes a block to which an action belongs can be
+    ///     // a "stale."  If that action already has been rendered,
+    ///     // it should be undone.
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///
+    ///         // You could compare this with a better example of
+    ///         // PolymorphicAction<T> class.
+    ///         switch (Type)
+    ///         {
+    ///             case ActType.CreateCharacter:
+    ///                 c.Hide();
+    ///                 break;
+    ///
+    ///             case ActType.Attack:
+    ///             case ActType.Heal:
+    ///                 IAccountStateDelta prevStates = context.PreviousStates;
+    ///                 c.Hp = prevStates.GetState(TargetAddress)["hp"];
+    ///                 c.Draw();
+    ///                 break;
+    ///
+    ///             default:
+    ///                 break;
+    ///         }
+    ///     }
+    ///
     ///     // Serializes its "bound arguments" so that they are transmitted
     ///     // over network or stored to the persistent storage.
     ///     // It uses .NET's built-in serialization mechanism.
@@ -252,5 +281,29 @@ namespace Libplanet.Action
         /// cref="Execute(IActionContext)"/> method returned.
         /// </param>
         void Render(IActionContext context, IAccountStateDelta nextStates);
+
+        /// <summary>
+        /// Does things that should be undone right after this action is
+        /// invalidated (mostly due to a block which this action has belonged
+        /// to becoming considered a stale).
+        /// <para>This method takes the equivalent arguments to
+        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The equivalent context object to
+        /// what <see cref="Execute(IActionContext)"/> method had received.
+        /// That means <see cref="IActionContext.PreviousStates"/> are
+        /// the states right <em>before</em> this action executed.
+        /// For the states after this action executed,
+        /// use the <paramref name="nextStates"/> argument instead.
+        /// </param>
+        /// <param name="nextStates">The states right <em>after</em> this action
+        /// executed, which means it is equivalent to what <see
+        /// cref="Execute(IActionContext)"/> method returned.
+        /// </param>
+        /// <remarks>As a rule of thumb, this should be the inverse of
+        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method
+        /// with redrawing the graphics on the display at the finish.</remarks>
+        void Unrender(IActionContext context, IAccountStateDelta nextStates);
     }
 }
