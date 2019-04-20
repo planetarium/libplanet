@@ -97,7 +97,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         internal static Block<T> MineNext<T>(
             Block<T> previousBlock,
             IEnumerable<Transaction<T>> txs = null,
-            byte[] nonce = null
+            byte[] nonce = null,
+            long difficulty = 1
         )
             where T : IAction, new()
         {
@@ -106,8 +107,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txs = new List<Transaction<T>>();
             }
 
-            const long index = 1;
-            const long difficulty = 1;
+            long index = previousBlock.Index + 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
             Address miner = previousBlock.Miner.Value;

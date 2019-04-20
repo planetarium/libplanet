@@ -188,7 +188,12 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(addresses[3], "qux"),
                     }),
                 };
-                Block<DumbAction> b1 = TestUtils.MineNext(b0, txs);
+                Block<DumbAction> b1 = TestUtils.MineNext(
+                    b0,
+                    txs,
+                    null,
+                    _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+                );
                 _blockChain.Append(b1);
                 Assert.Contains(b1, _blockChain);
                 Assert.Equal(new[] { b0, b1 }, _blockChain.ToArray());
