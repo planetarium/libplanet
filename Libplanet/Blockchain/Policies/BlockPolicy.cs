@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -60,69 +58,55 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
-        /// <inheritdoc />
-        public InvalidBlockException ValidateBlocks(
+        /// <inheritdoc/>
+        public InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks,
-            DateTimeOffset currentTime
-        )
+            Block<T> nextBlock)
         {
-            HashDigest<SHA256>? prevHash = null;
-            DateTimeOffset? prevTimestamp = null;
-            IEnumerable<(long i, DifficultyExpectation)> indexedDifficulties =
-                ExpectDifficulties(blocks).Select(
-                    (exp, i) => { return ((long)i, exp); }
-                ).ToArray();
+            int index = blocks.Count;
+            int difficulty = index < 2 ? index : GetNextBlockDifficulty(blocks);
 
-            foreach (var (i, exp) in indexedDifficulties)
+            Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
+            HashDigest<SHA256>? prevHash = lastBlock?.Hash;
+            DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
+
+            if (nextBlock.Index != index)
             {
-                Trace.Assert(exp.Block != null);
-                Block<T> block = exp.Block;
+                return new InvalidBlockIndexException(
+                    $"the expected block index is {index}, but its index" +
+                    $" is {nextBlock.Index}'");
+            }
 
-                if (i != block.Index)
+            if (nextBlock.Difficulty < difficulty)
+            {
+                return new InvalidBlockDifficultyException(
+                    $"the expected difficulty of the block #{index} " +
+                    $"is {difficulty}, but its difficulty is " +
+                    $"{nextBlock.Difficulty}'");
+            }
+
+            if (!nextBlock.PreviousHash.Equals(prevHash))
+            {
+                if (prevHash is null)
                 {
-                    return new InvalidBlockIndexException(
-                        $"the expected block index is {i}, but its index is" +
-                        $" {block.Index}'"
-                    );
-                }
-
-                if (block.Difficulty < exp.Difficulty)
-                {
-                    return new InvalidBlockDifficultyException(
-                        $"the expected difficulty of the block #{i} " +
-                        $"is {exp.Difficulty}, but its difficulty is " +
-                        $"{block.Difficulty}'"
-                    );
-                }
-
-                if (block.PreviousHash != prevHash)
-                {
-                    if (prevHash == null)
-                    {
-                        return new InvalidBlockPreviousHashException(
-                            "the genesis block must have not previous block"
-                        );
-                    }
-
                     return new InvalidBlockPreviousHashException(
-                        $"the block #{i} is not continuous from the " +
-                        $"block #{i - 1}; while previous block's hash is " +
-                        $"{prevHash}, the block #{i}'s pointer to " +
-                        "the previous hash refers to " +
-                        (block.PreviousHash?.ToString() ?? "nothing")
-                    );
+                        "the genesis block must have not previous block");
                 }
 
-                if (block.Timestamp < prevTimestamp)
-                {
-                    return new InvalidBlockTimestampException(
-                        $"the block #{i}'s timestamp ({block.Timestamp}) is " +
-                        $"earlier than the block #{i - 1}'s ({prevTimestamp})"
-                    );
-                }
+                return new InvalidBlockPreviousHashException(
+                    $"the block #{index} is not continuous from the " +
+                    $"block #{index - 1}; while previous block's hash is " +
+                    $"{prevHash}, the block #{index}'s pointer to " +
+                    "the previous hash refers to " +
+                    (nextBlock.PreviousHash?.ToString() ?? "nothing"));
+            }
 
-                prevHash = block.Hash;
-                prevTimestamp = block.Timestamp;
+            if (nextBlock.Timestamp < prevTimestamp)
+            {
+                return new InvalidBlockTimestampException(
+                    $"the block #{index}'s timestamp " +
+                    $"({nextBlock.Timestamp}) is earlier than" +
+                    $" the block #{index - 1}'s ({prevTimestamp})");
             }
 
             return null;
@@ -131,69 +115,22 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc />
         public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
-            return ExpectDifficulties(blocks, yieldNext: true)
-                .First(t => t.Block == null)
-                .Difficulty;
-        }
+            int index = blocks.Count;
 
-        private IEnumerable<DifficultyExpectation> ExpectDifficulties(
-            IEnumerable<Block<T>> blocks, bool yieldNext = false)
-        {
-            DateTimeOffset? prevTimestamp = null;
-            DateTimeOffset? prevPrevTimestamp = null;
-
-            if (yieldNext)
+            if (index <= 1)
             {
-                blocks = blocks.Append(null);
+                return index;
             }
 
-            bool genesis = true;
-            int difficulty = 1;
-            prevTimestamp = blocks.FirstOrDefault()?.Timestamp;
+            DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
+            DateTimeOffset prevTimestamp = blocks[index - 1].Timestamp;
+            int prevDifficulty = blocks[index - 1].Difficulty;
 
-            foreach (Block<T> block in blocks)
-            {
-                if (genesis)
-                {
-                    // genesis block's difficulty is 0
-                    yield return new DifficultyExpectation
-                    {
-                        Difficulty = 0,
-                        Block = block,
-                    };
-                    genesis = false;
-                    continue;
-                }
+            bool needMore = prevTimestamp - prevPrevTimestamp < BlockInterval;
 
-                bool needMore =
-                    prevPrevTimestamp != null &&
-                    (
-                        prevPrevTimestamp == null ||
-                        prevTimestamp - prevPrevTimestamp < BlockInterval
-                    );
-                difficulty = Math.Max(
-                    needMore ? difficulty + 1 : difficulty - 1,
-                    1
-                );
-                yield return new DifficultyExpectation
-                {
-                    Difficulty = difficulty,
-                    Block = block,
-                };
-
-                if (block != null)
-                {
-                    prevPrevTimestamp = prevTimestamp;
-                    prevTimestamp = block.Timestamp;
-                }
-            }
-        }
-
-        private struct DifficultyExpectation
-        {
-            internal Block<T> Block;
-
-            internal int Difficulty;
+            return Math.Max(
+                needMore ? prevDifficulty + 1 : prevDifficulty - 1,
+                1);
         }
     }
 }

@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Xml.Schema;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -51,7 +49,7 @@ namespace Libplanet.Tests.Blockchain
         public void CanFindBlockByIndex()
         {
             // use assignment to snooze compiler error (CS0201)
-            Assert.Throws<IndexOutOfRangeException>(() => { var x = _blockChain[0]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[0]; });
             Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
 
@@ -163,6 +161,17 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(_blockChain.Blocks);
             _blockChain.Append(_fx.Block1);
             Assert.Contains(_fx.Block1, _blockChain);
+        }
+
+        [Fact]
+        public void AppendValidatesBlock()
+        {
+            var blockChain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(
+                    new InvalidBlockDifficultyException(string.Empty)),
+                _fx.Store);
+            Assert.Throws<InvalidBlockDifficultyException>(
+                () => blockChain.Append(_fx.Block1));
         }
 
         [Fact]
@@ -354,13 +363,19 @@ namespace Libplanet.Tests.Blockchain
         private sealed class NullPolicy<T> : IBlockPolicy<T>
             where T : IAction, new()
         {
+            private readonly InvalidBlockException _exceptionToThrow;
+
+            public NullPolicy(InvalidBlockException exceptionToThrow = null)
+            {
+                _exceptionToThrow = exceptionToThrow;
+            }
+
             public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
                 blocks.Any() ? 1 : 0;
 
-            public InvalidBlockException ValidateBlocks(
-                IReadOnlyList<Block<T>> blocks,
-                DateTimeOffset currentTime
-            ) => null;
+            public InvalidBlockException ValidateNextBlock(
+                IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) =>
+                _exceptionToThrow;
         }
 
         private sealed class TestEvaluateAction : IAction

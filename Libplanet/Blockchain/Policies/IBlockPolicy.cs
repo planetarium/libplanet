@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -12,27 +11,27 @@ namespace Libplanet.Blockchain.Policies
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// <seealso cref="IBlockPolicyExtension"/>
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
         /// <summary>
-        /// Checks if <paramref name="blocks"/> are invalid, and if that
+        /// Checks if <paramref name="nextBlock"/> is invalid, and if that
         /// returns the reason.
-        /// <para>Note that it returns <c>null</c> when blocks are
-        /// <em>valid</em>.</para>
+        /// <para>Note that it returns <c>null</c> when
+        /// <paramref name="nextBlock"/> is <em>valid</em>.</para>
         /// </summary>
         /// <param name="blocks">Consecutive <see cref="Block{T}"/>s to
-        /// validate.</param>
-        /// <param name="currentTime">The current time to be used to validate
-        /// of <see cref="Block{T}.Timestamp"/>s.
-        /// Usually <see cref="DateTimeOffset.UtcNow"/> is used.</param>
+        /// append <paramref name="nextBlock"/>.</param>
+        /// <param name="nextBlock">The next block to append to
+        /// <paramref name="blocks"/>.</param>
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
-        InvalidBlockException ValidateBlocks(
+        /// <seealso cref="IBlockPolicyExtension.ValidateBlocks{T}"/>
+        InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks,
-            DateTimeOffset currentTime
-        );
+            Block<T> nextBlock);
 
         /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>

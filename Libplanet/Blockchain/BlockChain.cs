@@ -52,7 +52,7 @@ namespace Libplanet.Blockchain
                 {
                     return this[-1];
                 }
-                catch (IndexOutOfRangeException)
+                catch (ArgumentOutOfRangeException)
                 {
                     return null;
                 }
@@ -105,7 +105,7 @@ namespace Libplanet.Blockchain
                     );
                     if (blockHash == null)
                     {
-                        throw new IndexOutOfRangeException();
+                        throw new ArgumentOutOfRangeException();
                     }
 
                     return Blocks[blockHash.Value];
@@ -243,9 +243,14 @@ namespace Libplanet.Blockchain
                 block.Validate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
-                Enumerable.Append(this, block);
+                InvalidBlockException e =
+                    Policy.ValidateNextBlock(this, block);
 
-                Validate(this, currentTime);
+                if (!(e is null))
+                {
+                    throw e;
+                }
+
                 _rwlock.EnterWriteLock();
                 try
                 {
