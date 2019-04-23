@@ -344,7 +344,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!Hash.HasLeadingZeroBits(Difficulty))
+            if (!Hash.LessThanTarget(Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"hash ({Hash}) with the nonce ({Nonce}) does not " +

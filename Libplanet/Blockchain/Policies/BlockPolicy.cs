@@ -64,7 +64,7 @@ namespace Libplanet.Blockchain.Policies
             Block<T> nextBlock)
         {
             int index = blocks.Count;
-            int difficulty = index < 2 ? index : GetNextBlockDifficulty(blocks);
+            int difficulty = GetNextBlockDifficulty(blocks);
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -115,22 +115,32 @@ namespace Libplanet.Blockchain.Policies
         /// <inheritdoc />
         public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
+            const int minDifficulty = 1024;
+            const int difficultyBoundDivisor = 512;
+
             int index = blocks.Count;
 
             if (index <= 1)
             {
-                return index;
+                return index == 0 ? 0 : minDifficulty;
             }
 
+            var prevBlock = blocks[index - 1];
+
             DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
-            DateTimeOffset prevTimestamp = blocks[index - 1].Timestamp;
-            int prevDifficulty = blocks[index - 1].Difficulty;
+            DateTimeOffset prevTimestamp = prevBlock.Timestamp;
+            TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
+            int timeDiffMilliseconds = (int)timeDiff.TotalMilliseconds;
+            int multiplier = Math.Max(
+                1 - (timeDiffMilliseconds /
+                     (int)BlockInterval.TotalMilliseconds),
+                -99);
 
-            bool needMore = prevTimestamp - prevPrevTimestamp < BlockInterval;
+            var prevDifficulty = prevBlock.Difficulty;
+            var offset = prevDifficulty / difficultyBoundDivisor;
+            int nextDifficulty = prevDifficulty + (offset * multiplier);
 
-            return Math.Max(
-                needMore ? prevDifficulty + 1 : prevDifficulty - 1,
-                1);
+            return Math.Max(nextDifficulty, minDifficulty);
         }
     }
 }

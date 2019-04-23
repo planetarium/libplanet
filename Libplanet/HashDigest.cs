@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 
 namespace Libplanet
@@ -132,42 +133,31 @@ namespace Libplanet
         }
 
         /// <summary>
-        /// Tests if a digest starts with the given number
-        /// (i.e., <paramref name="bits"/>) of zero bits.
-        /// <para>Note that it is bitwise, not bytes.</para>
+        /// Tests if a digest is less than the target computed for the given
+        /// <paramref name="difficulty"/>).
         /// </summary>
-        /// <param name="bits">The number of leading zero bits to test.</param>
-        /// <returns><c>true</c> only if a digest has leading zero bits of
-        /// the given number (i.e., <paramref name="bits"/>), or more than that.
-        /// If <paramref name="bits"/> is <c>0</c> it always returns
-        /// <c>true</c>.   Otherwise, it returns <c>false</c>.
+        /// <param name="difficulty">The difficulty to compute target number.
+        /// </param>
+        /// <returns><c>true</c> only if a digest is less than the target
+        /// computed for the given <paramref name="difficulty"/>).
+        /// If <paramref name="difficulty"/> is <c>0</c> it always returns
+        /// <c>true</c>.
         /// </returns>
         [Pure]
-        public bool HasLeadingZeroBits(int bits)
+        public bool LessThanTarget(int difficulty)
         {
-            int leadingBytes = bits / 8;
-            int trailingBits = (int)bits % 8;
-
-            if (ByteArray.Length < (bits / 8) + 1)
+            if (difficulty == 0)
             {
-                return false;
+                return true;
             }
 
-            for (int i = 0; i < leadingBytes; i++)
-            {
-                if (ByteArray[i] != 0)
-                {
-                    return false;
-                }
-            }
+            BigInteger target = new BigInteger(
+                Math.Pow(2, 256) / difficulty);
 
-            if (trailingBits != 0)
-            {
-                var mask = 0xff << (8 - trailingBits) & 0xff;
-                return (ByteArray[(int)leadingBytes] & mask) == 0;
-            }
+            // Add zero to convert unsigned BigInteger
+            BigInteger result = new BigInteger(ByteArray.Add(0).ToArray());
 
-            return true;
+            return result < target;
         }
 
         /// <summary>
