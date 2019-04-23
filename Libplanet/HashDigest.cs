@@ -144,7 +144,7 @@ namespace Libplanet
         /// <c>true</c>.
         /// </returns>
         [Pure]
-        public bool LessThanTarget(int difficulty)
+        public bool LessThanTarget(long difficulty)
         {
             if (difficulty == 0)
             {

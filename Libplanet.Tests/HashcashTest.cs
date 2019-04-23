@@ -11,7 +11,7 @@ namespace Libplanet.Tests
     {
         [Theory]
         [ClassData(typeof(HashcashTestData))]
-        public void AnswerLessThanTarget(byte[] challenge, int difficulty)
+        public void AnswerLessThanTarget(byte[] challenge, long difficulty)
         {
             byte[] Stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(Stamp, difficulty);
@@ -24,10 +24,10 @@ namespace Libplanet.Tests
         {
             Assert.True(LessThanTarget(new byte[1] { 0x80 }, 0));
             Assert.False(LessThanTarget(new byte[1] { 0x80 }, 2));
-            int[] difficulties = Enumerable.Range(1, 8)
-                .Select(x => (int)Math.Pow(2, x)).ToArray();
+            long[] difficulties = Enumerable.Range(1, 8)
+                .Select(x => (long)Math.Pow(2, x)).ToArray();
 
-            foreach (int difficulty in difficulties)
+            foreach (long difficulty in difficulties)
             {
                 Assert.True(LessThanTarget(new byte[2] { 0x00, 0x80 }, difficulty));
             }
@@ -38,7 +38,7 @@ namespace Libplanet.Tests
             Assert.True(LessThanTarget(new byte[2] { 0x00, 0x20 }, 1024));
         }
 
-        private bool LessThanTarget(byte[] bytes, int difficulty)
+        private bool LessThanTarget(byte[] bytes, long difficulty)
         {
             byte[] digest;
             if (bytes.Length < HashDigest<SHA256>.Size)

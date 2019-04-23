@@ -64,7 +64,7 @@ namespace Libplanet.Blockchain.Policies
             Block<T> nextBlock)
         {
             int index = blocks.Count;
-            int difficulty = GetNextBlockDifficulty(blocks);
+            long difficulty = GetNextBlockDifficulty(blocks);
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -113,9 +113,9 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
+        public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
-            const int minDifficulty = 1024;
+            const long minDifficulty = 1024;
             const int difficultyBoundDivisor = 512;
 
             int index = blocks.Count;
@@ -130,15 +130,15 @@ namespace Libplanet.Blockchain.Policies
             DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
             DateTimeOffset prevTimestamp = prevBlock.Timestamp;
             TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
-            int timeDiffMilliseconds = (int)timeDiff.TotalMilliseconds;
-            int multiplier = Math.Max(
+            long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;
+            long multiplier = Math.Max(
                 1 - (timeDiffMilliseconds /
-                     (int)BlockInterval.TotalMilliseconds),
+                     (long)BlockInterval.TotalMilliseconds),
                 -99);
 
             var prevDifficulty = prevBlock.Difficulty;
             var offset = prevDifficulty / difficultyBoundDivisor;
-            int nextDifficulty = prevDifficulty + (offset * multiplier);
+            long nextDifficulty = prevDifficulty + (offset * multiplier);
 
             return Math.Max(nextDifficulty, minDifficulty);
         }

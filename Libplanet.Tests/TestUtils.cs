@@ -107,7 +107,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
 
             const long index = 1;
-            const int difficulty = 1;
+            const long difficulty = 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
             Address miner = previousBlock.Miner.Value;

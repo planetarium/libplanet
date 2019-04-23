@@ -352,9 +352,9 @@ namespace Libplanet.Tests.Blockchain.Policies
             var miner = default(Address);
             long i = 0;
             HashDigest<SHA256>? previousHash = null;
-            foreach ((int timestampHour, int d) in blockArgs)
+            foreach ((int timestampHour, long d) in blockArgs)
             {
-                int difficulty = d;
+                long difficulty = d;
                 var timestamp =
                     FixtureEpoch + TimeSpan.FromHours(timestampHour);
                 if (interprocess != null)
@@ -398,7 +398,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         private struct BlockFields
         {
             internal long Index;
-            internal int Difficulty;
+            internal long Difficulty;
             internal HashDigest<SHA256>? PreviousHash;
             internal DateTimeOffset Timestamp;
         }

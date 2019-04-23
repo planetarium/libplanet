@@ -306,7 +306,7 @@ namespace Libplanet.Blockchain
         {
             string @namespace = Id.ToString();
             long index = Store.CountIndex(@namespace);
-            int difficulty = Policy.GetNextBlockDifficulty(this);
+            long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(
                 @namespace,
                 index - 1

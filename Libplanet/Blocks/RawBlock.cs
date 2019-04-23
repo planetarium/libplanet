@@ -11,7 +11,7 @@ namespace Libplanet.Blocks
             string timestamp,
             byte[] nonce,
             byte[] miner,
-            int difficulty,
+            long difficulty,
             byte[] previousHash,
             IEnumerable transactions)
             : this(
@@ -32,7 +32,7 @@ namespace Libplanet.Blocks
             string timestamp,
             byte[] nonce,
             byte[] miner,
-            int difficulty,
+            long difficulty,
             byte[] previousHash,
             IEnumerable transactions,
             byte[] hash)
@@ -72,7 +72,7 @@ namespace Libplanet.Blocks
 
         public byte[] Miner { get; }
 
-        public int Difficulty { get; }
+        public long Difficulty { get; }
 
         public byte[] PreviousHash { get; }
 

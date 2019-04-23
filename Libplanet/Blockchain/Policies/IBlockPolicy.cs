@@ -42,6 +42,6 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks);
+        long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks);
     }
 }
