@@ -172,7 +172,7 @@ namespace Libplanet.Store
             {
                 foreach (var idx in IterateIndex(@namespace))
                 {
-                    if (!found && idx == hash)
+                    if (!found && idx.Equals(hash))
                     {
                         found = true;
                     }

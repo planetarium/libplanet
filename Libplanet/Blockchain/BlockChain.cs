@@ -379,7 +379,7 @@ namespace Libplanet.Blockchain
                 {
                     yield return currentHash.Value;
 
-                    if (currentHash == stop || currentHash == tip)
+                    if (currentHash.Equals(stop) || currentHash.Equals(tip))
                     {
                         break;
                     }
@@ -410,7 +410,7 @@ namespace Libplanet.Blockchain
                 foreach (var index in Store.IterateIndex(Id.ToString()))
                 {
                     Store.AppendIndex(forked.Id.ToString(), index);
-                    if (index == point)
+                    if (index.Equals(point))
                     {
                         break;
                     }

@@ -253,7 +253,7 @@ namespace Libplanet.Net
 
             foreach (Peer peer in peers)
             {
-                if (peer.PublicKey == publicKey)
+                if (peer.PublicKey.Equals(publicKey))
                 {
                     continue;
                 }
@@ -1000,7 +1000,7 @@ namespace Libplanet.Net
                     "BlockHashes doesn't have sender address.");
             }
 
-            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address.Equals(from));
             if (peer == null)
             {
                 _logger.Information(
@@ -1060,7 +1060,7 @@ namespace Libplanet.Net
             );
 
             BlockChain<T> synced;
-            if (tip is null || branchPoint == tip.Hash)
+            if (tip is null || branchPoint.Equals(tip.Hash))
             {
                 _logger.Debug("it doesn't need fork.");
                 synced = blockChain;
@@ -1247,7 +1247,7 @@ namespace Libplanet.Net
                     "TxIds doesn't have sender address.");
             }
 
-            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address.Equals(from));
             if (peer == null)
             {
                 _logger.Information(
@@ -1343,12 +1343,12 @@ namespace Libplanet.Net
 
         private bool IsUnknownPeer(Peer sender)
         {
-            if (_peers.Keys.All(p => sender.PublicKey != p.PublicKey))
+            if (_peers.Keys.All(p => !sender.PublicKey.Equals(p.PublicKey)))
             {
                 return true;
             }
 
-            if (_dealers.Keys.All(a => sender.Address != a))
+            if (_dealers.Keys.All(a => !sender.Address.Equals(a)))
             {
                 return true;
             }
