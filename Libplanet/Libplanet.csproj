@@ -34,10 +34,12 @@ https://docs.libplanet.io/</Description>
     <AssemblyName>Libplanet</AssemblyName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <TargetFramework>netstandard2.0</TargetFramework>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>CS1591</NoWarn> <!-- FIXME: This should be turned on eventually. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!-- FIXME: CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
