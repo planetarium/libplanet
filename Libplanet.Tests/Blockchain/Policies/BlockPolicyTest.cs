@@ -30,12 +30,15 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             _output = output;
             _blocks = new List<Block<DumbAction>>();
-            _policy = new BlockPolicy<DumbAction>();
+            _policy = new BlockPolicy<DumbAction>(
+                TimeSpan.FromMilliseconds(5000),
+                1024,
+                128);
             _emptyTransaction = new List<Transaction<DumbAction>>();
             _genesis = TestUtils.MineGenesis<DumbAction>();
             _validNext = Block<DumbAction>.Mine(
                 1,
-                1,
+                1024,
                 _genesis.Miner.Value,
                 _genesis.Hash,
                 _genesis.Timestamp.AddSeconds(1),
@@ -46,35 +49,36 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<DumbAction>(tenSec);
+            var a = new BlockPolicy<DumbAction>(tenSec, 1024, 128);
             Assert.Equal(tenSec, a.BlockInterval);
 
             var b = new BlockPolicy<DumbAction>(65000);
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
-                b.BlockInterval
-            );
+                b.BlockInterval);
 
             var c = new BlockPolicy<DumbAction>();
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
-                c.BlockInterval
-            );
+                c.BlockInterval);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(tenSec.Negate())
-            );
+                () => new BlockPolicy<DumbAction>(tenSec.Negate(), 1024, 128));
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(-5)
-            );
+                () => new BlockPolicy<DumbAction>(-5));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockPolicy<DumbAction>(tenSec, 0, 128));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                new BlockPolicy<DumbAction>(tenSec, 1024, 1024));
         }
 
         [Fact]
         public void GetNextBlockDifficulty()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0));
+            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
             Block<DumbAction>[] blocks = MineBlocks(
-                new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2), (13, 3) }
+                new[] { (0, 0), (1, 1024), (3, 1032), (7, 1040), (9, 1040), (13, 1048) }
             ).ToArray();
 
             Assert.Equal(
@@ -82,27 +86,27 @@ namespace Libplanet.Tests.Blockchain.Policies
                 policy.GetNextBlockDifficulty(blocks.Take(0).ToList())
             );
             Assert.Equal(
-                1,
+                1024,
                 policy.GetNextBlockDifficulty(blocks.Take(1).ToList())
             );
             Assert.Equal(
-                2,
+                1032,
                 policy.GetNextBlockDifficulty(blocks.Take(2).ToList())
             );
             Assert.Equal(
-                3,
+                1040,
                 policy.GetNextBlockDifficulty(blocks.Take(3).ToList())
             );
             Assert.Equal(
-                2,
+                1040,
                 policy.GetNextBlockDifficulty(blocks.Take(4).ToList())
             );
             Assert.Equal(
-                3,
+                1048,
                 policy.GetNextBlockDifficulty(blocks.Take(5).ToList())
             );
             Assert.Equal(
-                2,
+                1048,
                 policy.GetNextBlockDifficulty(blocks)
             );
         }
@@ -192,7 +196,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var invalidPreviousHashBlock = Block<DumbAction>.Mine(
                 2,
-                2,
+                1032,
                 _genesis.Miner.Value,
                 new HashDigest<SHA256>(new byte[32]),
                 _validNext.Timestamp.AddSeconds(1),
@@ -211,7 +215,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
             var invalidPreviousTimestamp = Block<DumbAction>.Mine(
                 2,
-                2,
+                1032,
                 _genesis.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),
@@ -225,7 +229,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateBlocks()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0));
+            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
 
             // The genesis block must has the index #0.
             Assert.IsType<InvalidBlockIndexException>(
@@ -272,33 +276,32 @@ namespace Libplanet.Tests.Blockchain.Policies
             // Block difficulties depend on interval between previous block
             // and previous of previous block.  If an interval is shorter than
             // BlockInterval (3 hours in this test case) it should be raised.
-            // Otherwise it should be dropped.  It should be always raised or
-            // dropped by only 1.
+            // Otherwise it should be dropped.
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 2) }).ToList(),
+                        new[] { (0, 0), (1, 1024), (3, 1032) }).ToList(),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
             );
             Assert.IsType<InvalidBlockDifficultyException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 1) }).ToList(),
+                        new[] { (0, 0), (1, 1024), (3, 1024) }).ToList(),
                     FixtureEpoch + new TimeSpan(3, 1, 0)
                 )
             );
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (5, 2), (9, 1) }).ToList(),
+                        new[] { (0, 0), (1, 1024), (5, 1032), (9, 1032) }).ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
             );
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (5, 2), (9, 5) }).ToList(),
+                        new[] { (0, 0), (1, 1024), (5, 1032), (9, 1032) }).ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
             );
@@ -308,7 +311,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockPreviousHashException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (5, 2) },
+                        new[] { (0, 0), (1, 1024), (5, 1032) },
                         fields =>
                         {
                             if (fields.Index >= 2)
@@ -327,7 +330,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockTimestampException>(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (2, 1), (1, 2) }).ToList(),
+                        new[] { (0, 0), (2, 1024), (1, 1032) }).ToList(),
                     FixtureEpoch + new TimeSpan(2, 1, 0)
                 )
             );
@@ -336,7 +339,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.Null(
                 policy.ValidateBlocks(
                     MineBlocks(
-                        new[] { (0, 0), (1, 1), (3, 2), (7, 3), (9, 2) })
+                        new[] { (0, 0), (1, 1024), (3, 1032), (7, 1040), (9, 1040) })
                     .ToList(),
                     FixtureEpoch + new TimeSpan(9, 1, 0)
                 )
