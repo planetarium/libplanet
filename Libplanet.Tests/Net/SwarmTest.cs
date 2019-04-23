@@ -397,36 +397,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact]
-        public void BeComparedProperly()
-        {
-            var pk1 = new PrivateKey();
-            var pk2 = new PrivateKey();
-            var a = new Swarm(
-                pk1,
-                1,
-                host: "0.0.0.0",
-                listenPort: 5555);
-            var b = new Swarm(
-                pk1,
-                1,
-                host: "0.0.0.0",
-                listenPort: 5555,
-                createdAt: a.LastDistributed);
-            var c = new Swarm(
-                pk2,
-                1,
-                host: "0.0.0.0",
-                listenPort: 5555);
-
-            Assert.Equal(a, b);
-            Assert.NotEqual(a, c);
-            a.Add(c.AsPeer);
-
-            Assert.NotEqual(a, b);
-            Assert.True(a.KeyEquals(b));
-        }
-
-        [Fact]
         public async Task CanBeCancelled()
         {
             Swarm swarm = _swarms[0];

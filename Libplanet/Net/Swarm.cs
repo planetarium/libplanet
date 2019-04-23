@@ -27,8 +27,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    [Uno.GeneratedEquality]
-    public partial class Swarm : ICollection<Peer>, IDisposable
+    public class Swarm : ICollection<Peer>, IDisposable
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -169,7 +168,6 @@ namespace Libplanet.Net
 
         public DnsEndPoint EndPoint { get; private set; }
 
-        [Uno.EqualityKey]
         public Address Address => _privateKey.PublicKey.ToAddress();
 
         public Peer AsPeer =>
@@ -178,16 +176,12 @@ namespace Libplanet.Net
             : throw new SwarmException(
                 "Can't translate unbound Swarm to Peer.");
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaReceived { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaDistributed { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent BlockReceived { get; }
 
         public DateTimeOffset LastReceived { get; private set; }
