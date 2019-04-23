@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Libplanet.Action;
 using Libplanet.Crypto;
-using Uno.Extensions;
 using Xunit;
 
 namespace Libplanet.Tests.Action
