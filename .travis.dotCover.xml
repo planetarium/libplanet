@@ -12,11 +12,13 @@ to be replaced using sed. -->
     <IncludeFilters>
       <FilterEntry>
         <ModuleMask>Libplanet</ModuleMask>
+        <ModuleMask>Libplanet.Stun</ModuleMask>
       </FilterEntry>
     </IncludeFilters>
     <ExcludeFilters>
       <FilterEntry>
         <ModuleMask>Libplanet.Tests</ModuleMask>
+        <ModuleMask>Libplanet.Stun.Tests</ModuleMask>
       </FilterEntry>
     </ExcludeFilters>
   </Filters>

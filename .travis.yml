@@ -3,6 +3,8 @@ matrix:
   - os: linux
     dist: xenial
     language: csharp
+    dotnet: 2.2.203
+    mono: none
     addons:
       apt:
         packages:
@@ -18,6 +20,7 @@ matrix:
   - os: osx
     osx_image: xcode10.1
     language: csharp
+    dotnet: 2.2.106
     cache:
       directories:
       - $HOME/Library/Caches/Homebrew
@@ -30,9 +33,6 @@ matrix:
       - $HOME/.nuget/packages
       - $HOME/AppData/Local/NuGet/v3-cache
     filter_secrets: false  # https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
-
-env:
-  - PROJECTS="Libplanet.Stun Libplanet"
 
 solution: Libplanet.sln
 install:
@@ -58,17 +58,9 @@ install:
     brew update
     brew cask install powershell
   elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
-    # MSBuild
-    {
-      echo "#!/bin/bash"
-      echo "'/c/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/MSBuild/15.0/Bin/MSBuild.exe'" '"$@"'
-    } > /usr/bin/msbuild
-    chmod +x /usr/bin/msbuild
-
-    # NuGet
-    curl -o /usr/bin/nuget.exe \
-      https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
-    chmod +x /usr/bin/nuget.exe
+    # .NET Core SDK 2.2+
+    choco install dotnetcore-sdk
+    dotnet --info
 
     # xmllint
     mkdir /tmp/libxml2
@@ -93,7 +85,7 @@ install:
       mkdir /tmp/dotcover
       pushd /tmp
       wget \
-        https://download.jetbrains.com/resharper/ReSharperUltimate.2018.3.3/JetBrains.dotCover.CommandLineTools.2018.3.3.zip
+        https://download.jetbrains.com/resharper/ReSharperUltimate.2018.3.4/JetBrains.dotCover.CommandLineTools.2018.3.4.zip
       pushd dotcover
       7z x ../JetBrains.dotCover.CommandLineTools.*.zip
       popd
@@ -105,20 +97,26 @@ install:
     fi
   fi
   set +ev
-- nuget restore Libplanet.sln
+
+# Restore NuGet packages (dependencies)
+- |
+  for i in 1 2 3; do
+    # Retry up to 3 times
+    dotnet restore -s https://api.nuget.org/v3/index.json && break
+  done
 
 script:
 # Fail fast if anything in below commands fails
 - set -e
 
 # If a tag is pushed, the NuGet package version has to be the same to
-# the tag name.
+# the tag name, without any suffix.
 - |
-  version="$(xmllint \
-    --xpath './Project/PropertyGroup/Version/text()' \
+  version_prefix="$(xmllint \
+    --xpath './Project/PropertyGroup/VersionPrefix/text()' \
     Libplanet/Libplanet.csproj)"
-- 'echo "NuGet package version: $version"'
-- '[[ "$TRAVIS_TAG" = "" || "$version" = "$TRAVIS_TAG" ]]'
+- 'echo "VersionPrefix: $version_prefix"'
+- '[[ "$TRAVIS_TAG" = "" || "$version_prefix" = "$TRAVIS_TAG" ]]'
 
 # If a tag is pushed, there has to be an entry in CHANGES.md for the version.
 - |
@@ -131,24 +129,43 @@ script:
 # Check coding styles
 - hooks/check-bom
 
+# Append suffix to the package version if it's not a tag push:
+# - "dev.BUILDNO+DATE" (e.g., 0.1.2-dev.34+20190423)
+# - "nightly.DATE" (e.g., 0.1.2-nightly.20190423)
+- |
+  if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
+    version_suffix="nightly.$(date +%Y%m%d)"
+    nupkg_version="$version_prefix-$version_suffix"
+  elif [[ "$TRAVIS_TAG" = "" ]]; then
+    version_suffix="dev.$TRAVIS_BUILD_NUMBER"
+    nupkg_version="$version_prefix-$version_suffix"
+    commit_date="$(git log -n1 --pretty=%cd --date=format:%Y%m%d)"
+    version_suffix="$version_suffix+$commit_date"
+  else
+    nupkg_version="$TRAVIS_TAG"
+  fi
+
 # Build the whole solution
 - |
-  for project in $PROJECTS; do
-    msbuild -p:Configuration=Release -r $project
-  done
+  if [[ "$TRAVIS_TAG" = "" ]]; then
+    dotnet build \
+      -c Release \
+      --version-suffix "$version_suffix" \
+      -p:NoPackageAnalysis=true
+  else
+    dotnet build \
+      -c Release
+  fi
 
 # Run unit tests
-- |
-  for project in $PROJECTS; do
-    msbuild -p:Configuration=Release -t:build,XunitTest $project.Tests
-  done
+- dotnet test -c Release -v n
 
 # Run unit tests with coverage report
 - cat codecov.yml | curl --data-binary @- https://codecov.io/validate
 - |
   if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
-    msbuild -p:Configuration=Debug -p:DebugType=full -r
-    for assembly in Libplanet.Tests/bin/Debug/*/Libplanet.Tests.dll; do
+    dotnet build -c Debug
+    for assembly in *.Tests/bin/Debug/*/*.Tests.dll; do
       echo "$assembly:"
       dotCover_config="$(cat .travis.dotCover.xml)"
       assembly_abspath="$(cygpath -w "$(pwd)/$assembly")"
@@ -162,33 +179,24 @@ script:
 
 # Build Libplanet.*.nupkg
 - |
-  rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
-  msbuild_props=('Configuration=Release')
-  if [[ "$TRAVIS_TAG" = "" && "$version" = *-dev ]]; then
-    # Append "+buildno" to the package version (e.g., 0.1.2-dev+34)
-    # if it's not a tag push.
-    if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
-      appended_version="${version/-dev/-nightly}.$(date +%Y%m%d)"
-      nupkg_version="$appended_version"
-    else
-      nupkg_version="$version.$TRAVIS_BUILD_NUMBER"
-      appended_version="$nupkg_version+$(date +%Y%m%d)"
-    fi
-    msbuild_props+=("PackageVersion=$appended_version")
-    msbuild_props+=('NoPackageAnalysis=true')
-    msbuild -r "${msbuild_props[@]/#/-p:}" Libplanet
+  if [[ "$TRAVIS_TAG" = "" ]]; then
+    echo "Version suffix: $version_suffix"
+    dotnet pack Libplanet \
+      -c Release \
+      --version-suffix "$version_suffix" \
+      -p:NoPackageAnalysis=true
   else
-    nupkg_version="$version"
-    appended_version="$version"
+    dotnet pack Libplanet \
+      -c Release
   fi
-  msbuild -t:pack "${msbuild_props[@]/#/-p:}" Libplanet
+  ls -al Libplanet/bin/Release/
   unzip -l "Libplanet/bin/Release/Libplanet.$nupkg_version.nupkg" \
     > /tmp/nupkgfiles
   cat /tmp/nupkgfiles
   grep -i Libplanet.dll /tmp/nupkgfiles
   grep -i Libplanet.Stun.dll /tmp/nupkgfiles
-  if [[ "$nupkg_version" != "$version" ]]; then
-    rm -f "Libplanet/bin/Release/Libplanet.$version.nupkg"
+  if [[ "$nupkg_version" != "$version_prefix" ]]; then
+    rm -f "Libplanet/bin/Release/Libplanet.$version_prefix.nupkg"
   fi
 
 # Build docs using DocFX

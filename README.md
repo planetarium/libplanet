@@ -66,17 +66,19 @@ In the near future, we are going to submit it to [Unity Asset Store] too.
 Build
 -----
 
-You could build a *Libplanet.dll* assembly from the source code.
+You could build a *Libplanet.dll* and *Libplanet.Stun.dll* assemblies
+from the source code.
 
 The following command installs dependencies (required library packages) and
 builds the whole Libplanet solution:
 
 ~~~~~~~~ bash
-msbuild -r
+dotnet build
 ~~~~~~~~
 
-Note that `msbuild` is distributed together with Mono framework or
-Visual Studio.
+Note that `dotnet` command is distributed together with [.NET Core] SDK.
 
 If you'd like to contribute code to the Libplanet project in earnest,
 please read our [contributor guide](CONTRIBUTING.md).
+
+[.NET Core]: https://dot.net/

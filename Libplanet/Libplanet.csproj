@@ -2,7 +2,18 @@
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
-    <Version>0.3.0-dev</Version>
+    <VersionPrefix>0.3.0</VersionPrefix>
+    <!-- Note: don't be confused by the word "prefix" here.  It's merely a
+    version without suffix like "-dev.123".  See the following examples:
+      Version: 1.2.3-dev.456
+      VersionPrefix: 1.2.3
+      VersionSuffix: dev.456
+    If it's a stable release the version becomes like:
+      Version: 1.2.3
+      VersionPrefix: 1.2.3
+      VersionSuffix: (N/A)
+    Note that the version suffix is filled through CLI option of dotnet command.
+    -->
     <Summary>A .NET library for creating multiplayer online game in decentralized fashion.</Summary>
     <Description>A .NET library for creating multiplayer online game in decentralized fashion.
 See also the docs for details:
