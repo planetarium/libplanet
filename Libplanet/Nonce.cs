@@ -9,10 +9,8 @@ namespace Libplanet
     /// An arbitrary <see cref="byte"/>s that determines a
     /// <see cref="Hashcash.Stamp"/>.
     /// </summary>
-    #pragma warning disable CS0282
-    [Uno.GeneratedEquality]
-    public partial struct Nonce
-    #pragma warning restore CS0282
+    [Equals]
+    public struct Nonce
     {
         private ImmutableArray<byte> _byteArray;
 
@@ -35,14 +33,6 @@ namespace Libplanet
             }
 
             _byteArray = nonce.ToImmutableArray();
-
-            #pragma warning disable CS0103
-            /* Suppress CS0171.
-            See also https://github.com/nventive/Uno.CodeGen/pull/91
-            */
-            _computedHashCode = null;
-            _computedKeyHashCode = null;
-            #pragma warning restore CS0103
         }
 
         /// <summary>
@@ -51,7 +41,6 @@ namespace Libplanet
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        [Uno.EqualityKey]
         public ImmutableArray<byte> ByteArray
         {
             get

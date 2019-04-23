@@ -16,11 +16,9 @@ namespace Libplanet.Tx
     /// (See also <see cref="Size"/> constant.)</para>
     /// </summary>
     /// <seealso cref="Transaction{T}.Id"/>
-    #pragma warning disable CS0282
     [Serializable]
-    [Uno.GeneratedEquality]
-    public partial struct TxId : ISerializable
-    #pragma warning restore CS0282
+    [Equals]
+    public struct TxId : ISerializable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -59,14 +57,6 @@ namespace Libplanet.Tx
             }
 
             _byteArray = txid.ToImmutableArray();
-
-            #pragma warning disable CS0103
-            /* Suppress CS0171.
-            See also https://github.com/nventive/Uno.CodeGen/pull/91
-            */
-            _computedHashCode = null;
-            _computedKeyHashCode = null;
-            #pragma warning restore CS0103
         }
 
         public TxId(
@@ -83,7 +73,6 @@ namespace Libplanet.Tx
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        [Uno.EqualityKey]
         public ImmutableArray<byte> ByteArray
         {
             get

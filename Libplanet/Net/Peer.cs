@@ -4,7 +4,6 @@ using System.Net;
 using System.Runtime.Serialization;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
-using Uno;
 
 namespace Libplanet.Net
 {
@@ -13,8 +12,8 @@ namespace Libplanet.Net
     /// </summary>
     /// <seealso cref="Swarm"/>
     [Serializable]
-    [GeneratedEquality]
-    public partial class Peer : ISerializable
+    [Equals]
+    public class Peer : ISerializable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Peer"/> class.
@@ -55,14 +54,12 @@ namespace Libplanet.Net
         /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this peer.
         /// </summary>
-        [EqualityKey]
         [Pure]
         public PublicKey PublicKey { get; }
 
         /// <summary>
         /// The corresponding <see cref="DnsEndPoint"/> of this peer.
         /// </summary>
-        [EqualityKey]
         [Pure]
         public DnsEndPoint EndPoint { get; }
 
@@ -70,9 +67,15 @@ namespace Libplanet.Net
         /// The corresponding application protocol version of this peer.
         /// </summary>
         /// <seealso cref="Swarm.DifferentVersionPeerEncountered"/>
+        [IgnoreDuringEquals]
         [Pure]
         public int AppProtocolVersion { get; }
 
+        /// <summary>The peer's address which is derviced from
+        /// its <see cref="PublicKey"/>.
+        /// </summary>
+        /// <seealso cref="PublicKey"/>
+        [IgnoreDuringEquals]
         [Pure]
         public Address Address => new Address(PublicKey);
 

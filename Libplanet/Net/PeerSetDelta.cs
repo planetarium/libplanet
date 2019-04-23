@@ -7,8 +7,8 @@ using Libplanet.Serialization;
 namespace Libplanet.Net
 {
     [Serializable]
-    [Uno.GeneratedEquality]
-    public partial class PeerSetDelta : ISerializable
+    [Equals]
+    public class PeerSetDelta : ISerializable
     {
         public PeerSetDelta(
             Peer sender,
@@ -36,21 +36,14 @@ namespace Libplanet.Net
                 .ToImmutableHashSet();
         }
 
-        [Uno.EqualityHash]
-        [Uno.EqualityKey]
         public Peer Sender { get; }
 
-        [Uno.EqualityHash]
-        [Uno.EqualityKey]
         public DateTimeOffset Timestamp { get; }
 
-        [Uno.EqualityHash]
         public IImmutableSet<Peer> AddedPeers { get; }
 
-        [Uno.EqualityHash]
         public IImmutableSet<Peer> RemovedPeers { get; }
 
-        [Uno.EqualityHash]
         public IImmutableSet<Peer> ExistingPeers { get; }
 
         public void GetObjectData(

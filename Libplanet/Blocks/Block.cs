@@ -14,8 +14,8 @@ using Libplanet.Tx;
 
 namespace Libplanet.Blocks
 {
-    [Uno.GeneratedEquality]
-    public partial class Block<T> : ISerializable
+    [Equals]
+    public class Block<T> : ISerializable
         where T : IAction, new()
     {
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -67,7 +67,6 @@ namespace Libplanet.Blocks
                 .ToList();
         }
 
-        [Uno.EqualityKey]
         public HashDigest<SHA256> Hash
         {
             get
@@ -80,25 +79,25 @@ namespace Libplanet.Blocks
             }
         }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public long Index { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public int Difficulty { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public Nonce Nonce { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public Address? Miner { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public HashDigest<SHA256>? PreviousHash { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public DateTimeOffset Timestamp { get; }
 
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
         public static Block<T> Mine(

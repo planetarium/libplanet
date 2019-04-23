@@ -37,11 +37,9 @@ namespace Libplanet
     /// </summary>
     /// <remarks>Every <see cref="Address"/> value is immutable.</remarks>
     /// <seealso cref="PublicKey"/>
-    #pragma warning disable CS0282
     [Serializable]
-    [Uno.GeneratedEquality]
-    public partial struct Address : ISerializable
-    #pragma warning restore CS0282
+    [Equals]
+    public struct Address : ISerializable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -79,14 +77,6 @@ namespace Libplanet
             }
 
             _byteArray = address.ToImmutableArray();
-
-            #pragma warning disable CS0103
-            /* Suppress CS0171.
-            See also https://github.com/nventive/Uno.CodeGen/pull/91
-            */
-            _computedHashCode = null;
-            _computedKeyHashCode = null;
-            #pragma warning restore CS0103
         }
 
         public Address(
@@ -141,7 +131,6 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        [Uno.EqualityKey]
         public ImmutableArray<byte> ByteArray
         {
             get

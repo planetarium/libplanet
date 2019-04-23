@@ -15,11 +15,9 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
-    #pragma warning disable CS0282
-    [Uno.GeneratedEquality]
-    public partial struct HashDigest<T>
+    [Equals]
+    public struct HashDigest<T>
         where T : HashAlgorithm
-    #pragma warning restore CS0282
     {
         /// <summary>
         /// The fixed, and valid <see cref="Array.Length"/> of
@@ -73,14 +71,6 @@ namespace Libplanet
             }
 
             _byteArray = hashDigest.ToImmutableArray();
-
-            #pragma warning disable CS0103
-            /* Suppress CS0171.
-            See also https://github.com/nventive/Uno.CodeGen/pull/91
-            */
-            _computedHashCode = null;
-            _computedKeyHashCode = null;
-            #pragma warning restore CS0103
         }
 
         /// <summary>
@@ -89,7 +79,6 @@ namespace Libplanet
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        [Uno.EqualityKey]
         public ImmutableArray<byte> ByteArray
         {
             get

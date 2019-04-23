@@ -20,17 +20,15 @@ namespace Libplanet.Crypto
     /// cryptography, it uses the same <see cref="SymmetricKey"/> for both
     /// encrypting a plaintext and decrypting a ciphertext.
     /// </summary>
-    [Uno.GeneratedEquality]
-    public partial class SymmetricKey
+    [Equals]
+    public class SymmetricKey
     {
         private const int KeyBitSize = 256;
         private const int MacBitSize = 128;
         private const int NonceBitSize = 128;
 
-        [Uno.EqualityIgnore]
         private readonly SecureRandom _secureRandom;
 
-        [Uno.EqualityIgnore]
         private readonly byte[] _key;
 
         /// <summary>
@@ -71,7 +69,6 @@ namespace Libplanet.Crypto
         /// <remarks>This is immutable.  For a mutable array, call
         /// <see cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        [Uno.EqualityKey]
         [Pure]
         public ImmutableArray<byte> ByteArray => _key.ToImmutableArray();
 

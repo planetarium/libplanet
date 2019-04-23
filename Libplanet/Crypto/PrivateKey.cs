@@ -37,8 +37,8 @@ namespace Libplanet.Crypto
     /// <para>Every <see cref="PrivateKey"/> object is immutable.</para>
     /// </remarks>
     /// <seealso cref="Libplanet.Crypto.PublicKey"/>
-    [Uno.GeneratedEquality]
-    public partial class PrivateKey
+    [Equals]
+    public class PrivateKey
     {
         private readonly ECPrivateKeyParameters keyParam;
 
@@ -88,7 +88,7 @@ namespace Libplanet.Crypto
         /// this private key.
         /// </summary>
         [Pure]
-        [Uno.EqualityIgnore]
+        [IgnoreDuringEquals]
         public PublicKey PublicKey
         {
             get
@@ -121,7 +121,6 @@ namespace Libplanet.Crypto
         /// </remarks>
         /// <seealso cref="PrivateKey(byte[])"/>
         [Pure]
-        [Uno.EqualityKey]
         public byte[] ByteArray => keyParam.D.ToByteArrayUnsigned();
 
         /// <summary>

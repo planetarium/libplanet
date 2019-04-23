@@ -28,6 +28,7 @@
 _UpgradeReport_Files/
 [Pp]ackages/
 mono_crash.*.json
+FodyWeavers.xsd
 
 Thumbs.db
 Desktop.ini
