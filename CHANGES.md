@@ -35,6 +35,12 @@ To be released.
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
     default behavior of `object` class.
+ -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
+    related classes method parameters and field types have changed accordingly.
+ -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
+ -  Added `HashDigest.LessThanTarget()` method.  [[#213]]
+ -  `BlockPolicy<T>` constructor became to receive the minimum difficulty and
+    the mining difficulty bound divisor.  [[#213]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
@@ -58,6 +64,8 @@ To be released.
     became to validate only the next block to be appended.  [[#210]]
  -  Improved `BlockChain<T>.Fork()` performance by avoiding double validation
     of already validated blocks.  [[#215]]
+ -  The calculation algorithm of `BlockPolicy<T>.GetNextBlockDifficulty()`
+    method is changed.  [[#213]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
@@ -67,6 +75,7 @@ To be released.
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
 [#210]: https://github.com/planetarium/libplanet/pull/210
+[#213]: https://github.com/planetarium/libplanet/pull/213
 [#215]: https://github.com/planetarium/libplanet/pull/215
 
 
