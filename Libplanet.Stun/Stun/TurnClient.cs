@@ -213,19 +213,27 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             while (true)
             {
-                StunMessage message = await StunMessage.Parse(stream);
+                try
+                {
+                    StunMessage message = await StunMessage.Parse(stream);
 
-                if (_connectAttempted != null &&
-                    message is ConnectionAttempt attempt)
-                {
-                    _connectAttempted.SetResult(attempt);
+                    if (_connectAttempted != null &&
+                        message is ConnectionAttempt attempt)
+                    {
+                        _connectAttempted.SetResult(attempt);
+                    }
+                    else if (_responses.TryGetValue(
+                        message.TransactionId,
+                        out TaskCompletionSource<StunMessage> tcs))
+                    {
+                        tcs.SetResult(message);
+                        _responses.Remove(message.TransactionId);
+                    }
                 }
-                else if (_responses.TryGetValue(
-                    message.TransactionId,
-                    out TaskCompletionSource<StunMessage> tcs))
+                catch (Exception)
                 {
-                    tcs.SetResult(message);
-                    _responses.Remove(message.TransactionId);
+                    // Ignore the exception and retry.
+                    // FIXME add logging framework and a proper log message.
                 }
             }
         }
