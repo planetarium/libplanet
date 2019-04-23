@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
-using Uno.Extensions;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
@@ -17,8 +16,9 @@ namespace Libplanet.Tx
 
                 signer: info.GetValue<byte[]>("signer"),
                 publicKey: info.GetValue<byte[]>("public_key"),
-                updatedAddresses: info.GetValue<byte[]>("updated_addresses")
-                    .GroupBy(Address.Size).Select(a => a.ToArray()).ToArray(),
+                updatedAddresses: To2dArray(
+                    info.GetValue<byte[]>("updated_addresses"),
+                    Address.Size),
                 timestamp: info.GetString("timestamp"),
                 signature: info.GetValue<byte[]>("signature"),
                 actions: info.GetValue<IEnumerable>(
@@ -65,8 +65,9 @@ namespace Libplanet.Tx
         public RawTransaction(Dictionary<string, object> dict)
         {
             Signer = (byte[])dict["signer"];
-            UpdatedAddresses = ((byte[])dict["updated_addresses"])
-                .GroupBy(Address.Size).Select(a => a.ToArray()).ToArray();
+            UpdatedAddresses = To2dArray(
+                (byte[])dict["updated_addresses"],
+                Address.Size);
             PublicKey = (byte[])dict["public_key"];
             Timestamp = (string)dict["timestamp"];
             Actions = ((IEnumerable)dict["actions"])
@@ -186,6 +187,27 @@ namespace Libplanet.Tx
   {nameof(UpdatedAddresses)} = {updatedAddresses}
   {nameof(Timestamp)} = {Timestamp}
   {nameof(Signature)} = {ByteUtil.Hex(Signature)}";
+        }
+
+        private static T[][] To2dArray<T>(T[] array, int chunk)
+        {
+            if (array.Length % chunk > 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(array),
+                    $"The array length must be multiples of {chunk}."
+                );
+            }
+
+            int resultLength = array.Length / chunk;
+            T[][] result = new T[resultLength][];
+            for (int i = 0; i < resultLength; i++)
+            {
+                result[i] = new T[chunk];
+                Array.Copy(array, i * chunk, result[i], 0, chunk);
+            }
+
+            return result;
         }
     }
 }
