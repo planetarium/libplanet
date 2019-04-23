@@ -50,6 +50,7 @@ To be released.
  -  Improved connection stability of TURN relay.
  -  Instead of validating the entire blocks, `BlockChain<T>.Append()` method
     became to validate only the next block to be appended.  [[#210]]
+ -  Improved `BlockChain<T>.Fork()` performance by omitting unnecessary validation.
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187

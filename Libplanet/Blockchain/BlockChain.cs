@@ -421,7 +421,6 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            forked.Validate(forked, currentTime);
             return forked;
         }
 
