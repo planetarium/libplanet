@@ -163,7 +163,6 @@ script:
 - dotnet test -c Release -v n
 
 # Run unit tests with coverage report
-- cat codecov.yml | curl --data-binary @- https://codecov.io/validate
 - |
   if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
     dotnet build -c Debug
