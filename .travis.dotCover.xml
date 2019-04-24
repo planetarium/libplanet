@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Configuration for dotCover.  It is intended to be used when
-Travis CI executes dotCover.  $ASSEMBLY is a placeholder
+Travis CI executes dotCover.  $SOLUTION is a placeholder
 to be replaced using sed. -->
 <CoverageParams>
-  <TargetExecutable>C:\ProgramData\chocolatey\bin\xunit.console.exe</TargetExecutable>
-  <TargetArguments>$ASSEMBLY -diagnostics</TargetArguments>
+  <TargetExecutable>C:\Program Files\dotnet\dotnet.exe</TargetExecutable>
+  <TargetArguments>test -c Debug -v n $SOLUTION</TargetArguments>
   <TargetWorkingDir></TargetWorkingDir>
   <ReportType>DetailedXML</ReportType>
-  <Output>$ASSEMBLY.cov.xml</Output>
+  <Output>Libplanet.cov.xml</Output>
   <Filters>
     <IncludeFilters>
       <FilterEntry>
         <ModuleMask>Libplanet</ModuleMask>
-        <ModuleMask>Libplanet.Stun</ModuleMask>
       </FilterEntry>
     </IncludeFilters>
     <ExcludeFilters>

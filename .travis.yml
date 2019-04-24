@@ -82,7 +82,7 @@ install:
     mv */*.exe */*.dll /c/Windows/
     popd
 
-    # Tools for test coverage (dotcover-clt, codecov-exe, xunit)
+    # Tools for test coverage (dotcover-clt, codecov-exe)
     if [[ "$CODECOV_TOKEN" != "" ]]; then
       mkdir /tmp/dotcover
       pushd /tmp
@@ -95,7 +95,7 @@ install:
       rm JetBrains.dotCover.CommandLineTools.*.zip
       popd
 
-      choco install codecov xunit
+      choco install codecov
     fi
   fi
   set +ev
@@ -166,16 +166,13 @@ script:
 - |
   if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
     dotnet build -c Debug
-    for assembly in *.Tests/bin/Debug/*/*.Tests.dll; do
-      echo "$assembly:"
-      dotCover_config="$(cat .travis.dotCover.xml)"
-      assembly_abspath="$(cygpath -w "$(pwd)/$assembly")"
-      echo "${dotCover_config//\$ASSEMBLY/$assembly_abspath}" \
-        > "$assembly.dotCover.xml"
-      dotCover.exe cover "$assembly.dotCover.xml"
-      # Upload report to Codecov.io
-      codecov.exe -f "$assembly.cov.xml" -t "$CODECOV_TOKEN"
-    done
+    solution_abspath="$(cygpath -w "$(pwd)"/Libplanet.sln)"
+    dotCover_config="$(cat .travis.dotCover.xml)"
+    echo "${dotCover_config//\$SOLUTION/$solution_abspath}" \
+      > dotCover.xml
+    dotCover.exe cover dotCover.xml
+    # Upload report to Codecov.io
+    codecov.exe -f Libplanet.cov.xml -t "$CODECOV_TOKEN"
   fi
 
 # Build Libplanet.*.nupkg
