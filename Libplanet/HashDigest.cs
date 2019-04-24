@@ -15,8 +15,7 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
-    [Equals]
-    public struct HashDigest<T>
+    public struct HashDigest<T> : IEquatable<HashDigest<T>>
         where T : HashAlgorithm
     {
         /// <summary>
@@ -193,6 +192,43 @@ namespace Libplanet
         public override string ToString()
         {
             return ByteUtil.Hex(ToByteArray());
+        }
+
+        [Pure]
+        public override bool Equals(object obj)
+        {
+            return obj is IEquatable<HashDigest<T>> other
+                ? other.Equals(this)
+                : false;
+        }
+
+        [Pure]
+        public override int GetHashCode()
+        {
+            int code = 0;
+            unchecked
+            {
+                foreach (byte b in ByteArray)
+                {
+                    code = (code * 397) ^ b.GetHashCode();
+                }
+            }
+
+            return code;
+        }
+
+        [Pure]
+        bool IEquatable<HashDigest<T>>.Equals(HashDigest<T> other)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                if (!ByteArray[i].Equals(other.ByteArray[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 

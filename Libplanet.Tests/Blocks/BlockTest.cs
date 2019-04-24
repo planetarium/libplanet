@@ -525,11 +525,8 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(sameBlock1, sameBlock2);
             Assert.NotEqual(sameBlock2, differentBlock);
 
-            Assert.True(sameBlock1 == sameBlock2);
-            Assert.False(sameBlock2 == differentBlock);
-
-            Assert.False(sameBlock1 != sameBlock2);
-            Assert.True(sameBlock2 != differentBlock);
+            Assert.True(sameBlock1.Equals(sameBlock2));
+            Assert.False(sameBlock2.Equals(differentBlock));
         }
     }
 }
