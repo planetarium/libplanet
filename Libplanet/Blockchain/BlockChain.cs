@@ -267,23 +267,14 @@ namespace Libplanet.Blockchain
 
         public void StageTransactions(ISet<Transaction<T>> txs)
         {
-            try
+            foreach (Transaction<T> tx in txs)
             {
-                _rwlock.EnterWriteLock();
-
-                foreach (Transaction<T> tx in txs)
-                {
-                    Transactions[tx.Id] = tx;
-                }
-
-                Store.StageTransactionIds(
-                    txs.Select(tx => tx.Id).ToImmutableHashSet()
-                );
+                Transactions[tx.Id] = tx;
             }
-            finally
-            {
-                _rwlock.ExitWriteLock();
-            }
+
+            Store.StageTransactionIds(
+                txs.Select(tx => tx.Id).ToImmutableHashSet()
+            );
         }
 
         public Block<T> MineBlock(
