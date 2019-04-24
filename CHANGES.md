@@ -47,8 +47,13 @@ To be released.
     given.
  -  Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
     minutes.
+ -  Fixed a bug that a TURN connection had turned unavailable after
+    it once failed to parse a message (due to a corrupted packet).
+    [[#215]]
  -  Instead of validating the entire blocks, `BlockChain<T>.Append()` method
     became to validate only the next block to be appended.  [[#210]]
+ -  Improved `BlockChain<T>.Fork()` performance by avoiding double validation
+    of already validated blocks.  [[#215]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
@@ -58,6 +63,7 @@ To be released.
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
 [#210]: https://github.com/planetarium/libplanet/pull/210
+[#215]: https://github.com/planetarium/libplanet/pull/215
 
 
 Version 0.2.2
