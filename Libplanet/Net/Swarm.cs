@@ -737,20 +737,32 @@ namespace Libplanet.Net
         {
             while (Running)
             {
-                NetworkStream stream =
-                    await _turnClient.AcceptRelayedStreamAsync();
-
-                #pragma warning disable CS4014
-                Task.Run(async () =>
+                try
                 {
-                    using (var proxy = new NetworkStreamProxy(stream))
+                    NetworkStream stream =
+                        await _turnClient.AcceptRelayedStreamAsync();
+
+                    // TODO We should expose the interface so that library users
+                    // can limit / manage the task.
+#pragma warning disable CS4014
+                    Task.Run(async () =>
                     {
-                        await proxy.StartAsync(
-                            IPAddress.Loopback,
-                            _listenPort.Value);
-                    }
-                });
-                #pragma warning restore CS4014
+                        using (var proxy = new NetworkStreamProxy(stream))
+                        {
+                            await proxy.StartAsync(
+                                IPAddress.Loopback,
+                                _listenPort.Value);
+                        }
+                    });
+#pragma warning restore CS4014
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        $"Unexpected exception occured. try again"
+                    );
+                }
             }
         }
 

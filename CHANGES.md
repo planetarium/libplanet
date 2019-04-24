@@ -47,6 +47,7 @@ To be released.
     given.
  -  Fixed a bug that TURN relay had been disconnected when being connected for longer than 5
     minutes.
+ -  Improved connection stability of TURN relay.
  -  Instead of validating the entire blocks, `BlockChain<T>.Append()` method
     became to validate only the next block to be appended.  [[#210]]
 
