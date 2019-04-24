@@ -327,7 +327,7 @@ namespace Libplanet.Blockchain
         )
         {
             _rwlock.EnterUpgradeableReadLock();
-            IEnumerable<ActionEvaluation<T>> evaledActions;
+            ActionEvaluation<T>[] evaluations;
             try
             {
                 HashDigest<SHA256>? tip =
@@ -344,11 +344,12 @@ namespace Libplanet.Blockchain
                     throw e;
                 }
 
+                evaluations = EvaluateActions(block);
                 _rwlock.EnterWriteLock();
                 try
                 {
                     Blocks[block.Hash] = block;
-                    evaledActions = EvaluateActions(block);
+                    SetStates(block.Hash, evaluations);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -369,7 +370,7 @@ namespace Libplanet.Blockchain
 
             if (render)
             {
-                foreach (var evaluation in evaledActions)
+                foreach (var evaluation in evaluations)
                 {
                     evaluation.Action.Render(
                         evaluation.InputContext,
@@ -584,11 +585,10 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private IEnumerable<ActionEvaluation<T>>
-        EvaluateActions(Block<T> block)
+        private ActionEvaluation<T>[] EvaluateActions(Block<T> block)
         {
             HashDigest<SHA256>? prevHash = block.PreviousHash;
-            var tuples = block.EvaluateActionsPerTx(address =>
+            return block.EvaluateActionsPerTx(address =>
             {
                 IImmutableDictionary<Address, object> result =
                     GetStates(new[] { address }, prevHash);
@@ -600,19 +600,24 @@ namespace Libplanet.Blockchain
                 {
                     return null;
                 }
-            }).ToArray();
-            IAccountStateDelta lastStates = tuples.Any()
-                ? tuples[tuples.Length - 1].Item2.OutputStates
-                : null;
+            }).Select(t => t.Item2).ToArray();
+        }
 
+        private void SetStates(
+            HashDigest<SHA256> blockHash,
+            IReadOnlyList<ActionEvaluation<T>> actionEvaluations)
+        {
+            IAccountStateDelta lastStates = actionEvaluations.Count > 0
+                ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
+                : null;
             ImmutableHashSet<Address> updatedAddresses =
-                tuples.Select(
-                    t => t.Item2.OutputStates.UpdatedAddresses
+                actionEvaluations.Select(
+                    a => a.OutputStates.UpdatedAddresses
                 ).Aggregate(
                     ImmutableHashSet<Address>.Empty,
                     (a, b) => a.Union(b)
                 );
-            IImmutableDictionary<Address, object> totalDelta =
+            ImmutableDictionary<Address, object> totalDelta =
                 updatedAddresses.Select(
                     a => new KeyValuePair<Address, object>(
                         a,
@@ -621,11 +626,9 @@ namespace Libplanet.Blockchain
                 ).ToImmutableDictionary();
 
             Store.SetBlockStates(
-                block.Hash,
+                blockHash,
                 new AddressStateMap(totalDelta)
             );
-
-            return tuples.Select(t => t.Item2);
         }
     }
 }
