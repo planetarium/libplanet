@@ -38,9 +38,9 @@ To be released.
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
     related classes method parameters and field types have changed accordingly.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
- -  Added `HashDigest.LessThanTarget()` method.  [[#213]]
- -  `BlockPolicy<T>` constructor became to receive the minimum difficulty and
-    the mining difficulty bound divisor.  [[#213]]
+ -  Added `HashDigest.Satisfies()` method.  [[#213]]
+ -  `BlockPolicy<T>` constructor became to receive the `minimumDifficulty`
+    and the mining `difficultyBoundDivisor`.  [[#213]]
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
@@ -65,7 +65,11 @@ To be released.
  -  Improved `BlockChain<T>.Fork()` performance by avoiding double validation
     of already validated blocks.  [[#215]]
  -  The calculation algorithm of `BlockPolicy<T>.GetNextBlockDifficulty()`
-    method is changed.  [[#213]]
+    method was changed to the [Ethereum Homestead algorithm] except for the
+    difficulty bomb.  [[#213]]
+ -  The difficulty was changed from representing the number of leading zeros of
+    target number to representing a divisor to obtain the target number.
+    [[#213]]
 
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
@@ -77,6 +81,7 @@ To be released.
 [#210]: https://github.com/planetarium/libplanet/pull/210
 [#213]: https://github.com/planetarium/libplanet/pull/213
 [#215]: https://github.com/planetarium/libplanet/pull/215
+[Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 
 
 Version 0.2.2
