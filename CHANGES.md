@@ -75,6 +75,8 @@ To be released.
     longer than 5 minutes.  [[#198]]
  -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host`
     argument was given.  [[#198]]
+ -  Removed unnecessary writer lock on `BlockChain<T>.StageTransactions()`. [[#217]]
+ -  Improve concurrency of `BlockChain<T>.Append()`. [[#217]]
 
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#185]: https://github.com/planetarium/libplanet/pull/185
@@ -92,6 +94,7 @@ To be released.
 [#213]: https://github.com/planetarium/libplanet/pull/213
 [#215]: https://github.com/planetarium/libplanet/pull/215
 [#216]: https://github.com/planetarium/libplanet/pull/216
+[#217]: https://github.com/planetarium/libplanet/pull/217
 
 
 Version 0.2.2
