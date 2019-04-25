@@ -151,8 +151,8 @@ namespace Libplanet
                 return true;
             }
 
-            var target = new BigInteger(
-                Math.Pow(2, 256) / difficulty);
+            double maxTarget = Math.Pow(2, 256);
+            var target = new BigInteger(maxTarget / difficulty);
 
             // Add zero to convert unsigned BigInteger
             var result = new BigInteger(ByteArray.Add(0).ToArray());
