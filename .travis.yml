@@ -160,7 +160,7 @@ script:
   fi
 
 # Run unit tests
-- dotnet test -c Release -v n
+- travis_wait dotnet test -c Release -v n
 
 # Run unit tests with coverage report
 - |
@@ -170,7 +170,7 @@ script:
     dotCover_config="$(cat .travis.dotCover.xml)"
     echo "${dotCover_config//\$SOLUTION/$solution_abspath}" \
       > dotCover.xml
-    dotCover.exe cover dotCover.xml
+    travis_wait dotCover.exe cover dotCover.xml
     # Upload report to Codecov.io
     codecov.exe -f Libplanet.cov.xml -t "$CODECOV_TOKEN"
   fi
