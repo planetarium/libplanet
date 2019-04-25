@@ -7,7 +7,7 @@ Version 0.3.0
 To be released.
 
  -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
- -  `BlockChain<T>.Validate()` method became to receive 
+ -  `BlockChain<T>.Validate()` method became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
  -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
@@ -31,6 +31,10 @@ To be released.
     [[#204]], [[#206]]
  -  Added `BlockDownloadState` class to represent a block downloading state.
     [[#204]], [[#206]]
+ -  Removed `KeyEquals()` methods from all classes and structs.
+ -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
+    its `Equals(object)` method and `GetHashCode()` method became to have
+    default behavior of `object` class.
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN

@@ -12,20 +12,6 @@ if [[ "$TRAVIS_JOB_NUMBER" != *.1 ]]; then
   exit 0
 fi
 
-version="$(xmllint \
- --xpath './Project/PropertyGroup/Version/text()' \
- Libplanet/Libplanet.csproj)"
-if [[ "$TRAVIS_TAG" = "" && "$version" != *-dev ]]; then
-  # If we prepare a RC, at that time a package version does not end with
-  # "-dev" suffix, and Travis CI builds try to build a .nupkg file of
-  # a stable versionn number twice, because two builds for one commit
-  # are made: one for push to a branch, and another one is a tag push.
-  # So we need to avoid publishing .nupkg to NuGet for stable version numbers
-  # when it is not a tag push.
-  echo "Publishing to NuGet will be done at a tag build." > /dev/stderr
-  exit 0
-fi
-
 if [[ "$NUGET_API_KEY" = "" ]]; then
   echo "This script is skipped if NUGET_API_KEY envrionment variable is not" \
        "present." > /dev/stderr
@@ -34,15 +20,19 @@ fi
 
 set -ev
 
-curl -o /tmp/nuget.exe \
-  https://dist.nuget.org/win-x86-commandline/v5.0.0-preview4/nuget.exe
+if [[ "$TRAVIS_TAG" = "" ]]; then
+  # If it's not a tag push, ensure only suffixed versions are uploaded.
+  version_prefix="$(xmllint \
+   --xpath './Project/PropertyGroup/VersionPrefix/text()' \
+   Libplanet/Libplanet.csproj)"
+  rm -f "Libplanet/bin/Release/Libplanet.$version_prefix.nupkg"
+fi
 
 if compgen -G "Libplanet/bin/Release/Libplanet.*.nupkg" > /dev/null; then
   for f in Libplanet/bin/Release/Libplanet.*.nupkg; do
-    mono /tmp/nuget.exe push \
+    dotnet nuget push \
       "$f" \
-      -ApiKey "$NUGET_API_KEY" \
-      -NonInteractive \
-      -Source https://api.nuget.org/v3/index.json
+      --api-key "$NUGET_API_KEY" \
+      --source https://api.nuget.org/v3/index.json
   done
 fi

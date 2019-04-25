@@ -11,7 +11,6 @@ using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
-using Uno.Extensions;
 
 namespace Libplanet.Tx
 {
@@ -470,7 +469,7 @@ namespace Libplanet.Tx
         {
             int seed =
                 BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                (Signature.Empty() ? 0 : BitConverter.ToInt32(Signature, 0));
+                (Signature.Any() ? BitConverter.ToInt32(Signature, 0) : 0);
             IAccountStateDelta states = previousStates;
             foreach (T action in Actions)
             {

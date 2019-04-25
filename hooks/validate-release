@@ -16,9 +16,9 @@ fi
 
 version="$1"
 
-if [[ "$version" = *-dev ]]; then
+if [[ "$version" = *-* ]]; then
   {
-    echo "$0: error: the version number must not end with -dev suffix:"
+    echo "$0: error: the version number must not end with any suffix:"
     echo "  $version"
   } > /dev/stderr
   exit 1
@@ -27,15 +27,15 @@ fi
 csproj="$root/Libplanet/Libplanet.csproj"
 if command -v xmllint > /dev/null; then
   csproj_version="$(xmllint \
-    --xpath './Project/PropertyGroup/Version/text()' \
+    --xpath './Project/PropertyGroup/VersionPrefix/text()' \
     "$csproj")"
 else
-  version_regex='<Version>([0-9]+\.[0-9]+\.[0-9]+)</Version>'
-  if [[ "$(grep '<Version>[^>]*</Version>' "$csproj")" =~ $version_regex ]]
+  regex='<VersionPrefix>([0-9]+\.[0-9]+\.[0-9]+)</VersionPrefix>'
+  if [[ "$(grep '<VersionPrefix>[^>]*</VersionPrefix>' "$csproj")" =~ $regex ]]
   then
     csproj_version="${BASH_REMATCH[1]}"
   else
-    echo "$0: error: failed to find <Version> tag from $csproj file" \
+    echo "$0: error: failed to find <VersionPrefix> tag from $csproj file" \
       > /dev/stderr
     exit 1
   fi

@@ -24,8 +24,8 @@ namespace Libplanet.Crypto
     /// <remarks>Every <see cref="PublicKey"/> object is immutable.</remarks>
     /// <seealso cref="PrivateKey"/>
     /// <seealso cref="Address"/>
-    [Uno.GeneratedEquality]
-    public partial class PublicKey
+    [Equals]
+    public class PublicKey
     {
         /// <summary>
         /// Creates a <see cref="PublicKey"/> instance from the given
@@ -51,7 +51,6 @@ namespace Libplanet.Crypto
             KeyParam = keyParam;
         }
 
-        [Uno.EqualityKey]
         internal ECPublicKeyParameters KeyParam { get; }
 
         /// <summary>

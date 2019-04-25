@@ -4,11 +4,8 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "msbuild",
-      "args": [
-        "-r",
-        "-p:GenerateFullPaths=true"
-      ],
+      "command": "dotnet",
+      "args": ["build"],
       "group": "build",
       "presentation": {
         "reveal": "silent"
@@ -18,14 +15,8 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "msbuild",
-      "args": [
-        "-r",
-        "-p:GenerateFullPaths=true",
-        "-t:Build",
-        "-t:XunitTest",
-        "Libplanet.Tests"
-      ],
+      "command": "dotnet",
+      "args": ["test"],
       "group": "build",
       "presentation": {
         "reveal": "always",

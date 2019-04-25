@@ -7,7 +7,6 @@ using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
-using Uno.Disposables;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
 

@@ -48,7 +48,7 @@ namespace Libplanet.Store
                     throw new KeyNotFoundException();
                 }
 
-                Trace.Assert(tx?.Id == key);
+                Trace.Assert(key.Equals(tx?.Id));
                 tx?.Validate();
 
                 return tx;
@@ -56,7 +56,7 @@ namespace Libplanet.Store
 
             set
             {
-                if (value.Id != key)
+                if (!key.Equals(value.Id))
                 {
                     throw new InvalidTxIdException(
                         value.Id,

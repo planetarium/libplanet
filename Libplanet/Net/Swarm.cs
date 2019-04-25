@@ -27,8 +27,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    [Uno.GeneratedEquality]
-    public partial class Swarm : ICollection<Peer>, IDisposable
+    public class Swarm : ICollection<Peer>, IDisposable
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -169,7 +168,6 @@ namespace Libplanet.Net
 
         public DnsEndPoint EndPoint { get; private set; }
 
-        [Uno.EqualityKey]
         public Address Address => _privateKey.PublicKey.ToAddress();
 
         public Peer AsPeer =>
@@ -178,16 +176,12 @@ namespace Libplanet.Net
             : throw new SwarmException(
                 "Can't translate unbound Swarm to Peer.");
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaReceived { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent DeltaDistributed { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent TxReceived { get; }
 
-        [Uno.EqualityIgnore]
         public AsyncAutoResetEvent BlockReceived { get; }
 
         public DateTimeOffset LastReceived { get; private set; }
@@ -253,7 +247,7 @@ namespace Libplanet.Net
 
             foreach (Peer peer in peers)
             {
-                if (peer.PublicKey == publicKey)
+                if (peer.PublicKey.Equals(publicKey))
                 {
                     continue;
                 }
@@ -1000,7 +994,7 @@ namespace Libplanet.Net
                     "BlockHashes doesn't have sender address.");
             }
 
-            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address.Equals(from));
             if (peer == null)
             {
                 _logger.Information(
@@ -1060,7 +1054,7 @@ namespace Libplanet.Net
             );
 
             BlockChain<T> synced;
-            if (tip is null || branchPoint == tip.Hash)
+            if (tip is null || branchPoint.Equals(tip.Hash))
             {
                 _logger.Debug("it doesn't need fork.");
                 synced = blockChain;
@@ -1247,7 +1241,7 @@ namespace Libplanet.Net
                     "TxIds doesn't have sender address.");
             }
 
-            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address == from);
+            Peer peer = _peers.Keys.FirstOrDefault(p => p.Address.Equals(from));
             if (peer == null)
             {
                 _logger.Information(
@@ -1343,12 +1337,12 @@ namespace Libplanet.Net
 
         private bool IsUnknownPeer(Peer sender)
         {
-            if (_peers.Keys.All(p => sender.PublicKey != p.PublicKey))
+            if (_peers.Keys.All(p => !sender.PublicKey.Equals(p.PublicKey)))
             {
                 return true;
             }
 
-            if (_dealers.Keys.All(a => sender.Address != a))
+            if (_dealers.Keys.All(a => !sender.Address.Equals(a)))
             {
                 return true;
             }

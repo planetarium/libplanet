@@ -25,22 +25,20 @@ for purposes:
 Prerequisites
 -------------
 
-If you use Linux or macOS you need [Mono], which provides C# compiler and
-.NET VM.  You could install it by `sudo apt install mono-devel` command
-if you use Ubuntu Linux.  If you use macOS and [Homebrew], you can install
-it by `brew cask install mono-mdk` command.
+You need [.NET Core] SDK 2.2+ which provides the latest C# compiler and .NET VM.
+Read and follow the instruction to install .NET Core SDK on
+the [.NET Core downloads page][1].
+FYI if you use macOS and [Homebrew] you can install it by
+`brew cask install dotnet-sdk` command.
 
-If you are on Windows you need things like C# compiler included in
-[Build Tools for Visual Studio 2017][1].  Choose the following workloads
-during installation:
+Make sure that your .NET Core SDK is 2.2 or higher.  You could show
+the version you are using by `dotnet --info` command.
 
- -  <q>Windows</q> → <q>.NET desktop build tools</q>
- -  <q>Other Toolsets</q> → <q>.NET Core build tools</q>
-
-These tools should bring MSBuild, the Libplanet project uses to build, as well.
-Check if `msbuild` is available on the shell or Command Prompt.  If it fails
-to find command named `msbuild` it might be not installed correctly or its
-directory might be missing in the `PATH` environment.
+If it's Windows please check if the environment variable named
+`MSBuildSDKsPath` refers to the proper version of .NET Core SDK.
+If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
+at the highest.  .NET Core SDK higher than the version 2.2.105 is not
+recognized Visual Studio 2017.
 
 Although it is not necessary, you should install a proper IDE for .NET
 (or an [OmniSharp] extension for your favorite editor — except it takes
@@ -52,11 +50,11 @@ Unless you already have your favorite setup, we recommend you to use
 made .NET as well.  So Visual Studio Code has a [first-party C# extension][2]
 which works well together.
 
-[Mono]: https://www.mono-project.com/
+[.NET Core]: https://dot.net/
 [Homebrew]: https://brew.sh/
 [OmniSharp]: http://www.omnisharp.net/
 [Visual Studio Code]: https://code.visualstudio.com/
-[1]: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017
+[1]: https://dotnet.microsoft.com/download
 [2]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp
 
 
@@ -64,9 +62,9 @@ Build
 -----
 
 The following command installs dependencies (required library packages) and
-builds the *Libplanet* project:
+builds the entire *Libplanet* solution:
 
-    msbuild -r Libplanet
+    dotnet build
 
 
 Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=master)][Travis CI] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][2]
@@ -86,10 +84,9 @@ one in *Libplanet* or *Libplanet.Stun* projects.
 If there's *Libplanet.Foo.Bar* class there also should be
 *Libplanet.Tests.Foo.BarTest* to test it.
 
-To build and run unit tests at a time execute the below commands:
+To build and run unit tests at a time execute the below command:
 
-    msbuild -r -t:Build,XunitTest Libplanet.Tests
-    msbuild -r -t:Build,XunitTest Libplanet.Stun.Tests
+    dotnet test
 
 [Travis CI]: https://travis-ci.com/planetarium/libplanet
 [2]: https://codecov.io/gh/planetarium/libplanet
