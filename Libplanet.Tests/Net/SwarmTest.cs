@@ -166,11 +166,11 @@ namespace Libplanet.Tests.Net
                         Log.Debug(
                             $"Block mined. " +
                             $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
-                        await swarm.BroadcastBlocksAsync(new[] { block });
+                        swarm.BroadcastBlocks(new[] { block });
                         await Task.Delay(delay);
                     }
 
-                    await swarm.BroadcastBlocksAsync(new[] { chain.Last() });
+                    swarm.BroadcastBlocks(new[] { chain.Last() });
                     Log.Debug("Mining complete.");
                 });
             }
@@ -550,7 +550,7 @@ namespace Libplanet.Tests.Net
                 await EnsureExchange(swarmA, swarmC);
                 await EnsureExchange(swarmB, swarmC);
 
-                await swarmA.BroadcastTxsAsync(new[] { tx });
+                swarmA.BroadcastTxs(new[] { tx });
 
                 await swarmC.TxReceived.WaitAsync();
                 await swarmB.TxReceived.WaitAsync();
@@ -608,7 +608,7 @@ namespace Libplanet.Tests.Net
                 await EnsureExchange(swarmA, swarmC);
                 await EnsureExchange(swarmB, swarmC);
 
-                await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
+                swarmB.BroadcastBlocks(new[] { chainB.Last() });
 
                 await swarmC.BlockReceived.WaitAsync();
                 await swarmA.BlockReceived.WaitAsync();
@@ -619,7 +619,7 @@ namespace Libplanet.Tests.Net
                 // than chainA
                 Assert.NotEqual(chainB.AsEnumerable(), chainA);
 
-                await swarmA.BroadcastBlocksAsync(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
 
                 await swarmB.BlockReceived.WaitAsync();
                 await swarmC.BlockReceived.WaitAsync();
