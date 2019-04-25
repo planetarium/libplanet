@@ -60,7 +60,7 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="AsyncEnumerator" Version="2.2.1" />
     <PackageReference Include="Bencodex" Version="0.1.0" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
-    <PackageReference Include="Equals.Fody" Version="1.9.3" />
+    <PackageReference Include="Equals4.Fody" Version="1.9.6" />
     <PackageReference Include="Fody" Version="4.2.1">
       <!-- Fody 5.0.0 dropped MSBuild 15 support. -->
       <PrivateAssets>all</PrivateAssets>
