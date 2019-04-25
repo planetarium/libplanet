@@ -16,36 +16,73 @@ namespace Libplanet.Blockchain.Policies
     {
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/> in milliseconds.
+        /// <see cref="BlockInterval"/> in milliseconds,
+        /// <see cref="MinimumDifficulty"/> and
+        /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
         /// <param name="blockIntervalMilliseconds">Configures
         /// <see cref="BlockInterval"/> in milliseconds.
         /// 5000 milliseconds by default.
         /// </param>
-        public BlockPolicy(int blockIntervalMilliseconds = 5000)
+        /// <param name="minimumDifficulty">Configures
+        /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
+        /// <param name="difficultyBoundDivisor">Configures
+        /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
+        public BlockPolicy(
+            int blockIntervalMilliseconds = 5000,
+            long minimumDifficulty = 1024,
+            int difficultyBoundDivisor = 128)
             : this(
-                TimeSpan.FromMilliseconds(blockIntervalMilliseconds)
-            )
+                TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
+                minimumDifficulty,
+                difficultyBoundDivisor)
         {
         }
 
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
-        /// <see cref="BlockInterval"/>.
+        /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
+        /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
         /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
         /// </param>
-        public BlockPolicy(TimeSpan blockInterval)
+        /// <param name="minimumDifficulty">Configures
+        /// <see cref="MinimumDifficulty"/>.</param>
+        /// <param name="difficultyBoundDivisor">Configures
+        /// <see cref="DifficultyBoundDivisor"/>.</param>
+        public BlockPolicy(
+            TimeSpan blockInterval,
+            long minimumDifficulty,
+            int difficultyBoundDivisor)
         {
             if (blockInterval < TimeSpan.Zero)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(blockInterval),
-                    "Interval between blocks cannot be negative."
-                );
+                    "Interval between blocks cannot be negative.");
+            }
+
+            if (minimumDifficulty < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(minimumDifficulty),
+                    "Minimum difficulty must be greater than 0.");
+            }
+
+            if (minimumDifficulty <= difficultyBoundDivisor)
+            {
+                const string message =
+                    "Difficulty bound divisor must be less than " +
+                    "the minimum difficulty.";
+
+                throw new ArgumentOutOfRangeException(
+                    nameof(difficultyBoundDivisor),
+                    message);
             }
 
             BlockInterval = blockInterval;
+            MinimumDifficulty = minimumDifficulty;
+            DifficultyBoundDivisor = difficultyBoundDivisor;
         }
 
         /// <summary>
@@ -58,13 +95,17 @@ namespace Libplanet.Blockchain.Policies
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
+        private long MinimumDifficulty { get; }
+
+        private int DifficultyBoundDivisor { get; }
+
         /// <inheritdoc/>
         public InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks,
             Block<T> nextBlock)
         {
             int index = blocks.Count;
-            int difficulty = index < 2 ? index : GetNextBlockDifficulty(blocks);
+            long difficulty = GetNextBlockDifficulty(blocks);
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -113,24 +154,37 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
+        public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
         {
             int index = blocks.Count;
 
-            if (index <= 1)
+            if (index < 0)
             {
-                return index;
+                throw new InvalidBlockIndexException(
+                    $"index must be 0 or more, but its index is {index}.");
             }
 
+            if (index <= 1)
+            {
+                return index == 0 ? 0 : MinimumDifficulty;
+            }
+
+            var prevBlock = blocks[index - 1];
+
             DateTimeOffset prevPrevTimestamp = blocks[index - 2].Timestamp;
-            DateTimeOffset prevTimestamp = blocks[index - 1].Timestamp;
-            int prevDifficulty = blocks[index - 1].Difficulty;
+            DateTimeOffset prevTimestamp = prevBlock.Timestamp;
+            TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
+            long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;
+            const long minimumMultiplier = -99;
+            long multiplier = 1 - (timeDiffMilliseconds /
+                                   (long)BlockInterval.TotalMilliseconds);
+            multiplier = Math.Max(multiplier, minimumMultiplier);
 
-            bool needMore = prevTimestamp - prevPrevTimestamp < BlockInterval;
+            var prevDifficulty = prevBlock.Difficulty;
+            var offset = prevDifficulty / DifficultyBoundDivisor;
+            long nextDifficulty = prevDifficulty + (offset * multiplier);
 
-            return Math.Max(
-                needMore ? prevDifficulty + 1 : prevDifficulty - 1,
-                1);
+            return Math.Max(nextDifficulty, MinimumDifficulty);
         }
     }
 }

@@ -391,19 +391,18 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidNonce()
         {
+            const int easyDifficulty = 4;
             var invalidBlock = new Block<PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
-                difficulty: _fx.Next.Difficulty,
+                difficulty: easyDifficulty,
                 nonce: new Nonce(new byte[] { 0x00 }),
                 miner: _fx.Next.Miner,
                 previousHash: _fx.Next.PreviousHash,
                 timestamp: _fx.Next.Timestamp,
-                transactions: _fx.Next.Transactions
-            );
+                transactions: _fx.Next.Transactions);
 
             Assert.Throws<InvalidBlockNonceException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow)
-            );
+                invalidBlock.Validate(DateTimeOffset.UtcNow));
         }
 
         [Fact]

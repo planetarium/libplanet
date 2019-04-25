@@ -21,12 +21,12 @@ namespace Libplanet
         /// should not vary for different <paramref name="nonce"/>s.</para>
         /// </summary>
         /// <param name="nonce">An arbitrary nonce for an attempt, provided
-        /// by <see cref="Hashcash.Answer(Stamp, int)"/> method.</param>
+        /// by <see cref="Hashcash.Answer(Stamp, long)"/> method.</param>
         /// <returns>A <see cref="byte"/> array determined from the given
         /// <paramref name="nonce"/>.  It should return consistently
         /// an equivalent array for equivalent <paramref name="nonce"/>
         /// values.</returns>
-        /// <seealso cref="Hashcash.Answer(Stamp, int)"/>
+        /// <seealso cref="Hashcash.Answer(Stamp, long)"/>
         /// <seealso cref="Nonce"/>
         public delegate byte[] Stamp(Nonce nonce);
 
@@ -40,12 +40,12 @@ namespace Libplanet
         /// <param name="stamp">A callback to get a &#x0201c;stamp&#x0201d;
         /// which is a <see cref="byte"/> array determined from a given
         /// <see cref="Nonce"/> value.</param>
-        /// <param name="difficulty">The minimum required number of
-        /// leading zero bits that a returned answer needs to have.</param>
+        /// <param name="difficulty">A number to calculate the target number
+        /// for which the returned answer should be less than.</param>
         /// <returns>A <see cref="Nonce"/> value which satisfies the given
         /// <paramref name="difficulty"/>.</returns>
         /// <seealso cref="Stamp"/>
-        public static Nonce Answer(Stamp stamp, int difficulty)
+        public static Nonce Answer(Stamp stamp, long difficulty)
         {
             var nonceBytes = new byte[10];
             var random = new Random();
@@ -54,7 +54,12 @@ namespace Libplanet
                 random.NextBytes(nonceBytes);
                 var nonce = new Nonce(nonceBytes);
                 var digest = Hash(stamp(nonce));
-                if (digest.HasLeadingZeroBits(difficulty))
+                if (difficulty == 0)
+                {
+                    return nonce;
+                }
+
+                if (digest.Satisfies(difficulty))
                 {
                     return nonce;
                 }

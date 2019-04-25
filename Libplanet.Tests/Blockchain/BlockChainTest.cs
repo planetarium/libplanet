@@ -370,7 +370,7 @@ namespace Libplanet.Tests.Blockchain
                 _exceptionToThrow = exceptionToThrow;
             }
 
-            public int GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
+            public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
                 blocks.Any() ? 1 : 0;
 
             public InvalidBlockException ValidateNextBlock(

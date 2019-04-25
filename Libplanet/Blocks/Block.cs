@@ -25,7 +25,7 @@ namespace Libplanet.Blocks
 
         public Block(
             long index,
-            int difficulty,
+            long difficulty,
             Nonce nonce,
             Address? miner,
             HashDigest<SHA256>? previousHash,
@@ -83,7 +83,7 @@ namespace Libplanet.Blocks
         public long Index { get; }
 
         [IgnoreDuringEquals]
-        public int Difficulty { get; }
+        public long Difficulty { get; }
 
         [IgnoreDuringEquals]
         public Nonce Nonce { get; }
@@ -102,7 +102,7 @@ namespace Libplanet.Blocks
 
         public static Block<T> Mine(
             long index,
-            int difficulty,
+            long difficulty,
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
@@ -344,7 +344,7 @@ namespace Libplanet.Blocks
                 }
             }
 
-            if (!Hash.HasLeadingZeroBits(Difficulty))
+            if (!Hash.Satisfies(Difficulty))
             {
                 throw new InvalidBlockNonceException(
                     $"hash ({Hash}) with the nonce ({Nonce}) does not " +
