@@ -1296,6 +1296,7 @@ namespace Libplanet.Net
 
             if (IsUnknownPeer(sender))
             {
+                _logger.Debug("The sender of delta is unknown.");
                 if (IsDifferentProtocolVersion(sender))
                 {
                     var args = new DifferentProtocolVersionEventArgs
@@ -1344,13 +1345,20 @@ namespace Libplanet.Net
 
         private bool IsUnknownPeer(Peer sender)
         {
-            if (_peers.Keys.All(p => !sender.PublicKey.Equals(p.PublicKey)))
+            Peer existing = _peers.Keys
+                .FirstOrDefault(p => sender.PublicKey.Equals(p.PublicKey));
+
+            if (existing is null)
             {
                 return true;
             }
 
-            if (_dealers.Keys.All(a => !sender.Address.Equals(a)))
+            if (!existing.EndPoint.Equals(sender.EndPoint))
             {
+                // Clear outdated existing peer.
+                _peers.Remove(existing);
+                CloseDealer(existing);
+
                 return true;
             }
 
