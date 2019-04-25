@@ -57,6 +57,30 @@ namespace Libplanet.Explorer.Controllers
                     resolve: ctx => ctx.Source.PreviousHash.ToString()
                 );
                 Field(x => x.Timestamp);
+                Field<ListGraphType<TransactionType>>("transactions");
+            }
+        }
+        public class TransactionType : ObjectGraphType<Transaction<T>>
+        {
+            public TransactionType()
+            {
+                Field<StringGraphType>(
+                    "Signer",
+                    resolve: ctx => ctx.Source.Signer.ToString()
+                );
+                Field<StringGraphType>(
+                    "PublicKey",
+                    resolve: ctx => ByteUtil.Hex(ctx.Source.PublicKey.Format(true))
+                );
+                Field<ListGraphType<StringGraphType>>(
+                    "UpdatedAddress",
+                    resolve: ctx => from address in ctx.Source.UpdatedAddresses select address.ToString()
+                );
+                Field<StringGraphType>(
+                    "Signature",
+                    resolve: ctx => ByteUtil.Hex(ctx.Source.Signature)
+                );
+                Field(x => x.Timestamp);
             }
         }
         public class BlocksQuery : ObjectGraphType
