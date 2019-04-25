@@ -77,21 +77,18 @@ Ask questions to <em>hack</em> Libplanet and to make a patch for it.</li>
 except you can speak Korean instead English here.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>If you use Linux or macOS you need <a href="https://www.mono-project.com/">Mono</a>, which provides C# compiler and
-.NET VM.  You could install it by <code>sudo apt install mono-devel</code> command
-if you use Ubuntu Linux.  If you use macOS and <a href="https://brew.sh/">Homebrew</a>, you can install
-it by <code>brew cask install mono-mdk</code> command.</p>
-<p>If you are on Windows you need things like C# compiler included in
-<a href="https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017">Build Tools for Visual Studio 2017</a>.  Choose the following workloads
-during installation:</p>
-<ul>
-<li><q>Windows</q> → <q>.NET desktop build tools</q></li>
-<li><q>Other Toolsets</q> → <q>.NET Core build tools</q></li>
-</ul>
-<p>These tools should bring MSBuild, the Libplanet project uses to build, as well.
-Check if <code>msbuild</code> is available on the shell or Command Prompt.  If it fails
-to find command named <code>msbuild</code> it might be not installed correctly or its
-directory might be missing in the <code>PATH</code> environment.</p>
+<p>You need <a href="https://dot.net/">.NET Core</a> SDK 2.2+ which provides the latest C# compiler and .NET VM.
+Read and follow the instruction to install .NET Core SDK on
+the <a href="https://dotnet.microsoft.com/download">.NET Core downloads page</a>.
+FYI if you use macOS and <a href="https://brew.sh/">Homebrew</a> you can install it by
+<code>brew cask install dotnet-sdk</code> command.</p>
+<p>Make sure that your .NET Core SDK is 2.2 or higher.  You could show
+the version you are using by <code>dotnet --info</code> command.</p>
+<p>If it's Windows please check if the environment variable named
+<code>MSBuildSDKsPath</code> refers to the proper version of .NET Core SDK.
+If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
+at the highest.  .NET Core SDK higher than the version 2.2.105 is not
+recognized Visual Studio 2017.</p>
 <p>Although it is not necessary, you should install a proper IDE for .NET
 (or an <a href="http://www.omnisharp.net/">OmniSharp</a> extension for your favorite editor — except it takes
 hours to properly configure and integrate with your editor).
@@ -102,8 +99,8 @@ made .NET as well.  So Visual Studio Code has a <a href="https://marketplace.vis
 which works well together.</p>
 <h2 id="build">Build</h2>
 <p>The following command installs dependencies (required library packages) and
-builds the <em>Libplanet</em> project:</p>
-<pre><code>msbuild -r Libplanet
+builds the entire <em>Libplanet</em> solution:</p>
+<pre><code>dotnet build
 </code></pre>
 <h2 id="tests-build-status-codecov">Tests <a href="https://travis-ci.com/planetarium/libplanet"><img src="https://travis-ci.com/planetarium/libplanet.svg?branch=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
@@ -117,9 +114,8 @@ Both depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace
 one in <em>Libplanet</em> or <em>Libplanet.Stun</em> projects.
 If there's <em>Libplanet.Foo.Bar</em> class there also should be
 <em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
-<p>To build and run unit tests at a time execute the below commands:</p>
-<pre><code>msbuild -r -t:Build,XunitTest Libplanet.Tests
-msbuild -r -t:Build,XunitTest Libplanet.Stun.Tests
+<p>To build and run unit tests at a time execute the below command:</p>
+<pre><code>dotnet test
 </code></pre>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
@@ -139,9 +135,6 @@ support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

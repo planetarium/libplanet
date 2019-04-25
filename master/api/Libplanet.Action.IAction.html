@@ -201,19 +201,14 @@ example.</p>
 
   <h3 id="properties">Properties
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/IAction.cs/#L146">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
   <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
 (or fields) of an action, so that they can be transmitted over
 network or saved to persistent storage.</p>
-<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
+<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
 later.</p>
 <p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
 </div>
@@ -232,7 +227,7 @@ later.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><p>A value which encodes this action's bound values (held
 by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">serializable</a>.</p>
 </td>
@@ -241,17 +236,12 @@ by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-u
   </table>
   <h5 id="Libplanet_Action_IAction_PlainValue_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a></div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a></div>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/IAction.cs/#L186">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
   <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
@@ -310,7 +300,7 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
   <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method should be deterministic:
 for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
-<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
+<p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
 <p>Also do not perform I/O operations such as file system access
@@ -320,15 +310,10 @@ or networking.  These bring an action indeterministic.</p>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/IAction.cs/#L157">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
+  <h4 id="Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property made), and then fills this action's properties (or fields)
 with the deserialized values.</p>
@@ -349,7 +334,7 @@ with the deserialized values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">plainValue</span></td>
         <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property) to be deserialized and assigned to this action's
@@ -358,7 +343,7 @@ properties (or fields).</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
+  <h5 id="Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
   </div>
@@ -369,12 +354,6 @@ properties (or fields).</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/IAction.cs/#L127" class="contribution-link">View Source</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

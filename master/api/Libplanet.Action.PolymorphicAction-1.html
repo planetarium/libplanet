@@ -91,35 +91,11 @@ compatibility issues on certain platforms, and is slightly slower.
     <h5>Implements</h5>
     <div><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Action_PolymorphicAction_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class PolymorphicAction&lt;T&gt; : IAction where T : IAction</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class PolymorphicAction&lt;T&gt; : object, IAction where T : IAction</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,13 +216,8 @@ public sealed class Heal : ActionBase
 
   <h3 id="constructors">Constructors
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L136">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor">PolymorphicAction()</h4>
   <div class="markdown level1 summary"><p>Do not use this constructor.
@@ -255,16 +226,10 @@ Use <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html#Libplanet_Ac
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete]
-public PolymorphicAction()</code></pre>
+    <pre><code class="lang-csharp hljs">public PolymorphicAction()</code></pre>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1__ctor__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.%23ctor(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L150">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1__ctor_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1__ctor__0_" data-uid="Libplanet.Action.PolymorphicAction`1.#ctor(`0)">PolymorphicAction(T)</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a> instance wrapping
@@ -314,13 +279,8 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
   </table>
   <h3 id="properties">Properties
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_InnerAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.InnerAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L159">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1_InnerAction_" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_InnerAction" data-uid="Libplanet.Action.PolymorphicAction`1.InnerAction">InnerAction</h4>
   <div class="markdown level1 summary"><p>The wrapped action object of <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>
@@ -346,19 +306,14 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L178">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1_PlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_PlainValue" data-uid="Libplanet.Action.PolymorphicAction`1.PlainValue">PlainValue</h4>
   <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
 (or fields) of an action, so that they can be transmitted over
 network or saved to persistent storage.</p>
-<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
+<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
 later.</p>
 <p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
 </div>
@@ -377,7 +332,7 @@ later.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><p>A value which encodes this action's bound values (held
 by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">serializable</a>.</p>
 </td>
@@ -386,17 +341,12 @@ by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-u
   </table>
   <h5 id="Libplanet_Action_PolymorphicAction_1_PlainValue_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;)</div>
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_IImmutableDictionary_System_String_System_Object__">LoadPlainValue</a>(<span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;)</div>
   </div>
   <h3 id="methods">Methods
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L220">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1_Execute_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.PolymorphicAction`1.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
   <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
@@ -455,7 +405,7 @@ See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</
   <h5 id="Libplanet_Action_PolymorphicAction_1_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This method should be deterministic:
 for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.</p>
-<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
+<p>For randomness, <em>never</em> use <see cref="!:System.Random"></see>
 nor any other PRNGs provided by other than Libplanet.
 Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.</p>
 <p>Also do not perform I/O operations such as file system access
@@ -465,15 +415,10 @@ or networking.  These bring an action indeterministic.</p>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
   </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L208">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue*"></a>
-  <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
+  <h4 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.PolymorphicAction`1.LoadPlainValue(IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
   <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property made), and then fills this action's properties (or fields)
 with the deserialized values.</p>
@@ -494,7 +439,7 @@ with the deserialized values.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="xref">IImmutableDictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
         <td><span class="parametername">plainValue</span></td>
         <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
 property) to be deserialized and assigned to this action's
@@ -503,19 +448,14 @@ properties (or fields).</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
+  <h5 id="Libplanet_Action_PolymorphicAction_1_LoadPlainValue_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
   </div>
   <h3 id="operators">Operators
   </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601.op_Implicit(%600)~Libplanet.Action.PolymorphicAction%7B%600%7D%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L202">View Source</a>
-  </span>
+  
+  
   <a id="Libplanet_Action_PolymorphicAction_1_op_Implicit_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit*"></a>
   <h4 id="Libplanet_Action_PolymorphicAction_1_op_Implicit__0__Libplanet_Action_PolymorphicAction__0_" data-uid="Libplanet.Action.PolymorphicAction`1.op_Implicit(`0)~Libplanet.Action.PolymorphicAction{`0}">Implicit(T to PolymorphicAction&lt;T&gt;)</h4>
   <div class="markdown level1 summary"><p>For convenience, an inner action <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> can be
@@ -591,12 +531,6 @@ is not annotated with <a class="xref" href="Libplanet.Action.ActionTypeAttribute
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/new/966cf17e2d4cba213da2414e310dbfbe8a2441d0/apiSpec/new?filename=Libplanet_Action_PolymorphicAction_1.md&amp;value=---%0Auid%3A%20Libplanet.Action.PolymorphicAction%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/966cf17e2d4cba213da2414e310dbfbe8a2441d0/Libplanet/Action/PolymorphicAction.cs/#L121" class="contribution-link">View Source</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
