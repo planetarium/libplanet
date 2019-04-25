@@ -151,11 +151,11 @@ namespace Libplanet
                 return true;
             }
 
-            BigInteger target = new BigInteger(
+            var target = new BigInteger(
                 Math.Pow(2, 256) / difficulty);
 
             // Add zero to convert unsigned BigInteger
-            BigInteger result = new BigInteger(ByteArray.Add(0).ToArray());
+            var result = new BigInteger(ByteArray.Add(0).ToArray());
 
             return result < target;
         }
