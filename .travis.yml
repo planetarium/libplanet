@@ -34,6 +34,7 @@ matrix:
       directories:
       - $HOME/.nuget/packages
       - $HOME/AppData/Local/NuGet/v3-cache
+      - $HOME/.ChocoCache
     filter_secrets: false  # https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
 
 solution: Libplanet.sln
@@ -60,6 +61,8 @@ install:
     brew update
     brew cask install powershell
   elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+    choco config set cacheLocation "$(cygpath -w "$HOME/.ChocoCache")"
+
     # .NET Core SDK 2.2+
     choco install dotnetcore-sdk
     dotnet --info
