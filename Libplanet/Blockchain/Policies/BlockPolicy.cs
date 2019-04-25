@@ -25,9 +25,9 @@ namespace Libplanet.Blockchain.Policies
         /// 5000 milliseconds by default.
         /// </param>
         /// <param name="minimumDifficulty">Configures
-        /// <see cref="MinimumDifficulty"/> 1024 by default.</param>
+        /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
         /// <param name="difficultyBoundDivisor">Configures
-        /// <see cref="DifficultyBoundDivisor"/> 128 by default.</param>
+        /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         public BlockPolicy(
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
@@ -66,14 +66,14 @@ namespace Libplanet.Blockchain.Policies
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(minimumDifficulty),
-                    "Minimum difficulty must be greater than 0");
+                    "Minimum difficulty must be greater than 0.");
             }
 
             if (minimumDifficulty <= difficultyBoundDivisor)
             {
                 const string message =
                     "Difficulty bound divisor must be less than " +
-                    "minimum difficulty";
+                    "the minimum difficulty.";
 
                 throw new ArgumentOutOfRangeException(
                     nameof(difficultyBoundDivisor),
