@@ -333,16 +333,15 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
   </table>
   
   
-  <a id="Libplanet_HashDigest_1_HasLeadingZeroBits_" data-uid="Libplanet.HashDigest`1.HasLeadingZeroBits*"></a>
-  <h4 id="Libplanet_HashDigest_1_HasLeadingZeroBits_System_Int32_" data-uid="Libplanet.HashDigest`1.HasLeadingZeroBits(System.Int32)">HasLeadingZeroBits(Int32)</h4>
-  <div class="markdown level1 summary"><p>Tests if a digest starts with the given number
-(i.e., <code data-dev-comment-type="paramref" class="paramref">bits</code>) of zero bits.</p>
-<p>Note that it is bitwise, not bytes.</p>
+  <a id="Libplanet_HashDigest_1_Satisfies_" data-uid="Libplanet.HashDigest`1.Satisfies*"></a>
+  <h4 id="Libplanet_HashDigest_1_Satisfies_System_Int64_" data-uid="Libplanet.HashDigest`1.Satisfies(System.Int64)">Satisfies(Int64)</h4>
+  <div class="markdown level1 summary"><p>Tests if a digest is less than the target computed for the given
+<code data-dev-comment-type="paramref" class="paramref">difficulty</code>).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasLeadingZeroBits(int bits)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Satisfies(long difficulty)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -355,9 +354,9 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">bits</span></td>
-        <td><p>The number of leading zero bits to test.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">difficulty</span></td>
+        <td><p>The difficulty to compute target number.</p>
 </td>
       </tr>
     </tbody>
@@ -373,10 +372,10 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p><code>true</code> only if a digest has leading zero bits of
-the given number (i.e., <code data-dev-comment-type="paramref" class="paramref">bits</code>), or more than that.
-If <code data-dev-comment-type="paramref" class="paramref">bits</code> is <code>0</code> it always returns
-<code>true</code>.   Otherwise, it returns <code>false</code>.</p>
+        <td><p><code>true</code> only if a digest is less than the target
+computed for the given <code data-dev-comment-type="paramref" class="paramref">difficulty</code>).
+If <code data-dev-comment-type="paramref" class="paramref">difficulty</code> is <code>0</code> it always returns
+<code>true</code>.</p>
 </td>
       </tr>
     </tbody>

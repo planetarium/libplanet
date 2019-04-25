@@ -93,6 +93,12 @@ initial blocks before <code>Swarm.StartAsync&lt;T&gt;()</code> being called.
 <li><code>Swarm</code> class now does not implement <code>IEquatable&lt;Swarm&gt;</code> anymore and
 its <code>Equals(object)</code> method and <code>GetHashCode()</code> method became to have
 default behavior of <code>object</code> class.</li>
+<li>The type of <code>Block&lt;T&gt;.Difficulty</code> is changed to <code>long</code> instead of <code>int</code>, and
+related classes method parameters and field types have changed accordingly.</li>
+<li>Removed <code>HashDigest.HasLeadingZeroBits()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+<li>Added <code>HashDigest.Satisfies()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+<li><code>BlockPolicy&lt;T&gt;</code> constructor became to receive the <code>minimumDifficulty</code>
+and the mining <code>difficultyBoundDivisor</code>.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
 <li>Improved overall read throughput of <code>BlockChain&lt;T&gt;</code> while blocks are being
 mined by <code>BlockChain&lt;T&gt;.MineBlock()</code>.</li>
 <li>Fixed a bug that <code>TurnClientException</code> had been thrown by Swarm when a STUN
@@ -116,6 +122,12 @@ it once failed to parse a message (due to a corrupted packet).
 became to validate only the next block to be appended.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Improved <code>BlockChain&lt;T&gt;.Fork()</code> performance by avoiding double validation
 of already validated blocks.  [<a href="https://github.com/planetarium/libplanet/pull/215">#215</a>]</li>
+<li>The calculation algorithm of <code>BlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code>
+method was changed to the <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md">Ethereum Homestead algorithm</a> except for the
+difficulty bomb.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+<li>The difficulty was changed from representing the number of leading zeros of
+target number to representing a divisor to obtain the target number.
+[<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>

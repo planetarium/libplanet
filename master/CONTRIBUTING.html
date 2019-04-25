@@ -117,6 +117,12 @@ If there's <em>Libplanet.Foo.Bar</em> class there also should be
 <p>To build and run unit tests at a time execute the below command:</p>
 <pre><code>dotnet test
 </code></pre>
+<h3 id="turn_server_url"><code>TURN_SERVER_URL</code></h3>
+<p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URL</code> environment variable
+is set (the value looks like <code>turn://user:password@host:3478/</code>)
+these tests also run.  Otherwise, these tests are skipped.</p>
+<p>FYI there are several TURN implementations like <a href="https://github.com/coturn/coturn">Coturn</a> and <a href="https://github.com/gortc/turn">gortc/turn</a>,
+or cloud offers like <a href="https://xirsys.com/">Xirsys</a>.</p>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
 static analyzers.  They are automatically executed together with <code>msbuild</code>,

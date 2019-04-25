@@ -113,14 +113,16 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   
   
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_System_Int32_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(System.Int32)">BlockPolicy(Int32)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_System_Int32_System_Int64_System_Int32_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(System.Int32,System.Int64,System.Int32)">BlockPolicy(Int32, Int64, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
-<a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a> in milliseconds.</p>
+<a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a> in milliseconds,
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(int blockIntervalMilliseconds = 5000)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(int blockIntervalMilliseconds = 5000, long minimumDifficulty = null, int difficultyBoundDivisor = 128)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -140,19 +142,34 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
 5000 milliseconds by default.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">minimumDifficulty</span></td>
+        <td><p>Configures
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span>. 1024 by default.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">difficultyBoundDivisor</span></td>
+        <td><p>Configures
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>. 128 by default.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   
   
   <a id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_TimeSpan_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(TimeSpan)">BlockPolicy(TimeSpan)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_TimeSpan_System_Int64_System_Int32_" data-uid="Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(TimeSpan,System.Int64,System.Int32)">BlockPolicy(TimeSpan, Int64, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html">BlockPolicy&lt;T&gt;</a> with configuring
-<a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>.</p>
+<a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>, <span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span> and
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BlockPolicy(TimeSpan blockInterval)</code></pre>
+    <pre><code class="lang-csharp hljs">public BlockPolicy(TimeSpan blockInterval, long minimumDifficulty, int difficultyBoundDivisor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -168,6 +185,20 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
         <td><span class="xref">TimeSpan</span></td>
         <td><span class="parametername">blockInterval</span></td>
         <td><p>Configures <a class="xref" href="Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_BlockInterval">BlockInterval</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">minimumDifficulty</span></td>
+        <td><p>Configures
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.MinimumDifficulty</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">difficultyBoundDivisor</span></td>
+        <td><p>Configures
+<span class="xref">Libplanet.Blockchain.Policies.BlockPolicy`1.DifficultyBoundDivisor</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -215,7 +246,7 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetNextBlockDifficulty(IReadOnlyList&lt;Block&lt;T&gt;&gt; blocks)</code></pre>
+    <pre><code class="lang-csharp hljs">public long GetNextBlockDifficulty(IReadOnlyList&lt;Block&lt;T&gt;&gt; blocks)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -244,7 +275,7 @@ than this <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_B
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
