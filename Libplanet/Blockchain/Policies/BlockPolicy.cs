@@ -158,6 +158,12 @@ namespace Libplanet.Blockchain.Policies
         {
             int index = blocks.Count;
 
+            if (index < 0)
+            {
+                throw new InvalidBlockIndexException(
+                    $"index must be 0 or more, but its index is {index}.");
+            }
+
             if (index <= 1)
             {
                 return index == 0 ? 0 : MinimumDifficulty;
