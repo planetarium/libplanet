@@ -175,10 +175,10 @@ namespace Libplanet.Blockchain.Policies
             DateTimeOffset prevTimestamp = prevBlock.Timestamp;
             TimeSpan timeDiff = prevTimestamp - prevPrevTimestamp;
             long timeDiffMilliseconds = (long)timeDiff.TotalMilliseconds;
-            long multiplier = Math.Max(
-                1 - (timeDiffMilliseconds /
-                     (long)BlockInterval.TotalMilliseconds),
-                -99);
+            const long minimumMultiplier = -99;
+            long multiplier = 1 - (timeDiffMilliseconds /
+                                   (long)BlockInterval.TotalMilliseconds);
+            multiplier = Math.Max(multiplier, minimumMultiplier);
 
             var prevDifficulty = prevBlock.Difficulty;
             var offset = prevDifficulty / DifficultyBoundDivisor;
