@@ -701,6 +701,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(swarm.EndPoint, swarm.AsPeer.EndPoint);
         }
 
+        [Trait("RequireTurnServer", "true")]
         [FactOnlyTurnAvailable]
         public async Task ExchangeWithIceServer()
         {

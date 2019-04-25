@@ -4,7 +4,12 @@ Travis CI executes dotCover.  $SOLUTION is a placeholder
 to be replaced using sed. -->
 <CoverageParams>
   <TargetExecutable>C:\Program Files\dotnet\dotnet.exe</TargetExecutable>
-  <TargetArguments>test -c Debug -v n $SOLUTION</TargetArguments>
+  <TargetArguments>test -c Debug -v n $SOLUTION --filter RequireTurnServer!=true</TargetArguments>
+  <!--
+  FIXME: For unknown reason, on Travis CI tests depending on TURN_SERVER_URL
+         seems not terminated or to take too long time.  We should diagnose
+         this and make the CI to run these tests too.
+  -->
   <TargetWorkingDir></TargetWorkingDir>
   <ReportType>DetailedXML</ReportType>
   <Output>Libplanet.cov.xml</Output>

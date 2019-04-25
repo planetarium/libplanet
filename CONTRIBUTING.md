@@ -93,6 +93,20 @@ To build and run unit tests at a time execute the below command:
 [Xunit]: https://xunit.github.io/
 
 
+### `TURN_SERVER_URL`
+
+Some tests depend on a TURN server.  If `TURN_SERVER_URL` environment variable
+is set (the value looks like `turn://user:password@host:3478/`)
+these tests also run.  Otherwise, these tests are skipped.
+
+FYI there are several TURN implementations like [Coturn] and [gortc/turn],
+or cloud offers like [Xirsys].
+
+[Coturn]: https://github.com/coturn/coturn
+[gortc/turn]: https://github.com/gortc/turn
+[Xirsys]: https://xirsys.com/
+
+
 Style convention
 ----------------
 
