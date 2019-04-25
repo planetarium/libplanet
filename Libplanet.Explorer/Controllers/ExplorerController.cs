@@ -10,6 +10,8 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.ViewModels;
 using Libplanet.Tx;
 using Microsoft.AspNetCore.Mvc;
+using GraphQL;
+using GraphQL.Types;
 
 namespace Libplanet.Explorer.Controllers
 {
@@ -34,6 +36,65 @@ namespace Libplanet.Explorer.Controllers
                 new BlockPolicy<T>(), Store.Store, _chainId);
 
             return chain;
+        }
+
+        public class BlockType : ObjectGraphType<Block<T>>
+        {
+            public BlockType()
+            {
+                Field(x => x.Index);
+                Field(x => x.Difficulty);
+                Field<StringGraphType>(
+                    "Nonce",
+                    resolve: ctx => ctx.Source.Nonce.ToString()
+                );
+                Field<StringGraphType>(
+                    "Miner",
+                    resolve: ctx => ctx.Source.Miner.ToString()
+                );
+                Field<StringGraphType>(
+                    "PreviousHash",
+                    resolve: ctx => ctx.Source.PreviousHash.ToString()
+                );
+                Field(x => x.Timestamp);
+            }
+        }
+        public class BlocksQuery : ObjectGraphType
+        {
+            private BlockChain<T> _chain;         
+            public BlocksQuery(BlockChain<T> chain)
+            {
+                Field<ListGraphType<BlockType>>(
+                    "blocks",
+                    resolve: context => chain
+                );
+
+                Field<BlockType>(
+                    "block",
+                    arguments: new QueryArguments(
+                        new QueryArgument<IdGraphType> { Name = "index" }
+                    ),
+                    resolve: context =>
+                    {
+                        ulong index = context.GetArgument<ulong>("index");
+                        return _chain.FirstOrDefault(x => (ulong)x.Index == index);
+                    }
+                );
+                _chain = chain;
+            }
+        }
+        
+        [HttpGet("/graphql/")]
+        public IActionResult getGraphQLResult(
+            [FromQuery(Name = "query")] string query
+        )
+        {
+            var schema = new Schema { Query = new BlocksQuery(GetBlockChain()) };
+            var json = schema.Execute(_ =>
+            {
+                _.Query = query;
+            });
+            return Ok(json);    
         }
 
         [HttpGet("/blocks/")]
