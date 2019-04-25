@@ -11,34 +11,34 @@ namespace Libplanet.Tests
     {
         [Theory]
         [ClassData(typeof(HashcashTestData))]
-        public void AnswerLessThanTarget(byte[] challenge, long difficulty)
+        public void AnswerSatisfiesDifficulty(byte[] challenge, long difficulty)
         {
             byte[] Stamp(Nonce nonce) => challenge.Concat(nonce.ToByteArray()).ToArray();
             var answer = Hashcash.Answer(Stamp, difficulty);
             var digest = Hashcash.Hash(Stamp(answer));
-            Assert.True(digest.LessThanTarget(difficulty));
+            Assert.True(digest.Satisfies(difficulty));
         }
 
         [Fact]
         public void TestBytesWithDifficulty()
         {
-            Assert.True(LessThanTarget(new byte[1] { 0x80 }, 0));
-            Assert.False(LessThanTarget(new byte[1] { 0x80 }, 2));
+            Assert.True(Satisfies(new byte[1] { 0x80 }, 0));
+            Assert.False(Satisfies(new byte[1] { 0x80 }, 2));
             long[] difficulties = Enumerable.Range(1, 8)
                 .Select(x => (long)Math.Pow(2, x)).ToArray();
 
             foreach (long difficulty in difficulties)
             {
-                Assert.True(LessThanTarget(new byte[2] { 0x00, 0x80 }, difficulty));
+                Assert.True(Satisfies(new byte[2] { 0x00, 0x80 }, difficulty));
             }
 
-            Assert.False(LessThanTarget(new byte[2] { 0x00, 0x80 }, 512));
-            Assert.True(LessThanTarget(new byte[2] { 0x00, 0x7f },  512));
-            Assert.False(LessThanTarget(new byte[2] { 0x00, 0x7f }, 1024));
-            Assert.True(LessThanTarget(new byte[2] { 0x00, 0x20 }, 1024));
+            Assert.False(Satisfies(new byte[2] { 0x00, 0x80 }, 512));
+            Assert.True(Satisfies(new byte[2] { 0x00, 0x7f },  512));
+            Assert.False(Satisfies(new byte[2] { 0x00, 0x7f }, 1024));
+            Assert.True(Satisfies(new byte[2] { 0x00, 0x20 }, 1024));
         }
 
-        private bool LessThanTarget(byte[] bytes, long difficulty)
+        private bool Satisfies(byte[] bytes, long difficulty)
         {
             byte[] digest;
             if (bytes.Length < HashDigest<SHA256>.Size)
@@ -54,7 +54,7 @@ namespace Libplanet.Tests
                 digest = bytes;
             }
 
-            return new HashDigest<SHA256>(digest).LessThanTarget(difficulty);
+            return new HashDigest<SHA256>(digest).Satisfies(difficulty);
         }
     }
 

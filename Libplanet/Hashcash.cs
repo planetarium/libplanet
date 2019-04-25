@@ -59,7 +59,7 @@ namespace Libplanet
                     return nonce;
                 }
 
-                if (digest.LessThanTarget(difficulty))
+                if (digest.Satisfies(difficulty))
                 {
                     return nonce;
                 }
