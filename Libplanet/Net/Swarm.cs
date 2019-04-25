@@ -27,7 +27,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm : ICollection<Peer>, IDisposable
+    public class Swarm : ICollection<Peer>
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -389,11 +389,6 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Stopped.");
-        }
-
-        public void Dispose()
-        {
-            StopAsync().Wait();
         }
 
         public IEnumerator<Peer> GetEnumerator()

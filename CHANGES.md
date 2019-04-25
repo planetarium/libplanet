@@ -30,6 +30,8 @@ To be released.
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
     default behavior of `object` class.  [[#216]]
+ -  also, `Swarm` class now does not implement `IDisposable` too. thus
+    `Swarm.Dispose()` was removed too.
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
     related classes method parameters and field types have changed accordingly.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]

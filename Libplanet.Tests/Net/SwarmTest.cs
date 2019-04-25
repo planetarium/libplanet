@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Net
 
             foreach (Swarm s in _swarms)
             {
-                s.Dispose();
+                s.StopAsync().Wait();
             }
         }
 
