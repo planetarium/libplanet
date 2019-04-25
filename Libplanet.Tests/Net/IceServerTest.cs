@@ -8,6 +8,7 @@ namespace Libplanet.Tests.Net
 {
     public class IceServerTest
     {
+        [Trait("RequireTurnServer", "true")]
         [FactOnlyTurnAvailable]
         public async Task CreateTurnClient()
         {

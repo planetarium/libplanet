@@ -162,8 +162,11 @@ script:
       -c Release
   fi
 
-# Run unit tests
-- travis_wait dotnet test -c Release -v n
+# Run unit tests (without TURN server)
+- dotnet test -c Release -v n --filter "RequireTurnServer!=true"
+# FIXME: For unknown reason, on Travis CI tests depending on TURN_SERVER_URL
+#        seems not terminated or to take too long time.  We should diagnose
+#        this and make the CI to run these tests too.
 
 # Run unit tests with coverage report
 - |
