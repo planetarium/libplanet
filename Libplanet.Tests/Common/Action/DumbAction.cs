@@ -150,7 +150,7 @@ namespace Libplanet.Tests.Common.Action
 
         public bool Equals(DumbAction other)
         {
-            return !ReferenceEquals(null, other) && (
+            return !(other is null) && (
                 ReferenceEquals(this, other) || (
                     TargetAddress.Equals(other.TargetAddress) &&
                     string.Equals(Item, other.Item) &&
@@ -161,7 +161,7 @@ namespace Libplanet.Tests.Common.Action
 
         public override bool Equals(object obj)
         {
-            return !ReferenceEquals(null, obj) && (
+            return !(obj is null) && (
                 ReferenceEquals(this, obj) ||
                 (obj is DumbAction other && Equals(other))
             );
