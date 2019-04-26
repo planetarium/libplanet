@@ -515,19 +515,30 @@ namespace Libplanet.Blockchain
         {
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            for (long i = Math.Min(other.Tip.Index, Tip.Index); i >= 0; i--)
+            long shorterHeight =
+                Math.Min(this.LongCount(), other.LongCount()) - 1;
+            for (
+                Block<T> t = this[shorterHeight], o = other[shorterHeight];
+                t.PreviousHash is HashDigest<SHA256> tp &&
+                    o.PreviousHash is HashDigest<SHA256> op;
+                t = Blocks[tp], o = other.Blocks[op]
+            )
             {
-                if (other[i].Equals(this[i]))
+                if (t.Equals(o))
                 {
-                    topmostCommon = this[i];
+                    topmostCommon = t;
                     break;
                 }
             }
 
             // Unrender stale actions.
-            for (long i = Tip.Index; i > (topmostCommon?.Index ?? -1); i--)
+            for (
+                Block<T> b = Tip;
+                !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
+                    b.PreviousHash is HashDigest<SHA256> ph;
+                b = Blocks[ph]
+            )
             {
-                Block<T> b = this[i];
                 var actions = b.EvaluateActionsPerTx(a =>
                     GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
                 ).Reverse();
@@ -554,9 +565,12 @@ namespace Libplanet.Blockchain
             }
 
             // Render actions that had been behind.
-            for (long i = topmostCommon.Index + 1; i <= Tip.Index; i++)
+            IEnumerable<Block<T>> blocksToRender =
+                topmostCommon is Block<T> branchPoint
+                    ? this.SkipWhile(b => b.Index <= branchPoint.Index)
+                    : this;
+            foreach (Block<T> b in blocksToRender)
             {
-                Block<T> b = this[i];
                 var actions = b.EvaluateActionsPerTx(a =>
                     GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
                 );
