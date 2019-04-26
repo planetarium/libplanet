@@ -54,14 +54,16 @@ namespace Libplanet.Net
         private readonly IList<IceServer> _iceServers;
         private readonly TimeSpan _linger;
 
+        private readonly NetMQQueue<Message> _replyQueue;
+        private readonly NetMQQueue<Message> _broadcastQueue;
+        private readonly NetMQPoller _queuePoller;
+
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
         private TurnClient _turnClient;
-
-        private NetMQQueue<Message> _replyQueue;
-        private NetMQQueue<Message> _broadcastQueue;
+        private CancellationTokenSource _workerCancellationTokenSource;
 
         public Swarm(
             PrivateKey privateKey,
@@ -122,6 +124,7 @@ namespace Libplanet.Net
             _router = new RouterSocket();
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
+            _queuePoller = new NetMQPoller { _replyQueue, _broadcastQueue };
 
             _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
@@ -150,6 +153,9 @@ namespace Libplanet.Net
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
                 .ForContext("SwarmId", loggerId);
+
+            _replyQueue.ReceiveReady += DoReply;
+            _broadcastQueue.ReceiveReady += DoBroadcast;
         }
 
         ~Swarm()
@@ -375,20 +381,25 @@ namespace Libplanet.Net
         public async Task StopAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            _workerCancellationTokenSource?.Cancel();
             _logger.Debug("Stopping...");
             using (await _runningMutex.LockAsync())
             {
                 if (Running)
                 {
+                    _router.Dispose();
                     _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
                     await DistributeDeltaAsync(false, cancellationToken);
 
                     if (_broadcastQueue.Any() || _replyQueue.Any())
                     {
-                        await Task.Delay(_linger);
+                        await Task.Delay(_linger, cancellationToken);
                     }
 
-                    _router.Dispose();
+                    if (_queuePoller.IsRunning)
+                    {
+                        _queuePoller.Stop();
+                    }
 
                     foreach (DealerSocket s in _dealers.Values)
                     {
@@ -485,20 +496,27 @@ namespace Libplanet.Net
                         cancellationToken: cancellationToken);
                 }
 
+                _workerCancellationTokenSource = new CancellationTokenSource();
+                CancellationToken workerCancellationToken =
+                    CancellationTokenSource.CreateLinkedTokenSource(
+                        _workerCancellationTokenSource.Token, cancellationToken
+                        ).Token;
                 var tasks = new List<Task>
                 {
                     RepeatDeltaDistributionAsync(
-                        distributeInterval, cancellationToken),
-                    ReceiveMessageAsync(blockChain, cancellationToken),
-                    RepeatReplyAsync(cancellationToken),
-                    RepeatBroadcastAsync(cancellationToken),
+                        distributeInterval,
+                        workerCancellationToken),
+                    ReceiveMessageAsync(
+                        blockChain,
+                        workerCancellationToken),
+                    Task.Run(() => _queuePoller.Run(), workerCancellationToken),
                 };
 
                 if (behindNAT)
                 {
-                    tasks.Add(BindingProxies());
-                    tasks.Add(RefreshAllocate());
-                    tasks.Add(RefreshPermissions());
+                    tasks.Add(BindingProxies(workerCancellationToken));
+                    tasks.Add(RefreshAllocate(workerCancellationToken));
+                    tasks.Add(RefreshPermissions(workerCancellationToken));
                 }
 
                 await Task.WhenAll(tasks);
@@ -726,9 +744,9 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task BindingProxies()
+        private async Task BindingProxies(CancellationToken cancellationToken)
         {
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -829,20 +847,21 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task RefreshAllocate()
+        private async Task RefreshAllocate(CancellationToken cancellationToken)
         {
             TimeSpan lifetime = TurnAllocationLifetime;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
             }
         }
 
-        private async Task RefreshPermissions()
+        private async Task RefreshPermissions(
+            CancellationToken cancellationToken)
         {
             TimeSpan lifetime = TurnPermissionLifetime;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 await Task.WhenAll(
@@ -854,7 +873,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain, CancellationToken cancellationToken)
             where T : IAction, new()
         {
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -1636,7 +1655,7 @@ namespace Libplanet.Net
             TimeSpan interval, CancellationToken cancellationToken)
         {
             int i = 1;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
                 await Task.Delay(interval, cancellationToken);
@@ -1644,58 +1663,39 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task RepeatReplyAsync(CancellationToken token)
+        private void DoBroadcast(object sender, NetMQQueueEventArgs<Message> e)
         {
-            TimeSpan interval = TimeSpan.FromMilliseconds(100);
-            while (Running)
-            {
-                if (_replyQueue.TryDequeue(out Message reply, interval))
-                {
-                    _logger.Debug(
-                        $"Reply {reply} to {ByteUtil.Hex(reply.Identity)}...");
-                    NetMQMessage netMQMessage =
-                        reply.ToNetMQMessage(_privateKey);
-                    await _router.SendMultipartMessageAsync(
-                        netMQMessage, cancellationToken: token);
-                    _logger.Debug($"Replied.");
-                }
+            Message msg = e.Queue.Dequeue();
+            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
 
-                await Task.Delay(interval, token);
+            // FIXME Should replace with PUB/SUB model.
+            try
+            {
+                Task.WhenAll(
+                    _dealers.Values.Select(s =>
+                        Task.Run(() => s.SendMultipartMessage(netMQMessage))
+                    )
+                ).Wait();
             }
+            catch (TimeoutException ex)
+            {
+                _logger.Error(ex, "TimeoutException occured.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "An unexpected exception occured.");
+            }
+
+            _logger.Debug($"broadcasted: {msg}");
         }
 
-        private async Task RepeatBroadcastAsync(CancellationToken token)
+        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
         {
-            TimeSpan interval = TimeSpan.FromMilliseconds(100);
-            while (Running)
-            {
-                if (_broadcastQueue.TryDequeue(out Message raw, interval))
-                {
-                    NetMQMessage message = raw.ToNetMQMessage(_privateKey);
-
-                    // FIXME Should replace with PUB/SUB model.
-                    try
-                    {
-                        await Task.WhenAll(
-                            _dealers.Values.Select(s =>
-                                Task.Run(() => s.SendMultipartMessage(message))
-                            )
-                        );
-                    }
-                    catch (TimeoutException e)
-                    {
-                        _logger.Error(e, "TimeoutException occured.");
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Error(e, "An unexpected exception occured.");
-                    }
-
-                    _logger.Debug($"broadcasted: {raw}");
-                }
-
-                await Task.Delay(interval, token);
-            }
+            Message msg = e.Queue.Dequeue();
+            _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
+            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
+            _router.SendMultipartMessage(netMQMessage);
+            _logger.Debug($"Replied.");
         }
 
         private void CheckStarted()
