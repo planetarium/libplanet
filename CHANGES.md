@@ -30,14 +30,14 @@ To be released.
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
     default behavior of `object` class.  [[#216]]
- -  also, `Swarm` class now does not implement `IDisposable` too. thus
+ -  Also, `Swarm` class now does not implement `IDisposable` too. Thus
     `Swarm.Dispose()` was removed too. [[#218]]
  -  `Swarm` became to use queue to broadcast own message. [[#218]]
-     - The methods that broadcast message now aren't async. so they are renamed
+     - The methods that broadcast message now aren't async. So they are renamed
        as below.
        - `Swarm.BroadcastBlocksAsync()` → `Swarm.BroadcastBlocks()`
        - `Swarm.BroadcastTxsAsync()` → `Swarm.BroadcastTxs()`
-     - `Swarm` became to receive a `linger` on its constructor. the linger is
+     - `Swarm` became to receive a `linger` on its constructor. The linger is
        used to determine how long to wait for a pending message when stopping
        the swarm.
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
