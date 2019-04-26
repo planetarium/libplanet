@@ -32,7 +32,7 @@ To be released.
     default behavior of `object` class.  [[#216]]
  -  Also, `Swarm` class now does not implement `IDisposable` too. Thus
     `Swarm.Dispose()` was removed too. [[#218]]
- -  `Swarm` became to use queue to broadcast own message. [[#218]]
+ -  `Swarm` became to use a queue to broadcast own message. [[#218]]
      - The methods that broadcast message now aren't async. So they are renamed
        as below.
        - `Swarm.BroadcastBlocksAsync()` → `Swarm.BroadcastBlocks()`
