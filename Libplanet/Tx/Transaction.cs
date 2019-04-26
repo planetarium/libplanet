@@ -531,7 +531,10 @@ namespace Libplanet.Tx
                     nextStates
                 );
                 states = nextStates;
-                seed++;
+                unchecked
+                {
+                    seed++;
+                }
             }
         }
 
