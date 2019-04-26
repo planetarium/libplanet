@@ -11,7 +11,7 @@ How to run
 ----------
 
 ~~~~ bash
-./run.ps1
+./run.ps1 BLOCKCHAIN_STORE_PATH
 ~~~~
 
 
