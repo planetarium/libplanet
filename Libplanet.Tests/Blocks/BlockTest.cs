@@ -200,7 +200,6 @@ namespace Libplanet.Tests.Blocks
             var pairs = blockIdx1
                 .EvaluateActionsPerTx(address => null)
                 .ToImmutableArray();
-            int i = 0;
             int randomValue = 0;
             (int, int, string[])[] expectations =
             {
@@ -209,9 +208,10 @@ namespace Libplanet.Tests.Blocks
                 (1, 0, new[] { "A", "B", "C", null, null }),
             };
             Assert.Equal(expectations.Length, pairs.Length);
-            foreach (var pair in pairs)
+            foreach (
+                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
+            )
             {
-                var expect = expectations[i++];
                 ActionEvaluation<DumbAction> eval = pair.Item2;
                 Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
@@ -279,7 +279,6 @@ namespace Libplanet.Tests.Blocks
             pairs = blockIdx2
                 .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
                 .ToImmutableArray();
-            i = 0;
             expectations = new[]
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }),
@@ -287,9 +286,10 @@ namespace Libplanet.Tests.Blocks
                 (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }),
             };
             Assert.Equal(expectations.Length, pairs.Length);
-            foreach (var pair in pairs)
+            foreach (
+                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
+            )
             {
-                var expect = expectations[i++];
                 ActionEvaluation<DumbAction> eval = pair.Item2;
                 Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
