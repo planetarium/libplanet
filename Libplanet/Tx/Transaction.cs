@@ -429,8 +429,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits
-        /// a triple of an action, input context, and output states
-        /// for each step.
+        /// an action, input context, and output states for each step.
         /// <para>If the needed value is only the final states,
         /// use <see cref="EvaluateActions"/> method instead.</para>
         /// </summary>
@@ -450,9 +449,9 @@ namespace Libplanet.Tx
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
-        /// <returns>Enumerates triples of an action, input context, and
+        /// <returns>Enumerates an action, input context, and
         /// output states for each one in <see cref="Actions"/>.
-        /// The order of triples are the same to the <see cref="Actions"/>.
+        /// The order is the same to the <see cref="Actions"/>.
         /// Note that each <see cref="IActionContext.Random"/> object has
         /// a unconsumed state.
         /// </returns>
@@ -465,7 +464,7 @@ namespace Libplanet.Tx
         /// <c>false</c>.
         /// </exception>
         [Pure]
-        public IEnumerable<(T, IActionContext, IAccountStateDelta)>
+        public IEnumerable<ActionEvaluation<T>>
         EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
@@ -526,7 +525,11 @@ namespace Libplanet.Tx
                 ActionContext equivalentContext =
                     CreateActionContext(states, seed);
 
-                yield return (action, equivalentContext, nextStates);
+                yield return new ActionEvaluation<T>(
+                    action,
+                    equivalentContext,
+                    nextStates
+                );
                 states = nextStates;
                 seed++;
             }
@@ -572,8 +575,7 @@ namespace Libplanet.Tx
             bool rehearsal = false
         )
         {
-            IAccountStateDelta states = previousStates;
-            var evaluationSteps = EvaluateActionsGradually(
+            var evaluations = EvaluateActionsGradually(
                 blockHash,
                 blockIndex,
                 previousStates,
@@ -581,12 +583,18 @@ namespace Libplanet.Tx
                 rehearsal: rehearsal
             );
 
-            foreach ((_, _, IAccountStateDelta nextStates) in evaluationSteps)
+            ActionEvaluation<T> lastEvaluation;
+            try
             {
-                states = nextStates;
+                lastEvaluation = evaluations.Last();
+            }
+            catch (InvalidOperationException)
+            {
+                // If "evaluations" is empty:
+                return previousStates;
             }
 
-            return states;
+            return lastEvaluation.OutputStates;
         }
 
         /// <summary>

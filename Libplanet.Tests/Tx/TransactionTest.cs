@@ -607,7 +607,7 @@ namespace Libplanet.Tests.Tx
             {
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
-                var evaluationSteps = tx.EvaluateActionsGradually(
+                var evaluations = tx.EvaluateActionsGradually(
                     default,
                     1,
                     new AccountStateDeltaImpl(address => null),
@@ -615,7 +615,7 @@ namespace Libplanet.Tests.Tx
                     rehearsal: rehearsal
                 ).ToImmutableArray();
 
-                Assert.Equal(actions.Length, evaluationSteps.Length);
+                Assert.Equal(actions.Length, evaluations.Length);
                 string[][] expectedStates =
                 {
                     new[] { "0", null, null },
@@ -624,30 +624,31 @@ namespace Libplanet.Tests.Tx
                     new[] { "0,2", "1", $"R:{rehearsal}" },
                 };
 
-                for (int i = 0; i < evaluationSteps.Length; i++)
+                for (int i = 0; i < evaluations.Length; i++)
                 {
-                    Assert.Equal(actions[i], evaluationSteps[i].Item1);
-                    Assert.Equal(_fx.Address, evaluationSteps[i].Item2.Signer);
-                    Assert.Equal(addresses[0], evaluationSteps[i].Item2.Miner);
-                    Assert.Equal(1, evaluationSteps[i].Item2.BlockIndex);
-                    Assert.Equal(rehearsal, evaluationSteps[i].Item2.Rehearsal);
+                    ActionEvaluation<DumbAction> eval = evaluations[i];
+                    Assert.Equal(actions[i], eval.Action);
+                    Assert.Equal(_fx.Address, eval.InputContext.Signer);
+                    Assert.Equal(addresses[0], eval.InputContext.Miner);
+                    Assert.Equal(1, eval.InputContext.BlockIndex);
+                    Assert.Equal(rehearsal, eval.InputContext.Rehearsal);
                     Assert.Equal(
-                        evaluationSteps[i].Item3.GetState(
+                        eval.OutputStates.GetState(
                             DumbAction.RandomRecordsAddress
                         ),
-                        evaluationSteps[i].Item2.Random.Next()
+                        eval.InputContext.Random.Next()
                     );
                     Assert.Equal(
                         i > 0 ? addresses.Select(
-                            evaluationSteps[i - 1].Item3.GetState
+                            evaluations[i - 1].OutputStates.GetState
                         ) : new object[] { null, null, null },
                         addresses.Select(
-                            evaluationSteps[i].Item2.PreviousStates.GetState
+                            eval.InputContext.PreviousStates.GetState
                         )
                     );
                     Assert.Equal(
                         expectedStates[i],
-                        addresses.Select(evaluationSteps[i].Item3.GetState)
+                        addresses.Select(eval.OutputStates.GetState)
                     );
                 }
 
@@ -676,7 +677,7 @@ namespace Libplanet.Tests.Tx
                     rehearsal: rehearsal
                 );
                 Assert.Equal(
-                    evaluationSteps[3].Item3.GetUpdatedStates(),
+                    evaluations[3].OutputStates.GetUpdatedStates(),
                     delta.GetUpdatedStates()
                 );
 

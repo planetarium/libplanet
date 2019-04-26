@@ -151,8 +151,8 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Executes every <see cref="IAction"/> in the
-        /// <see cref="Transactions"/> step by step, and emits a quadruple of
-        /// a transaction, an action, input context, and output states
+        /// <see cref="Transactions"/> step by step, and emits a pair of
+        /// a transaction, and an <see cref="ActionEvaluation{T}"/>
         /// for each step.
         /// <para>If the needed values are only the final states of each
         /// transaction, use <see cref="EvaluateActions"/> method instead.
@@ -162,9 +162,9 @@ namespace Libplanet.Blocks
         /// delegate to get a previous state.
         /// A <c>null</c> value, which is default, means a constant function
         /// that returns <c>null</c>.</param>
-        /// <returns>Enumerates quadruples of a transaction, an action,
-        /// input context, and output states for each action.
-        /// The order of quadruples are the same to
+        /// <returns>Enumerates pair of a transaction, and
+        /// <see cref="ActionEvaluation{T}"/> for each action.
+        /// The order of pairs are the same to
         /// the <see cref="Transactions"/> and their
         /// <see cref="Transaction{T}.Actions"/> (e.g., tx&#xb9;-act&#xb9;,
         /// tx&#xb9;-act&#xb2;, tx&#xb2;-act&#xb9;, tx&#xb2;-act&#xb2;,
@@ -174,7 +174,7 @@ namespace Libplanet.Blocks
         /// </returns>
         [Pure]
         public
-        IEnumerable<(Transaction<T>, T, IActionContext, IAccountStateDelta)>
+        IEnumerable<(Transaction<T>, ActionEvaluation<T>)>
         EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
         {
             IAccountStateDelta delta =
@@ -185,10 +185,10 @@ namespace Libplanet.Blocks
             {
                 var triples = tx.EvaluateActionsGradually(
                     Hash, Index, delta, Miner.Value);
-                foreach (var (action, ctx, states) in triples)
+                foreach (var evaluation in triples)
                 {
-                    yield return (tx, action, ctx, states);
-                    delta = states;
+                    yield return (tx, evaluation);
+                    delta = evaluation.OutputStates;
                 }
 
                 delta = new AccountStateDeltaImpl(delta.GetState);
@@ -212,16 +212,16 @@ namespace Libplanet.Blocks
             AccountStateGetter accountStateGetter = null
         )
         {
-            var tuples = EvaluateActionsPerTx(accountStateGetter);
+            var pairs = EvaluateActionsPerTx(accountStateGetter);
             int i = 0;
-            foreach (var (tx, _, _, delta) in tuples)
+            foreach (var (tx, evaluation) in pairs)
             {
                 if (++i < tx.Actions.Count)
                 {
                     continue;
                 }
 
-                yield return delta;
+                yield return evaluation.OutputStates;
                 i = 0;
             }
         }

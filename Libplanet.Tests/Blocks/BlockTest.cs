@@ -197,7 +197,7 @@ namespace Libplanet.Tests.Blocks
                 ),
             };
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs);
-            var tuples = blockIdx1
+            var pairs = blockIdx1
                 .EvaluateActionsPerTx(address => null)
                 .ToImmutableArray();
             int i = 0;
@@ -208,29 +208,30 @@ namespace Libplanet.Tests.Blocks
                 (0, 1, new[] { "A", "B", null, null, null }),
                 (1, 0, new[] { "A", "B", "C", null, null }),
             };
-            Assert.Equal(expectations.Length, tuples.Length);
-            foreach (var tuple in tuples)
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (var pair in pairs)
             {
                 var expect = expectations[i++];
-                Assert.Equal(blockIdx1Txs[expect.Item1], tuple.Item1);
+                ActionEvaluation<DumbAction> eval = pair.Item2;
+                Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
                     blockIdx1Txs[expect.Item1].Actions[expect.Item2],
-                    tuple.Item2
+                    eval.Action
                 );
-                Assert.Equal(_fx.TxFixture.Address, tuple.Item3.Signer);
-                Assert.Equal(GenesisMinerAddress, tuple.Item3.Miner);
-                Assert.Equal(blockIdx1.Index, tuple.Item3.BlockIndex);
-                Assert.False(tuple.Item3.Rehearsal);
-                randomValue = tuple.Item3.Random.Next();
+                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx1.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
-                    tuple.Item4.GetState(
+                    eval.OutputStates.GetState(
                         DumbAction.RandomRecordsAddress
                     ),
                     randomValue
                 );
                 Assert.Equal(
                     expect.Item3,
-                    addresses.Select(tuple.Item4.GetState)
+                    addresses.Select(eval.OutputStates.GetState)
                 );
             }
 
@@ -275,7 +276,7 @@ namespace Libplanet.Tests.Blocks
                 ),
             };
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
-            tuples = blockIdx2
+            pairs = blockIdx2
                 .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
                 .ToImmutableArray();
             i = 0;
@@ -285,29 +286,30 @@ namespace Libplanet.Tests.Blocks
                 (1, 0, new[] { "A,D", "B", "C", "E", null }),
                 (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }),
             };
-            Assert.Equal(expectations.Length, tuples.Length);
-            foreach (var tuple in tuples)
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (var pair in pairs)
             {
                 var expect = expectations[i++];
-                Assert.Equal(blockIdx2Txs[expect.Item1], tuple.Item1);
+                ActionEvaluation<DumbAction> eval = pair.Item2;
+                Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
                     blockIdx2Txs[expect.Item1].Actions[expect.Item2],
-                    tuple.Item2
+                    eval.Action
                 );
-                Assert.Equal(_fx.TxFixture.Address, tuple.Item3.Signer);
-                Assert.Equal(GenesisMinerAddress, tuple.Item3.Miner);
-                Assert.Equal(blockIdx2.Index, tuple.Item3.BlockIndex);
-                Assert.False(tuple.Item3.Rehearsal);
-                randomValue = tuple.Item3.Random.Next();
+                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
-                    tuple.Item4.GetState(
+                    eval.OutputStates.GetState(
                         DumbAction.RandomRecordsAddress
                     ),
                     randomValue
                 );
                 Assert.Equal(
                     expect.Item3,
-                    addresses.Select(tuple.Item4.GetState)
+                    addresses.Select(eval.OutputStates.GetState)
                 );
             }
 
