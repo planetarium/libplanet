@@ -21,7 +21,7 @@ matrix:
   - os: osx
     osx_image: xcode10.1
     language: csharp
-    dotnet: 2.2.106
+    dotnet: 2.2.203
     mono: none
     cache:
       directories:
