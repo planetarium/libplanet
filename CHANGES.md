@@ -56,6 +56,7 @@ To be released.
  -  Added `HashDigest.Satisfies()` method.  [[#213]]
  -  `BlockPolicy<T>` constructor became to receive the `minimumDifficulty`
     and the mining `difficultyBoundDivisor`.  [[#213]]
+ -  Added `BlockChain<T>.UnstageTransactions()` method.  [[#223]]
 
 ### Behavioral changes
 
@@ -115,6 +116,7 @@ To be released.
 [#215]: https://github.com/planetarium/libplanet/pull/215
 [#216]: https://github.com/planetarium/libplanet/pull/216
 [#217]: https://github.com/planetarium/libplanet/pull/217
+[#223]: https://github.com/planetarium/libplanet/pull/223
 
 
 Version 0.2.2

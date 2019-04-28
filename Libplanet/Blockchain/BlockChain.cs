@@ -265,16 +265,35 @@ namespace Libplanet.Blockchain
         public void Append(Block<T> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, render: true);
 
-        public void StageTransactions(ISet<Transaction<T>> txs)
+        /// <summary>
+        /// Adds <paramref name="transactions"/> to the pending list so that
+        /// a next <see cref="Block{T}"/> to be mined contains these
+        /// <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="transactions">
+        /// <see cref="Transaction{T}"/>s to add to the pending list.</param>
+        public void StageTransactions(ISet<Transaction<T>> transactions)
         {
-            foreach (Transaction<T> tx in txs)
+            foreach (Transaction<T> tx in transactions)
             {
                 Transactions[tx.Id] = tx;
             }
 
             Store.StageTransactionIds(
-                txs.Select(tx => tx.Id).ToImmutableHashSet()
+                transactions.Select(tx => tx.Id).ToImmutableHashSet()
             );
+        }
+
+        /// <summary>
+        /// Removes <paramref name="transactions"/> from the pending list.
+        /// </summary>
+        /// <param name="transactions"><see cref="Transaction{T}"/>s
+        /// to remove from the pending list.</param>
+        /// <seealso cref="StageTransactions"/>
+        public void UnstageTransactions(ISet<Transaction<T>> transactions)
+        {
+            Store.UnstageTransactionIds(
+                transactions.Select(tx => tx.Id).ToImmutableHashSet());
         }
 
         public Block<T> MineBlock(
