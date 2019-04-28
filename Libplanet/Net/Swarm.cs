@@ -136,9 +136,9 @@ namespace Libplanet.Net
             _appProtocolVersion = appProtocolVersion;
             _linger = linger;
 
-            if (_host != null && _listenPort != null)
+            if (_host != null && _listenPort is int listenPortAsInt)
             {
-                EndPoint = new DnsEndPoint(_host, listenPort.Value);
+                EndPoint = new DnsEndPoint(_host, listenPortAsInt);
             }
 
             _iceServers = iceServers?.ToList();
@@ -244,7 +244,8 @@ namespace Libplanet.Net
                 timestamp = DateTimeOffset.UtcNow;
             }
 
-            foreach (Peer peer in peers)
+            var peersAsArray = peers as Peer[] ?? peers.ToArray();
+            foreach (Peer peer in peersAsArray)
             {
                 if (_removedPeers.ContainsKey(peer))
                 {
@@ -252,13 +253,10 @@ namespace Libplanet.Net
                 }
             }
 
-            var existingKeys = new HashSet<PublicKey>(
-                _peers.Keys.Select(p => p.PublicKey)
-            );
             PublicKey publicKey = _privateKey.PublicKey;
             var addedPeers = new HashSet<Peer>();
 
-            foreach (Peer peer in peers)
+            foreach (Peer peer in peersAsArray)
             {
                 if (peer.PublicKey.Equals(publicKey))
                 {
@@ -288,7 +286,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                     catch (TimeoutException e)
                     {
@@ -296,7 +293,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -304,7 +300,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                 }
             }
@@ -639,12 +634,15 @@ namespace Libplanet.Net
             {
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    var request = new GetBlocks(blockHashes);
+                    var blockHashesAsArray =
+                        blockHashes as HashDigest<SHA256>[] ??
+                        blockHashes.ToArray();
+                    var request = new GetBlocks(blockHashesAsArray);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
                         cancellationToken: token);
 
-                    int hashCount = blockHashes.Count();
+                    int hashCount = blockHashesAsArray.Count();
                     _logger.Debug($"Required block count: {hashCount}.");
                     while (hashCount > 0)
                     {
@@ -687,12 +685,13 @@ namespace Libplanet.Net
             {
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    var request = new GetTxs(txIds);
+                    var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
+                    var request = new GetTxs(txIdsAsArray);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
                         cancellationToken: cancellationToken);
 
-                    int hashCount = txIds.Count();
+                    int hashCount = txIdsAsArray.Count();
                     _logger.Debug($"Required tx count: {hashCount}.");
                     while (hashCount > 0)
                     {
@@ -760,6 +759,9 @@ namespace Libplanet.Net
                     {
                         using (var proxy = new NetworkStreamProxy(stream))
                         {
+                            Debug.Assert(
+                                _listenPort != null,
+                                nameof(_listenPort) + " != null");
                             await proxy.StartAsync(
                                 IPAddress.Loopback,
                                 _listenPort.Value);
@@ -796,7 +798,6 @@ namespace Libplanet.Net
                             e,
                             $"TimeoutException occured ({peer})."
                         );
-                        continue;
                     }
                     catch (IOException e)
                     {
@@ -804,7 +805,6 @@ namespace Libplanet.Net
                             e,
                             $"IOException occured ({peer})."
                         );
-                        continue;
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -958,8 +958,7 @@ namespace Libplanet.Net
                         IEnumerable<HashDigest<SHA256>> hashes =
                             blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
-                                getBlockHashes.Stop,
-                                500);
+                                getBlockHashes.Stop);
                         var reply = new BlockHashes(Address, hashes)
                         {
                             Identity = getBlockHashes.Identity,
@@ -1187,18 +1186,19 @@ namespace Libplanet.Net
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
                         peer, locator, stop, cancellationToken);
-
                 if (blockChain.Tip != null)
                 {
                     hashes = hashes.Skip(1);
                 }
 
-                if (!hashes.Any())
+                var hashesAsArray =
+                    hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
+                if (!hashesAsArray.Any())
                 {
                     break;
                 }
 
-                int hashCount = hashes.Count();
+                int hashCount = hashesAsArray.Count();
                 int received = 0;
                 _logger.Debug(
                     $"Required hashes (count: {hashCount}). " +
@@ -1207,7 +1207,7 @@ namespace Libplanet.Net
 
                 await GetBlocksAsync<T>(
                     peer,
-                    hashes,
+                    hashesAsArray,
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
@@ -1394,7 +1394,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            PublicKey senderPublicKey = delta.Sender.PublicKey;
             bool firstEncounter = IsUnknownPeer(delta.Sender);
             RemovePeers(delta.RemovedPeers, delta.Timestamp);
             var addedPeers = new HashSet<Peer>(delta.AddedPeers);
@@ -1458,7 +1457,8 @@ namespace Libplanet.Net
             IEnumerable<Peer> peers, DateTimeOffset timestamp)
         {
             PublicKey publicKey = _privateKey.PublicKey;
-            foreach (Peer peer in peers)
+            var peersAsArray = peers as Peer[] ?? peers.ToArray();
+            foreach (Peer peer in peersAsArray)
             {
                 if (peer.PublicKey != publicKey)
                 {
@@ -1476,7 +1476,7 @@ namespace Libplanet.Net
 
             using (_distributeMutex.Lock())
             {
-                foreach (Peer peer in peers)
+                foreach (Peer peer in peersAsArray)
                 {
                     _peers.Remove(peer);
 
@@ -1594,15 +1594,15 @@ namespace Libplanet.Net
 
                 return pong;
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 dealer.Dispose();
-                throw e;
+                throw;
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
                 dealer.Dispose();
-                throw e;
+                throw;
             }
         }
 
