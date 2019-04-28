@@ -106,9 +106,10 @@ namespace Libplanet.Net
             _privateKey = privateKey
                 ?? throw new ArgumentNullException(nameof(privateKey));
             _dialTimeout = dialTimeout;
-            _peers = new Dictionary<Peer, DateTimeOffset>();
-            _removedPeers = new Dictionary<Peer, DateTimeOffset>();
-            LastSeenTimestamps = new Dictionary<Peer, DateTimeOffset>();
+            _peers = new ConcurrentDictionary<Peer, DateTimeOffset>();
+            _removedPeers = new ConcurrentDictionary<Peer, DateTimeOffset>();
+            LastSeenTimestamps =
+                new ConcurrentDictionary<Peer, DateTimeOffset>();
 
             DateTimeOffset now = createdAt.GetValueOrDefault(
                 DateTimeOffset.UtcNow);

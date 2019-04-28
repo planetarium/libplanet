@@ -305,7 +305,9 @@ namespace Libplanet.Tests.Net
 
             a.CopyTo(peers, 1);
 
-            Assert.Equal(new Peer[] { null, b.AsPeer, c.AsPeer }, peers);
+            Assert.Equal(
+                new HashSet<Peer> { null, b.AsPeer, c.AsPeer },
+                peers.ToHashSet());
         }
 
         [Fact]
