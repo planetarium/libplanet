@@ -6,9 +6,12 @@ Version 0.3.0
 
 To be released.
 
+### Backward-incompatible interface changes
+
  -  Added `IAction.Render(IActionContext, IAccountStateDelta)` method.
+    [[#31], [#212]]
  -  Added `IAction.Unrender(IActionContext, IAccountStateDelta)` method.
- -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
+    [[#31], [#212]]
  -  `BlockChain<T>.Validate()` method became to receive
     `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
  -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
@@ -21,21 +24,10 @@ To be released.
     IReadOnlyList<Block<T>>, DateTimeOffset)` method.  [[#210]]
  -  `BlockChain<T>[int]` became to throw `ArgumentOutOfRangeException` instead
     of `IndexOutOfRangeException`.  [[#210]]
- -  Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
-    events when a different version of a peer is discovered.  [[#167]], [[#185]]
- -  Added `Peer.AppProtocolVersion` property.  [[#185]]
  -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
     and its all implementations.  [[#189], [#197]]
  -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
- -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
-    initial blocks before `Swarm.StartAsync<T>()` being called.
-    [[#204]], [[#206]]
- -  Added `BlockDownloadState` class to represent a block downloading state.
-    [[#204]], [[#206]]
- -  Added `Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, long,
-    IAccountStateDelta, Address, bool)` method.
- -  Added `Block<T>.EvaluateActionsPerTx(AccountStateGetter)` method.
  -  Removed `KeyEquals()` methods from all classes and structs.  [[#216]]
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
@@ -43,13 +35,48 @@ To be released.
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
     related classes method parameters and field types have changed accordingly.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
+ -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
+    `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
+
+### Added interfaces
+
+ -  `BlockChain<T>` became to implement `IReadOnlyList<Block<T>>`.  [[#205]]
+ -  Added `Swarm.DifferentVersionPeerEncountered` event handler that can handle
+    events when a different version of a peer is discovered.  [[#167]], [[#185]]
+ -  Added `Peer.AppProtocolVersion` property.  [[#185]]
+ -  Added `Swarm.PreloadAsync()` method to explicitly and preemptively download
+    initial blocks before `Swarm.StartAsync<T>()` being called.
+    [[#204]], [[#206]]
+ -  Added `BlockDownloadState` class to represent a block downloading state.
+    [[#204]], [[#206]]
+ -  Added `Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, long,
+    IAccountStateDelta, Address, bool)` method.  [[#31], [#212]]
+ -  Added `Block<T>.EvaluateActionsPerTx(AccountStateGetter)` method.
+    [[#31], [#212]]
  -  Added `HashDigest.Satisfies()` method.  [[#213]]
  -  `BlockPolicy<T>` constructor became to receive the `minimumDifficulty`
     and the mining `difficultyBoundDivisor`.  [[#213]]
+
+### Behavioral changes
+
  -  `Swarm.StartAsync()` now receives the height of blocks (tip `Index`) from
     other known peers and synchronizes the blocks if necessary
     before propagating/receiving pinpointed recent blocks to prevent inefficient
     round-trips.  [[#187], [#190]]
+ -  The calculation algorithm of `BlockPolicy<T>.GetNextBlockDifficulty()`
+    method was changed to the [Ethereum Homestead algorithm] except for the
+    difficulty bomb.  [[#213]]
+ -  The difficulty was changed from representing the number of leading zeros of
+    target number to representing a divisor to obtain the target number.
+    [[#213]]
+
+# Bug fixes
+
+ -  Fixed a bug that TURN relay had been disconnected when being connected for
+    longer than 5 minutes.  [[#198]]
+ -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host`
+    argument was given.  [[#198]]
+ -  Improved the read throughput of `BlockChain<T>.Append()`.
  -  Improved overall read throughput of `BlockChain<T>` while blocks are being
     mined by `BlockChain<T>.MineBlock()`.  [[#191]]
  -  Fixed a bug that `TurnClientException` had been thrown by Swarm when a STUN
@@ -57,7 +84,6 @@ To be released.
  -  Fixed `BlockChain<T>.GetStates()` had descended to the bottom
     (i.e., the genesis block) where a given `Address` refers to
     a nonexistent account (i.e., never used before).  [[#189], [#192]]
- -  Improved the read throughput of `BlockChain<T>.Append()`.
  -  Fixed a bug that a TURN connection had turned unavailable after
     it once failed to parse a message (due to a corrupted packet).
     [[#215]]
@@ -65,20 +91,13 @@ To be released.
     became to validate only the next block to be appended.  [[#210]]
  -  Improved `BlockChain<T>.Fork()` performance by avoiding double validation
     of already validated blocks.  [[#215]]
- -  The calculation algorithm of `BlockPolicy<T>.GetNextBlockDifficulty()`
-    method was changed to the [Ethereum Homestead algorithm] except for the
-    difficulty bomb.  [[#213]]
- -  The difficulty was changed from representing the number of leading zeros of
-    target number to representing a divisor to obtain the target number.
-    [[#213]]
- -  Fixed a bug that TURN relay had been disconnected when being connected for
-    longer than 5 minutes.  [[#198]]
- -  Fixed a bug that `Swarm` had attempted to use TURN relay even if the `host`
-    argument was given.  [[#198]]
- -  Removed unnecessary writer lock on `BlockChain<T>.StageTransactions()`. [[#217]]
- -  Improve concurrency of `BlockChain<T>.Append()`. [[#217]]
+ -  Removed unnecessary writer locks on `BlockChain<T>.StageTransactions()`.
+    [[#217]]
+ -  Improved concurrency of `BlockChain<T>.Append()` method by removing
+    unnecessary race conditions. [[#217]]
 
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
+[#31]: https://github.com/planetarium/libplanet/issues/31
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
@@ -91,6 +110,7 @@ To be released.
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
 [#210]: https://github.com/planetarium/libplanet/pull/210
+[#212]: https://github.com/planetarium/libplanet/pull/212
 [#213]: https://github.com/planetarium/libplanet/pull/213
 [#215]: https://github.com/planetarium/libplanet/pull/215
 [#216]: https://github.com/planetarium/libplanet/pull/216
