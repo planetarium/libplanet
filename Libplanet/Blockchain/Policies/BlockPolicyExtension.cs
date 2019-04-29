@@ -10,7 +10,7 @@ namespace Libplanet.Blockchain.Policies
     /// the most part) to deal with <see cref="IBlockPolicy{T}"/>.
     /// </summary>
     /// <seealso cref="IBlockPolicy{T}"/>
-    public static class IBlockPolicyExtension
+    public static class BlockPolicyExtension
     {
         /// <summary>
         /// Checks if <paramref name="blocks"/> are invalid, and if that
