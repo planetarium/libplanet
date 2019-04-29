@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InvalidTxPublicKeyException
+    <title>Class ActionEvaluation&lt;T&gt;
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InvalidTxPublicKeyException
+    <meta name="title" content="Class ActionEvaluation&lt;T&gt;
    | Libplanet ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -125,8 +125,8 @@
                           <li class="">
                             <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="">ActionEvaluation&lt;T&gt;</a>
+                          <li class="active">
+                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="active">ActionEvaluation&lt;T&gt;</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
@@ -311,8 +311,8 @@
                           <li class="">
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
-                          <li class="active">
-                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="active">InvalidTxPublicKeyException</a>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Tx.InvalidTxSignatureException.html" title="InvalidTxSignatureException" class="">InvalidTxSignatureException</a>
@@ -337,46 +337,56 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Tx.InvalidTxPublicKeyException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.ActionEvaluation`1">
   
   
-  <h1 id="Libplanet_Tx_InvalidTxPublicKeyException" data-uid="Libplanet.Tx.InvalidTxPublicKeyException" class="text-break">Class InvalidTxPublicKeyException
+  <h1 id="Libplanet_Action_ActionEvaluation_1" data-uid="Libplanet.Action.ActionEvaluation`1" class="text-break">Class ActionEvaluation&lt;T&gt;
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> is not derived from its
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
+  <div class="markdown level0 summary"><p>A record type to represent an evaluation plan and result of
+a single action (<code data-dev-comment-type="typeparamref" class="typeparamref">T</code>).</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a></div>
-    <div class="level2"><span class="xref">InvalidTxPublicKeyException</span></div>
+    <div class="level1"><span class="xref">ActionEvaluation&lt;T&gt;</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException_TxId">InvalidTxException.TxId</a>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Tx_InvalidTxPublicKeyException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Action_ActionEvaluation_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InvalidTxPublicKeyException : InvalidTxException</code></pre>
+    <pre><code class="lang-csharp hljs">public class ActionEvaluation&lt;T&gt; : object where T : IAction, new()</code></pre>
   </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>A concrete type that implements
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="Libplanet_Tx_InvalidTxPublicKeyException__ctor_" data-uid="Libplanet.Tx.InvalidTxPublicKeyException.#ctor*"></a>
-  <h4 id="Libplanet_Tx_InvalidTxPublicKeyException__ctor_Libplanet_Tx_TxId_System_String_" data-uid="Libplanet.Tx.InvalidTxPublicKeyException.#ctor(Libplanet.Tx.TxId,System.String)">InvalidTxPublicKeyException(TxId, String)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.InvalidTxPublicKeyException.html">InvalidTxPublicKeyException</a> object.</p>
+  <a id="Libplanet_Action_ActionEvaluation_1__ctor_" data-uid="Libplanet.Action.ActionEvaluation`1.#ctor*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluation_1__ctor__0_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.ActionEvaluation`1.#ctor(`0,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">ActionEvaluation(T, IActionContext, IAccountStateDelta)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation&lt;T&gt;</a> instance
+with filling properties.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InvalidTxPublicKeyException(TxId txid, string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public ActionEvaluation(T action, IActionContext inputContext, IAccountStateDelta outputStates)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -389,18 +399,109 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
-        <td><span class="parametername">txid</span></td>
-        <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.  It is automatically included to
-the <see cref="!:Exception.Message"></see> string.</p>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">action</span></td>
+        <td><p>An action to evaluate.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>Specifies an <see cref="!:Exception.Message"></see>.</p>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">inputContext</span></td>
+        <td><p>An input <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> to
+evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
 </td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><span class="parametername">outputStates</span></td>
+        <td><p>The result states that
+<code data-dev-comment-type="paramref" class="paramref">action</code> makes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Libplanet_Action_ActionEvaluation_1_Action_" data-uid="Libplanet.Action.ActionEvaluation`1.Action*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluation_1_Action" data-uid="Libplanet.Action.ActionEvaluation`1.Action">Action</h4>
+  <div class="markdown level1 summary"><p>An action to evaluate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T Action { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Libplanet_Action_ActionEvaluation_1_InputContext_" data-uid="Libplanet.Action.ActionEvaluation`1.InputContext*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluation_1_InputContext" data-uid="Libplanet.Action.ActionEvaluation`1.InputContext">InputContext</h4>
+  <div class="markdown level1 summary"><p>An input <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> to evaluate
+<a class="xref" href="Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_Action">Action</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IActionContext InputContext { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_ActionEvaluation_1_InputContext_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Its <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> property
+is not consumed yet.</p>
+</div>
+  
+  
+  <a id="Libplanet_Action_ActionEvaluation_1_OutputStates_" data-uid="Libplanet.Action.ActionEvaluation`1.OutputStates*"></a>
+  <h4 id="Libplanet_Action_ActionEvaluation_1_OutputStates" data-uid="Libplanet.Action.ActionEvaluation`1.OutputStates">OutputStates</h4>
+  <div class="markdown level1 summary"><p>The result states that <a class="xref" href="Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_Action">Action</a> makes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAccountStateDelta OutputStates { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

@@ -19,6 +19,83 @@ references:
   commentId: T:Libplanet.Action.AccountStateGetter
   fullName: Libplanet.Action.AccountStateGetter
   nameWithType: AccountStateGetter
+- uid: Libplanet.Action.ActionEvaluation`1
+  name: ActionEvaluation<T>
+  href: api/Libplanet.Action.ActionEvaluation-1.html
+  commentId: T:Libplanet.Action.ActionEvaluation`1
+  name.vb: ActionEvaluation(Of T)
+  fullName: Libplanet.Action.ActionEvaluation<T>
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T)
+  nameWithType: ActionEvaluation<T>
+  nameWithType.vb: ActionEvaluation(Of T)
+- uid: Libplanet.Action.ActionEvaluation`1.#ctor(`0,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: ActionEvaluation(T, IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1__ctor__0_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.ActionEvaluation`1.#ctor(`0,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.ActionEvaluation<T>.ActionEvaluation(T, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).ActionEvaluation(T, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: ActionEvaluation<T>.ActionEvaluation(T, IActionContext, IAccountStateDelta)
+  nameWithType.vb: ActionEvaluation(Of T).ActionEvaluation(T, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.ActionEvaluation`1.#ctor*
+  name: ActionEvaluation
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1__ctor_
+  commentId: Overload:Libplanet.Action.ActionEvaluation`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation<T>.ActionEvaluation
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).ActionEvaluation
+  nameWithType: ActionEvaluation<T>.ActionEvaluation
+  nameWithType.vb: ActionEvaluation(Of T).ActionEvaluation
+- uid: Libplanet.Action.ActionEvaluation`1.Action
+  name: Action
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_Action
+  commentId: P:Libplanet.Action.ActionEvaluation`1.Action
+  fullName: Libplanet.Action.ActionEvaluation<T>.Action
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).Action
+  nameWithType: ActionEvaluation<T>.Action
+  nameWithType.vb: ActionEvaluation(Of T).Action
+- uid: Libplanet.Action.ActionEvaluation`1.Action*
+  name: Action
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_Action_
+  commentId: Overload:Libplanet.Action.ActionEvaluation`1.Action
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation<T>.Action
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).Action
+  nameWithType: ActionEvaluation<T>.Action
+  nameWithType.vb: ActionEvaluation(Of T).Action
+- uid: Libplanet.Action.ActionEvaluation`1.InputContext
+  name: InputContext
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_InputContext
+  commentId: P:Libplanet.Action.ActionEvaluation`1.InputContext
+  fullName: Libplanet.Action.ActionEvaluation<T>.InputContext
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).InputContext
+  nameWithType: ActionEvaluation<T>.InputContext
+  nameWithType.vb: ActionEvaluation(Of T).InputContext
+- uid: Libplanet.Action.ActionEvaluation`1.InputContext*
+  name: InputContext
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_InputContext_
+  commentId: Overload:Libplanet.Action.ActionEvaluation`1.InputContext
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation<T>.InputContext
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).InputContext
+  nameWithType: ActionEvaluation<T>.InputContext
+  nameWithType.vb: ActionEvaluation(Of T).InputContext
+- uid: Libplanet.Action.ActionEvaluation`1.OutputStates
+  name: OutputStates
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_OutputStates
+  commentId: P:Libplanet.Action.ActionEvaluation`1.OutputStates
+  fullName: Libplanet.Action.ActionEvaluation<T>.OutputStates
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).OutputStates
+  nameWithType: ActionEvaluation<T>.OutputStates
+  nameWithType.vb: ActionEvaluation(Of T).OutputStates
+- uid: Libplanet.Action.ActionEvaluation`1.OutputStates*
+  name: OutputStates
+  href: api/Libplanet.Action.ActionEvaluation-1.html#Libplanet_Action_ActionEvaluation_1_OutputStates_
+  commentId: Overload:Libplanet.Action.ActionEvaluation`1.OutputStates
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation<T>.OutputStates
+  fullName.vb: Libplanet.Action.ActionEvaluation(Of T).OutputStates
+  nameWithType: ActionEvaluation<T>.OutputStates
+  nameWithType.vb: ActionEvaluation(Of T).OutputStates
 - uid: Libplanet.Action.ActionTypeAttribute
   name: ActionTypeAttribute
   href: api/Libplanet.Action.ActionTypeAttribute.html
@@ -433,6 +510,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAction.PlainValue
   nameWithType: IAction.PlainValue
+- uid: Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: Render(IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: IAction.Render(IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.IAction.Render*
+  name: Render
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_
+  commentId: Overload:Libplanet.Action.IAction.Render
+  isSpec: "True"
+  fullName: Libplanet.Action.IAction.Render
+  nameWithType: IAction.Render
+- uid: Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: Unrender(IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: IAction.Unrender(IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.IAction.Unrender*
+  name: Unrender
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Unrender_
+  commentId: Overload:Libplanet.Action.IAction.Unrender
+  isSpec: "True"
+  fullName: Libplanet.Action.IAction.Unrender
+  nameWithType: IAction.Unrender
 - uid: Libplanet.Action.IActionContext
   name: IActionContext
   href: api/Libplanet.Action.IActionContext.html
@@ -731,6 +834,40 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).PlainValue
   nameWithType: PolymorphicAction<T>.PlainValue
   nameWithType.vb: PolymorphicAction(Of T).PlainValue
+- uid: Libplanet.Action.PolymorphicAction`1.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: Render(IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.PolymorphicAction<T>.Render(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Render(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: PolymorphicAction<T>.Render(IActionContext, IAccountStateDelta)
+  nameWithType.vb: PolymorphicAction(Of T).Render(IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.PolymorphicAction`1.Render*
+  name: Render
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Render_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.Render
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.Render
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Render
+  nameWithType: PolymorphicAction<T>.Render
+  nameWithType.vb: PolymorphicAction(Of T).Render
+- uid: Libplanet.Action.PolymorphicAction`1.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  name: Unrender(IActionContext, IAccountStateDelta)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
+  fullName: Libplanet.Action.PolymorphicAction<T>.Unrender(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Unrender(Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
+  nameWithType: PolymorphicAction<T>.Unrender(IActionContext, IAccountStateDelta)
+  nameWithType.vb: PolymorphicAction(Of T).Unrender(IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.PolymorphicAction`1.Unrender*
+  name: Unrender
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_Unrender_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.Unrender
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.Unrender
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Unrender
+  nameWithType: PolymorphicAction<T>.Unrender
+  nameWithType.vb: PolymorphicAction(Of T).Unrender
 - uid: Libplanet.Address
   name: Address
   href: api/Libplanet.Address.html
@@ -1390,6 +1527,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActions
   nameWithType: Block<T>.EvaluateActions
   nameWithType.vb: Block(Of T).EvaluateActions
+- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)
+  name: EvaluateActionsPerTx(AccountStateGetter)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_
+  commentId: M:Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)
+  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)
+  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)
+  nameWithType: Block<T>.EvaluateActionsPerTx(AccountStateGetter)
+  nameWithType.vb: Block(Of T).EvaluateActionsPerTx(AccountStateGetter)
+- uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx*
+  name: EvaluateActionsPerTx
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_
+  commentId: Overload:Libplanet.Blocks.Block`1.EvaluateActionsPerTx
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.EvaluateActionsPerTx
+  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx
+  nameWithType: Block<T>.EvaluateActionsPerTx
+  nameWithType.vb: Block(Of T).EvaluateActionsPerTx
 - uid: Libplanet.Blocks.Block`1.FromBencodex(System.Byte[])
   name: FromBencodex(Byte[])
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencodex_System_Byte___
@@ -5414,6 +5568,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActions
   nameWithType: Transaction<T>.EvaluateActions
   nameWithType.vb: Transaction(Of T).EvaluateActions
+- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  name: EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)
+  name.vb: EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually(Libplanet.HashDigest<SHA256>, System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually(Libplanet.HashDigest(Of SHA256), System.Int64, Libplanet.Action.IAccountStateDelta, Libplanet.Address, System.Boolean)
+  nameWithType: Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, Int64, IAccountStateDelta, Address, Boolean)
+  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually(HashDigest(Of SHA256), Int64, IAccountStateDelta, Address, Boolean)
+- uid: Libplanet.Tx.Transaction`1.EvaluateActionsGradually*
+  name: EvaluateActionsGradually
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActionsGradually_
+  commentId: Overload:Libplanet.Tx.Transaction`1.EvaluateActionsGradually
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.EvaluateActionsGradually
+  fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually
+  nameWithType: Transaction<T>.EvaluateActionsGradually
+  nameWithType.vb: Transaction(Of T).EvaluateActionsGradually
 - uid: Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])
   name: FromBencodex(Byte[])
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___

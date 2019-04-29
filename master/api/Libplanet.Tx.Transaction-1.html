@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
     
     
     
@@ -46,7 +46,21 @@
                   <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
                 </div>
               </form>
-            </div>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
           </div>
         </nav>
         
@@ -59,11 +73,266 @@
         </div>
       </header>
       <div role="main" class="container body-content hide-when-search">
-        
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
-            <div id="sidetoc"></div>
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.html" title="Libplanet" class="">Libplanet</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Address.html" title="Address" class="">Address</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.AddressExtension.html" title="AddressExtension" class="">AddressExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.ByteUtil.html" title="ByteUtil" class="">ByteUtil</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.html" title="Hashcash" class="">Hashcash</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.Stamp.html" title="Hashcash.Stamp" class="">Hashcash.Stamp</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigest-1.html" title="HashDigest&lt;T&gt;" class="">HashDigest&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigestExtension.html" title="HashDigestExtension" class="">HashDigestExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Nonce.html" title="Nonce" class="">Nonce</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="">Libplanet.Action</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="">ActionEvaluation&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.AddressStateMap.html" title="AddressStateMap" class="">AddressStateMap</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAccountStateDelta.html" title="IAccountStateDelta" class="">IAccountStateDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAction.html" title="IAction" class="">IAction</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IActionContext.html" title="IActionContext" class="">IActionContext</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IRandom.html" title="IRandom" class="">IRandom</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="">MissingActionTypeException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.PolymorphicAction-1.html" title="PolymorphicAction&lt;T&gt;" class="">PolymorphicAction&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.html" title="Libplanet.Blockchain" class="">Libplanet.Blockchain</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.BlockChain-1.html" title="BlockChain&lt;T&gt;" class="">BlockChain&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.Policies.html" title="Libplanet.Blockchain.Policies" class="">Libplanet.Blockchain.Policies</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicy-1.html" title="BlockPolicy&lt;T&gt;" class="">BlockPolicy&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html" title="IBlockPolicy&lt;T&gt;" class="">IBlockPolicy&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.IBlockPolicyExtension.html" title="IBlockPolicyExtension" class="">IBlockPolicyExtension</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blocks.html" title="Libplanet.Blocks" class="">Libplanet.Blocks</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blocks.Block-1.html" title="Block&lt;T&gt;" class="">Block&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockDifficultyException.html" title="InvalidBlockDifficultyException" class="">InvalidBlockDifficultyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockException.html" title="InvalidBlockException" class="">InvalidBlockException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockHashException.html" title="InvalidBlockHashException" class="">InvalidBlockHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockIndexException.html" title="InvalidBlockIndexException" class="">InvalidBlockIndexException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockNonceException.html" title="InvalidBlockNonceException" class="">InvalidBlockNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockPreviousHashException.html" title="InvalidBlockPreviousHashException" class="">InvalidBlockPreviousHashException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="">Libplanet.Crypto</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Crypto.InvalidCiphertextException.html" title="InvalidCiphertextException" class="">InvalidCiphertextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PrivateKey.html" title="PrivateKey" class="">PrivateKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PublicKey.html" title="PublicKey" class="">PublicKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.SymmetricKey.html" title="SymmetricKey" class="">SymmetricKey</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Net.html" title="Libplanet.Net" class="">Libplanet.Net</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServerException.html" title="IceServerException" class="">IceServerException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Peer.html" title="Peer" class="">Peer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerNotFoundException.html" title="PeerNotFoundException" class="">PeerNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerSetDelta.html" title="PeerSetDelta" class="">PeerSetDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Swarm.html" title="Swarm" class="">Swarm</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.SwarmException.html" title="SwarmException" class="">SwarmException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Serialization.html" title="Libplanet.Serialization" class="">Libplanet.Serialization</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Serialization.BencodexFormatter-1.html" title="BencodexFormatter&lt;T&gt;" class="">BencodexFormatter&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Serialization.SerializationInfoExtension.html" title="SerializationInfoExtension" class="">SerializationInfoExtension</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Store.html" title="Libplanet.Store" class="">Libplanet.Store</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Store.BaseIndex-2.html" title="BaseIndex&lt;TKey, TVal&gt;" class="">BaseIndex&lt;TKey, TVal&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BaseStore.html" title="BaseStore" class="">BaseStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BlockSet-1.html" title="BlockSet&lt;T&gt;" class="">BlockSet&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.FileStore.html" title="FileStore" class="">FileStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.IStore.html" title="IStore" class="">IStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.TransactionSet-1.html" title="TransactionSet&lt;T&gt;" class="">TransactionSet&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Tx.html" title="Libplanet.Tx" class="">Libplanet.Tx</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxException.html" title="InvalidTxException" class="">InvalidTxException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxSignatureException.html" title="InvalidTxSignatureException" class="">InvalidTxSignatureException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html" title="InvalidTxUpdatedAddressesException" class="">InvalidTxUpdatedAddressesException</a>
+                          </li>
+                          <li class="active">
+                            <a href="Libplanet.Tx.Transaction-1.html" title="Transaction&lt;T&gt;" class="active">Transaction&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.TxId.html" title="TxId" class="">TxId</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html" title="UnexpectedlyTerminatedTxRehearsalException" class="">UnexpectedlyTerminatedTxRehearsalException</a>
+                          </li>
+                        </ul>  </li>
+                  </ul>        </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="article row grid-right">
@@ -723,6 +992,112 @@ The default value is <code>false</code>.</p>
 being executed.  Note that it maintains
 <a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a> of the given
 <code data-dev-comment-type="paramref" class="paramref">previousStates</code> as well.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html">UnexpectedlyTerminatedTxRehearsalException</a></td>
+        <td><p>Thrown when one of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a> throws some
+exception during <code data-dev-comment-type="paramref" class="paramref">rehearsal</code> mode.
+The actual exception that an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> threw
+is stored in its <see cref="!:Exception.InnerException"></see> property.
+It is never thrown if the <code data-dev-comment-type="paramref" class="paramref">rehearsal</code> option is
+<code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Libplanet_Tx_Transaction_1_EvaluateActionsGradually_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActionsGradually*"></a>
+  <h4 id="Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)">EvaluateActionsGradually(HashDigest&lt;SHA256&gt;, Int64, IAccountStateDelta, Address, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Executes the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a> step by step, and emits
+an action, input context, and output states for each step.</p>
+<p>If the needed value is only the final states,
+use <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_">EvaluateActions(HashDigest&lt;SHA256&gt;, Int64, IAccountStateDelta, Address, Boolean)</a> method instead.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;ActionEvaluation&lt;T&gt;&gt; EvaluateActionsGradually(HashDigest&lt;SHA256&gt; blockHash, long blockIndex, IAccountStateDelta previousStates, Address minerAddress, bool rehearsal = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that this
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> will belong to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">blockIndex</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of
+<a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that this
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> will belong to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><span class="parametername">previousStates</span></td>
+        <td><p>The states immediately before
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a> being executed.  Note that its
+<a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a> are remained
+to the returned next states.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">minerAddress</span></td>
+        <td><p>An address of block miner.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">rehearsal</span></td>
+        <td><p>Pass <code>true</code> if it is intended
+to be dry-run (i.e., the returned result will be never used).
+The default value is <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation</a>&lt;T&gt;&gt;</td>
+        <td><p>Enumerates an action, input context, and
+output states for each one in <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.
+The order is the same to the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.
+Note that each <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> object has
+a unconsumed state.</p>
 </td>
       </tr>
     </tbody>
