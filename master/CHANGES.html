@@ -78,10 +78,12 @@
 
 <h2 id="version-030">Version 0.3.0</h2>
 <p>To be released.</p>
+<h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li>Added <code>IAction.Render(IActionContext, IAccountStateDelta)</code> method.</li>
-<li>Added <code>IAction.Unrender(IActionContext, IAccountStateDelta)</code> method.</li>
-<li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li>Added <code>IAction.Render(IActionContext, IAccountStateDelta)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
+<li>Added <code>IAction.Unrender(IActionContext, IAccountStateDelta)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Validate()</code> method became to receive
 <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
 <li><code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> method became to receive
@@ -93,20 +95,10 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]<
 <li>Added <code>IBlockPolicyExtension.ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li><code>BlockChain&lt;T&gt;[int]</code> became to throw <code>ArgumentOutOfRangeException</code> instead
 of <code>IndexOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
-<li>Added <code>Swarm.DifferentVersionPeerEncountered</code> event handler that can handle
-events when a different version of a peer is discovered.  [<a href="https://github.com/planetarium/libplanet/issues/167">#167</a>], [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
-<li>Added <code>Peer.AppProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
 <li>Added <code>GetAddressesMask(HashDigest&lt;SHA256&gt;)</code> method to <code>IStore</code> interface
 and its all implementations.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
 <li>The signature of <code>IStore.PutBlock&lt;T&gt;(Block&lt;T&gt;)</code> method was changed to
 <code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
-<li>Added <code>Swarm.PreloadAsync()</code> method to explicitly and preemptively download
-initial blocks before <code>Swarm.StartAsync&lt;T&gt;()</code> being called.
-[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
-<li>Added <code>BlockDownloadState</code> class to represent a block downloading state.
-[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
-<li>Added <code>Transaction&lt;T&gt;.EvaluateActionsGradually(HashDigest&lt;SHA256&gt;, long, IAccountStateDelta, Address, bool)</code> method.</li>
-<li>Added <code>Block&lt;T&gt;.EvaluateActionsPerTx(AccountStateGetter)</code> method.</li>
 <li>Removed <code>KeyEquals()</code> methods from all classes and structs.  [<a href="https://github.com/planetarium/libplanet/pull/216">#216</a>]</li>
 <li><code>Swarm</code> class now does not implement <code>IEquatable&lt;Swarm&gt;</code> anymore and
 its <code>Equals(object)</code> method and <code>GetHashCode()</code> method became to have
@@ -114,13 +106,47 @@ default behavior of <code>object</code> class.  [<a href="https://github.com/pla
 <li>The type of <code>Block&lt;T&gt;.Difficulty</code> is changed to <code>long</code> instead of <code>int</code>, and
 related classes method parameters and field types have changed accordingly.</li>
 <li>Removed <code>HashDigest.HasLeadingZeroBits()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+<li>The signature of <code>IStore.PutBlock&lt;T&gt;(Block&lt;T&gt;)</code> method was changed to
+<code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
+</ul>
+<h3 id="added-interfaces">Added interfaces</h3>
+<ul>
+<li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<li>Added <code>Swarm.DifferentVersionPeerEncountered</code> event handler that can handle
+events when a different version of a peer is discovered.  [<a href="https://github.com/planetarium/libplanet/issues/167">#167</a>], [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
+<li>Added <code>Peer.AppProtocolVersion</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/185">#185</a>]</li>
+<li>Added <code>Swarm.PreloadAsync()</code> method to explicitly and preemptively download
+initial blocks before <code>Swarm.StartAsync&lt;T&gt;()</code> being called.
+[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
+<li>Added <code>BlockDownloadState</code> class to represent a block downloading state.
+[<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.EvaluateActionsGradually(HashDigest&lt;SHA256&gt;, long, IAccountStateDelta, Address, bool)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
+<li>Added <code>Block&lt;T&gt;.EvaluateActionsPerTx(AccountStateGetter)</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
 <li>Added <code>HashDigest.Satisfies()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
 <li><code>BlockPolicy&lt;T&gt;</code> constructor became to receive the <code>minimumDifficulty</code>
 and the mining <code>difficultyBoundDivisor</code>.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+</ul>
+<h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
 <li><code>Swarm.StartAsync()</code> now receives the height of blocks (tip <code>Index</code>) from
 other known peers and synchronizes the blocks if necessary
 before propagating/receiving pinpointed recent blocks to prevent inefficient
 round-trips.  [<a href="https://github.com/planetarium/libplanet/issues/187">#187</a>, <a href="https://github.com/planetarium/libplanet/pull/190">#190</a>]</li>
+<li>The calculation algorithm of <code>BlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code>
+method was changed to the <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md">Ethereum Homestead algorithm</a> except for the
+difficulty bomb.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+<li>The difficulty was changed from representing the number of leading zeros of
+target number to representing a divisor to obtain the target number.
+[<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
+</ul>
+<h1 id="bug-fixes">Bug fixes</h1>
+<ul>
+<li>Fixed a bug that TURN relay had been disconnected when being connected for
+longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
+<li>Fixed a bug that <code>Swarm</code> had attempted to use TURN relay even if the <code>host</code>
+argument was given.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
+<li>Improved the read throughput of <code>BlockChain&lt;T&gt;.Append()</code>.</li>
 <li>Improved overall read throughput of <code>BlockChain&lt;T&gt;</code> while blocks are being
 mined by <code>BlockChain&lt;T&gt;.MineBlock()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/191">#191</a>]</li>
 <li>Fixed a bug that <code>TurnClientException</code> had been thrown by Swarm when a STUN
@@ -128,7 +154,6 @@ nonce is stale.  [<a href="https://github.com/planetarium/libplanet/pull/193">#1
 <li>Fixed <code>BlockChain&lt;T&gt;.GetStates()</code> had descended to the bottom
 (i.e., the genesis block) where a given <code>Address</code> refers to
 a nonexistent account (i.e., never used before).  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/192">#192</a>]</li>
-<li>Improved the read throughput of <code>BlockChain&lt;T&gt;.Append()</code>.</li>
 <li>Fixed a bug that a TURN connection had turned unavailable after
 it once failed to parse a message (due to a corrupted packet).
 [<a href="https://github.com/planetarium/libplanet/pull/215">#215</a>]</li>
@@ -136,18 +161,10 @@ it once failed to parse a message (due to a corrupted packet).
 became to validate only the next block to be appended.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Improved <code>BlockChain&lt;T&gt;.Fork()</code> performance by avoiding double validation
 of already validated blocks.  [<a href="https://github.com/planetarium/libplanet/pull/215">#215</a>]</li>
-<li>The calculation algorithm of <code>BlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code>
-method was changed to the <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md">Ethereum Homestead algorithm</a> except for the
-difficulty bomb.  [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
-<li>The difficulty was changed from representing the number of leading zeros of
-target number to representing a divisor to obtain the target number.
-[<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
-<li>Fixed a bug that TURN relay had been disconnected when being connected for
-longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
-<li>Fixed a bug that <code>Swarm</code> had attempted to use TURN relay even if the <code>host</code>
-argument was given.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
-<li>Removed unnecessary writer lock on <code>BlockChain&lt;T&gt;.StageTransactions()</code>. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
-<li>Improve concurrency of <code>BlockChain&lt;T&gt;.Append()</code>. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
+<li>Removed unnecessary writer locks on <code>BlockChain&lt;T&gt;.StageTransactions()</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
+<li>Improved concurrency of <code>BlockChain&lt;T&gt;.Append()</code> method by removing
+unnecessary race conditions. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
