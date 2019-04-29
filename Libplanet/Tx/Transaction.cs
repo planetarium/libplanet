@@ -5,7 +5,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -428,6 +427,117 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
+        /// Executes the <see cref="Actions"/> step by step, and emits
+        /// an action, input context, and output states for each step.
+        /// <para>If the needed value is only the final states,
+        /// use <see cref="EvaluateActions"/> method instead.</para>
+        /// </summary>
+        /// <param name="blockHash">The <see
+        /// cref="Libplanet.Blocks.Block{T}.Hash"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
+        /// <see cref="Transaction{T}"/> will belong to.</param>
+        /// <param name="blockIndex">The <see
+        /// cref="Libplanet.Blocks.Block{T}.Index"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this
+        /// <see cref="Transaction{T}"/> will belong to.</param>
+        /// <param name="previousStates">The states immediately before
+        /// <see cref="Actions"/> being executed.  Note that its
+        /// <see cref="IAccountStateDelta.UpdatedAddresses"/> are remained
+        /// to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
+        /// <returns>Enumerates an action, input context, and
+        /// output states for each one in <see cref="Actions"/>.
+        /// The order is the same to the <see cref="Actions"/>.
+        /// Note that each <see cref="IActionContext.Random"/> object has
+        /// a unconsumed state.
+        /// </returns>
+        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// Thrown when one of <see cref="Actions"/> throws some
+        /// exception during <paramref name="rehearsal"/> mode.
+        /// The actual exception that an <see cref="IAction"/> threw
+        /// is stored in its <see cref="Exception.InnerException"/> property.
+        /// It is never thrown if the <paramref name="rehearsal"/> option is
+        /// <c>false</c>.
+        /// </exception>
+        [Pure]
+        public IEnumerable<ActionEvaluation<T>>
+        EvaluateActionsGradually(
+            HashDigest<SHA256> blockHash,
+            long blockIndex,
+            IAccountStateDelta previousStates,
+            Address minerAddress,
+            bool rehearsal = false
+        )
+        {
+            ActionContext CreateActionContext(
+                IAccountStateDelta prevStates,
+                int randomSeed
+            ) =>
+                new ActionContext(
+                    signer: Signer,
+                    miner: minerAddress,
+                    blockIndex: blockIndex,
+                    previousStates: prevStates,
+                    randomSeed: randomSeed,
+                    rehearsal: rehearsal
+                );
+
+            int seed =
+                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
+                (Signature.Any() ? BitConverter.ToInt32(Signature, 0) : 0);
+            IAccountStateDelta states = previousStates;
+            foreach (T action in Actions)
+            {
+                ActionContext context =
+                    CreateActionContext(states, seed);
+                IAccountStateDelta nextStates;
+                try
+                {
+                    nextStates = action.Execute(context);
+                }
+                catch (Exception e)
+                {
+                    if (!rehearsal)
+                    {
+                        throw;
+                    }
+
+                    var msg =
+                        $"The action {action} threw an exception during its " +
+                        "rehearsal.  It is probably because the logic of the " +
+                        $"action {action} is not enough generic so that it " +
+                        "can cover every case including rehearsal mode.\n" +
+                        "The IActionContext.Rehearsal property also might be " +
+                        "useful to make the action can deal with the case of " +
+                        "rehearsal mode.\n" +
+                        "See also this exception's InnerException property.";
+                    throw new UnexpectedlyTerminatedTxRehearsalException(
+                        action, msg, e
+                    );
+                }
+
+                // As IActionContext.Random is stateful, we cannot reuse
+                // the context which is once consumed by Execute().
+                ActionContext equivalentContext =
+                    CreateActionContext(states, seed);
+
+                yield return new ActionEvaluation<T>(
+                    action,
+                    equivalentContext,
+                    nextStates
+                );
+                states = nextStates;
+                unchecked
+                {
+                    seed++;
+                }
+            }
+        }
+
+        /// <summary>
         /// Executes the <see cref="Actions"/> and gets the result states.
         /// </summary>
         /// <param name="blockHash">The <see
@@ -467,47 +577,26 @@ namespace Libplanet.Tx
             bool rehearsal = false
         )
         {
-            int seed =
-                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                (Signature.Any() ? BitConverter.ToInt32(Signature, 0) : 0);
-            IAccountStateDelta states = previousStates;
-            foreach (T action in Actions)
-            {
-                var context = new ActionContext(
-                    signer: Signer,
-                    miner: minerAddress,
-                    blockIndex: blockIndex,
-                    previousStates: states,
-                    randomSeed: unchecked(seed++),
-                    rehearsal: rehearsal
-                );
-                try
-                {
-                    states = action.Execute(context);
-                }
-                catch (Exception e)
-                {
-                    if (!rehearsal)
-                    {
-                        throw;
-                    }
+            var evaluations = EvaluateActionsGradually(
+                blockHash,
+                blockIndex,
+                previousStates,
+                minerAddress,
+                rehearsal: rehearsal
+            );
 
-                    var msg =
-                        $"The action {action} threw an exception during its " +
-                        "rehearsal.  It is probably because the logic of the " +
-                        $"action {action} is not enough generic so that it " +
-                        "can cover every case including rehearsal mode.\n" +
-                        "The IActionContext.Rehearsal property also might be " +
-                        "useful to make the action can deal with the case of " +
-                        "rehearsal mode.\n" +
-                        "See also this exception's InnerException property.";
-                    throw new UnexpectedlyTerminatedTxRehearsalException(
-                        action, msg, e
-                    );
-                }
+            ActionEvaluation<T> lastEvaluation;
+            try
+            {
+                lastEvaluation = evaluations.Last();
+            }
+            catch (InvalidOperationException)
+            {
+                // If "evaluations" is empty:
+                return previousStates;
             }
 
-            return states;
+            return lastEvaluation.OutputStates;
         }
 
         /// <summary>

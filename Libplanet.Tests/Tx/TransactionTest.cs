@@ -594,18 +594,79 @@ namespace Libplanet.Tests.Tx
                 new PrivateKey().PublicKey.ToAddress(),
                 new PrivateKey().PublicKey.ToAddress(),
             };
-            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                _fx.PrivateKey,
-                new[]
-                {
-                    new DumbAction(addresses[0], "0"),
-                    new DumbAction(addresses[1], "1"),
-                    new DumbAction(addresses[0], "2"),
-                    new DumbAction(addresses[2], "R", true),
-                }
-            );
+            DumbAction[] actions =
+            {
+                new DumbAction(addresses[0], "0", recordRandom: true),
+                new DumbAction(addresses[1], "1", recordRandom: true),
+                new DumbAction(addresses[0], "2", recordRandom: true),
+                new DumbAction(addresses[2], "R", true, recordRandom: true),
+            };
+            Transaction<DumbAction> tx =
+                Transaction<DumbAction>.Create(_fx.PrivateKey, actions);
             foreach (bool rehearsal in new[] { false, true })
             {
+                DumbAction.RehearsalRecords.Value =
+                    ImmutableList<(Address, string)>.Empty;
+                var evaluations = tx.EvaluateActionsGradually(
+                    default,
+                    1,
+                    new AccountStateDeltaImpl(address => null),
+                    addresses[0],
+                    rehearsal: rehearsal
+                ).ToImmutableArray();
+
+                Assert.Equal(actions.Length, evaluations.Length);
+                string[][] expectedStates =
+                {
+                    new[] { "0", null, null },
+                    new[] { "0", "1", null },
+                    new[] { "0,2", "1", null },
+                    new[] { "0,2", "1", $"R:{rehearsal}" },
+                };
+
+                for (int i = 0; i < evaluations.Length; i++)
+                {
+                    ActionEvaluation<DumbAction> eval = evaluations[i];
+                    Assert.Equal(actions[i], eval.Action);
+                    Assert.Equal(_fx.Address, eval.InputContext.Signer);
+                    Assert.Equal(addresses[0], eval.InputContext.Miner);
+                    Assert.Equal(1, eval.InputContext.BlockIndex);
+                    Assert.Equal(rehearsal, eval.InputContext.Rehearsal);
+                    Assert.Equal(
+                        eval.OutputStates.GetState(
+                            DumbAction.RandomRecordsAddress
+                        ),
+                        eval.InputContext.Random.Next()
+                    );
+                    Assert.Equal(
+                        i > 0 ? addresses.Select(
+                            evaluations[i - 1].OutputStates.GetState
+                        ) : new object[] { null, null, null },
+                        addresses.Select(
+                            eval.InputContext.PreviousStates.GetState
+                        )
+                    );
+                    Assert.Equal(
+                        expectedStates[i],
+                        addresses.Select(eval.OutputStates.GetState)
+                    );
+                }
+
+                if (rehearsal)
+                {
+                    Assert.Contains(
+                        (addresses[2], "R"),
+                        DumbAction.RehearsalRecords.Value
+                    );
+                }
+                else
+                {
+                    Assert.DoesNotContain(
+                        (addresses[2], "R"),
+                        DumbAction.RehearsalRecords.Value
+                    );
+                }
+
                 DumbAction.RehearsalRecords.Value =
                     ImmutableList<(Address, string)>.Empty;
                 IAccountStateDelta delta = tx.EvaluateActions(
@@ -616,12 +677,7 @@ namespace Libplanet.Tests.Tx
                     rehearsal: rehearsal
                 );
                 Assert.Equal(
-                    new Dictionary<Address, object>
-                    {
-                        [addresses[0]] = "0,2",
-                        [addresses[1]] = "1",
-                        [addresses[2]] = $"R:{rehearsal}",
-                    }.ToImmutableDictionary(),
+                    evaluations[3].OutputStates.GetUpdatedStates(),
                     delta.GetUpdatedStates()
                 );
 

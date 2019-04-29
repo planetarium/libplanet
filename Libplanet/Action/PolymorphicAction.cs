@@ -46,6 +46,21 @@ namespace Libplanet.Action
     ///     // implement their own logic.
     ///     public abstract IAccountStateDelta Execute(IActionContext context);
     ///
+    ///     // Makes Render() no-op by default, but overrideable by subclasses.
+    ///     public virtual void Render(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///     }
+    ///
+    ///     // Makes Unrender() no-op by default,
+    ///     // but overrideable by subclasses.
+    ///     public virtual void Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///     }
+    ///
     ///     IImmutableDictionary<string, object> IAction.PlainValue =>
     ///         ImmutableDictionary<string, object>.Empty
     ///             .Add("target_address", TargetAddress);
@@ -81,6 +96,27 @@ namespace Libplanet.Action
     ///             ImmutableDictionary<string, uint>.Empty.Add("hp", 20)
     ///         );
     ///     }
+    ///
+    ///     void IAction.Render(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         var c = new Character
+    ///         {
+    ///             Address = TargetAddress,
+    ///             Hp = nextStates.GetState(TargetAddress)["hp"],
+    ///         };
+    ///         c.Draw();
+    ///         break;
+    ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hide();
+    ///     }
     /// }
     ///
     /// [ActionType("attack")]
@@ -95,6 +131,24 @@ namespace Libplanet.Action
     ///             state.SetItem("hp", Math.Max(state["hp"] - 5, 0))
     ///         );
     ///     }
+    ///
+    ///     void IAction.Render(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
+    ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
+    ///     }
     /// }
     ///
     /// [ActionType("heal")]
@@ -108,6 +162,24 @@ namespace Libplanet.Action
     ///             TargetAddress,
     ///             state.SetItem("hp", Math.Min(state["hp"] + 5, 20))
     ///         );
+    ///     }
+    ///
+    ///     void IAction.Render(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
+    ///     }
+    ///
+    ///     void IAction.Unrender(
+    ///         IActionContext context,
+    ///         IAccountStateDelta nextStates)
+    ///     {
+    ///         Character c = Character.GetByAddress(TargetAddress);
+    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
+    ///         c.Draw();
     ///     }
     /// }
     /// ]]></code>
@@ -219,5 +291,19 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         public IAccountStateDelta Execute(IActionContext context) =>
             InnerAction.Execute(context);
+
+        /// <inheritdoc/>
+        public void Render(
+            IActionContext context,
+            IAccountStateDelta nextStates
+        ) =>
+            InnerAction.Render(context, nextStates);
+
+        /// <inheritdoc/>
+        public void Unrender(
+            IActionContext context,
+            IAccountStateDelta nextStates
+        ) =>
+            InnerAction.Unrender(context, nextStates);
     }
 }

@@ -13,6 +13,9 @@ namespace Libplanet.Tests
 {
     internal class TestUtils
     {
+        internal static readonly Address GenesisMinerAddress =
+            new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
+
         internal static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
             string msg;
@@ -79,15 +82,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         internal static Block<T> MineGenesis<T>()
             where T : IAction, new()
         {
-            var miner = new Address(
-                "21744f4f08db23e044178dafb8273aeb5ebe6644"
-            );
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
             return new Block<T>(
                 index: 0,
                 difficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                miner: miner,
+                miner: GenesisMinerAddress,
                 previousHash: null,
                 timestamp: timestamp,
                 transactions: new List<Transaction<T>>()
@@ -97,7 +97,8 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
         internal static Block<T> MineNext<T>(
             Block<T> previousBlock,
             IEnumerable<Transaction<T>> txs = null,
-            byte[] nonce = null
+            byte[] nonce = null,
+            long difficulty = 1
         )
             where T : IAction, new()
         {
@@ -106,8 +107,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txs = new List<Transaction<T>>();
             }
 
-            const long index = 1;
-            const long difficulty = 1;
+            long index = previousBlock.Index + 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
             Address miner = previousBlock.Miner.Value;

@@ -151,6 +151,52 @@ namespace Libplanet.Blocks
 
         /// <summary>
         /// Executes every <see cref="IAction"/> in the
+        /// <see cref="Transactions"/> step by step, and emits a pair of
+        /// a transaction, and an <see cref="ActionEvaluation{T}"/>
+        /// for each step.
+        /// <para>If the needed values are only the final states of each
+        /// transaction, use <see cref="EvaluateActions"/> method instead.
+        /// </para>
+        /// </summary>
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
+        /// delegate to get a previous state.
+        /// A <c>null</c> value, which is default, means a constant function
+        /// that returns <c>null</c>.</param>
+        /// <returns>Enumerates pair of a transaction, and
+        /// <see cref="ActionEvaluation{T}"/> for each action.
+        /// The order of pairs are the same to
+        /// the <see cref="Transactions"/> and their
+        /// <see cref="Transaction{T}.Actions"/> (e.g., tx&#xb9;-act&#xb9;,
+        /// tx&#xb9;-act&#xb2;, tx&#xb2;-act&#xb9;, tx&#xb2;-act&#xb2;,
+        /// &#x2026;).
+        /// Note that each <see cref="IActionContext.Random"/> object has
+        /// a unconsumed state.
+        /// </returns>
+        [Pure]
+        public
+        IEnumerable<(Transaction<T>, ActionEvaluation<T>)>
+        EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
+        {
+            IAccountStateDelta delta =
+                new AccountStateDeltaImpl(
+                    accountStateGetter ?? (a => null)
+                );
+            foreach (Transaction<T> tx in Transactions)
+            {
+                var triples = tx.EvaluateActionsGradually(
+                    Hash, Index, delta, Miner.Value);
+                foreach (var evaluation in triples)
+                {
+                    yield return (tx, evaluation);
+                    delta = evaluation.OutputStates;
+                }
+
+                delta = new AccountStateDeltaImpl(delta.GetState);
+            }
+        }
+
+        /// <summary>
+        /// Executes every <see cref="IAction"/> in the
         /// <see cref="Transactions"/> and gets result states of each step of
         /// every <see cref="Transaction{T}"/>.
         /// </summary>
@@ -166,16 +212,17 @@ namespace Libplanet.Blocks
             AccountStateGetter accountStateGetter = null
         )
         {
-            IAccountStateDelta delta =
-                new AccountStateDeltaImpl(
-                    accountStateGetter ?? (a => null)
-                );
-            foreach (Transaction<T> tx in Transactions)
+            var pairs = EvaluateActionsPerTx(accountStateGetter);
+            int i = 0;
+            foreach (var (tx, evaluation) in pairs)
             {
-                delta = tx.EvaluateActions(
-                    Hash, Index, delta, Miner.Value);
-                yield return delta;
-                delta = new AccountStateDeltaImpl(delta.GetState);
+                if (++i < tx.Actions.Count)
+                {
+                    continue;
+                }
+
+                yield return evaluation.OutputStates;
+                i = 0;
             }
         }
 

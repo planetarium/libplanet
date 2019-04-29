@@ -91,11 +91,11 @@ namespace Libplanet.Tests.Blocks
             {
                 0x64, 0x31, 0x30, 0x3a, 0x64, 0x69, 0x66, 0x66, 0x69, 0x63,
                 0x75, 0x6c, 0x74, 0x79, 0x69, 0x31, 0x65, 0x34, 0x3a, 0x68,
-                0x61, 0x73, 0x68, 0x33, 0x32, 0x3a, 0x79, 0xb9, 0x5a, 0x46,
-                0xfa, 0xed, 0xb1, 0x37, 0xbb, 0xe8, 0x93, 0xcd, 0x2d, 0x20,
-                0xcf, 0xa2, 0x1a, 0x43, 0x6a, 0x3d, 0x45, 0xaf, 0x4f, 0x64,
-                0x33, 0x39, 0x50, 0x37, 0xcf, 0x6a, 0x1e, 0xb2, 0x35, 0x3a,
-                0x69, 0x6e, 0x64, 0x65, 0x78, 0x69, 0x31, 0x65, 0x35, 0x3a,
+                0x61, 0x73, 0x68, 0x33, 0x32, 0x3a, 0x65, 0x5e, 0x39, 0xab,
+                0x02, 0x67, 0x71, 0xc3, 0x3d, 0xb8, 0x01, 0x1c, 0xf8, 0xf7,
+                0xa5, 0x4b, 0x50, 0x11, 0x86, 0x66, 0x5e, 0x90, 0xc4, 0x87,
+                0xd9, 0xbf, 0x96, 0x54, 0xab, 0x9a, 0xb2, 0x88, 0x35, 0x3a,
+                0x69, 0x6e, 0x64, 0x65, 0x78, 0x69, 0x32, 0x65, 0x35, 0x3a,
                 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x31, 0x30, 0x3a, 0x5c, 0x77,
                 0x74, 0xc2, 0x39, 0x69, 0x37, 0x51, 0x87, 0xa5, 0x31, 0x33,
                 0x3a, 0x70, 0x72, 0x65, 0x76, 0x69, 0x6f, 0x75, 0x73, 0x5f,
@@ -175,27 +175,66 @@ namespace Libplanet.Tests.Blocks
                 .Select(_ => new Address(new PrivateKey().PublicKey))
                 .ToImmutableArray();
             DumbAction MakeAction(Address address, char identifier) =>
-                new DumbAction(address, identifier.ToString());
+                new DumbAction(address, identifier.ToString(), false, true);
 
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
-            Block<DumbAction> blockIdx1 = MineNext(
-                genesis,
-                new[]
-                {
-                    Transaction<DumbAction>.Create(
-                        _fx.TxFixture.PrivateKey,
-                        new[]
-                        {
-                            MakeAction(addresses[0], 'A'),
-                            MakeAction(addresses[1], 'B'),
-                        }
+            Assert.Empty(genesis.EvaluateActionsPerTx(address => null));
+            Assert.Empty(genesis.EvaluateActions(address => null));
+
+            Transaction<DumbAction>[] blockIdx1Txs =
+            {
+                Transaction<DumbAction>.Create(
+                    _fx.TxFixture.PrivateKey,
+                    new[]
+                    {
+                        MakeAction(addresses[0], 'A'),
+                        MakeAction(addresses[1], 'B'),
+                    }
+                ),
+                Transaction<DumbAction>.Create(
+                    _fx.TxFixture.PrivateKey,
+                    new[] { MakeAction(addresses[2], 'C') }
+                ),
+            };
+            Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs);
+            var pairs = blockIdx1
+                .EvaluateActionsPerTx(address => null)
+                .ToImmutableArray();
+            int randomValue = 0;
+            (int, int, string[])[] expectations =
+            {
+                (0, 0, new[] { "A", null, null, null, null }),
+                (0, 1, new[] { "A", "B", null, null, null }),
+                (1, 0, new[] { "A", "B", "C", null, null }),
+            };
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (
+                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
+            )
+            {
+                ActionEvaluation<DumbAction> eval = pair.Item2;
+                Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
+                Assert.Equal(
+                    blockIdx1Txs[expect.Item1].Actions[expect.Item2],
+                    eval.Action
+                );
+                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx1.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                randomValue = eval.InputContext.Random.Next();
+                Assert.Equal(
+                    eval.OutputStates.GetState(
+                        DumbAction.RandomRecordsAddress
                     ),
-                    Transaction<DumbAction>.Create(
-                        _fx.TxFixture.PrivateKey,
-                        new[] { MakeAction(addresses[2], 'C') }
-                    ),
-                }
-            );
+                    randomValue
+                );
+                Assert.Equal(
+                    expect.Item3,
+                    addresses.Select(eval.OutputStates.GetState)
+                );
+            }
+
             IImmutableDictionary<Address, object> dirty1 = blockIdx1
                 .EvaluateActions(address => null)
                 .Aggregate(
@@ -208,35 +247,72 @@ namespace Libplanet.Tests.Blocks
                     [addresses[0]] = "A",
                     [addresses[1]] = "B",
                     [addresses[2]] = "C",
+                    [DumbAction.RandomRecordsAddress] = randomValue,
                 }.ToImmutableDictionary(),
                 dirty1
             );
 
-            Block<DumbAction> blockIdx2 = MineNext(
-                blockIdx1,
-                new[]
-                {
-                    Transaction<DumbAction>.Create(
-                        _fx.TxFixture.PrivateKey,
-                        new[] { MakeAction(addresses[0], 'D') }
+            Transaction<DumbAction>[] blockIdx2Txs =
+            {
+                Transaction<DumbAction>.Create(
+                    _fx.TxFixture.PrivateKey,
+                    new[] { MakeAction(addresses[0], 'D') }
+                ),
+                Transaction<DumbAction>.Create(
+                    _fx.TxFixture.PrivateKey,
+                    new[] { MakeAction(addresses[3], 'E') }
+                ),
+                Transaction<DumbAction>.Create(
+                    _fx.TxFixture.PrivateKey,
+                    new[]
+                    {
+                        new DumbAction(
+                            addresses[4],
+                            "RecordRehearsal",
+                            recordRehearsal: true,
+                            recordRandom: true
+                        ),
+                    }
+                ),
+            };
+            Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
+            pairs = blockIdx2
+                .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
+                .ToImmutableArray();
+            expectations = new[]
+            {
+                (0, 0, new[] { "A,D", "B", "C", null, null }),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }),
+            };
+            Assert.Equal(expectations.Length, pairs.Length);
+            foreach (
+                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
+            )
+            {
+                ActionEvaluation<DumbAction> eval = pair.Item2;
+                Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
+                Assert.Equal(
+                    blockIdx2Txs[expect.Item1].Actions[expect.Item2],
+                    eval.Action
+                );
+                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
+                Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
+                Assert.False(eval.InputContext.Rehearsal);
+                randomValue = eval.InputContext.Random.Next();
+                Assert.Equal(
+                    eval.OutputStates.GetState(
+                        DumbAction.RandomRecordsAddress
                     ),
-                    Transaction<DumbAction>.Create(
-                        _fx.TxFixture.PrivateKey,
-                        new[] { MakeAction(addresses[3], 'E') }
-                    ),
-                    Transaction<DumbAction>.Create(
-                        _fx.TxFixture.PrivateKey,
-                        new[]
-                        {
-                            new DumbAction(
-                                addresses[4],
-                                "RecordRehearsal",
-                                recordRehearsal: true
-                            ),
-                        }
-                    ),
-                }
-            );
+                    randomValue
+                );
+                Assert.Equal(
+                    expect.Item3,
+                    addresses.Select(eval.OutputStates.GetState)
+                );
+            }
+
             IImmutableDictionary<Address, object> dirty2 = blockIdx2
                 .EvaluateActions(dirty1.GetValueOrDefault)
                 .Aggregate(
@@ -249,6 +325,7 @@ namespace Libplanet.Tests.Blocks
                     [addresses[0]] = "A,D",
                     [addresses[3]] = "E",
                     [addresses[4]] = "RecordRehearsal:False",
+                    [DumbAction.RandomRecordsAddress] = randomValue,
                 }.ToImmutableDictionary(),
                 dirty2
             );
