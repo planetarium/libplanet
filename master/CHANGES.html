@@ -146,6 +146,8 @@ target number to representing a divisor to obtain the target number.
 longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
 <li>Fixed a bug that <code>Swarm</code> had attempted to use TURN relay even if the <code>host</code>
 argument was given.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
+<li>Removed unnecessary writer lock on <code>BlockChain&lt;T&gt;.StageTransactions()</code>. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
+<li>Improve concurrency of <code>BlockChain&lt;T&gt;.Append()</code>. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
