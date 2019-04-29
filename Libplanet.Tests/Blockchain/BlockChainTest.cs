@@ -67,7 +67,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanStateTransactions()
+        public void StageTransactions()
         {
             Assert.Empty(_blockChain.Transactions);
             var txs = new HashSet<Transaction<DumbAction>>()
@@ -80,6 +80,23 @@ namespace Libplanet.Tests.Blockchain
                 txs,
                 _blockChain.Transactions.Values.ToHashSet()
             );
+        }
+
+        [Fact]
+        public void UnstageTransactions()
+        {
+            Assert.Empty(_blockChain.Transactions);
+            var txs = new HashSet<Transaction<DumbAction>>()
+            {
+                _fx.Transaction1,
+                _fx.Transaction2,
+            };
+            _blockChain.StageTransactions(txs);
+            Assert.Equal(
+                txs.Select(tx => tx.Id).ToList(),
+                _blockChain.Store.IterateStagedTransactionIds());
+            _blockChain.UnstageTransactions(txs);
+            Assert.Empty(_blockChain.Store.IterateStagedTransactionIds());
         }
 
         [Fact]
