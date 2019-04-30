@@ -92,7 +92,6 @@
 <code>IBlockPolicy&lt;T&gt;.ValidateNextBlock(IReadOnlyList&lt;Block&lt;T&gt;&gt;, Block&lt;T&gt;)</code>
 method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Removed <code>IBlockPolicy&lt;T&gt;.ValidateBlocks()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
-<li>Added <code>IBlockPolicyExtension.ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li><code>BlockChain&lt;T&gt;[int]</code> became to throw <code>ArgumentOutOfRangeException</code> instead
 of <code>IndexOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Added <code>GetAddressesMask(HashDigest&lt;SHA256&gt;)</code> method to <code>IStore</code> interface
@@ -120,6 +119,7 @@ initial blocks before <code>Swarm.StartAsync&lt;T&gt;()</code> being called.
 [<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
 <li>Added <code>BlockDownloadState</code> class to represent a block downloading state.
 [<a href="https://github.com/planetarium/libplanet/issues/204">#204</a>], [<a href="https://github.com/planetarium/libplanet/pull/206">#206</a>]</li>
+<li>Added <code>BlockPolicyExtension.ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li>Added <code>Transaction&lt;T&gt;.EvaluateActionsGradually(HashDigest&lt;SHA256&gt;, long, IAccountStateDelta, Address, bool)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
 <li>Added <code>Block&lt;T&gt;.EvaluateActionsPerTx(AccountStateGetter)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>

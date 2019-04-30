@@ -1403,6 +1403,28 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlock
   nameWithType: BlockPolicy<T>.ValidateNextBlock
   nameWithType.vb: BlockPolicy(Of T).ValidateNextBlock
+- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension
+  name: BlockPolicyExtension
+  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html
+  commentId: T:Libplanet.Blockchain.Policies.BlockPolicyExtension
+  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension
+  nameWithType: BlockPolicyExtension
+- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks*
+  name: ValidateBlocks
+  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html#Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks
+  nameWithType: BlockPolicyExtension.ValidateBlocks
+- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
+  name: ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html#Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
+  name.vb: ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks<T>(Libplanet.Blockchain.Policies.IBlockPolicy<T>, IReadOnlyList<Libplanet.Blocks.Block<T>>, DateTimeOffset)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks(Of T)(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), DateTimeOffset)
+  nameWithType: BlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
+  nameWithType.vb: BlockPolicyExtension.ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1
   name: IBlockPolicy<T>
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html
@@ -1448,28 +1470,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlock
   nameWithType: IBlockPolicy<T>.ValidateNextBlock
   nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlock
-- uid: Libplanet.Blockchain.Policies.IBlockPolicyExtension
-  name: IBlockPolicyExtension
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicyExtension.html
-  commentId: T:Libplanet.Blockchain.Policies.IBlockPolicyExtension
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicyExtension
-  nameWithType: IBlockPolicyExtension
-- uid: Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks*
-  name: ValidateBlocks
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicyExtension.html#Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks
-  nameWithType: IBlockPolicyExtension.ValidateBlocks
-- uid: Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
-  name: ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicyExtension.html#Libplanet_Blockchain_Policies_IBlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
-  name.vb: ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks<T>(Libplanet.Blockchain.Policies.IBlockPolicy<T>, IReadOnlyList<Libplanet.Blocks.Block<T>>, DateTimeOffset)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicyExtension.ValidateBlocks(Of T)(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), DateTimeOffset)
-  nameWithType: IBlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
-  nameWithType.vb: IBlockPolicyExtension.ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
 - uid: Libplanet.Blocks
   name: Libplanet.Blocks
   href: api/Libplanet.Blocks.html
