@@ -92,9 +92,10 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction2,
             };
             _blockChain.StageTransactions(txs);
-            Assert.Equal(
-                txs.Select(tx => tx.Id).ToList(),
-                _blockChain.Store.IterateStagedTransactionIds());
+            HashSet<TxId> txIds = txs.Select(tx => tx.Id).ToHashSet();
+            HashSet<TxId> stagedTxIds = _blockChain.Store
+                .IterateStagedTransactionIds().ToHashSet();
+            Assert.Equal(txIds, stagedTxIds);
             _blockChain.UnstageTransactions(txs);
             Assert.Empty(_blockChain.Store.IterateStagedTransactionIds());
         }
