@@ -949,11 +949,14 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
   
   <a id="Libplanet_Blockchain_BlockChain_1_StageTransactions_" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransactions*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_StageTransactions_ISet_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransactions(ISet{Libplanet.Tx.Transaction{`0}})">StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds <code data-dev-comment-type="paramref" class="paramref">transactions</code> to the pending list so that
+a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined contains these
+<code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt; txs)</code></pre>
+    <pre><code class="lang-csharp hljs">public void StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -967,11 +970,46 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
     <tbody>
       <tr>
         <td><span class="xref">ISet</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
-        <td><span class="parametername">txs</span></td>
-        <td></td>
+        <td><span class="parametername">transactions</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s to add to the pending list.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransactions*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_ISet_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransactions(ISet{Libplanet.Tx.Transaction{`0}})">UnstageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Removes <code data-dev-comment-type="paramref" class="paramref">transactions</code> from the pending list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnstageTransactions(ISet&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ISet</span>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">transactions</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+to remove from the pending list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_ISet_Libplanet_Tx_Transaction__0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_ISet_Libplanet_Tx_Transaction__0___">StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</a></div>
+  </div>
   
   
   <a id="Libplanet_Blockchain_BlockChain_1_Validate_" data-uid="Libplanet.Blockchain.BlockChain`1.Validate*"></a>

@@ -1274,6 +1274,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Transactions
   nameWithType: BlockChain<T>.Transactions
   nameWithType.vb: BlockChain(Of T).Transactions
+- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransactions(ISet{Libplanet.Tx.Transaction{`0}})
+  name: UnstageTransactions(ISet<Transaction<T>>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransactions_ISet_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blockchain.BlockChain`1.UnstageTransactions(ISet{Libplanet.Tx.Transaction{`0}})
+  name.vb: UnstageTransactions(ISet(Of Transaction(Of T)))
+  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransactions(ISet<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransactions(ISet(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockChain<T>.UnstageTransactions(ISet<Transaction<T>>)
+  nameWithType.vb: BlockChain(Of T).UnstageTransactions(ISet(Of Transaction(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransactions*
+  name: UnstageTransactions
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransactions_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.UnstageTransactions
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransactions
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransactions
+  nameWithType: BlockChain<T>.UnstageTransactions
+  nameWithType.vb: BlockChain(Of T).UnstageTransactions
 - uid: Libplanet.Blockchain.BlockChain`1.Validate(IReadOnlyList{Libplanet.Blocks.Block{`0}},DateTimeOffset)
   name: Validate(IReadOnlyList<Block<T>>, DateTimeOffset)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Validate_IReadOnlyList_Libplanet_Blocks_Block__0___DateTimeOffset_
