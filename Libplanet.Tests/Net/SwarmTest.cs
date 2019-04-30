@@ -401,7 +401,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanBeCancelled()
+        public async Task Cancel()
         {
             Swarm swarm = _swarms[0];
             BlockChain<DumbAction> chain = _blockchains[0];
@@ -414,7 +414,7 @@ namespace Libplanet.Tests.Net
             );
 
             cts.Cancel();
-            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            await task;
             Assert.False(swarm.Running);
         }
 
