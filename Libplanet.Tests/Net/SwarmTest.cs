@@ -24,6 +24,8 @@ namespace Libplanet.Tests.Net
 {
     public class SwarmTest : IDisposable
     {
+        private const int Timeout = 60 * 1000;
+
         private readonly FileStoreFixture _fx1;
         private readonly FileStoreFixture _fx2;
         private readonly FileStoreFixture _fx3;
@@ -81,7 +83,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanNotStartTwice()
         {
             Swarm swarm = _swarms[0];
@@ -98,7 +100,7 @@ namespace Libplanet.Tests.Net
             await swarm.StopAsync();
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanStop()
         {
             Swarm swarm = _swarms[0];
@@ -114,7 +116,7 @@ namespace Libplanet.Tests.Net
             await task;
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanWaitForRunning()
         {
             Swarm swarm = _swarms[0];
@@ -142,7 +144,7 @@ namespace Libplanet.Tests.Net
             Assert.False(swarm.Running);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastWhileMining()
         {
             Swarm a = _swarms[0];
@@ -208,7 +210,7 @@ namespace Libplanet.Tests.Net
                 chainB.AsEnumerable().ToHashSet());
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanExchangePeer()
         {
             Swarm a = _swarms[0];
@@ -265,7 +267,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task WorksAsCollection()
         {
             Swarm a = _swarms[0];
@@ -310,7 +312,7 @@ namespace Libplanet.Tests.Net
                 peers.ToHashSet());
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
             var a = new Swarm(
@@ -360,7 +362,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task HandleDifferentAppProtocolVersion()
         {
             var isCalled = false;
@@ -398,7 +400,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanBeCancelled()
         {
             Swarm swarm = _swarms[0];
@@ -416,7 +418,7 @@ namespace Libplanet.Tests.Net
             Assert.False(swarm.Running);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanGetBlock()
         {
             Swarm swarmA = _swarms[0];
@@ -478,7 +480,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task GetTx()
         {
             Swarm swarmA = _swarms[0];
@@ -520,7 +522,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastTx()
         {
             Swarm swarmA = _swarms[0];
@@ -569,7 +571,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
             Swarm swarmA = _swarms[0];
@@ -638,7 +640,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public void ThrowArgumentExceptionInConstructor()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -662,7 +664,7 @@ namespace Libplanet.Tests.Net
             });
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
@@ -676,7 +678,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(expected, s.AsPeer.EndPoint);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanStopGracefullyWhileStarting()
         {
             Swarm a = _swarms[0];
@@ -689,7 +691,7 @@ namespace Libplanet.Tests.Net
             await Task.WhenAll(a.StopAsync(), t);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
             Swarm swarm = new Swarm(
@@ -746,7 +748,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task InitialBlockDownload()
         {
             Swarm minerSwarm = _swarms[0];
@@ -779,7 +781,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task Preload()
         {
             Swarm minerSwarm = _swarms[0];
