@@ -519,7 +519,9 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected exception occured.");
+                _logger.Error(
+                    e,
+                    "An unexpected exception occured during StartAsync()");
                 throw;
             }
             finally
@@ -774,7 +776,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"Unexpected exception occured. try again"
+                        "An unexpected exception occured. try again..."
                     );
                 }
             }
@@ -919,7 +921,12 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Unexpected exception occured.");
+                    _logger.Error(
+                        e,
+#pragma warning disable MEN002 // Line is too long
+                        "An unexpected exception occured during ReceiveMessageAsync()"
+#pragma warning restore MEN002 // Line is too long
+                    );
                     throw;
                 }
             }
@@ -1684,7 +1691,10 @@ namespace Libplanet.Net
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "An unexpected exception occured.");
+                _logger.Error(
+                    ex,
+                    "An unexpected exception occured during DoBroadcast()"
+                );
             }
 
             _logger.Debug($"broadcasted: {msg}");
