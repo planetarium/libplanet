@@ -20,8 +20,6 @@ To be released.
     `IBlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)`
     method.  [[#210]]
  -  Removed `IBlockPolicy<T>.ValidateBlocks()` method.  [[#210]]
- -  Added `IBlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>,
-    IReadOnlyList<Block<T>>, DateTimeOffset)` method.  [[#210]]
  -  `BlockChain<T>[int]` became to throw `ArgumentOutOfRangeException` instead
     of `IndexOutOfRangeException`.  [[#210]]
  -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
@@ -49,6 +47,8 @@ To be released.
     [[#204]], [[#206]]
  -  Added `BlockDownloadState` class to represent a block downloading state.
     [[#204]], [[#206]]
+ -  Added `BlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>,
+    IReadOnlyList<Block<T>>, DateTimeOffset)` method.  [[#210]]
  -  Added `Transaction<T>.EvaluateActionsGradually(HashDigest<SHA256>, long,
     IAccountStateDelta, Address, bool)` method.  [[#31], [#212]]
  -  Added `Block<T>.EvaluateActionsPerTx(AccountStateGetter)` method.
