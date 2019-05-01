@@ -82,7 +82,8 @@ namespace Libplanet.Explorer.Executable
 
         internal static int Parse(string[] args)
         {
-            string programName = System.Environment.GetCommandLineArgs()[0];
+            string programName = System.IO.Path.GetFileName(
+                System.Environment.GetCommandLineArgs()[0]);
             TextWriter stderr = Console.Error;
             List<string> extra;
             try
@@ -93,7 +94,7 @@ namespace Libplanet.Explorer.Executable
             {
                 stderr.WriteLine("error: {0}", e.Message);
                 stderr.WriteLine(
-                    "Try `{0}' --help' for more information.",
+                    "Try `{0} --help' for more information.",
                     programName
                 );
                 return 1;
@@ -115,7 +116,7 @@ namespace Libplanet.Explorer.Executable
             {
                 stderr.WriteLine("error: Too many arguments.");
                 stderr.WriteLine(
-                    "Try `{0}' --help' for more information.",
+                    "Try `{0} --help' for more information.",
                     programName
                 );
                 return 1;
@@ -124,7 +125,7 @@ namespace Libplanet.Explorer.Executable
             {
                 stderr.WriteLine("error: Too few arguments.");
                 stderr.WriteLine(
-                    "Try `{0}' --help' for more information.",
+                    "Try `{0} --help' for more information.",
                     programName
                 );
                 return 1;
