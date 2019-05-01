@@ -515,7 +515,7 @@ namespace Libplanet.Net
                     tasks.Add(RefreshPermissions(workerCancellationToken));
                 }
 
-                await Task.WhenAll(tasks);
+                await Task.WhenAny(tasks);
             }
             catch (Exception e)
             {
