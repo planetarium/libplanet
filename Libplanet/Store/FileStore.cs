@@ -316,8 +316,7 @@ namespace Libplanet.Store
                     return null;
                 }
             }
-
-            if (!File.Exists(GetIndexPath(@namespace)))
+            else if (index > CountIndex(@namespace) - 1)
             {
                 return null;
             }

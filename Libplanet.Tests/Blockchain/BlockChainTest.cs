@@ -50,8 +50,11 @@ namespace Libplanet.Tests.Blockchain
         {
             // use assignment to snooze compiler error (CS0201)
             Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[0]; });
+
             Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[1]; });
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[long.MaxValue]; });
 
             Block<DumbAction> anotherBlock = _blockChain.MineBlock(_fx.Address2);
             Assert.Equal(anotherBlock, _blockChain[1]);

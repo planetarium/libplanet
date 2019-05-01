@@ -85,6 +85,9 @@ To be released.
  -  Fixed `BlockChain<T>.GetStates()` had descended to the bottom
     (i.e., the genesis block) where a given `Address` refers to
     a nonexistent account (i.e., never used before).  [[#189], [#192]]
+ -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
+    `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
+    index of a block that does not exist locally.  [[#208]], [[#214]]
  -  Fixed a bug that a TURN connection had turned unavailable after
     it once failed to parse a message (due to a corrupted packet).
     [[#215]]
@@ -110,9 +113,11 @@ To be released.
 [#204]: https://github.com/planetarium/libplanet/issues/204
 [#205]: https://github.com/planetarium/libplanet/pull/205
 [#206]: https://github.com/planetarium/libplanet/pull/206
+[#208]: https://github.com/planetarium/libplanet/issues/208
 [#210]: https://github.com/planetarium/libplanet/pull/210
 [#212]: https://github.com/planetarium/libplanet/pull/212
 [#213]: https://github.com/planetarium/libplanet/pull/213
+[#214]: https://github.com/planetarium/libplanet/pull/214
 [#215]: https://github.com/planetarium/libplanet/pull/215
 [#216]: https://github.com/planetarium/libplanet/pull/216
 [#217]: https://github.com/planetarium/libplanet/pull/217
