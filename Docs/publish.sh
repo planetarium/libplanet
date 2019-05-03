@@ -75,3 +75,8 @@ for _ in 1 2 3; do
 done
 
 rm /tmp/github_id
+
+mkdir -p Docs/obj/
+github_user="${GITHUB_REPOSITORY%/*}"
+github_repo="${GITHUB_REPOSITORY#*/}"
+echo -n "https://$github_user.github.io/$github_repo/$slug/" > Docs/obj/url.txt
