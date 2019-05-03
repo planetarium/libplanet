@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -22,6 +23,7 @@ namespace Libplanet.Store
         private const string _stagedTransactionsDir = "stage";
         private const string _statesDir = "states";
         private const string _indicesDir = "indices";
+        private const string _addressStateBlockDir = "addr_state_block";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -30,6 +32,7 @@ namespace Libplanet.Store
             _stagedTransactionsDir,
             _statesDir,
             _indicesDir,
+            _addressStateBlockDir,
         };
 
         private readonly string _path;
@@ -122,6 +125,22 @@ namespace Libplanet.Store
                 _indicesDir,
                 @namespace
             );
+        }
+
+        public string GetAddressStateBlockHashPath()
+        {
+            return Path.Combine(
+                _path,
+                _addressStateBlockDir);
+        }
+
+        public string GetAddressStateBlockHashPath(Address address)
+        {
+            string addressHex = address.ToHex();
+            return Path.Combine(
+                GetAddressStateBlockHashPath(),
+                addressHex.Substring(0, 4),
+                addressHex.Substring(4));
         }
 
         /// <inheritdoc/>
@@ -507,6 +526,38 @@ namespace Libplanet.Store
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, states);
+            }
+        }
+
+        public override void SetAddressStateBlockHash<T>(Block<T> block)
+        {
+            HashDigest<SHA256> blockHash = block.Hash;
+            long blockIndex = block.Index;
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockInfoSize = hashSize + sizeof(long);
+            var buffer = new byte[blockInfoSize];
+
+            ImmutableHashSet<Address> updatedAddresses = block.Transactions
+                .SelectMany(tx => tx.UpdatedAddresses)
+                .ToImmutableHashSet();
+
+            foreach (Address address in updatedAddresses)
+            {
+                var addressStateBlockFile = new FileInfo(
+                    GetAddressStateBlockHashPath(address));
+
+                if (!addressStateBlockFile.Directory.Exists)
+                {
+                    addressStateBlockFile.Directory.Create();
+                }
+
+                using (Stream stream = addressStateBlockFile.Open(
+                    FileMode.Append, FileAccess.Write))
+                {
+                    blockHash.ToByteArray().CopyTo(buffer, 0);
+                    BitConverter.GetBytes(blockIndex).CopyTo(buffer, hashSize);
+                    stream.Write(buffer, 0, buffer.Length);
+                }
             }
         }
 

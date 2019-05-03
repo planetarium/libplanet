@@ -66,6 +66,9 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
+        public abstract void SetAddressStateBlockHash<T>(Block<T> block)
+            where T : IAction, new();
+
         public long CountTransactions()
         {
             return IterateTransactionIds().LongCount();

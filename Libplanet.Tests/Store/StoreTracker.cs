@@ -146,6 +146,13 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
+        public void SetAddressStateBlockHash<T>(Block<T> block)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(SetAddressStateBlockHash), block.Hash, null));
+            _store.SetAddressStateBlockHash(block);
+        }
+
         public void StageTransactionIds(ISet<TxId> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));

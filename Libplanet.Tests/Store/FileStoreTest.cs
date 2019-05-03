@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -81,6 +83,19 @@ namespace Libplanet.Tests.Store
                 Path.Combine(_fx.Path, "states", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
                 _fx.Store.GetStatesPath(hash)
             );
+        }
+
+        [Fact]
+        public void GetAddressStateBlockHashPath()
+        {
+            string expected = Path.Combine(
+                _fx.Path,
+                "addr_state_block",
+                "45a2",
+                "2187e2D8850bb357886958bC3E8560929ccc");
+            string actual = _fx.Store.GetAddressStateBlockHashPath(_fx.Address1);
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
@@ -296,6 +311,54 @@ namespace Libplanet.Tests.Store
             Assert.NotEmpty(_fx.Store.IterateIndex(_ns));
             Assert.True(_fx.Store.DeleteIndex(_ns, _fx.Hash1));
             Assert.Empty(_fx.Store.IterateIndex(_ns));
+        }
+
+        [Fact]
+        public void SetAddressStateBlockHash()
+        {
+            Address address = address;
+            Block<DumbAction> prevBlock = _fx.Block3;
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+            var txs = new[] { transaction };
+
+            var blocks = new List<Block<DumbAction>>
+            {
+                TestUtils.MineNext(prevBlock, txs),
+            };
+            blocks.Add(TestUtils.MineNext(blocks[0], txs));
+
+            string path = _fx.Store.GetAddressStateBlockHashPath(address);
+            var addressStateBlockFile = new FileInfo(path);
+            Assert.False(addressStateBlockFile.Exists);
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                _fx.Store.SetAddressStateBlockHash(block);
+            }
+
+            addressStateBlockFile = new FileInfo(path);
+            Assert.True(addressStateBlockFile.Exists);
+
+            using (Stream stream = addressStateBlockFile.OpenRead())
+            {
+                int hashSize = HashDigest<SHA256>.Size;
+                int blockInfoSize = hashSize + sizeof(long);
+                var buffer = new byte[blockInfoSize];
+
+                foreach (var block in blocks)
+                {
+                    stream.Read(buffer, 0, blockInfoSize);
+                    var blockHash = new HashDigest<SHA256>(
+                        buffer.Take(hashSize).ToArray());
+                    var blockIndex = BitConverter.ToInt64(buffer, hashSize);
+
+                    Assert.Equal(block.Hash, blockHash);
+                    Assert.Equal(block.Index, blockIndex);
+                }
+            }
         }
 
         public void Dispose()
