@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PublicKey
    | Libplanet ">
-    <meta name="generator" content="docfx 2.40.12.0">
+    <meta name="generator" content="docfx 2.42.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -361,23 +361,53 @@ Libplanet-backed games/apps too.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">PublicKey</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Crypto_PublicKey_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PublicKey : object</code></pre>
+    <pre><code class="lang-csharp hljs">[Equals]
+public class PublicKey</code></pre>
   </div>
   <h5 id="Libplanet_Crypto_PublicKey_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>Every <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object is immutable.</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Crypto_PublicKey__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Crypto/PublicKey.cs/#L44">View Source</a>
+  </span>
   <a id="Libplanet_Crypto_PublicKey__ctor_" data-uid="Libplanet.Crypto.PublicKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_PublicKey__ctor_System_Byte___" data-uid="Libplanet.Crypto.PublicKey.#ctor(System.Byte[])">PublicKey(Byte[])</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> instance from the given
-<see cref="!:System.Byte"></see> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">publicKey</code>),
 which encodes a valid <a href="https://en.wikipedia.org/wiki/ECDSA">
 ECDSA</a> public key.</p>
 </div>
@@ -399,7 +429,7 @@ ECDSA</a> public key.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">publicKey</span></td>
-        <td><p>A valid <see cref="!:System.Byte"></see> array that
+        <td><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that
 encodes an ECDSA public key.  It can be either compressed or
 not.</p>
 </td>
@@ -407,7 +437,7 @@ not.</p>
     </tbody>
   </table>
   <h5 id="Libplanet_Crypto_PublicKey__ctor_System_Byte____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array for
+  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array for
 a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> can be encoded using
 <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Format_System_Boolean_">Format(Boolean)</a> method.</p>
 </div>
@@ -417,8 +447,13 @@ a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> can be en
   </div>
   <h3 id="methods">Methods
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Encrypt_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Encrypt(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Crypto/PublicKey.cs/#L88">View Source</a>
+  </span>
   <a id="Libplanet_Crypto_PublicKey_Encrypt_" data-uid="Libplanet.Crypto.PublicKey.Encrypt*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Encrypt_System_Byte___" data-uid="Libplanet.Crypto.PublicKey.Encrypt(System.Byte[])">Encrypt(Byte[])</h4>
   <div class="markdown level1 summary"><p>Converts a plain <code data-dev-comment-type="paramref" class="paramref">message</code> to a ciphertext
@@ -461,7 +496,7 @@ which can be decrypted with the corresponding <a class="xref" href="Libplanet.Cr
         <td><p>A ciphertext that was encrypted from the <code data-dev-comment-type="paramref" class="paramref">message</code>
 and can be decrypted with the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>. (Although the word “ciphertext” has the word
 “text”, a returned ciphertext is not a Unicode
-<see cref="!:System.String"></see>, but a <see cref="!:System.Byte"></see> array.)</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, but a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.)</p>
 </td>
       </tr>
     </tbody>
@@ -470,17 +505,23 @@ and can be decrypted with the corresponding <a class="xref" href="Libplanet.Cryp
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_Decrypt_System_Byte___">Decrypt(Byte[])</a></div>
   </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Format_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Format(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Crypto/PublicKey.cs/#L68">View Source</a>
+  </span>
   <a id="Libplanet_Crypto_PublicKey_Format_" data-uid="Libplanet.Crypto.PublicKey.Format*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Format_System_Boolean_" data-uid="Libplanet.Crypto.PublicKey.Format(System.Boolean)">Format(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Encodes this public key into a <see cref="!:System.Byte"></see> array
+  <div class="markdown level1 summary"><p>Encodes this public key into a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array
 representation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[] Format(bool compress)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] Format(bool compress)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -512,7 +553,7 @@ it is <code>true</code>.  This option does not lose any information.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>An encoded <see cref="!:System.Byte"></see> array representation.
+        <td><p>An encoded <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array representation.
 It can recover a <a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> object again using
 its constructor (i.e., <a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Byte___">PublicKey(Byte[])</a>)
 regardless of compression.</p>
@@ -524,8 +565,13 @@ regardless of compression.</p>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey__ctor_System_Byte___">PublicKey(Byte[])</a></div>
   </div>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey.Verify(System.Byte%5B%5D%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Crypto/PublicKey.cs/#L114">View Source</a>
+  </span>
   <a id="Libplanet_Crypto_PublicKey_Verify_" data-uid="Libplanet.Crypto.PublicKey.Verify*"></a>
   <h4 id="Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___" data-uid="Libplanet.Crypto.PublicKey.Verify(System.Byte[],System.Byte[])">Verify(Byte[], Byte[])</h4>
   <div class="markdown level1 summary"><p>Verifies whether a <code data-dev-comment-type="paramref" class="paramref">signature</code> was created from
@@ -535,7 +581,8 @@ a <code data-dev-comment-type="paramref" class="paramref">message</code> with th
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Verify(byte[] message, byte[] signature)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public bool Verify(byte[] message, byte[] signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -600,6 +647,12 @@ from the <code data-dev-comment-type="paramref" class="paramref">message</code> 
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Crypto_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Crypto.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Crypto/PublicKey.cs/#L27" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

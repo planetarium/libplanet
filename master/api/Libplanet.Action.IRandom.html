@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IRandom
    | Libplanet ">
-    <meta name="generator" content="docfx 2.40.12.0">
+    <meta name="generator" content="docfx 2.42.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -343,7 +343,7 @@
   <h1 id="Libplanet_Action_IRandom" data-uid="Libplanet.Action.IRandom" class="text-break">Interface IRandom
   </h1>
   <div class="markdown level0 summary"><p>An pseudorandom number generator interface equivalent to
-<see cref="!:System.Random"></see>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </div>
@@ -356,8 +356,13 @@ compatible (i.e., disallowed to be casted to each other).</p>
   </div>
   <h3 id="methods">Methods
   </h3>
-  
-  
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom_Next.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom.Next%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L19">View Source</a>
+  </span>
   <a id="Libplanet_Action_IRandom_Next_" data-uid="Libplanet.Action.IRandom.Next*"></a>
   <h4 id="Libplanet_Action_IRandom_Next" data-uid="Libplanet.Action.IRandom.Next">Next()</h4>
   <div class="markdown level1 summary"><p>Gets a non-negative random integer.</p>
@@ -379,13 +384,22 @@ compatible (i.e., disallowed to be casted to each other).</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><p>A 32-bit signed integer that is greater than or equal to
-0 and less than <see cref="!:int.MaxValue"></see>.</p>
+0 and less than <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32.maxvalue">MaxValue</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <h5 id="Libplanet_Action_IRandom_Next_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random.next#System_Random_Next">Next()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom_Next_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom.Next(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L36">View Source</a>
+  </span>
   <a id="Libplanet_Action_IRandom_Next_" data-uid="Libplanet.Action.IRandom.Next*"></a>
   <h4 id="Libplanet_Action_IRandom_Next_System_Int32_" data-uid="Libplanet.Action.IRandom.Next(System.Int32)">Next(Int32)</h4>
   <div class="markdown level1 summary"><p>Gets a non-negative random integer that is less than the specified
@@ -434,8 +448,34 @@ to 0, <code data-dev-comment-type="paramref" class="paramref">maxValue</code> is
       </tr>
     </tbody>
   </table>
-  
-  
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">maxValue</code> is less than 0.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IRandom_Next_System_Int32__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random.next#System_Random_Next_System_Int32_">Next(Int32)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom_Next_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom.Next(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L58">View Source</a>
+  </span>
   <a id="Libplanet_Action_IRandom_Next_" data-uid="Libplanet.Action.IRandom.Next*"></a>
   <h4 id="Libplanet_Action_IRandom_Next_System_Int32_System_Int32_" data-uid="Libplanet.Action.IRandom.Next(System.Int32,System.Int32)">Next(Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Gets a random integer that is within a specified range.</p>
@@ -492,11 +532,37 @@ returned.</p>
       </tr>
     </tbody>
   </table>
-  
-  
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when
+<code data-dev-comment-type="paramref" class="paramref">maxValue</code> is less than <code data-dev-comment-type="paramref" class="paramref">minValue</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IRandom_Next_System_Int32_System_Int32__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random.next#System_Random_Next_System_Int32_System_Int32_">Next(Int32, Int32)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom_NextBytes_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom.NextBytes(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L69">View Source</a>
+  </span>
   <a id="Libplanet_Action_IRandom_NextBytes_" data-uid="Libplanet.Action.IRandom.NextBytes*"></a>
   <h4 id="Libplanet_Action_IRandom_NextBytes_System_Byte___" data-uid="Libplanet.Action.IRandom.NextBytes(System.Byte[])">NextBytes(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Fills the elements of a specified <see cref="!:System.Byte"></see>s <code data-dev-comment-type="paramref" class="paramref">buffer</code> with random numbers.</p>
+  <div class="markdown level1 summary"><p>Fills the elements of a specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s <code data-dev-comment-type="paramref" class="paramref">buffer</code> with random numbers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -516,14 +582,39 @@ returned.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">buffer</span></td>
-        <td><p>A <see cref="!:System.Byte"></see> array to contain random
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to contain random
 numbers.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  
-  
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when <code data-dev-comment-type="paramref" class="paramref">buffer</code> is <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IRandom_NextBytes_System_Byte____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random.nextbytes#System_Random_NextBytes_System_Byte___">NextBytes(Byte[])</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom_NextDouble.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom.NextDouble%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L78">View Source</a>
+  </span>
   <a id="Libplanet_Action_IRandom_NextDouble_" data-uid="Libplanet.Action.IRandom.NextDouble*"></a>
   <h4 id="Libplanet_Action_IRandom_NextDouble" data-uid="Libplanet.Action.IRandom.NextDouble">NextDouble()</h4>
   <div class="markdown level1 summary"><p>Gets a random floating-point number that is greater than or
@@ -551,6 +642,10 @@ than or equal to 0.0, and less than 1.0.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Action_IRandom_NextDouble_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random.nextdouble#System_Random_NextDouble">NextDouble()</a></div>
+  </div>
 </article>
           </div>
           
@@ -558,6 +653,12 @@ than or equal to 0.0, and less than 1.0.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_IRandom.md&amp;value=---%0Auid%3A%20Libplanet.Action.IRandom%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/IRandom.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
