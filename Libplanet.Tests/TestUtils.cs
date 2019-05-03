@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -132,13 +131,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 previousHash: previousHash,
                 timestamp: timestamp,
                 transactions: txs
-            );
-        }
-
-        internal static string ToString(BitArray bitArray)
-        {
-            return new string(
-                bitArray.OfType<bool>().Select(b => b ? '1' : '0').ToArray()
             );
         }
     }

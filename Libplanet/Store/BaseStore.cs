@@ -52,11 +52,7 @@ namespace Libplanet.Store
         public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction, new();
 
-        /// <inheritdoc />
-        public abstract Address? GetAddressesMask(HashDigest<SHA256> blockHash);
-
-        /// <inheritdoc />
-        public abstract void PutBlock<T>(Block<T> block, Address addressesMask)
+        public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
         public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
