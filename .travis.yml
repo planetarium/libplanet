@@ -203,32 +203,6 @@ script:
     rm -f "Libplanet/bin/Release/Libplanet.$version_prefix.nupkg"
   fi
 
-# Build docs using DocFX
-- |
-  if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
-    # As installing Mono on macOS build takes too long time and Travis CI
-    # does not support Docker on macOS build, we skip docs build on macOS.
-    exit 0
-  elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
-    powershell -Command "Set-ExecutionPolicy Unrestricted"
-    pwsh=powershell
-  else
-    pwsh=pwsh
-  fi
-  # TODO: Currently DocFX requires .NET Framework 4.6 which means incompatible
-  # with .NET Core but compatible with Mono.  We disabled Mono on Travis CI
-  # to prevent slow build startup (installing Mono on Travis Linux takes longer
-  # than minutes), so here we invoke DocFX using Docker instead.
-  # The current setup makes DocFX unable to resolve types in the framework
-  # as we need to invoke `dotnet recover` first inside the Docker.
-  # FIXME: We'd better have a separate build process for docs other than
-  # Travis CI, e.g., GitHub Actions.
-  $pwsh \
-    -File Docs/build.ps1 \
-    -WorkingDirectory Docs/ \
-    -ExecutionPolicy Bypass
-- '[[ -f Docs/_site/index.html ]]'
-
 # Turn off "set -e" option
 - set +e
 
@@ -250,12 +224,12 @@ deploy:
   file: Libplanet/bin/Release/Libplanet.*.nupkg
   name: "Libplanet $TRAVIS_TAG"
 
-# Upload a .nupkg file to NuGet and publish docs to GitHub Pages
+# Upload a .nupkg file to NuGet
 - provider: script
   on:
     all_branches: true
   skip_cleanup: true
-  script: bash publish.sh && bash Docs/publish.sh
+  script: bash publish.sh
 
 # Adjust the release note on GitHub releases
 after_deploy: |

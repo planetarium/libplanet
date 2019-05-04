@@ -64,8 +64,8 @@ if (-not (Test-Path "$BaseDir/docfx")) {
 # the native way on Windows, it should be interpreted by Mono VM on other POSIX
 # systems.
 Set-Location $BaseDir
-if (Get-Command mono1 -ErrorAction SilentlyContinue) {
-  mono1 "$BaseDir/docfx/docfx.exe" "$BaseDir/docfx.json" @args
+if (Get-Command mono -ErrorAction SilentlyContinue) {
+  mono "$BaseDir/docfx/docfx.exe" "$BaseDir/docfx.json" @args
 } else {
   $platform = [System.Environment]::OSVersion.Platform;
   $unix = [System.PlatformId]::Unix;
