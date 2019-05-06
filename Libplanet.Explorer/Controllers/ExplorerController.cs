@@ -150,7 +150,7 @@ namespace Libplanet.Explorer.Controllers
         }
         
         [HttpGet("/graphql/")]
-        public IActionResult getGraphQLResult(
+        public IActionResult GetGraphQLResult(
             [FromQuery(Name = "query")] string query
         )
         {
@@ -186,7 +186,7 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpGet("/blocks/{hash}/")]
-        public IActionResult getBlock(string hash)
+        public IActionResult GetBlock(string hash)
         {
             Block<T> block;
             HashDigest<SHA256> blockHash;
@@ -236,7 +236,7 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpGet("/tx/{txIdString}/")]
-        public IActionResult getTransaction(string txIdString)
+        public IActionResult GetTransaction(string txIdString)
         {
             Transaction<T> tx;
             TxId txId;
