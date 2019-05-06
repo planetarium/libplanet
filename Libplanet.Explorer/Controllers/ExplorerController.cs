@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -60,6 +61,13 @@ namespace Libplanet.Explorer.Controllers
                 Field<ListGraphType<TransactionType>>("transactions");
             }
         }
+
+        public class PlainValueKeyValuePair : Object
+        {
+            public string Key { get; set; }
+            public object Value { get; set; }
+        }
+
         public class TransactionType : ObjectGraphType<Transaction<T>>
         {
             public TransactionType()
@@ -81,8 +89,41 @@ namespace Libplanet.Explorer.Controllers
                     resolve: ctx => ByteUtil.Hex(ctx.Source.Signature)
                 );
                 Field(x => x.Timestamp);
+                Field<ListGraphType<IActionType>>("Actions");
             }
         }
+
+        public class IActionType : ObjectGraphType<IAction>
+        {
+            public IActionType()
+            {
+                Field<ListGraphType<PlainValueKeyValuePairType> >(
+                    "PlainValue",
+                    resolve: ctx =>
+                    {
+                        List<PlainValueKeyValuePair> result = new List<PlainValueKeyValuePair>();
+                        foreach(KeyValuePair<string, object> item in ctx.Source.PlainValue)
+                        {
+                            result.Add(new PlainValueKeyValuePair(){
+                                Key = item.Key,
+                                Value = item.Value
+                            });
+                        }
+                        return result;
+                    }
+                );
+            }
+        }
+
+        public class PlainValueKeyValuePairType : ObjectGraphType<PlainValueKeyValuePair>
+        {
+            public PlainValueKeyValuePairType()
+            {
+                Field<StringGraphType>("Key");
+                Field<StringGraphType>("Value");
+            }
+        }
+
         public class BlocksQuery : ObjectGraphType
         {
             private BlockChain<T> _chain;         
