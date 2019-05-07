@@ -70,6 +70,7 @@ To be released.
  -  The difficulty was changed from representing the number of leading zeros of
     target number to representing a divisor to obtain the target number.
     [[#213]]
+ -  `BlockSet<T>[int]` changed so as not to validate a block.  [[#231]]
 
 # Bug fixes
 
@@ -117,6 +118,7 @@ To be released.
 [#216]: https://github.com/planetarium/libplanet/pull/216
 [#217]: https://github.com/planetarium/libplanet/pull/217
 [#223]: https://github.com/planetarium/libplanet/pull/223
+[#231]: https://github.com/planetarium/libplanet/pull/231
 
 
 Version 0.2.2
