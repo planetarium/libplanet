@@ -47,7 +47,6 @@ namespace Libplanet.Net
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
-        private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly string _host;
@@ -127,7 +126,6 @@ namespace Libplanet.Net
             _broadcastQueue = new NetMQQueue<Message>();
             _queuePoller = new NetMQPoller { _replyQueue, _broadcastQueue };
 
-            _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
@@ -385,7 +383,7 @@ namespace Libplanet.Net
                 {
                     _router.Dispose();
                     _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
-                    await DistributeDeltaAsync(false, cancellationToken);
+                    DistributeDelta(false);
 
                     if (_broadcastQueue.Any() || _replyQueue.Any())
                     {
@@ -1433,7 +1431,7 @@ namespace Libplanet.Net
 
             if (firstEncounter)
             {
-                await DistributeDeltaAsync(true, cancellationToken);
+                DistributeDelta(true);
             }
         }
 
@@ -1482,37 +1480,34 @@ namespace Libplanet.Net
                     p => new[] { p }
                 );
 
-            using (_distributeMutex.Lock())
+            foreach (Peer peer in peersAsArray)
             {
-                foreach (Peer peer in peersAsArray)
+                _peers.Remove(peer);
+
+                _logger.Debug(
+                    $"Trying to close dealers associated {peer}."
+                );
+                if (Running)
                 {
-                    _peers.Remove(peer);
+                    CloseDealer(peer);
+                }
 
-                    _logger.Debug(
-                        $"Trying to close dealers associated {peer}."
-                    );
-                    if (Running)
+                var pubKey = peer.PublicKey;
+
+                if (existingPeers.TryGetValue(pubKey, out Peer[] remains))
+                {
+                    foreach (Peer key in remains)
                     {
-                        CloseDealer(peer);
-                    }
+                        _peers.Remove(key);
 
-                    var pubKey = peer.PublicKey;
-
-                    if (existingPeers.TryGetValue(pubKey, out Peer[] remains))
-                    {
-                        foreach (Peer key in remains)
+                        if (Running)
                         {
-                            _peers.Remove(key);
-
-                            if (Running)
-                            {
-                                CloseDealer(key);
-                            }
+                            CloseDealer(key);
                         }
                     }
-
-                    _logger.Debug($"Dealers associated {peer} were closed.");
                 }
+
+                _logger.Debug($"Dealers associated {peer} were closed.");
             }
         }
 
@@ -1614,8 +1609,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task DistributeDeltaAsync(
-            bool all, CancellationToken cancellationToken)
+        private void DistributeDelta(bool all)
         {
             CheckStarted();
 
@@ -1647,15 +1641,12 @@ namespace Libplanet.Net
             {
                 LastDistributed = now;
 
-                using (await _distributeMutex.LockAsync(cancellationToken))
-                {
-                    var message = new Messages.PeerSetDelta(delta);
-                    _logger.Debug("Send the delta to dealers...");
-                    _broadcastQueue.Enqueue(message);
+                var message = new Messages.PeerSetDelta(delta);
+                _logger.Debug("Send the delta to dealers...");
+                _broadcastQueue.Enqueue(message);
 
-                    _logger.Debug("The delta has been sent.");
-                    DeltaDistributed.Set();
-                }
+                _logger.Debug("The delta has been sent.");
+                DeltaDistributed.Set();
             }
         }
 
@@ -1665,7 +1656,7 @@ namespace Libplanet.Net
             int i = 1;
             while (!cancellationToken.IsCancellationRequested)
             {
-                await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
+                DistributeDelta(i % 10 == 0);
                 await Task.Delay(interval, cancellationToken);
                 i = (i + 1) % 10;
             }
