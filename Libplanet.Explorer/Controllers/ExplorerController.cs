@@ -13,6 +13,7 @@ using Libplanet.Tx;
 using Microsoft.AspNetCore.Mvc;
 using GraphQL;
 using GraphQL.Types;
+using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Controllers
 {
@@ -39,127 +40,17 @@ namespace Libplanet.Explorer.Controllers
             return chain;
         }
 
-        public class BlockType : ObjectGraphType<Block<T>>
-        {
-            public BlockType()
-            {
-                Field(x => x.Index);
-                Field(x => x.Difficulty);
-                Field<StringGraphType>(
-                    "Nonce",
-                    resolve: ctx => ctx.Source.Nonce.ToString()
-                );
-                Field<StringGraphType>(
-                    "Miner",
-                    resolve: ctx => ctx.Source.Miner.ToString()
-                );
-                Field<StringGraphType>(
-                    "PreviousHash",
-                    resolve: ctx => ctx.Source.PreviousHash.ToString()
-                );
-                Field(x => x.Timestamp);
-                Field<ListGraphType<TransactionType>>("transactions");
-            }
-        }
-
-        public class PlainValueKeyValuePair : Object
-        {
-            public string Key { get; set; }
-            public object Value { get; set; }
-        }
-
-        public class TransactionType : ObjectGraphType<Transaction<T>>
-        {
-            public TransactionType()
-            {
-                Field<StringGraphType>(
-                    "Signer",
-                    resolve: ctx => ctx.Source.Signer.ToString()
-                );
-                Field<StringGraphType>(
-                    "PublicKey",
-                    resolve: ctx => ByteUtil.Hex(ctx.Source.PublicKey.Format(true))
-                );
-                Field<ListGraphType<StringGraphType>>(
-                    "UpdatedAddress",
-                    resolve: ctx => from address in ctx.Source.UpdatedAddresses select address.ToString()
-                );
-                Field<StringGraphType>(
-                    "Signature",
-                    resolve: ctx => ByteUtil.Hex(ctx.Source.Signature)
-                );
-                Field(x => x.Timestamp);
-                Field<ListGraphType<IActionType>>("Actions");
-            }
-        }
-
-        public class IActionType : ObjectGraphType<IAction>
-        {
-            public IActionType()
-            {
-                Field<ListGraphType<PlainValueKeyValuePairType> >(
-                    "PlainValue",
-                    resolve: ctx =>
-                    {
-                        List<PlainValueKeyValuePair> result = new List<PlainValueKeyValuePair>();
-                        foreach(KeyValuePair<string, object> item in ctx.Source.PlainValue)
-                        {
-                            result.Add(new PlainValueKeyValuePair(){
-                                Key = item.Key,
-                                Value = item.Value
-                            });
-                        }
-                        return result;
-                    }
-                );
-            }
-        }
-
-        public class PlainValueKeyValuePairType : ObjectGraphType<PlainValueKeyValuePair>
-        {
-            public PlainValueKeyValuePairType()
-            {
-                Field<StringGraphType>("Key");
-                Field<StringGraphType>("Value");
-            }
-        }
-
-        public class BlocksQuery : ObjectGraphType
-        {
-            private BlockChain<T> _chain;         
-            public BlocksQuery(BlockChain<T> chain)
-            {
-                Field<ListGraphType<BlockType>>(
-                    "blocks",
-                    resolve: context => chain
-                );
-
-                Field<BlockType>(
-                    "block",
-                    arguments: new QueryArguments(
-                        new QueryArgument<IdGraphType> { Name = "index" }
-                    ),
-                    resolve: context =>
-                    {
-                        ulong index = context.GetArgument<ulong>("index");
-                        return _chain.FirstOrDefault(x => (ulong)x.Index == index);
-                    }
-                );
-                _chain = chain;
-            }
-        }
-        
         [HttpGet("/graphql/")]
         public IActionResult GetGraphQLResult(
             [FromQuery(Name = "query")] string query
         )
         {
-            var schema = new Schema { Query = new BlocksQuery(GetBlockChain()) };
+            var schema = new Schema { Query = new BlocksQuery<T>(GetBlockChain()) };
             var json = schema.Execute(_ =>
             {
                 _.Query = query;
             });
-            return Ok(json);    
+            return Ok(json);
         }
 
         [HttpGet("/blocks/")]
