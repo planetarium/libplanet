@@ -56,7 +56,6 @@ namespace Libplanet.Store
                 }
 
                 Trace.Assert(block.Hash.Equals(key));
-                block.Validate(DateTimeOffset.UtcNow);
                 return block;
             }
 
