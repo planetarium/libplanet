@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -10,6 +11,9 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.ViewModels;
 using Libplanet.Tx;
 using Microsoft.AspNetCore.Mvc;
+using GraphQL;
+using GraphQL.Types;
+using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Controllers
 {
@@ -36,6 +40,19 @@ namespace Libplanet.Explorer.Controllers
             return chain;
         }
 
+        [HttpGet("/graphql/")]
+        public IActionResult GetGraphQLResult(
+            [FromQuery(Name = "query")] string query
+        )
+        {
+            var schema = new Schema { Query = new BlocksQuery<T>(GetBlockChain()) };
+            var json = schema.Execute(_ =>
+            {
+                _.Query = query;
+            });
+            return Ok(json);
+        }
+
         [HttpGet("/blocks/")]
         public List<Dictionary<string, string>> Index(
             [FromQuery(Name = "hide-empty-blocks")] bool HideEmptyBlocks
@@ -60,7 +77,7 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpGet("/blocks/{hash}/")]
-        public IActionResult getBlock(string hash)
+        public IActionResult GetBlock(string hash)
         {
             Block<T> block;
             HashDigest<SHA256> blockHash;
@@ -110,7 +127,7 @@ namespace Libplanet.Explorer.Controllers
         }
 
         [HttpGet("/tx/{txIdString}/")]
-        public IActionResult getTransaction(string txIdString)
+        public IActionResult GetTransaction(string txIdString)
         {
             Transaction<T> tx;
             TxId txId;
