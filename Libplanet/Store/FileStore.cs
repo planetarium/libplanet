@@ -547,9 +547,10 @@ namespace Libplanet.Store
             {
                 long position = stream.Seek(0, SeekOrigin.End);
 
-                while (position - buffer.Length >= 0)
+                for (var i = 1; position - buffer.Length >= 0; i++)
                 {
-                    position = stream.Seek(-buffer.Length, SeekOrigin.Current);
+                    position = stream.Seek(
+                        -buffer.Length * i, SeekOrigin.End);
                     stream.Read(buffer, 0, buffer.Length);
                     byte[] hashBytes = buffer.Take(hashSize).ToArray();
                     long index = BitConverter.ToInt64(buffer, hashSize);

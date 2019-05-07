@@ -172,24 +172,37 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
+            var states = new AddressStateMap();
+
+            if (offset == null)
+            {
+                return states;
+            }
+
+            Block<T> block = Blocks[offset.Value];
+            long blockIndex = block.Index;
+
             ImmutableHashSet<Address> requestedAddresses =
                 addresses.ToImmutableHashSet();
-            var states = new AddressStateMap();
-            while (offset != null)
+            var hashValues = new HashSet<HashDigest<SHA256>>();
+
+            foreach (var address in requestedAddresses)
+            {
+                var hashDigest =
+                    Store.GetAddressStateBlockHash(address, blockIndex);
+                if (!(hashDigest is null))
+                {
+                    hashValues.Add(hashDigest.Value);
+                }
+            }
+
+            foreach (var hashValue in hashValues)
             {
                 states = (AddressStateMap)states.SetItems(
-                    Store.GetBlockStates(offset.Value)
-                    .Where(
-                        kv => requestedAddresses.Contains(kv.Key) &&
-                        !states.ContainsKey(kv.Key))
-                    );
-
-                if (requestedAddresses.SetEquals(states.Keys))
-                {
-                    break;
-                }
-
-                offset = Blocks[offset.Value].PreviousHash;
+                        Store.GetBlockStates(hashValue)
+                        .Where(
+                            kv => requestedAddresses.Contains(kv.Key) &&
+                            !states.ContainsKey(kv.Key)));
             }
 
             return states;
@@ -330,6 +343,7 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
 
                     Store.UnstageTransactionIds(txIds);
+                    Store.SetAddressStateBlockHash(block);
                 }
                 finally
                 {
