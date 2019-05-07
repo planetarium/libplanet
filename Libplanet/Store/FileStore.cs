@@ -529,6 +529,41 @@ namespace Libplanet.Store
             }
         }
 
+        public override HashDigest<SHA256>? GetAddressStateBlockHash(
+            Address address, long offsetIndex)
+        {
+            var addrFile = new FileInfo(GetAddressStateBlockHashPath(address));
+
+            if (!addrFile.Exists)
+            {
+                return null;
+            }
+
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockInfoSize = hashSize + sizeof(long);
+            var buffer = new byte[blockInfoSize];
+
+            using (Stream stream = addrFile.OpenRead())
+            {
+                long position = stream.Seek(0, SeekOrigin.End);
+
+                while (position - buffer.Length >= 0)
+                {
+                    position = stream.Seek(-buffer.Length, SeekOrigin.Current);
+                    stream.Read(buffer, 0, buffer.Length);
+                    byte[] hashBytes = buffer.Take(hashSize).ToArray();
+                    long index = BitConverter.ToInt64(buffer, hashSize);
+
+                    if (index <= offsetIndex)
+                    {
+                        return new HashDigest<SHA256>(hashBytes);
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public override void SetAddressStateBlockHash<T>(Block<T> block)
         {
             HashDigest<SHA256> blockHash = block.Hash;

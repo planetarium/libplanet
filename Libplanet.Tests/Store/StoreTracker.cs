@@ -146,6 +146,14 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
+        public HashDigest<SHA256>? GetAddressStateBlockHash(
+            Address address,
+            long offsetIndex)
+        {
+            _logs.Add((nameof(GetAddressStateBlockHash), address, null));
+            return _store.GetAddressStateBlockHash(address, offsetIndex);
+        }
+
         public void SetAddressStateBlockHash<T>(Block<T> block)
             where T : IAction, new()
         {

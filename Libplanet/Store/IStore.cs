@@ -64,6 +64,10 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
+        HashDigest<SHA256>? GetAddressStateBlockHash(
+            Address address,
+            long offsetIndex);
+
         void SetAddressStateBlockHash<T>(Block<T> block)
             where T : IAction, new();
 

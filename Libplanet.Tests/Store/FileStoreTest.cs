@@ -361,6 +361,30 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [Fact]
+        public void GetAddressStateBlockHash()
+        {
+            Address address = _fx.Address1;
+            Block<DumbAction> prevBlock = _fx.Block3;
+
+            Assert.Null(_fx.Store.GetAddressStateBlockHash(address, 0));
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+
+            Block<DumbAction> block = TestUtils.MineNext(
+                prevBlock,
+                new[] { transaction });
+
+            _fx.Store.SetAddressStateBlockHash(block);
+
+            Assert.Equal(
+                block.Hash,
+                _fx.Store.GetAddressStateBlockHash(address, block.Index));
+            Assert.Null(_fx.Store.GetAddressStateBlockHash(address, block.Index - 1));
+        }
+
         public void Dispose()
         {
             _fx.Dispose();
