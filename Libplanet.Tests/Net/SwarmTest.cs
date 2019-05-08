@@ -798,7 +798,10 @@ namespace Libplanet.Tests.Net
             var actualStates = new List<BlockDownloadState>();
             var progress = new Progress<BlockDownloadState>(state =>
             {
-                actualStates.Add(state);
+                lock (actualStates)
+                {
+                    actualStates.Add(state);
+                }
             });
 
             try
