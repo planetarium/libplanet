@@ -1362,8 +1362,17 @@ namespace Libplanet.Net
                 _logger.Debug($"Trying to apply the delta[{delta}]...");
                 await ApplyDelta(delta, cancellationToken);
 
-                LastReceived = delta.Timestamp;
-                LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+                bool alreadyReceived =
+                    LastSeenTimestamps.TryGetValue(
+                        delta.Sender,
+                        out DateTimeOffset existingTimestamp) &&
+                    existingTimestamp > delta.Timestamp;
+
+                if (!alreadyReceived)
+                {
+                    LastReceived = delta.Timestamp;
+                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+                }
 
                 DeltaReceived.Set();
             }
