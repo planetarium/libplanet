@@ -545,22 +545,12 @@ namespace Libplanet.Store
                 return null;
             }
 
-            int hashSize = HashDigest<SHA256>.Size;
-            int blockInfoSize = hashSize + sizeof(long);
-            var buffer = new byte[blockInfoSize];
-
             using (Stream stream = addrFile.OpenRead())
             {
-                long position = stream.Seek(0, SeekOrigin.End);
-
-                for (var i = 1; position - buffer.Length >= 0; i++)
+                foreach (
+                    var (hashBytes, index)
+                    in ReadAddressStateBlockHash(stream))
                 {
-                    position = stream.Seek(
-                        -buffer.Length * i, SeekOrigin.End);
-                    stream.Read(buffer, 0, buffer.Length);
-                    byte[] hashBytes = buffer.Take(hashSize).ToArray();
-                    long index = BitConverter.ToInt64(buffer, hashSize);
-
                     if (index <= offsetIndex)
                     {
                         return new HashDigest<SHA256>(hashBytes);
@@ -642,23 +632,11 @@ namespace Libplanet.Store
                 return;
             }
 
-            int hashSize = HashDigest<SHA256>.Size;
-            int blockInfoSize = hashSize + sizeof(long);
-            var buffer = new byte[blockInfoSize];
-
             using (Stream stream = addrFile.Open(
                 FileMode.Open, FileAccess.ReadWrite))
             {
-                long position = stream.Seek(0, SeekOrigin.End);
-
-                for (var i = 1; position - buffer.Length >= 0; i++)
+                foreach (var (_, index) in ReadAddressStateBlockHash(stream))
                 {
-                    position = stream.Seek(
-                        -buffer.Length * i, SeekOrigin.End);
-                    stream.Read(buffer, 0, buffer.Length);
-                    byte[] hashBytes = buffer.Take(hashSize).ToArray();
-                    long index = BitConverter.ToInt64(buffer, hashSize);
-
                     if (index <= branchPointIndex)
                     {
                         break;
@@ -666,6 +644,27 @@ namespace Libplanet.Store
                 }
 
                 stream.SetLength(stream.Position);
+            }
+        }
+
+        private IEnumerable<(byte[], long)> ReadAddressStateBlockHash(
+            Stream stream)
+        {
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockInfoSize = hashSize + sizeof(long);
+            var buffer = new byte[blockInfoSize];
+
+            long position = stream.Seek(0, SeekOrigin.End);
+
+            for (var i = 1; position - buffer.Length >= 0; i++)
+            {
+                position = stream.Seek(
+                    -buffer.Length * i, SeekOrigin.End);
+                stream.Read(buffer, 0, buffer.Length);
+                byte[] hashBytes = buffer.Take(hashSize).ToArray();
+                long index = BitConverter.ToInt64(buffer, hashSize);
+
+                yield return (hashBytes, index);
             }
         }
 
