@@ -1333,13 +1333,16 @@ namespace Libplanet.Net
                     return;
                 }
 
-                delta = new PeerSetDelta(
-                    delta.Sender,
-                    delta.Timestamp,
-                    delta.AddedPeers.Add(sender),
-                    delta.RemovedPeers,
-                    delta.ExistingPeers
-                );
+                if (!delta.RemovedPeers.Contains(delta.Sender))
+                {
+                    delta = new PeerSetDelta(
+                        delta.Sender,
+                        delta.Timestamp,
+                        delta.AddedPeers.Add(sender),
+                        delta.RemovedPeers,
+                        delta.ExistingPeers
+                    );
+                }
             }
 
             if (IsDifferentProtocolVersion(sender))
