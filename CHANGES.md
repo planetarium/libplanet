@@ -22,10 +22,6 @@ To be released.
  -  Removed `IBlockPolicy<T>.ValidateBlocks()` method.  [[#210]]
  -  `BlockChain<T>[int]` became to throw `ArgumentOutOfRangeException` instead
     of `IndexOutOfRangeException`.  [[#210]]
- -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
-    and its all implementations.  [[#189], [#197]]
- -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
-    `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  Removed `KeyEquals()` methods from all classes and structs.  [[#216]]
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
