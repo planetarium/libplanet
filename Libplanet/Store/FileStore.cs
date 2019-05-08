@@ -127,18 +127,21 @@ namespace Libplanet.Store
             );
         }
 
-        public string GetAddressStateBlockHashPath()
+        public string GetAddressStateBlockHashPath(string @namespace)
         {
             return Path.Combine(
                 _path,
-                _addressStateBlockDir);
+                _addressStateBlockDir,
+                @namespace);
         }
 
-        public string GetAddressStateBlockHashPath(Address address)
+        public string GetAddressStateBlockHashPath(
+            string @namespace,
+            Address address)
         {
             string addressHex = address.ToHex();
             return Path.Combine(
-                GetAddressStateBlockHashPath(),
+                GetAddressStateBlockHashPath(@namespace),
                 addressHex.Substring(0, 4),
                 addressHex.Substring(4));
         }
@@ -530,9 +533,12 @@ namespace Libplanet.Store
         }
 
         public override HashDigest<SHA256>? GetAddressStateBlockHash(
-            Address address, long offsetIndex)
+            string @namespace,
+            Address address,
+            long offsetIndex)
         {
-            var addrFile = new FileInfo(GetAddressStateBlockHashPath(address));
+            var addrFile = new FileInfo(
+                GetAddressStateBlockHashPath(@namespace, address));
 
             if (!addrFile.Exists)
             {
@@ -565,7 +571,9 @@ namespace Libplanet.Store
             return null;
         }
 
-        public override void SetAddressStateBlockHash<T>(Block<T> block)
+        public override void SetAddressStateBlockHash<T>(
+            string @namespace,
+            Block<T> block)
         {
             HashDigest<SHA256> blockHash = block.Hash;
             long blockIndex = block.Index;
@@ -580,7 +588,7 @@ namespace Libplanet.Store
             foreach (Address address in updatedAddresses)
             {
                 var addressStateBlockFile = new FileInfo(
-                    GetAddressStateBlockHashPath(address));
+                    GetAddressStateBlockHashPath(@namespace, address));
 
                 if (!addressStateBlockFile.Directory.Exists)
                 {

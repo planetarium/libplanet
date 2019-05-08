@@ -65,10 +65,11 @@ namespace Libplanet.Store
         );
 
         HashDigest<SHA256>? GetAddressStateBlockHash(
+            string @namespace,
             Address address,
             long offsetIndex);
 
-        void SetAddressStateBlockHash<T>(Block<T> block)
+        void SetAddressStateBlockHash<T>(string @namespace, Block<T> block)
             where T : IAction, new();
 
         long CountTransactions();

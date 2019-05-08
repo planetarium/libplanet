@@ -188,8 +188,8 @@ namespace Libplanet.Blockchain
 
             foreach (var address in requestedAddresses)
             {
-                var hashDigest =
-                    Store.GetAddressStateBlockHash(address, blockIndex);
+                var hashDigest = Store.GetAddressStateBlockHash(
+                    Id.ToString(), address, blockIndex);
                 if (!(hashDigest is null))
                 {
                     hashValues.Add(hashDigest.Value);
@@ -343,7 +343,7 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
 
                     Store.UnstageTransactionIds(txIds);
-                    Store.SetAddressStateBlockHash(block);
+                    Store.SetAddressStateBlockHash(Id.ToString(), block);
                 }
                 finally
                 {

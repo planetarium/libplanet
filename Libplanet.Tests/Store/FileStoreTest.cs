@@ -91,9 +91,12 @@ namespace Libplanet.Tests.Store
             string expected = Path.Combine(
                 _fx.Path,
                 "addr_state_block",
+                _ns,
                 "45a2",
                 "2187e2D8850bb357886958bC3E8560929ccc");
-            string actual = _fx.Store.GetAddressStateBlockHashPath(_fx.Address1);
+            string actual = _fx.Store.GetAddressStateBlockHashPath(
+                _ns,
+                _fx.Address1);
 
             Assert.Equal(expected, actual);
         }
@@ -330,13 +333,13 @@ namespace Libplanet.Tests.Store
             };
             blocks.Add(TestUtils.MineNext(blocks[0], txs));
 
-            string path = _fx.Store.GetAddressStateBlockHashPath(address);
+            string path = _fx.Store.GetAddressStateBlockHashPath(_ns, address);
             var addressStateBlockFile = new FileInfo(path);
             Assert.False(addressStateBlockFile.Exists);
 
             foreach (Block<DumbAction> block in blocks)
             {
-                _fx.Store.SetAddressStateBlockHash(block);
+                _fx.Store.SetAddressStateBlockHash(_ns, block);
             }
 
             addressStateBlockFile = new FileInfo(path);
@@ -367,7 +370,7 @@ namespace Libplanet.Tests.Store
             Address address = _fx.Address1;
             Block<DumbAction> prevBlock = _fx.Block3;
 
-            Assert.Null(_fx.Store.GetAddressStateBlockHash(address, 0));
+            Assert.Null(_fx.Store.GetAddressStateBlockHash(_ns, address, 0));
 
             Transaction<DumbAction> transaction = _fx.MakeTransaction(
                 new List<DumbAction>(),
@@ -377,12 +380,12 @@ namespace Libplanet.Tests.Store
                 prevBlock,
                 new[] { transaction });
 
-            _fx.Store.SetAddressStateBlockHash(block);
+            _fx.Store.SetAddressStateBlockHash(_ns, block);
 
             Assert.Equal(
                 block.Hash,
-                _fx.Store.GetAddressStateBlockHash(address, block.Index));
-            Assert.Null(_fx.Store.GetAddressStateBlockHash(address, block.Index - 1));
+                _fx.Store.GetAddressStateBlockHash(_ns, address, block.Index));
+            Assert.Null(_fx.Store.GetAddressStateBlockHash(_ns, address, block.Index - 1));
         }
 
         public void Dispose()

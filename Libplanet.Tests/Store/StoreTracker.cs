@@ -147,18 +147,21 @@ namespace Libplanet.Tests.Store
         }
 
         public HashDigest<SHA256>? GetAddressStateBlockHash(
+            string @namespace,
             Address address,
             long offsetIndex)
         {
             _logs.Add((nameof(GetAddressStateBlockHash), address, null));
-            return _store.GetAddressStateBlockHash(address, offsetIndex);
+            return _store.GetAddressStateBlockHash(@namespace, address, offsetIndex);
         }
 
-        public void SetAddressStateBlockHash<T>(Block<T> block)
+        public void SetAddressStateBlockHash<T>(
+            string @namespace,
+            Block<T> block)
             where T : IAction, new()
         {
             _logs.Add((nameof(SetAddressStateBlockHash), block.Hash, null));
-            _store.SetAddressStateBlockHash(block);
+            _store.SetAddressStateBlockHash(@namespace, block);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)
