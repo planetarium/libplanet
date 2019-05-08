@@ -388,6 +388,51 @@ namespace Libplanet.Tests.Store
             Assert.Null(_fx.Store.GetAddressStateBlockHash(_ns, address, block.Index - 1));
         }
 
+        [Fact]
+        public void ForkAddressStateBlockHash()
+        {
+            Address address = _fx.Address1;
+            Block<DumbAction> prevBlock = _fx.Block3;
+            const string targetNamespace = "dummy";
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+
+            var txs = new[] { transaction };
+            var blocks = new List<Block<DumbAction>>
+            {
+                TestUtils.MineNext(prevBlock, txs),
+            };
+            blocks.Add(TestUtils.MineNext(blocks[0], txs));
+            blocks.Add(TestUtils.MineNext(blocks[1], txs));
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                _fx.Store.SetAddressStateBlockHash(_ns, block);
+            }
+
+            var branchPoint = blocks[0];
+            var toUpdateAddresses = blocks
+                .SkipWhile(b => b.Index <= branchPoint.Index)
+                .SelectMany(b => b.Transactions)
+                .SelectMany(tx => tx.UpdatedAddresses)
+                .ToImmutableHashSet();
+
+            _fx.Store.ForkAddressStateBlockHash(
+                _ns,
+                targetNamespace,
+                branchPoint.Index,
+                toUpdateAddresses);
+
+            Assert.Equal(
+                blocks[2].Hash,
+                _fx.Store.GetAddressStateBlockHash(_ns, address, blocks[2].Index));
+            Assert.Equal(
+                    blocks[0].Hash,
+                    _fx.Store.GetAddressStateBlockHash(targetNamespace, address, blocks[2].Index));
+        }
+
         public void Dispose()
         {
             _fx.Dispose();

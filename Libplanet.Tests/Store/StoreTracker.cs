@@ -164,6 +164,17 @@ namespace Libplanet.Tests.Store
             _store.SetAddressStateBlockHash(@namespace, block);
         }
 
+        public void ForkAddressStateBlockHash(
+            string sourceNamespace,
+            string targetNamespace,
+            long branchPointIndex,
+            IImmutableSet<Address> toUpdateAddresses)
+        {
+            _logs.Add((nameof(ForkAddressStateBlockHash), null, null));
+            _store.ForkAddressStateBlockHash(
+                sourceNamespace, targetNamespace, branchPointIndex, toUpdateAddresses);
+        }
+
         public void StageTransactionIds(ISet<TxId> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));

@@ -605,6 +605,70 @@ namespace Libplanet.Store
             }
         }
 
+        public override void ForkAddressStateBlockHash(
+            string sourceNamespace,
+            string targetNamespace,
+            long branchPointIndex,
+            IImmutableSet<Address> toUpdateAddresses)
+        {
+            string sourceDir = GetAddressStateBlockHashPath(sourceNamespace);
+            string targetDir = GetAddressStateBlockHashPath(targetNamespace);
+            var copied = CopyDirectory(sourceDir, targetDir);
+
+            if (!copied)
+            {
+                return;
+            }
+
+            foreach (Address address in toUpdateAddresses)
+            {
+                RemoveAddressStateBlockHashAfterPoint(
+                    targetNamespace,
+                    address,
+                    branchPointIndex);
+            }
+        }
+
+        private void RemoveAddressStateBlockHashAfterPoint(
+            string @namespace,
+            Address address,
+            long branchPointIndex)
+        {
+            var addrFile = new FileInfo(
+                GetAddressStateBlockHashPath(@namespace, address));
+
+            if (!addrFile.Exists)
+            {
+                return;
+            }
+
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockInfoSize = hashSize + sizeof(long);
+            var buffer = new byte[blockInfoSize];
+
+            using (Stream stream = addrFile.Open(
+                FileMode.Open, FileAccess.ReadWrite))
+            {
+                long position = stream.Seek(0, SeekOrigin.End);
+
+                for (var i = 1; position - buffer.Length >= 0; i++)
+                {
+                    position = stream.Seek(
+                        -buffer.Length * i, SeekOrigin.End);
+                    stream.Read(buffer, 0, buffer.Length);
+                    byte[] hashBytes = buffer.Take(hashSize).ToArray();
+                    long index = BitConverter.ToInt64(buffer, hashSize);
+
+                    if (index <= branchPointIndex)
+                    {
+                        break;
+                    }
+                }
+
+                stream.SetLength(stream.Position);
+            }
+        }
+
         private FileStream IndexFileStream(string @namespace)
         {
             var stream = new FileStream(
@@ -632,6 +696,39 @@ namespace Libplanet.Store
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 .Where(tx => tx != null);
+        }
+
+        private bool CopyDirectory(
+            string sourceDirName,
+            string destDirName)
+        {
+            var dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                return false;
+            }
+
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                CopyDirectory(subdir.FullName, temppath);
+            }
+
+            return true;
         }
     }
 }

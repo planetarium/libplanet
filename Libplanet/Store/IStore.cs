@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -71,6 +72,12 @@ namespace Libplanet.Store
 
         void SetAddressStateBlockHash<T>(string @namespace, Block<T> block)
             where T : IAction, new();
+
+        void ForkAddressStateBlockHash(
+            string sourceNamespace,
+            string targetNamespace,
+            long branchPointIndex,
+            IImmutableSet<Address> toUpdateAddresses);
 
         long CountTransactions();
 
