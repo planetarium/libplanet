@@ -319,6 +319,53 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void ForkAddressStateBlockHash()
+        {
+            Address address = new PrivateKey().PublicKey.ToAddress();
+
+            Transaction<DumbAction>[] txsA =
+            {
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(address, "foo"),
+                }),
+            };
+            Transaction<DumbAction>[] txsB =
+            {
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(address, "bar"),
+                }),
+            };
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            _blockChain.Append(genesis);
+
+            Block<DumbAction> b1 = TestUtils.MineNext(
+                genesis,
+                txsA,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b1);
+
+            Block<DumbAction> b2 = TestUtils.MineNext(
+                b1,
+                txsB,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b2);
+
+            BlockChain<DumbAction> forked = _blockChain.Fork(b1.Hash);
+
+            var hash = forked.Store.GetAddressStateBlockHash(
+                forked.Id.ToString(),
+                address,
+                _blockChain.Tip.Index);
+
+            Assert.Equal(b1.Hash, hash);
+        }
+
+        [Fact]
         public void CanGetBlockLocator()
         {
             List<Block<DumbAction>> blocks = Enumerable.Range(0, 10)

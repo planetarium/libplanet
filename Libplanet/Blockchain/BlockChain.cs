@@ -449,6 +449,25 @@ namespace Libplanet.Blockchain
                         break;
                     }
                 }
+
+                Block<T> pointBlock = Blocks[point];
+
+                var toUpdateAddresses = new HashSet<Address>();
+
+                for (var i = pointBlock.Index + 1; i <= Tip.Index; i++)
+                {
+                    Block<T> block = this[i];
+                    toUpdateAddresses.UnionWith(
+                        block.Transactions
+                            .SelectMany(tx => tx.UpdatedAddresses)
+                            .ToImmutableHashSet());
+                }
+
+                Store.ForkAddressStateBlockHash(
+                    Id.ToString(),
+                    forked.Id.ToString(),
+                    pointBlock.Index,
+                    toUpdateAddresses.ToImmutableHashSet());
             }
             finally
             {
