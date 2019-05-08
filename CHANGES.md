@@ -40,6 +40,12 @@ To be released.
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  `Block<T>.Hash` is no longer calculated using the full data of the
     `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`. [[#234]]
+ -  Added `IStore.GetAddressStateBlockHash(string, Address, long)` method.
+    [[#232]]
+ -  Added `IStore.SetAddressStateBlockHash<T>(string, Block<T>)` method.
+    [[#232]]
+ -  Added `IStore.ForkAddressStateBlockHash(string, string, long,
+    IImmutableSet<Address>` method.  [[#232]]
 
 ### Added interfaces
 
@@ -132,6 +138,7 @@ To be released.
 [#223]: https://github.com/planetarium/libplanet/pull/223
 [#228]: https://github.com/planetarium/libplanet/issues/228
 [#231]: https://github.com/planetarium/libplanet/pull/231
+[#232]: https://github.com/planetarium/libplanet/pull/232
 [#234]: https://github.com/planetarium/libplanet/pull/234
 
 

@@ -156,6 +156,17 @@ namespace Libplanet.Blockchain
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets the state of the given <paramref name="addresses"/> in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="addresses">The list of <see cref="Address"/>es to get
+        /// their states.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state. It will be The tip of the
+        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <returns>The <see cref="AddressStateMap"/> of given
+        /// <paramref name="addresses"/>.</returns>
         public AddressStateMap GetStates(
             IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
         {

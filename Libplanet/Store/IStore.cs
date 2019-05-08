@@ -65,14 +65,53 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
+        /// <summary>
+        /// Gets a <see cref="Block{T}.Hash"/> which has the state of the
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="namespace">The namespace to get
+        /// <see cref="Block{T}.Hash"/>.</param>
+        /// <param name="address">The <see cref="Address"/> to find the
+        /// <see cref="Block{T}.Hash"/>.</param>
+        /// <param name="offsetIndex">The offset at which to begin looking for
+        /// a block hash.</param>
+        /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
+        /// <paramref name="address"/>.</returns>
+        /// <seealso cref="SetAddressStateBlockHash{T}"/>
         HashDigest<SHA256>? GetAddressStateBlockHash(
             string @namespace,
             Address address,
             long offsetIndex);
 
+        /// <summary>
+        /// Store a <see cref="Block{T}.Hash"/> which has the state of the
+        /// <see cref="Address"/> for each updated <see cref="Address"/>es by
+        /// the <paramref name="block"/>.
+        /// </summary>
+        /// <param name="namespace">The namespace to store
+        /// <see cref="Block{T}.Hash"/>.</param>
+        /// <param name="block">The <see cref="Block{T}"/> which has the state
+        /// of the <see cref="Address"/>.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="block"/>.</typeparam>
+        /// <seealso cref="GetAddressStateBlockHash"/>
         void SetAddressStateBlockHash<T>(string @namespace, Block<T> block)
             where T : IAction, new();
 
+        /// <summary>
+        /// Fork <see cref="Block{T}.Hash"/>es which has the state of the
+        /// <see cref="Address"/>es from <paramref name="sourceNamespace"/> to
+        /// <paramref name="targetNamespace"/>.
+        /// </summary>
+        /// <param name="sourceNamespace">The namespace to fork
+        /// <see cref="Block{T}.Hash"/>es.</param>
+        /// <param name="targetNamespace">The namespace where the forked
+        /// <see cref="Block{T}.Hash"/> will be stored.</param>
+        /// <param name="branchPointIndex">The index of branch point to fork.
+        /// </param>
+        /// <param name="toUpdateAddresses">The set of <see cref="Address"/>es
+        /// to be updated by fork in the <paramref name="targetNamespace"/>.
+        /// </param>
         void ForkAddressStateBlockHash(
             string sourceNamespace,
             string targetNamespace,

@@ -532,6 +532,7 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc/>
         public override HashDigest<SHA256>? GetAddressStateBlockHash(
             string @namespace,
             Address address,
@@ -561,6 +562,7 @@ namespace Libplanet.Store
             return null;
         }
 
+        /// <inheritdoc/>
         public override void SetAddressStateBlockHash<T>(
             string @namespace,
             Block<T> block)
@@ -595,6 +597,7 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc/>
         public override void ForkAddressStateBlockHash(
             string sourceNamespace,
             string targetNamespace,
