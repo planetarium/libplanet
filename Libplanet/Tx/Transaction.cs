@@ -86,33 +86,32 @@ namespace Libplanet.Tx
             DateTimeOffset timestamp,
             IEnumerable<T> actions,
             byte[] signature)
+            : this(
+                signer,
+                publicKey,
+                updatedAddresses,
+                timestamp,
+                actions,
+                signature,
+                true)
         {
-            Signer = signer;
-            UpdatedAddresses = updatedAddresses ??
-                throw new ArgumentNullException(nameof(updatedAddresses));
-            Signature = signature ??
-                throw new ArgumentNullException(nameof(signature));
-            Timestamp = timestamp;
-            Actions = actions?.ToImmutableList() ??
-                throw new ArgumentNullException(nameof(actions));
-            PublicKey = publicKey ??
-                throw new ArgumentNullException(nameof(publicKey));
-
-            Validate();
         }
 
         internal Transaction(RawTransaction rawTx)
+            : this(
+                new Address(rawTx.Signer),
+                new PublicKey(rawTx.PublicKey),
+                rawTx.UpdatedAddresses.Select(
+                    a => new Address(a)
+                ).ToImmutableHashSet(),
+                DateTimeOffset.ParseExact(
+                    rawTx.Timestamp,
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture).ToUniversalTime(),
+                rawTx.Actions.Select(ToAction).ToImmutableList(),
+                rawTx.Signature,
+                false)
         {
-            Signer = new Address(rawTx.Signer);
-            PublicKey = new PublicKey(rawTx.PublicKey);
-            UpdatedAddresses = rawTx.UpdatedAddresses.Select(a =>
-                new Address(a)).ToImmutableHashSet();
-            Timestamp = DateTimeOffset.ParseExact(
-                rawTx.Timestamp,
-                TimestampFormat,
-                CultureInfo.InvariantCulture).ToUniversalTime();
-            Actions = rawTx.Actions.Select(ToAction).ToImmutableList();
-            Signature = rawTx.Signature;
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -127,13 +126,41 @@ namespace Libplanet.Tx
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions)
+            : this(
+                signer,
+                publicKey,
+                updatedAddresses,
+                timestamp,
+                actions.ToImmutableList(),
+                new byte[0],
+                false)
+        {
+        }
+
+        private Transaction(
+            Address signer,
+            PublicKey publicKey,
+            IImmutableSet<Address> updatedAddresses,
+            DateTimeOffset timestamp,
+            IEnumerable<T> actions,
+            byte[] signature,
+            bool validate)
         {
             Signer = signer;
-            PublicKey = publicKey;
-            UpdatedAddresses = updatedAddresses;
+            UpdatedAddresses = updatedAddresses ??
+                    throw new ArgumentNullException(nameof(updatedAddresses));
+            Signature = signature ??
+                    throw new ArgumentNullException(nameof(signature));
             Timestamp = timestamp;
-            Actions = actions.ToImmutableList();
-            Signature = new byte[0];
+            Actions = actions?.ToImmutableList() ??
+                      throw new ArgumentNullException(nameof(actions));
+            PublicKey = publicKey ??
+                        throw new ArgumentNullException(nameof(publicKey));
+
+            if (validate)
+            {
+                Validate();
+            }
         }
 
         /// <summary>
