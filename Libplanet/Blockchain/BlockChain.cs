@@ -354,7 +354,14 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
 
                     Store.UnstageTransactionIds(txIds);
-                    Store.SetAddressStateBlockHash(Id.ToString(), block);
+
+                    ImmutableHashSet<Address> updatedAddresses =
+                        block.Transactions
+                        .SelectMany(tx => tx.UpdatedAddresses)
+                        .ToImmutableHashSet();
+
+                    Store.SetAddressStateBlockHash(
+                        Id.ToString(), block, updatedAddresses);
                 }
                 finally
                 {

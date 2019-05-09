@@ -339,7 +339,9 @@ namespace Libplanet.Tests.Store
 
             foreach (Block<DumbAction> block in blocks)
             {
-                _fx.Store.SetAddressStateBlockHash(_ns, block);
+                var updatedAddresses = new HashSet<Address> { address };
+                _fx.Store.SetAddressStateBlockHash(
+                    _ns, block, updatedAddresses.ToImmutableHashSet());
             }
 
             addressStateBlockFile = new FileInfo(path);
@@ -380,7 +382,9 @@ namespace Libplanet.Tests.Store
                 prevBlock,
                 new[] { transaction });
 
-            _fx.Store.SetAddressStateBlockHash(_ns, block);
+            var updatedAddresses = new HashSet<Address> { address };
+            _fx.Store.SetAddressStateBlockHash(
+                _ns, block, updatedAddresses.ToImmutableHashSet());
 
             Assert.Equal(
                 block.Hash,
@@ -409,7 +413,9 @@ namespace Libplanet.Tests.Store
 
             foreach (Block<DumbAction> block in blocks)
             {
-                _fx.Store.SetAddressStateBlockHash(_ns, block);
+                var updatedAddresses = new HashSet<Address> { address };
+                _fx.Store.SetAddressStateBlockHash(
+                    _ns, block, updatedAddresses.ToImmutableHashSet());
             }
 
             var branchPoint = blocks[0];

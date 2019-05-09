@@ -565,15 +565,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void SetAddressStateBlockHash<T>(
             string @namespace,
-            Block<T> block)
+            Block<T> block,
+            IImmutableSet<Address> updatedAddresses)
         {
             HashDigest<SHA256> blockHash = block.Hash;
             long blockIndex = block.Index;
             int hashSize = HashDigest<SHA256>.Size;
-
-            ImmutableHashSet<Address> updatedAddresses = block.Transactions
-                .SelectMany(tx => tx.UpdatedAddresses)
-                .ToImmutableHashSet();
 
             foreach (Address address in updatedAddresses)
             {

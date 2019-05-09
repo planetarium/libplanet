@@ -92,10 +92,15 @@ namespace Libplanet.Store
         /// <see cref="Block{T}.Hash"/>.</param>
         /// <param name="block">The <see cref="Block{T}"/> which has the state
         /// of the <see cref="Address"/>.</param>
+        /// <param name="updatedAddresses">The <see cref="Address"/>es updated
+        /// by the <paramref name="block"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
         /// <seealso cref="GetAddressStateBlockHash"/>
-        void SetAddressStateBlockHash<T>(string @namespace, Block<T> block)
+        void SetAddressStateBlockHash<T>(
+            string @namespace,
+            Block<T> block,
+            IImmutableSet<Address> updatedAddresses)
             where T : IAction, new();
 
         /// <summary>

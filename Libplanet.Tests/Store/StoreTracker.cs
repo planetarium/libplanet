@@ -157,11 +157,12 @@ namespace Libplanet.Tests.Store
 
         public void SetAddressStateBlockHash<T>(
             string @namespace,
-            Block<T> block)
+            Block<T> block,
+            IImmutableSet<Address> updatedAddresses)
             where T : IAction, new()
         {
             _logs.Add((nameof(SetAddressStateBlockHash), block.Hash, null));
-            _store.SetAddressStateBlockHash(@namespace, block);
+            _store.SetAddressStateBlockHash(@namespace, block, updatedAddresses);
         }
 
         public void ForkAddressStateBlockHash(

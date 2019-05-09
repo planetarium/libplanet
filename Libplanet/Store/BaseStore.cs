@@ -74,7 +74,8 @@ namespace Libplanet.Store
 
         public abstract void SetAddressStateBlockHash<T>(
             string @namespace,
-            Block<T> block)
+            Block<T> block,
+            IImmutableSet<Address> updatedAddresses)
             where T : IAction, new();
 
         public abstract void ForkAddressStateBlockHash(
