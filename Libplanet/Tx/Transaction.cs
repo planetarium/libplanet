@@ -157,6 +157,12 @@ namespace Libplanet.Tx
             PublicKey = publicKey ??
                         throw new ArgumentNullException(nameof(publicKey));
 
+            using (var hasher = SHA256.Create())
+            {
+                byte[] payload = ToBencodex(true);
+                Id = new TxId(hasher.ComputeHash(payload));
+            }
+
             if (validate)
             {
                 Validate();
@@ -169,17 +175,7 @@ namespace Libplanet.Tx
         /// <para>For more characteristics, see <see cref="TxId"/> type.</para>
         /// </summary>
         /// <seealso cref="TxId"/>
-        public TxId Id
-        {
-            get
-            {
-                using (var hasher = SHA256.Create())
-                {
-                    byte[] payload = ToBencodex(true);
-                    return new TxId(hasher.ComputeHash(payload));
-                }
-            }
-        }
+        public TxId Id { get; }
 
         /// <summary>
         /// A <see cref="PublicKey"/> of the account who signs this transaction.
