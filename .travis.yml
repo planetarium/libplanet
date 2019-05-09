@@ -21,7 +21,7 @@ matrix:
   - os: osx
     osx_image: xcode10.1
     language: csharp
-    dotnet: 2.2.106
+    dotnet: 2.2.203
     mono: none
     cache:
       directories:
@@ -172,11 +172,12 @@ script:
 - |
   if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
     dotnet build -c Debug
+    dotnet build-server shutdown
     solution_abspath="$(cygpath -w "$(pwd)"/Libplanet.sln)"
     dotCover_config="$(cat .travis.dotCover.xml)"
     echo "${dotCover_config//\$SOLUTION/$solution_abspath}" \
       > dotCover.xml
-    travis_wait dotCover.exe cover dotCover.xml
+    travis_wait 60 dotCover.exe cover dotCover.xml /p:UseSharedCompilation=false
     # Upload report to Codecov.io
     codecov.exe -f Libplanet.cov.xml -t "$CODECOV_TOKEN"
   fi

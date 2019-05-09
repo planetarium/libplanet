@@ -30,6 +30,13 @@ To be released.
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
     default behavior of `object` class.  [[#216]]
+ -  Also, `Swarm` class now does not implement `IDisposable` too. Thus
+    `Swarm.Dispose()` was removed too. [[#218]]
+ -  `Swarm` became to use a queue to maintain internal messages.  [[#218]]
+     -  The broadcasting methods are no more `async`, so they are renamed
+        as below.
+        -  `Swarm.BroadcastBlocksAsync()` → `Swarm.BroadcastBlocks()`
+        -  `Swarm.BroadcastTxsAsync()` → `Swarm.BroadcastTxs()`
  -  The type of `Block<T>.Difficulty` is changed to `long` instead of `int`, and
     related classes method parameters and field types have changed accordingly.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
@@ -57,6 +64,9 @@ To be released.
  -  `BlockPolicy<T>` constructor became to receive the `minimumDifficulty`
     and the mining `difficultyBoundDivisor`.  [[#213]]
  -  Added `BlockChain<T>.UnstageTransactions()` method.  [[#223]]
+ -  `Swarm` constructor became to receive a `linger` (or `millisecondsLinger`)
+    parameter.  This purposes to determine how long to wait for pending
+    messages when a `Swarm` instance is requested to terminate.
 
 ### Behavioral changes
 
@@ -117,6 +127,7 @@ To be released.
 [#215]: https://github.com/planetarium/libplanet/pull/215
 [#216]: https://github.com/planetarium/libplanet/pull/216
 [#217]: https://github.com/planetarium/libplanet/pull/217
+[#218]: https://github.com/planetarium/libplanet/pull/218
 [#223]: https://github.com/planetarium/libplanet/pull/223
 [#231]: https://github.com/planetarium/libplanet/pull/231
 

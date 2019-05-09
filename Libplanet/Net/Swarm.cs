@@ -27,7 +27,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm : ICollection<Peer>, IDisposable
+    public class Swarm : ICollection<Peer>
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -47,24 +47,28 @@ namespace Libplanet.Net
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
-        private readonly AsyncLock _distributeMutex;
         private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
+        private readonly TimeSpan _linger;
+
+        private readonly NetMQQueue<Message> _replyQueue;
+        private readonly NetMQQueue<Message> _broadcastQueue;
+        private readonly NetMQPoller _queuePoller;
 
         private readonly ILogger _logger;
 
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
         private TurnClient _turnClient;
-
-        private NetMQQueue<Message> _replyQueue;
+        private CancellationTokenSource _workerCancellationTokenSource;
 
         public Swarm(
             PrivateKey privateKey,
             int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
+            int millisecondsLinger = 1000,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -75,6 +79,7 @@ namespace Libplanet.Net
                   privateKey,
                   appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
+                  TimeSpan.FromMilliseconds(millisecondsLinger),
                   host,
                   listenPort,
                   createdAt,
@@ -87,6 +92,7 @@ namespace Libplanet.Net
             PrivateKey privateKey,
             int appProtocolVersion,
             TimeSpan dialTimeout,
+            TimeSpan linger,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -99,9 +105,10 @@ namespace Libplanet.Net
             _privateKey = privateKey
                 ?? throw new ArgumentNullException(nameof(privateKey));
             _dialTimeout = dialTimeout;
-            _peers = new Dictionary<Peer, DateTimeOffset>();
-            _removedPeers = new Dictionary<Peer, DateTimeOffset>();
-            LastSeenTimestamps = new Dictionary<Peer, DateTimeOffset>();
+            _peers = new ConcurrentDictionary<Peer, DateTimeOffset>();
+            _removedPeers = new ConcurrentDictionary<Peer, DateTimeOffset>();
+            LastSeenTimestamps =
+                new ConcurrentDictionary<Peer, DateTimeOffset>();
 
             DateTimeOffset now = createdAt.GetValueOrDefault(
                 DateTimeOffset.UtcNow);
@@ -116,8 +123,9 @@ namespace Libplanet.Net
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
             _replyQueue = new NetMQQueue<Message>();
+            _broadcastQueue = new NetMQQueue<Message>();
+            _queuePoller = new NetMQPoller { _replyQueue, _broadcastQueue };
 
-            _distributeMutex = new AsyncLock();
             _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
@@ -125,10 +133,11 @@ namespace Libplanet.Net
             _host = host;
             _listenPort = listenPort;
             _appProtocolVersion = appProtocolVersion;
+            _linger = linger;
 
-            if (_host != null && _listenPort != null)
+            if (_host != null && _listenPort is int listenPortAsInt)
             {
-                EndPoint = new DnsEndPoint(_host, listenPort.Value);
+                EndPoint = new DnsEndPoint(_host, listenPortAsInt);
             }
 
             _iceServers = iceServers?.ToList();
@@ -143,6 +152,9 @@ namespace Libplanet.Net
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm>()
                 .ForContext("SwarmId", loggerId);
+
+            _replyQueue.ReceiveReady += DoReply;
+            _broadcastQueue.ReceiveReady += DoBroadcast;
         }
 
         ~Swarm()
@@ -231,7 +243,8 @@ namespace Libplanet.Net
                 timestamp = DateTimeOffset.UtcNow;
             }
 
-            foreach (Peer peer in peers)
+            var peersAsArray = peers as Peer[] ?? peers.ToArray();
+            foreach (Peer peer in peersAsArray)
             {
                 if (_removedPeers.ContainsKey(peer))
                 {
@@ -239,13 +252,10 @@ namespace Libplanet.Net
                 }
             }
 
-            var existingKeys = new HashSet<PublicKey>(
-                _peers.Keys.Select(p => p.PublicKey)
-            );
             PublicKey publicKey = _privateKey.PublicKey;
             var addedPeers = new HashSet<Peer>();
 
-            foreach (Peer peer in peers)
+            foreach (Peer peer in peersAsArray)
             {
                 if (peer.PublicKey.Equals(publicKey))
                 {
@@ -275,7 +285,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                     catch (TimeoutException e)
                     {
@@ -283,7 +292,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -291,7 +299,6 @@ namespace Libplanet.Net
                             e,
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
-                        continue;
                     }
                 }
             }
@@ -368,15 +375,26 @@ namespace Libplanet.Net
         public async Task StopAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            _workerCancellationTokenSource?.Cancel();
             _logger.Debug("Stopping...");
             using (await _runningMutex.LockAsync())
             {
                 if (Running)
                 {
-                    _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
-                    await DistributeDeltaAsync(false, cancellationToken);
-
                     _router.Dispose();
+                    _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
+                    DistributeDelta(false);
+
+                    if (_broadcastQueue.Any() || _replyQueue.Any())
+                    {
+                        await Task.Delay(_linger, cancellationToken);
+                    }
+
+                    if (_queuePoller.IsRunning)
+                    {
+                        _queuePoller.Stop();
+                    }
+
                     foreach (DealerSocket s in _dealers.Values)
                     {
                         s.Dispose();
@@ -389,11 +407,6 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Stopped.");
-        }
-
-        public void Dispose()
-        {
-            StopAsync().Wait();
         }
 
         public IEnumerator<Peer> GetEnumerator()
@@ -477,26 +490,36 @@ namespace Libplanet.Net
                         cancellationToken: cancellationToken);
                 }
 
+                _workerCancellationTokenSource = new CancellationTokenSource();
+                CancellationToken workerCancellationToken =
+                    CancellationTokenSource.CreateLinkedTokenSource(
+                        _workerCancellationTokenSource.Token, cancellationToken
+                        ).Token;
                 var tasks = new List<Task>
                 {
                     RepeatDeltaDistributionAsync(
-                        distributeInterval, cancellationToken),
-                    ReceiveMessageAsync(blockChain, cancellationToken),
-                    RepeatReplyAsync(cancellationToken),
+                        distributeInterval,
+                        workerCancellationToken),
+                    ReceiveMessageAsync(
+                        blockChain,
+                        workerCancellationToken),
+                    Task.Run(() => _queuePoller.Run(), workerCancellationToken),
                 };
 
                 if (behindNAT)
                 {
-                    tasks.Add(BindingProxies());
-                    tasks.Add(RefreshAllocate());
-                    tasks.Add(RefreshPermissions());
+                    tasks.Add(BindingProxies(workerCancellationToken));
+                    tasks.Add(RefreshAllocate(workerCancellationToken));
+                    tasks.Add(RefreshPermissions(workerCancellationToken));
                 }
 
-                await Task.WhenAll(tasks);
+                await Task.WhenAny(tasks);
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected exception occured.");
+                _logger.Error(
+                    e,
+                    "An unexpected exception occured during StartAsync()");
                 throw;
             }
             finally
@@ -505,9 +528,7 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task BroadcastBlocksAsync<T>(
-            IEnumerable<Block<T>> blocks,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public void BroadcastBlocks<T>(IEnumerable<Block<T>> blocks)
             where T : IAction, new()
         {
             _logger.Debug("Trying to broadcast blocks...");
@@ -515,24 +536,16 @@ namespace Libplanet.Net
                 Address,
                 blocks.Select(b => b.Hash)
             );
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
+            _broadcastQueue.Enqueue(message);
             _logger.Debug("Block broadcasting complete.");
         }
 
-        public async Task BroadcastTxsAsync<T>(
-            IEnumerable<Transaction<T>> txs,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public void BroadcastTxs<T>(IEnumerable<Transaction<T>> txs)
             where T : IAction, new()
         {
             _logger.Debug("Broadcast Txs.");
             var message = new TxIds(Address, txs.Select(tx => tx.Id));
-            await BroadcastMessage(
-                message.ToNetMQMessage(_privateKey),
-                TimeSpan.FromMilliseconds(300),
-                cancellationToken);
+            _broadcastQueue.Enqueue(message);
         }
 
         /// <summary>
@@ -622,12 +635,15 @@ namespace Libplanet.Net
             {
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    var request = new GetBlocks(blockHashes);
+                    var blockHashesAsArray =
+                        blockHashes as HashDigest<SHA256>[] ??
+                        blockHashes.ToArray();
+                    var request = new GetBlocks(blockHashesAsArray);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
                         cancellationToken: token);
 
-                    int hashCount = blockHashes.Count();
+                    int hashCount = blockHashesAsArray.Count();
                     _logger.Debug($"Required block count: {hashCount}.");
                     while (hashCount > 0)
                     {
@@ -670,12 +686,13 @@ namespace Libplanet.Net
             {
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
-                    var request = new GetTxs(txIds);
+                    var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
+                    var request = new GetTxs(txIdsAsArray);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
                         cancellationToken: cancellationToken);
 
-                    int hashCount = txIds.Count();
+                    int hashCount = txIdsAsArray.Count();
                     _logger.Debug($"Required tx count: {hashCount}.");
                     while (hashCount > 0)
                     {
@@ -727,9 +744,9 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task BindingProxies()
+        private async Task BindingProxies(CancellationToken cancellationToken)
         {
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -743,6 +760,9 @@ namespace Libplanet.Net
                     {
                         using (var proxy = new NetworkStreamProxy(stream))
                         {
+                            Debug.Assert(
+                                _listenPort != null,
+                                nameof(_listenPort) + " != null");
                             await proxy.StartAsync(
                                 IPAddress.Loopback,
                                 _listenPort.Value);
@@ -754,7 +774,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"Unexpected exception occured. try again"
+                        "An unexpected exception occured. try again..."
                     );
                 }
             }
@@ -779,7 +799,6 @@ namespace Libplanet.Net
                             e,
                             $"TimeoutException occured ({peer})."
                         );
-                        continue;
                     }
                     catch (IOException e)
                     {
@@ -787,7 +806,6 @@ namespace Libplanet.Net
                             e,
                             $"IOException occured ({peer})."
                         );
-                        continue;
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -830,20 +848,21 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task RefreshAllocate()
+        private async Task RefreshAllocate(CancellationToken cancellationToken)
         {
             TimeSpan lifetime = TurnAllocationLifetime;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
             }
         }
 
-        private async Task RefreshPermissions()
+        private async Task RefreshPermissions(
+            CancellationToken cancellationToken)
         {
             TimeSpan lifetime = TurnPermissionLifetime;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 await Task.WhenAll(
@@ -855,7 +874,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain, CancellationToken cancellationToken)
             where T : IAction, new()
         {
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -900,7 +919,12 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Unexpected exception occured.");
+                    _logger.Error(
+                        e,
+#pragma warning disable MEN002 // Line is too long
+                        "An unexpected exception occured during ReceiveMessageAsync()"
+#pragma warning restore MEN002 // Line is too long
+                    );
                     throw;
                 }
             }
@@ -940,8 +964,7 @@ namespace Libplanet.Net
                         IEnumerable<HashDigest<SHA256>> hashes =
                             blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
-                                getBlockHashes.Stop,
-                                500);
+                                getBlockHashes.Stop);
                         var reply = new BlockHashes(Address, hashes)
                         {
                             Identity = getBlockHashes.Identity,
@@ -1169,18 +1192,19 @@ namespace Libplanet.Net
                 IEnumerable<HashDigest<SHA256>> hashes =
                     await GetBlockHashesAsync(
                         peer, locator, stop, cancellationToken);
-
                 if (blockChain.Tip != null)
                 {
                     hashes = hashes.Skip(1);
                 }
 
-                if (!hashes.Any())
+                var hashesAsArray =
+                    hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
+                if (!hashesAsArray.Any())
                 {
                     break;
                 }
 
-                int hashCount = hashes.Count();
+                int hashCount = hashesAsArray.Count();
                 int received = 0;
                 _logger.Debug(
                     $"Required hashes (count: {hashCount}). " +
@@ -1189,7 +1213,7 @@ namespace Libplanet.Net
 
                 await GetBlocksAsync<T>(
                     peer,
-                    hashes,
+                    hashesAsArray,
                     cancellationToken
                 ).ForEachAsync(block =>
                 {
@@ -1297,6 +1321,7 @@ namespace Libplanet.Net
 
             if (IsUnknownPeer(sender))
             {
+                _logger.Debug("The sender of delta is unknown.");
                 if (IsDifferentProtocolVersion(sender))
                 {
                     var args = new DifferentProtocolVersionEventArgs
@@ -1308,13 +1333,16 @@ namespace Libplanet.Net
                     return;
                 }
 
-                delta = new PeerSetDelta(
-                    delta.Sender,
-                    delta.Timestamp,
-                    delta.AddedPeers.Add(sender),
-                    delta.RemovedPeers,
-                    delta.ExistingPeers
-                );
+                if (!delta.RemovedPeers.Contains(delta.Sender))
+                {
+                    delta = new PeerSetDelta(
+                        delta.Sender,
+                        delta.Timestamp,
+                        delta.AddedPeers.Add(sender),
+                        delta.RemovedPeers,
+                        delta.ExistingPeers
+                    );
+                }
             }
 
             if (IsDifferentProtocolVersion(sender))
@@ -1334,8 +1362,17 @@ namespace Libplanet.Net
                 _logger.Debug($"Trying to apply the delta[{delta}]...");
                 await ApplyDelta(delta, cancellationToken);
 
-                LastReceived = delta.Timestamp;
-                LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+                bool alreadyReceived =
+                    LastSeenTimestamps.TryGetValue(
+                        delta.Sender,
+                        out DateTimeOffset existingTimestamp) &&
+                    existingTimestamp > delta.Timestamp;
+
+                if (!alreadyReceived)
+                {
+                    LastReceived = delta.Timestamp;
+                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
+                }
 
                 DeltaReceived.Set();
             }
@@ -1345,13 +1382,20 @@ namespace Libplanet.Net
 
         private bool IsUnknownPeer(Peer sender)
         {
-            if (_peers.Keys.All(p => !sender.PublicKey.Equals(p.PublicKey)))
+            Peer existing = _peers.Keys
+                .FirstOrDefault(p => sender.PublicKey.Equals(p.PublicKey));
+
+            if (existing is null)
             {
                 return true;
             }
 
-            if (_dealers.Keys.All(a => !sender.Address.Equals(a)))
+            if (!existing.EndPoint.Equals(sender.EndPoint))
             {
+                // Clear outdated existing peer.
+                _peers.Remove(existing);
+                CloseDealer(existing);
+
                 return true;
             }
 
@@ -1368,7 +1412,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            PublicKey senderPublicKey = delta.Sender.PublicKey;
             bool firstEncounter = IsUnknownPeer(delta.Sender);
             RemovePeers(delta.RemovedPeers, delta.Timestamp);
             var addedPeers = new HashSet<Peer>(delta.AddedPeers);
@@ -1400,7 +1443,7 @@ namespace Libplanet.Net
 
             if (firstEncounter)
             {
-                await DistributeDeltaAsync(true, cancellationToken);
+                DistributeDelta(true);
             }
         }
 
@@ -1432,7 +1475,8 @@ namespace Libplanet.Net
             IEnumerable<Peer> peers, DateTimeOffset timestamp)
         {
             PublicKey publicKey = _privateKey.PublicKey;
-            foreach (Peer peer in peers)
+            var peersAsArray = peers as Peer[] ?? peers.ToArray();
+            foreach (Peer peer in peersAsArray)
             {
                 if (peer.PublicKey != publicKey)
                 {
@@ -1448,37 +1492,34 @@ namespace Libplanet.Net
                     p => new[] { p }
                 );
 
-            using (_distributeMutex.Lock())
+            foreach (Peer peer in peersAsArray)
             {
-                foreach (Peer peer in peers)
+                _peers.Remove(peer);
+
+                _logger.Debug(
+                    $"Trying to close dealers associated {peer}."
+                );
+                if (Running)
                 {
-                    _peers.Remove(peer);
+                    CloseDealer(peer);
+                }
 
-                    _logger.Debug(
-                        $"Trying to close dealers associated {peer}."
-                    );
-                    if (Running)
+                var pubKey = peer.PublicKey;
+
+                if (existingPeers.TryGetValue(pubKey, out Peer[] remains))
+                {
+                    foreach (Peer key in remains)
                     {
-                        CloseDealer(peer);
-                    }
+                        _peers.Remove(key);
 
-                    var pubKey = peer.PublicKey;
-
-                    if (existingPeers.TryGetValue(pubKey, out Peer[] remains))
-                    {
-                        foreach (Peer key in remains)
+                        if (Running)
                         {
-                            _peers.Remove(key);
-
-                            if (Running)
-                            {
-                                CloseDealer(key);
-                            }
+                            CloseDealer(key);
                         }
                     }
-
-                    _logger.Debug($"Dealers associated {peer} were closed.");
                 }
+
+                _logger.Debug($"Dealers associated {peer} were closed.");
             }
         }
 
@@ -1531,9 +1572,11 @@ namespace Libplanet.Net
                 await CreatePermission(peer);
             }
 
-            var dealer = new DealerSocket();
-            dealer.Options.Identity =
-                _privateKey.PublicKey.ToAddress().ToByteArray();
+            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+            {
+                dealer = new DealerSocket();
+            }
+
             try
             {
                 _logger.Debug($"Trying to DialAsync({peer.EndPoint})...");
@@ -1566,20 +1609,19 @@ namespace Libplanet.Net
 
                 return pong;
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 dealer.Dispose();
-                throw e;
+                throw;
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
                 dealer.Dispose();
-                throw e;
+                throw;
             }
         }
 
-        private async Task DistributeDeltaAsync(
-            bool all, CancellationToken cancellationToken)
+        private void DistributeDelta(bool all)
         {
             CheckStarted();
 
@@ -1611,78 +1653,63 @@ namespace Libplanet.Net
             {
                 LastDistributed = now;
 
-                using (await _distributeMutex.LockAsync(cancellationToken))
-                {
-                    var message = new Messages.PeerSetDelta(delta);
-                    _logger.Debug("Send the delta to dealers...");
+                var message = new Messages.PeerSetDelta(delta);
+                _logger.Debug("Send the delta to dealers...");
+                _broadcastQueue.Enqueue(message);
 
-                    try
-                    {
-                        await BroadcastMessage(
-                            message.ToNetMQMessage(_privateKey),
-                            TimeSpan.FromMilliseconds(300),
-                            cancellationToken);
-                    }
-                    catch (TimeoutException e)
-                    {
-                        _logger.Error(e, "TimeoutException occured.");
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.Error(e, "UnexpectedException occured.");
-                        throw;
-                    }
-
-                    _logger.Debug("The delta has been sent.");
-                    DeltaDistributed.Set();
-                }
+                _logger.Debug("The delta has been sent.");
+                DeltaDistributed.Set();
             }
-        }
-
-        private Task BroadcastMessage(
-            NetMQMessage message,
-            TimeSpan timeout,
-            CancellationToken cancellationToken)
-        {
-            // FIXME Should replace with PUB/SUB model.
-            return Task.WhenAll(
-                _dealers.Values.Select(
-                    s => s.SendMultipartMessageAsync(
-                        message,
-                        timeout: timeout,
-                        cancellationToken: cancellationToken)));
         }
 
         private async Task RepeatDeltaDistributionAsync(
             TimeSpan interval, CancellationToken cancellationToken)
         {
             int i = 1;
-            while (Running)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                await DistributeDeltaAsync(i % 10 == 0, cancellationToken);
+                DistributeDelta(i % 10 == 0);
                 await Task.Delay(interval, cancellationToken);
                 i = (i + 1) % 10;
             }
         }
 
-        private async Task RepeatReplyAsync(CancellationToken token)
+        private void DoBroadcast(object sender, NetMQQueueEventArgs<Message> e)
         {
-            TimeSpan interval = TimeSpan.FromMilliseconds(100);
-            while (Running)
-            {
-                if (_replyQueue.TryDequeue(out Message reply, interval))
-                {
-                    _logger.Debug(
-                        $"Reply {reply} to {ByteUtil.Hex(reply.Identity)}...");
-                    NetMQMessage netMQMessage =
-                        reply.ToNetMQMessage(_privateKey);
-                    await _router.SendMultipartMessageAsync(
-                        netMQMessage, cancellationToken: token);
-                    _logger.Debug($"Replied.");
-                }
+            Message msg = e.Queue.Dequeue();
+            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
 
-                await Task.Delay(interval, token);
+            // FIXME Should replace with PUB/SUB model.
+            try
+            {
+                Task.WhenAll(
+                    _dealers.Values.Select(s =>
+                        Task.Run(() => s.SendMultipartMessage(netMQMessage))
+                    )
+                ).Wait();
             }
+            catch (TimeoutException ex)
+            {
+                _logger.Error(ex, "TimeoutException occured.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(
+                    ex,
+                    "An unexpected exception occured during DoBroadcast()"
+                );
+            }
+
+            _logger.Debug($"broadcasted: {msg}");
+        }
+
+        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
+        {
+            Message msg = e.Queue.Dequeue();
+            _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
+            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
+            _router.SendMultipartMessage(netMQMessage);
+            _logger.Debug($"Replied.");
         }
 
         private void CheckStarted()

@@ -24,6 +24,8 @@ namespace Libplanet.Tests.Net
 {
     public class SwarmTest : IDisposable
     {
+        private const int Timeout = 60 * 1000;
+
         private readonly FileStoreFixture _fx1;
         private readonly FileStoreFixture _fx2;
         private readonly FileStoreFixture _fx3;
@@ -77,11 +79,11 @@ namespace Libplanet.Tests.Net
 
             foreach (Swarm s in _swarms)
             {
-                s.Dispose();
+                s.StopAsync().Wait();
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanNotStartTwice()
         {
             Swarm swarm = _swarms[0];
@@ -98,7 +100,7 @@ namespace Libplanet.Tests.Net
             await swarm.StopAsync();
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanStop()
         {
             Swarm swarm = _swarms[0];
@@ -114,7 +116,7 @@ namespace Libplanet.Tests.Net
             await task;
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanWaitForRunning()
         {
             Swarm swarm = _swarms[0];
@@ -142,7 +144,7 @@ namespace Libplanet.Tests.Net
             Assert.False(swarm.Running);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastWhileMining()
         {
             Swarm a = _swarms[0];
@@ -166,11 +168,11 @@ namespace Libplanet.Tests.Net
                         Log.Debug(
                             $"Block mined. " +
                             $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
-                        await swarm.BroadcastBlocksAsync(new[] { block });
+                        swarm.BroadcastBlocks(new[] { block });
                         await Task.Delay(delay);
                     }
 
-                    await swarm.BroadcastBlocksAsync(new[] { chain.Last() });
+                    swarm.BroadcastBlocks(new[] { chain.Last() });
                     Log.Debug("Mining complete.");
                 });
             }
@@ -208,7 +210,7 @@ namespace Libplanet.Tests.Net
                 chainB.AsEnumerable().ToHashSet());
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanExchangePeer()
         {
             Swarm a = _swarms[0];
@@ -265,7 +267,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task WorksAsCollection()
         {
             Swarm a = _swarms[0];
@@ -305,10 +307,12 @@ namespace Libplanet.Tests.Net
 
             a.CopyTo(peers, 1);
 
-            Assert.Equal(new Peer[] { null, b.AsPeer, c.AsPeer }, peers);
+            Assert.Equal(
+                new HashSet<Peer> { null, b.AsPeer, c.AsPeer },
+                peers.ToHashSet());
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
             var a = new Swarm(
@@ -358,7 +362,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task HandleDifferentAppProtocolVersion()
         {
             var isCalled = false;
@@ -396,8 +400,8 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
-        public async Task CanBeCancelled()
+        [Fact(Timeout = Timeout)]
+        public async Task Cancel()
         {
             Swarm swarm = _swarms[0];
             BlockChain<DumbAction> chain = _blockchains[0];
@@ -410,11 +414,11 @@ namespace Libplanet.Tests.Net
             );
 
             cts.Cancel();
-            await Assert.ThrowsAsync<TaskCanceledException>(async () => await task);
+            await task;
             Assert.False(swarm.Running);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanGetBlock()
         {
             Swarm swarmA = _swarms[0];
@@ -476,7 +480,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task GetTx()
         {
             Swarm swarmA = _swarms[0];
@@ -518,7 +522,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastTx()
         {
             Swarm swarmA = _swarms[0];
@@ -550,7 +554,7 @@ namespace Libplanet.Tests.Net
                 await EnsureExchange(swarmA, swarmC);
                 await EnsureExchange(swarmB, swarmC);
 
-                await swarmA.BroadcastTxsAsync(new[] { tx });
+                swarmA.BroadcastTxs(new[] { tx });
 
                 await swarmC.TxReceived.WaitAsync();
                 await swarmB.TxReceived.WaitAsync();
@@ -567,7 +571,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
             Swarm swarmA = _swarms[0];
@@ -608,7 +612,7 @@ namespace Libplanet.Tests.Net
                 await EnsureExchange(swarmA, swarmC);
                 await EnsureExchange(swarmB, swarmC);
 
-                await swarmB.BroadcastBlocksAsync(new[] { chainB.Last() });
+                swarmB.BroadcastBlocks(new[] { chainB.Last() });
 
                 await swarmC.BlockReceived.WaitAsync();
                 await swarmA.BlockReceived.WaitAsync();
@@ -619,7 +623,7 @@ namespace Libplanet.Tests.Net
                 // than chainA
                 Assert.NotEqual(chainB.AsEnumerable(), chainA);
 
-                await swarmA.BroadcastBlocksAsync(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
 
                 await swarmB.BlockReceived.WaitAsync();
                 await swarmC.BlockReceived.WaitAsync();
@@ -636,7 +640,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public void ThrowArgumentExceptionInConstructor()
         {
             Assert.Throws<ArgumentNullException>(() =>
@@ -660,7 +664,7 @@ namespace Libplanet.Tests.Net
             });
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
@@ -674,7 +678,7 @@ namespace Libplanet.Tests.Net
             Assert.Equal(expected, s.AsPeer.EndPoint);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task CanStopGracefullyWhileStarting()
         {
             Swarm a = _swarms[0];
@@ -687,7 +691,7 @@ namespace Libplanet.Tests.Net
             await Task.WhenAll(a.StopAsync(), t);
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task AsPeerThrowSwarmExceptionWhenUnbound()
         {
             Swarm swarm = new Swarm(
@@ -744,7 +748,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task InitialBlockDownload()
         {
             Swarm minerSwarm = _swarms[0];
@@ -777,7 +781,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task Preload()
         {
             Swarm minerSwarm = _swarms[0];
@@ -794,7 +798,10 @@ namespace Libplanet.Tests.Net
             var actualStates = new List<BlockDownloadState>();
             var progress = new Progress<BlockDownloadState>(state =>
             {
-                actualStates.Add(state);
+                lock (actualStates)
+                {
+                    actualStates.Add(state);
+                }
             });
 
             try
