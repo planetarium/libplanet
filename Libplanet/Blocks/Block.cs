@@ -39,6 +39,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions;
+            Hash = Hashcash.Hash(ToBencodex(false, true));
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -67,17 +68,7 @@ namespace Libplanet.Blocks
         {
         }
 
-        public HashDigest<SHA256> Hash
-        {
-            get
-            {
-                byte[] bencoded = ToBencodex(
-                    hash: false,
-                    transactionData: true
-                );
-                return Hashcash.Hash(bencoded);
-            }
-        }
+        public HashDigest<SHA256> Hash { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
