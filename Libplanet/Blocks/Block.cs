@@ -39,7 +39,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions;
-            Hash = Hashcash.Hash(ToBencodex(false, true));
+            Hash = Hashcash.Hash(ToBencodex(false, false));
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -109,7 +109,7 @@ namespace Libplanet.Blocks
                 transactions
             );
             Nonce nonce = Hashcash.Answer(
-                n => MakeBlock(n).ToBencodex(false, true),
+                n => MakeBlock(n).ToBencodex(false, false),
                 difficulty
             );
             return MakeBlock(nonce);
