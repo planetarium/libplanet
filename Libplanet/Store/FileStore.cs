@@ -597,7 +597,7 @@ namespace Libplanet.Store
             string sourceNamespace,
             string targetNamespace,
             long branchPointIndex,
-            IImmutableSet<Address> toUpdateAddresses)
+            IImmutableSet<Address> addressesToStrip)
         {
             string sourceDir = GetAddressStateBlockHashPath(sourceNamespace);
             string targetDir = GetAddressStateBlockHashPath(targetNamespace);
@@ -608,7 +608,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            foreach (Address address in toUpdateAddresses)
+            foreach (Address address in addressesToStrip)
             {
                 RemoveAddressStateBlockHashAfterPoint(
                     targetNamespace,

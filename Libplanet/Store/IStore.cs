@@ -114,14 +114,13 @@ namespace Libplanet.Store
         /// <see cref="Block{T}.Hash"/> will be stored.</param>
         /// <param name="branchPointIndex">The index of branch point to fork.
         /// </param>
-        /// <param name="toUpdateAddresses">The set of <see cref="Address"/>es
-        /// to be updated by fork in the <paramref name="targetNamespace"/>.
-        /// </param>
+        /// <param name="addressesToStrip">The set of <see cref="Address"/>es
+        /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
         void ForkAddressStateBlockHash(
             string sourceNamespace,
             string targetNamespace,
             long branchPointIndex,
-            IImmutableSet<Address> toUpdateAddresses);
+            IImmutableSet<Address> addressesToStrip);
 
         long CountTransactions();
 

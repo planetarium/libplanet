@@ -419,7 +419,7 @@ namespace Libplanet.Tests.Store
             }
 
             var branchPoint = blocks[0];
-            var toUpdateAddresses = blocks
+            var addressesToStrip = blocks
                 .SkipWhile(b => b.Index <= branchPoint.Index)
                 .SelectMany(b => b.Transactions)
                 .SelectMany(tx => tx.UpdatedAddresses)
@@ -429,7 +429,7 @@ namespace Libplanet.Tests.Store
                 _ns,
                 targetNamespace,
                 branchPoint.Index,
-                toUpdateAddresses);
+                addressesToStrip);
 
             Assert.Equal(
                 blocks[2].Hash,

@@ -169,11 +169,11 @@ namespace Libplanet.Tests.Store
             string sourceNamespace,
             string targetNamespace,
             long branchPointIndex,
-            IImmutableSet<Address> toUpdateAddresses)
+            IImmutableSet<Address> addressesToStrip)
         {
             _logs.Add((nameof(ForkAddressStateBlockHash), null, null));
             _store.ForkAddressStateBlockHash(
-                sourceNamespace, targetNamespace, branchPointIndex, toUpdateAddresses);
+                sourceNamespace, targetNamespace, branchPointIndex, addressesToStrip);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)

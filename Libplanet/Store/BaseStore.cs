@@ -82,7 +82,7 @@ namespace Libplanet.Store
             string sourceNamespace,
             string targetNamespace,
             long branchPointIndex,
-            IImmutableSet<Address> toUpdateAddresses);
+            IImmutableSet<Address> addressesToStrip);
 
         public long CountTransactions()
         {
