@@ -570,8 +570,6 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash = block.Hash;
             long blockIndex = block.Index;
             int hashSize = HashDigest<SHA256>.Size;
-            int blockInfoSize = hashSize + sizeof(long);
-            var buffer = new byte[blockInfoSize];
 
             ImmutableHashSet<Address> updatedAddresses = block.Transactions
                 .SelectMany(tx => tx.UpdatedAddresses)
@@ -590,9 +588,9 @@ namespace Libplanet.Store
                 using (Stream stream = addressStateBlockFile.Open(
                     FileMode.Append, FileAccess.Write))
                 {
-                    blockHash.ToByteArray().CopyTo(buffer, 0);
-                    BitConverter.GetBytes(blockIndex).CopyTo(buffer, hashSize);
-                    stream.Write(buffer, 0, buffer.Length);
+                    stream.Write(blockHash.ToByteArray(), 0, hashSize);
+                    stream.Write(
+                        BitConverter.GetBytes(blockIndex), 0, sizeof(long));
                 }
             }
         }
