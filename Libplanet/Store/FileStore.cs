@@ -601,11 +601,12 @@ namespace Libplanet.Store
         {
             string sourceDir = GetAddressStateBlockHashPath(sourceNamespace);
             string targetDir = GetAddressStateBlockHashPath(targetNamespace);
-            var copied = CopyDirectory(sourceDir, targetDir);
+            bool copied = CopyDirectory(sourceDir, targetDir);
 
-            if (!copied)
+            if (!copied && addressesToStrip.Any())
             {
-                return;
+                throw new DirectoryNotFoundException(
+                    $"{sourceDir} to be forked does not exist.");
             }
 
             foreach (Address address in addressesToStrip)

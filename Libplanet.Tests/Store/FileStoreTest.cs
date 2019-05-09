@@ -439,6 +439,26 @@ namespace Libplanet.Tests.Store
                     _fx.Store.GetAddressStateBlockHash(targetNamespace, address, blocks[2].Index));
         }
 
+        [Fact]
+        public void ForkAddressStateBlockHashDirectoryNotFound()
+        {
+            var targetNamespace = "dummy";
+            Address address = _fx.Address1;
+
+            _fx.Store.ForkAddressStateBlockHash(
+                _ns,
+                targetNamespace,
+                0,
+                ImmutableHashSet<Address>.Empty);
+
+            Assert.Throws<DirectoryNotFoundException>(() =>
+                _fx.Store.ForkAddressStateBlockHash(
+                    _ns,
+                    targetNamespace,
+                    0,
+                    new HashSet<Address> { address }.ToImmutableHashSet()));
+        }
+
         public void Dispose()
         {
             _fx.Dispose();
