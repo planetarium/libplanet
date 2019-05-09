@@ -84,7 +84,7 @@ namespace Libplanet.Store
             long offsetIndex);
 
         /// <summary>
-        /// Store a <see cref="Block{T}.Hash"/> which has the state of the
+        /// Stores a <see cref="Block{T}.Hash"/> which has the state of the
         /// <see cref="Address"/> for each updated <see cref="Address"/>es by
         /// the <paramref name="block"/>.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <summary>
-        /// Fork <see cref="Block{T}.Hash"/>es which has the state of the
+        /// Forks <see cref="Block{T}.Hash"/>es which has the state of the
         /// <see cref="Address"/>es from <paramref name="sourceNamespace"/> to
         /// <paramref name="targetNamespace"/>.
         /// </summary>
