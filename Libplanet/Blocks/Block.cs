@@ -39,6 +39,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions;
+            Hash = Hashcash.Hash(ToBencodex(false, false));
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -46,38 +47,28 @@ namespace Libplanet.Blocks
         {
         }
 
-        private Block(RawBlock rawBlock)
+        private Block(RawBlock rb)
+            : this(
+                rb.Index,
+                rb.Difficulty,
+                new Nonce(rb.Nonce),
+                rb.Miner is null ? (Address?)null : new Address(rb.Miner),
+#pragma warning disable MEN002 // Line is too long
+                rb.PreviousHash is null ? (HashDigest<SHA256>?)null : new HashDigest<SHA256>(rb.PreviousHash),
+#pragma warning restore MEN002 // Line is too long
+                DateTimeOffset.ParseExact(
+                    rb.Timestamp,
+                    TimestampFormat,
+                    CultureInfo.InvariantCulture).ToUniversalTime(),
+                rb.Transactions
+                    .Cast<Dictionary<string, object>>()
+                    .Select(d => new Transaction<T>(new RawTransaction(d)))
+                    .ToList()
+                )
         {
-            Index = rawBlock.Index;
-            Difficulty = rawBlock.Difficulty;
-            Nonce = new Nonce(rawBlock.Nonce);
-            Miner = (rawBlock.Miner != null)
-                ? new Address(rawBlock.Miner)
-                : default(Address?);
-            PreviousHash = (rawBlock.PreviousHash != null)
-                ? new HashDigest<SHA256>(rawBlock.PreviousHash)
-                : default(HashDigest<SHA256>?);
-            Timestamp = DateTimeOffset.ParseExact(
-                rawBlock.Timestamp,
-                TimestampFormat,
-                CultureInfo.InvariantCulture).ToUniversalTime();
-            Transactions = rawBlock.Transactions
-                .Cast<Dictionary<string, object>>()
-                .Select(d => new Transaction<T>(new RawTransaction(d)))
-                .ToList();
         }
 
-        public HashDigest<SHA256> Hash
-        {
-            get
-            {
-                byte[] bencoded = ToBencodex(
-                    hash: false,
-                    transactionData: true
-                );
-                return Hashcash.Hash(bencoded);
-            }
-        }
+        public HashDigest<SHA256> Hash { get; }
 
         [IgnoreDuringEquals]
         public long Index { get; }
@@ -118,7 +109,7 @@ namespace Libplanet.Blocks
                 transactions
             );
             Nonce nonce = Hashcash.Answer(
-                n => MakeBlock(n).ToBencodex(false, true),
+                n => MakeBlock(n).ToBencodex(false, false),
                 difficulty
             );
             return MakeBlock(nonce);

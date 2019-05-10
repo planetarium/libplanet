@@ -42,6 +42,8 @@ To be released.
  -  Removed `HashDigest.HasLeadingZeroBits()` method.  [[#213]]
  -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
+ -  `Block<T>.Hash` is no longer calculated using the full data of the
+    `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`. [[#234]]
 
 ### Added interfaces
 
@@ -81,6 +83,8 @@ To be released.
     target number to representing a divisor to obtain the target number.
     [[#213]]
  -  `BlockSet<T>[int]` changed so as not to validate a block.  [[#231]]
+ -  Improved read performance of `Block<T>.Hash` and `Transaction<T>.Id`. [[#228],
+    [#234]]
 
 # Bug fixes
 
@@ -129,7 +133,9 @@ To be released.
 [#217]: https://github.com/planetarium/libplanet/pull/217
 [#218]: https://github.com/planetarium/libplanet/pull/218
 [#223]: https://github.com/planetarium/libplanet/pull/223
+[#228]: https://github.com/planetarium/libplanet/issues/228
 [#231]: https://github.com/planetarium/libplanet/pull/231
+[#234]: https://github.com/planetarium/libplanet/pull/234
 
 
 Version 0.2.2
