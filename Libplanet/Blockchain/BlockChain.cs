@@ -191,7 +191,6 @@ namespace Libplanet.Blockchain
             }
 
             Block<T> block = Blocks[offset.Value];
-            long blockIndex = block.Index;
 
             ImmutableHashSet<Address> requestedAddresses =
                 addresses.ToImmutableHashSet();
@@ -200,7 +199,7 @@ namespace Libplanet.Blockchain
             foreach (var address in requestedAddresses)
             {
                 var hashDigest = Store.LookupStateReference(
-                    Id.ToString(), address, blockIndex);
+                    Id.ToString(), address, block);
                 if (!(hashDigest is null))
                 {
                     hashValues.Add(hashDigest.Value);
@@ -484,7 +483,7 @@ namespace Libplanet.Blockchain
                 Store.ForkStateReferences(
                     Id.ToString(),
                     forked.Id.ToString(),
-                    pointBlock.Index,
+                    pointBlock,
                     toUpdateAddresses.ToImmutableHashSet());
             }
             finally

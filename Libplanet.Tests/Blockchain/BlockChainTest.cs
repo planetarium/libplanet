@@ -360,7 +360,7 @@ namespace Libplanet.Tests.Blockchain
             var hash = forked.Store.LookupStateReference(
                 forked.Id.ToString(),
                 address,
-                _blockChain.Tip.Index);
+                _blockChain.Tip);
 
             Assert.Equal(b1.Hash, hash);
         }

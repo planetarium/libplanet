@@ -73,15 +73,19 @@ namespace Libplanet.Store
         /// </param>
         /// <param name="address">The <see cref="Address"/> to find lookup.
         /// </param>
-        /// <param name="offsetIndex">The offset at which to begin looking for
-        /// a block hash.</param>
+        /// <param name="lookupFrom">The starting point to lookup a state
+        /// reference. Blocks after <paramref name="lookupFrom"/> are ignored.
+        /// </param>
         /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
         /// <paramref name="address"/>.</returns>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="lookupFrom"/>.</typeparam>
         /// <seealso cref="StoreStateReference{T}"/>
-        HashDigest<SHA256>? LookupStateReference(
+        HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            long offsetIndex);
+            Block<T> lookupFrom)
+            where T : IAction, new();
 
         /// <summary>
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
@@ -96,7 +100,7 @@ namespace Libplanet.Store
         /// of the <see cref="Address"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
-        /// <seealso cref="LookupStateReference"/>
+        /// <seealso cref="LookupStateReference{T}"/>
         void StoreStateReference<T>(
             string @namespace,
             IImmutableSet<Address> addresses,
@@ -112,23 +116,26 @@ namespace Libplanet.Store
         /// <paramref name="sourceNamespace"/> to
         /// <paramref name="destNamespace"/> and strips
         /// <paramref name="addressesToStrip"/> of state references after
-        /// <paramref name="branchPointIndex"/>.</para>
+        /// <paramref name="branchPoint"/>.</para>
         /// </summary>
         /// <param name="sourceNamespace">The namespace of state references to
-        /// fork.</param>
+        ///     fork.</param>
         /// <param name="destNamespace">The namespace of destination state
-        /// references.</param>
-        /// <param name="branchPointIndex">The index of branch point to fork.
+        ///     references.</param>
+        /// <param name="branchPoint">The index of branch point to fork.
         /// </param>
         /// <param name="addressesToStrip">The set of <see cref="Address"/>es
-        /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
-        /// <seealso cref="LookupStateReference"/>
+        ///     to strip <see cref="Block{T}.Hash"/> after forking.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="branchPoint"/>.</typeparam>
+        /// <seealso cref="LookupStateReference{T}"/>
         /// <seealso cref="StoreStateReference{T}"/>
-        void ForkStateReferences(
+        void ForkStateReferences<T>(
             string sourceNamespace,
             string destNamespace,
-            long branchPointIndex,
-            IImmutableSet<Address> addressesToStrip);
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new();
 
         long CountTransactions();
 

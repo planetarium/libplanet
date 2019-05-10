@@ -533,13 +533,14 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override HashDigest<SHA256>? LookupStateReference(
+        public override HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            long offsetIndex)
+            Block<T> lookupFrom)
         {
             var addrFile = new FileInfo(
                 GetStateReferencePath(@namespace, address));
+            long lookupFromIndex = lookupFrom.Index;
 
             if (!addrFile.Exists)
             {
@@ -552,7 +553,7 @@ namespace Libplanet.Store
                     var (hashBytes, index)
                     in GetStateReferences(stream))
                 {
-                    if (index <= offsetIndex)
+                    if (index <= lookupFromIndex)
                     {
                         return new HashDigest<SHA256>(hashBytes);
                     }
@@ -593,10 +594,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void ForkStateReferences(
+        public override void ForkStateReferences<T>(
             string sourceNamespace,
             string destNamespace,
-            long branchPointIndex,
+            Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
             string sourceDir = GetStateReferencePath(sourceNamespace);
@@ -614,7 +615,7 @@ namespace Libplanet.Store
                 StripStateReference(
                     destNamespace,
                     address,
-                    branchPointIndex);
+                    branchPoint.Index);
             }
         }
 

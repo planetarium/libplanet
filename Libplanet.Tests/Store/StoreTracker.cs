@@ -146,13 +146,14 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
-        public HashDigest<SHA256>? LookupStateReference(
+        public HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            long offsetIndex)
+            Block<T> lookupFrom)
+            where T : IAction, new()
         {
             _logs.Add((nameof(LookupStateReference), address, null));
-            return _store.LookupStateReference(@namespace, address, offsetIndex);
+            return _store.LookupStateReference(@namespace, address, lookupFrom);
         }
 
         public void StoreStateReference<T>(
@@ -165,15 +166,16 @@ namespace Libplanet.Tests.Store
             _store.StoreStateReference(@namespace, addresses, block);
         }
 
-        public void ForkStateReferences(
+        public void ForkStateReferences<T>(
             string sourceNamespace,
             string destNamespace,
-            long branchPointIndex,
+            Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new()
         {
             _logs.Add((nameof(ForkStateReferences), null, null));
             _store.ForkStateReferences(
-                sourceNamespace, destNamespace, branchPointIndex, addressesToStrip);
+                sourceNamespace, destNamespace, branchPoint, addressesToStrip);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)

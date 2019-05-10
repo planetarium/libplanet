@@ -372,7 +372,7 @@ namespace Libplanet.Tests.Store
             Address address = _fx.Address1;
             Block<DumbAction> prevBlock = _fx.Block3;
 
-            Assert.Null(_fx.Store.LookupStateReference(_ns, address, 0));
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, prevBlock));
 
             Transaction<DumbAction> transaction = _fx.MakeTransaction(
                 new List<DumbAction>(),
@@ -388,8 +388,8 @@ namespace Libplanet.Tests.Store
 
             Assert.Equal(
                 block.Hash,
-                _fx.Store.LookupStateReference(_ns, address, block.Index));
-            Assert.Null(_fx.Store.LookupStateReference(_ns, address, block.Index - 1));
+                _fx.Store.LookupStateReference(_ns, address, block));
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, prevBlock));
         }
 
         [Fact]
@@ -428,15 +428,15 @@ namespace Libplanet.Tests.Store
             _fx.Store.ForkStateReferences(
                 _ns,
                 targetNamespace,
-                branchPoint.Index,
+                branchPoint,
                 addressesToStrip);
 
             Assert.Equal(
                 blocks[2].Hash,
-                _fx.Store.LookupStateReference(_ns, address, blocks[2].Index));
+                _fx.Store.LookupStateReference(_ns, address, blocks[2]));
             Assert.Equal(
                     blocks[0].Hash,
-                    _fx.Store.LookupStateReference(targetNamespace, address, blocks[2].Index));
+                    _fx.Store.LookupStateReference(targetNamespace, address, blocks[2]));
         }
 
         [Fact]
@@ -448,14 +448,14 @@ namespace Libplanet.Tests.Store
             _fx.Store.ForkStateReferences(
                 _ns,
                 targetNamespace,
-                0,
+                _fx.Block1,
                 ImmutableHashSet<Address>.Empty);
 
             Assert.Throws<DirectoryNotFoundException>(() =>
                 _fx.Store.ForkStateReferences(
                     _ns,
                     targetNamespace,
-                    0,
+                    _fx.Block1,
                     new HashSet<Address> { address }.ToImmutableHashSet()));
         }
 
