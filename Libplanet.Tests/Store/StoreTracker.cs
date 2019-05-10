@@ -149,11 +149,11 @@ namespace Libplanet.Tests.Store
         public HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            Block<T> lookupFrom)
+            Block<T> lookupUntil)
             where T : IAction, new()
         {
             _logs.Add((nameof(LookupStateReference), address, null));
-            return _store.LookupStateReference(@namespace, address, lookupFrom);
+            return _store.LookupStateReference(@namespace, address, lookupUntil);
         }
 
         public void StoreStateReference<T>(
@@ -168,14 +168,14 @@ namespace Libplanet.Tests.Store
 
         public void ForkStateReferences<T>(
             string sourceNamespace,
-            string destNamespace,
+            string destinationNamespace,
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new()
         {
             _logs.Add((nameof(ForkStateReferences), null, null));
             _store.ForkStateReferences(
-                sourceNamespace, destNamespace, branchPoint, addressesToStrip);
+                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)

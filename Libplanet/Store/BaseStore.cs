@@ -70,7 +70,7 @@ namespace Libplanet.Store
         public abstract HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            Block<T> lookupFrom)
+            Block<T> lookupUntil)
             where T : IAction, new();
 
         public abstract void StoreStateReference<T>(
@@ -81,7 +81,7 @@ namespace Libplanet.Store
 
         public abstract void ForkStateReferences<T>(
             string sourceNamespace,
-            string destNamespace,
+            string destinationNamespace,
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new();

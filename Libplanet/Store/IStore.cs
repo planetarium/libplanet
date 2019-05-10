@@ -73,18 +73,18 @@ namespace Libplanet.Store
         /// </param>
         /// <param name="address">The <see cref="Address"/> to find lookup.
         /// </param>
-        /// <param name="lookupFrom">The starting point to lookup a state
-        /// reference. Blocks after <paramref name="lookupFrom"/> are ignored.
-        /// </param>
+        /// <param name="lookupUntil">The upper bound (i.e., the latest block)
+        /// of the search range. <see cref="Block{T}"/>s after
+        /// <paramref name="lookupUntil"/> are ignored.</param>
         /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
         /// <paramref name="address"/>.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="lookupFrom"/>.</typeparam>
+        /// <paramref name="lookupUntil"/>.</typeparam>
         /// <seealso cref="StoreStateReference{T}"/>
         HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
-            Block<T> lookupFrom)
+            Block<T> lookupUntil)
             where T : IAction, new();
 
         /// <summary>
@@ -111,21 +111,21 @@ namespace Libplanet.Store
         /// Forks state references, which are <see cref="Block{T}.Hash"/>es that
         /// have the state of the <see cref="Address"/>es, from
         /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destNamespace"/>.
+        /// <paramref name="destinationNamespace"/>.
         /// <para>This method copies state references from
         /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destNamespace"/> and strips
+        /// <paramref name="destinationNamespace"/> and strips
         /// <paramref name="addressesToStrip"/> of state references after
         /// <paramref name="branchPoint"/>.</para>
         /// </summary>
         /// <param name="sourceNamespace">The namespace of state references to
-        ///     fork.</param>
-        /// <param name="destNamespace">The namespace of destination state
-        ///     references.</param>
+        /// fork.</param>
+        /// <param name="destinationNamespace">The namespace of destination
+        /// state references.</param>
         /// <param name="branchPoint">The index of branch point to fork.
         /// </param>
         /// <param name="addressesToStrip">The set of <see cref="Address"/>es
-        ///     to strip <see cref="Block{T}.Hash"/> after forking.</param>
+        /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
@@ -134,7 +134,7 @@ namespace Libplanet.Store
         /// <seealso cref="StoreStateReference{T}"/>
         void ForkStateReferences<T>(
             string sourceNamespace,
-            string destNamespace,
+            string destinationNamespace,
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new();
