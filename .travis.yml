@@ -41,49 +41,12 @@ solution: Libplanet.sln
 install:
 - |
   set -ev
-  if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then
-    mkdir -p "$HOME/.local/bin"
-    export PATH="$PATH:$HOME/.local/bin"
-
-    # submark
-    curl -L -o "$HOME/.local/bin/submark" \
-      https://github.com/dahlia/submark/releases/download/0.2.0/submark-linux-x86_64
-    chmod +x $HOME/.local/bin/submark
-
-    # github-release
-    pushd /tmp
-    curl -LO \
-      https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
-    tar xvfj linux-amd64-github-release.tar.bz2
-    mv bin/linux/amd64/github-release $HOME/.local/bin/
-    popd
-  elif [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
-    brew update
-    brew cask install powershell
-  elif [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
+  if [[ "$TRAVIS_OS_NAME" = "windows" ]]; then
     choco config set cacheLocation "$(cygpath -w "$HOME/.ChocoCache")"
 
     # .NET Core SDK 2.2+
     choco install dotnetcore-sdk
     dotnet --info
-
-    # xmllint
-    mkdir /tmp/libxml2
-    pushd /tmp/libxml2
-    wget \
-      https://www.zlatkovic.com/pub/libxml/64bit/iconv-1.14-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/libtool-2.4.6-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/libxml2-2.9.3-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/libxslt-1.1.28-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/mingwrt-5.2.0-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/openssl-1.0.2e-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/xmlsec1-1.2.20-win32-x86_64.7z \
-      https://www.zlatkovic.com/pub/libxml/64bit/zlib-1.2.8-win32-x86_64.7z
-    for z in *.7z; do
-      7z x "$z"
-    done
-    mv */*.exe */*.dll /c/Windows/
-    popd
 
     # Tools for test coverage (dotcover-clt, codecov-exe)
     if [[ "$CODECOV_TOKEN" != "" ]]; then
@@ -114,53 +77,11 @@ script:
 # Fail fast if anything in below commands fails
 - set -e
 
-# If a tag is pushed, the NuGet package version has to be the same to
-# the tag name, without any suffix.
-- |
-  version_prefix="$(xmllint \
-    --xpath './Project/PropertyGroup/VersionPrefix/text()' \
-    Libplanet/Libplanet.csproj)"
-- 'echo "VersionPrefix: $version_prefix"'
-- '[[ "$TRAVIS_TAG" = "" || "$version_prefix" = "$TRAVIS_TAG" ]]'
-
-# If a tag is pushed, there has to be an entry in CHANGES.md for the version.
-- |
-  if [[ "$TRAVIS_OS_NAME" = "linux" && "$TRAVIS_TAG" != "" ]]; then
-    changes="$(submark -i --h2 "Version $TRAVIS_TAG" CHANGES.md | egrep '\S')"
-    [[ "$changes" != "" ]]
-    ! grep -i "to be released" CHANGES.md
-  fi
-
 # Check coding styles
 - hooks/check-bom
 
-# Append suffix to the package version if it's not a tag push:
-# - "dev.BUILDNO+DATE" (e.g., 0.1.2-dev.34+20190423)
-# - "nightly.DATE" (e.g., 0.1.2-nightly.20190423)
-- |
-  if [[ "$TRAVIS_EVENT_TYPE" = "cron" ]]; then
-    version_suffix="nightly.$(date +%Y%m%d)"
-    nupkg_version="$version_prefix-$version_suffix"
-  elif [[ "$TRAVIS_TAG" = "" ]]; then
-    version_suffix="dev.$TRAVIS_BUILD_NUMBER"
-    nupkg_version="$version_prefix-$version_suffix"
-    commit_date="$(git log -n1 --pretty=%cd --date=format:%Y%m%d)"
-    version_suffix="$version_suffix+$commit_date"
-  else
-    nupkg_version="$TRAVIS_TAG"
-  fi
-
 # Build the whole solution
-- |
-  if [[ "$TRAVIS_TAG" = "" ]]; then
-    dotnet build \
-      -c Release \
-      --version-suffix "$version_suffix" \
-      -p:NoPackageAnalysis=true
-  else
-    dotnet build \
-      -c Release
-  fi
+- dotnet build -c Release
 
 # Run unit tests (without TURN server)
 - dotnet test -c Release -v n --filter "RequireTurnServer!=true"
@@ -182,28 +103,6 @@ script:
     codecov.exe -f Libplanet.cov.xml -t "$CODECOV_TOKEN"
   fi
 
-# Build Libplanet.*.nupkg
-- |
-  if [[ "$TRAVIS_TAG" = "" ]]; then
-    echo "Version suffix: $version_suffix"
-    dotnet pack Libplanet \
-      -c Release \
-      --version-suffix "$version_suffix" \
-      -p:NoPackageAnalysis=true
-  else
-    dotnet pack Libplanet \
-      -c Release
-  fi
-  ls -al Libplanet/bin/Release/
-  unzip -l "Libplanet/bin/Release/Libplanet.$nupkg_version.nupkg" \
-    > /tmp/nupkgfiles
-  cat /tmp/nupkgfiles
-  grep -i Libplanet.dll /tmp/nupkgfiles
-  grep -i Libplanet.Stun.dll /tmp/nupkgfiles
-  if [[ "$nupkg_version" != "$version_prefix" ]]; then
-    rm -f "Libplanet/bin/Release/Libplanet.$version_prefix.nupkg"
-  fi
-
 # Turn off "set -e" option
 - set +e
 
@@ -212,40 +111,3 @@ before_cache:
   if [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
     brew cleanup
   fi
-
-deploy:
-# Upload a .nupkg file to GitHub releases
-- provider: releases
-  on:
-    tags: true
-    condition: '"$TRAVIS_OS_NAME" = "linux"'
-  skip_cleanup: true
-  api_key: "$GITHUB_TOKEN"
-  file_glob: yes
-  file: Libplanet/bin/Release/Libplanet.*.nupkg
-  name: "Libplanet $TRAVIS_TAG"
-
-# Upload a .nupkg file to NuGet
-- provider: script
-  on:
-    all_branches: true
-  skip_cleanup: true
-  script: bash publish.sh
-
-# Adjust the release note on GitHub releases
-after_deploy: |
-  [[ "$TRAVIS_TAG" != "" && "$TRAVIS_OS_NAME" = "linux" ]] || exit 0
-
-  # Extract a release note from the full changelog
-  submark -o /tmp/release-note -i --h2 "Version $TRAVIS_TAG" -O CHANGES.md
-
-  # Fill the description on GitHub releases with the release note
-  export \
-    GITHUB_USER="${TRAVIS_REPO_SLUG%%/[^/]*}" \
-    GITHUB_REPO="${TRAVIS_REPO_SLUG#[^/]*/}"
-  github-release edit \
-    --user "$GITHUB_USER" \
-    --repo "$GITHUB_REPO" \
-    --tag "$TRAVIS_TAG" \
-    --name "Libplanet $TRAVIS_TAG" \
-    --description "$(cat /tmp/release-note)"

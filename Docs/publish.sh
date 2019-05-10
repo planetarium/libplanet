@@ -36,32 +36,42 @@ echo "$GHPAGES_SSH_KEY" | b64d > /tmp/github_id
 chmod 600 /tmp/github_id
 export GIT_SSH_COMMAND='ssh -i /tmp/github_id -o "StrictHostKeyChecking no"'
 
-git clone -b gh-pages "git@github.com:$GITHUB_REPOSITORY.git" /tmp/gh-pages
-git -C /tmp/gh-pages config user.name "$(git log -n1 --format=%cn)"
-git -C /tmp/gh-pages config user.email "$(git log -n1 --format=%ce)"
+for _ in 1 2 3; do
+  # If more than an action are running simultaneously git push may fail
+  # due to conflicts.  So try up to 3 times.
 
-slug="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/\(heads\|tags\)\///g')"
-[ "$slug" != "" ]
-rm -rf "/tmp/gh-pages/$slug"
-cp -r Docs/_site "/tmp/gh-pages/$slug"
-git -C /tmp/gh-pages add "/tmp/gh-pages/$slug"
+  git clone -b gh-pages "git@github.com:$GITHUB_REPOSITORY.git" /tmp/gh-pages
+  git -C /tmp/gh-pages config user.name "$(git log -n1 --format=%cn)"
+  git -C /tmp/gh-pages config user.email "$(git log -n1 --format=%ce)"
 
-latest_version="$(git tag --sort -v:refname | head -n1)"
-tag="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/tags\///g')"
-if [ "$(git tag -l)" = "" ] || [ "$latest_version" = "$tag" ]; then
-  index="$(cat "/tmp/gh-pages/$slug/index.html")"
-  {
-    echo -n "${index%</title>*}</title>"
-    echo "<meta http-equiv=\"refresh\" content=\"0;$slug/\">"
-    echo "<base href=\"$slug/\">"
-    echo -n "${index#*</title>}"
-  } > /tmp/gh-pages/index.html
-  git -C /tmp/gh-pages add /tmp/gh-pages/index.html
-fi
+  slug="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/\(heads\|tags\)\///g')"
+  [ "$slug" != "" ]
+  rm -rf "/tmp/gh-pages/$slug"
+  cp -r Docs/_site "/tmp/gh-pages/$slug"
+  git -C /tmp/gh-pages add "/tmp/gh-pages/$slug"
 
-git -C /tmp/gh-pages commit \
-  --allow-empty \
-  -m "Publish docs from $GITHUB_SHA"
-git -C /tmp/gh-pages push origin gh-pages
+  latest_version="$(git tag --sort -v:refname | head -n1)"
+  tag="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/tags\///g')"
+  if [ "$(git tag -l)" = "" ] || [ "$latest_version" = "$tag" ]; then
+    index="$(cat "/tmp/gh-pages/$slug/index.html")"
+    {
+      echo -n "${index%</title>*}</title>"
+      echo "<meta http-equiv=\"refresh\" content=\"0;$slug/\">"
+      echo "<base href=\"$slug/\">"
+      echo -n "${index#*</title>}"
+    } > /tmp/gh-pages/index.html
+    git -C /tmp/gh-pages add /tmp/gh-pages/index.html
+  fi
+
+  git -C /tmp/gh-pages commit \
+    --allow-empty \
+    -m "Publish docs from $GITHUB_SHA"
+
+  if git -C /tmp/gh-pages push origin gh-pages; then
+    break
+  fi
+
+  rm -rf /tmp/gh-pages
+done
 
 rm /tmp/github_id
