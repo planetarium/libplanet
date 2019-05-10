@@ -71,6 +71,7 @@ To be released.
  -  `Swarm` constructor became to receive a `linger` (or `millisecondsLinger`)
     parameter.  This purposes to determine how long to wait for pending
     messages when a `Swarm` instance is requested to terminate.
+ -  Added `NamespaceNotFoundException` class.  [[#232]]
 
 ### Behavioral changes
 

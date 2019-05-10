@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -451,7 +452,7 @@ namespace Libplanet.Tests.Store
                 _fx.Block1,
                 ImmutableHashSet<Address>.Empty);
 
-            Assert.Throws<DirectoryNotFoundException>(() =>
+            Assert.Throws<NamespaceNotFoundException>(() =>
                 _fx.Store.ForkStateReferences(
                     _ns,
                     targetNamespace,

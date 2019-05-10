@@ -606,8 +606,9 @@ namespace Libplanet.Store
 
             if (!copied && addressesToStrip.Any())
             {
-                throw new DirectoryNotFoundException(
-                    $"{sourceDir} to be forked does not exist.");
+                throw new NamespaceNotFoundException(
+                    sourceNamespace,
+                    "The source namespace to be forked does not exist.");
             }
 
             foreach (Address address in addressesToStrip)

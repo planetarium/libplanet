@@ -128,6 +128,8 @@ namespace Libplanet.Store
         ///     to strip <see cref="Block{T}.Hash"/> after forking.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="branchPoint"/>.</typeparam>
+        /// <exception cref="NamespaceNotFoundException">Thrown when the given
+        /// <paramref name="sourceNamespace"/> does not exist.</exception>
         /// <seealso cref="LookupStateReference{T}"/>
         /// <seealso cref="StoreStateReference{T}"/>
         void ForkStateReferences<T>(
