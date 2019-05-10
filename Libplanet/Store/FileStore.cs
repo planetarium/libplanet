@@ -23,7 +23,7 @@ namespace Libplanet.Store
         private const string _stagedTransactionsDir = "stage";
         private const string _statesDir = "states";
         private const string _indicesDir = "indices";
-        private const string _addressStateBlockDir = "addr_state_block";
+        private const string _stateReferenceDir = "stateref";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -32,7 +32,7 @@ namespace Libplanet.Store
             _stagedTransactionsDir,
             _statesDir,
             _indicesDir,
-            _addressStateBlockDir,
+            _stateReferenceDir,
         };
 
         private readonly string _path;
@@ -127,21 +127,21 @@ namespace Libplanet.Store
             );
         }
 
-        public string GetAddressStateBlockHashPath(string @namespace)
+        public string GetStateReferencePath(string @namespace)
         {
             return Path.Combine(
                 _path,
-                _addressStateBlockDir,
+                _stateReferenceDir,
                 @namespace);
         }
 
-        public string GetAddressStateBlockHashPath(
+        public string GetStateReferencePath(
             string @namespace,
             Address address)
         {
             string addressHex = address.ToHex();
             return Path.Combine(
-                GetAddressStateBlockHashPath(@namespace),
+                GetStateReferencePath(@namespace),
                 addressHex.Substring(0, 4),
                 addressHex.Substring(4));
         }
@@ -533,13 +533,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override HashDigest<SHA256>? GetAddressStateBlockHash(
+        public override HashDigest<SHA256>? LookupStateReference(
             string @namespace,
             Address address,
             long offsetIndex)
         {
             var addrFile = new FileInfo(
-                GetAddressStateBlockHashPath(@namespace, address));
+                GetStateReferencePath(@namespace, address));
 
             if (!addrFile.Exists)
             {
@@ -550,7 +550,7 @@ namespace Libplanet.Store
             {
                 foreach (
                     var (hashBytes, index)
-                    in ReadAddressStateBlockHash(stream))
+                    in GetStateReferences(stream))
                 {
                     if (index <= offsetIndex)
                     {
@@ -563,26 +563,26 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void SetAddressStateBlockHash<T>(
+        public override void StoreStateReference<T>(
             string @namespace,
-            Block<T> block,
-            IImmutableSet<Address> updatedAddresses)
+            IImmutableSet<Address> addresses,
+            Block<T> block)
         {
             HashDigest<SHA256> blockHash = block.Hash;
             long blockIndex = block.Index;
             int hashSize = HashDigest<SHA256>.Size;
 
-            foreach (Address address in updatedAddresses)
+            foreach (Address address in addresses)
             {
-                var addressStateBlockFile = new FileInfo(
-                    GetAddressStateBlockHashPath(@namespace, address));
+                var stateReferenceFile = new FileInfo(
+                    GetStateReferencePath(@namespace, address));
 
-                if (!addressStateBlockFile.Directory.Exists)
+                if (!stateReferenceFile.Directory.Exists)
                 {
-                    addressStateBlockFile.Directory.Create();
+                    stateReferenceFile.Directory.Create();
                 }
 
-                using (Stream stream = addressStateBlockFile.Open(
+                using (Stream stream = stateReferenceFile.Open(
                     FileMode.Append, FileAccess.Write))
                 {
                     stream.Write(blockHash.ToByteArray(), 0, hashSize);
@@ -593,14 +593,14 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void ForkAddressStateBlockHash(
+        public override void ForkStateReferences(
             string sourceNamespace,
-            string targetNamespace,
+            string destNamespace,
             long branchPointIndex,
             IImmutableSet<Address> addressesToStrip)
         {
-            string sourceDir = GetAddressStateBlockHashPath(sourceNamespace);
-            string targetDir = GetAddressStateBlockHashPath(targetNamespace);
+            string sourceDir = GetStateReferencePath(sourceNamespace);
+            string targetDir = GetStateReferencePath(destNamespace);
             bool copied = CopyDirectory(sourceDir, targetDir);
 
             if (!copied && addressesToStrip.Any())
@@ -611,20 +611,20 @@ namespace Libplanet.Store
 
             foreach (Address address in addressesToStrip)
             {
-                RemoveAddressStateBlockHashAfterPoint(
-                    targetNamespace,
+                StripStateReference(
+                    destNamespace,
                     address,
                     branchPointIndex);
             }
         }
 
-        private void RemoveAddressStateBlockHashAfterPoint(
+        private void StripStateReference(
             string @namespace,
             Address address,
-            long branchPointIndex)
+            long stripAfter)
         {
             var addrFile = new FileInfo(
-                GetAddressStateBlockHashPath(@namespace, address));
+                GetStateReferencePath(@namespace, address));
 
             if (!addrFile.Exists)
             {
@@ -634,9 +634,9 @@ namespace Libplanet.Store
             using (Stream stream = addrFile.Open(
                 FileMode.Open, FileAccess.ReadWrite))
             {
-                foreach (var (_, index) in ReadAddressStateBlockHash(stream))
+                foreach (var (_, index) in GetStateReferences(stream))
                 {
-                    if (index <= branchPointIndex)
+                    if (index <= stripAfter)
                     {
                         break;
                     }
@@ -646,8 +646,7 @@ namespace Libplanet.Store
             }
         }
 
-        private IEnumerable<(byte[], long)> ReadAddressStateBlockHash(
-            Stream stream)
+        private IEnumerable<(byte[], long)> GetStateReferences(Stream stream)
         {
             int hashSize = HashDigest<SHA256>.Size;
             int blockInfoSize = hashSize + sizeof(long);

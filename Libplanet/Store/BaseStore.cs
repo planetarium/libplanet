@@ -67,20 +67,20 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
-        public abstract HashDigest<SHA256>? GetAddressStateBlockHash(
+        public abstract HashDigest<SHA256>? LookupStateReference(
             string @namespace,
             Address address,
             long offsetIndex);
 
-        public abstract void SetAddressStateBlockHash<T>(
+        public abstract void StoreStateReference<T>(
             string @namespace,
-            Block<T> block,
-            IImmutableSet<Address> updatedAddresses)
+            IImmutableSet<Address> addresses,
+            Block<T> block)
             where T : IAction, new();
 
-        public abstract void ForkAddressStateBlockHash(
+        public abstract void ForkStateReferences(
             string sourceNamespace,
-            string targetNamespace,
+            string destNamespace,
             long branchPointIndex,
             IImmutableSet<Address> addressesToStrip);
 

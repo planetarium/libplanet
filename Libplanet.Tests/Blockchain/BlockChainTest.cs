@@ -319,7 +319,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ForkAddressStateBlockHash()
+        public void ForkStateReferences()
         {
             Address address = new PrivateKey().PublicKey.ToAddress();
 
@@ -357,7 +357,7 @@ namespace Libplanet.Tests.Blockchain
 
             BlockChain<DumbAction> forked = _blockChain.Fork(b1.Hash);
 
-            var hash = forked.Store.GetAddressStateBlockHash(
+            var hash = forked.Store.LookupStateReference(
                 forked.Id.ToString(),
                 address,
                 _blockChain.Tip.Index);

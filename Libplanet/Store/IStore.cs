@@ -66,59 +66,67 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Gets a <see cref="Block{T}.Hash"/> which has the state of the
-        /// <paramref name="address"/>.
+        /// Lookup a state reference, which is a <see cref="Block{T}.Hash"/>
+        /// that has the state of the <paramref name="address"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to get
-        /// <see cref="Block{T}.Hash"/>.</param>
-        /// <param name="address">The <see cref="Address"/> to find the
-        /// <see cref="Block{T}.Hash"/>.</param>
+        /// <param name="namespace">The namespace to lookup a state reference.
+        /// </param>
+        /// <param name="address">The <see cref="Address"/> to find lookup.
+        /// </param>
         /// <param name="offsetIndex">The offset at which to begin looking for
         /// a block hash.</param>
         /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
         /// <paramref name="address"/>.</returns>
-        /// <seealso cref="SetAddressStateBlockHash{T}"/>
-        HashDigest<SHA256>? GetAddressStateBlockHash(
+        /// <seealso cref="StoreStateReference{T}"/>
+        HashDigest<SHA256>? LookupStateReference(
             string @namespace,
             Address address,
             long offsetIndex);
 
         /// <summary>
-        /// Stores a <see cref="Block{T}.Hash"/> which has the state of the
-        /// <see cref="Address"/> for each updated <see cref="Address"/>es by
-        /// the <paramref name="block"/>.
-        /// </summary>
-        /// <param name="namespace">The namespace to store
-        /// <see cref="Block{T}.Hash"/>.</param>
+        /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
+        /// that has the state of the <see cref="Address"/> for each updated
+        /// <see cref="Address"/>es by the <see cref="Transaction{T}"/>s in the
+        /// <paramref name="block"/>.</summary>
+        /// <param name="namespace">The namespace to store a state reference.
+        /// </param>
+        /// <param name="addresses">The <see cref="Address"/>es to store state
+        /// reference.</param>
         /// <param name="block">The <see cref="Block{T}"/> which has the state
         /// of the <see cref="Address"/>.</param>
-        /// <param name="updatedAddresses">The <see cref="Address"/>es updated
-        /// by the <paramref name="block"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
-        /// <seealso cref="GetAddressStateBlockHash"/>
-        void SetAddressStateBlockHash<T>(
+        /// <seealso cref="LookupStateReference"/>
+        void StoreStateReference<T>(
             string @namespace,
-            Block<T> block,
-            IImmutableSet<Address> updatedAddresses)
+            IImmutableSet<Address> addresses,
+            Block<T> block)
             where T : IAction, new();
 
         /// <summary>
-        /// Forks <see cref="Block{T}.Hash"/>es which has the state of the
-        /// <see cref="Address"/>es from <paramref name="sourceNamespace"/> to
-        /// <paramref name="targetNamespace"/>.
+        /// Forks state references, which are <see cref="Block{T}.Hash"/>es that
+        /// have the state of the <see cref="Address"/>es, from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destNamespace"/>.
+        /// <para>This method copies state references from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destNamespace"/> and strips
+        /// <paramref name="addressesToStrip"/> of state references after
+        /// <paramref name="branchPointIndex"/>.</para>
         /// </summary>
-        /// <param name="sourceNamespace">The namespace to fork
-        /// <see cref="Block{T}.Hash"/>es.</param>
-        /// <param name="targetNamespace">The namespace where the forked
-        /// <see cref="Block{T}.Hash"/> will be stored.</param>
+        /// <param name="sourceNamespace">The namespace of state references to
+        /// fork.</param>
+        /// <param name="destNamespace">The namespace of destination state
+        /// references.</param>
         /// <param name="branchPointIndex">The index of branch point to fork.
         /// </param>
         /// <param name="addressesToStrip">The set of <see cref="Address"/>es
         /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
-        void ForkAddressStateBlockHash(
+        /// <seealso cref="LookupStateReference"/>
+        /// <seealso cref="StoreStateReference{T}"/>
+        void ForkStateReferences(
             string sourceNamespace,
-            string targetNamespace,
+            string destNamespace,
             long branchPointIndex,
             IImmutableSet<Address> addressesToStrip);
 

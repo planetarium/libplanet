@@ -86,15 +86,15 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void GetAddressStateBlockHashPath()
+        public void GetStateReferencePath()
         {
             string expected = Path.Combine(
                 _fx.Path,
-                "addr_state_block",
+                "stateref",
                 _ns,
                 "45a2",
                 "2187e2D8850bb357886958bC3E8560929ccc");
-            string actual = _fx.Store.GetAddressStateBlockHashPath(
+            string actual = _fx.Store.GetStateReferencePath(
                 _ns,
                 _fx.Address1);
 
@@ -317,7 +317,7 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void SetAddressStateBlockHash()
+        public void StoreStateReference()
         {
             Address address = address;
             Block<DumbAction> prevBlock = _fx.Block3;
@@ -333,21 +333,21 @@ namespace Libplanet.Tests.Store
             };
             blocks.Add(TestUtils.MineNext(blocks[0], txs));
 
-            string path = _fx.Store.GetAddressStateBlockHashPath(_ns, address);
-            var addressStateBlockFile = new FileInfo(path);
-            Assert.False(addressStateBlockFile.Exists);
+            string path = _fx.Store.GetStateReferencePath(_ns, address);
+            var stateReferenceFile = new FileInfo(path);
+            Assert.False(stateReferenceFile.Exists);
 
             foreach (Block<DumbAction> block in blocks)
             {
                 var updatedAddresses = new HashSet<Address> { address };
-                _fx.Store.SetAddressStateBlockHash(
-                    _ns, block, updatedAddresses.ToImmutableHashSet());
+                _fx.Store.StoreStateReference(
+                    _ns, updatedAddresses.ToImmutableHashSet(), block);
             }
 
-            addressStateBlockFile = new FileInfo(path);
-            Assert.True(addressStateBlockFile.Exists);
+            stateReferenceFile = new FileInfo(path);
+            Assert.True(stateReferenceFile.Exists);
 
-            using (Stream stream = addressStateBlockFile.OpenRead())
+            using (Stream stream = stateReferenceFile.OpenRead())
             {
                 int hashSize = HashDigest<SHA256>.Size;
                 int blockInfoSize = hashSize + sizeof(long);
@@ -367,12 +367,12 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void GetAddressStateBlockHash()
+        public void LookupStateReference()
         {
             Address address = _fx.Address1;
             Block<DumbAction> prevBlock = _fx.Block3;
 
-            Assert.Null(_fx.Store.GetAddressStateBlockHash(_ns, address, 0));
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, 0));
 
             Transaction<DumbAction> transaction = _fx.MakeTransaction(
                 new List<DumbAction>(),
@@ -383,17 +383,17 @@ namespace Libplanet.Tests.Store
                 new[] { transaction });
 
             var updatedAddresses = new HashSet<Address> { address };
-            _fx.Store.SetAddressStateBlockHash(
-                _ns, block, updatedAddresses.ToImmutableHashSet());
+            _fx.Store.StoreStateReference(
+                _ns, updatedAddresses.ToImmutableHashSet(), block);
 
             Assert.Equal(
                 block.Hash,
-                _fx.Store.GetAddressStateBlockHash(_ns, address, block.Index));
-            Assert.Null(_fx.Store.GetAddressStateBlockHash(_ns, address, block.Index - 1));
+                _fx.Store.LookupStateReference(_ns, address, block.Index));
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, block.Index - 1));
         }
 
         [Fact]
-        public void ForkAddressStateBlockHash()
+        public void ForkStateReferences()
         {
             Address address = _fx.Address1;
             Block<DumbAction> prevBlock = _fx.Block3;
@@ -414,8 +414,8 @@ namespace Libplanet.Tests.Store
             foreach (Block<DumbAction> block in blocks)
             {
                 var updatedAddresses = new HashSet<Address> { address };
-                _fx.Store.SetAddressStateBlockHash(
-                    _ns, block, updatedAddresses.ToImmutableHashSet());
+                _fx.Store.StoreStateReference(
+                    _ns, updatedAddresses.ToImmutableHashSet(), block);
             }
 
             var branchPoint = blocks[0];
@@ -425,7 +425,7 @@ namespace Libplanet.Tests.Store
                 .SelectMany(tx => tx.UpdatedAddresses)
                 .ToImmutableHashSet();
 
-            _fx.Store.ForkAddressStateBlockHash(
+            _fx.Store.ForkStateReferences(
                 _ns,
                 targetNamespace,
                 branchPoint.Index,
@@ -433,26 +433,26 @@ namespace Libplanet.Tests.Store
 
             Assert.Equal(
                 blocks[2].Hash,
-                _fx.Store.GetAddressStateBlockHash(_ns, address, blocks[2].Index));
+                _fx.Store.LookupStateReference(_ns, address, blocks[2].Index));
             Assert.Equal(
                     blocks[0].Hash,
-                    _fx.Store.GetAddressStateBlockHash(targetNamespace, address, blocks[2].Index));
+                    _fx.Store.LookupStateReference(targetNamespace, address, blocks[2].Index));
         }
 
         [Fact]
-        public void ForkAddressStateBlockHashDirectoryNotFound()
+        public void ForkStateReferencesDirectoryNotFound()
         {
             var targetNamespace = "dummy";
             Address address = _fx.Address1;
 
-            _fx.Store.ForkAddressStateBlockHash(
+            _fx.Store.ForkStateReferences(
                 _ns,
                 targetNamespace,
                 0,
                 ImmutableHashSet<Address>.Empty);
 
             Assert.Throws<DirectoryNotFoundException>(() =>
-                _fx.Store.ForkAddressStateBlockHash(
+                _fx.Store.ForkStateReferences(
                     _ns,
                     targetNamespace,
                     0,

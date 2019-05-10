@@ -146,34 +146,34 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
-        public HashDigest<SHA256>? GetAddressStateBlockHash(
+        public HashDigest<SHA256>? LookupStateReference(
             string @namespace,
             Address address,
             long offsetIndex)
         {
-            _logs.Add((nameof(GetAddressStateBlockHash), address, null));
-            return _store.GetAddressStateBlockHash(@namespace, address, offsetIndex);
+            _logs.Add((nameof(LookupStateReference), address, null));
+            return _store.LookupStateReference(@namespace, address, offsetIndex);
         }
 
-        public void SetAddressStateBlockHash<T>(
+        public void StoreStateReference<T>(
             string @namespace,
-            Block<T> block,
-            IImmutableSet<Address> updatedAddresses)
+            IImmutableSet<Address> addresses,
+            Block<T> block)
             where T : IAction, new()
         {
-            _logs.Add((nameof(SetAddressStateBlockHash), block.Hash, null));
-            _store.SetAddressStateBlockHash(@namespace, block, updatedAddresses);
+            _logs.Add((nameof(StoreStateReference), block.Hash, null));
+            _store.StoreStateReference(@namespace, addresses, block);
         }
 
-        public void ForkAddressStateBlockHash(
+        public void ForkStateReferences(
             string sourceNamespace,
-            string targetNamespace,
+            string destNamespace,
             long branchPointIndex,
             IImmutableSet<Address> addressesToStrip)
         {
-            _logs.Add((nameof(ForkAddressStateBlockHash), null, null));
-            _store.ForkAddressStateBlockHash(
-                sourceNamespace, targetNamespace, branchPointIndex, addressesToStrip);
+            _logs.Add((nameof(ForkStateReferences), null, null));
+            _store.ForkStateReferences(
+                sourceNamespace, destNamespace, branchPointIndex, addressesToStrip);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)
