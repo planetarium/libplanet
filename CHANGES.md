@@ -40,11 +40,11 @@ To be released.
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  `Block<T>.Hash` is no longer calculated using the full data of the
     `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`. [[#234]]
- -  Added `IStore.GetAddressStateBlockHash(string, Address, long)` method.
+ -  Added `IStore.LookupStateReference<T>(string, Address, Block<T>)` method.
     [[#232]]
- -  Added `IStore.SetAddressStateBlockHash<T>(string, Block<T>)` method.
+ -  Added `IStore.StoreStateReference<T>(string, Block<T>)` method.
     [[#232]]
- -  Added `IStore.ForkAddressStateBlockHash(string, string, long,
+ -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
     IImmutableSet<Address>` method.  [[#232]]
 
 ### Added interfaces
