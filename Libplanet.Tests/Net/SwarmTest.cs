@@ -16,6 +16,7 @@ using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -81,6 +82,8 @@ namespace Libplanet.Tests.Net
             {
                 s.StopAsync().Wait();
             }
+
+            NetMQConfig.Cleanup(false);
         }
 
         [Fact(Timeout = Timeout)]
