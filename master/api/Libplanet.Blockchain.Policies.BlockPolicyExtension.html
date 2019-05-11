@@ -351,47 +351,23 @@ the most part) to deal with <a class="xref" href="Libplanet.Blockchain.Policies.
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">BlockPolicyExtension</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class BlockPolicyExtension</code></pre>
+    <pre><code class="lang-csharp hljs">public static class BlockPolicyExtension : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks%60%601(Libplanet.Blockchain.Policies.IBlockPolicy%7B%60%600%7D%2CSystem.Collections.Generic.IReadOnlyList%7BLibplanet.Blocks.Block%7B%60%600%7D%7D%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks%60%601(Libplanet.Blockchain.Policies.IBlockPolicy%7B%60%600%7D%2CIReadOnlyList%7BLibplanet.Blocks.Block%7B%60%600%7D%7D%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blockchain/Policies/BlockPolicyExtension.cs/#L35">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks_" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks*"></a>
-  <h4 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset_" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},System.Collections.Generic.IReadOnlyList{Libplanet.Blocks.Block{``0}},System.DateTimeOffset)">ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</h4>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)">ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</h4>
   <div class="markdown level1 summary"><p>Checks if <code data-dev-comment-type="paramref" class="paramref">blocks</code> are invalid, and if that
 returns the reason.</p>
 <p>Note that it returns <code>null</code> when blocks are
@@ -421,18 +397,18 @@ validation <code data-dev-comment-type="paramref" class="paramref">blocks</code>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
         <td><span class="parametername">blocks</span></td>
         <td><p>Consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s to
 validate.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="xref">DateTimeOffset</span></td>
         <td><span class="parametername">currentTime</span></td>
         <td><p>The current time to be used to validate
 of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp">Timestamp</a>s.
-Usually <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset.utcnow#System_DateTimeOffset_UtcNow">UtcNow</a> is used.</p>
+Usually <see cref="!:DateTimeOffset.UtcNow"></see> is used.</p>
 </td>
       </tr>
     </tbody>
@@ -472,10 +448,10 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block___0___System_DateTimeOffset__seealso">See Also</h5>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset__seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
-      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__">ValidateNextBlock</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;)</div>
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__">ValidateNextBlock</a>(<span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;)</div>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

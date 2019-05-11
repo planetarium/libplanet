@@ -353,36 +353,11 @@ encrypting a plaintext and decrypting a ciphertext.</p>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">SymmetricKey</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Crypto.html">Libplanet.Crypto</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Crypto_SymmetricKey_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Equals]
-public class SymmetricKey</code></pre>
+    <pre><code class="lang-csharp hljs">public class SymmetricKey : object</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -396,7 +371,7 @@ public class SymmetricKey</code></pre>
   <a id="Libplanet_Crypto_SymmetricKey__ctor_" data-uid="Libplanet.Crypto.SymmetricKey.#ctor*"></a>
   <h4 id="Libplanet_Crypto_SymmetricKey__ctor_System_Byte___" data-uid="Libplanet.Crypto.SymmetricKey.#ctor(System.Byte[])">SymmetricKey(Byte[])</h4>
   <div class="markdown level1 summary"><p>Creates a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> instance from the given
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array (i.e., <code data-dev-comment-type="paramref" class="paramref">key</code>),
+<see cref="!:System.Byte"></see> array (i.e., <code data-dev-comment-type="paramref" class="paramref">key</code>),
 which encodes a valid <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -417,14 +392,14 @@ which encodes a valid <a href="https://en.wikipedia.org/wiki/Advanced_Encryption
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">key</span></td>
-        <td><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that
+        <td><p>A valid <see cref="!:System.Byte"></see> array that
 encodes an AES-GCM symmetric key.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="Libplanet_Crypto_SymmetricKey__ctor_System_Byte____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>A valid <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array for
+  <div class="markdown level1 remarks"><p>A valid <see cref="!:System.Byte"></see> array for
 a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> can be encoded using
 <a class="xref" href="Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray">ToByteArray()</a> method.</p>
 </div>
@@ -443,13 +418,12 @@ a <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> can
   </span>
   <a id="Libplanet_Crypto_SymmetricKey_ByteArray_" data-uid="Libplanet.Crypto.SymmetricKey.ByteArray*"></a>
   <h4 id="Libplanet_Crypto_SymmetricKey_ByteArray" data-uid="Libplanet.Crypto.SymmetricKey.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>An immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array encoding of this key.</p>
+  <div class="markdown level1 summary"><p>An immutable <see cref="!:System.Byte"></see> array encoding of this key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -461,7 +435,7 @@ public ImmutableArray&lt;byte&gt; ByteArray { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -491,8 +465,7 @@ the same key to the plain message.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] Decrypt(byte[] ciphertext, int nonSecretLength = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] Decrypt(byte[] ciphertext, int nonSecretLength = 0)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -542,8 +515,8 @@ throw an exception instead).</p>
   <h5 id="Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Although the parameter name <code data-dev-comment-type="paramref" class="paramref">ciphertext</code> has the
 word “text”, both a <code data-dev-comment-type="paramref" class="paramref">ciphertext</code>
-and a returned message are a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> string,
-not a Unicode <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>.</p>
+and a returned message are a <see cref="!:System.Byte"></see> string,
+not a Unicode <see cref="!:System.String"></see>.</p>
 </div>
   <h5 id="Libplanet_Crypto_SymmetricKey_Decrypt_System_Byte___System_Int32__seealso">See Also</h5>
   <div class="seealso">
@@ -564,8 +537,7 @@ which can be decrypted with the same key.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] Encrypt(byte[] message, byte[] nonSecret = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] Encrypt(byte[] message, byte[] nonSecret = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -608,7 +580,7 @@ which means empty.</p>
 and can be decrypted with the same key.
 (Although the word “ciphertext” has the word
 “text”, a returned ciphertext is not a Unicode
-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, but a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.)</p>
+<see cref="!:System.String"></see>, but a <see cref="!:System.Byte"></see> array.)</p>
 </td>
       </tr>
     </tbody>
@@ -626,13 +598,12 @@ and can be decrypted with the same key.
   </span>
   <a id="Libplanet_Crypto_SymmetricKey_ToByteArray_" data-uid="Libplanet.Crypto.SymmetricKey.ToByteArray*"></a>
   <h4 id="Libplanet_Crypto_SymmetricKey_ToByteArray" data-uid="Libplanet.Crypto.SymmetricKey.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which encodes this key.</p>
+  <div class="markdown level1 summary"><p>Gets a mutable <see cref="!:System.Byte"></see> array which encodes this key.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -645,7 +616,7 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array which encodes this
+        <td><p>A new mutable <see cref="!:System.Byte"></see> array which encodes this
 key.  Since it is created every time the method is called, any
 mutation on that does not affect this <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a>
 object.</p>

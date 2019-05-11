@@ -351,35 +351,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">HashDigestExtension</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_HashDigestExtension_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class HashDigestExtension</code></pre>
+    <pre><code class="lang-csharp hljs">public static class HashDigestExtension : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -451,33 +427,8 @@ a <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a>.</p
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.hashalgorithm">HashAlgorithm</a> which corresponds
+        <td><p>A <see cref="!:HashAlgorithm"></see> which corresponds
 to a digest.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code> is <code>null</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">hexDigest</code>'s length is not the double of
-the <a class="xref" href="Libplanet.HashDigest-1.html#Libplanet_HashDigest_1_Size">Size</a>, the hash algorithm
-(i.e., <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> requires.</p>
 </td>
       </tr>
     </tbody>

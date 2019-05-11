@@ -345,43 +345,60 @@
   <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s,
+<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Size">Size</a> constant.)</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">ISerializable</a></div>
-  </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
+    <div><span class="xref">ISerializable</span></div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Tx_TxId_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-[Equals]
-public struct TxId : ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">public struct TxId : ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/TxId.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_TxId__ctor_" data-uid="Libplanet.Tx.TxId.#ctor*"></a>
+  <h4 id="Libplanet_Tx_TxId__ctor_SerializationInfo_StreamingContext_" data-uid="Libplanet.Tx.TxId.#ctor(SerializationInfo,StreamingContext)">TxId(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TxId(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SerializationInfo</span></td>
+        <td><span class="parametername">info</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">StreamingContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -391,7 +408,7 @@ public struct TxId : ISerializable</code></pre>
   </span>
   <a id="Libplanet_Tx_TxId__ctor_" data-uid="Libplanet.Tx.TxId.#ctor*"></a>
   <h4 id="Libplanet_Tx_TxId__ctor_System_Byte___" data-uid="Libplanet.Tx.TxId.#ctor(System.Byte[])">TxId(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
+  <div class="markdown level1 summary"><p>Converts a <see cref="!:System.Byte"></see> array into a <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -411,72 +428,11 @@ public struct TxId : ISerializable</code></pre>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">txid</span></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that encodes
+        <td><p>A <see cref="!:System.Byte"></see> array that encodes
 a <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.  It must not be <code>null</code>,
-and its <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> must be the same to
+and its <see cref="!:Array.Length"></see> must be the same to
 <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Size">Size</a>.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">txid</code> is <code>null</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
-        <td><p>Thrown when the given
-<code data-dev-comment-type="paramref" class="paramref">txid</code>'s <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.array.length#System_Array_Length">Length</a> is not
-the same to the required <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Size">Size</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_TxId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/TxId.cs/#L62">View Source</a>
-  </span>
-  <a id="Libplanet_Tx_TxId__ctor_" data-uid="Libplanet.Tx.TxId.#ctor*"></a>
-  <h4 id="Libplanet_Tx_TxId__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxId.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">TxId(SerializationInfo, StreamingContext)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TxId(SerializationInfo info, StreamingContext context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
-        <td><span class="parametername">info</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
@@ -490,14 +446,14 @@ the same to the required <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/TxId.cs/#L28">View Source</a>
   </span>
   <h4 id="Libplanet_Tx_TxId_Size" data-uid="Libplanet.Tx.TxId.Size">Size</h4>
-  <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s size that each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> takes.</p>
-<p>As a txid is a SHA-256 digest, it is 32 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s.
+  <div class="markdown level1 summary"><p>The <see cref="!:System.Byte"></see>s size that each <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> takes.</p>
+<p>As a txid is a SHA-256 digest, it is 32 <see cref="!:System.Byte"></see>s.
 </p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Size = 32</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Size = null</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -525,7 +481,7 @@ the same to the required <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_
   </span>
   <a id="Libplanet_Tx_TxId_ByteArray_" data-uid="Libplanet.Tx.TxId.ByteArray*"></a>
   <h4 id="Libplanet_Tx_TxId_ByteArray" data-uid="Libplanet.Tx.TxId.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+  <div class="markdown level1 summary"><p>A bare immutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -543,7 +499,7 @@ this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -560,13 +516,13 @@ this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.TxId.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/TxId.cs/#L119">View Source</a>
   </span>
   <a id="Libplanet_Tx_TxId_GetObjectData_" data-uid="Libplanet.Tx.TxId.GetObjectData*"></a>
-  <h4 id="Libplanet_Tx_TxId_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="Libplanet.Tx.TxId.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
+  <h4 id="Libplanet_Tx_TxId_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Tx.TxId.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -584,12 +540,12 @@ this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.serializationinfo">SerializationInfo</a></td>
+        <td><span class="xref">SerializationInfo</span></td>
         <td><span class="parametername">info</span></td>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.streamingcontext">StreamingContext</a></td>
+        <td><span class="xref">StreamingContext</span></td>
         <td><span class="parametername">context</span></td>
         <td></td>
       </tr>
@@ -604,14 +560,13 @@ this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
   </span>
   <a id="Libplanet_Tx_TxId_ToByteArray_" data-uid="Libplanet.Tx.TxId.ToByteArray*"></a>
   <h4 id="Libplanet_Tx_TxId_ToByteArray" data-uid="Libplanet.Tx.TxId.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+  <div class="markdown level1 summary"><p>Gets a bare mutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -624,7 +579,7 @@ public byte[] ToByteArray()</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of
+        <td><p>A new mutable <see cref="!:System.Byte"></see> array of
 this <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to
@@ -651,8 +606,7 @@ the <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> object.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public string ToHex()</code></pre>
+    <pre><code class="lang-csharp hljs">public string ToHex()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -684,8 +638,7 @@ public string ToHex()</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Pure]
-public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -703,11 +656,9 @@ public override string ToString()</code></pre>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
+      <span class="xref">ISerializable</span>
   </div>
   <h3 id="seealso">See Also</h3>
   <div class="seealso">

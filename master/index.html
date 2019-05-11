@@ -102,8 +102,8 @@ in Package Manager Console:</p>
 <p>In addition to stable releases, we also provide pre-release packages.
 For every day and every merge commit, it is packed into a <em>.nupkg</em>
 and uploaded to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> with a hyphen-suffixed version name.</p>
-<p>For a merge commit build, a version name is like <code>0.1.0-dev.123+20181231</code> where
-<code>123</code> is a build number in our CI system and <code>20181231</code> is a date of the build.
+<p>For a merge commit build, a version name is like <code>0.1.0-dev.20181231235959</code>
+where <code>20181231235959</code> is a UTC timestamp of the build.
 For a daily build, a version name is like <code>0.1.0-nightly.20181231</code>.</p>
 <p>Unfortunately, Unity currently does not support NuGet.  There are some Unity
 plug-ins to deal with NuGet package system, and these seem immature at present.
