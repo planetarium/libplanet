@@ -524,10 +524,6 @@ namespace Libplanet.Net
                     "An unexpected exception occured during StartAsync()");
                 throw;
             }
-            finally
-            {
-                await StopAsync();
-            }
         }
 
         public void BroadcastBlocks<T>(IEnumerable<Block<T>> blocks)

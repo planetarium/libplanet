@@ -85,6 +85,7 @@ To be released.
  -  `BlockSet<T>[int]` changed so as not to validate a block.  [[#231]]
  -  Improved read performance of `Block<T>.Hash` and `Transaction<T>.Id`. [[#228],
     [#234]]
+ -  `Swarm.StartAsync()` doesn't call `Swarm.StopAsync()` anymore.
 
 # Bug fixes
 

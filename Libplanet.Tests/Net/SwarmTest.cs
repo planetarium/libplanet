@@ -418,7 +418,6 @@ namespace Libplanet.Tests.Net
 
             cts.Cancel();
             await task;
-            Assert.False(swarm.Running);
         }
 
         [Fact(Timeout = Timeout)]
