@@ -25,6 +25,7 @@
 .vs/
 [Bb]in/
 [Oo]bj/
+!.github/bin/
 _UpgradeReport_Files/
 [Pp]ackages/
 mono_crash.*.json
