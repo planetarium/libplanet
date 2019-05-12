@@ -471,9 +471,12 @@ namespace Libplanet.Blockchain
 
                 var toUpdateAddresses = new HashSet<Address>();
 
-                for (var i = pointBlock.Index + 1; i <= Tip.Index; i++)
+                for (
+                    Block<T> block = Tip;
+                    block.PreviousHash is HashDigest<SHA256> hash
+                    && !block.Hash.Equals(point);
+                    block = Blocks[hash])
                 {
-                    Block<T> block = this[i];
                     toUpdateAddresses.UnionWith(
                         block.Transactions
                             .SelectMany(tx => tx.UpdatedAddresses)
