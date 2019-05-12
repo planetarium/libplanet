@@ -35,7 +35,7 @@ namespace Libplanet.Explorer
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }
