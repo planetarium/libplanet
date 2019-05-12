@@ -10,6 +10,7 @@ namespace Libplanet.Store
 {
     public abstract class BaseStore : IStore
     {
+        /// <inheritdoc />
         public abstract IEnumerable<string> ListNamespaces();
 
         public abstract long CountIndex(string @namespace);
@@ -53,6 +54,7 @@ namespace Libplanet.Store
         public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction, new();
 
+        /// <inheritdoc />
         public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
@@ -67,18 +69,21 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
+        /// <inheritdoc />
         public abstract HashDigest<SHA256>? LookupStateReference<T>(
             string @namespace,
             Address address,
             Block<T> lookupUntil)
             where T : IAction, new();
 
+        /// <inheritdoc />
         public abstract void StoreStateReference<T>(
             string @namespace,
             IImmutableSet<Address> addresses,
             Block<T> block)
             where T : IAction, new();
 
+        /// <inheritdoc />
         public abstract void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,

@@ -445,6 +445,7 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc />
         public override void PutBlock<T>(Block<T> block)
         {
             foreach (var tx in block.Transactions)
