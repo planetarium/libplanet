@@ -667,6 +667,8 @@ namespace Libplanet.Store
 
                 yield return (hashBytes, index);
             }
+
+            stream.Seek(position, SeekOrigin.Begin);
         }
 
         private FileStream IndexFileStream(string @namespace)

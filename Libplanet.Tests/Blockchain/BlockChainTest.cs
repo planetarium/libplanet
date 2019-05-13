@@ -321,20 +321,21 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkStateReferences()
         {
-            Address address = new PrivateKey().PublicKey.ToAddress();
+            Address addr1 = new PrivateKey().PublicKey.ToAddress();
+            Address addr2 = new PrivateKey().PublicKey.ToAddress();
 
             Transaction<DumbAction>[] txsA =
             {
                 _fx.MakeTransaction(new[]
                 {
-                    new DumbAction(address, "foo"),
+                    new DumbAction(addr1, "foo"),
                 }),
             };
             Transaction<DumbAction>[] txsB =
             {
                 _fx.MakeTransaction(new[]
                 {
-                    new DumbAction(address, "bar"),
+                    new DumbAction(addr2, "bar"),
                 }),
             };
 
@@ -355,14 +356,48 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
             _blockChain.Append(b2);
 
-            BlockChain<DumbAction> forked = _blockChain.Fork(b1.Hash);
+            Block<DumbAction> b3 = TestUtils.MineNext(
+                b2,
+                txsB,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b3);
 
-            var hash = forked.Store.LookupStateReference(
-                forked.Id.ToString(),
-                address,
-                _blockChain.Tip);
+            // Fork from genesis and append two empty blocks.
+            BlockChain<DumbAction> forked = _blockChain.Fork(genesis.Hash);
+            string fId = forked.Id.ToString();
+            Block<DumbAction> fb1 = TestUtils.MineNext(genesis, difficulty: b1.Difficulty);
+            Block<DumbAction> fb2 = TestUtils.MineNext(fb1, difficulty: b2.Difficulty);
+            forked.Append(fb1);
+            forked.Append(fb2);
 
-            Assert.Equal(b1.Hash, hash);
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+
+            // Fork from b1 and append a empty block.
+            forked = _blockChain.Fork(b1.Hash);
+            fId = forked.Id.ToString();
+            fb2 = TestUtils.MineNext(b1, difficulty: b2.Difficulty);
+            forked.Append(fb2);
+
+            Assert.Equal(
+                b1.Hash,
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+
+            // Fork from b2.
+            forked = _blockChain.Fork(b2.Hash);
+            fId = forked.Id.ToString();
+
+            Assert.Equal(
+                b1.Hash,
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Equal(
+                b2.Hash,
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
         }
 
         [Fact]
