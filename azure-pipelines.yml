@@ -1,0 +1,34 @@
+# Since Azure Pipelines does not support YAML anchors as of May 2019,
+# we use job and step templates, Azure Pipelines' mini language, instead here.
+# It is a domain specific language built upon YAML, and has quite complex
+# things.  Read the docs first:
+#   https://docs.microsoft.com/azure/devops/pipelines/process/templates
+# Template files are placed in the .azure-pipelines/ directory.
+variables:
+  configuration: Release
+
+jobs:
+
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+
+- job: macOS
+  pool:
+    vmImage: 'macOS-10.14'
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
+
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: $(configuration)
