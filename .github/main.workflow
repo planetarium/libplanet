@@ -3,6 +3,11 @@ workflow "push" {
   resolves = ["dist:nuget", "dist:github-release", "docs:status"]
 }
 
+workflow "pull request" {
+  on = "pull_request"
+  resolves = ["docs:status"]
+}
+
 workflow "everyday" {
   on = "schedule(59 14 * * *)"
   resolves = ["dist:nuget"]

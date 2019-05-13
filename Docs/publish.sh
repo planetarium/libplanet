@@ -32,6 +32,21 @@ if [ "$GHPAGES_SSH_KEY" = "" ]; then
   exit 0
 fi
 
+if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+  if ! command -v jq > /dev/null; then
+    wget -O /usr/local/bin/jq \
+      https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+    chmod +x /usr/local/bin/jq
+  fi
+  pr_number="$(jq '.pull_request.number' "$GITHUB_EVENT_PATH")"
+  slug="pulls/$pr_number"
+else
+  slug="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/\(heads\|tags\)\///g')"
+fi
+[ "$slug" != "" ]
+
+echo "Slug: $slug" > /dev/stderr
+
 echo "$GHPAGES_SSH_KEY" | b64d > /tmp/github_id
 chmod 600 /tmp/github_id
 export GIT_SSH_COMMAND='ssh -i /tmp/github_id -o "StrictHostKeyChecking no"'
@@ -44,9 +59,8 @@ for _ in 1 2 3; do
   git -C /tmp/gh-pages config user.name "$(git log -n1 --format=%cn)"
   git -C /tmp/gh-pages config user.email "$(git log -n1 --format=%ce)"
 
-  slug="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/\(heads\|tags\)\///g')"
-  [ "$slug" != "" ]
   rm -rf "/tmp/gh-pages/$slug"
+  mkdir -p "/tmp/gh-pages/$(dirname "$slug")"
   cp -r Docs/_site "/tmp/gh-pages/$slug"
   git -C /tmp/gh-pages add "/tmp/gh-pages/$slug"
 
