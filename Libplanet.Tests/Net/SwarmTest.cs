@@ -16,6 +16,7 @@ using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
+using NetMQ;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -80,6 +81,13 @@ namespace Libplanet.Tests.Net
             foreach (Swarm s in _swarms)
             {
                 s.StopAsync().Wait();
+            }
+
+            // FIXME NetMQConfig.Cleanup stucks in macOS + .NET Core now...
+            //       so we clean netmq related resources only in Mono runtime.
+            if (Type.GetType("Mono.Runtime") is Type)
+            {
+                NetMQConfig.Cleanup(false);
             }
         }
 
@@ -415,7 +423,6 @@ namespace Libplanet.Tests.Net
 
             cts.Cancel();
             await task;
-            Assert.False(swarm.Running);
         }
 
         [Fact(Timeout = Timeout)]

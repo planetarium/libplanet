@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>

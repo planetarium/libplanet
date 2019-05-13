@@ -390,10 +390,12 @@ namespace Libplanet.Net
                         await Task.Delay(_linger, cancellationToken);
                     }
 
-                    if (_queuePoller.IsRunning)
-                    {
-                        _queuePoller.Stop();
-                    }
+                    _broadcastQueue.ReceiveReady -= DoBroadcast;
+                    _replyQueue.ReceiveReady -= DoReply;
+
+                    _queuePoller.Dispose();
+                    _broadcastQueue.Dispose();
+                    _replyQueue.Dispose();
 
                     foreach (DealerSocket s in _dealers.Values)
                     {
@@ -521,10 +523,6 @@ namespace Libplanet.Net
                     e,
                     "An unexpected exception occured during StartAsync()");
                 throw;
-            }
-            finally
-            {
-                await StopAsync();
             }
         }
 
