@@ -420,11 +420,7 @@ namespace Libplanet.Tests.Store
             }
 
             var branchPoint = blocks[0];
-            var addressesToStrip = blocks
-                .SkipWhile(b => b.Index <= branchPoint.Index)
-                .SelectMany(b => b.Transactions)
-                .SelectMany(tx => tx.UpdatedAddresses)
-                .ToImmutableHashSet();
+            var addressesToStrip = new[] { address }.ToImmutableHashSet();
 
             _fx.Store.ForkStateReferences(
                 _ns,

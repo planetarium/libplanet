@@ -345,7 +345,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block.Hash, evaluations);
+                    SetStates(block, evaluations);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -353,14 +353,6 @@ namespace Libplanet.Blockchain
                         .ToImmutableHashSet();
 
                     Store.UnstageTransactionIds(txIds);
-
-                    ImmutableHashSet<Address> updatedAddresses =
-                        block.Transactions
-                        .SelectMany(tx => tx.UpdatedAddresses)
-                        .ToImmutableHashSet();
-
-                    Store.StoreStateReference(
-                        Id.ToString(), updatedAddresses, block);
                 }
                 finally
                 {
@@ -469,7 +461,7 @@ namespace Libplanet.Blockchain
 
                 Block<T> pointBlock = Blocks[point];
 
-                var toUpdateAddresses = new HashSet<Address>();
+                var addressesToStrip = new HashSet<Address>();
 
                 for (
                     Block<T> block = Tip;
@@ -477,17 +469,19 @@ namespace Libplanet.Blockchain
                     && !block.Hash.Equals(point);
                     block = Blocks[hash])
                 {
-                    toUpdateAddresses.UnionWith(
-                        block.Transactions
-                            .SelectMany(tx => tx.UpdatedAddresses)
-                            .ToImmutableHashSet());
+                    ImmutableHashSet<Address> addresses =
+                        Store.GetBlockStates(block.Hash)
+                        .Select(kv => kv.Key)
+                        .ToImmutableHashSet();
+
+                    addressesToStrip.UnionWith(addresses);
                 }
 
                 Store.ForkStateReferences(
                     Id.ToString(),
                     forked.Id.ToString(),
                     pointBlock,
-                    toUpdateAddresses.ToImmutableHashSet());
+                    addressesToStrip.ToImmutableHashSet());
             }
             finally
             {
@@ -630,9 +624,10 @@ namespace Libplanet.Blockchain
         }
 
         private void SetStates(
-            HashDigest<SHA256> blockHash,
+            Block<T> block,
             IReadOnlyList<ActionEvaluation<T>> actionEvaluations)
         {
+            HashDigest<SHA256> blockHash = block.Hash;
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
                 ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
                 : null;
@@ -655,6 +650,8 @@ namespace Libplanet.Blockchain
                 blockHash,
                 new AddressStateMap(totalDelta)
             );
+            Store.StoreStateReference(
+                Id.ToString(), updatedAddresses, block);
         }
     }
 }

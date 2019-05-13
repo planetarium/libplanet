@@ -171,6 +171,26 @@ namespace Libplanet.Tests.Blockchain
             states = chain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
+
+            var tx3 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                new PrivateKey(),
+                new List<PolymorphicAction<BaseAction>>
+                {
+                    new Attack
+                    {
+                        Weapon = "sword",
+                        Target = "orc",
+                        TargetAddress = _fx.Address1,
+                    },
+                }
+            );
+            chain.StageTransactions(
+                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx3 }
+            );
+            chain.MineBlock(_fx.Address1);
+            states = chain.GetStates(new List<Address> { _fx.Address1 });
+
+            Assert.NotEmpty(states);
         }
 
         [Fact]
