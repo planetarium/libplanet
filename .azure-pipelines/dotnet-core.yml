@@ -1,5 +1,6 @@
 parameters:
   configuration: Debug
+  testArguments: ""
 
 steps:
 
@@ -36,4 +37,12 @@ steps:
   displayName: dotnet test
   inputs:
     command: test
-    arguments: --configuration ${{ parameters.configuration }}
+    projects: '**/*Tests/*.csproj'
+    arguments: >-
+      --configuration ${{ parameters.configuration }}
+      ${{ parameters.testArguments }}
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '$(Agent.TempDirectory)/*.trx'

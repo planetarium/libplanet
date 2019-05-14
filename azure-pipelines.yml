@@ -9,6 +9,52 @@ variables:
 
 jobs:
 
+- job: Windows_coverage
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - task: CmdLine@2
+    displayName: dotnet tool install Codecov.Tool
+    inputs:
+      script: dotnet tool install --global Codecov.Tool --version 1.5.0
+  - template: .azure-pipelines/dotnet-core.yml
+    parameters:
+      configuration: Debug
+      testArguments: >-
+        --logger trx
+        --collect "Code coverage"
+  - task: Bash@3
+    displayName: codecov
+    condition: "ne('', variables['codecovToken'])"
+    inputs:
+      targetType: inline
+      script: |
+        pushd '$(Agent.TempDirectory)'
+        curl \
+          -o microsoft.codecoverage.16.1.0.nupkg -L \
+          https://www.nuget.org/api/v2/package/Microsoft.CodeCoverage/16.1.0
+        unzip microsoft.codecoverage.16.1.0.nupkg
+        i=0
+        mkdir cov
+        for cov in **/*.coverage; do
+          echo build/netstandard1.0/CodeCoverage/CodeCoverage.exe analyze \
+            /output:"cov/$i.coveragexml" \
+            "$cov"
+          build/netstandard1.0/CodeCoverage/CodeCoverage.exe analyze \
+            /output:"cov/$i.coveragexml" \
+            "$cov"
+          i=$[i+1]
+        done
+        tmp_path="`pwd`"
+        popd
+        for cov in "$tmp_path"/cov/*.coveragexml; do
+          codecov -f "$cov" -t '$(codecovToken)'
+        done
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Agent.TempDirectory)\cov'
+      artifactName: coverage
+
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
