@@ -171,6 +171,26 @@ namespace Libplanet.Tests.Blockchain
             states = chain.GetStates(new List<Address> { _fx.Address1 });
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
+
+            var tx3 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                new PrivateKey(),
+                new List<PolymorphicAction<BaseAction>>
+                {
+                    new Attack
+                    {
+                        Weapon = "sword",
+                        Target = "orc",
+                        TargetAddress = _fx.Address1,
+                    },
+                }
+            );
+            chain.StageTransactions(
+                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx3 }
+            );
+            chain.MineBlock(_fx.Address1);
+            states = chain.GetStates(new List<Address> { _fx.Address1 });
+
+            Assert.NotEmpty(states);
         }
 
         [Fact]
@@ -316,6 +336,88 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(new[] { block1, block2, block3 }, _blockChain);
             Assert.Equal(new[] { block1, block2 }, forked);
+        }
+
+        [Fact]
+        public void ForkStateReferences()
+        {
+            Address addr1 = new PrivateKey().PublicKey.ToAddress();
+            Address addr2 = new PrivateKey().PublicKey.ToAddress();
+
+            Transaction<DumbAction>[] txsA =
+            {
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(addr1, "foo"),
+                }),
+            };
+            Transaction<DumbAction>[] txsB =
+            {
+                _fx.MakeTransaction(new[]
+                {
+                    new DumbAction(addr2, "bar"),
+                }),
+            };
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            _blockChain.Append(genesis);
+
+            Block<DumbAction> b1 = TestUtils.MineNext(
+                genesis,
+                txsA,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b1);
+
+            Block<DumbAction> b2 = TestUtils.MineNext(
+                b1,
+                txsB,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b2);
+
+            Block<DumbAction> b3 = TestUtils.MineNext(
+                b2,
+                txsB,
+                null,
+                _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+            _blockChain.Append(b3);
+
+            // Fork from genesis and append two empty blocks.
+            BlockChain<DumbAction> forked = _blockChain.Fork(genesis.Hash);
+            string fId = forked.Id.ToString();
+            Block<DumbAction> fb1 = TestUtils.MineNext(genesis, difficulty: b1.Difficulty);
+            Block<DumbAction> fb2 = TestUtils.MineNext(fb1, difficulty: b2.Difficulty);
+            forked.Append(fb1);
+            forked.Append(fb2);
+
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+
+            // Fork from b1 and append a empty block.
+            forked = _blockChain.Fork(b1.Hash);
+            fId = forked.Id.ToString();
+            fb2 = TestUtils.MineNext(b1, difficulty: b2.Difficulty);
+            forked.Append(fb2);
+
+            Assert.Equal(
+                b1.Hash,
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Null(
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+
+            // Fork from b2.
+            forked = _blockChain.Fork(b2.Hash);
+            fId = forked.Id.ToString();
+
+            Assert.Equal(
+                b1.Hash,
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+            Assert.Equal(
+                b2.Hash,
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
         }
 
         [Fact]

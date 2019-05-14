@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
-using Libplanet.Crypto;
+using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -27,7 +29,7 @@ namespace Libplanet.Tests.Store
         {
             Assert.Empty(_fx.Store.ListNamespaces());
 
-            _fx.Store.PutBlock(_fx.Block1, default);
+            _fx.Store.PutBlock(_fx.Block1);
             _fx.Store.AppendIndex(_ns, _fx.Block1.Hash);
             Assert.Equal(
                 new[] { _ns }.ToImmutableHashSet(),
@@ -85,6 +87,22 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void GetStateReferencePath()
+        {
+            string expected = Path.Combine(
+                _fx.Path,
+                "stateref",
+                _ns,
+                "45a2",
+                "2187e2D8850bb357886958bC3E8560929ccc");
+            string actual = _fx.Store.GetStateReferencePath(
+                _ns,
+                _fx.Address1);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void StoreBlock()
         {
             Assert.Empty(_fx.Store.IterateBlockHashes());
@@ -93,8 +111,7 @@ namespace Libplanet.Tests.Store
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
             Assert.False(_fx.Store.DeleteBlock(_fx.Block1.Hash));
 
-            Address arbitraryMask = new PrivateKey().PublicKey.ToAddress();
-            _fx.Store.PutBlock(_fx.Block1, arbitraryMask);
+            _fx.Store.PutBlock(_fx.Block1);
             Assert.Equal(1, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
@@ -105,17 +122,10 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 _fx.Block1,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block1.Hash));
-            Assert.Equal(
-                arbitraryMask,
-                _fx.Store.GetAddressesMask(_fx.Block1.Hash)
-            );
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block2.Hash));
-            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block2.Hash));
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
-            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block3.Hash));
 
-            Address arbitraryMask2 = new PrivateKey().PublicKey.ToAddress();
-            _fx.Store.PutBlock(_fx.Block2, arbitraryMask2);
+            _fx.Store.PutBlock(_fx.Block2);
             Assert.Equal(2, _fx.Store.CountBlocks());
             Assert.Equal(
                 new HashSet<HashDigest<SHA256>>
@@ -128,18 +138,9 @@ namespace Libplanet.Tests.Store
                 _fx.Block1,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block1.Hash));
             Assert.Equal(
-                arbitraryMask,
-                _fx.Store.GetAddressesMask(_fx.Block1.Hash)
-            );
-            Assert.Equal(
                 _fx.Block2,
                 _fx.Store.GetBlock<DumbAction>(_fx.Block2.Hash));
-            Assert.Equal(
-                arbitraryMask2,
-                _fx.Store.GetAddressesMask(_fx.Block2.Hash)
-            );
             Assert.Null(_fx.Store.GetBlock<DumbAction>(_fx.Block3.Hash));
-            Assert.Null(_fx.Store.GetAddressesMask(_fx.Block3.Hash));
 
             Assert.True(_fx.Store.DeleteBlock(_fx.Block1.Hash));
             Assert.Equal(1, _fx.Store.CountBlocks());
@@ -314,6 +315,145 @@ namespace Libplanet.Tests.Store
             Assert.NotEmpty(_fx.Store.IterateIndex(_ns));
             Assert.True(_fx.Store.DeleteIndex(_ns, _fx.Hash1));
             Assert.Empty(_fx.Store.IterateIndex(_ns));
+        }
+
+        [Fact]
+        public void StoreStateReference()
+        {
+            Address address = address;
+            Block<DumbAction> prevBlock = _fx.Block3;
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+            var txs = new[] { transaction };
+
+            var blocks = new List<Block<DumbAction>>
+            {
+                TestUtils.MineNext(prevBlock, txs),
+            };
+            blocks.Add(TestUtils.MineNext(blocks[0], txs));
+
+            string path = _fx.Store.GetStateReferencePath(_ns, address);
+            var stateReferenceFile = new FileInfo(path);
+            Assert.False(stateReferenceFile.Exists);
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                var updatedAddresses = new HashSet<Address> { address };
+                _fx.Store.StoreStateReference(
+                    _ns, updatedAddresses.ToImmutableHashSet(), block);
+            }
+
+            stateReferenceFile = new FileInfo(path);
+            Assert.True(stateReferenceFile.Exists);
+
+            using (Stream stream = stateReferenceFile.OpenRead())
+            {
+                int hashSize = HashDigest<SHA256>.Size;
+                int blockInfoSize = hashSize + sizeof(long);
+                var buffer = new byte[blockInfoSize];
+
+                foreach (var block in blocks)
+                {
+                    stream.Read(buffer, 0, blockInfoSize);
+                    var blockHash = new HashDigest<SHA256>(
+                        buffer.Take(hashSize).ToArray());
+                    var blockIndex = BitConverter.ToInt64(buffer, hashSize);
+
+                    Assert.Equal(block.Hash, blockHash);
+                    Assert.Equal(block.Index, blockIndex);
+                }
+            }
+        }
+
+        [Fact]
+        public void LookupStateReference()
+        {
+            Address address = _fx.Address1;
+            Block<DumbAction> prevBlock = _fx.Block3;
+
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, prevBlock));
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+
+            Block<DumbAction> block = TestUtils.MineNext(
+                prevBlock,
+                new[] { transaction });
+
+            var updatedAddresses = new HashSet<Address> { address };
+            _fx.Store.StoreStateReference(
+                _ns, updatedAddresses.ToImmutableHashSet(), block);
+
+            Assert.Equal(
+                block.Hash,
+                _fx.Store.LookupStateReference(_ns, address, block));
+            Assert.Null(_fx.Store.LookupStateReference(_ns, address, prevBlock));
+        }
+
+        [Fact]
+        public void ForkStateReferences()
+        {
+            Address address = _fx.Address1;
+            Block<DumbAction> prevBlock = _fx.Block3;
+            const string targetNamespace = "dummy";
+
+            Transaction<DumbAction> transaction = _fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address }.ToImmutableHashSet());
+
+            var txs = new[] { transaction };
+            var blocks = new List<Block<DumbAction>>
+            {
+                TestUtils.MineNext(prevBlock, txs),
+            };
+            blocks.Add(TestUtils.MineNext(blocks[0], txs));
+            blocks.Add(TestUtils.MineNext(blocks[1], txs));
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                var updatedAddresses = new HashSet<Address> { address };
+                _fx.Store.StoreStateReference(
+                    _ns, updatedAddresses.ToImmutableHashSet(), block);
+            }
+
+            var branchPoint = blocks[0];
+            var addressesToStrip = new[] { address }.ToImmutableHashSet();
+
+            _fx.Store.ForkStateReferences(
+                _ns,
+                targetNamespace,
+                branchPoint,
+                addressesToStrip);
+
+            Assert.Equal(
+                blocks[2].Hash,
+                _fx.Store.LookupStateReference(_ns, address, blocks[2]));
+            Assert.Equal(
+                    blocks[0].Hash,
+                    _fx.Store.LookupStateReference(targetNamespace, address, blocks[2]));
+        }
+
+        [Fact]
+        public void ForkStateReferencesDirectoryNotFound()
+        {
+            var targetNamespace = "dummy";
+            Address address = _fx.Address1;
+
+            _fx.Store.ForkStateReferences(
+                _ns,
+                targetNamespace,
+                _fx.Block1,
+                ImmutableHashSet<Address>.Empty);
+
+            Assert.Throws<NamespaceNotFoundException>(() =>
+                _fx.Store.ForkStateReferences(
+                    _ns,
+                    targetNamespace,
+                    _fx.Block1,
+                    new HashSet<Address> { address }.ToImmutableHashSet()));
         }
 
         public void Dispose()

@@ -74,12 +74,6 @@ namespace Libplanet.Tests.Store
             return _store.GetBlock<T>(blockHash);
         }
 
-        public Address? GetAddressesMask(HashDigest<SHA256> blockHash)
-        {
-            _logs.Add((nameof(GetAddressesMask), blockHash, null));
-            return _store.GetAddressesMask(blockHash);
-        }
-
         public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
         {
             _logs.Add((nameof(GetBlockStates), blockHash, null));
@@ -129,11 +123,11 @@ namespace Libplanet.Tests.Store
             return _store.ListNamespaces();
         }
 
-        public void PutBlock<T>(Block<T> block, Address addressesMask)
+        public void PutBlock<T>(Block<T> block)
             where T : IAction, new()
         {
-            _logs.Add((nameof(PutBlock), block, addressesMask));
-            _store.PutBlock<T>(block, addressesMask);
+            _logs.Add((nameof(PutBlock), block, null));
+            _store.PutBlock<T>(block);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)
@@ -150,6 +144,38 @@ namespace Libplanet.Tests.Store
         {
             _logs.Add((nameof(SetBlockStates), blockHash, states));
             _store.SetBlockStates(blockHash, states);
+        }
+
+        public HashDigest<SHA256>? LookupStateReference<T>(
+            string @namespace,
+            Address address,
+            Block<T> lookupUntil)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(LookupStateReference), address, null));
+            return _store.LookupStateReference(@namespace, address, lookupUntil);
+        }
+
+        public void StoreStateReference<T>(
+            string @namespace,
+            IImmutableSet<Address> addresses,
+            Block<T> block)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(StoreStateReference), block.Hash, null));
+            _store.StoreStateReference(@namespace, addresses, block);
+        }
+
+        public void ForkStateReferences<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(ForkStateReferences), null, null));
+            _store.ForkStateReferences(
+                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
         public void StageTransactionIds(ISet<TxId> txids)

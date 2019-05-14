@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -9,6 +10,7 @@ namespace Libplanet.Store
 {
     public abstract class BaseStore : IStore
     {
+        /// <inheritdoc />
         public abstract IEnumerable<string> ListNamespaces();
 
         public abstract long CountIndex(string @namespace);
@@ -53,10 +55,7 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <inheritdoc />
-        public abstract Address? GetAddressesMask(HashDigest<SHA256> blockHash);
-
-        /// <inheritdoc />
-        public abstract void PutBlock<T>(Block<T> block, Address addressesMask)
+        public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
 
         public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
@@ -69,6 +68,28 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash,
             AddressStateMap states
         );
+
+        /// <inheritdoc />
+        public abstract HashDigest<SHA256>? LookupStateReference<T>(
+            string @namespace,
+            Address address,
+            Block<T> lookupUntil)
+            where T : IAction, new();
+
+        /// <inheritdoc />
+        public abstract void StoreStateReference<T>(
+            string @namespace,
+            IImmutableSet<Address> addresses,
+            Block<T> block)
+            where T : IAction, new();
+
+        /// <inheritdoc />
+        public abstract void ForkStateReferences<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new();
 
         public long CountTransactions()
         {

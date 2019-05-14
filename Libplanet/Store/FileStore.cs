@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Libplanet.Store
         private const string _stagedTransactionsDir = "stage";
         private const string _statesDir = "states";
         private const string _indicesDir = "indices";
-        private const string _addressesMaskDir = "masks";
+        private const string _stateReferenceDir = "stateref";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -31,6 +32,7 @@ namespace Libplanet.Store
             _stagedTransactionsDir,
             _statesDir,
             _indicesDir,
+            _stateReferenceDir,
         };
 
         private readonly string _path;
@@ -85,16 +87,6 @@ namespace Libplanet.Store
                 _blocksDir);
         }
 
-        public string GetAddressesMaskPath(HashDigest<SHA256> blockHash)
-        {
-            var keyHex = blockHash.ToString();
-            return Path.Combine(
-                _path,
-                _addressesMaskDir,
-                keyHex.Substring(0, 4),
-                keyHex.Substring(4));
-        }
-
         public string GetStagedTransactionPath(TxId txid)
         {
             return Path.Combine(
@@ -133,6 +125,25 @@ namespace Libplanet.Store
                 _indicesDir,
                 @namespace
             );
+        }
+
+        public string GetStateReferencePath(string @namespace)
+        {
+            return Path.Combine(
+                _path,
+                _stateReferenceDir,
+                @namespace);
+        }
+
+        public string GetStateReferencePath(
+            string @namespace,
+            Address address)
+        {
+            string addressHex = address.ToHex();
+            return Path.Combine(
+                GetStateReferencePath(@namespace),
+                addressHex.Substring(0, 4),
+                addressHex.Substring(4));
         }
 
         /// <inheritdoc/>
@@ -268,22 +279,6 @@ namespace Libplanet.Store
                     ).ToUniversalTime(),
                     transactions: GetTransactions<T>(rawBlock.Transactions)
                 );
-            }
-        }
-
-        public override Address? GetAddressesMask(HashDigest<SHA256> blockHash)
-        {
-            var blockFile = new FileInfo(GetAddressesMaskPath(blockHash));
-            if (!blockFile.Exists)
-            {
-                return null;
-            }
-
-            using (Stream stream = blockFile.OpenRead())
-            {
-                var buffer = new byte[Address.Size];
-                stream.Read(buffer, 0, buffer.Length);
-                return new Address(buffer);
             }
         }
 
@@ -450,7 +445,8 @@ namespace Libplanet.Store
             }
         }
 
-        public override void PutBlock<T>(Block<T> block, Address addressesMask)
+        /// <inheritdoc />
+        public override void PutBlock<T>(Block<T> block)
         {
             foreach (var tx in block.Transactions)
             {
@@ -467,14 +463,6 @@ namespace Libplanet.Store
                     transactionData: false
                 );
                 stream.Write(blockBytes, 0, blockBytes.Length);
-            }
-
-            var maskFile = new FileInfo(GetAddressesMaskPath(block.Hash));
-            maskFile.Directory.Create();
-            using (Stream stream = maskFile.Open(
-                FileMode.OpenOrCreate, FileAccess.Write))
-            {
-                stream.Write(addressesMask.ToByteArray(), 0, Address.Size);
             }
         }
 
@@ -545,6 +533,144 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc/>
+        public override HashDigest<SHA256>? LookupStateReference<T>(
+            string @namespace,
+            Address address,
+            Block<T> lookupUntil)
+        {
+            var addrFile = new FileInfo(
+                GetStateReferencePath(@namespace, address));
+            long lookupUntilIndex = lookupUntil.Index;
+
+            if (!addrFile.Exists)
+            {
+                return null;
+            }
+
+            using (Stream stream = addrFile.OpenRead())
+            {
+                foreach (
+                    var (hashBytes, index)
+                    in GetStateReferences(stream))
+                {
+                    if (index <= lookupUntilIndex)
+                    {
+                        return new HashDigest<SHA256>(hashBytes);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public override void StoreStateReference<T>(
+            string @namespace,
+            IImmutableSet<Address> addresses,
+            Block<T> block)
+        {
+            HashDigest<SHA256> blockHash = block.Hash;
+            long blockIndex = block.Index;
+            int hashSize = HashDigest<SHA256>.Size;
+
+            foreach (Address address in addresses)
+            {
+                var stateReferenceFile = new FileInfo(
+                    GetStateReferencePath(@namespace, address));
+
+                if (!stateReferenceFile.Directory.Exists)
+                {
+                    stateReferenceFile.Directory.Create();
+                }
+
+                using (Stream stream = stateReferenceFile.Open(
+                    FileMode.Append, FileAccess.Write))
+                {
+                    stream.Write(blockHash.ToByteArray(), 0, hashSize);
+                    stream.Write(
+                        BitConverter.GetBytes(blockIndex), 0, sizeof(long));
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ForkStateReferences<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+        {
+            string sourceDir = GetStateReferencePath(sourceNamespace);
+            string targetDir = GetStateReferencePath(destinationNamespace);
+            bool copied = CopyDirectory(sourceDir, targetDir);
+
+            if (!copied && addressesToStrip.Any())
+            {
+                throw new NamespaceNotFoundException(
+                    sourceNamespace,
+                    "The source namespace to be forked does not exist.");
+            }
+
+            foreach (Address address in addressesToStrip)
+            {
+                StripStateReference(
+                    destinationNamespace,
+                    address,
+                    branchPoint.Index);
+            }
+        }
+
+        private void StripStateReference(
+            string @namespace,
+            Address address,
+            long stripAfter)
+        {
+            var addrFile = new FileInfo(
+                GetStateReferencePath(@namespace, address));
+
+            if (!addrFile.Exists)
+            {
+                return;
+            }
+
+            using (Stream stream = addrFile.Open(
+                FileMode.Open, FileAccess.ReadWrite))
+            {
+                foreach (var (_, index) in GetStateReferences(stream))
+                {
+                    if (index <= stripAfter)
+                    {
+                        break;
+                    }
+                }
+
+                stream.SetLength(stream.Position);
+            }
+        }
+
+        private IEnumerable<(byte[], long)> GetStateReferences(Stream stream)
+        {
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockInfoSize = hashSize + sizeof(long);
+            var buffer = new byte[blockInfoSize];
+
+            long position = stream.Seek(0, SeekOrigin.End);
+
+            for (var i = 1; position - buffer.Length >= 0; i++)
+            {
+                position = stream.Seek(
+                    -buffer.Length * i, SeekOrigin.End);
+                stream.Read(buffer, 0, buffer.Length);
+                byte[] hashBytes = buffer.Take(hashSize).ToArray();
+                long index = BitConverter.ToInt64(buffer, hashSize);
+
+                yield return (hashBytes, index);
+            }
+
+            stream.Seek(position, SeekOrigin.Begin);
+        }
+
         private FileStream IndexFileStream(string @namespace)
         {
             var stream = new FileStream(
@@ -572,6 +698,39 @@ namespace Libplanet.Store
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 .Where(tx => tx != null);
+        }
+
+        private bool CopyDirectory(
+            string sourceDirName,
+            string destDirName)
+        {
+            var dir = new DirectoryInfo(sourceDirName);
+
+            if (!dir.Exists)
+            {
+                return false;
+            }
+
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            DirectoryInfo[] dirs = dir.GetDirectories();
+            foreach (DirectoryInfo subdir in dirs)
+            {
+                string temppath = Path.Combine(destDirName, subdir.Name);
+                CopyDirectory(subdir.FullName, temppath);
+            }
+
+            return true;
         }
     }
 }

@@ -22,10 +22,6 @@ To be released.
  -  Removed `IBlockPolicy<T>.ValidateBlocks()` method.  [[#210]]
  -  `BlockChain<T>[int]` became to throw `ArgumentOutOfRangeException` instead
     of `IndexOutOfRangeException`.  [[#210]]
- -  Added `GetAddressesMask(HashDigest<SHA256>)` method to `IStore` interface
-    and its all implementations.  [[#189], [#197]]
- -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
-    `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  Removed `KeyEquals()` methods from all classes and structs.  [[#216]]
  -  `Swarm` class now does not implement `IEquatable<Swarm>` anymore and
     its `Equals(object)` method and `GetHashCode()` method became to have
@@ -44,6 +40,12 @@ To be released.
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  `Block<T>.Hash` is no longer calculated using the full data of the
     `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`. [[#234]]
+ -  Added `IStore.LookupStateReference<T>(string, Address, Block<T>)` method.
+    [[#232]]
+ -  Added `IStore.StoreStateReference<T>(string, Block<T>)` method.
+    [[#232]]
+ -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
+    IImmutableSet<Address>` method.  [[#232]]
 
 ### Added interfaces
 
@@ -69,6 +71,7 @@ To be released.
  -  `Swarm` constructor became to receive a `linger` (or `millisecondsLinger`)
     parameter.  This purposes to determine how long to wait for pending
     messages when a `Swarm` instance is requested to terminate.
+ -  Added `NamespaceNotFoundException` class.  [[#232]]
 
 ### Behavioral changes
 
@@ -136,6 +139,7 @@ To be released.
 [#223]: https://github.com/planetarium/libplanet/pull/223
 [#228]: https://github.com/planetarium/libplanet/issues/228
 [#231]: https://github.com/planetarium/libplanet/pull/231
+[#232]: https://github.com/planetarium/libplanet/pull/232
 [#234]: https://github.com/planetarium/libplanet/pull/234
 
 

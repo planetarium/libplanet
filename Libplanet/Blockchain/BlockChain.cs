@@ -156,6 +156,17 @@ namespace Libplanet.Blockchain
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets the state of the given <paramref name="addresses"/> in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="addresses">The list of <see cref="Address"/>es to get
+        /// their states.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state. It will be The tip of the
+        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <returns>The <see cref="AddressStateMap"/> of given
+        /// <paramref name="addresses"/>.</returns>
         public AddressStateMap GetStates(
             IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
         {
@@ -172,61 +183,36 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            ImmutableDictionary<Address, BitArray> requestedAddresses =
-                addresses.Select(addr =>
-                    new KeyValuePair<Address, BitArray>(
-                        addr,
-                        new BitArray(addr.ToByteArray())
-                    )
-                ).ToImmutableDictionary();
-            ImmutableHashSet<Address> requestedAddressSet =
-                requestedAddresses.Keys.ToImmutableHashSet();
-
-            bool IsPossiblyIn(BitArray addr, BitArray maskPattern)
-            {
-                var match = (BitArray)maskPattern.Clone();
-                match.And(addr);
-                return match.OfType<bool>().Any(bit => bit);
-            }
-
-            var coveredAddresses = new HashSet<Address>();
             var states = new AddressStateMap();
 
-            while (offset != null)
+            if (offset == null)
+            {
+                return states;
+            }
+
+            Block<T> block = Blocks[offset.Value];
+
+            ImmutableHashSet<Address> requestedAddresses =
+                addresses.ToImmutableHashSet();
+            var hashValues = new HashSet<HashDigest<SHA256>>();
+
+            foreach (var address in requestedAddresses)
+            {
+                var hashDigest = Store.LookupStateReference(
+                    Id.ToString(), address, block);
+                if (!(hashDigest is null))
+                {
+                    hashValues.Add(hashDigest.Value);
+                }
+            }
+
+            foreach (var hashValue in hashValues)
             {
                 states = (AddressStateMap)states.SetItems(
-                    Store.GetBlockStates(offset.Value)
-                    .Where(
-                        kv => requestedAddresses.ContainsKey(kv.Key) &&
-                        !states.ContainsKey(kv.Key))
-                    );
-
-                // If there is no mask for the offset (the store made in
-                // the older versions of Libplanet may lack mask files),
-                // make the mask to match to all possible addresses.
-                var mask = new BitArray(
-                    offset is HashDigest<SHA256> hash &&
-                        Store.GetAddressesMask(hash) is Address a
-                        ? a.ToByteArray()
-                        : BlockSet<T>.WildcardMask
-                );
-
-                // Addresses that are definitely not existent.
-                coveredAddresses.UnionWith(
-                    requestedAddresses.Where(
-                        pair => !IsPossiblyIn(pair.Value, mask)
-                    ).Select(pair => pair.Key)
-                );
-
-                // Already gathered addresses.
-                coveredAddresses.UnionWith(states.Keys);
-
-                if (requestedAddressSet.SetEquals(coveredAddresses))
-                {
-                    break;
-                }
-
-                offset = Blocks[offset.Value].PreviousHash;
+                        Store.GetBlockStates(hashValue)
+                        .Where(
+                            kv => requestedAddresses.Contains(kv.Key) &&
+                            !states.ContainsKey(kv.Key)));
             }
 
             return states;
@@ -359,7 +345,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block.Hash, evaluations);
+                    SetStates(block, evaluations);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -472,6 +458,30 @@ namespace Libplanet.Blockchain
                         break;
                     }
                 }
+
+                Block<T> pointBlock = Blocks[point];
+
+                var addressesToStrip = new HashSet<Address>();
+
+                for (
+                    Block<T> block = Tip;
+                    block.PreviousHash is HashDigest<SHA256> hash
+                    && !block.Hash.Equals(point);
+                    block = Blocks[hash])
+                {
+                    ImmutableHashSet<Address> addresses =
+                        Store.GetBlockStates(block.Hash)
+                        .Select(kv => kv.Key)
+                        .ToImmutableHashSet();
+
+                    addressesToStrip.UnionWith(addresses);
+                }
+
+                Store.ForkStateReferences(
+                    Id.ToString(),
+                    forked.Id.ToString(),
+                    pointBlock,
+                    addressesToStrip.ToImmutableHashSet());
             }
             finally
             {
@@ -614,9 +624,10 @@ namespace Libplanet.Blockchain
         }
 
         private void SetStates(
-            HashDigest<SHA256> blockHash,
+            Block<T> block,
             IReadOnlyList<ActionEvaluation<T>> actionEvaluations)
         {
+            HashDigest<SHA256> blockHash = block.Hash;
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
                 ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
                 : null;
@@ -639,6 +650,8 @@ namespace Libplanet.Blockchain
                 blockHash,
                 new AddressStateMap(totalDelta)
             );
+            Store.StoreStateReference(
+                Id.ToString(), updatedAddresses, block);
         }
     }
 }
