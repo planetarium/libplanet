@@ -94,10 +94,6 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]<
 <li>Removed <code>IBlockPolicy&lt;T&gt;.ValidateBlocks()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
 <li><code>BlockChain&lt;T&gt;[int]</code> became to throw <code>ArgumentOutOfRangeException</code> instead
 of <code>IndexOutOfRangeException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
-<li>Added <code>GetAddressesMask(HashDigest&lt;SHA256&gt;)</code> method to <code>IStore</code> interface
-and its all implementations.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
-<li>The signature of <code>IStore.PutBlock&lt;T&gt;(Block&lt;T&gt;)</code> method was changed to
-<code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
 <li>Removed <code>KeyEquals()</code> methods from all classes and structs.  [<a href="https://github.com/planetarium/libplanet/pull/216">#216</a>]</li>
 <li><code>Swarm</code> class now does not implement <code>IEquatable&lt;Swarm&gt;</code> anymore and
 its <code>Equals(object)</code> method and <code>GetHashCode()</code> method became to have
@@ -122,6 +118,11 @@ related classes method parameters and field types have changed accordingly.</li>
 <code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
 <li><code>Block&lt;T&gt;.Hash</code> is no longer calculated using the full data of the
 <code>Transaction&lt;T&gt;</code>, but is calculated using only the <code>Transaction&lt;T&gt;.Id</code>. [<a href="https://github.com/planetarium/libplanet/pull/234">#234</a>]</li>
+<li>Added <code>IStore.LookupStateReference&lt;T&gt;(string, Address, Block&lt;T&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
+<li>Added <code>IStore.StoreStateReference&lt;T&gt;(string, Block&lt;T&gt;)</code> method.
+[<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
+<li>Added <code>IStore.ForkStateReferences&lt;T&gt;(string, string, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -145,6 +146,7 @@ and the mining <code>difficultyBoundDivisor</code>.  [<a href="https://github.co
 <li><code>Swarm</code> constructor became to receive a <code>linger</code> (or <code>millisecondsLinger</code>)
 parameter.  This purposes to determine how long to wait for pending
 messages when a <code>Swarm</code> instance is requested to terminate.</li>
+<li>Added <code>NamespaceNotFoundException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
