@@ -117,7 +117,8 @@ related classes method parameters and field types have changed accordingly.</li>
 <li>The signature of <code>IStore.PutBlock&lt;T&gt;(Block&lt;T&gt;)</code> method was changed to
 <code>PutBlock&lt;T&gt;(Block&lt;T&gt;, Address)</code>.  [<a href="https://github.com/planetarium/libplanet/issues/189">#189</a>, <a href="https://github.com/planetarium/libplanet/pull/197">#197</a>]</li>
 <li><code>Block&lt;T&gt;.Hash</code> is no longer calculated using the full data of the
-<code>Transaction&lt;T&gt;</code>, but is calculated using only the <code>Transaction&lt;T&gt;.Id</code>. [<a href="https://github.com/planetarium/libplanet/pull/234">#234</a>]</li>
+<code>Transaction&lt;T&gt;</code>, but is calculated using only the <code>Transaction&lt;T&gt;.Id</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/234">#234</a>]</li>
 <li>Added <code>IStore.LookupStateReference&lt;T&gt;(string, Address, Block&lt;T&gt;)</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
 <li>Added <code>IStore.StoreStateReference&lt;T&gt;(string, Block&lt;T&gt;)</code> method.
@@ -161,11 +162,12 @@ difficulty bomb.  [<a href="https://github.com/planetarium/libplanet/pull/213">#
 target number to representing a divisor to obtain the target number.
 [<a href="https://github.com/planetarium/libplanet/pull/213">#213</a>]</li>
 <li><code>BlockSet&lt;T&gt;[int]</code> changed so as not to validate a block.  [<a href="https://github.com/planetarium/libplanet/pull/231">#231</a>]</li>
-<li>Improved read performance of <code>Block&lt;T&gt;.Hash</code> and <code>Transaction&lt;T&gt;.Id</code>. [<a href="https://github.com/planetarium/libplanet/issues/228">#228</a>,
-<a href="https://github.com/planetarium/libplanet/pull/234">#234</a>]</li>
-<li><code>Swarm.StartAsync()</code> doesn't call <code>Swarm.StopAsync()</code> anymore.</li>
+<li>Improved read performance of <code>Block&lt;T&gt;.Hash</code> and <code>Transaction&lt;T&gt;.Id</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/228">#228</a>, <a href="https://github.com/planetarium/libplanet/pull/234">#234</a>]</li>
+<li><code>Swarm.StartAsync()</code> now does not call <code>Swarm.StopAsync()</code> anymore,
+therefore <code>Swarm.StopAsync()</code> should be explicitly called.  [<a href="https://github.com/planetarium/libplanet/pull/236">#236</a>]</li>
 </ul>
-<h1 id="bug-fixes">Bug fixes</h1>
+<h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that TURN relay had been disconnected when being connected for
 longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
