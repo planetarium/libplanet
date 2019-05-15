@@ -63,6 +63,7 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
+        private IPAddress _publicIPAddress;
 
         public Swarm(
             PrivateKey privateKey,
@@ -184,7 +185,11 @@ namespace Libplanet.Net
 
         public Peer AsPeer =>
             EndPoint != null
-            ? new Peer(_privateKey.PublicKey, EndPoint, _appProtocolVersion)
+            ? new Peer(
+                _privateKey.PublicKey,
+                EndPoint,
+                _appProtocolVersion,
+                _publicIPAddress)
             : throw new SwarmException(
                 "Can't translate unbound Swarm to Peer.");
 
@@ -470,8 +475,18 @@ namespace Libplanet.Net
 
             _logger.Information($"Listen on {_listenPort}");
 
-            bool behindNAT =
-                _turnClient != null && await _turnClient.IsBehindNAT();
+            var behindNAT = false;
+
+            if (!(_turnClient is null))
+            {
+                _publicIPAddress = (await _turnClient.GetMappedAddressAsync())
+                    .Address;
+
+                if (await _turnClient.IsBehindNAT())
+                {
+                    behindNAT = true;
+                }
+            }
 
             if (behindNAT)
             {
@@ -1734,15 +1749,22 @@ namespace Libplanet.Net
 
         private async Task CreatePermission(Peer peer)
         {
-            var peerHost = peer.EndPoint.Host;
             IPAddress[] ips;
-            if (IPAddress.TryParse(peerHost, out IPAddress asIp))
+            if (peer.PublicIPAddress is null)
             {
-                ips = new[] { asIp };
+                string peerHost = peer.EndPoint.Host;
+                if (IPAddress.TryParse(peerHost, out IPAddress asIp))
+                {
+                    ips = new[] { asIp };
+                }
+                else
+                {
+                    ips = await Dns.GetHostAddressesAsync(peerHost);
+                }
             }
             else
             {
-                ips = await Dns.GetHostAddressesAsync(peerHost);
+                ips = new[] { peer.PublicIPAddress };
             }
 
             foreach (IPAddress ip in ips)
