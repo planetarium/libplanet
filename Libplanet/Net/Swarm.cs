@@ -393,7 +393,11 @@ namespace Libplanet.Net
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
 
-                    _queuePoller.Dispose();
+                    if (_queuePoller.IsRunning)
+                    {
+                        _queuePoller.Dispose();
+                    }
+
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
 
