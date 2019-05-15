@@ -28,13 +28,18 @@ jobs:
     inputs:
       targetType: inline
       script: |
+        set -e
         pushd '$(Agent.TempDirectory)'
+        mkdir -p cov
+        if [[ '$(codecovToken)' = '' ]]; then
+          echo "codecovToken variable is not configured." > /dev/stderr
+          exit 0
+        fi
         curl \
           -o microsoft.codecoverage.16.1.0.nupkg -L \
           https://www.nuget.org/api/v2/package/Microsoft.CodeCoverage/16.1.0
         unzip microsoft.codecoverage.16.1.0.nupkg
         i=0
-        mkdir cov
         for cov in **/*.coverage; do
           echo build/netstandard1.0/CodeCoverage/CodeCoverage.exe analyze \
             /output:"cov/$i.coveragexml" \
