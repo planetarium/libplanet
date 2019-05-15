@@ -47,22 +47,6 @@ install:
     # .NET Core SDK 2.2+
     choco install dotnetcore-sdk
     dotnet --info
-
-    # Tools for test coverage (dotcover-clt, codecov-exe)
-    if [[ "$CODECOV_TOKEN" != "" ]]; then
-      mkdir /tmp/dotcover
-      pushd /tmp
-      wget \
-        https://download.jetbrains.com/resharper/ReSharperUltimate.2018.3.4/JetBrains.dotCover.CommandLineTools.2018.3.4.zip
-      pushd dotcover
-      7z x ../JetBrains.dotCover.CommandLineTools.*.zip
-      popd
-      mv dotcover/* /c/Windows/
-      rm JetBrains.dotCover.CommandLineTools.*.zip
-      popd
-
-      choco install codecov
-    fi
   fi
   set +ev
 
@@ -88,20 +72,6 @@ script:
 # FIXME: For unknown reason, on Travis CI tests depending on TURN_SERVER_URL
 #        seems not terminated or to take too long time.  We should diagnose
 #        this and make the CI to run these tests too.
-
-# Run unit tests with coverage report
-- |
-  if [[ "$TRAVIS_OS_NAME" = "windows" && "$CODECOV_TOKEN" != "" ]]; then
-    dotnet build -c Debug
-    dotnet build-server shutdown
-    solution_abspath="$(cygpath -w "$(pwd)"/Libplanet.sln)"
-    dotCover_config="$(cat .travis.dotCover.xml)"
-    echo "${dotCover_config//\$SOLUTION/$solution_abspath}" \
-      > dotCover.xml
-    travis_wait 60 dotCover.exe cover dotCover.xml /p:UseSharedCompilation=false
-    # Upload report to Codecov.io
-    codecov.exe -f Libplanet.cov.xml -t "$CODECOV_TOKEN"
-  fi
 
 # Turn off "set -e" option
 - set +e

@@ -67,7 +67,7 @@ builds the entire *Libplanet* solution:
     dotnet build
 
 
-Tests [![Build Status](https://travis-ci.com/planetarium/libplanet.svg?branch=master)][Travis CI] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][2]
+Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master)][Azure Pipelines] [![Codecov](https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg)][2]
 -----
 
 We write as complete tests as possible to the corresponding implementation code.
@@ -88,7 +88,7 @@ To build and run unit tests at a time execute the below command:
 
     dotnet test
 
-[Travis CI]: https://travis-ci.com/planetarium/libplanet
+[Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&branchName=master
 [2]: https://codecov.io/gh/planetarium/libplanet
 [Xunit]: https://xunit.github.io/
 

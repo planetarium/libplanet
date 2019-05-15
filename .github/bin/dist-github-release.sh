@@ -52,7 +52,7 @@ tar xvfj /tmp/github-release.tar.bz2 -C /tmp
 rm /tmp/github-release.tar.bz2 \
 
 # Fill the description on GitHub releases with the release note
-github_user="${GITHUB_REPOSITORY%/*}" \
+github_user="${GITHUB_REPOSITORY%/*}"
 github_repo="${GITHUB_REPOSITORY#*/}"
 
 if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ]; then

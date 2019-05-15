@@ -1,0 +1,48 @@
+parameters:
+  configuration: Debug
+  testArguments: ""
+
+steps:
+
+- task: Bash@3
+  displayName: hooks/check-bom
+  inputs:
+    targetType: filePath
+    filePath: hooks/check-bom
+
+- task: UseDotNet@2
+  displayName: Install .NET Core SDK
+  inputs:
+    packageType: sdk
+    version: 2.2.203
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: CmdLine@2
+  displayName: dotnet --version
+  inputs:
+    script: dotnet --version
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet restore
+  inputs:
+    command: restore
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet build
+  inputs:
+    command: build
+    arguments: --configuration ${{ parameters.configuration }}
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: >-
+      --configuration ${{ parameters.configuration }}
+      ${{ parameters.testArguments }}
+
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '$(Agent.TempDirectory)/*.trx'

@@ -39,7 +39,8 @@ To be released.
  -  The signature of `IStore.PutBlock<T>(Block<T>)` method was changed to
     `PutBlock<T>(Block<T>, Address)`.  [[#189], [#197]]
  -  `Block<T>.Hash` is no longer calculated using the full data of the
-    `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`. [[#234]]
+    `Transaction<T>`, but is calculated using only the `Transaction<T>.Id`.
+    [[#234]]
  -  Added `IStore.LookupStateReference<T>(string, Address, Block<T>)` method.
     [[#232]]
  -  Added `IStore.StoreStateReference<T>(string, Block<T>)` method.
@@ -86,11 +87,12 @@ To be released.
     target number to representing a divisor to obtain the target number.
     [[#213]]
  -  `BlockSet<T>[int]` changed so as not to validate a block.  [[#231]]
- -  Improved read performance of `Block<T>.Hash` and `Transaction<T>.Id`. [[#228],
-    [#234]]
- -  `Swarm.StartAsync()` doesn't call `Swarm.StopAsync()` anymore.
+ -  Improved read performance of `Block<T>.Hash` and `Transaction<T>.Id`.
+    [[#228], [#234]]
+ -  `Swarm.StartAsync()` now does not call `Swarm.StopAsync()` anymore,
+    therefore `Swarm.StopAsync()` should be explicitly called.  [[#236]]
 
-# Bug fixes
+### Bug fixes
 
  -  Fixed a bug that TURN relay had been disconnected when being connected for
     longer than 5 minutes.  [[#198]]
@@ -141,6 +143,7 @@ To be released.
 [#231]: https://github.com/planetarium/libplanet/pull/231
 [#232]: https://github.com/planetarium/libplanet/pull/232
 [#234]: https://github.com/planetarium/libplanet/pull/234
+[#236]: https://github.com/planetarium/libplanet/pull/236
 
 
 Version 0.2.2
