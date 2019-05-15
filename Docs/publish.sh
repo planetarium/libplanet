@@ -23,7 +23,7 @@ b64d() {
 if [ "$GHPAGES_SSH_KEY" = "" ]; then
   {
     echo "The environment variable GHPAGES_SSH_KEY is not configured."
-    echo "Configure GITHUB_TOKEN from GitHub Actions web page."
+    echo "Configure GHPAGES_SSH_KEY from GitHub Actions web page."
     echo "The key has to be also registered as a deploy key of the repository" \
          ", and be allowed write access."
     echo "GHPAGES_SSH_KEY has to contain a base64-encoded private key without" \
