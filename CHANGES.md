@@ -117,6 +117,8 @@ To be released.
     [[#217]]
  -  Improved concurrency of `BlockChain<T>.Append()` method by removing
     unnecessary race conditions. [[#217]]
+ -  Fixed a bug that `Swarm` could not properly communicate with `Peer` behind
+    NAT. [[#240]]
 
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#31]: https://github.com/planetarium/libplanet/issues/31
@@ -144,6 +146,7 @@ To be released.
 [#232]: https://github.com/planetarium/libplanet/pull/232
 [#234]: https://github.com/planetarium/libplanet/pull/234
 [#236]: https://github.com/planetarium/libplanet/pull/236
+[#240]: https://github.com/planetarium/libplanet/pull/240
 
 
 Version 0.2.2

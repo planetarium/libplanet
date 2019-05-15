@@ -25,20 +25,25 @@ namespace Libplanet.Net
         /// <param name="appProtocolVersion">An application protocol version
         /// that the <see cref="Peer"/> is using.</param>
         public Peer(
-            PublicKey publicKey, DnsEndPoint endPoint, int appProtocolVersion)
+            PublicKey publicKey,
+            DnsEndPoint endPoint,
+            int appProtocolVersion)
+        : this(publicKey, endPoint, appProtocolVersion, null)
         {
-            if (publicKey == null)
-            {
-                throw new ArgumentNullException(nameof(publicKey));
-            }
-            else if (endPoint == null)
-            {
-                throw new ArgumentNullException(nameof(endPoint));
-            }
+        }
 
-            PublicKey = publicKey;
-            EndPoint = endPoint;
+        internal Peer(
+            PublicKey publicKey,
+            DnsEndPoint endPoint,
+            int appProtocolVersion,
+            IPAddress publicIPAddress)
+        {
+            PublicKey = publicKey ??
+                        throw new ArgumentNullException(nameof(publicKey));
+            EndPoint = endPoint ??
+                       throw new ArgumentNullException(nameof(endPoint));
             AppProtocolVersion = appProtocolVersion;
+            PublicIPAddress = publicIPAddress;
         }
 
         protected Peer(SerializationInfo info, StreamingContext context)
@@ -48,6 +53,11 @@ namespace Libplanet.Net
                 info.GetString("end_point_host"),
                 info.GetInt32("end_point_port"));
             AppProtocolVersion = info.GetInt32("app_protocol_version");
+            string addressStr = info.GetString("public_ip_address");
+            if (addressStr != null)
+            {
+                PublicIPAddress = IPAddress.Parse(addressStr);
+            }
         }
 
         /// <summary>
@@ -71,13 +81,16 @@ namespace Libplanet.Net
         [Pure]
         public int AppProtocolVersion { get; }
 
-        /// <summary>The peer's address which is derviced from
+        /// <summary>The peer's address which is derived from
         /// its <see cref="PublicKey"/>.
         /// </summary>
         /// <seealso cref="PublicKey"/>
         [IgnoreDuringEquals]
         [Pure]
         public Address Address => new Address(PublicKey);
+
+        [Pure]
+        internal IPAddress PublicIPAddress { get; }
 
         /// <inheritdoc/>
         public void GetObjectData(
@@ -89,6 +102,7 @@ namespace Libplanet.Net
             info.AddValue("end_point_host", EndPoint.Host);
             info.AddValue("end_point_port", EndPoint.Port);
             info.AddValue("app_protocol_version", AppProtocolVersion);
+            info.AddValue("public_ip_address", PublicIPAddress?.ToString());
         }
 
         /// <inheritdoc/>

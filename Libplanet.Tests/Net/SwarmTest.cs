@@ -713,7 +713,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Trait("RequireTurnServer", "true")]
-        [FactOnlyTurnAvailable]
+        [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ExchangeWithIceServer()
         {
             Uri turnUrl = FactOnlyTurnAvailable.TurnUri;
