@@ -25,7 +25,6 @@ jobs:
         --collect "Code coverage"
   - task: Bash@3
     displayName: codecov
-    condition: "ne('', variables['codecovToken'])"
     inputs:
       targetType: inline
       script: |
