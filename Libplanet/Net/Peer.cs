@@ -71,7 +71,7 @@ namespace Libplanet.Net
         [Pure]
         public int AppProtocolVersion { get; }
 
-        /// <summary>The peer's address which is derviced from
+        /// <summary>The peer's address which is derived from
         /// its <see cref="PublicKey"/>.
         /// </summary>
         /// <seealso cref="PublicKey"/>
