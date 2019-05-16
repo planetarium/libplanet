@@ -145,9 +145,6 @@ namespace Libplanet.Blocks
         /// <see cref="Transactions"/> step by step, and emits a pair of
         /// a transaction, and an <see cref="ActionEvaluation{T}"/>
         /// for each step.
-        /// <para>If the needed values are only the final states of each
-        /// transaction, use <see cref="EvaluateActions"/> method instead.
-        /// </para>
         /// </summary>
         /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
         /// delegate to get a previous state.
@@ -174,8 +171,12 @@ namespace Libplanet.Blocks
                 );
             foreach (Transaction<T> tx in Transactions)
             {
-                var triples = tx.EvaluateActionsGradually(
-                    Hash, Index, delta, Miner.Value);
+                IEnumerable<ActionEvaluation<T>> triples =
+                    tx.EvaluateActionsGradually(
+                        Hash,
+                        Index,
+                        delta,
+                        Miner.Value);
                 foreach (var evaluation in triples)
                 {
                     yield return (tx, evaluation);
@@ -190,51 +191,19 @@ namespace Libplanet.Blocks
         /// Executes every <see cref="IAction"/> in the
         /// <see cref="Transactions"/> and gets result states of each step of
         /// every <see cref="Transaction{T}"/>.
-        /// </summary>
-        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
-        /// delegate to get a previous state.
-        /// A <c>null</c> value, which is default, means a constant function
-        /// that returns <c>null</c>.</param>
-        /// <returns>Result states of immediately after
-        /// <see cref="IAction"/>s in each <see cref="Transaction{T}"/>
-        /// being executed.</returns>
-        [Pure]
-        public IEnumerable<IAccountStateDelta> EvaluateActions(
-            AccountStateGetter accountStateGetter = null
-        )
-        {
-            var pairs = EvaluateActionsPerTx(accountStateGetter);
-            int i = 0;
-            foreach (var (tx, evaluation) in pairs)
-            {
-                if (++i < tx.Actions.Count)
-                {
-                    continue;
-                }
-
-                yield return evaluation.OutputStates;
-                i = 0;
-            }
-        }
-
-        /// <summary>
-        /// Validates the integrity of the <see cref="Block{T}"/>.
         /// <para>It throws an <see cref="InvalidBlockException"/> or
         /// an <see cref="InvalidTxException"/> if there is any
         /// integrity error.</para>
-        /// <para>Otherwise it returns an <see cref="IAccountStateDelta"/>
-        /// which represents the final states and maintains the changes
-        /// from the states of the previous <see cref="Block{T}"/>.</para>
+        /// <para>Otherwise it returns an <see cref="ActionEvaluation{T}"/>
+        /// for each steps.</para>
         /// </summary>
         /// <param name="currentTime">The current time to validate
         /// time-wise conditions.</param>
         /// <param name="accountStateGetter">The getter of previous states.
         /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
-        /// <returns>An <see cref="IAccountStateDelta"/> of the states
-        /// right after all <see cref="Transaction{T}.Actions"/> of
-        /// <see cref="Transactions"/>, which maintains the changes from
-        /// the states of the previous <see cref="Block{T}"/>.</returns>
+        /// <returns>An <see cref="ActionEvaluation{T}"/> for each steps.
+        /// </returns>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
         /// the <see cref="Timestamp"/> is invalid, for example, it is the far
         /// future than the given <paramref name="currentTime"/>.</exception>
@@ -265,31 +234,30 @@ namespace Libplanet.Blocks
         /// <see cref="Transaction{T}.Signer"/> has more than one
         /// <see cref="Transaction{T}"/>s in a block.
         /// </exception>
-        public IAccountStateDelta Validate(
+        public IEnumerable<ActionEvaluation<T>> Evaluate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter
         )
         {
             Validate(currentTime);
-            IEnumerable<IAccountStateDelta> deltas =
-                EvaluateActions(accountStateGetter);
-            IAccountStateDelta result = new AccountStateDeltaImpl(
-                accountStateGetter
-            );
+            (Transaction<T>, ActionEvaluation<T>)[] txEvaluations =
+                EvaluateActionsPerTx(accountStateGetter).ToArray();
 
-            var txUpdatedAddressesPairs = Transactions.Zip(
-                deltas,
-                (tx, d) => (tx, d)
-            );
-
-            foreach (var (tx, delta) in txUpdatedAddressesPairs)
+            var txUpdatedAddressesPairs = txEvaluations
+                    .GroupBy(tuple => tuple.Item1)
+                    .Select(
+                        grp => (
+                            grp.Key,
+                            grp.Last().Item2.OutputStates.UpdatedAddresses
+                        )
+                    );
+            foreach (
+                (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
+                in txUpdatedAddressesPairs)
             {
-                IImmutableSet<Address> updatedAddresses =
-                    delta.UpdatedAddresses;
-
                 if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
                 {
-                    var msg =
+                    const string msg =
                         "Actions in the transaction try to update " +
                         "the addresses not granted.";
                     throw new InvalidTxUpdatedAddressesException(
@@ -299,14 +267,9 @@ namespace Libplanet.Blocks
                         msg
                     );
                 }
-
-                foreach (var pair in delta.GetUpdatedStates())
-                {
-                    result = result.SetState(pair.Key, pair.Value);
-                }
             }
 
-            return result;
+            return txEvaluations.Select(te => te.Item2);
         }
 
         public override string ToString()
