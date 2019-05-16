@@ -83,13 +83,6 @@ namespace Libplanet.Tests.Net
             {
                 s.StopAsync().Wait(DisposeTimeout);
             }
-
-            // FIXME NetMQConfig.Cleanup stucks in macOS + .NET Core now...
-            //       so we clean netmq related resources only in Mono runtime.
-            if (Type.GetType("Mono.Runtime") is Type)
-            {
-                NetMQConfig.Cleanup(false);
-            }
         }
 
         [Fact(Timeout = Timeout)]
