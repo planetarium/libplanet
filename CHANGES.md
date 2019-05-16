@@ -91,6 +91,9 @@ To be released.
     [[#228], [#234]]
  -  `Swarm.StartAsync()` now does not call `Swarm.StopAsync()` anymore,
     therefore `Swarm.StopAsync()` should be explicitly called.  [[#236]]
+ -  `Transaction<T>.EvaluateActionsGradually()` became to record
+    `IAccountStateDelta.SetState()` calls even if its argument is the same
+    to the previous state. [[#241]]
 
 ### Bug fixes
 
@@ -147,6 +150,7 @@ To be released.
 [#234]: https://github.com/planetarium/libplanet/pull/234
 [#236]: https://github.com/planetarium/libplanet/pull/236
 [#240]: https://github.com/planetarium/libplanet/pull/240
+[#241]: https://github.com/planetarium/libplanet/pull/241
 
 
 Version 0.2.2

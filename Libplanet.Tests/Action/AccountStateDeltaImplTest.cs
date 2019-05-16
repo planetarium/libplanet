@@ -73,7 +73,6 @@ namespace Libplanet.Tests.Action
             IAccountStateDelta c = b.SetState(_addr[0], "a");
             Assert.Equal("a", c.GetState(_addr[0]));
             Assert.Equal("z", b.GetState(_addr[0]));
-            Assert.Empty(c.UpdatedAddresses);
             Assert.Empty(init.UpdatedAddresses);
         }
 

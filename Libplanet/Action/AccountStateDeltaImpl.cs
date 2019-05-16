@@ -46,21 +46,9 @@ namespace Libplanet.Action
             object state
         )
         {
-            IImmutableDictionary<Address, object> newState =
-                _updatedStates.SetItem(address, state);
-            foreach (Address addr in newState.Keys)
-            {
-                object epochState = _accountStateGetter(addr);
-                if (ReferenceEquals(epochState, state) ||
-                    Equals(epochState, state))
-                {
-                    newState = newState.Remove(addr);
-                }
-            }
-
             return new AccountStateDeltaImpl(_accountStateGetter)
             {
-                _updatedStates = newState,
+                _updatedStates = _updatedStates.SetItem(address, state),
             };
         }
     }
