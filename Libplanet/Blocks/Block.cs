@@ -261,6 +261,10 @@ namespace Libplanet.Blocks
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
+        /// <exception cref="SimultaneousTxsException">Thrown when a
+        /// <see cref="Transaction{T}.Signer"/> has more than one
+        /// <see cref="Transaction{T}"/>s in a block.
+        /// </exception>
         public IAccountStateDelta Validate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter
@@ -388,6 +392,20 @@ namespace Libplanet.Blocks
                     $"hash ({Hash}) with the nonce ({Nonce}) does not " +
                     $"satisfy its difficulty level {Difficulty}."
                 );
+            }
+
+            List<Address> singersHaveMoreThanOneTxs = Transactions
+                .GroupBy(tx => tx.Signer)
+                .Where(s => s.Count() > 1)
+                .Select(s => s.Key)
+                .ToList();
+
+            if (singersHaveMoreThanOneTxs.Any())
+            {
+                throw new SimultaneousTxsException(
+                    "A signer is allowed to have only one transaction " +
+                    "at most in a block.",
+                    singersHaveMoreThanOneTxs);
             }
 
             foreach (Transaction<T> tx in Transactions)
