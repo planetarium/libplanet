@@ -41,6 +41,8 @@ steps:
     arguments: >-
       --configuration ${{ parameters.configuration }}
       ${{ parameters.testArguments }}
+  env:
+    TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
 
 - task: PublishTestResults@2
   inputs:

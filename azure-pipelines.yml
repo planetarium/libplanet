@@ -20,6 +20,7 @@ jobs:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
       configuration: Debug
+      turnServerUrl: $(turnServerUrl)
       testArguments: >-
         --logger trx
         --collect "Code coverage"
@@ -66,6 +67,7 @@ jobs:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
       configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
 
 - job: macOS
   pool:
@@ -74,6 +76,7 @@ jobs:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
       configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
 
 - job: Windows
   pool:
@@ -82,3 +85,4 @@ jobs:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
       configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
