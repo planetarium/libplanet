@@ -9,7 +9,7 @@ variables:
 
 jobs:
 
-- job: Windows_coverage
+- job: Windows_NETCore_coverage
   pool:
     vmImage: 'vs2017-win2016'
   steps:
@@ -64,7 +64,25 @@ jobs:
       pathtoPublish: '$(Agent.TempDirectory)\cov'
       artifactName: coverage
 
-- job: Linux
+- job: Linux_Mono
+  pool:
+    vmImage: ubuntu-16.04
+  steps:
+  - template: .azure-pipelines/mono.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+
+- job: macOS_Mono
+  pool:
+    vmImage: macOS-10.14
+  steps:
+  - template: .azure-pipelines/mono.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+
+- job: Linux_NETCore
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
@@ -73,7 +91,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
 
-- job: macOS
+- job: macOS_NETCore
   pool:
     vmImage: 'macOS-10.14'
   steps:
@@ -82,7 +100,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
 
-- job: Windows
+- job: Windows_NETCore
   pool:
     vmImage: 'vs2017-win2016'
   steps:
