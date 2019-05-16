@@ -446,6 +446,26 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
+        public void ValidateSignersHaveOnlyOneTransactions()
+        {
+            var privateKey = new PrivateKey();
+
+            var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                privateKey,
+                new PolymorphicAction<BaseAction>[0]);
+            var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                privateKey,
+                new PolymorphicAction<BaseAction>[0]);
+
+            Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
+                _fx.Genesis,
+                new[] { tx1, tx2 });
+
+            Assert.Throws<SimultaneousTxsException>(() =>
+                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null));
+        }
+
+        [Fact]
         public void CanDetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
