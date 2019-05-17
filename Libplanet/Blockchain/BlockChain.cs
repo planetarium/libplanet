@@ -326,12 +326,6 @@ namespace Libplanet.Blockchain
             ActionEvaluation<T>[] evaluations;
             try
             {
-                HashDigest<SHA256>? tip =
-                    Store.IndexBlockHash(Id.ToString(), -1);
-
-                block.Validate(
-                    currentTime,
-                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a));
                 InvalidBlockException e =
                     Policy.ValidateNextBlock(this, block);
 
@@ -340,7 +334,13 @@ namespace Libplanet.Blockchain
                     throw e;
                 }
 
-                evaluations = EvaluateActions(block);
+                HashDigest<SHA256>? tip =
+                    Store.IndexBlockHash(Id.ToString(), -1);
+                evaluations = block.Evaluate(
+                    currentTime,
+                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
+                ).ToArray();
+
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -603,24 +603,6 @@ namespace Libplanet.Blockchain
                     );
                 }
             }
-        }
-
-        private ActionEvaluation<T>[] EvaluateActions(Block<T> block)
-        {
-            HashDigest<SHA256>? prevHash = block.PreviousHash;
-            return block.EvaluateActionsPerTx(address =>
-            {
-                IImmutableDictionary<Address, object> result =
-                    GetStates(new[] { address }, prevHash);
-                try
-                {
-                    return result[address];
-                }
-                catch (KeyNotFoundException)
-                {
-                    return null;
-                }
-            }).Select(t => t.Item2).ToArray();
         }
 
         private void SetStates(

@@ -8,6 +8,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
+using Libplanet.Tests.Tx;
 using Libplanet.Tx;
 using Xunit;
 using static Libplanet.Tests.TestUtils;
@@ -169,7 +170,7 @@ namespace Libplanet.Tests.Blocks
             "SA1118",
             Justification = "Long array literals should be multiline.")]
         [Fact]
-        public void EvaluateActions()
+        public void EvaluateActionsPerTx()
         {
             ImmutableArray<Address> addresses = Enumerable.Range(0, 5)
                 .Select(_ => new Address(new PrivateKey().PublicKey))
@@ -179,12 +180,11 @@ namespace Libplanet.Tests.Blocks
 
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
             Assert.Empty(genesis.EvaluateActionsPerTx(address => null));
-            Assert.Empty(genesis.EvaluateActions(address => null));
 
             Transaction<DumbAction>[] blockIdx1Txs =
             {
                 Transaction<DumbAction>.Create(
-                    _fx.TxFixture.PrivateKey,
+                    _fx.TxFixture.PrivateKey1,
                     new[]
                     {
                         MakeAction(addresses[0], 'A'),
@@ -192,7 +192,7 @@ namespace Libplanet.Tests.Blocks
                     }
                 ),
                 Transaction<DumbAction>.Create(
-                    _fx.TxFixture.PrivateKey,
+                    _fx.TxFixture.PrivateKey2,
                     new[] { MakeAction(addresses[2], 'C') }
                 ),
             };
@@ -201,11 +201,11 @@ namespace Libplanet.Tests.Blocks
                 .EvaluateActionsPerTx(address => null)
                 .ToImmutableArray();
             int randomValue = 0;
-            (int, int, string[])[] expectations =
+            (int, int, string[], Address)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }),
-                (0, 1, new[] { "A", "B", null, null, null }),
-                (1, 0, new[] { "A", "B", "C", null, null }),
+                (0, 0, new[] { "A", null, null, null, null }, _fx.TxFixture.Address1),
+                (0, 1, new[] { "A", "B", null, null, null }, _fx.TxFixture.Address1),
+                (1, 0, new[] { "A", "B", "C", null, null }, _fx.TxFixture.Address2),
             };
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (
@@ -218,7 +218,7 @@ namespace Libplanet.Tests.Blocks
                     blockIdx1Txs[expect.Item1].Actions[expect.Item2],
                     eval.Action
                 );
-                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx1.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
@@ -236,10 +236,10 @@ namespace Libplanet.Tests.Blocks
             }
 
             IImmutableDictionary<Address, object> dirty1 = blockIdx1
-                .EvaluateActions(address => null)
+                .Evaluate(DateTimeOffset.UtcNow, address => null)
                 .Aggregate(
                     ImmutableDictionary<Address, object>.Empty,
-                    (dirty, delta) => dirty.SetItems(delta.GetUpdatedStates())
+                    (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
                 );
             Assert.Equal(
                 new Dictionary<Address, object>
@@ -255,15 +255,15 @@ namespace Libplanet.Tests.Blocks
             Transaction<DumbAction>[] blockIdx2Txs =
             {
                 Transaction<DumbAction>.Create(
-                    _fx.TxFixture.PrivateKey,
+                    _fx.TxFixture.PrivateKey1,
                     new[] { MakeAction(addresses[0], 'D') }
                 ),
                 Transaction<DumbAction>.Create(
-                    _fx.TxFixture.PrivateKey,
+                    _fx.TxFixture.PrivateKey2,
                     new[] { MakeAction(addresses[3], 'E') }
                 ),
                 Transaction<DumbAction>.Create(
-                    _fx.TxFixture.PrivateKey,
+                    _fx.TxFixture.PrivateKey3,
                     new[]
                     {
                         new DumbAction(
@@ -275,15 +275,16 @@ namespace Libplanet.Tests.Blocks
                     }
                 ),
             };
+
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
             pairs = blockIdx2
                 .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
                 .ToImmutableArray();
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _fx.TxFixture.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _fx.TxFixture.Address2),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _fx.TxFixture.Address3),
             };
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (
@@ -296,7 +297,7 @@ namespace Libplanet.Tests.Blocks
                     blockIdx2Txs[expect.Item1].Actions[expect.Item2],
                     eval.Action
                 );
-                Assert.Equal(_fx.TxFixture.Address, eval.InputContext.Signer);
+                Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
@@ -314,10 +315,10 @@ namespace Libplanet.Tests.Blocks
             }
 
             IImmutableDictionary<Address, object> dirty2 = blockIdx2
-                .EvaluateActions(dirty1.GetValueOrDefault)
+                .Evaluate(DateTimeOffset.UtcNow, dirty1.GetValueOrDefault)
                 .Aggregate(
                     ImmutableDictionary<Address, object>.Empty,
-                    (dirty, delta) => dirty.SetItems(delta.GetUpdatedStates())
+                    (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
                 );
             Assert.Equal(
                 new Dictionary<Address, object>
@@ -332,31 +333,12 @@ namespace Libplanet.Tests.Blocks
         }
 
         [Fact]
-        public void Validate()
-        {
-            IAccountStateDelta state0 =
-                _fx.Genesis.Validate(DateTimeOffset.UtcNow, _ => null);
-            Assert.Empty(state0.UpdatedAddresses);
-
-            IAccountStateDelta state1 =
-                _fx.Next.Validate(DateTimeOffset.UtcNow, state0.GetState);
-            Assert.Empty(state1.UpdatedAddresses);
-
-            IAccountStateDelta state2 =
-                _fx.HasTx.Validate(DateTimeOffset.UtcNow, state1.GetState);
-            Assert.Equal(
-                new[] { _fx.TxFixture.Address }.ToImmutableHashSet(),
-                state2.UpdatedAddresses
-            );
-        }
-
-        [Fact]
-        public void ValidateInvalidTxSignature()
+        public void EvaluateInvalidTxSignature()
         {
             RawTransaction rawTx = new RawTransaction(
-                _fx.TxFixture.Address.ToByteArray(),
+                _fx.TxFixture.Address1.ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 new IDictionary<string, object>[0],
                 new byte[10]
@@ -367,22 +349,22 @@ namespace Libplanet.Tests.Blocks
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
             );
         }
 
         [Fact]
-        public void ValidateInvalidTxPublicKey()
+        public void EvaluateInvalidTxPublicKey()
         {
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 new PrivateKey().PublicKey.ToAddress().ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 new IDictionary<string, object>[0],
                 new byte[0]
             );
-            byte[] sig = _fx.TxFixture.PrivateKey.Sign(
+            byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<DumbAction>(rawTxWithoutSig).ToBencodex(false)
             );
             var invalidTx = new Transaction<DumbAction>(
@@ -400,25 +382,25 @@ namespace Libplanet.Tests.Blocks
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
             );
         }
 
         [Fact]
-        public void ValidateInvalidTxUpdatedAddresses()
+        public void EvaluateInvalidTxUpdatedAddresses()
         {
             ImmutableArray<IDictionary<string, object>> rawActions =
                 _fx.TxFixture.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             RawTransaction rawTxWithoutSig = new RawTransaction(
-                _fx.TxFixture.Address.ToByteArray(),
+                _fx.TxFixture.Address1.ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 rawActions,
                 new byte[0]
             );
-            byte[] sig = _fx.TxFixture.PrivateKey.Sign(
+            byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
                     rawTxWithoutSig
                 ).ToBencodex(false)
@@ -441,12 +423,12 @@ namespace Libplanet.Tests.Blocks
                 }
             );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
             );
         }
 
         [Fact]
-        public void ValidateSignersHaveOnlyOneTransactions()
+        public void EvaluateSignersHaveOnlyOneTransactions()
         {
             var privateKey = new PrivateKey();
 
@@ -462,7 +444,7 @@ namespace Libplanet.Tests.Blocks
                 new[] { tx1, tx2 });
 
             Assert.Throws<SimultaneousTxsException>(() =>
-                invalidBlock.Validate(DateTimeOffset.UtcNow, _ => null));
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null));
         }
 
         [Fact]

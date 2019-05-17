@@ -47,6 +47,7 @@ To be released.
     [[#232]]
  -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
     IImmutableSet<Address>` method.  [[#232]]
+ -  Removed `Block<T>.Validate()` and `Block<T>.EvaluateActions()` method.  [[#243]]
 
 ### Added interfaces
 
@@ -74,6 +75,7 @@ To be released.
     messages when a `Swarm` instance is requested to terminate.
  -  Added `NamespaceNotFoundException` class.  [[#232]]
  -  Added `SimultaneousTxsException` class.  [[#242]]
+ -  Added `Block<T>.Evaluate()` method.  [[#243]]
 
 ### Behavioral changes
 
@@ -97,7 +99,11 @@ To be released.
     to the previous state. [[#241]]
  -  A signer became to allowed to have only one transaction at most in 
     `Block<T>.Transactions`. [[#125]], [[#242]]
-
+ -  `Block<T>.Validate()` and `Block<T>.EvaluateActions()` are integrated into
+    `Block<T>.Evaluate()`.  [[#243]]
+ -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
+    action in the `Block<T>`.  [[#243]]
+ 
 ### Bug fixes
 
  -  Fixed a bug that TURN relay had been disconnected when being connected for
@@ -156,6 +162,7 @@ To be released.
 [#240]: https://github.com/planetarium/libplanet/pull/240
 [#241]: https://github.com/planetarium/libplanet/pull/241
 [#242]: https://github.com/planetarium/libplanet/pull/242
+[#243]: https://github.com/planetarium/libplanet/pull/243
 
 
 Version 0.2.2
