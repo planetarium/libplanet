@@ -71,9 +71,17 @@ namespace Libplanet.Tests.Tx
 
         public PrivateKey PrivateKey3 { get; }
 
-        public PublicKey PublicKey => PrivateKey1.PublicKey;
+        public PublicKey PublicKey1 => PrivateKey1.PublicKey;
 
-        public Address Address => PublicKey.ToAddress();
+        public PublicKey PublicKey2 => PrivateKey2.PublicKey;
+
+        public PublicKey PublicKey3 => PrivateKey3.PublicKey;
+
+        public Address Address1 => PublicKey1.ToAddress();
+
+        public Address Address2 => PublicKey2.ToAddress();
+
+        public Address Address3 => PublicKey3.ToAddress();
 
         public Transaction<PolymorphicAction<BaseAction>> Tx { get; }
 

@@ -107,7 +107,7 @@ namespace Libplanet.Tests.Tx
                 _fx.TxWithActions.Actions
             );
             Assert.Equal(
-                new[] { _fx.Address }.ToImmutableHashSet(),
+                new[] { _fx.Address1 }.ToImmutableHashSet(),
                 tx.UpdatedAddresses
             );
 
@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Tx
                 new[] { additionalAddr }.ToImmutableHashSet()
             );
             Assert.Equal(
-                new[] { _fx.Address, additionalAddr }.ToHashSet(),
+                new[] { _fx.Address1, additionalAddr }.ToHashSet(),
                 txWithAddr.UpdatedAddresses.ToHashSet()
             );
         }
@@ -628,7 +628,7 @@ namespace Libplanet.Tests.Tx
                 {
                     ActionEvaluation<DumbAction> eval = evaluations[i];
                     Assert.Equal(actions[i], eval.Action);
-                    Assert.Equal(_fx.Address, eval.InputContext.Signer);
+                    Assert.Equal(_fx.Address1, eval.InputContext.Signer);
                     Assert.Equal(addresses[0], eval.InputContext.Miner);
                     Assert.Equal(1, eval.InputContext.BlockIndex);
                     Assert.Equal(rehearsal, eval.InputContext.Rehearsal);

@@ -171,13 +171,13 @@ namespace Libplanet.Blocks
                 );
             foreach (Transaction<T> tx in Transactions)
             {
-                IEnumerable<ActionEvaluation<T>> triples =
+                IEnumerable<ActionEvaluation<T>> evaluations =
                     tx.EvaluateActionsGradually(
                         Hash,
                         Index,
                         delta,
                         Miner.Value);
-                foreach (var evaluation in triples)
+                foreach (var evaluation in evaluations)
                 {
                     yield return (tx, evaluation);
                     delta = evaluation.OutputStates;
@@ -194,16 +194,16 @@ namespace Libplanet.Blocks
         /// <para>It throws an <see cref="InvalidBlockException"/> or
         /// an <see cref="InvalidTxException"/> if there is any
         /// integrity error.</para>
-        /// <para>Otherwise it returns an <see cref="ActionEvaluation{T}"/>
-        /// for each steps.</para>
+        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation{T}"/>
+        /// for each <see cref="IAction"/>.</para>
         /// </summary>
         /// <param name="currentTime">The current time to validate
         /// time-wise conditions.</param>
         /// <param name="accountStateGetter">The getter of previous states.
         /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
-        /// <returns>An <see cref="ActionEvaluation{T}"/> for each steps.
-        /// </returns>
+        /// <returns>An <see cref="ActionEvaluation{T}"/> for each
+        /// <see cref="IAction"/>.</returns>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
         /// the <see cref="Timestamp"/> is invalid, for example, it is the far
         /// future than the given <paramref name="currentTime"/>.</exception>

@@ -203,9 +203,9 @@ namespace Libplanet.Tests.Blocks
             int randomValue = 0;
             (int, int, string[], Address)[] expectations =
             {
-                (0, 0, new[] { "A", null, null, null, null }, _fx.TxFixture.PrivateKey1.PublicKey.ToAddress()),
-                (0, 1, new[] { "A", "B", null, null, null }, _fx.TxFixture.PrivateKey1.PublicKey.ToAddress()),
-                (1, 0, new[] { "A", "B", "C", null, null }, _fx.TxFixture.PrivateKey2.PublicKey.ToAddress()),
+                (0, 0, new[] { "A", null, null, null, null }, _fx.TxFixture.Address1),
+                (0, 1, new[] { "A", "B", null, null, null }, _fx.TxFixture.Address1),
+                (1, 0, new[] { "A", "B", "C", null, null }, _fx.TxFixture.Address2),
             };
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (
@@ -282,9 +282,9 @@ namespace Libplanet.Tests.Blocks
                 .ToImmutableArray();
             expectations = new[]
             {
-                (0, 0, new[] { "A,D", "B", "C", null, null }, _fx.TxFixture.PrivateKey1.PublicKey.ToAddress()),
-                (1, 0, new[] { "A,D", "B", "C", "E", null }, _fx.TxFixture.PrivateKey2.PublicKey.ToAddress()),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _fx.TxFixture.PrivateKey3.PublicKey.ToAddress()),
+                (0, 0, new[] { "A,D", "B", "C", null, null }, _fx.TxFixture.Address1),
+                (1, 0, new[] { "A,D", "B", "C", "E", null }, _fx.TxFixture.Address2),
+                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _fx.TxFixture.Address3),
             };
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (
@@ -336,9 +336,9 @@ namespace Libplanet.Tests.Blocks
         public void EvaluateInvalidTxSignature()
         {
             RawTransaction rawTx = new RawTransaction(
-                _fx.TxFixture.Address.ToByteArray(),
+                _fx.TxFixture.Address1.ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 new IDictionary<string, object>[0],
                 new byte[10]
@@ -359,7 +359,7 @@ namespace Libplanet.Tests.Blocks
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 new PrivateKey().PublicKey.ToAddress().ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 new IDictionary<string, object>[0],
                 new byte[0]
@@ -393,9 +393,9 @@ namespace Libplanet.Tests.Blocks
                 _fx.TxFixture.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             RawTransaction rawTxWithoutSig = new RawTransaction(
-                _fx.TxFixture.Address.ToByteArray(),
+                _fx.TxFixture.Address1.ToByteArray(),
                 new byte[][] { },
-                _fx.TxFixture.PublicKey.Format(false),
+                _fx.TxFixture.PublicKey1.Format(false),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 rawActions,
                 new byte[0]
