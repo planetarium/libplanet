@@ -102,7 +102,7 @@ To be released.
  -  `Block<T>.Validate()` and `Block<T>.EvaluateActions()` are integrated into
     `Block<T>.Evaluate()`.  [[#243]]
  -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
-    actions in the `Block<T>`.  [[#243]]
+    action in the `Block<T>`.  [[#243]]
  
 ### Bug fixes
 
