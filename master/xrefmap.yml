@@ -1528,23 +1528,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Difficulty
   nameWithType: Block<T>.Difficulty
   nameWithType.vb: Block(Of T).Difficulty
-- uid: Libplanet.Blocks.Block`1.EvaluateActions(Libplanet.Action.AccountStateGetter)
-  name: EvaluateActions(AccountStateGetter)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActions_Libplanet_Action_AccountStateGetter_
-  commentId: M:Libplanet.Blocks.Block`1.EvaluateActions(Libplanet.Action.AccountStateGetter)
-  fullName: Libplanet.Blocks.Block<T>.EvaluateActions(Libplanet.Action.AccountStateGetter)
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActions(Libplanet.Action.AccountStateGetter)
-  nameWithType: Block<T>.EvaluateActions(AccountStateGetter)
-  nameWithType.vb: Block(Of T).EvaluateActions(AccountStateGetter)
-- uid: Libplanet.Blocks.Block`1.EvaluateActions*
-  name: EvaluateActions
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActions_
-  commentId: Overload:Libplanet.Blocks.Block`1.EvaluateActions
+- uid: Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter)
+  name: Evaluate(DateTimeOffset, AccountStateGetter)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_
+  commentId: M:Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter)
+  fullName: Libplanet.Blocks.Block<T>.Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate(DateTimeOffset, Libplanet.Action.AccountStateGetter)
+  nameWithType: Block<T>.Evaluate(DateTimeOffset, AccountStateGetter)
+  nameWithType.vb: Block(Of T).Evaluate(DateTimeOffset, AccountStateGetter)
+- uid: Libplanet.Blocks.Block`1.Evaluate*
+  name: Evaluate
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Evaluate_
+  commentId: Overload:Libplanet.Blocks.Block`1.Evaluate
   isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.EvaluateActions
-  fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActions
-  nameWithType: Block<T>.EvaluateActions
-  nameWithType.vb: Block(Of T).EvaluateActions
+  fullName: Libplanet.Blocks.Block<T>.Evaluate
+  fullName.vb: Libplanet.Blocks.Block(Of T).Evaluate
+  nameWithType: Block<T>.Evaluate
+  nameWithType.vb: Block(Of T).Evaluate
 - uid: Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)
   name: EvaluateActionsPerTx(AccountStateGetter)
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_
@@ -1768,23 +1768,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Transactions
   nameWithType: Block<T>.Transactions
   nameWithType.vb: Block(Of T).Transactions
-- uid: Libplanet.Blocks.Block`1.Validate(DateTimeOffset,Libplanet.Action.AccountStateGetter)
-  name: Validate(DateTimeOffset, AccountStateGetter)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Validate_DateTimeOffset_Libplanet_Action_AccountStateGetter_
-  commentId: M:Libplanet.Blocks.Block`1.Validate(DateTimeOffset,Libplanet.Action.AccountStateGetter)
-  fullName: Libplanet.Blocks.Block<T>.Validate(DateTimeOffset, Libplanet.Action.AccountStateGetter)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Validate(DateTimeOffset, Libplanet.Action.AccountStateGetter)
-  nameWithType: Block<T>.Validate(DateTimeOffset, AccountStateGetter)
-  nameWithType.vb: Block(Of T).Validate(DateTimeOffset, AccountStateGetter)
-- uid: Libplanet.Blocks.Block`1.Validate*
-  name: Validate
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Validate_
-  commentId: Overload:Libplanet.Blocks.Block`1.Validate
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.Validate
-  fullName.vb: Libplanet.Blocks.Block(Of T).Validate
-  nameWithType: Block<T>.Validate
-  nameWithType.vb: Block(Of T).Validate
 - uid: Libplanet.Blocks.InvalidBlockDifficultyException
   name: InvalidBlockDifficultyException
   href: api/Libplanet.Blocks.InvalidBlockDifficultyException.html

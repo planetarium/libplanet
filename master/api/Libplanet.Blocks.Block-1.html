@@ -723,21 +723,26 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_EvaluateActions_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.EvaluateActions(Libplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Evaluate(DateTimeOffset%2CLibplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L201">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L237">View Source</a>
   </span>
-  <a id="Libplanet_Blocks_Block_1_EvaluateActions_" data-uid="Libplanet.Blocks.Block`1.EvaluateActions*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_EvaluateActions_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.EvaluateActions(Libplanet.Action.AccountStateGetter)">EvaluateActions(AccountStateGetter)</h4>
+  <a id="Libplanet_Blocks_Block_1_Evaluate_" data-uid="Libplanet.Blocks.Block`1.Evaluate*"></a>
+  <h4 id="Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter)">Evaluate(DateTimeOffset, AccountStateGetter)</h4>
   <div class="markdown level1 summary"><p>Executes every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> in the
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> and gets result states of each step of
 every <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+<p>It throws an <a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a> or
+an <a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a> if there is any
+integrity error.</p>
+<p>Otherwise it enumerates an <a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation&lt;T&gt;</a>
+for each <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;IAccountStateDelta&gt; EvaluateActions(AccountStateGetter accountStateGetter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;ActionEvaluation&lt;T&gt;&gt; Evaluate(DateTimeOffset currentTime, AccountStateGetter accountStateGetter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -750,12 +755,17 @@ every <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt
     </thead>
     <tbody>
       <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td><p>The current time to validate
+time-wise conditions.</p>
+</td>
+      </tr>
+      <tr>
         <td><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></td>
         <td><span class="parametername">accountStateGetter</span></td>
-        <td><p>An <a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a>
-delegate to get a previous state.
-A <code>null</code> value, which is default, means a constant function
-that returns <code>null</code>.</p>
+        <td><p>The getter of previous states.
+This affects the execution of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -770,10 +780,85 @@ that returns <code>null</code>.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a>&gt;</td>
-        <td><p>Result states of immediately after
-<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>s in each <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>
-being executed.</p>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation</a>&lt;T&gt;&gt;</td>
+        <td><p>An <a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation&lt;T&gt;</a> for each
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Libplanet.Blocks.InvalidBlockTimestampException</span></td>
+        <td><p>Thrown when
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp">Timestamp</a> is invalid, for example, it is the far
+future than the given <code data-dev-comment-type="paramref" class="paramref">currentTime</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
+        <td><p>Thrown when
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>is invalid, for example, it is a negative
+integer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></td>
+        <td><p>Thrown when
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a> is not properly configured,
+for example, it is too easy.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockPreviousHashException.html">InvalidBlockPreviousHashException</a></td>
+        <td><p>Thrown when
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PreviousHash">PreviousHash</a> is invalid so that
+the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are not continuous.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockNonceException.html">InvalidBlockNonceException</a></td>
+        <td><p>Thrown when
+the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Nonce">Nonce</a> does not satisfy its
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a> level.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
+        <td><p>Thrown when its
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> is invalid or not signed by
+the account who corresponds to its
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxPublicKeyException.html">InvalidTxPublicKeyException</a></td>
+        <td><p>Thrown when its
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> is not derived from its
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html">InvalidTxUpdatedAddressesException</a></td>
+        <td><p>Thrown when
+any <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> tries
+to update the states of <a class="xref" href="Libplanet.Address.html">Address</a>es not included
+in <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses">UpdatedAddresses</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.SimultaneousTxsException.html">SimultaneousTxsException</a></td>
+        <td><p>Thrown when a
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> has more than one
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s in a block.</p>
 </td>
       </tr>
     </tbody>
@@ -783,7 +868,7 @@ being executed.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L166">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L163">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_EvaluateActionsPerTx_" data-uid="Libplanet.Blocks.Block`1.EvaluateActionsPerTx*"></a>
   <h4 id="Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)">EvaluateActionsPerTx(AccountStateGetter)</h4>
@@ -791,9 +876,6 @@ being executed.</p>
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> step by step, and emits a pair of
 a transaction, and an <a class="xref" href="Libplanet.Action.ActionEvaluation-1.html">ActionEvaluation&lt;T&gt;</a>
 for each step.</p>
-<p>If the needed values are only the final states of each
-transaction, use <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_EvaluateActions_Libplanet_Action_AccountStateGetter_">EvaluateActions(AccountStateGetter)</a> method instead.
-</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -897,7 +979,7 @@ a unconsumed state.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L317">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L280">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_GetObjectData_" data-uid="Libplanet.Blocks.Block`1.GetObjectData*"></a>
   <h4 id="Libplanet_Blocks_Block_1_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Blocks.Block`1.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -1058,7 +1140,7 @@ a unconsumed state.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L312">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L275">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_ToString_" data-uid="Libplanet.Blocks.Block`1.ToString*"></a>
   <h4 id="Libplanet_Blocks_Block_1_ToString" data-uid="Libplanet.Blocks.Block`1.ToString">ToString()</h4>
@@ -1080,149 +1162,6 @@ a unconsumed state.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Validate_DateTimeOffset_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Validate(DateTimeOffset%2CLibplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L268">View Source</a>
-  </span>
-  <a id="Libplanet_Blocks_Block_1_Validate_" data-uid="Libplanet.Blocks.Block`1.Validate*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_Validate_DateTimeOffset_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.Validate(DateTimeOffset,Libplanet.Action.AccountStateGetter)">Validate(DateTimeOffset, AccountStateGetter)</h4>
-  <div class="markdown level1 summary"><p>Validates the integrity of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
-<p>It throws an <a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a> or
-an <a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a> if there is any
-integrity error.</p>
-<p>Otherwise it returns an <a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a>
-which represents the final states and maintains the changes
-from the states of the previous <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAccountStateDelta Validate(DateTimeOffset currentTime, AccountStateGetter accountStateGetter)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">DateTimeOffset</span></td>
-        <td><span class="parametername">currentTime</span></td>
-        <td><p>The current time to validate
-time-wise conditions.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></td>
-        <td><span class="parametername">accountStateGetter</span></td>
-        <td><p>The getter of previous states.
-This affects the execution of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><p>An <a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a> of the states
-right after all <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a> of
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a>, which maintains the changes from
-the states of the previous <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Libplanet.Blocks.InvalidBlockTimestampException</span></td>
-        <td><p>Thrown when
-the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp">Timestamp</a> is invalid, for example, it is the far
-future than the given <code data-dev-comment-type="paramref" class="paramref">currentTime</code>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockIndexException.html">InvalidBlockIndexException</a></td>
-        <td><p>Thrown when
-the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>is invalid, for example, it is a negative
-integer.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockDifficultyException.html">InvalidBlockDifficultyException</a></td>
-        <td><p>Thrown when
-the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a> is not properly configured,
-for example, it is too easy.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockPreviousHashException.html">InvalidBlockPreviousHashException</a></td>
-        <td><p>Thrown when
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PreviousHash">PreviousHash</a> is invalid so that
-the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s are not continuous.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockNonceException.html">InvalidBlockNonceException</a></td>
-        <td><p>Thrown when
-the <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Nonce">Nonce</a> does not satisfy its
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty">Difficulty</a> level.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Tx.InvalidTxSignatureException.html">InvalidTxSignatureException</a></td>
-        <td><p>Thrown when its
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature">Signature</a> is invalid or not signed by
-the account who corresponds to its
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Tx.InvalidTxPublicKeyException.html">InvalidTxPublicKeyException</a></td>
-        <td><p>Thrown when its
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> is not derived from its
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html">InvalidTxUpdatedAddressesException</a></td>
-        <td><p>Thrown when
-any <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> tries
-to update the states of <a class="xref" href="Libplanet.Address.html">Address</a>es not included
-in <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses">UpdatedAddresses</a>.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blocks.SimultaneousTxsException.html">SimultaneousTxsException</a></td>
-        <td><p>Thrown when a
-<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> has more than one
-<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s in a block.</p>
-</td>
       </tr>
     </tbody>
   </table>
