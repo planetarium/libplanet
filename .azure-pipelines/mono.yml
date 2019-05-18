@@ -32,3 +32,4 @@ steps:
         *.Tests/bin/${{ parameters.configuration }}/net*/*.Tests.dll
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+  timeoutInMinutes: 10

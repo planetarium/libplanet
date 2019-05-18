@@ -63,6 +63,7 @@ jobs:
     inputs:
       pathtoPublish: '$(Agent.TempDirectory)\cov'
       artifactName: coverage
+  timeoutInMinutes: 30
 
 - job: Linux_Mono
   pool:
@@ -72,6 +73,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+  timeoutInMinutes: 30
 
 - job: macOS_Mono
   pool:
@@ -81,6 +83,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+  timeoutInMinutes: 30
 
 - job: Windows_Mono
   pool:
@@ -126,6 +129,8 @@ jobs:
       #        this and make Windows builds to run these tests too.
     env:
       TURN_SERVER_URL: $(turnServerUrl)
+    timeoutInMinutes: 10
+  timeoutInMinutes: 30
 
 - job: Linux_NETCore
   pool:
@@ -135,6 +140,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+  timeoutInMinutes: 30
 
 - job: macOS_NETCore
   pool:
@@ -144,6 +150,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+  timeoutInMinutes: 30
 
 - job: Windows_NETCore
   pool:
@@ -157,3 +164,4 @@ jobs:
       # FIXME: For unknown reason, on Windows tests depending on TURN_SERVER_URL
       #        seems to never end or to take too long time.  We should diagnose
       #        this and make Windows builds to run these tests too.
+  timeoutInMinutes: 30
