@@ -93,47 +93,17 @@ jobs:
     displayName: choco install mono
     inputs:
       script: choco install mono --yes
-  - task: NuGetCommand@2
-    displayName: nuget install xunit.runner.console
-    inputs:
-      command: custom
-      arguments: install xunit.runner.console
-  - task: PowerShell@2
-    displayName: Set TargetFramework to net461 by force
-    inputs:
-      targetType: inline
-      script: |
-        foreach ($path in gci *.Tests/*.Tests.csproj) {
-          [xml]$csproj = Get-Content $path
-          $csproj.Project.PropertyGroup[0].TargetFramework = "net461"
-          $csproj.Save($path)
-        }
-  - task: MSBuild@1
-    inputs:
-      solution: Libplanet.sln
-      msbuildVersion: "16.0"
+  - template: .azure-pipelines/windows-net461.yml
+    parameters:
       configuration: $(configuration)
-      msbuildArguments: /restore
-  - task: Bash@3
-    displayName: xunit.console.exe *.Tests.dll
-    inputs:
-      targetType: inline
-      script: |
-        "$PROGRAMFILES/Mono/bin/mono.exe" \
-          xunit.runner.console.*/tools/net472/xunit.console.exe \
-            *.Tests/bin/$(configuration)/net*/*.Tests.dll \
-            -appdomains denied \
-            -notrait "RequireTurnServer=true" \
-            -noclass Libplanet.Tests.Net.SwarmTest
-      # FIXME: For unknown reason, on Windows tests depending on TURN_SERVER_URL
-      #        seems to never end or to take too long time.  We should diagnose
-      #        this and make Windows builds to run these tests too.
+      turnServerUrl: $(turnServerUrl)
+      testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
+      testArguments: |
+        -appdomains denied \
+        -noclass Libplanet.Tests.Net.SwarmTest
       # FIXME: For unknown reason, on Windows + Mono SwarmTests seem never end.
       #        We should diagnose this and make Windows builds to run these
       #        tests too.
-    env:
-      TURN_SERVER_URL: $(turnServerUrl)
-    timeoutInMinutes: 10
   timeoutInMinutes: 30
 
 - job: Linux_NETCore
@@ -169,3 +139,11 @@ jobs:
       #        seems to never end or to take too long time.  We should diagnose
       #        this and make Windows builds to run these tests too.
   timeoutInMinutes: 30
+
+- job: Windows_NETFramework
+  pool:
+    vmImage: windows-2019
+  steps:
+  - template: .azure-pipelines/windows-net461.yml
+    parameters:
+      configuration: $(configuration)
