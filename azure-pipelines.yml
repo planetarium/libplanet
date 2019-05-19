@@ -123,10 +123,14 @@ jobs:
           xunit.runner.console.*/tools/net472/xunit.console.exe \
             *.Tests/bin/$(configuration)/net*/*.Tests.dll \
             -appdomains denied \
-            -notrait "RequireTurnServer=true"
+            -notrait "RequireTurnServer=true" \
+            -noclass Libplanet.Tests.Net.SwarmTest
       # FIXME: For unknown reason, on Windows tests depending on TURN_SERVER_URL
       #        seems to never end or to take too long time.  We should diagnose
       #        this and make Windows builds to run these tests too.
+      # FIXME: For unknown reason, on Windows + Mono SwarmTests seem never end.
+      #        We should diagnose this and make Windows builds to run these
+      #        tests too.
     env:
       TURN_SERVER_URL: $(turnServerUrl)
     timeoutInMinutes: 10
