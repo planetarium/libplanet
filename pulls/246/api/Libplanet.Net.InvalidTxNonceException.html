@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class IceServer
+    <title>Class InvalidTxNonceException
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class IceServer
+    <meta name="title" content="Class InvalidTxNonceException
    | Libplanet ">
     <meta name="generator" content="docfx 2.42.1.0">
     
@@ -239,8 +239,8 @@
                           <li class="">
                             <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
                           </li>
-                          <li class="active">
-                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="active">IceServer</a>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.IceServerException.html" title="IceServerException" class="">IceServerException</a>
@@ -248,8 +248,8 @@
                           <li class="">
                             <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Net.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          <li class="active">
+                            <a href="Libplanet.Net.InvalidTxNonceException.html" title="InvalidTxNonceException" class="active">InvalidTxNonceException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
@@ -346,40 +346,52 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Net.IceServer">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.InvalidTxNonceException">
   
   
-  <h1 id="Libplanet_Net_IceServer" data-uid="Libplanet.Net.IceServer" class="text-break">Class IceServer
+  <h1 id="Libplanet_Net_InvalidTxNonceException" data-uid="Libplanet.Net.InvalidTxNonceException" class="text-break">Class InvalidTxNonceException
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
+is different from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of
+the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">IceServer</span></div>
+    <div class="level1"><a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a></div>
+    <div class="level2"><span class="xref">InvalidTxNonceException</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException_TxId">InvalidTxException.TxId</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Net_IceServer_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_InvalidTxNonceException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class IceServer : object</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class InvalidTxNonceException : InvalidTxException</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_IEnumerable_System_String__System_String_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(IEnumerable%7BSystem.String%7D%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.InvalidTxNonceException.%23ctor(Libplanet.Tx.TxId%2CSystem.Int64%2CSystem.Int64%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L12">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/InvalidTxNonceException.cs/#L27">View Source</a>
   </span>
-  <a id="Libplanet_Net_IceServer__ctor_" data-uid="Libplanet.Net.IceServer.#ctor*"></a>
-  <h4 id="Libplanet_Net_IceServer__ctor_IEnumerable_System_String__System_String_System_String_" data-uid="Libplanet.Net.IceServer.#ctor(IEnumerable{System.String},System.String,System.String)">IceServer(IEnumerable&lt;String&gt;, String, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Libplanet_Net_InvalidTxNonceException__ctor_" data-uid="Libplanet.Net.InvalidTxNonceException.#ctor*"></a>
+  <h4 id="Libplanet_Net_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_" data-uid="Libplanet.Net.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)">InvalidTxNonceException(TxId, Int64, Int64, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the
+<a class="xref" href="Libplanet.Net.InvalidTxNonceException.html">InvalidTxNonceException</a> class.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IceServer(IEnumerable&lt;string&gt; urls, string username = null, string credential = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public InvalidTxNonceException(TxId txid, long expectedNonce, long actualNonce, string message)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -392,61 +404,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
-        <td><span class="parametername">urls</span></td>
-        <td></td>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.  It is automatically included to
+the <see cref="!:Exception.Message"></see> string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">expectedNonce</span></td>
+        <td><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a>
+result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">actualNonce</span></td>
+        <td><p>The actual
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">username</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">credential</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer__ctor_IEnumerable_Uri__System_String_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.%23ctor(IEnumerable%7BUri%7D%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L20">View Source</a>
-  </span>
-  <a id="Libplanet_Net_IceServer__ctor_" data-uid="Libplanet.Net.IceServer.#ctor*"></a>
-  <h4 id="Libplanet_Net_IceServer__ctor_IEnumerable_Uri__System_String_System_String_" data-uid="Libplanet.Net.IceServer.#ctor(IEnumerable{Uri},System.String,System.String)">IceServer(IEnumerable&lt;Uri&gt;, String, String)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IceServer(IEnumerable&lt;Uri&gt; urls, string username = null, string credential = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Uri</span>&gt;</td>
-        <td><span class="parametername">urls</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">username</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">credential</span></td>
-        <td></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message that describes the error.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -454,18 +437,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer_Credential.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Credential%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_InvalidTxNonceException_ActualNonce.md&amp;value=---%0Auid%3A%20Libplanet.Net.InvalidTxNonceException.ActualNonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L34">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/InvalidTxNonceException.cs/#L49">View Source</a>
   </span>
-  <a id="Libplanet_Net_IceServer_Credential_" data-uid="Libplanet.Net.IceServer.Credential*"></a>
-  <h4 id="Libplanet_Net_IceServer_Credential" data-uid="Libplanet.Net.IceServer.Credential">Credential</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Libplanet_Net_InvalidTxNonceException_ActualNonce_" data-uid="Libplanet.Net.InvalidTxNonceException.ActualNonce*"></a>
+  <h4 id="Libplanet_Net_InvalidTxNonceException_ActualNonce" data-uid="Libplanet.Net.InvalidTxNonceException.ActualNonce">ActualNonce</h4>
+  <div class="markdown level1 summary"><p>The actual <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Credential { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public long ActualNonce { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -477,25 +461,27 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer_Urls.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Urls%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_InvalidTxNonceException_ExpectedNonce.md&amp;value=---%0Auid%3A%20Libplanet.Net.InvalidTxNonceException.ExpectedNonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/InvalidTxNonceException.cs/#L44">View Source</a>
   </span>
-  <a id="Libplanet_Net_IceServer_Urls_" data-uid="Libplanet.Net.IceServer.Urls*"></a>
-  <h4 id="Libplanet_Net_IceServer_Urls" data-uid="Libplanet.Net.IceServer.Urls">Urls</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Libplanet_Net_InvalidTxNonceException_ExpectedNonce_" data-uid="Libplanet.Net.InvalidTxNonceException.ExpectedNonce*"></a>
+  <h4 id="Libplanet_Net_InvalidTxNonceException_ExpectedNonce" data-uid="Libplanet.Net.InvalidTxNonceException.ExpectedNonce">ExpectedNonce</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Uri&gt; Urls { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public long ExpectedNonce { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -507,37 +493,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Uri</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer_Username.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer.Username%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L32">View Source</a>
-  </span>
-  <a id="Libplanet_Net_IceServer_Username_" data-uid="Libplanet.Net.IceServer.Username*"></a>
-  <h4 id="Libplanet_Net_IceServer_Username" data-uid="Libplanet.Net.IceServer.Username">Username</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Username { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -550,10 +506,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_IceServer.md&amp;value=---%0Auid%3A%20Libplanet.Net.IceServer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Net_InvalidTxNonceException.md&amp;value=---%0Auid%3A%20Libplanet.Net.InvalidTxNonceException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Net/IceServer.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/InvalidTxNonceException.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

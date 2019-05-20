@@ -249,6 +249,9 @@
                             <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Net.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
                           </li>
                           <li class="">
@@ -392,25 +395,25 @@ and <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(Libplanet.Address%2CLibplanet.Crypto.PublicKey%2CIImmutableSet%7BLibplanet.Address%7D%2CDateTimeOffset%2CIEnumerable%7B%600%7D%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.%23ctor(System.Int64%2CLibplanet.Address%2CLibplanet.Crypto.PublicKey%2CIImmutableSet%7BLibplanet.Address%7D%2CDateTimeOffset%2CIEnumerable%7B%600%7D%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L82">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L84">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1__ctor_" data-uid="Libplanet.Tx.Transaction`1.#ctor*"></a>
-  <h4 id="Libplanet_Tx_Transaction_1__ctor_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])">Transaction(Address, PublicKey, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, Byte[])</h4>
+  <h4 id="Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___" data-uid="Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])">Transaction(Int64, Address, PublicKey, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, Byte[])</h4>
   <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
 <p>This constructor takes all required and only required values
 for a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, so gives you full control of
 creating a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, and in other words,
 this constructor is only useful when all details of
 a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> need to be manually adjusted.
-For the most cases, the façade factory <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__">Create(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</a> is more useful.</p>
+For the most cases, the façade factory <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__">Create(Int64, PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</a> is more useful.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transaction(Address signer, PublicKey publicKey, IImmutableSet&lt;Address&gt; updatedAddresses, DateTimeOffset timestamp, IEnumerable&lt;T&gt; actions, byte[] signature)</code></pre>
+    <pre><code class="lang-csharp hljs">public Transaction(long nonce, Address signer, PublicKey publicKey, IImmutableSet&lt;Address&gt; updatedAddresses, DateTimeOffset timestamp, IEnumerable&lt;T&gt; actions, byte[] signature)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -422,6 +425,12 @@ For the most cases, the façade factory <a class="xref" href="Libplanet.Tx.Trans
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">nonce</span></td>
+        <td><p>The nonce of this <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">signer</span></td>
@@ -505,10 +514,10 @@ the account who corresponds to <code data-dev-comment-type="paramref" class="par
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Actions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Actions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Actions.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Actions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L221">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L236">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Actions_" data-uid="Libplanet.Tx.Transaction`1.Actions*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Actions" data-uid="Libplanet.Tx.Transaction`1.Actions">Actions</h4>
@@ -537,10 +546,10 @@ This can be empty, but cannot be <code>null</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Id.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Id.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L178">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L187">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Id_" data-uid="Libplanet.Tx.Transaction`1.Id*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Id" data-uid="Libplanet.Tx.Transaction`1.Id">Id</h4>
@@ -574,10 +583,42 @@ content.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Nonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Nonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L234">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L193">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_Transaction_1_Nonce_" data-uid="Libplanet.Tx.Transaction`1.Nonce*"></a>
+  <h4 id="Libplanet_Tx_Transaction_1_Nonce" data-uid="Libplanet.Tx.Transaction`1.Nonce">Nonce</h4>
+  <div class="markdown level1 summary"><p>The number of <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s committed by the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> of this transaction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Nonce { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_PublicKey.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.PublicKey%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L249">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_PublicKey_" data-uid="Libplanet.Tx.Transaction`1.PublicKey*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_PublicKey" data-uid="Libplanet.Tx.Transaction`1.PublicKey">PublicKey</h4>
@@ -608,10 +649,10 @@ for each transaction.  This cannot be <code>null</code>.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Signature%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Signature%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L201">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L216">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Signature_" data-uid="Libplanet.Tx.Transaction`1.Signature*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Signature" data-uid="Libplanet.Tx.Transaction`1.Signature">Signature</h4>
@@ -645,10 +686,10 @@ state of this <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Signer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Signer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L184">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L199">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Signer_" data-uid="Libplanet.Tx.Transaction`1.Signer*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Signer" data-uid="Libplanet.Tx.Transaction`1.Signer">Signer</h4>
@@ -677,10 +718,10 @@ This is derived from the <a class="xref" href="Libplanet.Tx.Transaction-1.html#L
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Timestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Timestamp.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Timestamp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L226">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L241">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Timestamp_" data-uid="Libplanet.Tx.Transaction`1.Timestamp*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Timestamp" data-uid="Libplanet.Tx.Transaction`1.Timestamp">Timestamp</h4>
@@ -708,10 +749,10 @@ This is derived from the <a class="xref" href="Libplanet.Tx.Transaction-1.html#L
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.UpdatedAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_UpdatedAddresses.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.UpdatedAddresses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L190">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_UpdatedAddresses_" data-uid="Libplanet.Tx.Transaction`1.UpdatedAddresses*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_UpdatedAddresses" data-uid="Libplanet.Tx.Transaction`1.UpdatedAddresses">UpdatedAddresses</h4>
@@ -742,15 +783,15 @@ This is derived from the <a class="xref" href="Libplanet.Tx.Transaction-1.html#L
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Create_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Create(Libplanet.Crypto.PrivateKey%2CIEnumerable%7B%600%7D%2CIImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BDateTimeOffset%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Create(System.Int64%2CLibplanet.Crypto.PrivateKey%2CIEnumerable%7B%600%7D%2CIImmutableSet%7BLibplanet.Address%7D%2CSystem.Nullable%7BDateTimeOffset%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L348">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L365">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Create_" data-uid="Libplanet.Tx.Transaction`1.Create*"></a>
-  <h4 id="Libplanet_Tx_Transaction_1_Create_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction`1.Create(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})">Create(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
+  <h4 id="Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__" data-uid="Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})">Create(Int64, PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, Nullable&lt;DateTimeOffset&gt;)</h4>
   <div class="markdown level1 summary"><p>A façade factory to create a new <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.
-Unlike the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___">Transaction(Address, PublicKey, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, Byte[])</a>
+Unlike the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___">Transaction(Int64, Address, PublicKey, IImmutableSet&lt;Address&gt;, DateTimeOffset, IEnumerable&lt;T&gt;, Byte[])</a>
 constructor, it automatically fills the following values from:</p>
 <table><thead><tr><th>Property</th><th>Parameter the filled value derived from</th></tr></thead><tbody><tr><td><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey">PublicKey</a></td><td><code data-dev-comment-type="paramref" class="paramref">privateKey</code></td></tr><tr><td><a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses">UpdatedAddresses</a></td><td><code data-dev-comment-type="paramref" class="paramref">actions</code> and
 <code data-dev-comment-type="paramref" class="paramref">updatedAddresses</code></td></tr></tbody></table>
@@ -760,7 +801,7 @@ included in the created <a class="xref" href="Libplanet.Tx.Transaction-1.html">T
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Create(PrivateKey privateKey, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Transaction&lt;T&gt; Create(long nonce, PrivateKey privateKey, IEnumerable&lt;T&gt; actions, IImmutableSet&lt;Address&gt; updatedAddresses = null, DateTimeOffset? timestamp = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -772,6 +813,12 @@ included in the created <a class="xref" href="Libplanet.Tx.Transaction-1.html">T
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">nonce</span></td>
+        <td><p>The nonce of this <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">privateKey</span></td>
@@ -832,7 +879,7 @@ the given <code data-dev-comment-type="paramref" class="paramref">privateKey</co
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Tx_Transaction_1_Create_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset___remarks">Remarks</h5>
+  <h5 id="Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This factory method tries its best to fill the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_UpdatedAddresses">UpdatedAddresses</a> property by actually evaluating
 the given <code data-dev-comment-type="paramref" class="paramref">actions</code> (we call it “rehearsal
 mode”), but remember that its result
@@ -884,10 +931,10 @@ is stored in its <see cref="!:Exception.InnerException"></see> property.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Equals_Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Equals(Libplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Equals_Libplanet_Tx_Transaction__0__.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Equals(Libplanet.Tx.Transaction%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L668">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L690">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Equals_" data-uid="Libplanet.Tx.Transaction`1.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Equals_Libplanet_Tx_Transaction__0__" data-uid="Libplanet.Tx.Transaction`1.Equals(Libplanet.Tx.Transaction{`0})">Equals(Transaction&lt;T&gt;)</h4>
@@ -931,10 +978,10 @@ is stored in its <see cref="!:Exception.InnerException"></see> property.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L674">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L696">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Equals_" data-uid="Libplanet.Tx.Transaction`1.Equals*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Equals_System_Object_" data-uid="Libplanet.Tx.Transaction`1.Equals(System.Object)">Equals(Object)</h4>
@@ -978,10 +1025,10 @@ is stored in its <see cref="!:Exception.InnerException"></see> property.
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.EvaluateActions(Libplanet.HashDigest%7BSHA256%7D%2CSystem.Int64%2CLibplanet.Action.IAccountStateDelta%2CLibplanet.Address%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.EvaluateActions(Libplanet.HashDigest%7BSHA256%7D%2CSystem.Int64%2CLibplanet.Action.IAccountStateDelta%2CLibplanet.Address%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L594">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L616">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_EvaluateActions_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActions*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_EvaluateActions_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActions(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)">EvaluateActions(HashDigest&lt;SHA256&gt;, Int64, IAccountStateDelta, Address, Boolean)</h4>
@@ -1085,10 +1132,10 @@ It is never thrown if the <code data-dev-comment-type="paramref" class="paramref
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.EvaluateActionsGradually(Libplanet.HashDigest%7BSHA256%7D%2CSystem.Int64%2CLibplanet.Action.IAccountStateDelta%2CLibplanet.Address%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.EvaluateActionsGradually(Libplanet.HashDigest%7BSHA256%7D%2CSystem.Int64%2CLibplanet.Action.IAccountStateDelta%2CLibplanet.Address%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L488">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L510">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_EvaluateActionsGradually_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActionsGradually*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_EvaluateActionsGradually_Libplanet_HashDigest_SHA256__System_Int64_Libplanet_Action_IAccountStateDelta_Libplanet_Address_System_Boolean_" data-uid="Libplanet.Tx.Transaction`1.EvaluateActionsGradually(Libplanet.HashDigest{SHA256},System.Int64,Libplanet.Action.IAccountStateDelta,Libplanet.Address,System.Boolean)">EvaluateActionsGradually(HashDigest&lt;SHA256&gt;, Int64, IAccountStateDelta, Address, Boolean)</h4>
@@ -1196,10 +1243,10 @@ It is never thrown if the <code data-dev-comment-type="paramref" class="paramref
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.FromBencodex(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.FromBencodex(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L244">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L259">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_FromBencodex_" data-uid="Libplanet.Tx.Transaction`1.FromBencodex*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___" data-uid="Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])">FromBencodex(Byte[])</h4>
@@ -1252,10 +1299,10 @@ representation of a transaction.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L685">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L707">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_GetHashCode_" data-uid="Libplanet.Tx.Transaction`1.GetHashCode*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_GetHashCode" data-uid="Libplanet.Tx.Transaction`1.GetHashCode">GetHashCode()</h4>
@@ -1282,10 +1329,10 @@ representation of a transaction.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_GetObjectData_SerializationInfo_StreamingContext_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.GetObjectData(SerializationInfo%2CStreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L656">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L678">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_GetObjectData_" data-uid="Libplanet.Tx.Transaction`1.GetObjectData*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_GetObjectData_SerializationInfo_StreamingContext_" data-uid="Libplanet.Tx.Transaction`1.GetObjectData(SerializationInfo,StreamingContext)">GetObjectData(SerializationInfo, StreamingContext)</h4>
@@ -1319,10 +1366,10 @@ representation of a transaction.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.ToBencodex(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.ToBencodex(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L433">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L455">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_ToBencodex_" data-uid="Libplanet.Tx.Transaction`1.ToBencodex*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_ToBencodex_System_Boolean_" data-uid="Libplanet.Tx.Transaction`1.ToBencodex(System.Boolean)">ToBencodex(Boolean)</h4>
@@ -1380,10 +1427,10 @@ representation of this <a class="xref" href="Libplanet.Tx.Transaction-1.html">Tr
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Validate.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Validate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1_Validate.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601.Validate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L636">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L658">View Source</a>
   </span>
   <a id="Libplanet_Tx_Transaction_1_Validate_" data-uid="Libplanet.Tx.Transaction`1.Validate*"></a>
   <h4 id="Libplanet_Tx_Transaction_1_Validate" data-uid="Libplanet.Tx.Transaction`1.Validate">Validate()</h4>
@@ -1437,10 +1484,10 @@ the account who corresponds to its <a class="xref" href="Libplanet.Tx.Transactio
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Tx_Transaction_1.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Tx_Transaction_1.md&amp;value=---%0Auid%3A%20Libplanet.Tx.Transaction%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Tx/Transaction.cs/#L29" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Tx/Transaction.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

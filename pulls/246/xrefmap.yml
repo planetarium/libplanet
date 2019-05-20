@@ -1118,6 +1118,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetEnumerator
   nameWithType: BlockChain<T>.GetEnumerator
   nameWithType.vb: BlockChain(Of T).GetEnumerator
+- uid: Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)
+  name: GetNonce(Address)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetNonce(Libplanet.Address)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNonce(Libplanet.Address)
+  nameWithType: BlockChain<T>.GetNonce(Address)
+  nameWithType.vb: BlockChain(Of T).GetNonce(Address)
+- uid: Libplanet.Blockchain.BlockChain`1.GetNonce*
+  name: GetNonce
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetNonce
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetNonce
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNonce
+  nameWithType: BlockChain<T>.GetNonce
+  nameWithType.vb: BlockChain(Of T).GetNonce
 - uid: Libplanet.Blockchain.BlockChain`1.GetStates(IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{SHA256}})
   name: GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_SHA256___
@@ -2728,6 +2745,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
   nameWithType: InvalidMessageException.InvalidMessageException
+- uid: Libplanet.Net.InvalidTxNonceException
+  name: InvalidTxNonceException
+  href: api/Libplanet.Net.InvalidTxNonceException.html
+  commentId: T:Libplanet.Net.InvalidTxNonceException
+  fullName: Libplanet.Net.InvalidTxNonceException
+  nameWithType: InvalidTxNonceException
+- uid: Libplanet.Net.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
+  name: InvalidTxNonceException(TxId, Int64, Int64, String)
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_
+  commentId: M:Libplanet.Net.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
+  fullName: Libplanet.Net.InvalidTxNonceException.InvalidTxNonceException(Libplanet.Tx.TxId, System.Int64, System.Int64, System.String)
+  nameWithType: InvalidTxNonceException.InvalidTxNonceException(TxId, Int64, Int64, String)
+- uid: Libplanet.Net.InvalidTxNonceException.#ctor*
+  name: InvalidTxNonceException
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException__ctor_
+  commentId: Overload:Libplanet.Net.InvalidTxNonceException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidTxNonceException.InvalidTxNonceException
+  nameWithType: InvalidTxNonceException.InvalidTxNonceException
+- uid: Libplanet.Net.InvalidTxNonceException.ActualNonce
+  name: ActualNonce
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ActualNonce
+  commentId: P:Libplanet.Net.InvalidTxNonceException.ActualNonce
+  fullName: Libplanet.Net.InvalidTxNonceException.ActualNonce
+  nameWithType: InvalidTxNonceException.ActualNonce
+- uid: Libplanet.Net.InvalidTxNonceException.ActualNonce*
+  name: ActualNonce
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ActualNonce_
+  commentId: Overload:Libplanet.Net.InvalidTxNonceException.ActualNonce
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidTxNonceException.ActualNonce
+  nameWithType: InvalidTxNonceException.ActualNonce
+- uid: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
+  name: ExpectedNonce
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ExpectedNonce
+  commentId: P:Libplanet.Net.InvalidTxNonceException.ExpectedNonce
+  fullName: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
+  nameWithType: InvalidTxNonceException.ExpectedNonce
+- uid: Libplanet.Net.InvalidTxNonceException.ExpectedNonce*
+  name: ExpectedNonce
+  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ExpectedNonce_
+  commentId: Overload:Libplanet.Net.InvalidTxNonceException.ExpectedNonce
+  isSpec: "True"
+  fullName: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
+  nameWithType: InvalidTxNonceException.ExpectedNonce
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html
@@ -4123,6 +4185,22 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.ForkStateReferences(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
   nameWithType: BaseStore.ForkStateReferences<T>(String, String, Block<T>, IImmutableSet<Address>)
   nameWithType.vb: BaseStore.ForkStateReferences(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+- uid: Libplanet.Store.BaseStore.ForkTxNonce*
+  name: ForkTxNonce
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonce_
+  commentId: Overload:Libplanet.Store.BaseStore.ForkTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ForkTxNonce
+  nameWithType: BaseStore.ForkTxNonce
+- uid: Libplanet.Store.BaseStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name: ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address__
+  commentId: M:Libplanet.Store.BaseStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name.vb: ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+  fullName: Libplanet.Store.BaseStore.ForkTxNonce<T>(System.String, System.String, Libplanet.Blocks.Block<T>, IImmutableSet<Libplanet.Address>)
+  fullName.vb: Libplanet.Store.BaseStore.ForkTxNonce(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
+  nameWithType: BaseStore.ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  nameWithType.vb: BaseStore.ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
 - uid: Libplanet.Store.BaseStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock_
@@ -4171,6 +4249,35 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
   nameWithType: BaseStore.GetTransaction<T>(TxId)
   nameWithType.vb: BaseStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.BaseStore.GetTxNonce(System.String,Libplanet.Address)
+  name: GetTxNonce(String, Address)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_System_String_Libplanet_Address_
+  commentId: M:Libplanet.Store.BaseStore.GetTxNonce(System.String,Libplanet.Address)
+  fullName: Libplanet.Store.BaseStore.GetTxNonce(System.String, Libplanet.Address)
+  nameWithType: BaseStore.GetTxNonce(String, Address)
+- uid: Libplanet.Store.BaseStore.GetTxNonce*
+  name: GetTxNonce
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.BaseStore.GetTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.GetTxNonce
+  nameWithType: BaseStore.GetTxNonce
+- uid: Libplanet.Store.BaseStore.IncreaseTxNonce*
+  name: IncreaseTxNonce
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.BaseStore.IncreaseTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.IncreaseTxNonce
+  nameWithType: BaseStore.IncreaseTxNonce
+- uid: Libplanet.Store.BaseStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name: IncreaseTxNonce<T>(String, Block<T>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.BaseStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name.vb: IncreaseTxNonce(Of T)(String, Block(Of T))
+  fullName: Libplanet.Store.BaseStore.IncreaseTxNonce<T>(System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.BaseStore.IncreaseTxNonce(Of T)(System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: BaseStore.IncreaseTxNonce<T>(String, Block<T>)
+  nameWithType.vb: BaseStore.IncreaseTxNonce(Of T)(String, Block(Of T))
 - uid: Libplanet.Store.BaseStore.IndexBlockHash(System.String,System.Int64)
   name: IndexBlockHash(String, Int64)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IndexBlockHash_System_String_System_Int64_
@@ -4600,6 +4707,22 @@ references:
   fullName.vb: Libplanet.Store.FileStore.ForkStateReferences(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
   nameWithType: FileStore.ForkStateReferences<T>(String, String, Block<T>, IImmutableSet<Address>)
   nameWithType.vb: FileStore.ForkStateReferences(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+- uid: Libplanet.Store.FileStore.ForkTxNonce*
+  name: ForkTxNonce
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ForkTxNonce_
+  commentId: Overload:Libplanet.Store.FileStore.ForkTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.ForkTxNonce
+  nameWithType: FileStore.ForkTxNonce
+- uid: Libplanet.Store.FileStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name: ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address__
+  commentId: M:Libplanet.Store.FileStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name.vb: ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+  fullName: Libplanet.Store.FileStore.ForkTxNonce<T>(System.String, System.String, Libplanet.Blocks.Block<T>, IImmutableSet<Libplanet.Address>)
+  fullName.vb: Libplanet.Store.FileStore.ForkTxNonce(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
+  nameWithType: FileStore.ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  nameWithType.vb: FileStore.ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
 - uid: Libplanet.Store.FileStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetBlock_
@@ -4762,6 +4885,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.GetTransactionPath
   nameWithType: FileStore.GetTransactionPath
+- uid: Libplanet.Store.FileStore.GetTxNonce(System.String,Libplanet.Address)
+  name: GetTxNonce(String, Address)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTxNonce_System_String_Libplanet_Address_
+  commentId: M:Libplanet.Store.FileStore.GetTxNonce(System.String,Libplanet.Address)
+  fullName: Libplanet.Store.FileStore.GetTxNonce(System.String, Libplanet.Address)
+  nameWithType: FileStore.GetTxNonce(String, Address)
+- uid: Libplanet.Store.FileStore.GetTxNonce*
+  name: GetTxNonce
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.FileStore.GetTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.GetTxNonce
+  nameWithType: FileStore.GetTxNonce
+- uid: Libplanet.Store.FileStore.GetTxNoncePath(System.String)
+  name: GetTxNoncePath(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTxNoncePath_System_String_
+  commentId: M:Libplanet.Store.FileStore.GetTxNoncePath(System.String)
+  fullName: Libplanet.Store.FileStore.GetTxNoncePath(System.String)
+  nameWithType: FileStore.GetTxNoncePath(String)
+- uid: Libplanet.Store.FileStore.GetTxNoncePath(System.String,Libplanet.Address)
+  name: GetTxNoncePath(String, Address)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTxNoncePath_System_String_Libplanet_Address_
+  commentId: M:Libplanet.Store.FileStore.GetTxNoncePath(System.String,Libplanet.Address)
+  fullName: Libplanet.Store.FileStore.GetTxNoncePath(System.String, Libplanet.Address)
+  nameWithType: FileStore.GetTxNoncePath(String, Address)
+- uid: Libplanet.Store.FileStore.GetTxNoncePath*
+  name: GetTxNoncePath
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_GetTxNoncePath_
+  commentId: Overload:Libplanet.Store.FileStore.GetTxNoncePath
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.GetTxNoncePath
+  nameWithType: FileStore.GetTxNoncePath
+- uid: Libplanet.Store.FileStore.IncreaseTxNonce*
+  name: IncreaseTxNonce
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.FileStore.IncreaseTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.IncreaseTxNonce
+  nameWithType: FileStore.IncreaseTxNonce
+- uid: Libplanet.Store.FileStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name: IncreaseTxNonce<T>(String, Block<T>)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.FileStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name.vb: IncreaseTxNonce(Of T)(String, Block(Of T))
+  fullName: Libplanet.Store.FileStore.IncreaseTxNonce<T>(System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.FileStore.IncreaseTxNonce(Of T)(System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: FileStore.IncreaseTxNonce<T>(String, Block<T>)
+  nameWithType.vb: FileStore.IncreaseTxNonce(Of T)(String, Block(Of T))
 - uid: Libplanet.Store.FileStore.IndexBlockHash(System.String,System.Int64)
   name: IndexBlockHash(String, Int64)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IndexBlockHash_System_String_System_Int64_
@@ -5074,6 +5245,22 @@ references:
   fullName.vb: Libplanet.Store.IStore.ForkStateReferences(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
   nameWithType: IStore.ForkStateReferences<T>(String, String, Block<T>, IImmutableSet<Address>)
   nameWithType.vb: IStore.ForkStateReferences(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+- uid: Libplanet.Store.IStore.ForkTxNonce*
+  name: ForkTxNonce
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkTxNonce_
+  commentId: Overload:Libplanet.Store.IStore.ForkTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ForkTxNonce
+  nameWithType: IStore.ForkTxNonce
+- uid: Libplanet.Store.IStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name: ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address__
+  commentId: M:Libplanet.Store.IStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})
+  name.vb: ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+  fullName: Libplanet.Store.IStore.ForkTxNonce<T>(System.String, System.String, Libplanet.Blocks.Block<T>, IImmutableSet<Libplanet.Address>)
+  fullName.vb: Libplanet.Store.IStore.ForkTxNonce(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), IImmutableSet(Of Libplanet.Address))
+  nameWithType: IStore.ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  nameWithType.vb: IStore.ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
 - uid: Libplanet.Store.IStore.GetBlock*
   name: GetBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetBlock_
@@ -5122,6 +5309,35 @@ references:
   fullName.vb: Libplanet.Store.IStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
   nameWithType: IStore.GetTransaction<T>(TxId)
   nameWithType.vb: IStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.IStore.GetTxNonce(System.String,Libplanet.Address)
+  name: GetTxNonce(String, Address)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_
+  commentId: M:Libplanet.Store.IStore.GetTxNonce(System.String,Libplanet.Address)
+  fullName: Libplanet.Store.IStore.GetTxNonce(System.String, Libplanet.Address)
+  nameWithType: IStore.GetTxNonce(String, Address)
+- uid: Libplanet.Store.IStore.GetTxNonce*
+  name: GetTxNonce
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.IStore.GetTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.GetTxNonce
+  nameWithType: IStore.GetTxNonce
+- uid: Libplanet.Store.IStore.IncreaseTxNonce*
+  name: IncreaseTxNonce
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.IStore.IncreaseTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.IncreaseTxNonce
+  nameWithType: IStore.IncreaseTxNonce
+- uid: Libplanet.Store.IStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name: IncreaseTxNonce<T>(String, Block<T>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.IStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name.vb: IncreaseTxNonce(Of T)(String, Block(Of T))
+  fullName: Libplanet.Store.IStore.IncreaseTxNonce<T>(System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.IStore.IncreaseTxNonce(Of T)(System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: IStore.IncreaseTxNonce<T>(String, Block<T>)
+  nameWithType.vb: IStore.IncreaseTxNonce(Of T)(String, Block(Of T))
 - uid: Libplanet.Store.IStore.IndexBlockHash(System.String,System.Int64)
   name: IndexBlockHash(String, Int64)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IndexBlockHash_System_String_System_Int64_
@@ -5625,15 +5841,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T)
   nameWithType: Transaction<T>
   nameWithType.vb: Transaction(Of T)
-- uid: Libplanet.Tx.Transaction`1.#ctor(Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
-  name: Transaction(Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet<Libplanet.Address>, DateTimeOffset, IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet(Of Libplanet.Address), DateTimeOffset, IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
+  name: Transaction(Int64, Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
+  name.vb: Transaction(Int64, Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet<Libplanet.Address>, DateTimeOffset, IEnumerable<T>, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet(Of Libplanet.Address), DateTimeOffset, IEnumerable(Of T), System.Byte())
+  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor*
   name: Transaction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_
@@ -5660,15 +5876,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
-- uid: Libplanet.Tx.Transaction`1.Create(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name: Create(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name.vb: Create(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(Libplanet.Crypto.PrivateKey, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(Libplanet.Crypto.PrivateKey, IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
-  nameWithType: Transaction<T>.Create(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name: Create(Int64, PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_
@@ -5809,6 +6025,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Id
   nameWithType: Transaction<T>.Id
   nameWithType.vb: Transaction(Of T).Id
+- uid: Libplanet.Tx.Transaction`1.Nonce
+  name: Nonce
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce
+  commentId: P:Libplanet.Tx.Transaction`1.Nonce
+  fullName: Libplanet.Tx.Transaction<T>.Nonce
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Nonce
+  nameWithType: Transaction<T>.Nonce
+  nameWithType.vb: Transaction(Of T).Nonce
+- uid: Libplanet.Tx.Transaction`1.Nonce*
+  name: Nonce
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce_
+  commentId: Overload:Libplanet.Tx.Transaction`1.Nonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.Nonce
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Nonce
+  nameWithType: Transaction<T>.Nonce
+  nameWithType.vb: Transaction(Of T).Nonce
 - uid: Libplanet.Tx.Transaction`1.PublicKey
   name: PublicKey
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_PublicKey
