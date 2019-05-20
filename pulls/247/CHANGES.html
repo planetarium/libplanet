@@ -205,6 +205,8 @@ of already validated blocks.  [<a href="https://github.com/planetarium/libplanet
 unnecessary race conditions. [<a href="https://github.com/planetarium/libplanet/pull/217">#217</a>]</li>
 <li>Fixed a bug that <code>Swarm</code> could not properly communicate with <code>Peer</code> behind
 NAT. [<a href="https://github.com/planetarium/libplanet/pull/240">#240</a>]</li>
+<li>Fixed a bug that <code>BlockChain&lt;T&gt;.FindNextHashes()</code> throws
+<code>ArgumentOutOfRangeException</code> when chain is empty.</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
