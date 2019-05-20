@@ -83,6 +83,11 @@ namespace Libplanet.Tests.Net
             {
                 s.StopAsync().Wait(DisposeTimeout);
             }
+
+            if (!(Type.GetType("Mono.Runtime") is null))
+            {
+                NetMQConfig.Cleanup(false);
+            }
         }
 
         [Fact(Timeout = Timeout)]
