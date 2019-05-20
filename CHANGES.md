@@ -75,6 +75,8 @@ To be released.
     messages when a `Swarm` instance is requested to terminate.
  -  Added `NamespaceNotFoundException` class.  [[#232]]
  -  Added `Block<T>.Evaluate()` method.  [[#243]]
+ -  Made `InvalidBlockTimestampException` class `public` so that it can be
+    caught. [[#133], [#251]]
 
 ### Behavioral changes
 
@@ -100,7 +102,7 @@ To be released.
     `Block<T>.Evaluate()`.  [[#243]]
  -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
     action in the `Block<T>`.  [[#243]]
- 
+
 ### Bug fixes
 
  -  Fixed a bug that TURN relay had been disconnected when being connected for
@@ -131,6 +133,7 @@ To be released.
 
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#31]: https://github.com/planetarium/libplanet/issues/31
+[#133]: https://github.com/planetarium/libplanet/issues/133
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
@@ -158,6 +161,7 @@ To be released.
 [#240]: https://github.com/planetarium/libplanet/pull/240
 [#241]: https://github.com/planetarium/libplanet/pull/241
 [#243]: https://github.com/planetarium/libplanet/pull/243
+[#251]: https://github.com/planetarium/libplanet/pull/251
 
 
 Version 0.2.2
