@@ -8,8 +8,10 @@ namespace Libplanet.Tests.Net
 {
     public class IceServerTest
     {
+        private const int Timeout = 60 * 1000;
+
         [Trait("RequireTurnServer", "true")]
-        [FactOnlyTurnAvailable]
+        [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task CreateTurnClient()
         {
             var turnUri = new Uri(

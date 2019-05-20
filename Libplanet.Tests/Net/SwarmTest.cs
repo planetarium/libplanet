@@ -26,6 +26,7 @@ namespace Libplanet.Tests.Net
     public class SwarmTest : IDisposable
     {
         private const int Timeout = 60 * 1000;
+        private const int DisposeTimeout = 5 * 1000;
 
         private readonly FileStoreFixture _fx1;
         private readonly FileStoreFixture _fx2;
@@ -80,14 +81,7 @@ namespace Libplanet.Tests.Net
 
             foreach (Swarm s in _swarms)
             {
-                s.StopAsync().Wait();
-            }
-
-            // FIXME NetMQConfig.Cleanup stucks in macOS + .NET Core now...
-            //       so we clean netmq related resources only in Mono runtime.
-            if (Type.GetType("Mono.Runtime") is Type)
-            {
-                NetMQConfig.Cleanup(false);
+                s.StopAsync().Wait(DisposeTimeout);
             }
         }
 

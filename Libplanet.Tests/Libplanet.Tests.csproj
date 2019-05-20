@@ -1,4 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+  Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -9,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,6 +33,10 @@
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
