@@ -252,7 +252,7 @@ namespace Libplanet.Net
             DateTimeOffset? timestamp = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (timestamp == null)
+            if (timestamp is null)
             {
                 timestamp = DateTimeOffset.UtcNow;
             }
@@ -314,6 +314,10 @@ namespace Libplanet.Net
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
                     }
+                }
+                else
+                {
+                    _peers[peer] = timestamp.Value;
                 }
             }
 

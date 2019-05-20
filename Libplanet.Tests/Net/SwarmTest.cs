@@ -275,51 +275,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task WorksAsCollection()
-        {
-            Swarm a = _swarms[0];
-            Swarm b = _swarms[1];
-            Swarm c = _swarms[2];
-
-            // Obtaining swarm's endpoint...
-            await Task.WhenAll(
-                StartAsync(a, _blockchains[0]),
-                StartAsync(b, _blockchains[1]),
-                StartAsync(c, _blockchains[2]));
-
-            Assert.Empty(a);
-            Assert.Empty(b);
-            Assert.Empty(c);
-
-            a.Add(b.AsPeer);
-            a.Add(c.AsPeer);
-            Assert.Contains(b.AsPeer, a);
-            Assert.Contains(c.AsPeer, a);
-
-            Peer[] peers = null;
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                a.CopyTo(peers, 0);
-            });
-
-            peers = new Peer[3];
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                a.CopyTo(peers, -1);
-            });
-            Assert.Throws<ArgumentException>(() =>
-            {
-                a.CopyTo(peers, 2);
-            });
-
-            a.CopyTo(peers, 1);
-
-            Assert.Equal(
-                new HashSet<Peer> { null, b.AsPeer, c.AsPeer },
-                peers.ToHashSet());
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
             var a = new Swarm(
@@ -353,8 +308,8 @@ namespace Libplanet.Tests.Net
 
                 foreach (var peer in peers)
                 {
-                    a.Add(peer);
-                    b.Add(peer);
+                    await a.AddPeersAsync(new[] { peer });
+                    await b.AddPeersAsync(new[] { peer });
                 }
 
                 Assert.Equal(new[] { c.AsPeer }, a.ToArray());
@@ -396,7 +351,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(a, chain);
                 await StartAsync(b, chain);
 
-                a.Add(b.AsPeer);
+                await a.AddPeersAsync(new[] { b.AsPeer });
 
                 Assert.True(isCalled);
             }
@@ -773,7 +728,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm, minerChain);
-                receiverSwarm.Add(minerSwarm.AsPeer);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
                 await StartAsync(receiverSwarm, receiverChain);
 
@@ -815,7 +770,7 @@ namespace Libplanet.Tests.Net
             try
             {
                 await StartAsync(minerSwarm, minerChain);
-                receiverSwarm.Add(minerSwarm.AsPeer);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
                 await receiverSwarm.PreloadAsync(receiverChain, progress);
 
