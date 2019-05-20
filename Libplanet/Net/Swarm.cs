@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using AsyncIO;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -64,6 +65,14 @@ namespace Libplanet.Net
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
         private IPAddress _publicIPAddress;
+
+        static Swarm()
+        {
+            if (!(Type.GetType("Mono.Runtime") is null))
+            {
+                ForceDotNet.Force();
+            }
+        }
 
         public Swarm(
             PrivateKey privateKey,

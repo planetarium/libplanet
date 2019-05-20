@@ -112,7 +112,9 @@ To be released.
  -  `BlockChain<T>.Append()` method became to throw `InvalidTxNonceException`
     when the `Transaction<T>.Nonce` does not correspond to its `Signer`'s
     current nonce.  [[#246]]
-
+ -  `Swarm` became to enforce `ForceDotNet.Force()` in [AsyncIO] while it's running on
+    Mono runtime.  [[#247]]
+ 
 ### Bug fixes
 
  -  Fixed a bug that TURN relay had been disconnected when being connected for
@@ -141,6 +143,7 @@ To be released.
  -  Fixed a bug that `Swarm` could not properly communicate with `Peer` behind
     NAT. [[#240]]
 
+[AsyncIO]: https://github.com/somdoron/AsyncIO
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#31]: https://github.com/planetarium/libplanet/issues/31
 [#133]: https://github.com/planetarium/libplanet/issues/133
@@ -171,6 +174,8 @@ To be released.
 [#240]: https://github.com/planetarium/libplanet/pull/240
 [#241]: https://github.com/planetarium/libplanet/pull/241
 [#243]: https://github.com/planetarium/libplanet/pull/243
+[#246]: https://github.com/planetarium/libplanet/pull/246
+[#247]: https://github.com/planetarium/libplanet/pull/247
 [#251]: https://github.com/planetarium/libplanet/pull/251
 
 
