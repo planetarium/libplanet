@@ -125,6 +125,7 @@ namespace Libplanet.Tests.Blockchain
                 },
             };
             var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                0,
                 new PrivateKey(),
                 actions1
             );
@@ -159,6 +160,7 @@ namespace Libplanet.Tests.Blockchain
                 },
             };
             var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                0,
                 new PrivateKey(),
                 actions2
             );
@@ -173,6 +175,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Contains("bow", result.UsedWeapons);
 
             var tx3 = Transaction<PolymorphicAction<BaseAction>>.Create(
+                0,
                 new PrivateKey(),
                 new List<PolymorphicAction<BaseAction>>
                 {
@@ -344,19 +347,20 @@ namespace Libplanet.Tests.Blockchain
             Address addr1 = new PrivateKey().PublicKey.ToAddress();
             Address addr2 = new PrivateKey().PublicKey.ToAddress();
 
+            var actions1 = new[] { new DumbAction(addr1, "foo") };
+            var actions2 = new[] { new DumbAction(addr2, "bar") };
+
             Transaction<DumbAction>[] txsA =
             {
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addr1, "foo"),
-                }),
+                _fx.MakeTransaction(actions1),
             };
             Transaction<DumbAction>[] txsB =
             {
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addr2, "bar"),
-                }),
+                _fx.MakeTransaction(actions2),
+            };
+            Transaction<DumbAction>[] txsC =
+            {
+                _fx.MakeTransaction(actions2),
             };
 
             Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
@@ -378,7 +382,7 @@ namespace Libplanet.Tests.Blockchain
 
             Block<DumbAction> b3 = TestUtils.MineNext(
                 b2,
-                txsB,
+                txsC,
                 null,
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
             _blockChain.Append(b3);
@@ -570,7 +574,7 @@ namespace Libplanet.Tests.Blockchain
                 };
                 Transaction<DumbAction>[] txs =
                 {
-                    Transaction<DumbAction>.Create(privateKey, actions),
+                    Transaction<DumbAction>.Create(0, privateKey, actions),
                 };
                 b = TestUtils.MineNext(b, txs);
                 chain.Append(b);
@@ -638,6 +642,7 @@ namespace Libplanet.Tests.Blockchain
 
             TestEvaluateAction action = new TestEvaluateAction();
             var tx1 = Transaction<TestEvaluateAction>.Create(
+                0,
                 fromPrivateKey,
                 new[] { action }
             );

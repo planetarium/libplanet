@@ -48,6 +48,7 @@ To be released.
  -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
     IImmutableSet<Address>` method.  [[#232]]
  -  Removed `Block<T>.Validate()` and `Block<T>.EvaluateActions()` method.  [[#243]]
+ -  Added `Transaction<T>.Nonce` and `RawTransaction.Nonce`.  [[#246]]
 
 ### Added interfaces
 

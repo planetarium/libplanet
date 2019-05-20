@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Libplanet.Serialization;
@@ -9,11 +10,12 @@ using Libplanet.Serialization;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
 {
-    internal struct RawTransaction : ISerializable, IEquatable<RawTransaction>
+    [Equals]
+    internal struct RawTransaction : ISerializable
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
-
+                nonce: info.GetInt64("nonce"),
                 signer: info.GetValue<byte[]>("signer"),
                 publicKey: info.GetValue<byte[]>("public_key"),
                 updatedAddresses: To2dArray(
@@ -28,6 +30,7 @@ namespace Libplanet.Tx
         }
 
         public RawTransaction(
+            long nonce,
             byte[] signer,
             byte[][] updatedAddresses,
             byte[] publicKey,
@@ -35,6 +38,7 @@ namespace Libplanet.Tx
             IEnumerable<IDictionary<string, object>> actions
         )
             : this(
+                nonce,
                 signer,
                 updatedAddresses,
                 publicKey,
@@ -46,6 +50,7 @@ namespace Libplanet.Tx
         }
 
         public RawTransaction(
+            long nonce,
             byte[] signer,
             byte[][] updatedAddresses,
             byte[] publicKey,
@@ -54,6 +59,7 @@ namespace Libplanet.Tx
             byte[] signature
         )
         {
+            Nonce = nonce;
             Signer = signer;
             UpdatedAddresses = updatedAddresses;
             PublicKey = publicKey;
@@ -64,6 +70,7 @@ namespace Libplanet.Tx
 
         public RawTransaction(Dictionary<string, object> dict)
         {
+            Nonce = (long)(BigInteger)dict["nonce"];
             Signer = (byte[])dict["signer"];
             UpdatedAddresses = To2dArray(
                 (byte[])dict["updated_addresses"],
@@ -83,6 +90,8 @@ namespace Libplanet.Tx
             }
         }
 
+        public long Nonce { get; }
+
         public byte[] Signer { get; }
 
         public byte[] PublicKey { get; }
@@ -95,21 +104,12 @@ namespace Libplanet.Tx
 
         public IEnumerable<IDictionary<string, object>> Actions { get; }
 
-        public static bool operator ==(RawTransaction tx1, RawTransaction tx2)
-        {
-            return tx1.Equals(tx2);
-        }
-
-        public static bool operator !=(RawTransaction tx1, RawTransaction tx2)
-        {
-            return !(tx1 == tx2);
-        }
-
         public void GetObjectData(
             SerializationInfo info,
             StreamingContext context
         )
         {
+            info.AddValue("nonce", Nonce);
             info.AddValue("signer", Signer);
 
             // SerializationInfo.AddValue() doesn't seem to work well with
@@ -139,6 +139,7 @@ namespace Libplanet.Tx
         public RawTransaction AddSignature(byte[] signature)
         {
             return new RawTransaction(
+                Nonce,
                 Signer,
                 UpdatedAddresses,
                 PublicKey,
@@ -146,28 +147,6 @@ namespace Libplanet.Tx
                 Actions,
                 signature
             );
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is RawTransaction && Equals((RawTransaction)obj);
-        }
-
-        public bool Equals(RawTransaction other)
-        {
-            bool eq = Signer.SequenceEqual(other.Signer) &&
-                PublicKey.SequenceEqual(other.PublicKey) &&
-                UpdatedAddresses.SequenceEqual(other.UpdatedAddresses) &&
-                Timestamp == other.Timestamp &&
-                Actions.SequenceEqual(other.Actions);
-            if (Signature == null)
-            {
-                return eq && other.Signature == null;
-            }
-            else
-            {
-                return eq && Signature.SequenceEqual(other.Signature);
-            }
         }
 
         public override int GetHashCode()
@@ -182,6 +161,7 @@ namespace Libplanet.Tx
                 UpdatedAddresses.Select(a => "\n    " + ByteUtil.Hex(a))
             );
             return $@"{nameof(RawTransaction)}
+  {nameof(Nonce)} = {Nonce.ToString()}
   {nameof(Signer)} = {ByteUtil.Hex(Signer)}
   {nameof(PublicKey)} = {ByteUtil.Hex(PublicKey)}
   {nameof(UpdatedAddresses)} = {updatedAddresses}
