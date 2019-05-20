@@ -149,9 +149,7 @@ and the mining <code>difficultyBoundDivisor</code>.  [<a href="https://github.co
 parameter.  This purposes to determine how long to wait for pending
 messages when a <code>Swarm</code> instance is requested to terminate.</li>
 <li>Added <code>NamespaceNotFoundException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/232">#232</a>]</li>
-<li>Added <code>SimultaneousTxsException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/242">#242</a>]</li>
 <li>Added <code>Block&lt;T&gt;.Evaluate()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/243">#243</a>]</li>
-<li>Updated access modifier of <code>InvalidBlockTimestampException</code> to public [[#133], [#251]]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -173,8 +171,6 @@ therefore <code>Swarm.StopAsync()</code> should be explicitly called.  [<a href=
 <li><code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> became to record
 <code>IAccountStateDelta.SetState()</code> calls even if its argument is the same
 to the previous state. [<a href="https://github.com/planetarium/libplanet/pull/241">#241</a>]</li>
-<li>A signer became to allowed to have only one transaction at most in
-<code>Block&lt;T&gt;.Transactions</code>. [<a href="https://github.com/planetarium/libplanet/issues/125">#125</a>], [<a href="https://github.com/planetarium/libplanet/pull/242">#242</a>]</li>
 <li><code>Block&lt;T&gt;.Validate()</code> and <code>Block&lt;T&gt;.EvaluateActions()</code> are integrated into
 <code>Block&lt;T&gt;.Evaluate()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/243">#243</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Append()</code> became to execute <code>Action.Execute()</code> only once per
