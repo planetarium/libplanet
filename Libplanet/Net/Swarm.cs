@@ -1092,9 +1092,19 @@ namespace Libplanet.Net
             _logger.Debug("Trying to find branchpoint...");
             BlockLocator locator = blockChain.GetBlockLocator();
             _logger.Debug($"Locator's count: {locator.Count()}");
-            IEnumerable<HashDigest<SHA256>> hashes =
+            IEnumerable<HashDigest<SHA256>> hashes = (
                 await GetBlockHashesAsync(
-                    peer, locator, stop, cancellationToken);
+                    peer, locator, stop, cancellationToken)
+            ).ToArray();
+
+            if (!hashes.Any())
+            {
+                _logger.Debug(
+                    $"Peer[{peer}] didn't return any hashes. " +
+                    $"ignored.");
+                return blockChain;
+            }
+
             HashDigest<SHA256> branchPoint = hashes.First();
 
             _logger.Debug(
