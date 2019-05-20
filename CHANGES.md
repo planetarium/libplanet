@@ -74,7 +74,6 @@ To be released.
     parameter.  This purposes to determine how long to wait for pending
     messages when a `Swarm` instance is requested to terminate.
  -  Added `NamespaceNotFoundException` class.  [[#232]]
- -  Added `SimultaneousTxsException` class.  [[#242]]
  -  Added `Block<T>.Evaluate()` method.  [[#243]]
 
 ### Behavioral changes
@@ -97,8 +96,6 @@ To be released.
  -  `Transaction<T>.EvaluateActionsGradually()` became to record
     `IAccountStateDelta.SetState()` calls even if its argument is the same
     to the previous state. [[#241]]
- -  A signer became to allowed to have only one transaction at most in 
-    `Block<T>.Transactions`. [[#125]], [[#242]]
  -  `Block<T>.Validate()` and `Block<T>.EvaluateActions()` are integrated into
     `Block<T>.Evaluate()`.  [[#243]]
  -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
@@ -134,7 +131,6 @@ To be released.
 
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
 [#31]: https://github.com/planetarium/libplanet/issues/31
-[#125]: https://github.com/planetarium/libplanet/issues/125
 [#185]: https://github.com/planetarium/libplanet/pull/185
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
@@ -161,7 +157,6 @@ To be released.
 [#236]: https://github.com/planetarium/libplanet/pull/236
 [#240]: https://github.com/planetarium/libplanet/pull/240
 [#241]: https://github.com/planetarium/libplanet/pull/241
-[#242]: https://github.com/planetarium/libplanet/pull/242
 [#243]: https://github.com/planetarium/libplanet/pull/243
 
 
