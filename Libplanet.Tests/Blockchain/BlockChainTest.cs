@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -300,8 +301,11 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanFindNextHashes()
+        public void FindNextHashes()
         {
+            Assert.Empty(_blockChain.FindNextHashes(
+                new BlockLocator(new HashDigest<SHA256>[] { })
+                ));
             _blockChain.Append(_fx.Block1);
             var block0 = _fx.Block1;
             var block1 = _blockChain.MineBlock(_fx.Address1);

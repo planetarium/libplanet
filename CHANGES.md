@@ -142,6 +142,8 @@ To be released.
     unnecessary race conditions. [[#217]]
  -  Fixed a bug that `Swarm` could not properly communicate with `Peer` behind
     NAT. [[#240]]
+ -  Fixed a bug that `BlockChain<T>.FindNextHashes()` throws
+    `ArgumentOutOfRangeException` when chain is empty.
 
 [AsyncIO]: https://github.com/somdoron/AsyncIO
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
