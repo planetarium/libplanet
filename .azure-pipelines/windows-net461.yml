@@ -33,7 +33,7 @@ steps:
     targetType: inline
     script: |
       ${{ parameters.testPrefix }} \
-        xunit.runner.console.*/tools/net472/xunit.console.exe \
+        xunit.runner.console.*/tools/net461/xunit.console.exe \
           *.Tests/bin/$(configuration)/net*/*.Tests.dll \
           ${{ parameters.testArguments }}
   env:
