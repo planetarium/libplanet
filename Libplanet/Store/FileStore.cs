@@ -632,24 +632,14 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            string sourceDir = GetStateReferencePath(sourceNamespace);
-            string targetDir = GetStateReferencePath(destinationNamespace);
-            bool copied = CopyDirectory(sourceDir, targetDir);
-
-            if (!copied && addressesToStrip.Any())
-            {
-                throw new NamespaceNotFoundException(
-                    sourceNamespace,
-                    "The source namespace to be forked does not exist.");
-            }
-
-            foreach (Address address in addressesToStrip)
-            {
-                StripStateReference(
-                    destinationNamespace,
-                    address,
-                    branchPoint.Index);
-            }
+            ForkEntries(
+                sourceNamespace,
+                destinationNamespace,
+                branchPoint.Index,
+                addressesToStrip,
+                GetStateReferencePath,
+                GetStateReferencePath,
+                s => GetStateReferences(s).Select(t => t.Item2));
         }
 
         /// <inheritdoc/>
@@ -727,8 +717,27 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            string sourceDir = GetTxNoncePath(sourceNamespace);
-            string targetDir = GetTxNoncePath(destinationNamespace);
+            ForkEntries(
+                sourceNamespace,
+                destinationNamespace,
+                branchPoint.Index,
+                addressesToStrip,
+                GetTxNoncePath,
+                GetTxNoncePath,
+                s => GetTxNonces(s).Select(t => t.Item2));
+        }
+
+        private void ForkEntries(
+            string sourceNamespace,
+            string destinationNamespace,
+            long branchPointIndex,
+            IImmutableSet<Address> addressesToStrip,
+            Func<string, string> getPath,
+            Func<string, Address, string> getAddressPath,
+            Func<Stream, IEnumerable<long>> getEntryIndices)
+        {
+            string sourceDir = getPath(sourceNamespace);
+            string targetDir = getPath(destinationNamespace);
             bool copied = CopyDirectory(sourceDir, targetDir);
 
             if (!copied && addressesToStrip.Any())
@@ -740,58 +749,29 @@ namespace Libplanet.Store
 
             foreach (Address address in addressesToStrip)
             {
-                StripTxNonce(
-                    destinationNamespace,
-                    address,
-                    branchPoint.Index);
+                StripEntries(
+                    getAddressPath(destinationNamespace, address),
+                    branchPointIndex,
+                    getEntryIndices);
             }
         }
 
-        private void StripStateReference(
-            string @namespace,
-            Address address,
-            long stripAfter)
+        private void StripEntries(
+            string path,
+            long stripAfter,
+            Func<Stream, IEnumerable<long>> getEntryIndices)
         {
-            var addrFile = new FileInfo(
-                GetStateReferencePath(@namespace, address));
+            var file = new FileInfo(path);
 
-            if (!addrFile.Exists)
+            if (!file.Exists)
             {
                 return;
             }
 
-            using (Stream stream = addrFile.Open(
+            using (Stream stream = file.Open(
                 FileMode.Open, FileAccess.ReadWrite))
             {
-                foreach (var (_, index) in GetStateReferences(stream))
-                {
-                    if (index <= stripAfter)
-                    {
-                        break;
-                    }
-                }
-
-                stream.SetLength(stream.Position);
-            }
-        }
-
-        private void StripTxNonce(
-            string @namespace,
-            Address address,
-            long stripAfter)
-        {
-            var addrFile = new FileInfo(
-                GetTxNoncePath(@namespace, address));
-
-            if (!addrFile.Exists)
-            {
-                return;
-            }
-
-            using (Stream stream = addrFile.Open(
-                FileMode.Open, FileAccess.ReadWrite))
-            {
-                foreach (var (_, index, _) in GetTxNonces(stream))
+                foreach (long index in getEntryIndices(stream))
                 {
                     if (index <= stripAfter)
                     {
