@@ -8,9 +8,11 @@ if ((Get-ChildItem env:GITHUB_*).Count -lt 1) {
   exit 1
 }
 
+$Namespace = @{m = "http://schemas.microsoft.com/developer/msbuild/2003"}
 $VersionPrefix = (Select-Xml `
   -Path Libplanet/Libplanet.csproj `
-  -XPath './Project/PropertyGroup/VersionPrefix/text()').Node.Value
+  -Namespace $Namespace `
+  -XPath './m:Project/m:PropertyGroup/m:VersionPrefix/text()').Node.Value
 
 New-Item -ItemType directory -Path obj -ErrorAction SilentlyContinue
 [Console]::Error.Write("VersionPrefix: ")
