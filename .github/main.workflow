@@ -5,7 +5,7 @@ workflow "push" {
 
 workflow "pull request" {
   on = "pull_request"
-  resolves = ["docs:status"]
+  resolves = ["docs:status", "dist:pack"]
 }
 
 workflow "everyday" {
@@ -60,13 +60,14 @@ action "docs:status" {
   ]
 }
 
-action "dist:version" {
-  uses = "docker://mcr.microsoft.com/powershell:latest"
-  args = [".github/bin/dist-version.ps1"]
-}
-
 action "dist:git-checkout" {
   uses = "dahlia/actions/checkout-pull-request@master"
+}
+
+action "dist:version" {
+  uses = "docker://mcr.microsoft.com/powershell:latest"
+  needs = ["dist:git-checkout"]
+  args = [".github/bin/dist-version.ps1"]
 }
 
 action "dist:pack" {
