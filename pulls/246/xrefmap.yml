@@ -2729,51 +2729,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.InvalidMessageException.InvalidMessageException
   nameWithType: InvalidMessageException.InvalidMessageException
-- uid: Libplanet.Net.InvalidTxNonceException
-  name: InvalidTxNonceException
-  href: api/Libplanet.Net.InvalidTxNonceException.html
-  commentId: T:Libplanet.Net.InvalidTxNonceException
-  fullName: Libplanet.Net.InvalidTxNonceException
-  nameWithType: InvalidTxNonceException
-- uid: Libplanet.Net.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
-  name: InvalidTxNonceException(TxId, Int64, Int64, String)
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_
-  commentId: M:Libplanet.Net.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
-  fullName: Libplanet.Net.InvalidTxNonceException.InvalidTxNonceException(Libplanet.Tx.TxId, System.Int64, System.Int64, System.String)
-  nameWithType: InvalidTxNonceException.InvalidTxNonceException(TxId, Int64, Int64, String)
-- uid: Libplanet.Net.InvalidTxNonceException.#ctor*
-  name: InvalidTxNonceException
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException__ctor_
-  commentId: Overload:Libplanet.Net.InvalidTxNonceException.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidTxNonceException.InvalidTxNonceException
-  nameWithType: InvalidTxNonceException.InvalidTxNonceException
-- uid: Libplanet.Net.InvalidTxNonceException.ActualNonce
-  name: ActualNonce
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ActualNonce
-  commentId: P:Libplanet.Net.InvalidTxNonceException.ActualNonce
-  fullName: Libplanet.Net.InvalidTxNonceException.ActualNonce
-  nameWithType: InvalidTxNonceException.ActualNonce
-- uid: Libplanet.Net.InvalidTxNonceException.ActualNonce*
-  name: ActualNonce
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ActualNonce_
-  commentId: Overload:Libplanet.Net.InvalidTxNonceException.ActualNonce
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidTxNonceException.ActualNonce
-  nameWithType: InvalidTxNonceException.ActualNonce
-- uid: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
-  name: ExpectedNonce
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ExpectedNonce
-  commentId: P:Libplanet.Net.InvalidTxNonceException.ExpectedNonce
-  fullName: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
-  nameWithType: InvalidTxNonceException.ExpectedNonce
-- uid: Libplanet.Net.InvalidTxNonceException.ExpectedNonce*
-  name: ExpectedNonce
-  href: api/Libplanet.Net.InvalidTxNonceException.html#Libplanet_Net_InvalidTxNonceException_ExpectedNonce_
-  commentId: Overload:Libplanet.Net.InvalidTxNonceException.ExpectedNonce
-  isSpec: "True"
-  fullName: Libplanet.Net.InvalidTxNonceException.ExpectedNonce
-  nameWithType: InvalidTxNonceException.ExpectedNonce
 - uid: Libplanet.Net.NoSwarmContextException
   name: NoSwarmContextException
   href: api/Libplanet.Net.NoSwarmContextException.html
@@ -5730,6 +5685,51 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.InvalidTxIdException.InvalidTxIdException
   nameWithType: InvalidTxIdException.InvalidTxIdException
+- uid: Libplanet.Tx.InvalidTxNonceException
+  name: InvalidTxNonceException
+  href: api/Libplanet.Tx.InvalidTxNonceException.html
+  commentId: T:Libplanet.Tx.InvalidTxNonceException
+  fullName: Libplanet.Tx.InvalidTxNonceException
+  nameWithType: InvalidTxNonceException
+- uid: Libplanet.Tx.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
+  name: InvalidTxNonceException(TxId, Int64, Int64, String)
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_
+  commentId: M:Libplanet.Tx.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)
+  fullName: Libplanet.Tx.InvalidTxNonceException.InvalidTxNonceException(Libplanet.Tx.TxId, System.Int64, System.Int64, System.String)
+  nameWithType: InvalidTxNonceException.InvalidTxNonceException(TxId, Int64, Int64, String)
+- uid: Libplanet.Tx.InvalidTxNonceException.#ctor*
+  name: InvalidTxNonceException
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException__ctor_
+  commentId: Overload:Libplanet.Tx.InvalidTxNonceException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxNonceException.InvalidTxNonceException
+  nameWithType: InvalidTxNonceException.InvalidTxNonceException
+- uid: Libplanet.Tx.InvalidTxNonceException.ExpectedNonce
+  name: ExpectedNonce
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException_ExpectedNonce
+  commentId: P:Libplanet.Tx.InvalidTxNonceException.ExpectedNonce
+  fullName: Libplanet.Tx.InvalidTxNonceException.ExpectedNonce
+  nameWithType: InvalidTxNonceException.ExpectedNonce
+- uid: Libplanet.Tx.InvalidTxNonceException.ExpectedNonce*
+  name: ExpectedNonce
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException_ExpectedNonce_
+  commentId: Overload:Libplanet.Tx.InvalidTxNonceException.ExpectedNonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxNonceException.ExpectedNonce
+  nameWithType: InvalidTxNonceException.ExpectedNonce
+- uid: Libplanet.Tx.InvalidTxNonceException.ImproperNonce
+  name: ImproperNonce
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException_ImproperNonce
+  commentId: P:Libplanet.Tx.InvalidTxNonceException.ImproperNonce
+  fullName: Libplanet.Tx.InvalidTxNonceException.ImproperNonce
+  nameWithType: InvalidTxNonceException.ImproperNonce
+- uid: Libplanet.Tx.InvalidTxNonceException.ImproperNonce*
+  name: ImproperNonce
+  href: api/Libplanet.Tx.InvalidTxNonceException.html#Libplanet_Tx_InvalidTxNonceException_ImproperNonce_
+  commentId: Overload:Libplanet.Tx.InvalidTxNonceException.ImproperNonce
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxNonceException.ImproperNonce
+  nameWithType: InvalidTxNonceException.ImproperNonce
 - uid: Libplanet.Tx.InvalidTxPublicKeyException
   name: InvalidTxPublicKeyException
   href: api/Libplanet.Tx.InvalidTxPublicKeyException.html
