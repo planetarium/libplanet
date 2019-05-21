@@ -204,7 +204,7 @@
                             <a href="Libplanet.Blocks.InvalidBlockPreviousHashException.html" title="InvalidBlockPreviousHashException" class="">InvalidBlockPreviousHashException</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Blocks.SimultaneousTxsException.html" title="SimultaneousTxsException" class="">SimultaneousTxsException</a>
+                            <a href="Libplanet.Blocks.InvalidBlockTimestampException.html" title="InvalidBlockTimestampException" class="">InvalidBlockTimestampException</a>
                           </li>
                         </ul>  </li>
                     <li class="">
@@ -418,7 +418,7 @@
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L156">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L205">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_CountBlocks_" data-uid="Libplanet.Store.IStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_IStore_CountBlocks" data-uid="Libplanet.Store.IStore.CountBlocks">CountBlocks()</h4>
@@ -495,7 +495,7 @@
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L203">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_CountTransactions_" data-uid="Libplanet.Store.IStore.CountTransactions*"></a>
   <h4 id="Libplanet_Store_IStore_CountTransactions" data-uid="Libplanet.Store.IStore.CountTransactions">CountTransactions()</h4>
@@ -718,7 +718,8 @@ state references.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
         <td><span class="parametername">branchPoint</span></td>
-        <td><p>The index of branch point to fork.</p>
+        <td><p>The branch point <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+to fork.</p>
 </td>
       </tr>
       <tr>
@@ -774,11 +775,20 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.ForkTxNonce%60%601(System.String%2CSystem.String%2CLibplanet.Blocks.Block%7B%60%600%7D%2CIImmutableSet%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L196">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_ForkTxNonce_" data-uid="Libplanet.Store.IStore.ForkTxNonce*"></a>
   <h4 id="Libplanet_Store_IStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address__" data-uid="Libplanet.Store.IStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},IImmutableSet{Libplanet.Address})">ForkTxNonce&lt;T&gt;(String, String, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Forks <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce from
+<code data-dev-comment-type="paramref" class="paramref">sourceNamespace</code> to
+<code data-dev-comment-type="paramref" class="paramref">destinationNamespace</code>.</p>
+<p>This method copies <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces from
+<code data-dev-comment-type="paramref" class="paramref">sourceNamespace</code> to
+<code data-dev-comment-type="paramref" class="paramref">destinationNamespace</code> and strips
+<code data-dev-comment-type="paramref" class="paramref">addressesToStrip</code> of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> after
+<code data-dev-comment-type="paramref" class="paramref">branchPoint</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -798,22 +808,30 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sourceNamespace</span></td>
-        <td></td>
+        <td><p>The namespace of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces to fork.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">destinationNamespace</span></td>
-        <td></td>
+        <td><p>The namespace of destination
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
         <td><span class="parametername">branchPoint</span></td>
-        <td></td>
+        <td><p>The branch point <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+to fork.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">addressesToStrip</span></td>
-        <td></td>
+        <td><p>The set of <a class="xref" href="Libplanet.Address.html">Address</a>es
+to strip <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces after forking.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -828,10 +846,34 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">branchPoint</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.NamespaceNotFoundException.html">NamespaceNotFoundException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">sourceNamespace</code> does not exist.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_IStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__IImmutableSet_Libplanet_Address___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_">GetTxNonce(String, Address)</a></div>
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__">IncreaseTxNonce&lt;T&gt;(String, Block&lt;T&gt;)</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_GetBlock__1_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetBlock%60%601(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1010,11 +1052,13 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.GetTxNonce(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L142">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L155">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_GetTxNonce_" data-uid="Libplanet.Store.IStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_" data-uid="Libplanet.Store.IStore.GetTxNonce(System.String,Libplanet.Address)">GetTxNonce(String, Address)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce of the
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1033,12 +1077,16 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">namespace</span></td>
-        <td></td>
+        <td><p>The namespace to get
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to get
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1053,20 +1101,28 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
-        <td></td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce. If there is no
+previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, return 0.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__">IncreaseTxNonce&lt;T&gt;(String, Block&lt;T&gt;)</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IncreaseTxNonce%60%601(System.String%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L144">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/transaction-nonce2/Libplanet/Store/IStore.cs/#L168">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IncreaseTxNonce_" data-uid="Libplanet.Store.IStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.IStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})">IncreaseTxNonce&lt;T&gt;(String, Block&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Increases <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> of
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> in the <code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1086,12 +1142,16 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">namespace</span></td>
-        <td></td>
+        <td><p>The namespace to increase
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
         <td><span class="parametername">block</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> which has the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1106,10 +1166,16 @@ to strip <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Bl
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> class used with
+<code data-dev-comment-type="paramref" class="paramref">block</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Store_IStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_">GetTxNonce(String, Address)</a></div>
+  </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/transaction-nonce2/apiSpec/new?filename=Libplanet_Store_IStore_IndexBlockHash_System_String_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IndexBlockHash(System.String%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1368,7 +1434,7 @@ that has the state of the <code data-dev-comment-type="paramref" class="paramref
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to find lookup.</p>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to lookup.</p>
 </td>
       </tr>
       <tr>
