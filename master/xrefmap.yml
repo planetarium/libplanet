@@ -1882,41 +1882,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
   nameWithType: InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
-- uid: Libplanet.Blocks.SimultaneousTxsException
-  name: SimultaneousTxsException
-  href: api/Libplanet.Blocks.SimultaneousTxsException.html
-  commentId: T:Libplanet.Blocks.SimultaneousTxsException
-  fullName: Libplanet.Blocks.SimultaneousTxsException
-  nameWithType: SimultaneousTxsException
-- uid: Libplanet.Blocks.SimultaneousTxsException.#ctor(System.String,IEnumerable{Libplanet.Address})
-  name: SimultaneousTxsException(String, IEnumerable<Address>)
-  href: api/Libplanet.Blocks.SimultaneousTxsException.html#Libplanet_Blocks_SimultaneousTxsException__ctor_System_String_IEnumerable_Libplanet_Address__
-  commentId: M:Libplanet.Blocks.SimultaneousTxsException.#ctor(System.String,IEnumerable{Libplanet.Address})
-  name.vb: SimultaneousTxsException(String, IEnumerable(Of Address))
-  fullName: Libplanet.Blocks.SimultaneousTxsException.SimultaneousTxsException(System.String, IEnumerable<Libplanet.Address>)
-  fullName.vb: Libplanet.Blocks.SimultaneousTxsException.SimultaneousTxsException(System.String, IEnumerable(Of Libplanet.Address))
-  nameWithType: SimultaneousTxsException.SimultaneousTxsException(String, IEnumerable<Address>)
-  nameWithType.vb: SimultaneousTxsException.SimultaneousTxsException(String, IEnumerable(Of Address))
-- uid: Libplanet.Blocks.SimultaneousTxsException.#ctor*
-  name: SimultaneousTxsException
-  href: api/Libplanet.Blocks.SimultaneousTxsException.html#Libplanet_Blocks_SimultaneousTxsException__ctor_
-  commentId: Overload:Libplanet.Blocks.SimultaneousTxsException.#ctor
+- uid: Libplanet.Blocks.InvalidBlockTimestampException
+  name: InvalidBlockTimestampException
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockTimestampException
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException
+  nameWithType: InvalidBlockTimestampException
+- uid: Libplanet.Blocks.InvalidBlockTimestampException.#ctor(System.String)
+  name: InvalidBlockTimestampException(String)
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html#Libplanet_Blocks_InvalidBlockTimestampException__ctor_System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockTimestampException.#ctor(System.String)
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException.InvalidBlockTimestampException(System.String)
+  nameWithType: InvalidBlockTimestampException.InvalidBlockTimestampException(String)
+- uid: Libplanet.Blocks.InvalidBlockTimestampException.#ctor*
+  name: InvalidBlockTimestampException
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html#Libplanet_Blocks_InvalidBlockTimestampException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTimestampException.#ctor
   isSpec: "True"
-  fullName: Libplanet.Blocks.SimultaneousTxsException.SimultaneousTxsException
-  nameWithType: SimultaneousTxsException.SimultaneousTxsException
-- uid: Libplanet.Blocks.SimultaneousTxsException.Signers
-  name: Signers
-  href: api/Libplanet.Blocks.SimultaneousTxsException.html#Libplanet_Blocks_SimultaneousTxsException_Signers
-  commentId: P:Libplanet.Blocks.SimultaneousTxsException.Signers
-  fullName: Libplanet.Blocks.SimultaneousTxsException.Signers
-  nameWithType: SimultaneousTxsException.Signers
-- uid: Libplanet.Blocks.SimultaneousTxsException.Signers*
-  name: Signers
-  href: api/Libplanet.Blocks.SimultaneousTxsException.html#Libplanet_Blocks_SimultaneousTxsException_Signers_
-  commentId: Overload:Libplanet.Blocks.SimultaneousTxsException.Signers
-  isSpec: "True"
-  fullName: Libplanet.Blocks.SimultaneousTxsException.Signers
-  nameWithType: SimultaneousTxsException.Signers
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException.InvalidBlockTimestampException
+  nameWithType: InvalidBlockTimestampException.InvalidBlockTimestampException
 - uid: Libplanet.ByteUtil
   name: ByteUtil
   href: api/Libplanet.ByteUtil.html
