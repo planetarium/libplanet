@@ -66,12 +66,12 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Lookup a state reference, which is a <see cref="Block{T}.Hash"/>
+        /// Looks up a state reference, which is a <see cref="Block{T}.Hash"/>
         /// that has the state of the <paramref name="address"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to lookup a state reference.
+        /// <param name="namespace">The namespace to look up a state reference.
         /// </param>
-        /// <param name="address">The <see cref="Address"/> to lookup.
+        /// <param name="address">The <see cref="Address"/> to look up.
         /// </param>
         /// <param name="lookupUntil">The upper bound (i.e., the latest block)
         /// of the search range. <see cref="Block{T}"/>s after

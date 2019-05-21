@@ -44,8 +44,10 @@ namespace Libplanet.Tx
         /// cref="Create(long, PrivateKey, IEnumerable{T},
         /// IImmutableSet{Address}, DateTimeOffset?)"/> is more useful.</para>
         /// </summary>
-        /// <param name="nonce">The nonce of this <see cref="Transaction{T}"/>.
-        /// </param>
+        /// <param name="nonce">The number of previous
+        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// of this transaction.  This goes to the
+        /// <see cref="Transaction{T}.Nonce"/> property.</param>
         /// <param name="signer">An <see cref="Address"/> of the account
         /// who signs this transaction.  If this is not derived from <paramref
         /// name="publicKey"/> <see cref="InvalidTxPublicKeyException"/> is
@@ -187,8 +189,8 @@ namespace Libplanet.Tx
         public TxId Id { get; }
 
         /// <summary>
-        /// The number of <see cref="Transaction{T}"/>s committed by the
-        /// <see cref="Signer"/> of this transaction.
+        /// The number of previous <see cref="Transaction{T}"/>s committed by
+        /// the <see cref="Signer"/> of this transaction.
         /// </summary>
         public long Nonce { get; }
 
@@ -319,8 +321,10 @@ namespace Libplanet.Tx
         /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
         /// a conditional logic for the case.</para>
         /// </remarks>
-        /// <param name="nonce">The nonce of this <see cref="Transaction{T}"/>.
-        /// </param>
+        /// <param name="nonce">The number of previous
+        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// of this transaction.  This goes to the
+        /// <see cref="Transaction{T}.Nonce"/> property.</param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and

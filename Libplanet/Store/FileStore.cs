@@ -632,7 +632,7 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            ForkEntries(
+            ForkIndexedStack(
                 sourceNamespace,
                 destinationNamespace,
                 branchPoint.Index,
@@ -717,7 +717,7 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            ForkEntries(
+            ForkIndexedStack(
                 sourceNamespace,
                 destinationNamespace,
                 branchPoint.Index,
@@ -727,14 +727,14 @@ namespace Libplanet.Store
                 s => GetTxNonces(s).Select(t => t.Item2));
         }
 
-        private void ForkEntries(
+        private void ForkIndexedStack(
             string sourceNamespace,
             string destinationNamespace,
             long branchPointIndex,
             IImmutableSet<Address> addressesToStrip,
             Func<string, string> getPath,
             Func<string, Address, string> getAddressPath,
-            Func<Stream, IEnumerable<long>> getEntryIndices)
+            Func<Stream, IEnumerable<long>> getIndexedStack)
         {
             string sourceDir = getPath(sourceNamespace);
             string targetDir = getPath(destinationNamespace);
@@ -749,17 +749,17 @@ namespace Libplanet.Store
 
             foreach (Address address in addressesToStrip)
             {
-                StripEntries(
+                StripIndexedStack(
                     getAddressPath(destinationNamespace, address),
                     branchPointIndex,
-                    getEntryIndices);
+                    getIndexedStack);
             }
         }
 
-        private void StripEntries(
+        private void StripIndexedStack(
             string path,
             long stripAfter,
-            Func<Stream, IEnumerable<long>> getEntryIndices)
+            Func<Stream, IEnumerable<long>> getIndexedStack)
         {
             var file = new FileInfo(path);
 
@@ -771,7 +771,7 @@ namespace Libplanet.Store
             using (Stream stream = file.Open(
                 FileMode.Open, FileAccess.ReadWrite))
             {
-                foreach (long index in getEntryIndices(stream))
+                foreach (long index in getIndexedStack(stream))
                 {
                     if (index <= stripAfter)
                     {

@@ -1,8 +1,8 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Libplanet.Blockchain;
-using Libplanet.Tx;
 
-namespace Libplanet.Net
+namespace Libplanet.Tx
 {
     /// <summary>
     /// The exception that is thrown when the <see cref="Transaction{T}.Nonce"/>
@@ -21,20 +21,26 @@ namespace Libplanet.Net
         /// the <see cref="Exception.Message"/> string.</param>
         /// <param name="expectedNonce"><see cref="BlockChain{T}.GetNonce"/>
         /// result of the <see cref="Transaction{T}.Signer"/>.</param>
-        /// <param name="actualNonce">The actual
+        /// <param name="improperNonce">The actual
         /// <see cref="Transaction{T}.Nonce"/>.</param>
         /// <param name="message">The message that describes the error.</param>
+        [SuppressMessage(
+            "Microsoft.StyleCop.CSharp.ReadabilityRules",
+            "SA1118",
+            Justification = "A long error message should be multiline.")]
         public InvalidTxNonceException(
             TxId txid,
             long expectedNonce,
-            long actualNonce,
+            long improperNonce,
             string message)
             : base(
                 txid,
-                $"{message}, Expected: {expectedNonce}, Actual: {actualNonce}")
+                $"{message}\n" +
+                $"Expected nonce: {expectedNonce}\n" +
+                $"Improper nonce: {improperNonce}")
         {
             ExpectedNonce = expectedNonce;
-            ActualNonce = actualNonce;
+            ImproperNonce = improperNonce;
         }
 
         /// <summary>
@@ -44,8 +50,8 @@ namespace Libplanet.Net
         public long ExpectedNonce { get; }
 
         /// <summary>
-        /// The actual <see cref="Transaction{T}.Nonce"/>.
+        /// The actual <see cref="Transaction{T}.Nonce"/>, which is improper.
         /// </summary>
-        public long ActualNonce { get; }
+        public long ImproperNonce { get; }
     }
 }

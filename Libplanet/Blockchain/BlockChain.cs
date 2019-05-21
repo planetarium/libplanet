@@ -9,7 +9,6 @@ using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-using Libplanet.Net;
 using Libplanet.Store;
 using Libplanet.Tx;
 
