@@ -1882,6 +1882,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
   nameWithType: InvalidBlockPreviousHashException.InvalidBlockPreviousHashException
+- uid: Libplanet.Blocks.InvalidBlockTimestampException
+  name: InvalidBlockTimestampException
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html
+  commentId: T:Libplanet.Blocks.InvalidBlockTimestampException
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException
+  nameWithType: InvalidBlockTimestampException
+- uid: Libplanet.Blocks.InvalidBlockTimestampException.#ctor(System.String)
+  name: InvalidBlockTimestampException(String)
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html#Libplanet_Blocks_InvalidBlockTimestampException__ctor_System_String_
+  commentId: M:Libplanet.Blocks.InvalidBlockTimestampException.#ctor(System.String)
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException.InvalidBlockTimestampException(System.String)
+  nameWithType: InvalidBlockTimestampException.InvalidBlockTimestampException(String)
+- uid: Libplanet.Blocks.InvalidBlockTimestampException.#ctor*
+  name: InvalidBlockTimestampException
+  href: api/Libplanet.Blocks.InvalidBlockTimestampException.html#Libplanet_Blocks_InvalidBlockTimestampException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidBlockTimestampException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidBlockTimestampException.InvalidBlockTimestampException
+  nameWithType: InvalidBlockTimestampException.InvalidBlockTimestampException
 - uid: Libplanet.ByteUtil
   name: ByteUtil
   href: api/Libplanet.ByteUtil.html
