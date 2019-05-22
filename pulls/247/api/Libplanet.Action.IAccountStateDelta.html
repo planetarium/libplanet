@@ -318,6 +318,9 @@
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
                           </li>
                           <li class="">
@@ -354,7 +357,7 @@ maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <code>null</code>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<see cref="!:KeyNotFoundException"></see>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
 <code>null</code> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
@@ -389,7 +392,8 @@ been updated since then.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+IImmutableSet&lt;Address&gt; UpdatedAddresses { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -401,7 +405,7 @@ been updated since then.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IImmutableSet</span>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -422,7 +426,8 @@ been updated since then.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">object GetState(Address address)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+object GetState(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -477,7 +482,8 @@ instead.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IAccountStateDelta SetState(Address address, object state)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+IAccountStateDelta SetState(Address address, object state)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">

@@ -318,6 +318,9 @@
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
                           </li>
                           <li class="">
@@ -360,6 +363,11 @@
       <section><p>The exception that is thrown when a given <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a> cannot be
 found.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></h4>
+      <section><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
+is different from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of
+the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Tx.InvalidTxPublicKeyException.html">InvalidTxPublicKeyException</a></h4>
       <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a> is not derived from its
@@ -387,7 +395,7 @@ a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> and tr
 is being created when one of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>
 throws some exception during rehearsal mode.</p>
 <p>The actual exception that the <a class="xref" href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html#Libplanet_Tx_UnexpectedlyTerminatedTxRehearsalException_Action">Action</a> threw
-is stored in the <see cref="!:Exception.InnerException"></see> property.</p>
+is stored in the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.innerexception#System_Exception_InnerException">InnerException</a> property.</p>
 </section>
     <h3 id="structs">Structs
   </h3>
@@ -395,7 +403,7 @@ is stored in the <see cref="!:Exception.InnerException"></see> property.</p>
       <section><p><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>, abbreviation of transaction identifier,
 is a SHA-256 digest derived from a <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
 content.</p>
-<p>As it is a SHA-256 digest, it consists of 32 <see cref="!:System.Byte"></see>s,
+<p>As it is a SHA-256 digest, it consists of 32 <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s,
 and 64 characters in hexadecimal.
 (See also <a class="xref" href="Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Size">Size</a> constant.)</p>
 </section>

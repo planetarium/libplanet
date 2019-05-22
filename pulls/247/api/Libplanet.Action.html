@@ -318,6 +318,9 @@
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
                           </li>
                           <li class="">
@@ -366,7 +369,7 @@ serialization and deserialization.</p>
       <section><p>An immutable key–value data structure to represent states of
 multiple accounts.  Keys are an account <a class="xref" href="Libplanet.Address.html">Address</a>,
 and values are their state.</p>
-<p>Since this implements <see cref="!:System.Collections.Immutable.IImmutableDictionary&lt;TKey,TValue>"></see>
+<p>Since this implements <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary&lt;TKey,TValue&gt;</a>
 interface, the usage is same.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
@@ -392,7 +395,7 @@ maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta
 that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
 is mapped to <code>null</code>.  That means that:</p>
 <ul><li>it does not have length,</li><li>its index getter never throws
-<see cref="!:KeyNotFoundException"></see>,
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keynotfoundexception">KeyNotFoundException</a>,
 but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
 <code>null</code> state cannot be distinguished from
 the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
@@ -417,7 +420,7 @@ Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_I
 </section>
       <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
       <section><p>An pseudorandom number generator interface equivalent to
-<see cref="!:System.Random"></see>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>.</p>
 <p>Although these two types have similar shapes, they are not
 compatible (i.e., disallowed to be casted to each other).</p>
 </section>
