@@ -43,7 +43,7 @@ if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
     $timestamp = Get-Date
   }
   $timestamp = $timestamp.ToUniversalTime()
-  $VersionSuffix = "dev.$($timestamp.ToString("yyyyMMddHHmmss")).$HeadCommit"
+  $VersionSuffix = "dev.$($timestamp.ToString("yyyyMMddHHmmss"))+$HeadCommit"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
 }
 
