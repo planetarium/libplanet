@@ -12,6 +12,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using AsyncIO;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -64,6 +65,14 @@ namespace Libplanet.Net
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
         private IPAddress _publicIPAddress;
+
+        static Swarm()
+        {
+            if (!(Type.GetType("Mono.Runtime") is null))
+            {
+                ForceDotNet.Force();
+            }
+        }
 
         public Swarm(
             PrivateKey privateKey,
@@ -243,7 +252,7 @@ namespace Libplanet.Net
             DateTimeOffset? timestamp = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (timestamp == null)
+            if (timestamp is null)
             {
                 timestamp = DateTimeOffset.UtcNow;
             }
@@ -305,6 +314,10 @@ namespace Libplanet.Net
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
                     }
+                }
+                else
+                {
+                    _peers[peer] = timestamp.Value;
                 }
             }
 
@@ -1083,9 +1096,19 @@ namespace Libplanet.Net
             _logger.Debug("Trying to find branchpoint...");
             BlockLocator locator = blockChain.GetBlockLocator();
             _logger.Debug($"Locator's count: {locator.Count()}");
-            IEnumerable<HashDigest<SHA256>> hashes =
+            IEnumerable<HashDigest<SHA256>> hashes = (
                 await GetBlockHashesAsync(
-                    peer, locator, stop, cancellationToken);
+                    peer, locator, stop, cancellationToken)
+            ).ToArray();
+
+            if (!hashes.Any())
+            {
+                _logger.Debug(
+                    $"Peer[{peer}] didn't return any hashes. " +
+                    $"ignored.");
+                return blockChain;
+            }
+
             HashDigest<SHA256> branchPoint = hashes.First();
 
             _logger.Debug(

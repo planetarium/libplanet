@@ -445,6 +445,11 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(
                     Id.ToString(), -1);
+                if (tip is null)
+                {
+                    yield break;
+                }
+
                 HashDigest<SHA256>? currentHash = FindBranchPoint(locator);
 
                 while (currentHash != null && count > 0)

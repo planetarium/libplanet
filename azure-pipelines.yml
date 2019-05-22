@@ -98,12 +98,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testPrefix: '"$PROGRAMFILES/Mono/bin/mono.exe"'
-      testArguments: |
-        -appdomains denied \
-        -noclass Libplanet.Tests.Net.SwarmTest
-      # FIXME: For unknown reason, on Windows + Mono SwarmTests seem never end.
-      #        We should diagnose this and make Windows builds to run these
-      #        tests too.
+      testArguments: -appdomains denied
   timeoutInMinutes: 30
 
 - job: Linux_NETCore
