@@ -19,9 +19,12 @@ New-Item -ItemType directory -Path obj -ErrorAction SilentlyContinue
 Write-Output $VersionPrefix
 Write-Output $VersionPrefix > obj/version_prefix.txt
 
+$HeadCommit = `
+  (Get-Content ".git/$((Get-Content .git/HEAD).Split()[1])").Substring(0, 7)
+
 if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
   $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
-  $VersionSuffix = "nightly.$date"
+  $VersionSuffix = "nightly.$date+$HeadCommit"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
 } elseif ($env:GITHUB_REF.StartsWith("refs/tags/")) {
   $tag = $env:GITHUB_REF.Substring(10)
@@ -33,11 +36,14 @@ if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
 } else {
   $event = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json
   $timestamp = $event.head_commit.timestamp
+  if ($event.head_commit.id -ne $null) {
+    $HeadCommit = $event.head_commit.id.Substring(0, 7)
+  }
   if ($timestamp -eq $null) {
     $timestamp = Get-Date
   }
   $timestamp = $timestamp.ToUniversalTime()
-  $VersionSuffix = "dev." + $timestamp.ToString("yyyyMMddHHmmss")
+  $VersionSuffix = "dev.$($timestamp.ToString("yyyyMMddHHmmss")).$HeadCommit"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
 }
 
