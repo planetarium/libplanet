@@ -318,6 +318,9 @@
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
                           </li>
                           <li class="">
@@ -348,7 +351,7 @@
   
   <h1 id="Libplanet_ByteUtil" data-uid="Libplanet.ByteUtil" class="text-break">Class ByteUtil
   </h1>
-  <div class="markdown level0 summary"><p>Utility methods to deal with <see cref="!:System.Byte"></see> arrays.</p>
+  <div class="markdown level0 summary"><p>Utility methods to deal with <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> arrays.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -356,11 +359,35 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">ByteUtil</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_ByteUtil_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class ByteUtil : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ByteUtil</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -375,12 +402,13 @@
   <h4 id="Libplanet_ByteUtil_CalculateHashCode_System_Byte___" data-uid="Libplanet.ByteUtil.CalculateHashCode(System.Byte[])">CalculateHashCode(Byte[])</h4>
   <div class="markdown level1 summary"><p>Calculates a deterministic hash code from a given
 <code data-dev-comment-type="paramref" class="paramref">bytes</code>.  It is mostly used to implement
-<see cref="!:object.GetHashCode()"></see> method.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">GetHashCode()</a> method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int CalculateHashCode(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static int CalculateHashCode(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -395,7 +423,7 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <see cref="!:System.Byte"></see> array, which completely
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array, which completely
 determines (or encodes) an object, to calculate a hash code.</p>
 </td>
       </tr>
@@ -419,6 +447,23 @@ the same hash code is returned.  It must not be <code>null</code>.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_ByteUtil_Hex_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil.Hex(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -428,12 +473,13 @@ the same hash code is returned.  It must not be <code>null</code>.</p>
   </span>
   <a id="Libplanet_ByteUtil_Hex_" data-uid="Libplanet.ByteUtil.Hex*"></a>
   <h4 id="Libplanet_ByteUtil_Hex_System_Byte___" data-uid="Libplanet.ByteUtil.Hex(System.Byte[])">Hex(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <see cref="!:System.Byte"></see> array.</p>
+  <div class="markdown level1 summary"><p>Renders a hexadecimal string from a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string Hex(byte[] bytes)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static string Hex(byte[] bytes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -448,7 +494,7 @@ the same hash code is returned.  It must not be <code>null</code>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">bytes</span></td>
-        <td><p>A <see cref="!:System.Byte"></see> array to renders
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to renders
 the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
 </td>
       </tr>
@@ -471,6 +517,23 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">bytes</code> is <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_ByteUtil_ParseHex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.ByteUtil.ParseHex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -480,12 +543,13 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
   </span>
   <a id="Libplanet_ByteUtil_ParseHex_" data-uid="Libplanet.ByteUtil.ParseHex*"></a>
   <h4 id="Libplanet_ByteUtil_ParseHex_System_String_" data-uid="Libplanet.ByteUtil.ParseHex(System.String)">ParseHex(String)</h4>
-  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a <see cref="!:System.Byte"></see> array.</p>
+  <div class="markdown level1 summary"><p>Converts a hexadecimal string to a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte[] ParseHex(string hex)</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public static byte[] ParseHex(string hex)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -500,8 +564,8 @@ the corresponding hexadecimal string.  It must not be <code>null</code>.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">hex</span></td>
-        <td><p>A <see cref="!:System.String"></see> which encodes
-<see cref="!:System.Byte"></see>s in hexadecimal.  Its length must be zero or
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a> which encodes
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s in hexadecimal.  Its length must be zero or
 an even number.  It must not be <code>null</code>.</p>
 </td>
       </tr>
@@ -518,9 +582,38 @@ an even number.  It must not be <code>null</code>.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A <see cref="!:System.Byte"></see> array that the given
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array that the given
 <code data-dev-comment-type="paramref" class="paramref">hex</code> string represented in hexadecimal.
 It lengthens the half of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string is <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentoutofrangeexception">ArgumentOutOfRangeException</a></td>
+        <td><p>Thrown when the length
+of the given <code data-dev-comment-type="paramref" class="paramref">hex</code> string is an odd number.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.formatexception">FormatException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">hex</code> string is not a valid hexadecimal string.</p>
 </td>
       </tr>
     </tbody>
