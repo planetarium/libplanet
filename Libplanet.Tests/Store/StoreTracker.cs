@@ -178,6 +178,31 @@ namespace Libplanet.Tests.Store
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
+        public long GetTxNonce(string @namespace, Address address)
+        {
+            _logs.Add((nameof(GetTxNonce), address, null));
+            return _store.GetTxNonce(@namespace, address);
+        }
+
+        public void IncreaseTxNonce<T>(string @namespace, Block<T> block)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(IncreaseTxNonce), block.Hash, null));
+            _store.IncreaseTxNonce(@namespace, block);
+        }
+
+        public void ForkTxNonce<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new()
+        {
+            _logs.Add((nameof(ForkTxNonce), null, null));
+            _store.ForkTxNonce(
+                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
+        }
+
         public void StageTransactionIds(ISet<TxId> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));

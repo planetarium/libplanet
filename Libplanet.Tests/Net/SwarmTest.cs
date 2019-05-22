@@ -491,6 +491,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainB = _blockchains[1];
 
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                0,
                 new PrivateKey(),
                 new DumbAction[0]
             );
@@ -535,6 +536,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainC = _blockchains[2];
 
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                0,
                 new PrivateKey(),
                 new DumbAction[] { }
             );

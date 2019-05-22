@@ -41,9 +41,13 @@ namespace Libplanet.Tx
         /// this constructor is only useful when all details of
         /// a <see cref="Transaction{T}"/> need to be manually adjusted.
         /// For the most cases, the fa&#xe7;ade factory <see
-        /// cref="Create(PrivateKey, IEnumerable{T}, IImmutableSet{Address},
-        /// DateTimeOffset?)"/> is more useful.</para>
+        /// cref="Create(long, PrivateKey, IEnumerable{T},
+        /// IImmutableSet{Address}, DateTimeOffset?)"/> is more useful.</para>
         /// </summary>
+        /// <param name="nonce">The number of previous
+        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// of this transaction.  This goes to the
+        /// <see cref="Transaction{T}.Nonce"/> property.</param>
         /// <param name="signer">An <see cref="Address"/> of the account
         /// who signs this transaction.  If this is not derived from <paramref
         /// name="publicKey"/> <see cref="InvalidTxPublicKeyException"/> is
@@ -80,6 +84,7 @@ namespace Libplanet.Tx
         /// <paramref name="signer"/> is not derived from its
         /// <paramref name="publicKey"/>.</exception>
         public Transaction(
+            long nonce,
             Address signer,
             PublicKey publicKey,
             IImmutableSet<Address> updatedAddresses,
@@ -87,6 +92,7 @@ namespace Libplanet.Tx
             IEnumerable<T> actions,
             byte[] signature)
             : this(
+                nonce,
                 signer,
                 publicKey,
                 updatedAddresses,
@@ -99,6 +105,7 @@ namespace Libplanet.Tx
 
         internal Transaction(RawTransaction rawTx)
             : this(
+                rawTx.Nonce,
                 new Address(rawTx.Signer),
                 new PublicKey(rawTx.PublicKey),
                 rawTx.UpdatedAddresses.Select(
@@ -121,12 +128,14 @@ namespace Libplanet.Tx
         }
 
         private Transaction(
+            long nonce,
             Address signer,
             PublicKey publicKey,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions)
             : this(
+                nonce,
                 signer,
                 publicKey,
                 updatedAddresses,
@@ -138,6 +147,7 @@ namespace Libplanet.Tx
         }
 
         private Transaction(
+            long nonce,
             Address signer,
             PublicKey publicKey,
             IImmutableSet<Address> updatedAddresses,
@@ -146,6 +156,7 @@ namespace Libplanet.Tx
             byte[] signature,
             bool validate)
         {
+            Nonce = nonce;
             Signer = signer;
             UpdatedAddresses = updatedAddresses ??
                     throw new ArgumentNullException(nameof(updatedAddresses));
@@ -176,6 +187,12 @@ namespace Libplanet.Tx
         /// </summary>
         /// <seealso cref="TxId"/>
         public TxId Id { get; }
+
+        /// <summary>
+        /// The number of previous <see cref="Transaction{T}"/>s committed by
+        /// the <see cref="Signer"/> of this transaction.
+        /// </summary>
+        public long Nonce { get; }
 
         /// <summary>
         /// A <see cref="PublicKey"/> of the account who signs this transaction.
@@ -253,7 +270,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(Address, PublicKey,
+        /// Unlike the <see cref="Transaction(long, Address, PublicKey,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
         /// constructor, it automatically fills the following values from:
         /// <list type="table">
@@ -304,6 +321,10 @@ namespace Libplanet.Tx
         /// <see cref="IActionContext.Rehearsal"/> is <c>true</c> and
         /// a conditional logic for the case.</para>
         /// </remarks>
+        /// <param name="nonce">The number of previous
+        /// <see cref="Transaction{T}"/>s committed by the <see cref="Signer"/>
+        /// of this transaction.  This goes to the
+        /// <see cref="Transaction{T}.Nonce"/> property.</param>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account
         /// who creates and signs a new transaction.  This key is used to fill
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
@@ -346,6 +367,7 @@ namespace Libplanet.Tx
         /// </para>
         /// </exception>
         public static Transaction<T> Create(
+            long nonce,
             PrivateKey privateKey,
             IEnumerable<T> actions,
             IImmutableSet<Address> updatedAddresses = null,
@@ -369,6 +391,7 @@ namespace Libplanet.Tx
 
             ImmutableArray<T> actionsArray = actions.ToImmutableArray();
             byte[] payload = new Transaction<T>(
+                nonce,
                 signer,
                 publicKey,
                 updatedAddresses,
@@ -379,6 +402,7 @@ namespace Libplanet.Tx
             if (!actionsArray.IsEmpty)
             {
                 IAccountStateDelta delta = new Transaction<T>(
+                    nonce,
                     signer,
                     publicKey,
                     updatedAddresses,
@@ -396,6 +420,7 @@ namespace Libplanet.Tx
                     updatedAddresses =
                         updatedAddresses.Union(delta.UpdatedAddresses);
                     payload = new Transaction<T>(
+                        nonce,
                         signer,
                         publicKey,
                         updatedAddresses,
@@ -407,6 +432,7 @@ namespace Libplanet.Tx
 
             byte[] sig = privateKey.Sign(payload);
             return new Transaction<T>(
+                nonce,
                 signer,
                 publicKey,
                 updatedAddresses,
@@ -690,6 +716,7 @@ namespace Libplanet.Tx
         internal RawTransaction ToRawTransaction(bool includeSign)
         {
             var rawTx = new RawTransaction(
+                nonce: Nonce,
                 signer: Signer.ToByteArray(),
                 updatedAddresses: UpdatedAddresses.Select(a =>
                     a.ToByteArray()).ToArray(),

@@ -24,6 +24,7 @@ namespace Libplanet.Store
         private const string _statesDir = "states";
         private const string _indicesDir = "indices";
         private const string _stateReferenceDir = "stateref";
+        private const string _txNonceDir = "txnonce";
 
         private static readonly string[] BuiltinDirs =
         {
@@ -33,6 +34,7 @@ namespace Libplanet.Store
             _statesDir,
             _indicesDir,
             _stateReferenceDir,
+            _txNonceDir,
         };
 
         private readonly string _path;
@@ -142,6 +144,25 @@ namespace Libplanet.Store
             string addressHex = address.ToHex();
             return Path.Combine(
                 GetStateReferencePath(@namespace),
+                addressHex.Substring(0, 4),
+                addressHex.Substring(4));
+        }
+
+        public string GetTxNoncePath(string @namespace)
+        {
+            return Path.Combine(
+                _path,
+                _txNonceDir,
+                @namespace);
+        }
+
+        public string GetTxNoncePath(
+            string @namespace,
+            Address address)
+        {
+            string addressHex = address.ToHex();
+            return Path.Combine(
+                GetTxNoncePath(@namespace),
                 addressHex.Substring(0, 4),
                 addressHex.Substring(4));
         }
@@ -543,13 +564,23 @@ namespace Libplanet.Store
                 GetStateReferencePath(@namespace, address));
             long lookupUntilIndex = lookupUntil.Index;
 
-            if (!addrFile.Exists)
+            if (!addrFile.Exists || addrFile.Length == 0)
             {
                 return null;
             }
 
             using (Stream stream = addrFile.OpenRead())
             {
+                int stateReferenceSize = HashDigest<SHA256>.Size + sizeof(long);
+
+                if (stream.Length % stateReferenceSize != 0)
+                {
+                    throw new FileLoadException(
+                        $"State reference file size {stream.Length} " +
+                        "should be multiple of state reference entry size " +
+                        $"{stateReferenceSize}");
+                }
+
                 foreach (
                     var (hashBytes, index)
                     in GetStateReferences(stream))
@@ -601,8 +632,112 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            string sourceDir = GetStateReferencePath(sourceNamespace);
-            string targetDir = GetStateReferencePath(destinationNamespace);
+            ForkIndexedStack(
+                sourceNamespace,
+                destinationNamespace,
+                branchPoint.Index,
+                addressesToStrip,
+                GetStateReferencePath,
+                GetStateReferencePath,
+                s => GetStateReferences(s).Select(t => t.Item2));
+        }
+
+        /// <inheritdoc/>
+        public override long GetTxNonce(string @namespace, Address address)
+        {
+            var nonceFile = new FileInfo(
+                GetTxNoncePath(@namespace, address));
+
+            if (!nonceFile.Exists || nonceFile.Length == 0)
+            {
+                return 0;
+            }
+
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockIndexSize = sizeof(long);
+            int nonceSize = sizeof(long);
+            int nonceEntrySize = hashSize + blockIndexSize + nonceSize;
+
+            using (Stream stream = nonceFile.OpenRead())
+            {
+                if (stream.Length % nonceEntrySize != 0)
+                {
+                    throw new FileLoadException(
+                        $"Nonce file size {stream.Length} should be " +
+                        $"a multiple of nonce entry size {nonceEntrySize}");
+                }
+
+                var buffer = new byte[nonceEntrySize];
+
+                stream.Seek(-buffer.Length, SeekOrigin.End);
+                stream.Read(buffer, 0, buffer.Length);
+
+                return BitConverter.ToInt64(buffer, hashSize + blockIndexSize);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void IncreaseTxNonce<T>(
+            string @namespace,
+            Block<T> block)
+        {
+            IEnumerable<Address> signers = block
+                .Transactions
+                .Select(tx => tx.Signer);
+            int hashSize = HashDigest<SHA256>.Size;
+            long blockIndex = block.Index;
+
+            foreach (Address signer in signers)
+            {
+                long nextNonce = GetTxNonce(@namespace, signer) + 1;
+                var nonceFile = new FileInfo(
+                    GetTxNoncePath(@namespace, signer));
+
+                if (!nonceFile.Directory.Exists)
+                {
+                    nonceFile.Directory.Create();
+                }
+
+                using (Stream stream = nonceFile.Open(
+                    FileMode.Append, FileAccess.Write))
+                {
+                    stream.Write(block.Hash.ToByteArray(), 0, hashSize);
+                    stream.Write(
+                        BitConverter.GetBytes(blockIndex), 0, sizeof(long));
+                    stream.Write(
+                        BitConverter.GetBytes(nextNonce), 0, sizeof(long));
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void ForkTxNonce<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+        {
+            ForkIndexedStack(
+                sourceNamespace,
+                destinationNamespace,
+                branchPoint.Index,
+                addressesToStrip,
+                GetTxNoncePath,
+                GetTxNoncePath,
+                s => GetTxNonces(s).Select(t => t.Item2));
+        }
+
+        private void ForkIndexedStack(
+            string sourceNamespace,
+            string destinationNamespace,
+            long branchPointIndex,
+            IImmutableSet<Address> addressesToStrip,
+            Func<string, string> getPath,
+            Func<string, Address, string> getAddressPath,
+            Func<Stream, IEnumerable<long>> getIndexedStack)
+        {
+            string sourceDir = getPath(sourceNamespace);
+            string targetDir = getPath(destinationNamespace);
             bool copied = CopyDirectory(sourceDir, targetDir);
 
             if (!copied && addressesToStrip.Any())
@@ -614,30 +749,29 @@ namespace Libplanet.Store
 
             foreach (Address address in addressesToStrip)
             {
-                StripStateReference(
-                    destinationNamespace,
-                    address,
-                    branchPoint.Index);
+                StripIndexedStack(
+                    getAddressPath(destinationNamespace, address),
+                    branchPointIndex,
+                    getIndexedStack);
             }
         }
 
-        private void StripStateReference(
-            string @namespace,
-            Address address,
-            long stripAfter)
+        private void StripIndexedStack(
+            string path,
+            long stripAfter,
+            Func<Stream, IEnumerable<long>> getIndexedStack)
         {
-            var addrFile = new FileInfo(
-                GetStateReferencePath(@namespace, address));
+            var file = new FileInfo(path);
 
-            if (!addrFile.Exists)
+            if (!file.Exists)
             {
                 return;
             }
 
-            using (Stream stream = addrFile.Open(
+            using (Stream stream = file.Open(
                 FileMode.Open, FileAccess.ReadWrite))
             {
-                foreach (var (_, index) in GetStateReferences(stream))
+                foreach (long index in getIndexedStack(stream))
                 {
                     if (index <= stripAfter)
                     {
@@ -669,6 +803,30 @@ namespace Libplanet.Store
             }
 
             stream.Seek(position, SeekOrigin.Begin);
+        }
+
+        private IEnumerable<(byte[], long, long)> GetTxNonces(Stream stream)
+        {
+            int hashSize = HashDigest<SHA256>.Size;
+            int blockIndexSize = sizeof(long);
+            int nonceSize = sizeof(long);
+            int nonceEntrySize = hashSize + blockIndexSize + nonceSize;
+            var buffer = new byte[nonceEntrySize];
+
+            long position = stream.Seek(0, SeekOrigin.End);
+
+            for (var i = 1; position - buffer.Length >= 0; i++)
+            {
+                position = stream.Seek(
+                    -buffer.Length * i, SeekOrigin.End);
+                stream.Read(buffer, 0, buffer.Length);
+                byte[] hashBytes = buffer.Take(hashSize).ToArray();
+                long index = BitConverter.ToInt64(buffer, hashSize);
+                long nonce = BitConverter.ToInt64(
+                    buffer, hashSize + blockIndexSize);
+
+                yield return (hashBytes, index, nonce);
+            }
         }
 
         private FileStream IndexFileStream(string @namespace)

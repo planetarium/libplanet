@@ -48,6 +48,12 @@ To be released.
  -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
     IImmutableSet<Address>` method.  [[#232]]
  -  Removed `Block<T>.Validate()` and `Block<T>.EvaluateActions()` method.  [[#243]]
+ -  Added `Transaction<T>.Nonce` and `RawTransaction.Nonce` properties.
+    [[#246]]
+ -  Added `IStore.GetTxNonce(string, Address)` method.  [[#246]]
+ -  Added `IStore.IncreaseTxNonce<T>(string, Block<T>)` method.  [[#246]]
+ -  Added `IStore.ForkTxNonce<T>(string, string, Block<T>,
+    IImmutableSet<Address>` method.  [[#246]]
 
 ### Added interfaces
 
@@ -77,6 +83,7 @@ To be released.
  -  Added `Block<T>.Evaluate()` method.  [[#243]]
  -  Made `InvalidBlockTimestampException` class `public` so that it can be
     caught. [[#133], [#251]]
+ -  Added `InvalidTxNonceException` class.  [[#246]]
 
 ### Behavioral changes
 
@@ -102,6 +109,9 @@ To be released.
     `Block<T>.Evaluate()`.  [[#243]]
  -  `BlockChain<T>.Append()` became to execute `Action.Execute()` only once per
     action in the `Block<T>`.  [[#243]]
+ -  `BlockChain<T>.Append()` method became to throw `InvalidTxNonceException`
+    when the `Transaction<T>.Nonce` does not correspond to its `Signer`'s
+    current nonce.  [[#246]]
 
 ### Bug fixes
 

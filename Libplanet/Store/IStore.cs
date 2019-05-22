@@ -66,12 +66,12 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Lookup a state reference, which is a <see cref="Block{T}.Hash"/>
+        /// Looks up a state reference, which is a <see cref="Block{T}.Hash"/>
         /// that has the state of the <paramref name="address"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to lookup a state reference.
+        /// <param name="namespace">The namespace to look up a state reference.
         /// </param>
-        /// <param name="address">The <see cref="Address"/> to find lookup.
+        /// <param name="address">The <see cref="Address"/> to look up.
         /// </param>
         /// <param name="lookupUntil">The upper bound (i.e., the latest block)
         /// of the search range. <see cref="Block{T}"/>s after
@@ -122,8 +122,8 @@ namespace Libplanet.Store
         /// fork.</param>
         /// <param name="destinationNamespace">The namespace of destination
         /// state references.</param>
-        /// <param name="branchPoint">The index of branch point to fork.
-        /// </param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
         /// <param name="addressesToStrip">The set of <see cref="Address"/>es
         /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
@@ -133,6 +133,66 @@ namespace Libplanet.Store
         /// <seealso cref="LookupStateReference{T}"/>
         /// <seealso cref="StoreStateReference{T}"/>
         void ForkStateReferences<T>(
+            string sourceNamespace,
+            string destinationNamespace,
+            Block<T> branchPoint,
+            IImmutableSet<Address> addressesToStrip)
+            where T : IAction, new();
+
+        /// <summary>
+        /// Gets <see cref="Transaction{T}"/> nonce of the
+        /// <paramref name="address"/>.
+        /// </summary>
+        /// <param name="namespace">The namespace to get
+        /// <see cref="Transaction{T}"/> nonce.
+        /// </param>
+        /// <param name="address">The <see cref="Address"/> to get
+        /// <see cref="Transaction{T}"/> nonce.
+        /// </param>
+        /// <returns>A <see cref="Transaction{T}"/> nonce. If there is no
+        /// previous <see cref="Transaction{T}"/>, return 0.</returns>
+        /// <seealso cref="IncreaseTxNonce{T}"/>
+        long GetTxNonce(string @namespace, Address address);
+
+        /// <summary>
+        /// Increases <see cref="Transaction{T}"/> of
+        /// <see cref="Transaction{T}.Signer"/> in the <paramref name="block"/>.
+        /// </summary>
+        /// <param name="namespace">The namespace to increase
+        /// <see cref="Transaction{T}"/> nonce.</param>
+        /// <param name="block">The <see cref="Block{T}"/> which has the
+        /// <see cref="Transaction{T}"/>s.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="block"/>.</typeparam>
+        /// <seealso cref="GetTxNonce"/>
+        void IncreaseTxNonce<T>(string @namespace, Block<T> block)
+            where T : IAction, new();
+
+        /// <summary>
+        /// Forks <see cref="Transaction{T}"/> nonces from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destinationNamespace"/>.
+        /// <para>This method copies <see cref="Transaction{T}"/> nonces from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destinationNamespace"/> and strips
+        /// <paramref name="addressesToStrip"/> of nonces after
+        /// <paramref name="branchPoint"/>.</para>
+        /// </summary>
+        /// <param name="sourceNamespace">The namespace of
+        /// <see cref="Transaction{T}"/> nonces to fork.</param>
+        /// <param name="destinationNamespace">The namespace of destination
+        /// <see cref="Transaction{T}"/> nonces.</param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
+        /// <param name="addressesToStrip">The set of <see cref="Address"/>es
+        /// to strip <see cref="Transaction{T}"/> nonces after forking.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="branchPoint"/>.</typeparam>
+        /// <exception cref="NamespaceNotFoundException">Thrown when the given
+        /// <paramref name="sourceNamespace"/> does not exist.</exception>
+        /// <seealso cref="GetTxNonce"/>
+        /// <seealso cref="IncreaseTxNonce{T}"/>
+        void ForkTxNonce<T>(
             string sourceNamespace,
             string destinationNamespace,
             Block<T> branchPoint,

@@ -41,6 +41,7 @@ namespace Libplanet.Tests.Tx
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
             Tx = Transaction<PolymorphicAction<BaseAction>>.Create(
+                0,
                 PrivateKey1,
                 new PolymorphicAction<BaseAction>[0],
                 timestamp: timestamp
@@ -59,6 +60,7 @@ namespace Libplanet.Tests.Tx
                 },
             };
             TxWithActions = Transaction<PolymorphicAction<BaseAction>>.Create(
+                0,
                 PrivateKey1,
                 actions,
                 timestamp: timestamp

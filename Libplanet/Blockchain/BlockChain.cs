@@ -231,6 +231,10 @@ namespace Libplanet.Blockchain
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
+        /// <exception cref="InvalidTxNonceException">Thrown when the
+        /// <see cref="Transaction{T}.Nonce"/> is different from
+        /// <see cref="BlockChain{T}.GetNonce"/> result of the
+        /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(Block<T> block) =>
             Append(block, DateTimeOffset.UtcNow);
 
@@ -248,6 +252,10 @@ namespace Libplanet.Blockchain
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
+        /// <exception cref="InvalidTxNonceException">Thrown when the
+        /// <see cref="Transaction{T}.Nonce"/> is different from
+        /// <see cref="BlockChain{T}.GetNonce"/> result of the
+        /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(Block<T> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, render: true);
 
@@ -280,6 +288,11 @@ namespace Libplanet.Blockchain
         {
             Store.UnstageTransactionIds(
                 transactions.Select(tx => tx.Id).ToImmutableHashSet());
+        }
+
+        public long GetNonce(Address address)
+        {
+            return Store.GetTxNonce(Id.ToString(), address);
         }
 
         public Block<T> MineBlock(
@@ -336,6 +349,22 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256>? tip =
                     Store.IndexBlockHash(Id.ToString(), -1);
+
+                foreach (Transaction<T> tx in block.Transactions)
+                {
+                    Address signer = tx.Signer;
+                    long nonce = Store.GetTxNonce(Id.ToString(), signer);
+
+                    if (!nonce.Equals(tx.Nonce))
+                    {
+                        throw new InvalidTxNonceException(
+                            tx.Id,
+                            nonce,
+                            tx.Nonce,
+                            "Transaction nonce is invalid.");
+                    }
+                }
+
                 evaluations = block.Evaluate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
@@ -462,6 +491,7 @@ namespace Libplanet.Blockchain
                 Block<T> pointBlock = Blocks[point];
 
                 var addressesToStrip = new HashSet<Address>();
+                var signersToStrip = new HashSet<Address>();
 
                 for (
                     Block<T> block = Tip;
@@ -474,7 +504,13 @@ namespace Libplanet.Blockchain
                         .Select(kv => kv.Key)
                         .ToImmutableHashSet();
 
+                    ImmutableHashSet<Address> signers = block
+                        .Transactions
+                        .Select(tx => tx.Signer)
+                        .ToImmutableHashSet();
+
                     addressesToStrip.UnionWith(addresses);
+                    signersToStrip.UnionWith(signers);
                 }
 
                 Store.ForkStateReferences(
@@ -482,6 +518,11 @@ namespace Libplanet.Blockchain
                     forked.Id.ToString(),
                     pointBlock,
                     addressesToStrip.ToImmutableHashSet());
+                Store.ForkTxNonce(
+                    Id.ToString(),
+                    forked.Id.ToString(),
+                    pointBlock,
+                    signersToStrip.ToImmutableHashSet());
             }
             finally
             {
@@ -632,8 +673,10 @@ namespace Libplanet.Blockchain
                 blockHash,
                 new AddressStateMap(totalDelta)
             );
-            Store.StoreStateReference(
-                Id.ToString(), updatedAddresses, block);
+
+            var chainId = Id.ToString();
+            Store.StoreStateReference(chainId, updatedAddresses, block);
+            Store.IncreaseTxNonce(chainId, block);
         }
     }
 }
