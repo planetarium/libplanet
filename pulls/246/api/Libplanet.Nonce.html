@@ -351,15 +351,34 @@
   
   <h1 id="Libplanet_Nonce" data-uid="Libplanet.Nonce" class="text-break">Struct Nonce
   </h1>
-  <div class="markdown level0 summary"><p>An arbitrary <see cref="!:System.Byte"></see>s that determines a
+  <div class="markdown level0 summary"><p>An arbitrary <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>s that determines a
 <a class="xref" href="Libplanet.Hashcash.Stamp.html">Hashcash.Stamp</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.equals#System_ValueType_Equals_System_Object_">ValueType.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.gethashcode#System_ValueType_GetHashCode">ValueType.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.html">Libplanet</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
   <h5 id="Libplanet_Nonce_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct Nonce</code></pre>
+    <pre><code class="lang-csharp hljs">[Equals]
+public struct Nonce</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -372,7 +391,7 @@
   </span>
   <a id="Libplanet_Nonce__ctor_" data-uid="Libplanet.Nonce.#ctor*"></a>
   <h4 id="Libplanet_Nonce__ctor_System_Byte___" data-uid="Libplanet.Nonce.#ctor(System.Byte[])">Nonce(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Converts a <see cref="!:System.Byte"></see> array into a <a class="xref" href="Libplanet.Nonce.html">Nonce</a>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array into a <a class="xref" href="Libplanet.Nonce.html">Nonce</a>
 value.</p>
 <p>This constructor is an inverse function of
 <a class="xref" href="Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray">ToByteArray()</a> method.</p>
@@ -395,8 +414,25 @@ value.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
         <td><span class="parametername">nonce</span></td>
-        <td><p>A <see cref="!:System.Byte"></see> array to convert to
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array to convert to
 a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">nonce</code> is a <code>null</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -416,7 +452,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be 
   </span>
   <a id="Libplanet_Nonce_ByteArray_" data-uid="Libplanet.Nonce.ByteArray*"></a>
   <h4 id="Libplanet_Nonce_ByteArray" data-uid="Libplanet.Nonce.ByteArray">ByteArray</h4>
-  <div class="markdown level1 summary"><p>A bare immutable <see cref="!:System.Byte"></see> array of the nonce.</p>
+  <div class="markdown level1 summary"><p>A bare immutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -433,7 +469,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be 
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.immutablearray-1">ImmutableArray</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -457,12 +493,13 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be 
   </span>
   <a id="Libplanet_Nonce_ToByteArray_" data-uid="Libplanet.Nonce.ToByteArray*"></a>
   <h4 id="Libplanet_Nonce_ToByteArray" data-uid="Libplanet.Nonce.ToByteArray">ToByteArray()</h4>
-  <div class="markdown level1 summary"><p>Gets a bare mutable <see cref="!:System.Byte"></see> array of the nonce.</p>
+  <div class="markdown level1 summary"><p>Gets a bare mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public byte[] ToByteArray()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -475,7 +512,7 @@ a <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.  It must not be 
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
-        <td><p>A new mutable <see cref="!:System.Byte"></see> array of the nonce.
+        <td><p>A new mutable <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a> array of the nonce.
 Since a returned array is created every time the method is called,
 any mutations on that array does not affect to
 the <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.</p>
@@ -501,7 +538,8 @@ the <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">[Pure]
+public override string ToString()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -519,6 +557,8 @@ the <a class="xref" href="Libplanet.Nonce.html">Nonce</a> object.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.valuetype.tostring#System_ValueType_ToString">ValueType.ToString()</a></div>
 </article>
           </div>
           
