@@ -144,6 +144,8 @@ To be released.
     NAT. [[#240]]
  -  Fixed a bug that `BlockChain<T>.FindNextHashes()` throws
     `ArgumentOutOfRangeException` when chain is empty.
+ -  Fixed a bug that `TurnClient.AcceptRelayedStreamAsync()`didn't handle
+    concurrent connections correctly. [[#256]]
 
 [AsyncIO]: https://github.com/somdoron/AsyncIO
 [Ethereum Homestead algorithm]: https://github.com/ethereum/EIPs/blob/master/EIPS/eip-2.md
@@ -179,6 +181,7 @@ To be released.
 [#246]: https://github.com/planetarium/libplanet/pull/246
 [#247]: https://github.com/planetarium/libplanet/pull/247
 [#251]: https://github.com/planetarium/libplanet/pull/251
+[#256]: https://github.com/planetarium/libplanet/pull/256
 
 
 Version 0.2.2
