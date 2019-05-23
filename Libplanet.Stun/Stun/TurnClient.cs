@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Stun.Messages;
+using Serilog;
 
 [assembly: InternalsVisibleTo("Libplanet.Stun.Tests")]
 namespace Libplanet.Stun
@@ -230,10 +230,12 @@ namespace Libplanet.Stun
                         _responses.Remove(message.TransactionId);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // Ignore the exception and retry.
-                    // FIXME add logging framework and a proper log message.
+                    Log.Error(
+                        e,
+                        $"An unexpected exception occured during parsing."
+                    );
                 }
             }
         }
