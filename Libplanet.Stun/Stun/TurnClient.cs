@@ -5,9 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Stun.Messages;
+using Nito.AsyncEx;
+using Serilog;
 
 [assembly: InternalsVisibleTo("Libplanet.Stun.Tests")]
 namespace Libplanet.Stun
@@ -22,9 +23,11 @@ namespace Libplanet.Stun
         private readonly IDictionary<byte[], TaskCompletionSource<StunMessage>>
             _responses;
 
+        private readonly AsyncProducerConsumerQueue<ConnectionAttempt>
+            _connectionAttempts;
+
         private readonly Task _messageProcessor;
         private TcpClient _control;
-        private TaskCompletionSource<ConnectionAttempt> _connectAttempted;
 
         public TurnClient(
             string host,
@@ -41,6 +44,9 @@ namespace Libplanet.Stun
 
             _control = new TcpClient();
             _control.Connect(_host, _port);
+
+            _connectionAttempts =
+                new AsyncProducerConsumerQueue<ConnectionAttempt>();
 
             _responses =
                 new Dictionary<byte[], TaskCompletionSource<StunMessage>>(
@@ -105,12 +111,10 @@ namespace Libplanet.Stun
 
         public async Task<NetworkStream> AcceptRelayedStreamAsync()
         {
-            NetworkStream stream = _control.GetStream();
             while (true)
             {
-                _connectAttempted =
-                    new TaskCompletionSource<ConnectionAttempt>();
-                ConnectionAttempt attempt = await _connectAttempted.Task;
+                ConnectionAttempt attempt =
+                    await _connectionAttempts.DequeueAsync();
 
                 byte[] id = attempt.ConnectionId;
                 var relayedClient = new TcpClient(_host, _port);
@@ -217,10 +221,9 @@ namespace Libplanet.Stun
                 {
                     StunMessage message = await StunMessage.Parse(stream);
 
-                    if (_connectAttempted != null &&
-                        message is ConnectionAttempt attempt)
+                    if (message is ConnectionAttempt attempt)
                     {
-                        _connectAttempted.SetResult(attempt);
+                        await _connectionAttempts.EnqueueAsync(attempt);
                     }
                     else if (_responses.TryGetValue(
                         message.TransactionId,
@@ -230,10 +233,12 @@ namespace Libplanet.Stun
                         _responses.Remove(message.TransactionId);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // Ignore the exception and retry.
-                    // FIXME add logging framework and a proper log message.
+                    Log.Error(
+                        e,
+                        $"An unexpected exception occured during parsing."
+                    );
                 }
             }
         }
