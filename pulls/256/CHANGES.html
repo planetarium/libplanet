@@ -218,6 +218,8 @@ unnecessary race conditions. [<a href="https://github.com/planetarium/libplanet/
 NAT. [<a href="https://github.com/planetarium/libplanet/pull/240">#240</a>]</li>
 <li>Fixed a bug that <code>BlockChain&lt;T&gt;.FindNextHashes()</code> throws
 <code>ArgumentOutOfRangeException</code> when chain is empty.</li>
+<li>Fixed a bug that <code>TurnClient.AcceptRelayedStreamAsync()</code>didn't handle
+concurrent connections correctly. [<a href="https://github.com/planetarium/libplanet/pull/256">#256</a>]</li>
 </ul>
 <h2 id="version-022">Version 0.2.2</h2>
 <p>Released on April 12, 2019.</p>
