@@ -101,6 +101,33 @@ jobs:
       testArguments: -appdomains denied
   timeoutInMinutes: 30
 
+- job: macOS_Unity
+  pool:
+    vmImage: macOS-10.14
+  steps:
+  - task: CmdLine@2
+    displayName: Download xunit-unity-runner
+    inputs:
+      script: |
+        pushd /tmp
+        curl -L -O \
+          https://github.com/planetarium/xunit-unity-runner/releases/download/0.2.0/xunit-unity-runner-0.2.0-StandaloneOSX.tar.bz2
+        tar xvfj xunit-unity-runner-*.tar.bz2
+        popd
+  - template: .azure-pipelines/mono.yml
+    parameters:
+      configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
+      testDisplayName: StandaloneOSX *.Tests.dll
+      testCommand: |-
+        /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX \
+          --exclude-method Libplanet.Tests.Blocks.BlockTest.EvaluateActionsPerTx
+      # FIXME: For unknown reason, on Unity methods returning ValueTuple<...>
+      #        cause MissingMethodException exception.  We should diagnose
+      #        this and make Unity builds to run these tests too.
+      #        See also: https://git.io/fjBDY
+  timeoutInMinutes: 30
+
 - job: Linux_NETCore
   pool:
     vmImage: 'ubuntu-16.04'

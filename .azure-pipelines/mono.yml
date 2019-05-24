@@ -1,6 +1,7 @@
 parameters:
   configuration: Debug
-  testArguments: ""
+  testDisplayName: xunit.console.exe *.Tests.dll
+  testCommand: "mono xunit.runner.console.*/tools/net461/xunit.console.exe"
 
 steps:
 
@@ -25,11 +26,11 @@ steps:
         /p:Configuration=${{ parameters.configuration }}
 
 - task: CmdLine@2
-  displayName: xunit.console.exe *.Tests.dll
+  displayName: ${{ parameters.testDisplayName }}
   inputs:
     script: |
-      mono xunit.runner.console.*/tools/net461/xunit.console.exe \
-        *.Tests/bin/${{ parameters.configuration }}/net*/*.Tests.dll
+      ${{ parameters.testCommand }} \
+        "$(pwd)"/*.Tests/bin/${{ parameters.configuration }}/net*/*.Tests.dll
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
   timeoutInMinutes: 10
