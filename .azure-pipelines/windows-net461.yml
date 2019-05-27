@@ -16,7 +16,11 @@ steps:
     script: |
       foreach ($path in gci *.Tests/*.Tests.csproj) {
         [xml]$csproj = Get-Content $path
-        $csproj.Project.PropertyGroup[0].TargetFramework = "net461"
+        foreach ($pg in $csproj.Project.PropertyGroup) {
+          if ($pg.TargetFramework -ne $null) {
+            $pg.TargetFramework = "net461"
+          }
+        }
         $csproj.Save($path)
       }
 
