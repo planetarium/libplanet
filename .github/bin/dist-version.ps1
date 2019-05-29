@@ -21,22 +21,24 @@ Write-Output $VersionPrefix > obj/version_prefix.txt
 
 $Event = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json
 if ($Event.head_commit.id -ne $null) {
-  $HeadCommit = $Event.head_commit.id
+  $HeadCommitHash = $Event.head_commit.id
 }
-if ($HeadCommit -eq $null) {
-  $HeadCommit = Get-Content .git/HEAD
-  $refPair = $HeadCommit.Split()
+if ($HeadCommitHash -eq $null) {
+  $headCommit = Get-Content .git/HEAD
+  $refPair = $headCommit.Split()
   if ($refPair.Length -gt 1) {
-    $HeadCommit = Get-Content ".git/$($refPair[1])"
+    $HeadCommitHash = Get-Content ".git/$($refPair[1])"
+  } else {
+    $HeadCommitHash = $headCommit
   }
 }
-$HeadCommit = $HeadCommit.Substring(0, 7)
+$HeadCommitHash = $HeadCommitHash.Substring(0, 7)
 
 if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
   $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
   $VersionSuffix = "nightly.$date"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
-  $VersionSuffix = "$VersionSuffix+$HeadCommit"
+  $VersionSuffix = "$VersionSuffix+$HeadCommitHash"
 } elseif ($env:GITHUB_REF.StartsWith("refs/tags/")) {
   $tag = $env:GITHUB_REF.Substring(10)
   if ("$tag" -ne "$VersionPrefix") {
@@ -52,7 +54,7 @@ if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
   $timestamp = $timestamp.ToUniversalTime()
   $VersionSuffix = "dev.$($timestamp.ToString("yyyyMMddHHmmss"))"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
-  $VersionSuffix = "$VersionSuffix+$HeadCommit"
+  $VersionSuffix = "$VersionSuffix+$HeadCommitHash"
 }
 
 if ($VersionSuffix -eq $null) {
