@@ -19,8 +19,18 @@ New-Item -ItemType directory -Path obj -ErrorAction SilentlyContinue
 Write-Output $VersionPrefix
 Write-Output $VersionPrefix > obj/version_prefix.txt
 
-$HeadCommit = `
-  (Get-Content ".git/$((Get-Content .git/HEAD).Split()[1])").Substring(0, 7)
+$Event = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json
+if ($Event.head_commit.id -ne $null) {
+  $HeadCommit = $Event.head_commit.id
+}
+if ($HeadCommit -eq $null) {
+  $HeadCommit = Get-Content .git/HEAD
+  $refPair = $HeadCommit.Split()
+  if ($refPair.Length -gt 1) {
+    $HeadCommit = Get-Content ".git/$($refPair[1])"
+  }
+}
+$HeadCommit = $HeadCommit.Substring(0, 7)
 
 if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
   $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
@@ -35,17 +45,13 @@ if ($env:GITHUB_EVENT_NAME.StartsWith("schedule")) {
   }
   $PackageVersion = $tag
 } else {
-  $event = Get-Content $env:GITHUB_EVENT_PATH | ConvertFrom-Json
-  $timestamp = $event.head_commit.timestamp
+  $timestamp = $Event.head_commit.timestamp
   if ($timestamp -eq $null) {
     $timestamp = Get-Date
   }
   $timestamp = $timestamp.ToUniversalTime()
   $VersionSuffix = "dev.$($timestamp.ToString("yyyyMMddHHmmss"))"
   $PackageVersion = "$VersionPrefix-$VersionSuffix"
-  if ($event.head_commit.id -ne $null) {
-    $HeadCommit = $event.head_commit.id.Substring(0, 7)
-  }
   $VersionSuffix = "$VersionSuffix+$HeadCommit"
 }
 
