@@ -34,7 +34,7 @@ if ! grep -E '\S' "$2" > /dev/null; then
   echo "There is no section for the version $version_prefix." > /dev/stderr
   exit 1
 elif [ "$version_prefix" = "$package_version" ] && \
-     ! grep -i "to be released" "$2"; then
+     grep -i "to be released" "$2"; then
   echo 'Release date should be shown on the release note.' > /dev/stderr
   exit 1
 fi
