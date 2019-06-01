@@ -61,7 +61,7 @@ else
   alias github-release="echo DRY-RUN: github-release"
 fi
 
-github-release relase \
+github-release release \
   --user "$github_user" \
   --repo "$github_repo" \
   --tag "$tag" \
