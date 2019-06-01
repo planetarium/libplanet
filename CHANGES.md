@@ -1,6 +1,20 @@
 Libplanet changelog
 ===================
 
+Version 0.4.0
+-------------
+
+To be released.
+
+### Backward-incompatible interface changes
+
+### Added interfaces
+
+### Behavioral changes
+
+### Bug fixes
+
+
 Version 0.3.0
 -------------
 
@@ -114,7 +128,7 @@ Released on May 31, 2019.
     current nonce.  [[#246]]
  -  `Swarm` became to enforce `ForceDotNet.Force()` in [AsyncIO] while it's running on
     Mono runtime.  [[#247]]
- 
+
 ### Bug fixes
 
  -  Fixed a bug that TURN relay had been disconnected when being connected for
