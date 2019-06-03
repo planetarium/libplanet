@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Net;
-using System.Numerics;
 using Libplanet.Stun.Attributes;
 using Xunit;
 
