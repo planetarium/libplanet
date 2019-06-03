@@ -18,6 +18,14 @@ namespace Libplanet.Store
 {
     public class LiteDBStore : IStore, IDisposable
     {
+        private const string TxIdPrefix = "tx/";
+
+        private const string IndexColPrefix = "index_";
+
+        private const string StateRefIdPrefix = "stateref/";
+
+        private const string NonceIdPrefix = "nonce/";
+
         private readonly LiteDatabase _db;
 
         public LiteDBStore(string path)
@@ -60,8 +68,8 @@ namespace Libplanet.Store
         public IEnumerable<string> ListNamespaces()
         {
             return _db.GetCollectionNames()
-                .Where(name => name.StartsWith("indices_"))
-                .Select(name => name.Split('_')[1]);
+                .Where(name => name.StartsWith(IndexColPrefix))
+                .Select(name => name.Substring(IndexColPrefix.Length));
         }
 
         /// <inheritdoc/>
@@ -132,7 +140,7 @@ namespace Libplanet.Store
         public IEnumerable<TxId> IterateTransactionIds()
         {
             return _db.FileStorage
-                .Find("tx/")
+                .Find(TxIdPrefix)
                 .Select(file => new TxId(ByteUtil.ParseHex(file.Filename)));
         }
 
@@ -298,7 +306,7 @@ namespace Libplanet.Store
             Block<T> lookupUntil)
             where T : IAction, new()
         {
-            var fileId = $"stateref/{@namespace}/{address.ToHex()}";
+            var fileId = $"{StateRefIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
 
             if (file is null)
@@ -347,12 +355,13 @@ namespace Libplanet.Store
 
             foreach (Address address in addresses)
             {
-                var fileId = $"stateref/{@namespace}/{address.ToHex()}";
+                string addrHex = address.ToHex();
+                var fileId = $"{StateRefIdPrefix}{@namespace}/{addrHex}";
                 if (!_db.FileStorage.Exists(fileId))
                 {
                     _db.FileStorage.Upload(
                         fileId,
-                        address.ToHex(),
+                        addrHex,
                         new MemoryStream());
                 }
 
@@ -375,8 +384,8 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public void ForkStateReferences<T>(
-            string sourceNamespace,
-            string destinationNamespace,
+            string srcNamespace,
+            string destNamespace,
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new()
@@ -384,20 +393,20 @@ namespace Libplanet.Store
             long branchPointIndex = branchPoint.Index;
             List<LiteFileInfo> files =
                 _db.FileStorage
-                    .Find($"stateref/{sourceNamespace}")
+                    .Find($"{StateRefIdPrefix}{srcNamespace}")
                     .ToList();
 
             if (!files.Any() && addressesToStrip.Any())
             {
                 throw new NamespaceNotFoundException(
-                    sourceNamespace,
+                    srcNamespace,
                     "The source namespace to be forked does not exist.");
             }
 
             foreach (LiteFileInfo srcFile in files)
             {
                 string destId =
-                    $"stateref/{destinationNamespace}/{srcFile.Filename}";
+                    $"{StateRefIdPrefix}{destNamespace}/{srcFile.Filename}";
                 _db.FileStorage.Upload(
                     destId,
                     srcFile.Filename,
@@ -435,7 +444,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public long GetTxNonce(string @namespace, Address address)
         {
-            var fileId = $"nonce/{@namespace}/{address.ToHex()}";
+            var fileId = $"{NonceIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
 
             if (file is null)
@@ -479,7 +488,7 @@ namespace Libplanet.Store
 
             foreach (Address signer in signers)
             {
-                var fileId = $"nonce/{@namespace}/{signer.ToHex()}";
+                var fileId = $"{NonceIdPrefix}{@namespace}/{signer.ToHex()}";
                 long nextNonce = GetTxNonce(@namespace, signer) + 1;
 
                 if (!_db.FileStorage.Exists(fileId))
@@ -521,7 +530,7 @@ namespace Libplanet.Store
             long branchPointIndex = branchPoint.Index;
             List<LiteFileInfo> files =
                 _db.FileStorage
-                    .Find($"nonce/{sourceNamespace}")
+                    .Find($"{NonceIdPrefix}{sourceNamespace}")
                     .ToList();
 
             if (!files.Any() && addressesToStrip.Any())
@@ -534,7 +543,7 @@ namespace Libplanet.Store
             foreach (LiteFileInfo srcFile in files)
             {
                 string destId =
-                    $"nonce/{destinationNamespace}/{srcFile.Filename}";
+                    $"{NonceIdPrefix}{destinationNamespace}/{srcFile.Filename}";
                 _db.FileStorage.Upload(
                     destId,
                     srcFile.Filename,
@@ -575,7 +584,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public long CountTransactions()
         {
-            return _db.FileStorage.Find("tx/").Count();
+            return _db.FileStorage.Find(TxIdPrefix).Count();
         }
 
         /// <inheritdoc/>
@@ -617,7 +626,7 @@ namespace Libplanet.Store
 
         private LiteCollection<HashDoc> IndexCollection(string @namespace)
         {
-            return _db.GetCollection<HashDoc>($"indices_{@namespace}");
+            return _db.GetCollection<HashDoc>($"{IndexColPrefix}{@namespace}");
         }
 
         private class HashDoc
