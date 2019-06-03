@@ -10,9 +10,14 @@ To be released.
 
 ### Added interfaces
 
+-  `BlockChain<T>.GetNonce()` became to receive an optional parameter
+   `includeStage` to refer staged transactions during nonce computation. [[#270]]
+
 ### Behavioral changes
 
 ### Bug fixes
+
+[#270]: https://github.com/planetarium/libplanet/pull/270
 
 
 Version 0.3.0
