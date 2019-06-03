@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 
@@ -103,6 +104,8 @@ namespace Libplanet.Tests.Store
         public Transaction<DumbAction> Transaction1 { get; }
 
         public Transaction<DumbAction> Transaction2 { get; }
+
+        public IStore Store { get; set; }
 
         public Transaction<DumbAction> MakeTransaction(
             IEnumerable<DumbAction> actions = null,

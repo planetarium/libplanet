@@ -7,7 +7,6 @@ namespace Libplanet.Tests.Store
     public class FileStoreFixture : StoreFixture, IDisposable
     {
         public FileStoreFixture()
-        : base()
         {
             string postfix = Guid.NewGuid().ToString();
             Path = System.IO.Path.Combine(
@@ -16,8 +15,6 @@ namespace Libplanet.Tests.Store
         }
 
         public string Path { get; }
-
-        public FileStore Store { get; }
 
         public void Dispose()
         {

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using Libplanet.Store;
-using LiteDB;
 
 namespace Libplanet.Tests.Store
 {
@@ -17,11 +16,9 @@ namespace Libplanet.Tests.Store
 
         public string Path { get; }
 
-        public LiteDBStore Store { get; }
-
         public void Dispose()
         {
-            Store?.Dispose();
+            (Store as LiteDBStore)?.Dispose();
             File.Delete(Path);
         }
     }
