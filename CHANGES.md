@@ -10,7 +10,7 @@ To be released.
 
 ### Added interfaces
 
- -  Added `LiteDBStore` that using [LiteDB] as backend. [[#269]]
+ -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
 
 ### Behavioral changes
 
