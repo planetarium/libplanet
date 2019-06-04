@@ -290,23 +290,20 @@ namespace Libplanet.Blockchain
                 transactions.Select(tx => tx.Id).ToImmutableHashSet());
         }
 
-        public long GetNonce(Address address, bool includeStage = false)
+        public long GetNonce(Address address)
         {
             long nonce = Store.GetTxNonce(Id.ToString(), address);
 
-            if (includeStage)
-            {
-                IEnumerable<Transaction<T>> stagedTxs = Store
-                    .IterateStagedTransactionIds()
-                    .Select(Store.GetTransaction<T>)
-                    .Where(tx => tx.Signer.Equals(address));
+            IEnumerable<Transaction<T>> stagedTxs = Store
+                .IterateStagedTransactionIds()
+                .Select(Store.GetTransaction<T>)
+                .Where(tx => tx.Signer.Equals(address));
 
-                foreach (Transaction<T> tx in stagedTxs)
+            foreach (Transaction<T> tx in stagedTxs)
+            {
+                if (nonce <= tx.Nonce)
                 {
-                    if (nonce <= tx.Nonce)
-                    {
-                        nonce = tx.Nonce + 1;
-                    }
+                    nonce = tx.Nonce + 1;
                 }
             }
 

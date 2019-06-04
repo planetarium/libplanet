@@ -802,8 +802,7 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.StageTransactions(txsB.ToHashSet());
 
-            Assert.Equal(1, _blockChain.GetNonce(address));
-            Assert.Equal(3, _blockChain.GetNonce(address, true));
+            Assert.Equal(3, _blockChain.GetNonce(address));
 
             Transaction<DumbAction>[] txsC =
             {
@@ -812,7 +811,7 @@ namespace Libplanet.Tests.Blockchain
             };
             _blockChain.StageTransactions(txsC.ToHashSet());
 
-            Assert.Equal(4, _blockChain.GetNonce(address, true));
+            Assert.Equal(4, _blockChain.GetNonce(address));
         }
 
         private sealed class NullPolicy<T> : IBlockPolicy<T>

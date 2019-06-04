@@ -10,10 +10,10 @@ To be released.
 
 ### Added interfaces
 
--  `BlockChain<T>.GetNonce()` became to receive an optional parameter
-   `includeStage` to refer staged transactions during nonce computation. [[#270]]
-
 ### Behavioral changes
+
+-  `BlockChain<T>.GetNonce()` became to refer staged transactions during nonce
+   computation. [[#270]]
 
 ### Bug fixes
 
