@@ -807,7 +807,7 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
         <td><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></td>
         <td><p>Thrown when the
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> is different from
-<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_System_Boolean_">GetNonce(Address, Boolean)</a> result of the
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of the
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
 </td>
       </tr>
@@ -879,7 +879,7 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
         <td><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></td>
         <td><p>Thrown when the
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> is different from
-<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_System_Boolean_">GetNonce(Address, Boolean)</a> result of the
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of the
 <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
 </td>
       </tr>
@@ -932,18 +932,18 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/feature/get-nonce-include-staging/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetNonce(Libplanet.Address%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/feature/get-nonce-include-staging/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetNonce(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/feature/get-nonce-include-staging/Libplanet/Blockchain/BlockChain.cs/#L293">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_GetNonce_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNonce*"></a>
-  <h4 id="Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_System_Boolean_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address,System.Boolean)">GetNonce(Address, Boolean)</h4>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)">GetNonce(Address)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public long GetNonce(Address address, bool includeStage = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public long GetNonce(Address address)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -958,11 +958,6 @@ the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Block
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">includeStage</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1048,7 +1043,7 @@ start finding the state. It will be The tip of the
     <a href="https://github.com/planetarium/libplanet/new/feature/get-nonce-include-staging/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/feature/get-nonce-include-staging/Libplanet/Blockchain/BlockChain.cs/#L347">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/feature/get-nonce-include-staging/Libplanet/Blockchain/BlockChain.cs/#L344">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address)">MineBlock(Address)</h4>
@@ -1095,7 +1090,7 @@ start finding the state. It will be The tip of the
     <a href="https://github.com/planetarium/libplanet/new/feature/get-nonce-include-staging/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/feature/get-nonce-include-staging/Libplanet/Blockchain/BlockChain.cs/#L316">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/feature/get-nonce-include-staging/Libplanet/Blockchain/BlockChain.cs/#L313">View Source</a>
   </span>
   <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
   <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset)">MineBlock(Address, DateTimeOffset)</h4>

@@ -1135,14 +1135,14 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetEnumerator
   nameWithType: BlockChain<T>.GetEnumerator
   nameWithType.vb: BlockChain(Of T).GetEnumerator
-- uid: Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address,System.Boolean)
-  name: GetNonce(Address, Boolean)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_System_Boolean_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address,System.Boolean)
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetNonce(Libplanet.Address, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNonce(Libplanet.Address, System.Boolean)
-  nameWithType: BlockChain<T>.GetNonce(Address, Boolean)
-  nameWithType.vb: BlockChain(Of T).GetNonce(Address, Boolean)
+- uid: Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)
+  name: GetNonce(Address)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetNonce(Libplanet.Address)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNonce(Libplanet.Address)
+  nameWithType: BlockChain<T>.GetNonce(Address)
+  nameWithType.vb: BlockChain(Of T).GetNonce(Address)
 - uid: Libplanet.Blockchain.BlockChain`1.GetNonce*
   name: GetNonce
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_
