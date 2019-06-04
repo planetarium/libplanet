@@ -12,7 +12,12 @@ To be released.
 
 ### Behavioral changes
 
+-  `BlockChain<T>.GetNonce()` became to count staged transactions too during nonce
+   computation. [[#270]]
+
 ### Bug fixes
+
+[#270]: https://github.com/planetarium/libplanet/pull/270
 
 
 Version 0.3.0
