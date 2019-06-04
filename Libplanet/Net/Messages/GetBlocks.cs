@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -7,9 +8,19 @@ namespace Libplanet.Net.Messages
 {
     internal class GetBlocks : Message
     {
-        public GetBlocks(IEnumerable<HashDigest<SHA256>> hashes)
+        public GetBlocks(
+            IEnumerable<HashDigest<SHA256>> hashes,
+            int chunkSize = 500)
         {
+            if (chunkSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(chunkSize),
+                    "Chunk size must be greater than 0.");
+            }
+
             BlockHashes = hashes;
+            ChunkSize = chunkSize;
         }
 
         public GetBlocks(NetMQFrame[] frames)
@@ -19,9 +30,12 @@ namespace Libplanet.Net.Messages
                 .Skip(1).Take(hashCount)
                 .Select(f => f.ConvertToHashDigest<SHA256>())
                 .ToList();
+            ChunkSize = frames[1 + hashCount].ConvertToInt32();
         }
 
         public IEnumerable<HashDigest<SHA256>> BlockHashes { get; }
+
+        public int ChunkSize { get; }
 
         protected override MessageType Type => MessageType.GetBlocks;
 
@@ -36,6 +50,9 @@ namespace Libplanet.Net.Messages
                 {
                     yield return new NetMQFrame(hash.ToByteArray());
                 }
+
+                yield return new NetMQFrame(
+                    NetworkOrderBitsConverter.GetBytes(ChunkSize));
             }
         }
     }
