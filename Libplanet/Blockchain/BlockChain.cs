@@ -368,20 +368,7 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip =
                     Store.IndexBlockHash(Id.ToString(), -1);
 
-                foreach (Transaction<T> tx in block.Transactions)
-                {
-                    Address signer = tx.Signer;
-                    long nonce = Store.GetTxNonce(Id.ToString(), signer);
-
-                    if (!nonce.Equals(tx.Nonce))
-                    {
-                        throw new InvalidTxNonceException(
-                            tx.Id,
-                            nonce,
-                            tx.Nonce,
-                            "Transaction nonce is invalid.");
-                    }
-                }
+                ValidateNonce(block);
 
                 evaluations = block.Evaluate(
                     currentTime,
@@ -420,6 +407,31 @@ namespace Libplanet.Blockchain
                         evaluation.OutputStates
                     );
                 }
+            }
+        }
+
+        internal void ValidateNonce(Block<T> block)
+        {
+            var nonces = new Dictionary<Address, long>();
+            foreach (Transaction<T> tx in block.Transactions)
+            {
+                Address signer = tx.Signer;
+                if (!nonces.TryGetValue(signer, out long nonce))
+                {
+                    nonce =
+                        Store.GetTxNonce(Id.ToString(), signer);
+                }
+
+                if (!nonce.Equals(tx.Nonce))
+                {
+                    throw new InvalidTxNonceException(
+                        tx.Id,
+                        nonce,
+                        tx.Nonce,
+                        "Transaction nonce is invalid.");
+                }
+
+                nonces[signer] = nonce + 1;
             }
         }
 
