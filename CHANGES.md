@@ -12,7 +12,7 @@ To be released.
 
 ### Behavioral changes
 
--  `BlockChain<T>.GetNonce()` became to refer staged transactions during nonce
+-  `BlockChain<T>.GetNonce()` became to count staged transactions too during nonce
    computation. [[#270]]
 
 ### Bug fixes
