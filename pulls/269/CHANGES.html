@@ -84,6 +84,10 @@
 <li>Added <code>LiteDBStore</code> backend that uses <a href="https://www.litedb.org/">LiteDB</a> under the hood.  [<a href="https://github.com/planetarium/libplanet/pull/269">#269</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>BlockChain&lt;T&gt;.GetNonce()</code> became to count staged transactions too during nonce
+computation. [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
