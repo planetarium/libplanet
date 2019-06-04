@@ -328,7 +328,7 @@ namespace Libplanet.Blockchain
             List<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
-                .OfType<Transaction<T>>()
+                .OrderBy(tx => tx.Nonce)
                 .ToList();
 
             Block<T> block = Block<T>.Mine(
