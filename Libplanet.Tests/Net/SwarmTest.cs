@@ -110,19 +110,20 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanStop()
+        public async Task StopAsync()
         {
             Swarm swarm = _swarms[0];
             BlockChain<DumbAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
-            Task task = await StartAsync(swarm, chain);
+            var task = await StartAsync(swarm, chain);
 
             Assert.True(swarm.Running);
             await swarm.StopAsync();
 
             Assert.False(swarm.Running);
-            await task;
+
+            Assert.False(task.IsFaulted);
         }
 
         [Fact(Timeout = Timeout)]
@@ -867,12 +868,10 @@ namespace Libplanet.Tests.Net
         )
             where T : IAction, new()
         {
-            Task task = Task.Run(
-                async () => await swarm.StartAsync(
-                    blockChain,
-                    200,
-                    cancellationToken
-                )
+            Task task = swarm.StartAsync(
+                blockChain,
+                200,
+                cancellationToken
             );
             await swarm.WaitForRunningAsync();
             return task;
