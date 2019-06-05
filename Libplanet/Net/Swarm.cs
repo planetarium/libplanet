@@ -682,12 +682,14 @@ namespace Libplanet.Net
                         await socket.ReceiveMultipartMessageAsync(
                             cancellationToken: token);
                         Message parsedMessage = Message.Parse(response, true);
-                        if (parsedMessage is Block blockMessage)
+                        if (parsedMessage is Messages.Blocks blockMessage)
                         {
-                            Block<T> block = Block<T>.FromBencodex(
-                                blockMessage.Payload);
-                            await yield.ReturnAsync(block);
-                            hashCount--;
+                            foreach (byte[] payload in blockMessage.Payloads)
+                            {
+                                Block<T> block = Block<T>.FromBencodex(payload);
+                                await yield.ReturnAsync(block);
+                                hashCount--;
+                            }
                         }
                         else
                         {
@@ -1337,16 +1339,35 @@ namespace Libplanet.Net
             where T : IAction, new()
         {
             _logger.Debug("Trying to transfer blocks...");
+
+            var blocks = new List<byte[]>();
+
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
                 if (blockChain.Blocks.TryGetValue(hash, out Block<T> block))
                 {
-                    Message response = new Block(block.ToBencodex(true, true))
+                    byte[] payload = block.ToBencodex(true, true);
+                    blocks.Add(payload);
+                }
+
+                if (blocks.Count == getData.ChunkSize)
+                {
+                    var response = new Messages.Blocks(blocks)
                     {
                         Identity = getData.Identity,
                     };
                     _replyQueue.Enqueue(response);
+                    blocks.Clear();
                 }
+            }
+
+            if (blocks.Any())
+            {
+                var response = new Messages.Blocks(blocks)
+                {
+                    Identity = getData.Identity,
+                };
+                _replyQueue.Enqueue(response);
             }
 
             _logger.Debug("Transfer complete.");

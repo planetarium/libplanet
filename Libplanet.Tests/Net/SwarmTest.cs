@@ -13,10 +13,12 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Messages;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using NetMQ;
+using NetMQ.Sockets;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -432,6 +434,68 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(
                     new[] { genesis, block1, block2 },
                     receivedBlocks);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task GetMultipleBlocksAtOnce()
+        {
+            var privateKey = new PrivateKey();
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = new Swarm(
+                privateKey,
+                1,
+                host: IPAddress.Loopback.ToString());
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis); // chainA and chainB shares genesis block.
+            chainA.MineBlock(_fx1.Address1);
+            chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainA);
+
+                var peer = swarmA.AsPeer;
+
+                await swarmB.AddPeersAsync(new[] { peer });
+
+                IEnumerable<HashDigest<SHA256>> hashes =
+                    await swarmB.GetBlockHashesAsync(
+                        peer,
+                        new BlockLocator(new[] { genesis.Hash }),
+                        null);
+
+                var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
+                using (var socket = new DealerSocket(netMQAddress))
+                {
+                    var request = new GetBlocks(hashes, 2);
+                    await socket.SendMultipartMessageAsync(
+                        request.ToNetMQMessage(privateKey));
+
+                    NetMQMessage response = await socket.ReceiveMultipartMessageAsync();
+                    Message parsedMessage = Message.Parse(response, true);
+                    Libplanet.Net.Messages.Blocks blockMessage =
+                        (Libplanet.Net.Messages.Blocks)parsedMessage;
+
+                    Assert.Equal(2, blockMessage.Payloads.Count);
+
+                    response = await socket.ReceiveMultipartMessageAsync();
+                    parsedMessage = Message.Parse(response, true);
+                    blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
+
+                    Assert.Single(blockMessage.Payloads);
+                }
             }
             finally
             {

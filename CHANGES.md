@@ -12,12 +12,18 @@ To be released.
 
 ### Behavioral changes
 
--  `BlockChain<T>.GetNonce()` became to count staged transactions too during nonce
-   computation. [[#270]]
+ -  `BlockChain<T>.GetNonce()` became to count staged transactions too during
+    nonce computation.  [[#270]]
+ -  A message `Swarm` became to have multiple blocks within it, which means 
+    round trips on the network are now much reduced.  [[#273], [#276]]
+ -  `Message.Block` has been replaced by `Message.Blocks` and the magic number
+    has been changed to `0x0a`.  [[#276]]
 
 ### Bug fixes
 
 [#270]: https://github.com/planetarium/libplanet/pull/270
+[#273]: https://github.com/planetarium/libplanet/issues/273
+[#276]: https://github.com/planetarium/libplanet/pull/276
 
 
 Version 0.3.0

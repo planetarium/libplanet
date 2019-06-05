@@ -51,9 +51,9 @@ namespace Libplanet.Net.Messages
             GetTxs = 0x08,
 
             /// <summary>
-            /// Message containing serialized block.
+            /// Message containing serialized blocks.
             /// </summary>
-            Block = 0x09,
+            Blocks = 0x0a,
 
             /// <summary>
             /// Message containing serialized transaction.
@@ -100,7 +100,7 @@ namespace Libplanet.Net.Messages
                 { MessageType.TxIds, typeof(TxIds) },
                 { MessageType.GetBlocks, typeof(GetBlocks) },
                 { MessageType.GetTxs, typeof(GetTxs) },
-                { MessageType.Block, typeof(Block) },
+                { MessageType.Blocks, typeof(Blocks) },
                 { MessageType.Tx, typeof(Tx) },
             };
 
