@@ -516,19 +516,20 @@ namespace Libplanet.Net
 
             try
             {
+                _workerCancellationTokenSource = new CancellationTokenSource();
+                CancellationToken workerCancellationToken =
+                    CancellationTokenSource.CreateLinkedTokenSource(
+                        _workerCancellationTokenSource.Token, cancellationToken
+                    ).Token;
+
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
                     await PreloadAsync(
                         blockChain,
-                        cancellationToken: cancellationToken);
+                        cancellationToken: workerCancellationToken);
                 }
 
-                _workerCancellationTokenSource = new CancellationTokenSource();
-                CancellationToken workerCancellationToken =
-                    CancellationTokenSource.CreateLinkedTokenSource(
-                        _workerCancellationTokenSource.Token, cancellationToken
-                        ).Token;
                 var tasks = new List<Task>
                 {
                     RepeatDeltaDistributionAsync(
@@ -640,7 +641,8 @@ namespace Libplanet.Net
                     cancellationToken: token);
 
                 NetMQMessage response =
-                    await socket.ReceiveMultipartMessageAsync();
+                    await socket.ReceiveMultipartMessageAsync(
+                        cancellationToken: token);
                 Message parsedMessage = Message.Parse(response, reply: true);
                 if (parsedMessage is BlockHashes blockHashes)
                 {
@@ -934,16 +936,18 @@ namespace Libplanet.Net
 
                     // Queue a task per message to avoid blocking.
                     #pragma warning disable CS4014
-                    Task.Run(async () =>
-                    {
-                        // it's still async because some method it relies are
-                        // async yet.
-                        await ProcessMessageAsync(
-                            blockChain,
-                            message,
-                            cancellationToken
-                        );
-                    });
+                    Task.Run(
+                        async () =>
+                        {
+                            // it's still async because some method it relies
+                            // are async yet.
+                            await ProcessMessageAsync(
+                                blockChain,
+                                message,
+                                cancellationToken
+                            );
+                        },
+                        cancellationToken);
                     #pragma warning restore CS4014
                 }
                 catch (InvalidMessageException e)
@@ -1071,12 +1075,14 @@ namespace Libplanet.Net
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
                 peer, message.Hashes, cancellationToken);
 
-            List<Block<T>> blocks = await fetched.ToListAsync();
+            List<Block<T>> blocks = await fetched.ToListAsync(
+                cancellationToken
+            );
             _logger.Debug("GetBlocksAsync() complete.");
 
             try
             {
-                using (await _blockSyncMutex.LockAsync())
+                using (await _blockSyncMutex.LockAsync(cancellationToken))
                 {
                     await AppendBlocksAsync(
                         blockChain, peer, blocks, cancellationToken
@@ -1240,7 +1246,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken)
             where T : IAction, new()
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 BlockLocator locator = blockChain.GetBlockLocator();
                 IEnumerable<HashDigest<SHA256>> hashes =
@@ -1269,27 +1275,30 @@ namespace Libplanet.Net
                     peer,
                     hashesAsArray,
                     cancellationToken
-                ).ForEachAsync(block =>
-                {
-                    _logger.Debug($"Trying to append block[{block.Hash}]...");
-
-                    // As actions in this block should be rendered
-                    // after actions in stale blocks are unrendered,
-                    // given the `render: false` option here.
-                    blockChain.Append(
-                        block,
-                        DateTimeOffset.UtcNow,
-                        render: false
-                    );
-                    received++;
-                    progress?.Report(new BlockDownloadState()
+                ).ForEachAsync(
+                    block =>
                     {
-                        TotalBlockCount = hashCount,
-                        ReceivedBlockCount = received,
-                        ReceivedBlockHash = block.Hash,
-                    });
-                    _logger.Debug($"Block[{block.Hash}] is appended.");
-                });
+                        _logger.Debug(
+                            $"Trying to append block[{block.Hash}]...");
+
+                        // As actions in this block should be rendered
+                        // after actions in stale blocks are unrendered,
+                        // given the `render: false` option here.
+                        blockChain.Append(
+                            block,
+                            DateTimeOffset.UtcNow,
+                            render: false
+                        );
+                        received++;
+                        progress?.Report(new BlockDownloadState
+                        {
+                            TotalBlockCount = hashCount,
+                            ReceivedBlockCount = received,
+                            ReceivedBlockHash = block.Hash,
+                        });
+                        _logger.Debug($"Block[{block.Hash}] is appended.");
+                    },
+                    cancellationToken);
             }
         }
 
