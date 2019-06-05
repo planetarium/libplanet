@@ -549,6 +549,10 @@ namespace Libplanet.Net
 
                 await Task.WhenAny(tasks);
             }
+            catch (TaskCanceledException e)
+            {
+                _logger.Information(e, "Task was canceled.");
+            }
             catch (Exception e)
             {
                 _logger.Error(
@@ -949,6 +953,10 @@ namespace Libplanet.Net
                         "Could not parse NetMQMessage properly; ignore."
                     );
                 }
+                catch (TaskCanceledException e)
+                {
+                    _logger.Information(e, "Task was canceled.");
+                }
                 catch (Exception e)
                 {
                     _logger.Error(
@@ -1152,6 +1160,10 @@ namespace Libplanet.Net
                     await FillBlocksAsync(
                         peer, synced, stop, progress, cancellationToken);
                     break;
+                }
+                catch (TaskCanceledException)
+                {
+                    throw;
                 }
                 catch (Exception e)
                 {
