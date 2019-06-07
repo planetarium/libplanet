@@ -1170,6 +1170,13 @@ namespace Libplanet.Net
                         peer, synced, stop, progress, cancellationToken);
                     break;
                 }
+
+                // We can't recover with TaskCanceledException and
+                // ObjectDisposedException. so just re-throw them.
+                catch (ObjectDisposedException)
+                {
+                    throw;
+                }
                 catch (TaskCanceledException)
                 {
                     throw;
