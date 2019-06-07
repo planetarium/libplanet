@@ -657,8 +657,7 @@ namespace Libplanet.Net
 
         internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
             Peer peer,
-            IEnumerable<HashDigest<SHA256>> blockHashes,
-            CancellationToken token = default(CancellationToken))
+            IEnumerable<HashDigest<SHA256>> blockHashes)
             where T : IAction, new()
         {
             if (!_peers.ContainsKey(peer))
@@ -669,6 +668,7 @@ namespace Libplanet.Net
 
             return new AsyncEnumerable<Block<T>>(async yield =>
             {
+                CancellationToken yieldToken = yield.CancellationToken;
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
                     var blockHashesAsArray =
@@ -677,16 +677,17 @@ namespace Libplanet.Net
                     var request = new GetBlocks(blockHashesAsArray);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
-                        cancellationToken: token);
+                        cancellationToken: yieldToken);
 
                     int hashCount = blockHashesAsArray.Count();
-                    _logger.Debug($"Required block count: {hashCount}.");
-                    while (hashCount > 0)
+                    _logger.Debug(
+                        $"Required block count: {hashCount}. {yieldToken}");
+                    while (hashCount > 0 && !yieldToken.IsCancellationRequested)
                     {
                         _logger.Debug("Receiving block...");
                         NetMQMessage response =
                         await socket.ReceiveMultipartMessageAsync(
-                            cancellationToken: token);
+                            cancellationToken: yieldToken);
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Blocks blockMessage)
                         {
@@ -1073,7 +1074,9 @@ namespace Libplanet.Net
                 $"Trying to GetBlocksAsync() " +
                 $"(using {message.Hashes.Count()} hashes)");
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
-                peer, message.Hashes, cancellationToken);
+                peer,
+                message.Hashes
+            );
 
             List<Block<T>> blocks = await fetched.ToListAsync(
                 cancellationToken
@@ -1273,8 +1276,7 @@ namespace Libplanet.Net
 
                 await GetBlocksAsync<T>(
                     peer,
-                    hashesAsArray,
-                    cancellationToken
+                    hashesAsArray
                 ).ForEachAsync(
                     block =>
                     {
