@@ -55,6 +55,12 @@ namespace Libplanet.Store
             }
         }
 
+        public override bool Contains(
+            KeyValuePair<HashDigest<SHA256>, Block<T>> item)
+        {
+            return Store.IterateBlockHashes().Contains(item.Key);
+        }
+
         public override bool Remove(HashDigest<SHA256> key)
         {
             return Store.DeleteBlock(key);

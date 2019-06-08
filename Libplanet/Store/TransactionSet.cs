@@ -63,6 +63,11 @@ namespace Libplanet.Store
             }
         }
 
+        public override bool Contains(KeyValuePair<TxId, Transaction<T>> item)
+        {
+            return Store.IterateTransactionIds().Contains(item.Key);
+        }
+
         public override bool Remove(TxId key)
         {
             return Store.DeleteTransaction(key);
