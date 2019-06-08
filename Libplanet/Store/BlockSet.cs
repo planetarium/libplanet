@@ -16,24 +16,13 @@ namespace Libplanet.Store
         {
         }
 
-        public override ICollection<HashDigest<SHA256>> Keys
-        {
-            get
-            {
-                return Store.IterateBlockHashes().ToList();
-            }
-        }
+        public override ICollection<HashDigest<SHA256>> Keys =>
+            Store.IterateBlockHashes().ToList();
 
-        public override ICollection<Block<T>> Values
-        {
-            get
-            {
-                return Store.IterateBlockHashes()
-                    .Select(Store.GetBlock<T>)
-                    .OfType<Block<T>>()
-                    .ToList();
-            }
-        }
+        public override ICollection<Block<T>> Values =>
+            Store.IterateBlockHashes()
+                .Select(Store.GetBlock<T>)
+                .ToList();
 
         public override int Count => (int)Store.CountBlocks();
 
