@@ -471,12 +471,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? Next(HashDigest<SHA256> hash)
-                {
-                    long nextIndex = Blocks[hash].Index + 1;
-                    return Store.IndexBlockHash(Id.ToString(), nextIndex);
-                }
-
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(
                     Id.ToString(), -1);
                 if (tip is null)
@@ -484,18 +478,26 @@ namespace Libplanet.Blockchain
                     yield break;
                 }
 
-                HashDigest<SHA256>? currentHash = FindBranchPoint(locator);
+                HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
+                var branchPointIndex = (int)Blocks[branchPoint].Index;
+                IEnumerable<HashDigest<SHA256>> hashes = Store
+                    .IterateIndex(Id.ToString())
+                    .Skip(branchPointIndex);
 
-                while (currentHash != null && count > 0)
+                foreach (HashDigest<SHA256> hash in hashes)
                 {
-                    yield return currentHash.Value;
-
-                    if (currentHash.Equals(stop) || currentHash.Equals(tip))
+                    if (count == 0)
                     {
-                        break;
+                        yield break;
                     }
 
-                    currentHash = Next(currentHash.Value);
+                    yield return hash;
+
+                    if (hash.Equals(stop))
+                    {
+                        yield break;
+                    }
+
                     count--;
                 }
             }
