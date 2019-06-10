@@ -90,6 +90,12 @@ round trips on the network are now much reduced.  [<a href="https://github.com/p
 has been changed to <code>0x0a</code>.  [<a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug that <code>Swarm</code> reported <code>TaskCanceledException</code> as an unknown
+exception while stopping. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
+<li>Fixed a bug that <code>Swarm</code> didn't stop properly during <code>Swarm.Preload()</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
+</ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
 <h3 id="backward-incompatible-interface-changes-1">Backward-incompatible interface changes</h3>
