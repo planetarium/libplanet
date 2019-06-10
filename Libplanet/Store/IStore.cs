@@ -58,6 +58,27 @@ namespace Libplanet.Store
 
         bool DeleteBlock(HashDigest<SHA256> blockHash);
 
+        /// <summary>
+        /// Gets the states updated by actions in the inquired block.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.
+        /// </param>
+        /// <returns>The states updated by actions in the inquired block.
+        /// If actions definitely do not update any addresses it returns
+        /// an empty map.  If there is no record for the inquired block
+        /// (because actions in it have never been evaluated yet) it returns
+        /// <c>null</c> instead.
+        /// </returns>
+        /// <remarks>It does not return all states built up from the genesis
+        /// block nor delta, but only dirty states by actions the inquired
+        /// block.
+        /// <para>For example, if actions in the genesis block do
+        /// <c>a++; b++</c>, /// and actions in the second block do
+        /// <c>b++; c++</c>, this method /// for the second block returns
+        /// <c>b = 2; c = 1</c> (dirty), not
+        /// <c>a = 1; b = 2; c = 1</c> (all states) nor
+        /// <c>b = 1; c = 1</c> (delta).</para>
+        /// </remarks>
         AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
 
         void SetBlockStates(

@@ -335,9 +335,9 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void StoreBlockState()
+        public void BlockState()
         {
-            Assert.Empty(Fx.Store.GetBlockStates(Fx.Hash1));
+            Assert.Null(Fx.Store.GetBlockStates(Fx.Hash1));
             AddressStateMap states = new AddressStateMap(
                 new Dictionary<Address, object>()
                 {

@@ -526,7 +526,7 @@ namespace Libplanet.Store
 
             if (!statesFile.Exists)
             {
-                return new AddressStateMap();
+                return null;
             }
 
             using (Stream stream = statesFile.OpenRead())

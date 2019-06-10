@@ -30,6 +30,8 @@ To be released.
  -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
+ -  `IStore.GetStates()` became able to return `null` to represent an absence
+    of states (i.e., incomplete states).  [[#272], [#285]]
 
 ### Bug fixes
 
