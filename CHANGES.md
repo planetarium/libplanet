@@ -21,9 +21,9 @@ To be released.
 
 ### Bug fixes
 
--  Fixed a bug that `Swarm` reported `TaskCanceledException` as an unknown
+ -  Fixed a bug that `Swarm` reported `TaskCanceledException` as an unknown
    exception while stopping. [[#275]]
--  Fixed a bug that `Swarm` didn't stop properly during `Swarm.Preload()`.
+ -  Fixed a bug that `Swarm` didn't stop properly during `Swarm.Preload()`.
    [[#275]]
 
 [#270]: https://github.com/planetarium/libplanet/pull/270
