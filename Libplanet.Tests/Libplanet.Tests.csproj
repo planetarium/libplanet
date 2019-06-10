@@ -10,7 +10,8 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
+                             '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
@@ -24,7 +25,9 @@
     <PackageReference Include="Serilog.Sinks.XUnit" Version="1.0.7" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
