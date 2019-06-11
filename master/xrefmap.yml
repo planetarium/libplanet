@@ -5595,6 +5595,437 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.UnstageTransactionIds
   nameWithType: IStore.UnstageTransactionIds
+- uid: Libplanet.Store.LiteDBStore
+  name: LiteDBStore
+  href: api/Libplanet.Store.LiteDBStore.html
+  commentId: T:Libplanet.Store.LiteDBStore
+  fullName: Libplanet.Store.LiteDBStore
+  nameWithType: LiteDBStore
+- uid: Libplanet.Store.LiteDBStore.#ctor(System.String)
+  name: LiteDBStore(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.#ctor(System.String)
+  fullName: Libplanet.Store.LiteDBStore.LiteDBStore(System.String)
+  nameWithType: LiteDBStore.LiteDBStore(String)
+- uid: Libplanet.Store.LiteDBStore.#ctor*
+  name: LiteDBStore
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_
+  commentId: Overload:Libplanet.Store.LiteDBStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.LiteDBStore
+  nameWithType: LiteDBStore.LiteDBStore
+- uid: Libplanet.Store.LiteDBStore.AppendIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: AppendIndex(String, HashDigest<SHA256>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.LiteDBStore.AppendIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: AppendIndex(String, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.LiteDBStore.AppendIndex(System.String, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.LiteDBStore.AppendIndex(System.String, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LiteDBStore.AppendIndex(String, HashDigest<SHA256>)
+  nameWithType.vb: LiteDBStore.AppendIndex(String, HashDigest(Of SHA256))
+- uid: Libplanet.Store.LiteDBStore.AppendIndex*
+  name: AppendIndex
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_AppendIndex_
+  commentId: Overload:Libplanet.Store.LiteDBStore.AppendIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.AppendIndex
+  nameWithType: LiteDBStore.AppendIndex
+- uid: Libplanet.Store.LiteDBStore.CountBlocks
+  name: CountBlocks()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountBlocks
+  commentId: M:Libplanet.Store.LiteDBStore.CountBlocks
+  fullName: Libplanet.Store.LiteDBStore.CountBlocks()
+  nameWithType: LiteDBStore.CountBlocks()
+- uid: Libplanet.Store.LiteDBStore.CountBlocks*
+  name: CountBlocks
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountBlocks_
+  commentId: Overload:Libplanet.Store.LiteDBStore.CountBlocks
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.CountBlocks
+  nameWithType: LiteDBStore.CountBlocks
+- uid: Libplanet.Store.LiteDBStore.CountIndex(System.String)
+  name: CountIndex(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountIndex_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.CountIndex(System.String)
+  fullName: Libplanet.Store.LiteDBStore.CountIndex(System.String)
+  nameWithType: LiteDBStore.CountIndex(String)
+- uid: Libplanet.Store.LiteDBStore.CountIndex*
+  name: CountIndex
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountIndex_
+  commentId: Overload:Libplanet.Store.LiteDBStore.CountIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.CountIndex
+  nameWithType: LiteDBStore.CountIndex
+- uid: Libplanet.Store.LiteDBStore.CountTransactions
+  name: CountTransactions()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountTransactions
+  commentId: M:Libplanet.Store.LiteDBStore.CountTransactions
+  fullName: Libplanet.Store.LiteDBStore.CountTransactions()
+  nameWithType: LiteDBStore.CountTransactions()
+- uid: Libplanet.Store.LiteDBStore.CountTransactions*
+  name: CountTransactions
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountTransactions_
+  commentId: Overload:Libplanet.Store.LiteDBStore.CountTransactions
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.CountTransactions
+  nameWithType: LiteDBStore.CountTransactions
+- uid: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: DeleteBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: DeleteBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LiteDBStore.DeleteBlock(HashDigest<SHA256>)
+  nameWithType.vb: LiteDBStore.DeleteBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.LiteDBStore.DeleteBlock*
+  name: DeleteBlock
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteBlock_
+  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.DeleteBlock
+  nameWithType: LiteDBStore.DeleteBlock
+- uid: Libplanet.Store.LiteDBStore.DeleteIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: DeleteIndex(String, HashDigest<SHA256>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.LiteDBStore.DeleteIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: DeleteIndex(String, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.LiteDBStore.DeleteIndex(System.String, Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.LiteDBStore.DeleteIndex(System.String, Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LiteDBStore.DeleteIndex(String, HashDigest<SHA256>)
+  nameWithType.vb: LiteDBStore.DeleteIndex(String, HashDigest(Of SHA256))
+- uid: Libplanet.Store.LiteDBStore.DeleteIndex*
+  name: DeleteIndex
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteIndex_
+  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.DeleteIndex
+  nameWithType: LiteDBStore.DeleteIndex
+- uid: Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
+  name: DeleteTransaction(TxId)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
+  nameWithType: LiteDBStore.DeleteTransaction(TxId)
+- uid: Libplanet.Store.LiteDBStore.DeleteTransaction*
+  name: DeleteTransaction
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteTransaction_
+  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.DeleteTransaction
+  nameWithType: LiteDBStore.DeleteTransaction
+- uid: Libplanet.Store.LiteDBStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_Dispose
+  commentId: M:Libplanet.Store.LiteDBStore.Dispose
+  fullName: Libplanet.Store.LiteDBStore.Dispose()
+  nameWithType: LiteDBStore.Dispose()
+- uid: Libplanet.Store.LiteDBStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_Dispose_
+  commentId: Overload:Libplanet.Store.LiteDBStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.Dispose
+  nameWithType: LiteDBStore.Dispose
+- uid: Libplanet.Store.LiteDBStore.ForkStateReferences*
+  name: ForkStateReferences
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkStateReferences_
+  commentId: Overload:Libplanet.Store.LiteDBStore.ForkStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.ForkStateReferences
+  nameWithType: LiteDBStore.ForkStateReferences
+- uid: Libplanet.Store.LiteDBStore.ForkStateReferences``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})
+  name: ForkStateReferences<T>(String, String, Block<T>, IImmutableSet<Address>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkStateReferences__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__
+  commentId: M:Libplanet.Store.LiteDBStore.ForkStateReferences``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})
+  name.vb: ForkStateReferences(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+  fullName: Libplanet.Store.LiteDBStore.ForkStateReferences<T>(System.String, System.String, Libplanet.Blocks.Block<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>)
+  fullName.vb: Libplanet.Store.LiteDBStore.ForkStateReferences(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address))
+  nameWithType: LiteDBStore.ForkStateReferences<T>(String, String, Block<T>, IImmutableSet<Address>)
+  nameWithType.vb: LiteDBStore.ForkStateReferences(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+- uid: Libplanet.Store.LiteDBStore.ForkTxNonce*
+  name: ForkTxNonce
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkTxNonce_
+  commentId: Overload:Libplanet.Store.LiteDBStore.ForkTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.ForkTxNonce
+  nameWithType: LiteDBStore.ForkTxNonce
+- uid: Libplanet.Store.LiteDBStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})
+  name: ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__
+  commentId: M:Libplanet.Store.LiteDBStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})
+  name.vb: ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+  fullName: Libplanet.Store.LiteDBStore.ForkTxNonce<T>(System.String, System.String, Libplanet.Blocks.Block<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>)
+  fullName.vb: Libplanet.Store.LiteDBStore.ForkTxNonce(Of T)(System.String, System.String, Libplanet.Blocks.Block(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address))
+  nameWithType: LiteDBStore.ForkTxNonce<T>(String, String, Block<T>, IImmutableSet<Address>)
+  nameWithType.vb: LiteDBStore.ForkTxNonce(Of T)(String, String, Block(Of T), IImmutableSet(Of Address))
+- uid: Libplanet.Store.LiteDBStore.GetBlock*
+  name: GetBlock
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlock_
+  commentId: Overload:Libplanet.Store.LiteDBStore.GetBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.GetBlock
+  nameWithType: LiteDBStore.GetBlock
+- uid: Libplanet.Store.LiteDBStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetBlock<T>(HashDigest<SHA256>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.LiteDBStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetBlock(Of T)(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.LiteDBStore.GetBlock<T>(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.LiteDBStore.GetBlock(Of T)(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LiteDBStore.GetBlock<T>(HashDigest<SHA256>)
+  nameWithType.vb: LiteDBStore.GetBlock(Of T)(HashDigest(Of SHA256))
+- uid: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name: GetBlockStates(HashDigest<SHA256>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__
+  commentId: M:Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})
+  name.vb: GetBlockStates(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest<System.Security.Cryptography.SHA256>)
+  fullName.vb: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256))
+  nameWithType: LiteDBStore.GetBlockStates(HashDigest<SHA256>)
+  nameWithType.vb: LiteDBStore.GetBlockStates(HashDigest(Of SHA256))
+- uid: Libplanet.Store.LiteDBStore.GetBlockStates*
+  name: GetBlockStates
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlockStates_
+  commentId: Overload:Libplanet.Store.LiteDBStore.GetBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.GetBlockStates
+  nameWithType: LiteDBStore.GetBlockStates
+- uid: Libplanet.Store.LiteDBStore.GetTransaction*
+  name: GetTransaction
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTransaction_
+  commentId: Overload:Libplanet.Store.LiteDBStore.GetTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.GetTransaction
+  nameWithType: LiteDBStore.GetTransaction
+- uid: Libplanet.Store.LiteDBStore.GetTransaction``1(Libplanet.Tx.TxId)
+  name: GetTransaction<T>(TxId)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTransaction__1_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.LiteDBStore.GetTransaction``1(Libplanet.Tx.TxId)
+  name.vb: GetTransaction(Of T)(TxId)
+  fullName: Libplanet.Store.LiteDBStore.GetTransaction<T>(Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Store.LiteDBStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
+  nameWithType: LiteDBStore.GetTransaction<T>(TxId)
+  nameWithType.vb: LiteDBStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.LiteDBStore.GetTxNonce(System.String,Libplanet.Address)
+  name: GetTxNonce(String, Address)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTxNonce_System_String_Libplanet_Address_
+  commentId: M:Libplanet.Store.LiteDBStore.GetTxNonce(System.String,Libplanet.Address)
+  fullName: Libplanet.Store.LiteDBStore.GetTxNonce(System.String, Libplanet.Address)
+  nameWithType: LiteDBStore.GetTxNonce(String, Address)
+- uid: Libplanet.Store.LiteDBStore.GetTxNonce*
+  name: GetTxNonce
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.LiteDBStore.GetTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.GetTxNonce
+  nameWithType: LiteDBStore.GetTxNonce
+- uid: Libplanet.Store.LiteDBStore.IncreaseTxNonce*
+  name: IncreaseTxNonce
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IncreaseTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IncreaseTxNonce
+  nameWithType: LiteDBStore.IncreaseTxNonce
+- uid: Libplanet.Store.LiteDBStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name: IncreaseTxNonce<T>(String, Block<T>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.LiteDBStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})
+  name.vb: IncreaseTxNonce(Of T)(String, Block(Of T))
+  fullName: Libplanet.Store.LiteDBStore.IncreaseTxNonce<T>(System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.LiteDBStore.IncreaseTxNonce(Of T)(System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: LiteDBStore.IncreaseTxNonce<T>(String, Block<T>)
+  nameWithType.vb: LiteDBStore.IncreaseTxNonce(Of T)(String, Block(Of T))
+- uid: Libplanet.Store.LiteDBStore.IndexBlockHash(System.String,System.Int64)
+  name: IndexBlockHash(String, Int64)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IndexBlockHash_System_String_System_Int64_
+  commentId: M:Libplanet.Store.LiteDBStore.IndexBlockHash(System.String,System.Int64)
+  fullName: Libplanet.Store.LiteDBStore.IndexBlockHash(System.String, System.Int64)
+  nameWithType: LiteDBStore.IndexBlockHash(String, Int64)
+- uid: Libplanet.Store.LiteDBStore.IndexBlockHash*
+  name: IndexBlockHash
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IndexBlockHash_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IndexBlockHash
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IndexBlockHash
+  nameWithType: LiteDBStore.IndexBlockHash
+- uid: Libplanet.Store.LiteDBStore.IterateBlockHashes
+  name: IterateBlockHashes()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBlockHashes
+  commentId: M:Libplanet.Store.LiteDBStore.IterateBlockHashes
+  fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes()
+  nameWithType: LiteDBStore.IterateBlockHashes()
+- uid: Libplanet.Store.LiteDBStore.IterateBlockHashes*
+  name: IterateBlockHashes
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBlockHashes_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IterateBlockHashes
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes
+  nameWithType: LiteDBStore.IterateBlockHashes
+- uid: Libplanet.Store.LiteDBStore.IterateIndex(System.String)
+  name: IterateIndex(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndex_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.IterateIndex(System.String)
+  fullName: Libplanet.Store.LiteDBStore.IterateIndex(System.String)
+  nameWithType: LiteDBStore.IterateIndex(String)
+- uid: Libplanet.Store.LiteDBStore.IterateIndex*
+  name: IterateIndex
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndex_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IterateIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IterateIndex
+  nameWithType: LiteDBStore.IterateIndex
+- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
+  name: IterateStagedTransactionIds()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds
+  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
+  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds()
+  nameWithType: LiteDBStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds*
+  name: IterateStagedTransactionIds
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
+  nameWithType: LiteDBStore.IterateStagedTransactionIds
+- uid: Libplanet.Store.LiteDBStore.IterateTransactionIds
+  name: IterateTransactionIds()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateTransactionIds
+  commentId: M:Libplanet.Store.LiteDBStore.IterateTransactionIds
+  fullName: Libplanet.Store.LiteDBStore.IterateTransactionIds()
+  nameWithType: LiteDBStore.IterateTransactionIds()
+- uid: Libplanet.Store.LiteDBStore.IterateTransactionIds*
+  name: IterateTransactionIds
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateTransactionIds_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IterateTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.IterateTransactionIds
+  nameWithType: LiteDBStore.IterateTransactionIds
+- uid: Libplanet.Store.LiteDBStore.ListNamespaces
+  name: ListNamespaces()
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListNamespaces
+  commentId: M:Libplanet.Store.LiteDBStore.ListNamespaces
+  fullName: Libplanet.Store.LiteDBStore.ListNamespaces()
+  nameWithType: LiteDBStore.ListNamespaces()
+- uid: Libplanet.Store.LiteDBStore.ListNamespaces*
+  name: ListNamespaces
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListNamespaces_
+  commentId: Overload:Libplanet.Store.LiteDBStore.ListNamespaces
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.ListNamespaces
+  nameWithType: LiteDBStore.ListNamespaces
+- uid: Libplanet.Store.LiteDBStore.LookupStateReference*
+  name: LookupStateReference
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_LookupStateReference_
+  commentId: Overload:Libplanet.Store.LiteDBStore.LookupStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.LookupStateReference
+  nameWithType: LiteDBStore.LookupStateReference
+- uid: Libplanet.Store.LiteDBStore.LookupStateReference``1(System.String,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(String, Address, Block<T>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_LookupStateReference__1_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.LiteDBStore.LookupStateReference``1(System.String,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(String, Address, Block(Of T))
+  fullName: Libplanet.Store.LiteDBStore.LookupStateReference<T>(System.String, Libplanet.Address, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.LiteDBStore.LookupStateReference(Of T)(System.String, Libplanet.Address, Libplanet.Blocks.Block(Of T))
+  nameWithType: LiteDBStore.LookupStateReference<T>(String, Address, Block<T>)
+  nameWithType.vb: LiteDBStore.LookupStateReference(Of T)(String, Address, Block(Of T))
+- uid: Libplanet.Store.LiteDBStore.PutBlock*
+  name: PutBlock
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutBlock_
+  commentId: Overload:Libplanet.Store.LiteDBStore.PutBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.PutBlock
+  nameWithType: LiteDBStore.PutBlock
+- uid: Libplanet.Store.LiteDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})
+  name: PutBlock<T>(Block<T>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutBlock__1_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.LiteDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})
+  name.vb: PutBlock(Of T)(Block(Of T))
+  fullName: Libplanet.Store.LiteDBStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.LiteDBStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
+  nameWithType: LiteDBStore.PutBlock<T>(Block<T>)
+  nameWithType.vb: LiteDBStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.LiteDBStore.PutTransaction*
+  name: PutTransaction
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutTransaction_
+  commentId: Overload:Libplanet.Store.LiteDBStore.PutTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.PutTransaction
+  nameWithType: LiteDBStore.PutTransaction
+- uid: Libplanet.Store.LiteDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name: PutTransaction<T>(Transaction<T>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__
+  commentId: M:Libplanet.Store.LiteDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name.vb: PutTransaction(Of T)(Transaction(Of T))
+  fullName: Libplanet.Store.LiteDBStore.PutTransaction<T>(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Store.LiteDBStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
+  nameWithType: LiteDBStore.PutTransaction<T>(Transaction<T>)
+  nameWithType.vb: LiteDBStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)
+  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_
+  commentId: M:Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)
+  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+  fullName: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Action.AddressStateMap)
+  fullName.vb: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Action.AddressStateMap)
+  nameWithType: LiteDBStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
+  nameWithType.vb: LiteDBStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+- uid: Libplanet.Store.LiteDBStore.SetBlockStates*
+  name: SetBlockStates
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetBlockStates_
+  commentId: Overload:Libplanet.Store.LiteDBStore.SetBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.SetBlockStates
+  nameWithType: LiteDBStore.SetBlockStates
+- uid: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
+  name: StageTransactionIds(ISet<TxId>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
+  commentId: M:Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
+  name.vb: StageTransactionIds(ISet(Of TxId))
+  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
+  fullName.vb: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
+  nameWithType: LiteDBStore.StageTransactionIds(ISet<TxId>)
+  nameWithType.vb: LiteDBStore.StageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.LiteDBStore.StageTransactionIds*
+  name: StageTransactionIds
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_
+  commentId: Overload:Libplanet.Store.LiteDBStore.StageTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds
+  nameWithType: LiteDBStore.StageTransactionIds
+- uid: Libplanet.Store.LiteDBStore.StoreStateReference*
+  name: StoreStateReference
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StoreStateReference_
+  commentId: Overload:Libplanet.Store.LiteDBStore.StoreStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.StoreStateReference
+  nameWithType: LiteDBStore.StoreStateReference
+- uid: Libplanet.Store.LiteDBStore.StoreStateReference``1(System.String,System.Collections.Immutable.IImmutableSet{Libplanet.Address},Libplanet.Blocks.Block{``0})
+  name: StoreStateReference<T>(String, IImmutableSet<Address>, Block<T>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.LiteDBStore.StoreStateReference``1(System.String,System.Collections.Immutable.IImmutableSet{Libplanet.Address},Libplanet.Blocks.Block{``0})
+  name.vb: StoreStateReference(Of T)(String, IImmutableSet(Of Address), Block(Of T))
+  fullName: Libplanet.Store.LiteDBStore.StoreStateReference<T>(System.String, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.LiteDBStore.StoreStateReference(Of T)(System.String, System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), Libplanet.Blocks.Block(Of T))
+  nameWithType: LiteDBStore.StoreStateReference<T>(String, IImmutableSet<Address>, Block<T>)
+  nameWithType.vb: LiteDBStore.StoreStateReference(Of T)(String, IImmutableSet(Of Address), Block(Of T))
+- uid: Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
+  name: UnstageTransactionIds(ISet<TxId>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
+  commentId: M:Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
+  name.vb: UnstageTransactionIds(ISet(Of TxId))
+  fullName: Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
+  fullName.vb: Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
+  nameWithType: LiteDBStore.UnstageTransactionIds(ISet<TxId>)
+  nameWithType.vb: LiteDBStore.UnstageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.LiteDBStore.UnstageTransactionIds*
+  name: UnstageTransactionIds
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_UnstageTransactionIds_
+  commentId: Overload:Libplanet.Store.LiteDBStore.UnstageTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.UnstageTransactionIds
+  nameWithType: LiteDBStore.UnstageTransactionIds
 - uid: Libplanet.Store.NamespaceNotFoundException
   name: NamespaceNotFoundException
   href: api/Libplanet.Store.NamespaceNotFoundException.html
