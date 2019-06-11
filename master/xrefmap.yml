@@ -4543,6 +4543,24 @@ references:
   fullName.vb: Libplanet.Store.BlockSet(Of T).BlockSet
   nameWithType: BlockSet<T>.BlockSet
   nameWithType.vb: BlockSet(Of T).BlockSet
+- uid: Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.Block{`0}})
+  name: Contains(KeyValuePair<HashDigest<SHA256>, Block<T>>)
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Contains_System_Collections_Generic_KeyValuePair_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Blocks_Block__0___
+  commentId: M:Libplanet.Store.BlockSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Blocks.Block{`0}})
+  name.vb: Contains(KeyValuePair(Of HashDigest(Of SHA256), Block(Of T)))
+  fullName: Libplanet.Store.BlockSet<T>.Contains(System.Collections.Generic.KeyValuePair<Libplanet.HashDigest<System.Security.Cryptography.SHA256>, Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Store.BlockSet(Of T).Contains(System.Collections.Generic.KeyValuePair(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), Libplanet.Blocks.Block(Of T)))
+  nameWithType: BlockSet<T>.Contains(KeyValuePair<HashDigest<SHA256>, Block<T>>)
+  nameWithType.vb: BlockSet(Of T).Contains(KeyValuePair(Of HashDigest(Of SHA256), Block(Of T)))
+- uid: Libplanet.Store.BlockSet`1.Contains*
+  name: Contains
+  href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Contains_
+  commentId: Overload:Libplanet.Store.BlockSet`1.Contains
+  isSpec: "True"
+  fullName: Libplanet.Store.BlockSet<T>.Contains
+  fullName.vb: Libplanet.Store.BlockSet(Of T).Contains
+  nameWithType: BlockSet<T>.Contains
+  nameWithType.vb: BlockSet(Of T).Contains
 - uid: Libplanet.Store.BlockSet`1.Count
   name: Count
   href: api/Libplanet.Store.BlockSet-1.html#Libplanet_Store_BlockSet_1_Count
@@ -5635,6 +5653,24 @@ references:
   fullName.vb: Libplanet.Store.TransactionSet(Of T).TransactionSet
   nameWithType: TransactionSet<T>.TransactionSet
   nameWithType.vb: TransactionSet(Of T).TransactionSet
+- uid: Libplanet.Store.TransactionSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Tx.TxId,Libplanet.Tx.Transaction{`0}})
+  name: Contains(KeyValuePair<TxId, Transaction<T>>)
+  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Contains_System_Collections_Generic_KeyValuePair_Libplanet_Tx_TxId_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Store.TransactionSet`1.Contains(System.Collections.Generic.KeyValuePair{Libplanet.Tx.TxId,Libplanet.Tx.Transaction{`0}})
+  name.vb: Contains(KeyValuePair(Of TxId, Transaction(Of T)))
+  fullName: Libplanet.Store.TransactionSet<T>.Contains(System.Collections.Generic.KeyValuePair<Libplanet.Tx.TxId, Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Store.TransactionSet(Of T).Contains(System.Collections.Generic.KeyValuePair(Of Libplanet.Tx.TxId, Libplanet.Tx.Transaction(Of T)))
+  nameWithType: TransactionSet<T>.Contains(KeyValuePair<TxId, Transaction<T>>)
+  nameWithType.vb: TransactionSet(Of T).Contains(KeyValuePair(Of TxId, Transaction(Of T)))
+- uid: Libplanet.Store.TransactionSet`1.Contains*
+  name: Contains
+  href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Contains_
+  commentId: Overload:Libplanet.Store.TransactionSet`1.Contains
+  isSpec: "True"
+  fullName: Libplanet.Store.TransactionSet<T>.Contains
+  fullName.vb: Libplanet.Store.TransactionSet(Of T).Contains
+  nameWithType: TransactionSet<T>.Contains
+  nameWithType.vb: TransactionSet(Of T).Contains
 - uid: Libplanet.Store.TransactionSet`1.Count
   name: Count
   href: api/Libplanet.Store.TransactionSet-1.html#Libplanet_Store_TransactionSet_1_Count
