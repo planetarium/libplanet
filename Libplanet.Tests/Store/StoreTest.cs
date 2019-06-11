@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -217,8 +218,11 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.LookupStateReference(Fx.StoreNamespace, address, prevBlock));
         }
 
-        [Fact]
-        public void ForkStateReferences()
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [Theory]
+        public void ForkStateReferences(int branchPointIndex)
         {
             Address address = Fx.Address1;
             Block<DumbAction> prevBlock = Fx.Block3;
@@ -243,7 +247,7 @@ namespace Libplanet.Tests.Store
                     Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), block);
             }
 
-            var branchPoint = blocks[0];
+            var branchPoint = blocks[branchPointIndex];
             var addressesToStrip = new[] { address }.ToImmutableHashSet();
 
             Fx.Store.ForkStateReferences(
@@ -256,7 +260,7 @@ namespace Libplanet.Tests.Store
                 blocks[2].Hash,
                 Fx.Store.LookupStateReference(Fx.StoreNamespace, address, blocks[2]));
             Assert.Equal(
-                    blocks[0].Hash,
+                    blocks[branchPointIndex].Hash,
                     Fx.Store.LookupStateReference(targetNamespace, address, blocks[2]));
         }
 
@@ -353,6 +357,51 @@ namespace Libplanet.Tests.Store
 
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+        }
+
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [Theory]
+        public void ForkTxNonce(int branchPointIndex)
+        {
+            var privateKey = new PrivateKey();
+            Address address = privateKey.PublicKey.ToAddress();
+            Block<DumbAction> prevBlock = Fx.Block3;
+            const string targetNamespace = "dummy";
+
+            var blocks = new List<Block<DumbAction>>
+            {
+                TestUtils.MineNext(
+                    prevBlock,
+                    new[] { Fx.MakeTransaction(privateKey: privateKey) }),
+            };
+            blocks.Add(
+                TestUtils.MineNext(
+                    blocks[0],
+                    new[] { Fx.MakeTransaction(privateKey: privateKey) }));
+            blocks.Add(
+                TestUtils.MineNext(
+                    blocks[1],
+                    new[] { Fx.MakeTransaction(privateKey: privateKey) }));
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block);
+            }
+
+            var branchPoint = blocks[branchPointIndex];
+            Fx.Store.ForkTxNonce(
+                Fx.StoreNamespace,
+                targetNamespace,
+                branchPoint,
+                new[] { address }.ToImmutableHashSet());
+            Assert.Equal(
+                3,
+                Fx.Store.GetTxNonce(Fx.StoreNamespace, address));
+            Assert.Equal(
+                branchPointIndex + 1,
+                Fx.Store.GetTxNonce(targetNamespace, address));
         }
     }
 }

@@ -416,7 +416,7 @@ namespace Libplanet.Store
                 using (LiteFileStream srcStream = srcFile.OpenRead())
                 using (LiteFileStream destStream = destFile.OpenWrite())
                 {
-                    while (srcStream.CanRead)
+                    while (srcStream.Position < srcStream.Length)
                     {
                         var hashBytes = new byte[HashDigest<SHA256>.Size];
                         var indexBytes = new byte[sizeof(long)];
@@ -553,7 +553,7 @@ namespace Libplanet.Store
                 using (LiteFileStream srcStream = srcFile.OpenRead())
                 using (LiteFileStream destStream = destFile.OpenWrite())
                 {
-                    while (srcStream.CanRead)
+                    while (srcStream.Position < srcStream.Length)
                     {
                         var hashBytes = new byte[HashDigest<SHA256>.Size];
                         var indexBytes = new byte[sizeof(long)];
