@@ -43,7 +43,11 @@ namespace Libplanet.Stun
             _relayedClients = new List<TcpClient>();
 
             _control = new TcpClient();
+
+            // TODO Should investigate about PC001 on TcpClient.Connect().
+#pragma warning disable PC001  // API not supported on all platforms
             _control.Connect(_host, _port);
+#pragma warning restore PC001
 
             _connectionAttempts =
                 new AsyncProducerConsumerQueue<ConnectionAttempt>();

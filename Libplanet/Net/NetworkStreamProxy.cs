@@ -29,7 +29,11 @@ namespace Libplanet.Net
         public async Task StartAsync(IPEndPoint endPoint)
         {
             _targetClient = new TcpClient();
+
+            // TODO Should investigate about PC001 on TcpClient.Connect().
+#pragma warning disable PC001  // API not supported on all platforms
             _targetClient.Connect(endPoint);
+#pragma warning restore PC001
             NetworkStream target = _targetClient.GetStream();
             await Task.WhenAll(
                 Proxy(_source, target),

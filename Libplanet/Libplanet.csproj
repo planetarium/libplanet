@@ -66,8 +66,13 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Fody" Version="5.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="LiteDB" Version="4.1.4" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NetMQ" Version="4.0.0.207-pre" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />

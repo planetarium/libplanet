@@ -10,6 +10,8 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
+
 ### Behavioral changes
 
  -  `BlockChain<T>.GetNonce()` became to count staged transactions too during
@@ -28,6 +30,8 @@ To be released.
  -  Fixed a bug that `Swarm` didn't stop properly during `Swarm.Preload()`.
    [[#275]]
 
+[LiteDB]: https://www.litedb.org/
+[#269]: https://github.com/planetarium/libplanet/pull/269
 [#270]: https://github.com/planetarium/libplanet/pull/270
 [#273]: https://github.com/planetarium/libplanet/issues/273
 [#275]: https://github.com/planetarium/libplanet/pull/275
