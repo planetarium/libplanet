@@ -44,10 +44,7 @@ namespace Libplanet.Store
             }
         }
 
-        public bool Contains(KeyValuePair<TKey, TVal> item)
-        {
-            return Enumerable.Contains(this, item);
-        }
+        public abstract bool Contains(KeyValuePair<TKey, TVal> item);
 
         public bool ContainsKey(TKey key)
         {

@@ -14,13 +14,8 @@ namespace Libplanet.Store
         {
         }
 
-        public override ICollection<TxId> Keys
-        {
-            get
-            {
-                return Store.IterateTransactionIds().ToList();
-            }
-        }
+        public override ICollection<TxId> Keys =>
+            Store.IterateTransactionIds().ToList();
 
         public override ICollection<Transaction<T>> Values
         {
@@ -28,7 +23,6 @@ namespace Libplanet.Store
             {
                 return Keys
                     .Select(k => Store.GetTransaction<T>(k))
-                    .OfType<Transaction<T>>()
                     .ToList();
             }
         }
@@ -67,6 +61,11 @@ namespace Libplanet.Store
                 value.Validate();
                 Store.PutTransaction(value);
             }
+        }
+
+        public override bool Contains(KeyValuePair<TxId, Transaction<T>> item)
+        {
+            return Store.IterateTransactionIds().Contains(item.Key);
         }
 
         public override bool Remove(TxId key)

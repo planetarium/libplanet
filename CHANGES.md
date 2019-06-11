@@ -18,6 +18,8 @@ To be released.
     round trips on the network are now much reduced.  [[#273], [#276]]
  -  `Message.Block` has been replaced by `Message.Blocks` and the magic number
     has been changed to `0x0a`.  [[#276]]
+ -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
+    request messages.  [[#277]]
 
 ### Bug fixes
 
@@ -30,6 +32,7 @@ To be released.
 [#273]: https://github.com/planetarium/libplanet/issues/273
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
+[#277]: https://github.com/planetarium/libplanet/pull/277
 
 
 Version 0.3.0
