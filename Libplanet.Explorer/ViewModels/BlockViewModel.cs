@@ -7,7 +7,7 @@ namespace Libplanet.Explorer.ViewModels
     public class BlockViewModel
     {
         public long Index { get; set; }
-        public int Difficulty { get; set; }
+        public long Difficulty { get; set; }
         public string Nonce { get; set; }
         public string Miner { get; set; }
         public string PreviousHash { get; set; }
