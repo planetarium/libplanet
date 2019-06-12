@@ -118,6 +118,39 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public IEnumerable<Address> ListAddresses(string @namespace)
+        {
+            var prefix = $"{StateRefIdPrefix}{@namespace}/";
+            foreach (LiteFileInfo fileInfo in _db.FileStorage.Find(prefix))
+            {
+                string fileId = fileInfo.Id;
+                int slashIndex = fileId.LastIndexOf('/');
+                if (slashIndex < 0)
+                {
+                    continue;
+                }
+
+                string addressHex = fileId.Substring(slashIndex + 1);
+                if (addressHex.Length < Address.Size * 2)
+                {
+                    continue;
+                }
+
+                Address address;
+                try
+                {
+                    address = new Address(addressHex);
+                }
+                catch (ArgumentException)
+                {
+                    continue;
+                }
+
+                yield return address;
+            }
+        }
+
+        /// <inheritdoc/>
         public void StageTransactionIds(ISet<TxId> txids)
         {
             StagedTxIds.InsertBulk(

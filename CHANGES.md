@@ -10,6 +10,7 @@ To be released.
 
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.
+ -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
 
 ### Added interfaces
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -31,6 +32,43 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 new[] { Fx.StoreNamespace, "asdf" }.ToImmutableHashSet(),
                 Fx.Store.ListNamespaces().ToImmutableHashSet()
+            );
+        }
+
+        [Fact]
+        public void ListAddresses()
+        {
+            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());
+
+            Address[] addresses = Enumerable.Repeat<object>(null, 8)
+                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .ToArray();
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                addresses.Take(3).ToImmutableHashSet(),
+                Fx.Block1
+            );
+            Assert.Equal(
+                addresses.Take(3).ToImmutableHashSet(),
+                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
+            );
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                addresses.Skip(2).Take(3).ToImmutableHashSet(),
+                Fx.Block2
+            );
+            Assert.Equal(
+                addresses.Take(5).ToImmutableHashSet(),
+                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
+            );
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                addresses.Skip(5).Take(3).ToImmutableHashSet(),
+                Fx.Block3
+            );
+            Assert.Equal(
+                addresses.ToImmutableHashSet(),
+                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
             );
         }
 

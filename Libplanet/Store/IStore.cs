@@ -25,6 +25,14 @@ namespace Libplanet.Store
 
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
+        /// <summary>
+        /// Lists all addresses that have ever had states.
+        /// </summary>
+        /// <param name="namespace">The namespace to list addresses.</param>
+        /// <returns>All addresses in an arbitrary order.  The order might
+        /// be vary for each call.</returns>
+        IEnumerable<Address> ListAddresses(string @namespace);
+
         void StageTransactionIds(ISet<TxId> txids);
 
         void UnstageTransactionIds(ISet<TxId> txids);

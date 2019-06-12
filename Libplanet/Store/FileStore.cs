@@ -242,6 +242,36 @@ namespace Libplanet.Store
             return 0;
         }
 
+        /// <inheritdoc/>
+        public override IEnumerable<Address> ListAddresses(string @namespace)
+        {
+            string dirPath = GetStateReferencePath(@namespace);
+            var dir = new DirectoryInfo(dirPath);
+            if (!dir.Exists)
+            {
+                yield break;
+            }
+
+            foreach (DirectoryInfo upper in dir.EnumerateDirectories())
+            {
+                foreach (FileInfo lower in upper.EnumerateFiles())
+                {
+                    string hex = upper.Name + lower.Name;
+                    Address address;
+                    try
+                    {
+                        address = new Address(hex);
+                    }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
+
+                    yield return address;
+                }
+            }
+        }
+
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
             var blockFile = new FileInfo(GetBlockPath(blockHash));
