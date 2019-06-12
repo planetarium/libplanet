@@ -270,7 +270,7 @@ namespace Libplanet.Store
                 _db.FileStorage.FindById(BlockStateFileId(blockHash));
             if (file is null)
             {
-                return new AddressStateMap();
+                return null;
             }
 
             using (var stream = new MemoryStream())

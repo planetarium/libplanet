@@ -167,6 +167,11 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
+        /// <exception cref="IncompleteBlockStatesException">Thrown when
+        /// the <see cref="BlockChain{T}"/> instance does not contain
+        /// states dirty of the block which lastly updated states of a requested
+        /// address, because actions in the block has never been executed.
+        /// </exception>
         public AddressStateMap GetStates(
             IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
         {
@@ -208,11 +213,18 @@ namespace Libplanet.Blockchain
 
             foreach (var hashValue in hashValues)
             {
+                AddressStateMap blockStates = Store.GetBlockStates(hashValue);
+                if (blockStates is null)
+                {
+                    throw new IncompleteBlockStatesException(hashValue);
+                }
+
                 states = (AddressStateMap)states.SetItems(
-                        Store.GetBlockStates(hashValue)
-                        .Where(
-                            kv => requestedAddresses.Contains(kv.Key) &&
-                            !states.ContainsKey(kv.Key)));
+                    blockStates.Where(kv =>
+                        requestedAddresses.Contains(kv.Key) &&
+                        !states.ContainsKey(kv.Key)
+                    )
+                );
             }
 
             return states;
