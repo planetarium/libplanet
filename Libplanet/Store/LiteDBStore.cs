@@ -309,7 +309,7 @@ namespace Libplanet.Store
             var fileId = $"{StateRefIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
 
-            if (file is null)
+            if (file is null || file.Length == 0)
             {
                 return null;
             }
@@ -319,8 +319,16 @@ namespace Libplanet.Store
                 file.CopyTo(stream);
 
                 int hashSize = HashDigest<SHA256>.Size;
-                int blockInfoSize = hashSize + sizeof(long);
-                var buffer = new byte[blockInfoSize];
+                int stateReferenceSize = hashSize + sizeof(long);
+                var buffer = new byte[stateReferenceSize];
+
+                if (stream.Length % stateReferenceSize != 0)
+                {
+                    throw new FileLoadException(
+                        $"State reference file size {stream.Length} " +
+                        "should be multiple of state reference entry size " +
+                        $"{stateReferenceSize}");
+                }
 
                 long position = stream.Seek(0, SeekOrigin.End);
 
@@ -438,6 +446,11 @@ namespace Libplanet.Store
                         }
                     }
                 }
+
+                if (destFile.Length == 0)
+                {
+                    _db.FileStorage.Delete(destId);
+                }
             }
         }
 
@@ -447,7 +460,7 @@ namespace Libplanet.Store
             var fileId = $"{NonceIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
 
-            if (file is null)
+            if (file is null || file.Length == 0)
             {
                 return 0;
             }
@@ -459,14 +472,14 @@ namespace Libplanet.Store
 
             using (var stream = new MemoryStream())
             {
+                file.CopyTo(stream);
+
                 if (stream.Length % nonceEntrySize != 0)
                 {
                     throw new FileLoadException(
                         $"Nonce file size {stream.Length} should be " +
                         $"a multiple of nonce entry size {nonceEntrySize}");
                 }
-
-                file.CopyTo(stream);
 
                 var buffer = new byte[nonceEntrySize];
                 stream.Seek(stream.Length - buffer.Length, SeekOrigin.Begin);
@@ -577,6 +590,11 @@ namespace Libplanet.Store
                             break;
                         }
                     }
+                }
+
+                if (destFile.Length == 0)
+                {
+                    _db.FileStorage.Delete(destId);
                 }
             }
         }

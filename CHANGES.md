@@ -31,6 +31,8 @@ To be released.
     [[#275]]
  -  Fixed a bug where the oldest `TxNonce` of an address is not invalidated
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
+ -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
+    `System.IO.IOException` after forking.  [[#281]]
 
 [LiteDB]: https://www.litedb.org/
 [#269]: https://github.com/planetarium/libplanet/pull/269
