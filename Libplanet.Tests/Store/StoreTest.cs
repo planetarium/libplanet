@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -224,31 +223,44 @@ namespace Libplanet.Tests.Store
         [Theory]
         public void ForkStateReferences(int branchPointIndex)
         {
-            Address address = Fx.Address1;
+            Address address1 = Fx.Address1;
+            Address address2 = Fx.Address2;
             Block<DumbAction> prevBlock = Fx.Block3;
             const string targetNamespace = "dummy";
 
-            Transaction<DumbAction> transaction = Fx.MakeTransaction(
+            Transaction<DumbAction> tx1 = Fx.MakeTransaction(
                 new List<DumbAction>(),
-                new HashSet<Address> { address }.ToImmutableHashSet());
+                new HashSet<Address> { address1 }.ToImmutableHashSet());
 
-            var txs = new[] { transaction };
+            Transaction<DumbAction> tx2 = Fx.MakeTransaction(
+                new List<DumbAction>(),
+                new HashSet<Address> { address2 }.ToImmutableHashSet());
+
+            var txs1 = new[] { tx1 };
             var blocks = new List<Block<DumbAction>>
             {
-                TestUtils.MineNext(prevBlock, txs),
+                TestUtils.MineNext(prevBlock, txs1),
             };
-            blocks.Add(TestUtils.MineNext(blocks[0], txs));
-            blocks.Add(TestUtils.MineNext(blocks[1], txs));
+            blocks.Add(TestUtils.MineNext(blocks[0], txs1));
+            blocks.Add(TestUtils.MineNext(blocks[1], txs1));
 
+            HashSet<Address> updatedAddresses;
             foreach (Block<DumbAction> block in blocks)
             {
-                var updatedAddresses = new HashSet<Address> { address };
+                updatedAddresses = new HashSet<Address> { address1 };
                 Fx.Store.StoreStateReference(
                     Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), block);
             }
 
+            var txs2 = new[] { tx2 };
+            blocks.Add(TestUtils.MineNext(blocks[2], txs2));
+
+            updatedAddresses = new HashSet<Address> { address2 };
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), blocks[3]);
+
             var branchPoint = blocks[branchPointIndex];
-            var addressesToStrip = new[] { address }.ToImmutableHashSet();
+            var addressesToStrip = new[] { address1, address2 }.ToImmutableHashSet();
 
             Fx.Store.ForkStateReferences(
                 Fx.StoreNamespace,
@@ -256,12 +268,22 @@ namespace Libplanet.Tests.Store
                 branchPoint,
                 addressesToStrip);
 
+            var actual = Fx.Store.LookupStateReference(
+                Fx.StoreNamespace,
+                address1,
+                blocks[3]);
+
             Assert.Equal(
                 blocks[2].Hash,
-                Fx.Store.LookupStateReference(Fx.StoreNamespace, address, blocks[2]));
+                Fx.Store.LookupStateReference(Fx.StoreNamespace, address1, blocks[3]));
+            Assert.Equal(
+                blocks[3].Hash,
+                Fx.Store.LookupStateReference(Fx.StoreNamespace, address2, blocks[3]));
             Assert.Equal(
                     blocks[branchPointIndex].Hash,
-                    Fx.Store.LookupStateReference(targetNamespace, address, blocks[2]));
+                    Fx.Store.LookupStateReference(targetNamespace, address1, blocks[3]));
+            Assert.Null(
+                    Fx.Store.LookupStateReference(targetNamespace, address2, blocks[3]));
         }
 
         [Fact]
@@ -365,8 +387,10 @@ namespace Libplanet.Tests.Store
         [Theory]
         public void ForkTxNonce(int branchPointIndex)
         {
-            var privateKey = new PrivateKey();
-            Address address = privateKey.PublicKey.ToAddress();
+            var privateKey1 = new PrivateKey();
+            var privateKey2 = new PrivateKey();
+            Address address1 = privateKey1.PublicKey.ToAddress();
+            Address address2 = privateKey2.PublicKey.ToAddress();
             Block<DumbAction> prevBlock = Fx.Block3;
             const string targetNamespace = "dummy";
 
@@ -374,16 +398,20 @@ namespace Libplanet.Tests.Store
             {
                 TestUtils.MineNext(
                     prevBlock,
-                    new[] { Fx.MakeTransaction(privateKey: privateKey) }),
+                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }),
             };
             blocks.Add(
                 TestUtils.MineNext(
                     blocks[0],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey) }));
+                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
             blocks.Add(
                 TestUtils.MineNext(
                     blocks[1],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey) }));
+                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
+            blocks.Add(
+                TestUtils.MineNext(
+                    blocks[2],
+                    new[] { Fx.MakeTransaction(privateKey: privateKey2) }));
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -395,13 +423,16 @@ namespace Libplanet.Tests.Store
                 Fx.StoreNamespace,
                 targetNamespace,
                 branchPoint,
-                new[] { address }.ToImmutableHashSet());
+                new[] { address1, address2 }.ToImmutableHashSet());
             Assert.Equal(
                 3,
-                Fx.Store.GetTxNonce(Fx.StoreNamespace, address));
+                Fx.Store.GetTxNonce(Fx.StoreNamespace, address1));
             Assert.Equal(
                 branchPointIndex + 1,
-                Fx.Store.GetTxNonce(targetNamespace, address));
+                Fx.Store.GetTxNonce(targetNamespace, address1));
+            Assert.Equal(
+                0,
+                Fx.Store.GetTxNonce(targetNamespace, address2));
         }
     }
 }

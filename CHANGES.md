@@ -16,8 +16,8 @@ To be released.
 
  -  `BlockChain<T>.GetNonce()` became to count staged transactions too during
     nonce computation.  [[#270]]
- -  A message `Swarm` became to have multiple blocks within it, which means 
-    round trips on the network are now much reduced.  [[#273], [#276]]
+ -  A message `Swarm` makes became to have multiple blocks within it, which
+    means round trips on the network are now much reduced.  [[#273], [#276]]
  -  `Message.Block` has been replaced by `Message.Blocks` and the magic number
     has been changed to `0x0a`.  [[#276]]
  -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
@@ -26,9 +26,11 @@ To be released.
 ### Bug fixes
 
  -  Fixed a bug that `Swarm` reported `TaskCanceledException` as an unknown
-   exception while stopping. [[#275]]
+    exception while stopping. [[#275]]
  -  Fixed a bug that `Swarm` didn't stop properly during `Swarm.Preload()`.
-   [[#275]]
+    [[#275]]
+ -  Fixed a bug where the oldest `TxNonce` of an address is not invalidated
+    when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
 
 [LiteDB]: https://www.litedb.org/
 [#269]: https://github.com/planetarium/libplanet/pull/269
@@ -37,6 +39,7 @@ To be released.
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
+[#281]: https://github.com/planetarium/libplanet/pull/281
 
 
 Version 0.3.0
