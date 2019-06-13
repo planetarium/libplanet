@@ -87,8 +87,8 @@
 <ul>
 <li><code>BlockChain&lt;T&gt;.GetNonce()</code> became to count staged transactions too during
 nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>]</li>
-<li>A message <code>Swarm</code> became to have multiple blocks within it, which means
-round trips on the network are now much reduced.  [<a href="https://github.com/planetarium/libplanet/issues/273">#273</a>, <a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
+<li>A message <code>Swarm</code> makes became to have multiple blocks within it, which
+means round trips on the network are now much reduced.  [<a href="https://github.com/planetarium/libplanet/issues/273">#273</a>, <a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
 <li><code>Message.Block</code> has been replaced by <code>Message.Blocks</code> and the magic number
 has been changed to <code>0x0a</code>.  [<a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
 <li>Improved performance of <code>Swarm</code>'s response time to <code>GetBlockHashes</code>
@@ -100,6 +100,10 @@ request messages.  [<a href="https://github.com/planetarium/libplanet/pull/277">
 exception while stopping. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
 <li>Fixed a bug that <code>Swarm</code> didn't stop properly during <code>Swarm.Preload()</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
+<li>Fixed a bug where the oldest <code>TxNonce</code> of an address is not invalidated
+when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
+<li>Fixed a bug where <code>LiteDBStore.GetTxNonce()</code> method throws a
+<code>System.IO.IOException</code> after forking.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
