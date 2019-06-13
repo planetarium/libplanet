@@ -731,63 +731,12 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void GetStatesThrowsIncompleteBlockStatesException()
         {
-            IStore store = _fx.Store;
-            Guid chainId = Guid.NewGuid();
-            var chain = new BlockChain<DumbAction>(
-                new NullPolicy<DumbAction>(),
-                store,
-                chainId
-            );
-            var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
-
-            IImmutableDictionary<Address, object> GetDirty(
-                IEnumerable<ActionEvaluation<DumbAction>> evaluations) =>
-                evaluations.Select(
-                    a => a.OutputStates
-                ).Aggregate(
-                    ImmutableDictionary<Address, object>.Empty,
-                    (x, y) => x.SetItems(y.GetUpdatedStates())
-                );
-
-            // Build the store has incomplete states
-            Block<DumbAction> b = TestUtils.MineGenesis<DumbAction>();
-            chain.Blocks[b.Hash] = b;
-            store.IncreaseTxNonce(chainId.ToString(), b);
-            store.AppendIndex(chainId.ToString(), b.Hash);
-            IImmutableDictionary<Address, object> dirty =
-                GetDirty(b.Evaluate(DateTimeOffset.UtcNow, _ => null));
-            const int blocksCount = 5;
-            Address[] addresses = Enumerable.Repeat<object>(null, blocksCount)
-                .Select(_ => new PrivateKey().PublicKey.ToAddress())
-                .ToArray();
-            for (int i = 0; i < blocksCount; ++i)
-            {
-                Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                    store.GetTxNonce(chainId.ToString(), address),
-                    privateKey,
-                    new[] { new DumbAction(addresses[i], i.ToString()) }
-                );
-                b = TestUtils.MineNext(b, new Transaction<DumbAction>[] { tx });
-                dirty = GetDirty(
-                    b.Evaluate(DateTimeOffset.UtcNow, dirty.GetValueOrDefault)
-                );
-                Assert.NotEmpty(dirty);
-                chain.Blocks[b.Hash] = b;
-                store.StoreStateReference(
-                    chainId.ToString(),
-                    dirty.Keys.ToImmutableHashSet(),
-                    b
-                );
-                store.IncreaseTxNonce(chainId.ToString(), b);
-                store.AppendIndex(chainId.ToString(), b.Hash);
-            }
-
-            store.SetBlockStates(b.Hash, new AddressStateMap(dirty));
+            (Address[] addresses, BlockChain<DumbAction> chain) =
+                MakeIncompleteBlockStates();
 
             // As the store has the states for the tip (latest block),
             // it shouldn't throw an exception.
-            Address lastAddress = addresses[blocksCount - 1];
+            Address lastAddress = addresses.Last();
             AddressStateMap states = chain.GetStates(new[] { lastAddress });
             Assert.NotEmpty(states);
             Assert.Equal("4", states[lastAddress]);
@@ -799,6 +748,26 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Throws<IncompleteBlockStatesException>(() =>
                     chain.GetStates(new[] { addr })
                 );
+            }
+        }
+
+        [Fact]
+        public void GetStatesWithCompletingStates()
+        {
+            (Address[] addresses, BlockChain<DumbAction> chain) =
+                MakeIncompleteBlockStates();
+            IStore store = chain.Store;
+
+            chain.GetStates(new[] { addresses.Last() }, completeStates: true);
+            foreach (Block<DumbAction> block in chain.SkipLast(1))
+            {
+                Assert.Null(store.GetBlockStates(block.Hash));
+            }
+
+            chain.GetStates(new[] { addresses[0] }, completeStates: true);
+            foreach (Block<DumbAction> block in chain)
+            {
+                Assert.NotNull(store.GetBlockStates(block.Hash));
             }
         }
 
@@ -887,6 +856,71 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransactions(txsC.ToHashSet());
 
             Assert.Equal(4, _blockChain.GetNonce(address));
+        }
+
+        /// <summary>
+        /// Builds a fixture that has incomplete states for blocks other
+        /// than the tip, to test GetStates() method's completeStates: true
+        /// option and IncompleteBlockStatesException.
+        /// </summary>
+        private (Address[] addresses, BlockChain<DumbAction> chain)
+            MakeIncompleteBlockStates()
+        {
+            IStore store = _fx.Store;
+            Guid chainId = Guid.NewGuid();
+            var chain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                store,
+                chainId
+            );
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+
+            IImmutableDictionary<Address, object> GetDirty(
+                IEnumerable<ActionEvaluation<DumbAction>> evaluations) =>
+                evaluations.Select(
+                    a => a.OutputStates
+                ).Aggregate(
+                    ImmutableDictionary<Address, object>.Empty,
+                    (x, y) => x.SetItems(y.GetUpdatedStates())
+                );
+
+            // Build the store has incomplete states
+            Block<DumbAction> b = TestUtils.MineGenesis<DumbAction>();
+            chain.Blocks[b.Hash] = b;
+            store.IncreaseTxNonce(chainId.ToString(), b);
+            store.AppendIndex(chainId.ToString(), b.Hash);
+            IImmutableDictionary<Address, object> dirty =
+                GetDirty(b.Evaluate(DateTimeOffset.UtcNow, _ => null));
+            const int blocksCount = 5;
+            Address[] addresses = Enumerable.Repeat<object>(null, blocksCount)
+                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .ToArray();
+            for (int i = 0; i < blocksCount; ++i)
+            {
+                Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                    store.GetTxNonce(chainId.ToString(), address),
+                    privateKey,
+                    new[] { new DumbAction(addresses[i], i.ToString()) }
+                );
+                b = TestUtils.MineNext(b, new Transaction<DumbAction>[] { tx });
+                dirty = GetDirty(
+                    b.Evaluate(DateTimeOffset.UtcNow, dirty.GetValueOrDefault)
+                );
+                Assert.NotEmpty(dirty);
+                chain.Blocks[b.Hash] = b;
+                store.StoreStateReference(
+                    chainId.ToString(),
+                    dirty.Keys.ToImmutableHashSet(),
+                    b
+                );
+                store.IncreaseTxNonce(chainId.ToString(), b);
+                store.AppendIndex(chainId.ToString(), b.Hash);
+            }
+
+            store.SetBlockStates(b.Hash, new AddressStateMap(dirty));
+
+            return (addresses, chain);
         }
 
         private sealed class NullPolicy<T> : IBlockPolicy<T>

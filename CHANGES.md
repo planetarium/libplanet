@@ -20,6 +20,8 @@ To be released.
  -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
     to create a `Peer` whose version is unknown.
  -  Added `IncompleteBlockStatesException` class.  [[#272], [#285]]
+ -  Added `completeStates` option to `BlockChain<T>.GetStates()` method.
+    [[#272], [#285]]
 
 ### Behavioral changes
 

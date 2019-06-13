@@ -165,15 +165,30 @@ namespace Libplanet.Blockchain
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be The tip of the
         /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <param name="completeStates">When the <see cref="BlockChain{T}"/>
+        /// instance does not contain states dirty of the block which lastly
+        /// updated states of a requested address, this option makes
+        /// the incomplete states calculated and filled on the fly.
+        /// If this option is turned off (which is default) this method throws
+        /// <see cref="IncompleteBlockStatesException"/> instead
+        /// for the same situation.
+        /// Just-in-time calculation of states could take long time so that
+        /// overall latency of an application may rise.</param>
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
         /// the <see cref="BlockChain{T}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
         /// address, because actions in the block has never been executed.
+        /// If <paramref name="completeStates"/> option is turned on
+        /// this exception is not thrown and incomplete states are calculated
+        /// and filled on the fly instead.
         /// </exception>
         public AddressStateMap GetStates(
-            IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
+            IEnumerable<Address> addresses,
+            HashDigest<SHA256>? offset = null,
+            bool completeStates = false
+        )
         {
             _rwlock.EnterReadLock();
             try
@@ -216,7 +231,38 @@ namespace Libplanet.Blockchain
                 AddressStateMap blockStates = Store.GetBlockStates(hashValue);
                 if (blockStates is null)
                 {
-                    throw new IncompleteBlockStatesException(hashValue);
+                    if (completeStates)
+                    {
+                        // Calculates and fills the incomplete states
+                        // on the fly.
+                        foreach (Block<T> b in this)
+                        {
+                            if (!(Store.GetBlockStates(b.Hash) is null))
+                            {
+                                continue;
+                            }
+
+                            ActionEvaluation<T>[] evaluations =
+                                b.Evaluate(
+                                    DateTimeOffset.UtcNow,
+                                    a => GetStates(
+                                        new[] { a },
+                                        b.PreviousHash
+                                    ).GetValueOrDefault(a)
+                                ).ToArray();
+                            SetStates(b, evaluations);
+                        }
+
+                        blockStates = Store.GetBlockStates(hashValue);
+                        if (blockStates is null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                    }
+                    else
+                    {
+                        throw new IncompleteBlockStatesException(hashValue);
+                    }
                 }
 
                 states = (AddressStateMap)states.SetItems(
