@@ -22,6 +22,7 @@ To be released.
     has been changed to `0x0a`.  [[#276]]
  -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
+ -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
 
 ### Bug fixes
 
@@ -35,8 +36,10 @@ To be released.
     `System.IO.IOException` after forking.  [[#281]]
 
 [LiteDB]: https://www.litedb.org/
+[#267]: https://github.com/planetarium/libplanet/issues/267
 [#269]: https://github.com/planetarium/libplanet/pull/269
 [#270]: https://github.com/planetarium/libplanet/pull/270
+[#271]: https://github.com/planetarium/libplanet/pull/271
 [#273]: https://github.com/planetarium/libplanet/issues/273
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
