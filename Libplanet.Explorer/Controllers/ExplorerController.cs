@@ -17,6 +17,11 @@ using Libplanet.Explorer.GraphTypes;
 
 namespace Libplanet.Explorer.Controllers
 {
+    public class GraphQLBody
+    {
+        public string Query { get; set; }
+    }
+
     [GenericControllerNameConvention]
     public class ExplorerController<T> : Controller where T : IAction, new()
     {
@@ -40,15 +45,15 @@ namespace Libplanet.Explorer.Controllers
             return chain;
         }
 
-        [HttpGet("/graphql/")]
+        [HttpPost("/graphql/")]
         public IActionResult GetGraphQLResult(
-            [FromQuery(Name = "query")] string query
+            [FromBody] GraphQLBody body
         )
         {
             var schema = new Schema { Query = new BlocksQuery<T>(GetBlockChain()) };
             var json = schema.Execute(_ =>
             {
-                _.Query = query;
+                _.Query = body.Query;
             });
             return Ok(json);
         }
