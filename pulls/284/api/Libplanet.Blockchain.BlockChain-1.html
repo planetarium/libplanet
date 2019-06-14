@@ -1,0 +1,1371 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BlockChain&lt;T&gt;
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BlockChain&lt;T&gt;
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.42.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.html" title="Libplanet" class="">Libplanet</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Address.html" title="Address" class="">Address</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.AddressExtension.html" title="AddressExtension" class="">AddressExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.ByteUtil.html" title="ByteUtil" class="">ByteUtil</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.html" title="Hashcash" class="">Hashcash</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.Stamp.html" title="Hashcash.Stamp" class="">Hashcash.Stamp</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigest-1.html" title="HashDigest&lt;T&gt;" class="">HashDigest&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigestExtension.html" title="HashDigestExtension" class="">HashDigestExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Nonce.html" title="Nonce" class="">Nonce</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="">Libplanet.Action</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="">ActionEvaluation&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.AddressStateMap.html" title="AddressStateMap" class="">AddressStateMap</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAccountStateDelta.html" title="IAccountStateDelta" class="">IAccountStateDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAction.html" title="IAction" class="">IAction</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IActionContext.html" title="IActionContext" class="">IActionContext</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IRandom.html" title="IRandom" class="">IRandom</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="">MissingActionTypeException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.PolymorphicAction-1.html" title="PolymorphicAction&lt;T&gt;" class="">PolymorphicAction&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.html" title="Libplanet.Blockchain" class="">Libplanet.Blockchain</a>
+                        
+                        <ul class="nav level2">
+                          <li class="active">
+                            <a href="Libplanet.Blockchain.BlockChain-1.html" title="BlockChain&lt;T&gt;" class="active">BlockChain&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.Policies.html" title="Libplanet.Blockchain.Policies" class="">Libplanet.Blockchain.Policies</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicy-1.html" title="BlockPolicy&lt;T&gt;" class="">BlockPolicy&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicyExtension.html" title="BlockPolicyExtension" class="">BlockPolicyExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html" title="IBlockPolicy&lt;T&gt;" class="">IBlockPolicy&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blocks.html" title="Libplanet.Blocks" class="">Libplanet.Blocks</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blocks.Block-1.html" title="Block&lt;T&gt;" class="">Block&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockDifficultyException.html" title="InvalidBlockDifficultyException" class="">InvalidBlockDifficultyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockException.html" title="InvalidBlockException" class="">InvalidBlockException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockHashException.html" title="InvalidBlockHashException" class="">InvalidBlockHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockIndexException.html" title="InvalidBlockIndexException" class="">InvalidBlockIndexException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockNonceException.html" title="InvalidBlockNonceException" class="">InvalidBlockNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockPreviousHashException.html" title="InvalidBlockPreviousHashException" class="">InvalidBlockPreviousHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockTimestampException.html" title="InvalidBlockTimestampException" class="">InvalidBlockTimestampException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="">Libplanet.Crypto</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Crypto.InvalidCiphertextException.html" title="InvalidCiphertextException" class="">InvalidCiphertextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PrivateKey.html" title="PrivateKey" class="">PrivateKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PublicKey.html" title="PublicKey" class="">PublicKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.SymmetricKey.html" title="SymmetricKey" class="">SymmetricKey</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Net.html" title="Libplanet.Net" class="">Libplanet.Net</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServerException.html" title="IceServerException" class="">IceServerException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Peer.html" title="Peer" class="">Peer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerNotFoundException.html" title="PeerNotFoundException" class="">PeerNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerSetDelta.html" title="PeerSetDelta" class="">PeerSetDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Swarm.html" title="Swarm" class="">Swarm</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.SwarmException.html" title="SwarmException" class="">SwarmException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Serialization.html" title="Libplanet.Serialization" class="">Libplanet.Serialization</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Serialization.BencodexFormatter-1.html" title="BencodexFormatter&lt;T&gt;" class="">BencodexFormatter&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Serialization.SerializationInfoExtension.html" title="SerializationInfoExtension" class="">SerializationInfoExtension</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Store.html" title="Libplanet.Store" class="">Libplanet.Store</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Store.BaseIndex-2.html" title="BaseIndex&lt;TKey, TVal&gt;" class="">BaseIndex&lt;TKey, TVal&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BaseStore.html" title="BaseStore" class="">BaseStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BlockSet-1.html" title="BlockSet&lt;T&gt;" class="">BlockSet&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.FileStore.html" title="FileStore" class="">FileStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.IStore.html" title="IStore" class="">IStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.LiteDBStore.html" title="LiteDBStore" class="">LiteDBStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.NamespaceNotFoundException.html" title="NamespaceNotFoundException" class="">NamespaceNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.TransactionSet-1.html" title="TransactionSet&lt;T&gt;" class="">TransactionSet&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Tx.html" title="Libplanet.Tx" class="">Libplanet.Tx</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxException.html" title="InvalidTxException" class="">InvalidTxException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxSignatureException.html" title="InvalidTxSignatureException" class="">InvalidTxSignatureException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html" title="InvalidTxUpdatedAddressesException" class="">InvalidTxUpdatedAddressesException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.Transaction-1.html" title="Transaction&lt;T&gt;" class="">Transaction&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.TxId.html" title="TxId" class="">TxId</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html" title="UnexpectedlyTerminatedTxRehearsalException" class="">UnexpectedlyTerminatedTxRehearsalException</a>
+                          </li>
+                        </ul>  </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.BlockChain`1">
+  
+  
+  <h1 id="Libplanet_Blockchain_BlockChain_1" data-uid="Libplanet.Blockchain.BlockChain`1" class="text-break">Class BlockChain&lt;T&gt;
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BlockChain&lt;T&gt;</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</div>
+    <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class BlockChain&lt;T&gt; : IReadOnlyList&lt;Block&lt;T&gt;&gt;, IReadOnlyCollection&lt;Block&lt;T&gt;&gt;, IEnumerable&lt;Block&lt;T&gt;&gt;, IEnumerable where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Store.IStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L23">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore)">BlockChain(IBlockPolicy&lt;T&gt;, IStore)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStore store)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">policy</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">store</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_System_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.%23ctor(Libplanet.Blockchain.Policies.IBlockPolicy%7B%600%7D%2CLibplanet.Store.IStore%2CSystem.Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L28">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1__ctor_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_System_Guid_" data-uid="Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore,System.Guid)">BlockChain(IBlockPolicy&lt;T&gt;, IStore, Guid)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockChain(IBlockPolicy&lt;T&gt; policy, IStore store, Guid id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">policy</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">store</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Blocks.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Blocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L70">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Blocks_" data-uid="Libplanet.Blockchain.BlockChain`1.Blocks*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Blocks" data-uid="Libplanet.Blockchain.BlockChain`1.Blocks">Blocks</h4>
+  <div class="markdown level1 summary"><p>All <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s in the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>
+storage, including orphan <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.
+Keys are <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a>es and values are
+their corresponding <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDictionary&lt;HashDigest&lt;SHA256&gt;, Block&lt;T&gt;&gt; Blocks { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Id.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L62">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Id_" data-uid="Libplanet.Blockchain.BlockChain`1.Id*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Id" data-uid="Libplanet.Blockchain.BlockChain`1.Id">Id</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid Id { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.guid">Guid</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Item_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Item(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L93">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Item_System_Int32_" data-uid="Libplanet.Blockchain.BlockChain`1.Item(System.Int32)">Item[Int32]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; this[int index] { get; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Item_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Item(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L95">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Item_" data-uid="Libplanet.Blockchain.BlockChain`1.Item*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Item_System_Int64_" data-uid="Libplanet.Blockchain.BlockChain`1.Item(System.Int64)">Item[Int64]</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; this[long index] { get; }</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Policy.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Policy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L45">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Policy_" data-uid="Libplanet.Blockchain.BlockChain`1.Policy*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Policy" data-uid="Libplanet.Blockchain.BlockChain`1.Policy">Policy</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IBlockPolicy&lt;T&gt; Policy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Tip.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Tip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L47">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Tip_" data-uid="Libplanet.Blockchain.BlockChain`1.Tip*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Tip" data-uid="Libplanet.Blockchain.BlockChain`1.Tip">Tip</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; Tip { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Transactions.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Transactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L81">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Transactions_" data-uid="Libplanet.Blockchain.BlockChain`1.Transactions*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Transactions" data-uid="Libplanet.Blockchain.BlockChain`1.Transactions">Transactions</h4>
+  <div class="markdown level1 summary"><p>All <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s in the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>
+storage, including orphan <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.
+Keys are <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>s and values are
+their corresponding <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IDictionary&lt;TxId, Transaction&lt;T&gt;&gt; Transactions { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>, <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Append(Libplanet.Blocks.Block%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L238">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Append_" data-uid="Libplanet.Blockchain.BlockChain`1.Append*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__" data-uid="Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0})">Append(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds a <code data-dev-comment-type="paramref" class="paramref">block</code> to the end of this chain.</p>
+<p>Note that <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> methods of
+all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> objects that belong
+to the <code data-dev-comment-type="paramref" class="paramref">block</code> are called right after
+the <code data-dev-comment-type="paramref" class="paramref">block</code> is confirmed (and thus all states
+reflect changes in the <code data-dev-comment-type="paramref" class="paramref">block</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Append(Block&lt;T&gt; block)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>A next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, which is mined,
+to add.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">block</code> is invalid, in itself or according to
+the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Policy">Policy</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></td>
+        <td><p>Thrown when the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> is different from
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Append(Libplanet.Blocks.Block%7B%600%7D%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L259">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Append_" data-uid="Libplanet.Blockchain.BlockChain`1.Append*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__System_DateTimeOffset_" data-uid="Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},System.DateTimeOffset)">Append(Block&lt;T&gt;, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Adds a <code data-dev-comment-type="paramref" class="paramref">block</code> to the end of this chain.</p>
+<p>Note that <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> methods of
+all <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> objects that belong
+to the <code data-dev-comment-type="paramref" class="paramref">block</code> are called right after
+the <code data-dev-comment-type="paramref" class="paramref">block</code> is confirmed (and thus all states
+reflect changes in the <code data-dev-comment-type="paramref" class="paramref">block</code>).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Append(Block&lt;T&gt; block, DateTimeOffset currentTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>A next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>, which is mined,
+to add.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td><p>The current time.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></td>
+        <td><p>Thrown when the given
+<code data-dev-comment-type="paramref" class="paramref">block</code> is invalid, in itself or according to
+the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Policy">Policy</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a></td>
+        <td><p>Thrown when the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a> is different from
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_">GetNonce(Address)</a> result of the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L40">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Finalize_" data-uid="Libplanet.Blockchain.BlockChain`1.Finalize*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Finalize" data-uid="Libplanet.Blockchain.BlockChain`1.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L134">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_GetEnumerator_" data-uid="Libplanet.Blockchain.BlockChain`1.GetEnumerator*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_GetEnumerator" data-uid="Libplanet.Blockchain.BlockChain`1.GetEnumerator">GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;Block&lt;T&gt;&gt; GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetNonce(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L293">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_GetNonce_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNonce*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_GetNonce_Libplanet_Address_" data-uid="Libplanet.Blockchain.BlockChain`1.GetNonce(Libplanet.Address)">GetNonce(Address)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long GetNonce(Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.GetStates(System.Collections.Generic.IEnumerable%7BLibplanet.Address%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L170">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_GetStates_" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___" data-uid="Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})">GetStates(IEnumerable&lt;Address&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Gets the state of the given <code data-dev-comment-type="paramref" class="paramref">addresses</code> in the
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> from <code data-dev-comment-type="paramref" class="paramref">offset</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AddressStateMap GetStates(IEnumerable&lt;Address&gt; addresses, HashDigest&lt;SHA256&gt;? offset = default(HashDigest&lt;SHA256&gt;? ))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td><p>The list of <a class="xref" href="Libplanet.Address.html">Address</a>es to get
+their states.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the block to
+start finding the state. It will be The tip of the
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> if it is <code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a> of given
+<code data-dev-comment-type="paramref" class="paramref">addresses</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L344">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address)">MineBlock(Address)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; MineBlock(Address miner)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">miner</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.MineBlock(Libplanet.Address%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L313">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_MineBlock_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_MineBlock_Libplanet_Address_System_DateTimeOffset_" data-uid="Libplanet.Blockchain.BlockChain`1.MineBlock(Libplanet.Address,System.DateTimeOffset)">MineBlock(Address, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Block&lt;T&gt; MineBlock(Address miner, DateTimeOffset currentTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">miner</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_StageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.StageTransactions(System.Collections.Generic.ISet%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L269">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_StageTransactions_" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransactions*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_StageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.BlockChain`1.StageTransactions(System.Collections.Generic.ISet{Libplanet.Tx.Transaction{`0}})">StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds <code data-dev-comment-type="paramref" class="paramref">transactions</code> to the pending list so that
+a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined contains these
+<code data-dev-comment-type="paramref" class="paramref">transactions</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">transactions</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s to add to the pending list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_UnstageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.UnstageTransactions(System.Collections.Generic.ISet%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L287">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransactions*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Blockchain.BlockChain`1.UnstageTransactions(System.Collections.Generic.ISet{Libplanet.Tx.Transaction{`0}})">UnstageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Removes <code data-dev-comment-type="paramref" class="paramref">transactions</code> from the pending list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnstageTransactions(ISet&lt;Transaction&lt;T&gt;&gt; transactions)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">transactions</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s
+to remove from the pending list.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_BlockChain_1_UnstageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0____seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___">StageTransactions(ISet&lt;Transaction&lt;T&gt;&gt;)</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_Validate_System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block__0___System_DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.Validate(System.Collections.Generic.IReadOnlyList%7BLibplanet.Blocks.Block%7B%600%7D%7D%2CSystem.DateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L120">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_Validate_" data-uid="Libplanet.Blockchain.BlockChain`1.Validate*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_Validate_System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block__0___System_DateTimeOffset_" data-uid="Libplanet.Blockchain.BlockChain`1.Validate(System.Collections.Generic.IReadOnlyList{Libplanet.Blocks.Block{`0}},System.DateTimeOffset)">Validate(IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Validate(IReadOnlyList&lt;Block&lt;T&gt;&gt; blocks, DateTimeOffset currentTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">blocks</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_System_Collections_Generic_IReadOnlyCollection_Libplanet_Blocks_Block_T___Count.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.System%23Collections%23Generic%23IReadOnlyCollection%7BLibplanet%23Blocks%23Block%7BT%7D%7D%23Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L87">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_System_Collections_Generic_IReadOnlyCollection_Libplanet_Blocks_Block_T___Count_" data-uid="Libplanet.Blockchain.BlockChain`1.System#Collections#Generic#IReadOnlyCollection{Libplanet#Blocks#Block{T}}#Count*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_System_Collections_Generic_IReadOnlyCollection_Libplanet_Blocks_Block_T___Count" data-uid="Libplanet.Blockchain.BlockChain`1.System#Collections#Generic#IReadOnlyCollection{Libplanet#Blocks#Block{T}}#Count">IReadOnlyCollection&lt;Block&lt;T&gt;&gt;.Count</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int IReadOnlyCollection&lt;Block&lt;T&gt;&gt;.Count { get; }</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L154">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_BlockChain_1_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Blockchain.BlockChain`1.System#Collections#IEnumerable#GetEnumerator*"></a>
+  <h4 id="Libplanet_Blockchain_BlockChain_1_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Blockchain.BlockChain`1.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerator">IEnumerator</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">System.Collections.Generic.IReadOnlyList&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">System.Collections.Generic.IReadOnlyCollection&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">System.Collections.Generic.IEnumerable&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable">System.Collections.IEnumerable</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/fix-validate-nonce-ordering/apiSpec/new?filename=Libplanet_Blockchain_BlockChain_1.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.BlockChain%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/fix-validate-nonce-ordering/Libplanet/Blockchain/BlockChain.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
