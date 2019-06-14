@@ -410,7 +410,9 @@ namespace Libplanet.Blockchain
         internal void ValidateNonce(Block<T> block)
         {
             var nonces = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions)
+            IEnumerable<Transaction<T>> transactions =
+                block.Transactions.OrderBy(tx => tx.Nonce);
+            foreach (Transaction<T> tx in transactions)
             {
                 Address signer = tx.Signer;
                 if (!nonces.TryGetValue(signer, out long nonce))

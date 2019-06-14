@@ -814,6 +814,33 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(4, _blockChain.GetNonce(address));
         }
 
+        [Fact]
+        public void ValidateNonce()
+        {
+            var privateKey = new PrivateKey();
+            Address address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(_fx.Address1, "foo") };
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            _blockChain.Append(genesis);
+
+            Transaction<DumbAction>[] txsA =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+            };
+            Block<DumbAction> b1 = TestUtils.MineNext(genesis, txsA);
+            _blockChain.ValidateNonce(b1);
+
+            Transaction<DumbAction>[] txsB =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+            };
+            Block<DumbAction> b2 = TestUtils.MineNext(genesis, txsB);
+            Assert.Throws<InvalidTxNonceException>(() =>
+                _blockChain.ValidateNonce(b2));
+        }
+
         private sealed class NullPolicy<T> : IBlockPolicy<T>
             where T : IAction, new()
         {
