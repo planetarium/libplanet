@@ -743,7 +743,7 @@ namespace Libplanet.Tests.Blockchain
 
             // As the store lacks the states for blocks other than the tip,
             // the following GetStates() calls should throw an exception.
-            foreach (Address addr in addresses.SkipLast(1))
+            foreach (Address addr in addresses.Take(addresses.Length - 1))
             {
                 Assert.Throws<IncompleteBlockStatesException>(() =>
                     chain.GetStates(new[] { addr })
@@ -759,7 +759,7 @@ namespace Libplanet.Tests.Blockchain
             IStore store = chain.Store;
 
             chain.GetStates(new[] { addresses.Last() }, completeStates: true);
-            foreach (Block<DumbAction> block in chain.SkipLast(1))
+            foreach (Block<DumbAction> block in chain.Take(chain.Count() - 1))
             {
                 Assert.Null(store.GetBlockStates(block.Hash));
             }
