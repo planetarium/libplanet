@@ -11,7 +11,8 @@ To be released.
 ### Added interfaces
 
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
- -  Added cancellation support to async methods on `TurnClient` [[#287]]
+ -  All `*Async()` methods belonging to `TurnClient` class became to have
+    `cancellationToken` option.  [[#287]]
 
 ### Behavioral changes
 
@@ -35,7 +36,7 @@ To be released.
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
     `System.IO.IOException` after forking.  [[#281]]
- -  Fixed a bug that `TurnClient` didn't stop properly. [[#287]]
+ -  Fixed a bug that `TurnClient` had not stopped properly.  [[#287]]
 
 [LiteDB]: https://www.litedb.org/
 [#267]: https://github.com/planetarium/libplanet/issues/267
