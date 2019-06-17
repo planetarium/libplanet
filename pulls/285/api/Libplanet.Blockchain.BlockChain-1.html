@@ -1035,8 +1035,8 @@ the incomplete states calculated and filled on the fly.
 If this option is turned off (which is default) this method throws
 <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.html">IncompleteBlockStatesException</a> instead
 for the same situation.
-Just-in-time calculation of states could take long time so that
-overall latency of an application may rise.</p>
+Just-in-time calculation of states could take a long time so that
+the overall latency of an application may rise.</p>
 </td>
       </tr>
     </tbody>
@@ -1072,7 +1072,7 @@ overall latency of an application may rise.</p>
         <td><p>Thrown when
 the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance does not contain
 states dirty of the block which lastly updated states of a requested
-address, because actions in the block has never been executed.
+address, because actions in the block have never been executed.
 If <code data-dev-comment-type="paramref" class="paramref">completeStates</code> option is turned on
 this exception is not thrown and incomplete states are calculated
 and filled on the fly instead.</p>
