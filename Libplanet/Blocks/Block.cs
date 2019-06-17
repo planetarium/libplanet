@@ -38,7 +38,7 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions;
+            Transactions = transactions.OrderBy(tx => tx.Nonce).ToList();
             Hash = Hashcash.Hash(ToBencodex(false, false));
         }
 

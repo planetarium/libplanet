@@ -380,11 +380,9 @@ namespace Libplanet.Blockchain
                 @namespace,
                 index - 1
             );
-            List<Transaction<T>> transactions = Store
+            IEnumerable<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .OrderBy(tx => tx.Nonce)
-                .ToList();
+                .Select(Store.GetTransaction<T>);
 
             Block<T> block = Block<T>.Mine(
                 index: index,
