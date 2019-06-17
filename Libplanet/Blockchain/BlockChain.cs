@@ -172,14 +172,14 @@ namespace Libplanet.Blockchain
         /// If this option is turned off (which is default) this method throws
         /// <see cref="IncompleteBlockStatesException"/> instead
         /// for the same situation.
-        /// Just-in-time calculation of states could take long time so that
-        /// overall latency of an application may rise.</param>
+        /// Just-in-time calculation of states could take a long time so that
+        /// the overall latency of an application may rise.</param>
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
         /// the <see cref="BlockChain{T}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
-        /// address, because actions in the block has never been executed.
+        /// address, because actions in the block have never been executed.
         /// If <paramref name="completeStates"/> option is turned on
         /// this exception is not thrown and incomplete states are calculated
         /// and filled on the fly instead.
