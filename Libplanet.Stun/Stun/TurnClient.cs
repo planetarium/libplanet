@@ -27,7 +27,7 @@ namespace Libplanet.Stun
             _connectionAttempts;
 
         private readonly Task _messageProcessor;
-        private TcpClient _control;
+        private readonly TcpClient _control;
 
         public TurnClient(
             string host,
@@ -219,7 +219,7 @@ namespace Libplanet.Stun
         private async Task ProcessMessage()
         {
             NetworkStream stream = _control.GetStream();
-            while (true)
+            while (_control.Connected)
             {
                 try
                 {

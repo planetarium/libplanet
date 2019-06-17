@@ -34,6 +34,7 @@ To be released.
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
     `System.IO.IOException` after forking.  [[#281]]
+ -  Fixed a bug that `TurnClient` didn't stop properly. [[#287]]
 
 [LiteDB]: https://www.litedb.org/
 [#267]: https://github.com/planetarium/libplanet/issues/267
@@ -45,6 +46,7 @@ To be released.
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
 [#281]: https://github.com/planetarium/libplanet/pull/281
+[#287]: https://github.com/planetarium/libplanet/pull/287
 
 
 Version 0.3.0
