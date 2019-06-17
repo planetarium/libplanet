@@ -11,6 +11,7 @@ To be released.
 ### Added interfaces
 
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
+ -  Added cancellation support to async methods on `TurnClient` [[#287]]
 
 ### Behavioral changes
 
