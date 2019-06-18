@@ -111,7 +111,7 @@ jobs:
       script: |
         pushd /tmp
         curl -L -O \
-          https://github.com/planetarium/xunit-unity-runner/releases/download/0.2.2/xunit-unity-runner-0.2.2-StandaloneOSX.tar.bz2
+          https://github.com/planetarium/xunit-unity-runner/releases/download/0.2.3/xunit-unity-runner-0.2.3-StandaloneOSX.tar.bz2
         tar xvfj xunit-unity-runner-*.tar.bz2
         popd
   - template: .azure-pipelines/mono.yml
