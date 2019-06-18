@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Stun.Messages;
 using Nito.AsyncEx;
@@ -27,7 +28,7 @@ namespace Libplanet.Stun
             _connectionAttempts;
 
         private readonly Task _messageProcessor;
-        private TcpClient _control;
+        private readonly TcpClient _control;
 
         public TurnClient(
             string host,
@@ -66,7 +67,9 @@ namespace Libplanet.Stun
 
         public byte[] Nonce { get; private set; }
 
-        public async Task<IPEndPoint> AllocateRequestAsync(TimeSpan lifetime)
+        public async Task<IPEndPoint> AllocateRequestAsync(
+            TimeSpan lifetime,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetworkStream stream = _control.GetStream();
             StunMessage response;
@@ -74,7 +77,7 @@ namespace Libplanet.Stun
             do
             {
                 var request = new AllocateRequest((int)lifetime.TotalSeconds);
-                await SendMessageAsync(stream, request);
+                await SendMessageAsync(stream, request, cancellationToken);
                 response = await _responses[request.TransactionId].Task;
 
                 if (response is AllocateErrorResponse allocError)
@@ -97,11 +100,13 @@ namespace Libplanet.Stun
             }
         }
 
-        public async Task CreatePermissionAsync(IPEndPoint peerAddress)
+        public async Task CreatePermissionAsync(
+            IPEndPoint peerAddress,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
-            await SendMessageAsync(stream, request);
+            await SendMessageAsync(stream, request, cancellationToken);
             StunMessage response =
                 await _responses[request.TransactionId].Task;
 
@@ -113,19 +118,23 @@ namespace Libplanet.Stun
             }
         }
 
-        public async Task<NetworkStream> AcceptRelayedStreamAsync()
+        public async Task<NetworkStream> AcceptRelayedStreamAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             while (true)
             {
                 ConnectionAttempt attempt =
-                    await _connectionAttempts.DequeueAsync();
+                    await _connectionAttempts.DequeueAsync(cancellationToken);
 
                 byte[] id = attempt.ConnectionId;
                 var relayedClient = new TcpClient(_host, _port);
                 NetworkStream relayedStream = relayedClient.GetStream();
 
                 var bindRequest = new ConnectionBindRequest(id);
-                await SendMessageAsync(relayedStream, bindRequest);
+                await SendMessageAsync(
+                    relayedStream,
+                    bindRequest,
+                    cancellationToken);
                 StunMessage bindResponse =
                     await StunMessage.Parse(relayedStream);
 
@@ -141,11 +150,12 @@ namespace Libplanet.Stun
             }
         }
 
-        public async Task<IPEndPoint> GetMappedAddressAsync()
+        public async Task<IPEndPoint> GetMappedAddressAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
-            await SendMessageAsync(stream, request);
+            await SendMessageAsync(stream, request, cancellationToken);
             StunMessage response =
                 await _responses[request.TransactionId].Task;
 
@@ -159,11 +169,13 @@ namespace Libplanet.Stun
                 response);
         }
 
-        public async Task<TimeSpan> RefreshAllocationAsync(TimeSpan lifetime)
+        public async Task<TimeSpan> RefreshAllocationAsync(
+            TimeSpan lifetime,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
-            await SendMessageAsync(stream, request);
+            await SendMessageAsync(stream, request, cancellationToken);
 
             StunMessage response =
                 await _responses[request.TransactionId].Task;
@@ -183,9 +195,10 @@ namespace Libplanet.Stun
             throw new TurnClientException("RefreshRequest failed.", response);
         }
 
-        public async Task<bool> IsBehindNAT()
+        public async Task<bool> IsBehindNAT(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            IPEndPoint mapped = await GetMappedAddressAsync();
+            IPEndPoint mapped = await GetMappedAddressAsync(cancellationToken);
             return !_control.Client.LocalEndPoint.Equals(mapped);
         }
 
@@ -208,18 +221,23 @@ namespace Libplanet.Stun
 
         private async Task SendMessageAsync(
             NetworkStream stream,
-            StunMessage message)
+            StunMessage message,
+            CancellationToken cancellationToken)
         {
             _responses[message.TransactionId] =
-                new TaskCompletionSource<StunMessage>();
+                new TaskCompletionSource<StunMessage>(cancellationToken);
             var asBytes = message.Encode(this);
-            await stream.WriteAsync(asBytes, 0, asBytes.Length);
+            await stream.WriteAsync(
+                asBytes,
+                0,
+                asBytes.Length,
+                cancellationToken);
         }
 
         private async Task ProcessMessage()
         {
             NetworkStream stream = _control.GetStream();
-            while (true)
+            while (_control.Connected)
             {
                 try
                 {
