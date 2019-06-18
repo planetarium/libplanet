@@ -82,6 +82,8 @@
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
 <li>Added <code>LiteDBStore</code> backend that uses <a href="https://www.litedb.org/">LiteDB</a> under the hood.  [<a href="https://github.com/planetarium/libplanet/pull/269">#269</a>]</li>
+<li>All <code>*Async()</code> methods belonging to <code>TurnClient</code> class became to have
+<code>cancellationToken</code> option.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -105,6 +107,7 @@ exception while stopping. [<a href="https://github.com/planetarium/libplanet/pul
 when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
 <li>Fixed a bug where <code>LiteDBStore.GetTxNonce()</code> method throws a
 <code>System.IO.IOException</code> after forking.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
+<li>Fixed a bug that <code>TurnClient</code> had not stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
