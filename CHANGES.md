@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `Swarm` constructor became to receive `BlockChain<T>` and have a type
+    parameter `T`.  [[#295]]
+
 ### Added interfaces
 
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
@@ -49,6 +52,7 @@ To be released.
 [#277]: https://github.com/planetarium/libplanet/pull/277
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#287]: https://github.com/planetarium/libplanet/pull/287
+[#295]: https://github.com/planetarium/libplanet/pull/295
 
 
 Version 0.3.0
