@@ -1152,15 +1152,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNonce
   nameWithType: BlockChain<T>.GetNonce
   nameWithType.vb: BlockChain(Of T).GetNonce
-- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name: GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}})
-  name.vb: GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IEnumerable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IEnumerable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)))
-  nameWithType: BlockChain<T>.GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: BlockChain(Of T).GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
+  name: GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>, Boolean)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_System_Collections_Generic_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_System_Security_Cryptography_SHA256___System_Boolean_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(System.Collections.Generic.IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{System.Security.Cryptography.SHA256}},System.Boolean)
+  name.vb: GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)), Boolean)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(System.Collections.Generic.IEnumerable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<System.Security.Cryptography.SHA256>>, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(System.Collections.Generic.IEnumerable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of System.Security.Cryptography.SHA256)), System.Boolean)
+  nameWithType: BlockChain<T>.GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>, Boolean)
+  nameWithType.vb: BlockChain(Of T).GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)), Boolean)
 - uid: Libplanet.Blockchain.BlockChain`1.GetStates*
   name: GetStates
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_
@@ -1382,6 +1382,41 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Validate
   nameWithType: BlockChain<T>.Validate
   nameWithType.vb: BlockChain(Of T).Validate
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException
+  name: IncompleteBlockStatesException
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
+  commentId: T:Libplanet.Blockchain.IncompleteBlockStatesException
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException
+  nameWithType: IncompleteBlockStatesException
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name: IncompleteBlockStatesException(HashDigest<SHA256>, String)
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_
+  commentId: M:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)
+  name.vb: IncompleteBlockStatesException(HashDigest(Of SHA256), String)
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest<System.Security.Cryptography.SHA256>, System.String)
+  fullName.vb: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException(Libplanet.HashDigest(Of System.Security.Cryptography.SHA256), System.String)
+  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest<SHA256>, String)
+  nameWithType.vb: IncompleteBlockStatesException.IncompleteBlockStatesException(HashDigest(Of SHA256), String)
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.#ctor*
+  name: IncompleteBlockStatesException
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException__ctor_
+  commentId: Overload:Libplanet.Blockchain.IncompleteBlockStatesException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.IncompleteBlockStatesException
+  nameWithType: IncompleteBlockStatesException.IncompleteBlockStatesException
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
+  name: BlockHash
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash
+  commentId: P:Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
+  nameWithType: IncompleteBlockStatesException.BlockHash
+- uid: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash*
+  name: BlockHash
+  href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash_
+  commentId: Overload:Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash
+  nameWithType: IncompleteBlockStatesException.BlockHash
 - uid: Libplanet.Blockchain.Policies
   name: Libplanet.Blockchain.Policies
   href: api/Libplanet.Blockchain.Policies.html
@@ -4401,6 +4436,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateTransactionIds
   nameWithType: BaseStore.IterateTransactionIds
+- uid: Libplanet.Store.BaseStore.ListAddresses(System.String)
+  name: ListAddresses(String)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAddresses_System_String_
+  commentId: M:Libplanet.Store.BaseStore.ListAddresses(System.String)
+  fullName: Libplanet.Store.BaseStore.ListAddresses(System.String)
+  nameWithType: BaseStore.ListAddresses(String)
+- uid: Libplanet.Store.BaseStore.ListAddresses*
+  name: ListAddresses
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAddresses_
+  commentId: Overload:Libplanet.Store.BaseStore.ListAddresses
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ListAddresses
+  nameWithType: BaseStore.ListAddresses
 - uid: Libplanet.Store.BaseStore.ListNamespaces
   name: ListNamespaces()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListNamespaces
@@ -5074,6 +5122,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.IterateTransactionIds
   nameWithType: FileStore.IterateTransactionIds
+- uid: Libplanet.Store.FileStore.ListAddresses(System.String)
+  name: ListAddresses(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ListAddresses_System_String_
+  commentId: M:Libplanet.Store.FileStore.ListAddresses(System.String)
+  fullName: Libplanet.Store.FileStore.ListAddresses(System.String)
+  nameWithType: FileStore.ListAddresses(String)
+- uid: Libplanet.Store.FileStore.ListAddresses*
+  name: ListAddresses
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ListAddresses_
+  commentId: Overload:Libplanet.Store.FileStore.ListAddresses
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.ListAddresses
+  nameWithType: FileStore.ListAddresses
 - uid: Libplanet.Store.FileStore.ListNamespaces
   name: ListNamespaces()
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ListNamespaces
@@ -5479,6 +5540,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateTransactionIds
   nameWithType: IStore.IterateTransactionIds
+- uid: Libplanet.Store.IStore.ListAddresses(System.String)
+  name: ListAddresses(String)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAddresses_System_String_
+  commentId: M:Libplanet.Store.IStore.ListAddresses(System.String)
+  fullName: Libplanet.Store.IStore.ListAddresses(System.String)
+  nameWithType: IStore.ListAddresses(String)
+- uid: Libplanet.Store.IStore.ListAddresses*
+  name: ListAddresses
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAddresses_
+  commentId: Overload:Libplanet.Store.IStore.ListAddresses
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ListAddresses
+  nameWithType: IStore.ListAddresses
 - uid: Libplanet.Store.IStore.ListNamespaces
   name: ListNamespaces()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListNamespaces
@@ -5910,6 +5984,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateTransactionIds
   nameWithType: LiteDBStore.IterateTransactionIds
+- uid: Libplanet.Store.LiteDBStore.ListAddresses(System.String)
+  name: ListAddresses(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListAddresses_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.ListAddresses(System.String)
+  fullName: Libplanet.Store.LiteDBStore.ListAddresses(System.String)
+  nameWithType: LiteDBStore.ListAddresses(String)
+- uid: Libplanet.Store.LiteDBStore.ListAddresses*
+  name: ListAddresses
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListAddresses_
+  commentId: Overload:Libplanet.Store.LiteDBStore.ListAddresses
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.ListAddresses
+  nameWithType: LiteDBStore.ListAddresses
 - uid: Libplanet.Store.LiteDBStore.ListNamespaces
   name: ListNamespaces()
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListNamespaces

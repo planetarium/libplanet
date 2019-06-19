@@ -82,6 +82,7 @@
 <ul>
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
 is unknown.</li>
+<li>Added <code>IStore.ListAddresses()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -90,11 +91,17 @@ is unknown.</li>
 <code>cancellationToken</code> option.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 <li>Added a <code>Peer</code> constructor omitting <code>appProtocolVersion</code> parameter
 to create a <code>Peer</code> whose version is unknown.</li>
+<li>Added <code>IncompleteBlockStatesException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
+<li>Added <code>completeStates</code> option to <code>BlockChain&lt;T&gt;.GetStates()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>BlockChain&lt;T&gt;.GetNonce()</code> became to count staged transactions too during
 nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>]</li>
+<li><code>BlockChain&lt;T&gt;.GetStates()</code> method became to throw
+<code>IncompleteBlockStatesException</code> if its <code>Store</code> lacks the states of a block
+that a requested address lastly updated.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>A message <code>Swarm</code> makes became to have multiple blocks within it, which
 means round trips on the network are now much reduced.  [<a href="https://github.com/planetarium/libplanet/issues/273">#273</a>, <a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
 <li><code>Message.Block</code> has been replaced by <code>Message.Blocks</code> and the magic number
@@ -102,6 +109,8 @@ has been changed to <code>0x0a</code>.  [<a href="https://github.com/planetarium
 <li>Improved performance of <code>Swarm</code>'s response time to <code>GetBlockHashes</code>
 request messages.  [<a href="https://github.com/planetarium/libplanet/pull/277">#277</a>]</li>
 <li>Added IPv6 support to <code>Libplanet.Stun.StunAddress</code>. [<a href="https://github.com/planetarium/libplanet/issues/267">#267</a>, <a href="https://github.com/planetarium/libplanet/pull/271">#271</a>]</li>
+<li><code>IStore.GetBlockStates()</code> became able to return <code>null</code> to represent an absence
+of states (i.e., incomplete states).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
