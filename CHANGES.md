@@ -36,6 +36,10 @@ To be released.
         Instead, a newly added static class `StoreExtension` provides
         an extension method of the same name.
      -  Added `IStore.IterateStateReferences()` method.
+ -  `Swarm` constructor became to receive `BlockChain<T>`.  [[#324]]
+ -  `Swarm` became to have type parameter `T`.  [[#324]]
+ -  Methods that take `BlockChain<T>` as a parameter in `Swarm` no longer take
+    `BlockChain<T>`. And they are no longer the generic methods.  [[#324]]
 
 ### Added interfaces
 
@@ -120,6 +124,7 @@ To be released.
 [#310]: https://github.com/planetarium/libplanet/pull/310
 [#311]: https://github.com/planetarium/libplanet/pull/311
 [#317]: https://github.com/planetarium/libplanet/pull/317
+[#324]: https://github.com/planetarium/libplanet/pull/324
 
 
 Version 0.3.0
