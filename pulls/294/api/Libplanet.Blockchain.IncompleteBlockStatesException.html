@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class MissingActionTypeException
+    <title>Class IncompleteBlockStatesException
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class MissingActionTypeException
+    <meta name="title" content="Class IncompleteBlockStatesException
    | Libplanet ">
     <meta name="generator" content="docfx 2.42.1.0">
     
@@ -146,8 +146,8 @@
                           <li class="">
                             <a href="Libplanet.Action.IRandom.html" title="IRandom" class="">IRandom</a>
                           </li>
-                          <li class="active">
-                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="active">MissingActionTypeException</a>
+                          <li class="">
+                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="">MissingActionTypeException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Action.PolymorphicAction-1.html" title="PolymorphicAction&lt;T&gt;" class="">PolymorphicAction&lt;T&gt;</a>
@@ -161,8 +161,8 @@
                           <li class="">
                             <a href="Libplanet.Blockchain.BlockChain-1.html" title="BlockChain&lt;T&gt;" class="">BlockChain&lt;T&gt;</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Blockchain.IncompleteBlockStatesException.html" title="IncompleteBlockStatesException" class="">IncompleteBlockStatesException</a>
+                          <li class="active">
+                            <a href="Libplanet.Blockchain.IncompleteBlockStatesException.html" title="IncompleteBlockStatesException" class="active">IncompleteBlockStatesException</a>
                           </li>
                         </ul>  </li>
                     <li class="">
@@ -352,21 +352,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.MissingActionTypeException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException">
   
   
-  <h1 id="Libplanet_Action_MissingActionTypeException" data-uid="Libplanet.Action.MissingActionTypeException" class="text-break">Class MissingActionTypeException
+  <h1 id="Libplanet_Blockchain_IncompleteBlockStatesException" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException" class="text-break">Class IncompleteBlockStatesException
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when an action class without
-<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> is tried to used with
-<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
+  <div class="markdown level0 summary"><p>The exception that is thrown when a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> have
+not calculated the complete states for all blocks, but an operation
+that needs some lacked states is requested.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></div>
-    <div class="level2"><span class="xref">MissingActionTypeException</span></div>
+    <div class="level2"><span class="xref">IncompleteBlockStatesException</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -429,30 +429,29 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.html">Libplanet.Blockchain</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Action_MissingActionTypeException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Blockchain_IncompleteBlockStatesException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Serializable]
-public sealed class MissingActionTypeException : Exception, ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">public class IncompleteBlockStatesException : Exception, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Action_MissingActionTypeException__ctor_System_Type_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Action.MissingActionTypeException.%23ctor(System.Type%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.IncompleteBlockStatesException.%23ctor(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Action/MissingActionTypeException.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Blockchain/IncompleteBlockStatesException.cs/#L22">View Source</a>
   </span>
-  <a id="Libplanet_Action_MissingActionTypeException__ctor_" data-uid="Libplanet.Action.MissingActionTypeException.#ctor*"></a>
-  <h4 id="Libplanet_Action_MissingActionTypeException__ctor_System_Type_System_String_" data-uid="Libplanet.Action.MissingActionTypeException.#ctor(System.Type,System.String)">MissingActionTypeException(Type, String)</h4>
-  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a> object.</p>
+  <a id="Libplanet_Blockchain_IncompleteBlockStatesException__ctor_" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException.#ctor*"></a>
+  <h4 id="Libplanet_Blockchain_IncompleteBlockStatesException__ctor_Libplanet_HashDigest_System_Security_Cryptography_SHA256__System_String_" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException.#ctor(Libplanet.HashDigest{System.Security.Cryptography.SHA256},System.String)">IncompleteBlockStatesException(HashDigest&lt;SHA256&gt;, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.html">IncompleteBlockStatesException</a> object.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MissingActionTypeException(Type actionType, string message)</code></pre>
+    <pre><code class="lang-csharp hljs">public IncompleteBlockStatesException(HashDigest&lt;SHA256&gt; blockHash, string message = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -465,17 +464,17 @@ public sealed class MissingActionTypeException : Exception, ISerializable</code>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td><span class="parametername">actionType</span></td>
-        <td><p>The action type that lacks
-<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  It is automatically included to
-the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a> string.</p>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>Specifies <a class="xref" href="Libplanet.Blockchain.IncompleteBlockStatesException.html#Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash">BlockHash</a>.
+It is automatically included to the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a>
+string.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">message</span></td>
-        <td><p>Specifies an <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a>.</p>
+        <td><p>Specifies the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception.message#System_Exception_Message">Message</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -484,19 +483,20 @@ the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Action_MissingActionTypeException_ActionType.md&amp;value=---%0Auid%3A%20Libplanet.Action.MissingActionTypeException.ActionType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Action/MissingActionTypeException.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Blockchain/IncompleteBlockStatesException.cs/#L37">View Source</a>
   </span>
-  <a id="Libplanet_Action_MissingActionTypeException_ActionType_" data-uid="Libplanet.Action.MissingActionTypeException.ActionType*"></a>
-  <h4 id="Libplanet_Action_MissingActionTypeException_ActionType" data-uid="Libplanet.Action.MissingActionTypeException.ActionType">ActionType</h4>
-  <div class="markdown level1 summary"><p>The action type that lacks <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.</p>
+  <a id="Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash_" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash*"></a>
+  <h4 id="Libplanet_Blockchain_IncompleteBlockStatesException_BlockHash" data-uid="Libplanet.Blockchain.IncompleteBlockStatesException.BlockHash">BlockHash</h4>
+  <div class="markdown level1 summary"><p>The <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> of <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> that
+a <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> lacks the states.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type ActionType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HashDigest&lt;SHA256&gt; BlockHash { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -508,7 +508,7 @@ the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -516,10 +516,6 @@ the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.runtime.serialization.iserializable">System.Runtime.Serialization.ISerializable</a>
-  </div>
-  <h3 id="seealso">See Also</h3>
-  <div class="seealso">
-      <div><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction</a>&lt;T&gt;</div>
   </div>
 </article>
           </div>
@@ -529,10 +525,10 @@ the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Action_MissingActionTypeException.md&amp;value=---%0Auid%3A%20Libplanet.Action.MissingActionTypeException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/fix-transaction-interface/apiSpec/new?filename=Libplanet_Blockchain_IncompleteBlockStatesException.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.IncompleteBlockStatesException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Action/MissingActionTypeException.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/fix-transaction-interface/Libplanet/Blockchain/IncompleteBlockStatesException.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
