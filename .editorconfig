@@ -13,7 +13,7 @@ indent_style = space
 continuation_indent_size = 4
 
 [*.{cs,md,xml}]
-max_line_length = 80
+max_line_length = 100
 
 [*.{cs,md}]
 indent_size = 4
