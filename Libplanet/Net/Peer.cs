@@ -16,6 +16,21 @@ namespace Libplanet.Net
     public class Peer : ISerializable
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Peer"/> class
+        /// with omitting <see cref="AppProtocolVersion"/>.
+        /// </summary>
+        /// <param name="publicKey">A <see cref="PublicKey"/> of the
+        /// <see cref="Peer"/>.</param>
+        /// <param name="endPoint">A <see cref="DnsEndPoint"/> consisting of the
+        /// host and port of the <see cref="Peer"/>.</param>
+        public Peer(
+            PublicKey publicKey,
+            DnsEndPoint endPoint)
+            : this(publicKey, endPoint, default(int?), null)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Peer"/> class.
         /// </summary>
         /// <param name="publicKey">A <see cref="PublicKey"/> of the
@@ -27,7 +42,7 @@ namespace Libplanet.Net
         public Peer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            int appProtocolVersion)
+            int? appProtocolVersion)
         : this(publicKey, endPoint, appProtocolVersion, null)
         {
         }
@@ -35,7 +50,7 @@ namespace Libplanet.Net
         internal Peer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            int appProtocolVersion,
+            int? appProtocolVersion,
             IPAddress publicIPAddress)
         {
             PublicKey = publicKey ??
@@ -52,7 +67,8 @@ namespace Libplanet.Net
             EndPoint = new DnsEndPoint(
                 info.GetString("end_point_host"),
                 info.GetInt32("end_point_port"));
-            AppProtocolVersion = info.GetInt32("app_protocol_version");
+            AppProtocolVersion =
+                info.GetValueOrDefault<int?>("app_protocol_version", null);
             string addressStr = info.GetString("public_ip_address");
             if (addressStr != null)
             {
@@ -79,7 +95,7 @@ namespace Libplanet.Net
         /// <seealso cref="Swarm.DifferentVersionPeerEncountered"/>
         [IgnoreDuringEquals]
         [Pure]
-        public int AppProtocolVersion { get; }
+        public int? AppProtocolVersion { get; }
 
         /// <summary>The peer's address which is derived from
         /// its <see cref="PublicKey"/>.
@@ -109,6 +125,15 @@ namespace Libplanet.Net
         public override string ToString()
         {
             return $"{Address}.{EndPoint}.{AppProtocolVersion}";
+        }
+
+        internal Peer WithAppProtocolVersion(int appProtocolVersion)
+        {
+            return new Peer(
+                PublicKey,
+                EndPoint,
+                appProtocolVersion,
+                PublicIPAddress);
         }
     }
 }

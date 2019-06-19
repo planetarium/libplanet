@@ -287,11 +287,12 @@ namespace Libplanet.Net
                     try
                     {
                         _logger.Debug($"Trying to DialPeerAsync({peer})...");
-                        await DialPeerAsync(peer, cancellationToken);
+                        Pong pong = await DialPeerAsync(peer, cancellationToken);
                         _logger.Debug($"DialPeerAsync({peer}) is complete.");
 
-                        _peers[peer] = timestamp.Value;
-                        addedPeers.Add(peer);
+                        Peer peerWithVersion = peer.WithAppProtocolVersion(pong.AppProtocolVersion);
+                        _peers[peerWithVersion] = timestamp.Value;
+                        addedPeers.Add(peerWithVersion);
                     }
                     catch (IOException e)
                     {
@@ -1413,12 +1414,13 @@ namespace Libplanet.Net
             if (IsUnknownPeer(sender))
             {
                 _logger.Debug("The sender of delta is unknown.");
-                if (IsDifferentProtocolVersion(sender))
+                if (IsDifferentProtocolVersion(sender) &&
+                    sender.AppProtocolVersion is int senderVersion)
                 {
                     var args = new DifferentProtocolVersionEventArgs
                         {
                             ExpectedVersion = _appProtocolVersion,
-                            ActualVersion = sender.AppProtocolVersion,
+                            ActualVersion = senderVersion,
                         };
                     DifferentVersionPeerEncountered?.Invoke(this, args);
                     return;

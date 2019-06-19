@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -9,16 +10,62 @@ namespace Libplanet.Tests.Net
 {
     public class PeerTest
     {
-        [Fact]
-        public void Serialize()
+        public static IEnumerable<object[]> GetPeers()
         {
-            var key = new PublicKey(
-                ByteUtil.ParseHex(
-                    "038f92e8098c897c2a9ae3226eb6337eb" +
-                    "7ca8dbad5e1c8c9b130a9d39171a44134"
-                    ));
-            var endPoint = new DnsEndPoint("0.0.0.0", 1234);
-            var peer = new Peer(key, endPoint, 1, IPAddress.IPv6Loopback);
+            yield return new object[]
+            {
+                new Peer(
+                    new PublicKey(new byte[]
+                    {
+                        0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b,
+                        0xad, 0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b,
+                        0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96,
+                        0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57,
+                        0xac, 0x2e, 0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45,
+                        0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
+                        0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+                    }),
+                    new DnsEndPoint("0.0.0.0", 1234),
+                    1,
+                    IPAddress.IPv6Loopback),
+            };
+            yield return new object[]
+            {
+                new Peer(
+                    new PublicKey(new byte[]
+                    {
+                        0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b,
+                        0xad, 0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b,
+                        0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96,
+                        0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57,
+                        0xac, 0x2e, 0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45,
+                        0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
+                        0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+                    }),
+                    new DnsEndPoint("0.0.0.0", 1234),
+                    1),
+            };
+            yield return new object[]
+            {
+                new Peer(
+                    new PublicKey(new byte[]
+                    {
+                        0x04, 0xb5, 0xa2, 0x4a, 0xa2, 0x11, 0x27, 0x20, 0x42, 0x3b,
+                        0xad, 0x39, 0xa0, 0x20, 0x51, 0x82, 0x37, 0x9d, 0x6f, 0x2b,
+                        0x33, 0xe3, 0x48, 0x7c, 0x9a, 0xb6, 0xcc, 0x8f, 0xc4, 0x96,
+                        0xf8, 0xa5, 0x48, 0x34, 0x40, 0xef, 0xbb, 0xef, 0x06, 0x57,
+                        0xac, 0x2e, 0xf6, 0xc6, 0xee, 0x05, 0xdb, 0x06, 0xa9, 0x45,
+                        0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
+                        0x1a, 0x3d, 0x3c, 0x76, 0xdb,
+                    }),
+                    new DnsEndPoint("0.0.0.0", 1234)),
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetPeers))]
+        public void Serialize(Peer peer)
+        {
             var formatter = new BinaryFormatter();
             using (var stream = new MemoryStream())
             {
@@ -28,6 +75,21 @@ namespace Libplanet.Tests.Net
                 Peer deserialized = (Peer)formatter.Deserialize(stream);
                 Assert.Equal(peer, deserialized);
             }
+        }
+
+        [Fact]
+        public void WithAppProtocolVersion()
+        {
+            var peerWithoutVersion = new Peer(
+                new PrivateKey().PublicKey,
+                new DnsEndPoint("0.0.0.0", 1234));
+            Peer peerWithVersion = peerWithoutVersion.WithAppProtocolVersion(42);
+            var expected = new Peer(
+                peerWithoutVersion.PublicKey,
+                peerWithoutVersion.EndPoint,
+                42
+                );
+            Assert.Equal(expected, peerWithVersion);
         }
     }
 }

@@ -8,11 +8,16 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
+    is unknown.
+
 ### Added interfaces
 
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
  -  All `*Async()` methods belonging to `TurnClient` class became to have
     `cancellationToken` option.  [[#287]]
+ -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
+    to create a `Peer` whose version is unknown.
 
 ### Behavioral changes
 
