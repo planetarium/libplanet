@@ -2881,12 +2881,21 @@ references:
   commentId: T:Libplanet.Net.Peer
   fullName: Libplanet.Net.Peer
   nameWithType: Peer
-- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Int32)
-  name: Peer(PublicKey, DnsEndPoint, Int32)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_System_Int32_
-  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Int32)
-  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint, System.Int32)
-  nameWithType: Peer.Peer(PublicKey, DnsEndPoint, Int32)
+- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
+  name: Peer(PublicKey, DnsEndPoint)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_
+  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint)
+  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint)
+  nameWithType: Peer.Peer(PublicKey, DnsEndPoint)
+- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Nullable{System.Int32})
+  name: Peer(PublicKey, DnsEndPoint, Nullable<Int32>)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Net_DnsEndPoint_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Net.DnsEndPoint,System.Nullable{System.Int32})
+  name.vb: Peer(PublicKey, DnsEndPoint, Nullable(Of Int32))
+  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Net.DnsEndPoint, System.Nullable(Of System.Int32))
+  nameWithType: Peer.Peer(PublicKey, DnsEndPoint, Nullable<Int32>)
+  nameWithType.vb: Peer.Peer(PublicKey, DnsEndPoint, Nullable(Of Int32))
 - uid: Libplanet.Net.Peer.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: Peer(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
