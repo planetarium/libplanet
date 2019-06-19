@@ -8,6 +8,9 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
+    is unknown.
+
 ### Added interfaces
 
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
