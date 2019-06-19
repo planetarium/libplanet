@@ -250,7 +250,7 @@ namespace Libplanet.Blockchain
                                         b.PreviousHash
                                     ).GetValueOrDefault(a)
                                 ).ToArray();
-                            SetStates(b, evaluations);
+                            SetStates(b, evaluations, buildIndices: false);
                         }
 
                         blockStates = Store.GetBlockStates(hashValue);
@@ -434,7 +434,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block, evaluations);
+                    SetStates(block, evaluations, buildIndices: true);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -747,7 +747,9 @@ namespace Libplanet.Blockchain
 
         private void SetStates(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation<T>> actionEvaluations)
+            IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
+            bool buildIndices
+        )
         {
             HashDigest<SHA256> blockHash = block.Hash;
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -773,9 +775,12 @@ namespace Libplanet.Blockchain
                 new AddressStateMap(totalDelta)
             );
 
-            var chainId = Id.ToString();
-            Store.StoreStateReference(chainId, updatedAddresses, block);
-            Store.IncreaseTxNonce(chainId, block);
+            if (buildIndices)
+            {
+                string chainId = Id.ToString();
+                Store.StoreStateReference(chainId, updatedAddresses, block);
+                Store.IncreaseTxNonce(chainId, block);
+            }
         }
     }
 }
