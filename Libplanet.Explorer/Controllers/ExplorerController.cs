@@ -14,12 +14,14 @@ using Microsoft.AspNetCore.Mvc;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Explorer.GraphTypes;
+using Newtonsoft.Json.Linq;
 
 namespace Libplanet.Explorer.Controllers
 {
     public class GraphQLBody
     {
         public string Query { get; set; }
+        public JObject Variables { get; set; }
     }
 
     [GenericControllerNameConvention]
@@ -54,8 +56,10 @@ namespace Libplanet.Explorer.Controllers
             var json = schema.Execute(_ =>
             {
                 _.Query = body.Query;
+                if (body.Variables != null)
+                    _.Inputs = body.Variables.ToString(Newtonsoft.Json.Formatting.None).ToInputs();
             });
-            return Ok(json);
+            return Ok(JObject.Parse(json));
         }
 
         [HttpGet("/blocks/")]
