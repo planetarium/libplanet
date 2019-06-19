@@ -13,8 +13,8 @@ To be released.
  -  Added `LiteDBStore` backend that uses [LiteDB] under the hood.  [[#269]]
  -  All `*Async()` methods belonging to `TurnClient` class became to have
     `cancellationToken` option.  [[#287]]
- -  Added a version-less `Peer` constructor to create a `Peer` whose version
-    is unknown.
+ -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
+    to create a `Peer` whose version is unknown.
 
 ### Behavioral changes
 
