@@ -84,8 +84,8 @@
 <li>Added <code>LiteDBStore</code> backend that uses <a href="https://www.litedb.org/">LiteDB</a> under the hood.  [<a href="https://github.com/planetarium/libplanet/pull/269">#269</a>]</li>
 <li>All <code>*Async()</code> methods belonging to <code>TurnClient</code> class became to have
 <code>cancellationToken</code> option.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
-<li>Added a version-less <code>Peer</code> constructor to create a <code>Peer</code> whose version
-is unknown.</li>
+<li>Added a <code>Peer</code> constructor omitting <code>appProtocolVersion</code> parameter
+to create a <code>Peer</code> whose version is unknown.</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
