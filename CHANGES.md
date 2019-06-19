@@ -10,6 +10,7 @@ To be released.
 
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.
+ -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
 
 ### Added interfaces
 
@@ -18,11 +19,17 @@ To be released.
     `cancellationToken` option.  [[#287]]
  -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
     to create a `Peer` whose version is unknown.
+ -  Added `IncompleteBlockStatesException` class.  [[#272], [#285]]
+ -  Added `completeStates` option to `BlockChain<T>.GetStates()` method.
+    [[#272], [#285]]
 
 ### Behavioral changes
 
  -  `BlockChain<T>.GetNonce()` became to count staged transactions too during
     nonce computation.  [[#270]]
+ -  `BlockChain<T>.GetStates()` method became to throw
+    `IncompleteBlockStatesException` if its `Store` lacks the states of a block
+    that a requested address lastly updated.  [[#272], [#285]]
  -  A message `Swarm` makes became to have multiple blocks within it, which
     means round trips on the network are now much reduced.  [[#273], [#276]]
  -  `Message.Block` has been replaced by `Message.Blocks` and the magic number
@@ -30,6 +37,8 @@ To be released.
  -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
+ -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
+    of states (i.e., incomplete states).  [[#272], [#285]]
 
 ### Bug fixes
 
@@ -48,11 +57,13 @@ To be released.
 [#269]: https://github.com/planetarium/libplanet/pull/269
 [#270]: https://github.com/planetarium/libplanet/pull/270
 [#271]: https://github.com/planetarium/libplanet/pull/271
+[#272]: https://github.com/planetarium/libplanet/issues/272
 [#273]: https://github.com/planetarium/libplanet/issues/273
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
 [#281]: https://github.com/planetarium/libplanet/pull/281
+[#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
 
 

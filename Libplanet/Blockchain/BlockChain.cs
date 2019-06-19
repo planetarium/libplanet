@@ -165,10 +165,30 @@ namespace Libplanet.Blockchain
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be The tip of the
         /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <param name="completeStates">When the <see cref="BlockChain{T}"/>
+        /// instance does not contain states dirty of the block which lastly
+        /// updated states of a requested address, this option makes
+        /// the incomplete states calculated and filled on the fly.
+        /// If this option is turned off (which is default) this method throws
+        /// <see cref="IncompleteBlockStatesException"/> instead
+        /// for the same situation.
+        /// Just-in-time calculation of states could take a long time so that
+        /// the overall latency of an application may rise.</param>
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
+        /// <exception cref="IncompleteBlockStatesException">Thrown when
+        /// the <see cref="BlockChain{T}"/> instance does not contain
+        /// states dirty of the block which lastly updated states of a requested
+        /// address, because actions in the block have never been executed.
+        /// If <paramref name="completeStates"/> option is turned on
+        /// this exception is not thrown and incomplete states are calculated
+        /// and filled on the fly instead.
+        /// </exception>
         public AddressStateMap GetStates(
-            IEnumerable<Address> addresses, HashDigest<SHA256>? offset = null)
+            IEnumerable<Address> addresses,
+            HashDigest<SHA256>? offset = null,
+            bool completeStates = false
+        )
         {
             _rwlock.EnterReadLock();
             try
@@ -208,11 +228,49 @@ namespace Libplanet.Blockchain
 
             foreach (var hashValue in hashValues)
             {
+                AddressStateMap blockStates = Store.GetBlockStates(hashValue);
+                if (blockStates is null)
+                {
+                    if (completeStates)
+                    {
+                        // Calculates and fills the incomplete states
+                        // on the fly.
+                        foreach (Block<T> b in this)
+                        {
+                            if (!(Store.GetBlockStates(b.Hash) is null))
+                            {
+                                continue;
+                            }
+
+                            ActionEvaluation<T>[] evaluations =
+                                b.Evaluate(
+                                    DateTimeOffset.UtcNow,
+                                    a => GetStates(
+                                        new[] { a },
+                                        b.PreviousHash
+                                    ).GetValueOrDefault(a)
+                                ).ToArray();
+                            SetStates(b, evaluations, buildIndices: false);
+                        }
+
+                        blockStates = Store.GetBlockStates(hashValue);
+                        if (blockStates is null)
+                        {
+                            throw new NullReferenceException();
+                        }
+                    }
+                    else
+                    {
+                        throw new IncompleteBlockStatesException(hashValue);
+                    }
+                }
+
                 states = (AddressStateMap)states.SetItems(
-                        Store.GetBlockStates(hashValue)
-                        .Where(
-                            kv => requestedAddresses.Contains(kv.Key) &&
-                            !states.ContainsKey(kv.Key)));
+                    blockStates.Where(kv =>
+                        requestedAddresses.Contains(kv.Key) &&
+                        !states.ContainsKey(kv.Key)
+                    )
+                );
             }
 
             return states;
@@ -376,7 +434,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block, evaluations);
+                    SetStates(block, evaluations, buildIndices: true);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -689,7 +747,9 @@ namespace Libplanet.Blockchain
 
         private void SetStates(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation<T>> actionEvaluations)
+            IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
+            bool buildIndices
+        )
         {
             HashDigest<SHA256> blockHash = block.Hash;
             IAccountStateDelta lastStates = actionEvaluations.Count > 0
@@ -715,9 +775,12 @@ namespace Libplanet.Blockchain
                 new AddressStateMap(totalDelta)
             );
 
-            var chainId = Id.ToString();
-            Store.StoreStateReference(chainId, updatedAddresses, block);
-            Store.IncreaseTxNonce(chainId, block);
+            if (buildIndices)
+            {
+                string chainId = Id.ToString();
+                Store.StoreStateReference(chainId, updatedAddresses, block);
+                Store.IncreaseTxNonce(chainId, block);
+            }
         }
     }
 }

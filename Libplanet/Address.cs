@@ -253,7 +253,8 @@ namespace Libplanet
             if (hex.Length != 40)
             {
                 throw new ArgumentException(
-                    "address hex must be 40 bytes",
+                    "Address hex must be 40 bytes, but " +
+                    $"{hex.Length} bytes were passed.",
                     nameof(hex)
                 );
             }

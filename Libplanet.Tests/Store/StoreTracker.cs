@@ -61,6 +61,12 @@ namespace Libplanet.Tests.Store
             return _store.DeleteIndex(@namespace, hash);
         }
 
+        public IEnumerable<Address> ListAddresses(string @namespace)
+        {
+            _logs.Add((nameof(ListAddresses), @namespace, null));
+            return _store.ListAddresses(@namespace);
+        }
+
         public bool DeleteTransaction(TxId txid)
         {
             _logs.Add((nameof(DeleteTransaction), txid, null));

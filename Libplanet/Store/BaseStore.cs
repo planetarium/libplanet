@@ -29,6 +29,9 @@ namespace Libplanet.Store
             HashDigest<SHA256> hash
         );
 
+        /// <inheritdoc />
+        public abstract IEnumerable<Address> ListAddresses(string @namespace);
+
         public abstract void StageTransactionIds(
             ISet<TxId> txids
         );
