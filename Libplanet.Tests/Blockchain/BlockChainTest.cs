@@ -920,10 +920,10 @@ namespace Libplanet.Tests.Blockchain
         /// these go to the second item of the returned triple) and 11 blocks
         /// (these go to the third item of the returned triple). Every block
         /// contains a transaction within an action that mutates one account
-        /// state except of the genesis block.  All transactions in the fixture
+        /// state except for the genesis block.  All transactions in the fixture
         /// are signed by one private key (its address goes to the first item
         /// of the returned triple).  The most important thing is that
-        /// these blocks all lack its states except of the last block (tip).
+        /// these blocks all lack its states except for the last block (tip).
         /// Overall blocks in the fixture look like:</para>
         ///
         /// <code>
