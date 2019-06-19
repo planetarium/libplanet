@@ -16,7 +16,8 @@ namespace Libplanet.Net
     public class Peer : ISerializable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Peer"/> class.
+        /// Initializes a new instance of the <see cref="Peer"/> class
+        /// with omitting <see cref="AppProtocolVersion"/>.
         /// </summary>
         /// <param name="publicKey">A <see cref="PublicKey"/> of the
         /// <see cref="Peer"/>.</param>
