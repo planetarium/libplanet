@@ -83,9 +83,8 @@
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
 is unknown.</li>
 <li>Added <code>IStore.ListAddresses()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
-<li>Removed <code>Transaction&lt;T&gt;.Create()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
-<li>Removed <code>BlockChain&lt;T&gt;.GetNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
-<li>Removed <code>BlockChain&lt;T&gt;.StageTransactions()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
+<li>Renamed <code>BlockChain&lt;T&gt;.GetNonce()</code> method to <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
