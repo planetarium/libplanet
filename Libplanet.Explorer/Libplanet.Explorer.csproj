@@ -18,4 +18,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\*" />
+  </ItemGroup>
 </Project>
