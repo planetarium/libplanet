@@ -11,6 +11,8 @@ To be released.
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
+ -  Renamed `BlockChain<T>.GetNonce()` method to `BlockChain<T>.GetNextTxNonce()`
+    method.  [[#294]]
 
 ### Added interfaces
 
@@ -22,6 +24,8 @@ To be released.
  -  Added `IncompleteBlockStatesException` class.  [[#272], [#285]]
  -  Added `completeStates` option to `BlockChain<T>.GetStates()` method.
     [[#272], [#285]]
+ -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
+    IImmutableSet<Address>, DateTimeOffset?)` method.  [[#294]]
 
 ### Behavioral changes
 
@@ -65,6 +69,7 @@ To be released.
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
+[#294]: https://github.com/planetarium/libplanet/pull/294
 
 
 Version 0.3.0
