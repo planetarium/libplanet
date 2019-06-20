@@ -9,6 +9,7 @@ using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -19,6 +20,7 @@ namespace Libplanet.Blockchain
         where T : IAction, new()
     {
         private readonly ReaderWriterLockSlim _rwlock;
+        private readonly object _txLock;
 
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(policy, store, Guid.NewGuid())
@@ -35,6 +37,7 @@ namespace Libplanet.Blockchain
 
             _rwlock = new ReaderWriterLockSlim(
                 LockRecursionPolicy.SupportsRecursion);
+            _txLock = new object();
         }
 
         ~BlockChain()
@@ -291,7 +294,7 @@ namespace Libplanet.Blockchain
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
         /// <see cref="Transaction{T}.Nonce"/> is different from
-        /// <see cref="BlockChain{T}.GetNonce"/> result of the
+        /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(Block<T> block) =>
             Append(block, DateTimeOffset.UtcNow);
@@ -312,7 +315,7 @@ namespace Libplanet.Blockchain
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
         /// <see cref="Transaction{T}.Nonce"/> is different from
-        /// <see cref="BlockChain{T}.GetNonce"/> result of the
+        /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(Block<T> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, render: true);
@@ -348,7 +351,14 @@ namespace Libplanet.Blockchain
                 transactions.Select(tx => tx.Id).ToImmutableHashSet());
         }
 
-        public long GetNonce(Address address)
+        /// <summary>
+        /// Gets next <see cref="Transaction{T}.Nonce"/> of the address.
+        /// </summary>
+        /// <param name="address">The <see cref="Address"/> from which to obtain the
+        /// <see cref="Transaction{T}.Nonce"/> value.</param>
+        /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
+        /// <paramref name="address"/>.</returns>
+        public long GetNextTxNonce(Address address)
         {
             long nonce = Store.GetTxNonce(Id.ToString(), address);
 
@@ -380,11 +390,9 @@ namespace Libplanet.Blockchain
                 @namespace,
                 index - 1
             );
-            List<Transaction<T>> transactions = Store
+            IEnumerable<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .OrderBy(tx => tx.Nonce)
-                .ToList();
+                .Select(Store.GetTransaction<T>);
 
             Block<T> block = Block<T>.Mine(
                 index: index,
@@ -401,6 +409,41 @@ namespace Libplanet.Blockchain
 
         public Block<T> MineBlock(Address miner) =>
             MineBlock(miner, DateTimeOffset.UtcNow);
+
+        /// <summary>
+        /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
+        /// </summary>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
+        /// signs a new transaction.</param>
+        /// <param name="actions">A list of <see cref="IAction"/>s to include to a new transaction.
+        /// </param>
+        /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
+        /// <paramref name="actions"/>.</param>
+        /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
+        /// signed.</param>
+        /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
+        /// <paramref name="privateKey"/>.</returns>
+        /// <seealso cref="Transaction{T}.Create" />
+        public Transaction<T> MakeTransaction(
+            PrivateKey privateKey,
+            IEnumerable<T> actions,
+            IImmutableSet<Address> updatedAddresses = null,
+            DateTimeOffset? timestamp = null)
+        {
+            timestamp = timestamp ?? DateTimeOffset.UtcNow;
+            lock (_txLock)
+            {
+                Transaction<T> tx = Transaction<T>.Create(
+                    GetNextTxNonce(privateKey.PublicKey.ToAddress()),
+                    privateKey,
+                    actions,
+                    updatedAddresses,
+                    timestamp);
+                StageTransactions(new HashSet<Transaction<T>> { tx });
+
+                return tx;
+            }
+        }
 
         internal void Append(
             Block<T> block,

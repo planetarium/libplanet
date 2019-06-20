@@ -488,7 +488,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey),
             };
 
-            Assert.Equal(0, _blockChain.GetNonce(address));
+            Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
             Block<DumbAction> b1 = TestUtils.MineNext(
                 genesis,
@@ -497,7 +497,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
             _blockChain.Append(b1);
 
-            Assert.Equal(1, _blockChain.GetNonce(address));
+            Assert.Equal(1, _blockChain.GetNextTxNonce(address));
 
             Transaction<DumbAction>[] txsB =
             {
@@ -513,10 +513,10 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
             _blockChain.Append(b2);
 
-            Assert.Equal(2, _blockChain.GetNonce(address));
+            Assert.Equal(2, _blockChain.GetNextTxNonce(address));
 
             BlockChain<DumbAction> forked = _blockChain.Fork(b1.Hash);
-            Assert.Equal(1, forked.GetNonce(address));
+            Assert.Equal(1, forked.GetNextTxNonce(address));
         }
 
         [Fact]
@@ -863,18 +863,18 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void GetNonce()
+        public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
             Address address = privateKey.PublicKey.ToAddress();
             var actions = new[] { new DumbAction(_fx.Address1, "foo") };
 
-            Assert.Equal(0, _blockChain.GetNonce(address));
+            Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
             Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
             _blockChain.Append(genesis);
 
-            Assert.Equal(0, _blockChain.GetNonce(address));
+            Assert.Equal(0, _blockChain.GetNextTxNonce(address));
 
             Transaction<DumbAction>[] txsA =
             {
@@ -888,7 +888,7 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
             _blockChain.Append(b1);
 
-            Assert.Equal(1, _blockChain.GetNonce(address));
+            Assert.Equal(1, _blockChain.GetNextTxNonce(address));
 
             Transaction<DumbAction>[] txsB =
             {
@@ -898,7 +898,7 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.StageTransactions(txsB.ToHashSet());
 
-            Assert.Equal(3, _blockChain.GetNonce(address));
+            Assert.Equal(3, _blockChain.GetNextTxNonce(address));
 
             Transaction<DumbAction>[] txsC =
             {
@@ -907,7 +907,62 @@ namespace Libplanet.Tests.Blockchain
             };
             _blockChain.StageTransactions(txsC.ToHashSet());
 
-            Assert.Equal(4, _blockChain.GetNonce(address));
+            Assert.Equal(4, _blockChain.GetNextTxNonce(address));
+        }
+
+        [Fact]
+        public void ValidateNonce()
+        {
+            var privateKey = new PrivateKey();
+            var actions = new[] { new DumbAction() };
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            _blockChain.Append(genesis);
+
+            Transaction<DumbAction>[] txsA =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+            };
+            Block<DumbAction> b1 = TestUtils.MineNext(genesis, txsA);
+            _blockChain.ValidateNonce(b1);
+
+            Transaction<DumbAction>[] txsB =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+            };
+            Block<DumbAction> b2 = TestUtils.MineNext(genesis, txsB);
+            Assert.Throws<InvalidTxNonceException>(() =>
+                _blockChain.ValidateNonce(b2));
+        }
+
+        [Fact]
+        public void MakeTransaction()
+        {
+            var privateKey = new PrivateKey();
+            Address address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(address, "foo") };
+
+            _blockChain.MakeTransaction(privateKey, actions);
+            _blockChain.MakeTransaction(privateKey, actions);
+
+            List<Transaction<DumbAction>> txs = _blockChain.Store
+                .IterateStagedTransactionIds()
+                .Select(_blockChain.Store.GetTransaction<DumbAction>)
+                .OrderBy(tx => tx.Nonce)
+                .ToList();
+
+            Assert.Equal(2, txs.Count());
+
+            var transaction = txs[0];
+            Assert.Equal(0, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(actions, transaction.Actions);
+
+            transaction = txs[1];
+            Assert.Equal(1, transaction.Nonce);
+            Assert.Equal(address, transaction.Signer);
+            Assert.Equal(actions, transaction.Actions);
         }
 
         /// <summary>

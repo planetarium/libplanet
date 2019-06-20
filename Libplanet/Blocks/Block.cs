@@ -38,7 +38,10 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions;
+
+            // FIXME: We need to fix this to solve
+            // https://github.com/planetarium/libplanet/issues/244.
+            Transactions = transactions.OrderBy(tx => tx.Nonce).ToList();
             Hash = Hashcash.Hash(ToBencodex(false, false));
         }
 
