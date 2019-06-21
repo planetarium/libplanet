@@ -12,6 +12,13 @@ To be released.
     is unknown.
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
  -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
+ -  `BlockChain<T>.StageTransactions` became to receive
+    `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
+ -  `IStore.StageTransactionIds()` method became to receive
+    `IDictionary<TxId, bool>` instead of `ISet<TxId>`.
+ -  `IStore.IterateStagedTransactionIds()` method became to receive
+    `bool toBroadcast` which is whether to iterate only the TxId set to
+    broadcast.
 
 ### Added interfaces
 
