@@ -44,7 +44,13 @@ namespace Libplanet.Store
 
         void UnstageTransactionIds(ISet<TxId> txids);
 
-        IEnumerable<TxId> IterateStagedTransactionIds();
+        /// <summary>
+        /// Iterates staged <see cref="TxId"/>s.
+        /// </summary>
+        /// <param name="toBroadcast">Whether to iterate only the <see cref="TxId "/>s set to
+        /// broadcast.</param>
+        /// <returns>Staged <see cref="TxId"/>s.</returns>
+        IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast = false);
 
         IEnumerable<TxId> IterateTransactionIds();
 

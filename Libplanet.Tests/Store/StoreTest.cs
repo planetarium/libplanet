@@ -376,6 +376,27 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void IterateStagedTransactionIdsToBroadcast()
+        {
+            var toStage = new Dictionary<TxId, bool>
+            {
+                { Fx.Transaction1.Id, false },
+                { Fx.Transaction2.Id, true },
+            };
+            Fx.Store.StageTransactionIds(toStage);
+
+            Assert.Equal(
+                new HashSet<TxId> { Fx.Transaction2.Id, },
+                Fx.Store.IterateStagedTransactionIds(true).ToHashSet());
+
+            Fx.Store.UnstageTransactionIds(new HashSet<TxId> { Fx.Transaction2.Id });
+
+            Assert.Equal(
+                new HashSet<TxId>(),
+                Fx.Store.IterateStagedTransactionIds(true).ToHashSet());
+        }
+
+        [Fact]
         public void BlockState()
         {
             Assert.Null(Fx.Store.GetBlockStates(Fx.Hash1));

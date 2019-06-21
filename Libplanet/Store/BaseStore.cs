@@ -41,7 +41,8 @@ namespace Libplanet.Store
             ISet<TxId> txids
         );
 
-        public abstract IEnumerable<TxId> IterateStagedTransactionIds();
+        /// <inheritdoc />
+        public abstract IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast);
 
         public abstract IEnumerable<TxId> IterateTransactionIds();
 

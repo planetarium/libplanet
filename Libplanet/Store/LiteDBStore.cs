@@ -180,8 +180,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TxId> IterateStagedTransactionIds()
+        public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
+            if (toBroadcast)
+            {
+                return StagedTxIds.FindAll().Where(t => t.Broadcast).Select(t => t.TxId);
+            }
+
             return StagedTxIds.FindAll().Select(t => t.TxId);
         }
 
