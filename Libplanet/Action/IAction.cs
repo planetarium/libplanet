@@ -26,12 +26,12 @@ namespace Libplanet.Action
     /// node <c>m</c> changes their own <c>Heal</c> action code to
     /// <c>Heal(Target) => PreviousStates[Target] + 2</c> (2 instead of 1),
     /// and then send an action <c>Heal(m)</c>.
-    /// Fortuneately, this action does not work as <c>m</c>'s intention,
+    /// Fortunately, this action does not work as <c>m</c>'s intention,
     /// because the changed code in itself is not used by other honest nodes,
     /// so they still increase only 1, not 2.  The effect of that double healing
     /// is a sort of &#x201c;illusion&#x201d; only visible to the malicious node
     /// alone.</para>
-    /// <para>In conclusion, action code is a part of protocol and it works with
+    /// <para>In conclusion, action code is a part of the protocol and it works with
     /// consensus in the network, so only things each node can affect the network
     /// in general is property values of each action they signs and sends,
     /// not code of an action.</para>
