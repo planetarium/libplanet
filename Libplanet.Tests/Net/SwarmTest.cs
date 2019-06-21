@@ -602,6 +602,89 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task TxStagedNotToBroadcast()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            Transaction<DumbAction> txA = chainA.MakeTransaction(
+                new PrivateKey(),
+                new DumbAction[] { },
+                broadcast: true);
+            Transaction<DumbAction> txB = chainA.MakeTransaction(
+                new PrivateKey(),
+                new DumbAction[] { },
+                broadcast: false);
+
+            try
+            {
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+                await swarmB.TxReceived.WaitAsync();
+                Assert.Equal(txA, chainB.Transactions[txA.Id]);
+                Assert.False(chainB.Transactions.ContainsKey(txB.Id));
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync());
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BroadcastTxAsync()
+        {
+            Swarm swarmA = _swarms[0];
+            Swarm swarmB = _swarms[1];
+            Swarm swarmC = _swarms[2];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+            BlockChain<DumbAction> chainC = _blockchains[2];
+
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                new DumbAction[] { }
+            );
+
+            chainA.StageTransactions(
+                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
+
+            try
+            {
+                await StartAsync(swarmA, chainA);
+                await StartAsync(swarmB, chainB);
+                await StartAsync(swarmC, chainC);
+
+                // Broadcast tx swarmA to swarmB
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
+                await swarmB.TxReceived.WaitAsync();
+                Assert.Equal(tx, chainB.Transactions[tx.Id]);
+
+                await swarmA.StopAsync();
+
+                // Re-Broadcast received tx swarmB to swarmC
+                await swarmB.AddPeersAsync(new[] { swarmC.AsPeer });
+                await swarmC.TxReceived.WaitAsync();
+                Assert.Equal(tx, chainC.Transactions[tx.Id]);
+            }
+            finally
+            {
+                await Task.WhenAll(
+                    swarmA.StopAsync(),
+                    swarmB.StopAsync(),
+                    swarmC.StopAsync());
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
             Swarm swarmA = _swarms[0];
@@ -872,6 +955,7 @@ namespace Libplanet.Tests.Net
         {
             Task task = swarm.StartAsync(
                 blockChain,
+                200,
                 200,
                 cancellationToken
             );

@@ -19,6 +19,8 @@ To be released.
  -  `IStore.IterateStagedTransactionIds()` method became to receive
     `bool toBroadcast` which is whether to iterate only the TxId set to
     broadcast.
+ -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
+    (or `millisecondsBroadcastTxInterval`) parameter.
 
 ### Added interfaces
 
@@ -49,6 +51,7 @@ To be released.
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
  -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
     of states (i.e., incomplete states).  [[#272], [#285]]
+ -  `Swarm` became to broadcast staged `Transaction`s periodically.
 
 ### Bug fixes
 
