@@ -1356,8 +1356,8 @@ namespace Libplanet.Net
 
             IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync<T>(
                 peer, unknownTxIds, cancellationToken);
-            var toStage = new HashSet<Transaction<T>>(
-                await fetched.ToListAsync(cancellationToken));
+            List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
+            var toStage = txs.ToDictionary(tx => tx, _ => true);
 
             blockChain.StageTransactions(toStage);
             TxReceived.Set();

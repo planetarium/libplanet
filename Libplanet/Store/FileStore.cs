@@ -529,14 +529,20 @@ namespace Libplanet.Store
             }
         }
 
-        public override void StageTransactionIds(ISet<TxId> txids)
+        /// <inheritdoc />
+        public override void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
-            foreach (var txid in txids)
+            foreach (var kv in txids)
             {
-                string stagedPath = GetStagedTransactionPath(txid);
+                TxId txId = kv.Key;
+                bool broadcast = kv.Value;
+                string stagedPath = GetStagedTransactionPath(txId);
                 var stagedFile = new FileInfo(stagedPath);
                 stagedFile.Directory.Create();
-                stagedFile.Create().Close();
+                using (Stream stream = stagedFile.OpenWrite())
+                {
+                    stream.Write(BitConverter.GetBytes(broadcast), 0, sizeof(bool));
+                }
             }
         }
 

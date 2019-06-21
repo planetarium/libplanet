@@ -345,12 +345,15 @@ namespace Libplanet.Tests.Store
             Fx.Store.PutTransaction(Fx.Transaction2);
             Assert.Empty(Fx.Store.IterateStagedTransactionIds());
 
-            Fx.Store.StageTransactionIds(
-                new HashSet<TxId>()
-                {
-                    Fx.Transaction1.Id,
-                    Fx.Transaction2.Id,
-                });
+            var txIds = new HashSet<TxId>()
+            {
+                Fx.Transaction1.Id,
+                Fx.Transaction2.Id,
+            };
+
+            Dictionary<TxId, bool> toStage = txIds.ToDictionary(txId => txId, _ => true);
+
+            Fx.Store.StageTransactionIds(toStage);
             Assert.Equal(
                 new HashSet<TxId>()
                 {

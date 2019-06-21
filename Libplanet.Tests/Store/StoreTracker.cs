@@ -209,7 +209,7 @@ namespace Libplanet.Tests.Store
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
-        public void StageTransactionIds(ISet<TxId> txids)
+        public void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));
             _store.StageTransactionIds(txids);

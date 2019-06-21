@@ -33,7 +33,14 @@ namespace Libplanet.Store
         /// be vary for each call.</returns>
         IEnumerable<Address> ListAddresses(string @namespace);
 
-        void StageTransactionIds(ISet<TxId> txids);
+        /// <summary>
+        /// Adds <see cref="TxId"/>s to the pending list so that
+        /// a next <see cref="Block{T}"/> to be mined contains the corresponding
+        /// <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <param name="txids"><see cref="TxId"/>s to add to pending list. Keys are
+        /// <see cref="TxId"/>s and values are whether to broadcast.</param>
+        void StageTransactionIds(IDictionary<TxId, bool> txids);
 
         void UnstageTransactionIds(ISet<TxId> txids);
 

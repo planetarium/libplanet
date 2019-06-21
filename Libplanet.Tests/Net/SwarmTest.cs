@@ -520,7 +520,8 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new DumbAction[0]
             );
-            chainB.StageTransactions(new[] { tx }.ToHashSet());
+            chainB.StageTransactions(
+                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
             chainB.MineBlock(_fx1.Address1);
 
             try
@@ -566,7 +567,8 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            chainA.StageTransactions(new[] { tx }.ToHashSet());
+            chainA.StageTransactions(
+                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
             chainA.MineBlock(_fx1.Address1);
 
             try
