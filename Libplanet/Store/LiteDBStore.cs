@@ -28,7 +28,7 @@ namespace Libplanet.Store
 
         private readonly LiteDatabase _db;
 
-        public LiteDBStore(string path)
+        public LiteDBStore(string path, bool journal = true, int cacheSize = 50000)
         {
             if (path is null)
             {
@@ -38,8 +38,8 @@ namespace Libplanet.Store
             var connectionString = new ConnectionString
             {
                 Filename = path,
-                Journal = false,
-                CacheSize = 50000,
+                Journal = journal,
+                CacheSize = cacheSize,
             };
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
