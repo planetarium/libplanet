@@ -559,23 +559,39 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                // FIXME Depending on the amount of Index stored in the `Store`,
-                //       it can use the memory excessively.
-                //       we should find alternative approach.
-                ImmutableHashSet<HashDigest<SHA256>> indices = Store
-                    .IterateIndex(Id.ToString())
-                    .ToImmutableHashSet();
+                IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
+                    Id.ToString()
+                );
 
-                // Assume locator is sorted descending by height.
-                foreach (HashDigest<SHA256> hash in locator)
+                ImmutableArray<HashDigest<SHA256>> hashes = locator.ToImmutableArray();
+                var hashesIndex = hashes.Length - 1;
+
+                // Supposes the indexes are sorted in the order of the chain.
+                foreach (HashDigest<SHA256> index in indexes)
                 {
-                    if (indices.Contains(hash))
+                    for (int i = hashesIndex; i >= 0; --i)
                     {
-                        return hash;
+                        if (index.Equals(hashes[i]))
+                        {
+                            hashesIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (hashesIndex == 0)
+                    {
+                        break;
                     }
                 }
 
-                return this[0].Hash;
+                if (hashesIndex + 1 == hashes.Length)
+                {
+                    return this[0].Hash;
+                }
+                else
+                {
+                    return hashes[hashesIndex];
+                }
             }
             finally
             {
