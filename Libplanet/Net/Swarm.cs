@@ -1386,6 +1386,12 @@ namespace Libplanet.Net
             IEnumerable<TxId> unknownTxIds = message.Ids
                 .Where(id => !blockChain.Transactions.ContainsKey(id));
 
+            if (!unknownTxIds.Any())
+            {
+                _logger.Debug("No txs to require.");
+                return;
+            }
+
             if (!(message.Sender is Address from))
             {
                 throw new NullReferenceException(
