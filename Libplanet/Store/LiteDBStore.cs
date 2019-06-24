@@ -17,7 +17,7 @@ using LiteDB;
 namespace Libplanet.Store
 {
     /// <summary>
-    /// <seealso cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
+    /// <see cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
     /// </summary>
     /// <seealso cref="IStore"/>
     public class LiteDBStore : IStore, IDisposable
@@ -37,9 +37,9 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="path">The path where the storage file will be saved.</param>
         /// <param name="journal">
-        /// Enabled or disable double write check to ensure durability.
+        /// Enables or disables double write check to ensure durability.
         /// </param>
-        /// <param name="cacheSize">Max number of pages in cache.</param>
+        /// <param name="cacheSize">Max number of pages in the cache.</param>
         public LiteDBStore(string path, bool journal = true, int cacheSize = 50000)
         {
             if (path is null)
