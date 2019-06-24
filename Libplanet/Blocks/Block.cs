@@ -38,10 +38,7 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-
-            // FIXME: We need to fix this to solve
-            // https://github.com/planetarium/libplanet/issues/244.
-            Transactions = transactions.OrderBy(tx => tx.Nonce).ToList();
+            Transactions = transactions.ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
         }
 
@@ -102,6 +99,9 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
+            // FIXME: We need to fix this to solve
+            // https://github.com/planetarium/libplanet/issues/244.
+            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
@@ -109,7 +109,7 @@ namespace Libplanet.Blocks
                 miner,
                 previousHash,
                 timestamp,
-                transactions
+                orderedTxs
             );
             Nonce nonce = Hashcash.Answer(
                 n => MakeBlock(n).ToBencodex(false, false),
