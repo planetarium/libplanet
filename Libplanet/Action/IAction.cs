@@ -33,7 +33,7 @@ namespace Libplanet.Action
     /// alone.</para>
     /// <para>In conclusion, action code is a part of the protocol and it works with
     /// consensus in the network, so only things each node can affect the network
-    /// in general is property values of each action they signs and sends,
+    /// in general is property values of each action they sign and send,
     /// not code of an action.</para>
     /// </summary>
     /// <example>
