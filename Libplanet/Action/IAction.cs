@@ -14,6 +14,27 @@ namespace Libplanet.Action
     /// represented as fields or properties in an action class, and bound
     /// argument values to these parameters should be received through
     /// a constructor parameters of that class.</para>
+    /// <para>From a perspective of security, an action class belongs to
+    /// the network protocol, and property values in an action belong to
+    /// a node's will (i.e., a user/player's choice).
+    /// That means if you define an action class it also defines what every
+    /// honest node can do in the network.  Even if a malicious node changes
+    /// their own action code it won't affect other honest nodes in
+    /// the network.</para>
+    /// <para>For example, where honest nodes share the common action
+    /// <c>Heal(Target) => PreviousStates[Target] + 1</c>, suppose a malicious
+    /// node <c>m</c> changes their own <c>Heal</c> action code to
+    /// <c>Heal(Target) => PreviousStates[Target] + 2</c> (2 instead of 1),
+    /// and then send an action <c>Heal(m)</c>.
+    /// Fortunately, this action does not work as <c>m</c>'s intention,
+    /// because the changed code in itself is not used by other honest nodes,
+    /// so they still increase only 1, not 2.  The effect of that double healing
+    /// is a sort of &#x201c;illusion&#x201d; only visible to the malicious node
+    /// alone.</para>
+    /// <para>In conclusion, action code is a part of the protocol and it works with
+    /// consensus in the network, so only things each node can affect the network
+    /// in general is property values of each action they sign and send,
+    /// not code of an action.</para>
     /// </summary>
     /// <example>
     /// The following example shows how to implement an action of three types
