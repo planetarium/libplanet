@@ -16,6 +16,10 @@ using LiteDB;
 
 namespace Libplanet.Store
 {
+    /// <summary>
+    /// <see cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
+    /// </summary>
+    /// <seealso cref="IStore"/>
     public class LiteDBStore : IStore, IDisposable
     {
         private const string TxIdPrefix = "tx/";
@@ -28,7 +32,15 @@ namespace Libplanet.Store
 
         private readonly LiteDatabase _db;
 
-        public LiteDBStore(string path)
+        /// <summary>
+        /// Creates a new <seealso cref="LiteDBStore"/>.
+        /// </summary>
+        /// <param name="path">The path where the storage file will be saved.</param>
+        /// <param name="journal">
+        /// Enables or disables double write check to ensure durability.
+        /// </param>
+        /// <param name="cacheSize">Max number of pages in the cache.</param>
+        public LiteDBStore(string path, bool journal = true, int cacheSize = 50000)
         {
             if (path is null)
             {
@@ -38,8 +50,8 @@ namespace Libplanet.Store
             var connectionString = new ConnectionString
             {
                 Filename = path,
-                Journal = false,
-                CacheSize = 50000,
+                Journal = journal,
+                CacheSize = cacheSize,
             };
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
