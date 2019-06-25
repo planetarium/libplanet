@@ -11,8 +11,7 @@ To be released.
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
- -  Renamed `BlockChain<T>.GetNonce()` method to `BlockChain<T>.GetNextTxNonce()`
-    method.  [[#294]]
+ -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
 
 ### Added interfaces
 
@@ -26,11 +25,11 @@ To be released.
     [[#272], [#285]]
  -  Added `BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>,
     IImmutableSet<Address>, DateTimeOffset?)` method.  [[#294]]
+ -  Added `BlockChain<T>.GetNextTxNonce()` method which counts staged
+    transactions too during nonce computation.  [[#270], [#294]]
 
 ### Behavioral changes
 
- -  `BlockChain<T>.GetNonce()` became to count staged transactions too during
-    nonce computation.  [[#270]]
  -  `BlockChain<T>.GetStates()` method became to throw
     `IncompleteBlockStatesException` if its `Store` lacks the states of a block
     that a requested address lastly updated.  [[#272], [#285]]
