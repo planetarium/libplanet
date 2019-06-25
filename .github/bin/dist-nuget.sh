@@ -19,7 +19,12 @@ if [ "$NUGET_API_KEY" = "" ]; then
   exit 1
 fi
 
-if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ]; then
+# Publish a package only if the repository is upstream (planetarium/libplanet)
+# and the branch is for releases (master or maintenance-*).
+# shellcheck disable=SC2235
+if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ] || (
+    [ "$GITHUB_REF" != refs/heads/master ] &&
+    [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ] ); then
   alias dotnet="echo DRY-RUN: dotnet"
 fi
 
