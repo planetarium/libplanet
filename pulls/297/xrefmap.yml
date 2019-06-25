@@ -5785,12 +5785,12 @@ references:
   commentId: T:Libplanet.Store.LiteDBStore
   fullName: Libplanet.Store.LiteDBStore
   nameWithType: LiteDBStore
-- uid: Libplanet.Store.LiteDBStore.#ctor(System.String)
-  name: LiteDBStore(String)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_System_String_
-  commentId: M:Libplanet.Store.LiteDBStore.#ctor(System.String)
-  fullName: Libplanet.Store.LiteDBStore.LiteDBStore(System.String)
-  nameWithType: LiteDBStore.LiteDBStore(String)
+- uid: Libplanet.Store.LiteDBStore.#ctor(System.String,System.Boolean,System.Int32)
+  name: LiteDBStore(String, Boolean, Int32)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_System_String_System_Boolean_System_Int32_
+  commentId: M:Libplanet.Store.LiteDBStore.#ctor(System.String,System.Boolean,System.Int32)
+  fullName: Libplanet.Store.LiteDBStore.LiteDBStore(System.String, System.Boolean, System.Int32)
+  nameWithType: LiteDBStore.LiteDBStore(String, Boolean, Int32)
 - uid: Libplanet.Store.LiteDBStore.#ctor*
   name: LiteDBStore
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_
