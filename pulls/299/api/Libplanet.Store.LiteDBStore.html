@@ -360,7 +360,8 @@
   
   <h1 id="Libplanet_Store_LiteDBStore" data-uid="Libplanet.Store.LiteDBStore" class="text-break">Class LiteDBStore
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p><a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementation using <a href="https://www.litedb.org/">LiteDB</a>.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -406,18 +407,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore__ctor_System_String_System_Boolean_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.%23ctor(System.String%2CSystem.Boolean%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L43">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore__ctor_" data-uid="Libplanet.Store.LiteDBStore.#ctor*"></a>
-  <h4 id="Libplanet_Store_LiteDBStore__ctor_System_String_" data-uid="Libplanet.Store.LiteDBStore.#ctor(System.String)">LiteDBStore(String)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Libplanet_Store_LiteDBStore__ctor_System_String_System_Boolean_System_Int32_" data-uid="Libplanet.Store.LiteDBStore.#ctor(System.String,System.Boolean,System.Int32)">LiteDBStore(String, Boolean, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new <a class="xref" href="Libplanet.Store.LiteDBStore.html">LiteDBStore</a>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LiteDBStore(string path)</code></pre>
+    <pre><code class="lang-csharp hljs">public LiteDBStore(string path, bool journal = true, int cacheSize = 50000)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -432,7 +434,20 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">path</span></td>
-        <td></td>
+        <td><p>The path where the storage file will be saved.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">journal</span></td>
+        <td><p>Enables or disables double write check to ensure durability.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">cacheSize</span></td>
+        <td><p>Max number of pages in the cache.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -443,7 +458,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.AppendIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L106">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L118">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_AppendIndex_" data-uid="Libplanet.Store.LiteDBStore.AppendIndex*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.LiteDBStore.AppendIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">AppendIndex(String, HashDigest&lt;SHA256&gt;)</h4>
@@ -495,7 +510,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L642">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L654">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_CountBlocks_" data-uid="Libplanet.Store.LiteDBStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_CountBlocks" data-uid="Libplanet.Store.LiteDBStore.CountBlocks">CountBlocks()</h4>
@@ -525,7 +540,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_CountIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.CountIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L76">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L88">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_CountIndex_" data-uid="Libplanet.Store.LiteDBStore.CountIndex*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_CountIndex_System_String_" data-uid="Libplanet.Store.LiteDBStore.CountIndex(System.String)">CountIndex(String)</h4>
@@ -572,7 +587,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L636">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L648">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_CountTransactions_" data-uid="Libplanet.Store.LiteDBStore.CountTransactions*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_CountTransactions" data-uid="Libplanet.Store.LiteDBStore.CountTransactions">CountTransactions()</h4>
@@ -602,7 +617,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L294">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L306">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_DeleteBlock_" data-uid="Libplanet.Store.LiteDBStore.DeleteBlock*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteBlock(HashDigest&lt;SHA256&gt;)</h4>
@@ -649,7 +664,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.DeleteIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L113">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L125">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_DeleteIndex_" data-uid="Libplanet.Store.LiteDBStore.DeleteIndex*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.LiteDBStore.DeleteIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteIndex(String, HashDigest&lt;SHA256&gt;)</h4>
@@ -701,7 +716,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L215">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L227">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_DeleteTransaction_" data-uid="Libplanet.Store.LiteDBStore.DeleteTransaction*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
@@ -748,7 +763,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L647">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L659">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_Dispose_" data-uid="Libplanet.Store.LiteDBStore.Dispose*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_Dispose" data-uid="Libplanet.Store.LiteDBStore.Dispose">Dispose()</h4>
@@ -763,7 +778,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_ForkStateReferences__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.ForkStateReferences%60%601(System.String%2CSystem.String%2CLibplanet.Blocks.Block%7B%60%600%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L427">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L439">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_ForkStateReferences_" data-uid="Libplanet.Store.LiteDBStore.ForkStateReferences*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_ForkStateReferences__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__" data-uid="Libplanet.Store.LiteDBStore.ForkStateReferences``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})">ForkStateReferences&lt;T&gt;(String, String, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;)</h4>
@@ -826,7 +841,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.ForkTxNonce%60%601(System.String%2CSystem.String%2CLibplanet.Blocks.Block%7B%60%600%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L569">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L581">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_ForkTxNonce_" data-uid="Libplanet.Store.LiteDBStore.ForkTxNonce*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_ForkTxNonce__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__" data-uid="Libplanet.Store.LiteDBStore.ForkTxNonce``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})">ForkTxNonce&lt;T&gt;(String, String, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;)</h4>
@@ -889,7 +904,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.GetBlock%60%601(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L230">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L242">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_GetBlock_" data-uid="Libplanet.Store.LiteDBStore.GetBlock*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.LiteDBStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</h4>
@@ -952,7 +967,7 @@
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L300">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L312">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_GetBlockStates_" data-uid="Libplanet.Store.LiteDBStore.GetBlockStates*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
@@ -1017,7 +1032,7 @@ block.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L181">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L193">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_GetTransaction_" data-uid="Libplanet.Store.LiteDBStore.GetTransaction*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.LiteDBStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
@@ -1080,7 +1095,7 @@ block.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_GetTxNonce_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.GetTxNonce(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L491">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L503">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_GetTxNonce_" data-uid="Libplanet.Store.LiteDBStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_GetTxNonce_System_String_Libplanet_Address_" data-uid="Libplanet.Store.LiteDBStore.GetTxNonce(System.String,Libplanet.Address)">GetTxNonce(String, Address)</h4>
@@ -1144,7 +1159,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IncreaseTxNonce%60%601(System.String%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L526">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L538">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IncreaseTxNonce_" data-uid="Libplanet.Store.LiteDBStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IncreaseTxNonce__1_System_String_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.LiteDBStore.IncreaseTxNonce``1(System.String,Libplanet.Blocks.Block{``0})">IncreaseTxNonce&lt;T&gt;(String, Block&lt;T&gt;)</h4>
@@ -1197,7 +1212,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IndexBlockHash_System_String_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IndexBlockHash(System.String%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L90">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L102">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IndexBlockHash_" data-uid="Libplanet.Store.LiteDBStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IndexBlockHash_System_String_System_Int64_" data-uid="Libplanet.Store.LiteDBStore.IndexBlockHash(System.String,System.Int64)">IndexBlockHash(String, Int64)</h4>
@@ -1249,7 +1264,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L221">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L233">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IterateBlockHashes_" data-uid="Libplanet.Store.LiteDBStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IterateBlockHashes" data-uid="Libplanet.Store.LiteDBStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1279,7 +1294,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IterateIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IterateIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L82">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L94">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IterateIndex_" data-uid="Libplanet.Store.LiteDBStore.IterateIndex*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IterateIndex_System_String_" data-uid="Libplanet.Store.LiteDBStore.IterateIndex(System.String)">IterateIndex(String)</h4>
@@ -1326,7 +1341,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L167">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L179">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.LiteDBStore.IterateStagedTransactionIds*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IterateStagedTransactionIds" data-uid="Libplanet.Store.LiteDBStore.IterateStagedTransactionIds">IterateStagedTransactionIds()</h4>
@@ -1356,7 +1371,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L173">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L185">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_IterateTransactionIds_" data-uid="Libplanet.Store.LiteDBStore.IterateTransactionIds*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_IterateTransactionIds" data-uid="Libplanet.Store.LiteDBStore.IterateTransactionIds">IterateTransactionIds()</h4>
@@ -1386,7 +1401,7 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_ListAddresses_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.ListAddresses(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L121">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L133">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_ListAddresses_" data-uid="Libplanet.Store.LiteDBStore.ListAddresses*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_ListAddresses_System_String_" data-uid="Libplanet.Store.LiteDBStore.ListAddresses(System.String)">ListAddresses(String)</h4>
@@ -1437,7 +1452,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_ListNamespaces.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.ListNamespaces%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L68">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L80">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_ListNamespaces_" data-uid="Libplanet.Store.LiteDBStore.ListNamespaces*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_ListNamespaces" data-uid="Libplanet.Store.LiteDBStore.ListNamespaces">ListNamespaces()</h4>
@@ -1469,7 +1484,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_LookupStateReference__1_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.LookupStateReference%60%601(System.String%2CLibplanet.Address%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L336">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L348">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_LookupStateReference_" data-uid="Libplanet.Store.LiteDBStore.LookupStateReference*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_LookupStateReference__1_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.LiteDBStore.LookupStateReference``1(System.String,Libplanet.Address,Libplanet.Blocks.Block{``0})">LookupStateReference&lt;T&gt;(String, Address, Block&lt;T&gt;)</h4>
@@ -1542,7 +1557,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L273">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L285">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_PutBlock_" data-uid="Libplanet.Store.LiteDBStore.PutBlock*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.LiteDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
@@ -1590,7 +1605,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L199">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L211">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_PutTransaction_" data-uid="Libplanet.Store.LiteDBStore.PutTransaction*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.LiteDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
@@ -1638,7 +1653,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L319">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L331">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_SetBlockStates_" data-uid="Libplanet.Store.LiteDBStore.SetBlockStates*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
@@ -1675,7 +1690,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L166">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_StageTransactionIds_" data-uid="Libplanet.Store.LiteDBStore.StageTransactionIds*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">StageTransactionIds(ISet&lt;TxId&gt;)</h4>
@@ -1707,7 +1722,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.StoreStateReference%60%601(System.String%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L387">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L399">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_StoreStateReference_" data-uid="Libplanet.Store.LiteDBStore.StoreStateReference*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.LiteDBStore.StoreStateReference``1(System.String,System.Collections.Immutable.IImmutableSet{Libplanet.Address},Libplanet.Blocks.Block{``0})">StoreStateReference&lt;T&gt;(String, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</h4>
@@ -1765,7 +1780,7 @@ be vary for each call.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L161">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L173">View Source</a>
   </span>
   <a id="Libplanet_Store_LiteDBStore_UnstageTransactionIds_" data-uid="Libplanet.Store.LiteDBStore.UnstageTransactionIds*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.LiteDBStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(ISet&lt;TxId&gt;)</h4>
@@ -1799,6 +1814,10 @@ be vary for each call.</p>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
   </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
 </article>
           </div>
           
@@ -1810,7 +1829,7 @@ be vary for each call.</p>
                     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Store_LiteDBStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Store/LiteDBStore.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

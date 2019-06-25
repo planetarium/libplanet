@@ -422,6 +422,27 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
+<p>From a perspective of security, an action class belongs to
+the network protocol, and property values in an action belong to
+a node&apos;s will (i.e., a user/player&apos;s choice).
+That means if you define an action class it also defines what every
+honest node can do in the network.  Even if a malicious node changes
+their own action code it won&apos;t affect other honest nodes in
+the network.</p>
+<p>For example, where honest nodes share the common action
+<code>Heal(Target) => PreviousStates[Target] + 1</code>, suppose a malicious
+node <code>m</code> changes their own <code>Heal</code> action code to
+<code>Heal(Target) => PreviousStates[Target] + 2</code> (2 instead of 1),
+and then send an action <code>Heal(m)</code>.
+Fortunately, this action does not work as <code>m</code>&apos;s intention,
+because the changed code in itself is not used by other honest nodes,
+so they still increase only 1, not 2.  The effect of that double healing
+is a sort of “illusion” only visible to the malicious node
+alone.</p>
+<p>In conclusion, action code is a part of the protocol and it works with
+consensus in the network, so only things each node can affect the network
+in general is property values of each action they sign and send,
+not code of an action.</p>
 </section>
       <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
       <section><p>Contextual data determined by a transaction and a block.

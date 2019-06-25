@@ -371,6 +371,27 @@ arguments.  Those parameters that will be bound at runtime should be
 represented as fields or properties in an action class, and bound
 argument values to these parameters should be received through
 a constructor parameters of that class.</p>
+<p>From a perspective of security, an action class belongs to
+the network protocol, and property values in an action belong to
+a node&apos;s will (i.e., a user/player&apos;s choice).
+That means if you define an action class it also defines what every
+honest node can do in the network.  Even if a malicious node changes
+their own action code it won&apos;t affect other honest nodes in
+the network.</p>
+<p>For example, where honest nodes share the common action
+<code>Heal(Target) => PreviousStates[Target] + 1</code>, suppose a malicious
+node <code>m</code> changes their own <code>Heal</code> action code to
+<code>Heal(Target) => PreviousStates[Target] + 2</code> (2 instead of 1),
+and then send an action <code>Heal(m)</code>.
+Fortunately, this action does not work as <code>m</code>&apos;s intention,
+because the changed code in itself is not used by other honest nodes,
+so they still increase only 1, not 2.  The effect of that double healing
+is a sort of “illusion” only visible to the malicious node
+alone.</p>
+<p>In conclusion, action code is a part of the protocol and it works with
+consensus in the network, so only things each node can affect the network
+in general is property values of each action they sign and send,
+not code of an action.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
@@ -555,7 +576,7 @@ example.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L208">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L229">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
@@ -599,7 +620,7 @@ by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-u
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L261">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L282">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
   <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
@@ -686,7 +707,7 @@ could be logged multiple times.</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L219">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L240">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
   <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
@@ -728,7 +749,7 @@ properties (or fields).</p>
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L283">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L304">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Render_" data-uid="Libplanet.Action.IAction.Render*"></a>
   <h4 id="Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Render(IActionContext, IAccountStateDelta)</h4>
@@ -780,7 +801,7 @@ executed, which means it is equivalent to what <a class="xref" href="Libplanet.A
     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L307">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L328">View Source</a>
   </span>
   <a id="Libplanet_Action_IAction_Unrender_" data-uid="Libplanet.Action.IAction.Unrender*"></a>
   <h4 id="Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Unrender(IActionContext, IAccountStateDelta)</h4>
@@ -842,7 +863,7 @@ with redrawing the graphics on the display at the finish.</p>
                     <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L189" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Action/IAction.cs/#L210" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
