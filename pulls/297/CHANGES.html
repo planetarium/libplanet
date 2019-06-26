@@ -83,8 +83,7 @@
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
 is unknown.</li>
 <li>Added <code>IStore.ListAddresses()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
-<li>Renamed <code>BlockChain&lt;T&gt;.GetNonce()</code> method to <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code>
-method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.GetNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 <li><code>BlockChain&lt;T&gt;.StageTransactions</code> became to receive
 <code>IDictionary&lt;Transaction&lt;T&gt;, bool&gt;</code> instead of <code>ISet&lt;Transaction&lt;T&gt;&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
@@ -104,11 +103,11 @@ to create a <code>Peer</code> whose version is unknown.</li>
 <li>Added <code>completeStates</code> option to <code>BlockChain&lt;T&gt;.GetStates()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> method which counts staged
+transactions too during nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>, <a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li><code>BlockChain&lt;T&gt;.GetNonce()</code> became to count staged transactions too during
-nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>]</li>
 <li><code>BlockChain&lt;T&gt;.GetStates()</code> method became to throw
 <code>IncompleteBlockStatesException</code> if its <code>Store</code> lacks the states of a block
 that a requested address lastly updated.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
