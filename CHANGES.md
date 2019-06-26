@@ -52,7 +52,9 @@ To be released.
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
  -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
     of states (i.e., incomplete states).  [[#272], [#285]]
- -  `Swarm` became to broadcast staged `Transaction`s periodically.  [[#274], [#297]]
+ -  `Swarm` became to broadcast staged `Transaction`s periodically
+     so that game apps no more need to maintain their own thread to
+     broadcast staged transactions.  [[#274], [#297]]
  -  Previously, `Swarm` had sent an empty `GetTxs` message when it receives
     an empty `TxIds` from peers, and it had made the network waste bandwidth for
     unnecessary messages.  `Swam` became to no more send such empty `GetTxs`.
