@@ -126,9 +126,9 @@ of states (i.e., incomplete states).  [<a href="https://github.com/planetarium/l
 <li><code>Swarm</code> became to broadcast staged <code>Transaction</code>s periodically
 so that game apps no more need to maintain their own thread to
 broadcast staged transactions.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
-<li>Currently, Swarm sent <code>GetTxs</code> with an empty <code>txIds</code> when it receives a
-<code>TxIds</code> message and if it does not have unknown <code>TxId</code>s.  Changed so that
-the <code>GetTxs</code> message is not sent when there are no unknown <code>TxId</code>s.
+<li>Previously, <code>Swarm</code> had sent an empty <code>GetTxs</code> message when it receives
+an empty <code>TxIds</code> from peers, and it had made the network waste bandwidth for
+unnecessary messages.  <code>Swam</code> became to no more send such empty <code>GetTxs</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
