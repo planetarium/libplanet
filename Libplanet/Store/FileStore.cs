@@ -611,44 +611,33 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override HashDigest<SHA256>? LookupStateReference<T>(
-            string @namespace,
-            Address address,
-            Block<T> lookupUntil)
+        public override IEnumerable<(HashDigest<SHA256>, long)>
+        IterateStateReferences(string @namespace, Address address)
         {
             var addrFile = new FileInfo(
                 GetStateReferencePath(@namespace, address));
-            long lookupUntilIndex = lookupUntil.Index;
 
             if (!addrFile.Exists || addrFile.Length == 0)
             {
-                return null;
+                yield break;
+            }
+
+            int stateReferenceSize = HashDigest<SHA256>.Size + sizeof(long);
+            if (addrFile.Length % stateReferenceSize != 0)
+            {
+                throw new FileLoadException(
+                    $"State references file's size ({addrFile.Length}) should be multiple of " +
+                    $"state reference entry size {stateReferenceSize})."
+                );
             }
 
             using (Stream stream = addrFile.OpenRead())
             {
-                int stateReferenceSize = HashDigest<SHA256>.Size + sizeof(long);
-
-                if (stream.Length % stateReferenceSize != 0)
+                foreach (var (hashBytes, index) in GetStateReferences(stream))
                 {
-                    throw new FileLoadException(
-                        $"State reference file size {stream.Length} " +
-                        "should be multiple of state reference entry size " +
-                        $"{stateReferenceSize}");
-                }
-
-                foreach (
-                    var (hashBytes, index)
-                    in GetStateReferences(stream))
-                {
-                    if (index <= lookupUntilIndex)
-                    {
-                        return new HashDigest<SHA256>(hashBytes);
-                    }
+                    yield return (new HashDigest<SHA256>(hashBytes), index);
                 }
             }
-
-            return null;
         }
 
         /// <inheritdoc/>

@@ -29,6 +29,12 @@ To be released.
      -  Removed `IStore.ForkTxNonce()` method.
      -  `FileStore` became to occupy fewer bytes for storing tx nonces.
         This change broke file-level backward compatibility.
+ -  `IStore` became possible to look up multiple state references in a stack.
+    [[#272], [#307]]
+     -  Removed `IStore.LookupStateReference<T>()` method.
+        Instead, a newly added static class `StoreExtension` provides
+        an extension method of the same name.
+     -  Added `IStore.IterateStateReferences()` method.
 
 ### Added interfaces
 
@@ -44,6 +50,7 @@ To be released.
     IImmutableSet<Address>, DateTimeOffset?)` method.  [[#294]]
  -  Added `BlockChain<T>.GetNextTxNonce()` method which counts staged
     transactions too during nonce computation.  [[#270], [#294]]
+ -  Added `StoreExtension` static class.  [[#272], [#307]]
 
 ### Behavioral changes
 

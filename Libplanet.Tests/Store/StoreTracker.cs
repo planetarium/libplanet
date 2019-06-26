@@ -152,14 +152,13 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
-        public HashDigest<SHA256>? LookupStateReference<T>(
+        public IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
             string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new()
+            Address address
+        )
         {
-            _logs.Add((nameof(LookupStateReference), address, null));
-            return _store.LookupStateReference(@namespace, address, lookupUntil);
+            _logs.Add((nameof(IterateStateReferences), @namespace, address));
+            return _store.IterateStateReferences(@namespace, address);
         }
 
         public void StoreStateReference<T>(
@@ -168,6 +167,7 @@ namespace Libplanet.Tests.Store
             Block<T> block)
             where T : IAction, new()
         {
+            // FIXME: Log arguments properly (including @namespace).
             _logs.Add((nameof(StoreStateReference), block.Hash, null));
             _store.StoreStateReference(@namespace, addresses, block);
         }
@@ -179,6 +179,7 @@ namespace Libplanet.Tests.Store
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new()
         {
+            // FIXME: Log arguments properly.
             _logs.Add((nameof(ForkStateReferences), null, null));
             _store.ForkStateReferences(
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
@@ -186,12 +187,13 @@ namespace Libplanet.Tests.Store
 
         public long GetTxNonce(string @namespace, Address address)
         {
-            _logs.Add((nameof(GetTxNonce), address, null));
+            _logs.Add((nameof(GetTxNonce), @namespace, address));
             return _store.GetTxNonce(@namespace, address);
         }
 
         public void IncreaseTxNonce(string @namespace, Address address, long delta = 1)
         {
+            // FIXME: Log arguments properly (including @namespace).
             _logs.Add((nameof(IncreaseTxNonce), address, delta));
             _store.IncreaseTxNonce(@namespace, address, delta);
         }

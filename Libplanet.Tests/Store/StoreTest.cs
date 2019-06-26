@@ -230,29 +230,33 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void LookupStateReference()
+        public void IterateStateReferences()
         {
-            Address address = Fx.Address1;
-            Block<DumbAction> prevBlock = Fx.Block3;
+            Address address = this.Fx.Address1;
 
-            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreNamespace, address, prevBlock));
+            Transaction<DumbAction> tx4 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "foo") }
+            );
+            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
 
-            Transaction<DumbAction> transaction = Fx.MakeTransaction(
-                new List<DumbAction>(),
-                new HashSet<Address> { address }.ToImmutableHashSet());
+            Transaction<DumbAction> tx5 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "bar") }
+            );
+            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
 
-            Block<DumbAction> block = TestUtils.MineNext(
-                prevBlock,
-                new[] { transaction });
+            Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address));
 
-            var updatedAddresses = new HashSet<Address> { address };
-            Fx.Store.StoreStateReference(
-                Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), block);
-
+            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx4.UpdatedAddresses, block4);
             Assert.Equal(
-                block.Hash,
-                Fx.Store.LookupStateReference(Fx.StoreNamespace, address, block));
-            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreNamespace, address, prevBlock));
+                new[] { (block4.Hash, block4.Index) },
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+            );
+
+            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx5.UpdatedAddresses, block5);
+            Assert.Equal(
+                new[] { (block5.Hash, block5.Index), (block4.Hash, block4.Index) },
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+            );
         }
 
         [InlineData(0)]

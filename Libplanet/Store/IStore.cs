@@ -108,26 +108,19 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Looks up a state reference, which is a <see cref="Block{T}.Hash"/>
-        /// that has the state of the <paramref name="address"/>.
+        /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
+        /// the requested <paramref name="address"/> in the specified <paramref name="namespace"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to look up a state reference.
-        /// </param>
-        /// <param name="address">The <see cref="Address"/> to look up.
-        /// </param>
-        /// <param name="lookupUntil">The upper bound (i.e., the latest block)
-        /// of the search range. <see cref="Block{T}"/>s after
-        /// <paramref name="lookupUntil"/> are ignored.</param>
-        /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
-        /// <paramref name="address"/>.</returns>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="lookupUntil"/>.</typeparam>
-        /// <seealso cref="StoreStateReference{T}"/>
-        HashDigest<SHA256>? LookupStateReference<T>(
+        /// <param name="namespace">The chain namespace.</param>
+        /// <param name="address">The <see cref="Address"/> to get state references.</param>
+        /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
+        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go last,
+        /// and the lowest index (i.e., the closest to the genesis) go first.</returns>
+        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
             string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new();
+            Address address
+        );
 
         /// <summary>
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
@@ -142,7 +135,7 @@ namespace Libplanet.Store
         /// of the <see cref="Address"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
-        /// <seealso cref="LookupStateReference{T}"/>
+        /// <seealso cref="IterateStateReferences(string, Address)"/>
         void StoreStateReference<T>(
             string @namespace,
             IImmutableSet<Address> addresses,
@@ -172,8 +165,8 @@ namespace Libplanet.Store
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
         /// <paramref name="sourceNamespace"/> does not exist.</exception>
-        /// <seealso cref="LookupStateReference{T}"/>
-        /// <seealso cref="StoreStateReference{T}"/>
+        /// <seealso cref="IterateStateReferences(string, Address)"/>
+        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
         void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,

@@ -75,11 +75,8 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
-        public abstract HashDigest<SHA256>? LookupStateReference<T>(
-            string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new();
+        public abstract IEnumerable<(HashDigest<SHA256>, long)>
+        IterateStateReferences(string @namespace, Address address);
 
         /// <inheritdoc />
         public abstract void StoreStateReference<T>(

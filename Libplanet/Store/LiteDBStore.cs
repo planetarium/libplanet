@@ -354,54 +354,48 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public HashDigest<SHA256>? LookupStateReference<T>(
+        public IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
             string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new()
+            Address address
+        )
         {
             var fileId = $"{StateRefIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
 
             if (file is null || file.Length == 0)
             {
-                return null;
+                yield break;
+            }
+
+            int hashSize = HashDigest<SHA256>.Size;
+            int stateReferenceSize = hashSize + sizeof(long);
+            if (file.Length % stateReferenceSize != 0)
+            {
+                throw new FileLoadException(
+                    $"State references file's size ({file.Length}) should be multiple of " +
+                    $"state reference entry size {stateReferenceSize})."
+                );
             }
 
             using (var stream = new MemoryStream())
             {
+                // Note that a stream made by file.OpenRead() does not support
+                // .Seek() operation --- although it implements the interface,
+                // the method throws a NotSupportedException.
                 file.CopyTo(stream);
 
-                int hashSize = HashDigest<SHA256>.Size;
-                int stateReferenceSize = hashSize + sizeof(long);
                 var buffer = new byte[stateReferenceSize];
-
-                if (stream.Length % stateReferenceSize != 0)
-                {
-                    throw new FileLoadException(
-                        $"State reference file size {stream.Length} " +
-                        "should be multiple of state reference entry size " +
-                        $"{stateReferenceSize}");
-                }
-
                 long position = stream.Seek(0, SeekOrigin.End);
 
                 for (var i = 1; position - buffer.Length >= 0; i++)
                 {
-                    position = stream.Seek(
-                        -buffer.Length * i, SeekOrigin.End);
+                    position = stream.Seek(-buffer.Length * i, SeekOrigin.End);
                     stream.Read(buffer, 0, buffer.Length);
                     byte[] hashBytes = buffer.Take(hashSize).ToArray();
                     long index = BitConverter.ToInt64(buffer, hashSize);
-
-                    if (index <= lookupUntil.Index)
-                    {
-                        return new HashDigest<SHA256>(hashBytes);
-                    }
+                    yield return (new HashDigest<SHA256>(hashBytes), index);
                 }
             }
-
-            return null;
         }
 
         /// <inheritdoc/>
