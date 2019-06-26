@@ -9,7 +9,7 @@ To be released.
 ### Backward-incompatible interface changes
 
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
-    is unknown.
+    is unknown.  [[#280]]
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
  -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
  -  `BlockChain<T>.StageTransactions` became to receive
@@ -29,7 +29,7 @@ To be released.
  -  All `*Async()` methods belonging to `TurnClient` class became to have
     `cancellationToken` option.  [[#287]]
  -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
-    to create a `Peer` whose version is unknown.
+    to create a `Peer` whose version is unknown.  [[#280]]
  -  Added `IncompleteBlockStatesException` class.  [[#272], [#285]]
  -  Added `completeStates` option to `BlockChain<T>.GetStates()` method.
     [[#272], [#285]]
@@ -83,6 +83,7 @@ To be released.
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
+[#281]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
