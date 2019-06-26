@@ -998,8 +998,8 @@ namespace Libplanet.Net
                     await Task.Run(
                         () =>
                         {
-                            List<TxId> txIds = blockChain.Store
-                                .IterateStagedTransactionIds(true)
+                            List<TxId> txIds = blockChain
+                                .GetStagedTransactionIds(true)
                                 .ToList();
 
                             if (txIds.Any())
