@@ -28,7 +28,7 @@ namespace Libplanet.Store
 
         private const string StateRefIdPrefix = "stateref/";
 
-        private const string NonceIdPrefix = "nonce/";
+        private const string NonceIdPrefix = "nonce_";
 
         private readonly LiteDatabase _db;
 
@@ -505,49 +505,21 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public long GetTxNonce(string @namespace, Address address)
         {
-            var fileId = $"{NonceIdPrefix}{@namespace}/{address.ToHex()}";
-            LiteFileInfo file = _db.FileStorage.FindById(fileId);
-
-            if (file is null || file.Length == 0)
-            {
-                return 0;
-            }
-
-            using (var stream = file.OpenRead())
-            {
-                var buffer = new byte[sizeof(long)];
-                stream.Read(buffer, 0, buffer.Length);
-                return BitConverter.ToInt64(buffer, 0);
-            }
+            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            var docId = new BsonValue(address.ToByteArray());
+            BsonDocument doc = collection.FindById(docId);
+            return doc is null ? 0 : (doc.TryGetValue("v", out BsonValue v) ? v.AsInt64 : 0);
         }
 
         /// <inheritdoc/>
         public void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
         {
-            var fileId = $"{NonceIdPrefix}{@namespace}/{signer.ToHex()}";
             long nextNonce = GetTxNonce(@namespace, signer) + delta;
-
-            if (!_db.FileStorage.Exists(fileId))
-            {
-                _db.FileStorage.Upload(
-                    fileId,
-                    signer.ToHex(),
-                    new MemoryStream());
-            }
-
-            LiteFileInfo file = _db.FileStorage.FindById(fileId);
-            using (var temp = new MemoryStream())
-            {
-                file.CopyTo(temp);
-                temp.Seek(0, SeekOrigin.Begin);
-                byte[] prev = temp.ToArray();
-
-                using (LiteFileStream stream = file.OpenWrite())
-                {
-                    byte[] nonceBytes = BitConverter.GetBytes(nextNonce);
-                    stream.Write(nonceBytes, 0, nonceBytes.Length);
-                }
-            }
+            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            var docId = new BsonValue(signer.ToByteArray());
+            collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
         }
 
         /// <inheritdoc/>
