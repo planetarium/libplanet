@@ -638,12 +638,14 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime)
         {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
+            string id = Id.ToString();
+            string forkedId = forked.Id.ToString();
             try
             {
                 _rwlock.EnterReadLock();
-                foreach (var index in Store.IterateIndex(Id.ToString()))
+                foreach (var index in Store.IterateIndex(id))
                 {
-                    Store.AppendIndex(forked.Id.ToString(), index);
+                    Store.AppendIndex(forkedId, index);
                     if (index.Equals(point))
                     {
                         break;
@@ -653,7 +655,7 @@ namespace Libplanet.Blockchain
                 Block<T> pointBlock = Blocks[point];
 
                 var addressesToStrip = new HashSet<Address>();
-                var signersToStrip = new HashSet<Address>();
+                var signersToStrip = new Dictionary<Address, int>();
 
                 for (
                     Block<T> block = Tip;
@@ -666,13 +668,19 @@ namespace Libplanet.Blockchain
                         .Select(kv => kv.Key)
                         .ToImmutableHashSet();
 
-                    ImmutableHashSet<Address> signers = block
-                        .Transactions
-                        .Select(tx => tx.Signer)
-                        .ToImmutableHashSet();
-
                     addressesToStrip.UnionWith(addresses);
-                    signersToStrip.UnionWith(signers);
+
+                    IEnumerable<(Address, int)> signers = block
+                        .Transactions
+                        .GroupBy(tx => tx.Signer)
+                        .Select(g => (g.Key, g.Count()));
+
+                    foreach ((Address address, int txCount) in signers)
+                    {
+                        int existingValue = 0;
+                        signersToStrip.TryGetValue(address, out existingValue);
+                        signersToStrip[address] = existingValue + txCount;
+                    }
                 }
 
                 Store.ForkStateReferences(
@@ -680,11 +688,22 @@ namespace Libplanet.Blockchain
                     forked.Id.ToString(),
                     pointBlock,
                     addressesToStrip.ToImmutableHashSet());
-                Store.ForkTxNonce(
-                    Id.ToString(),
-                    forked.Id.ToString(),
-                    pointBlock,
-                    signersToStrip.ToImmutableHashSet());
+
+                foreach (KeyValuePair<Address, int> pair in signersToStrip)
+                {
+                    long existingNonce = Store.GetTxNonce(id, pair.Key);
+                    long forkedNonce = existingNonce - pair.Value;
+                    if (forkedNonce < 0)
+                    {
+                        throw new InvalidOperationException(
+                            $"A tx nonce for {pair.Key} in the store seems broken.\n" +
+                            $"Existing tx nonce: {existingNonce}\n" +
+                            $"Forked tx nonce: {forkedNonce} (delta: {pair.Value})"
+                        );
+                    }
+
+                    Store.IncreaseTxNonce(forkedId, pair.Key, forkedNonce);
+                }
             }
             finally
             {
@@ -856,7 +875,12 @@ namespace Libplanet.Blockchain
             {
                 string chainId = Id.ToString();
                 Store.StoreStateReference(chainId, updatedAddresses, block);
-                Store.IncreaseTxNonce(chainId, block);
+                IEnumerable<(Address, int)> signers = block
+                    .Transactions.GroupBy(tx => tx.Signer).Select(g => (g.Key, g.Count()));
+                foreach ((Address signer, int txCount) in signers)
+                {
+                    Store.IncreaseTxNonce(chainId, signer, txCount);
+                }
             }
         }
     }

@@ -426,75 +426,17 @@ namespace Libplanet.Tests.Store
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-            Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(),
-                new[] { Fx.Transaction1 });
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block1);
-
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-            Block<DumbAction> block2 = TestUtils.MineNext(
-                block1,
-                new[] { Fx.Transaction2 });
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block2);
-
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer, 5);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
-        }
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        [Theory]
-        public void ForkTxNonce(int branchPointIndex)
-        {
-            var privateKey1 = new PrivateKey();
-            var privateKey2 = new PrivateKey();
-            Address address1 = privateKey1.PublicKey.ToAddress();
-            Address address2 = privateKey2.PublicKey.ToAddress();
-            Block<DumbAction> prevBlock = Fx.Block3;
-            const string targetNamespace = "dummy";
-
-            var blocks = new List<Block<DumbAction>>
-            {
-                TestUtils.MineNext(
-                    prevBlock,
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }),
-            };
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[0],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[1],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[2],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey2) }));
-
-            foreach (Block<DumbAction> block in blocks)
-            {
-                Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block);
-            }
-
-            var branchPoint = blocks[branchPointIndex];
-            Fx.Store.ForkTxNonce(
-                Fx.StoreNamespace,
-                targetNamespace,
-                branchPoint,
-                new[] { address1, address2 }.ToImmutableHashSet());
-            Assert.Equal(
-                3,
-                Fx.Store.GetTxNonce(Fx.StoreNamespace, address1));
-            Assert.Equal(
-                branchPointIndex + 1,
-                Fx.Store.GetTxNonce(targetNamespace, address1));
-            Assert.Equal(
-                0,
-                Fx.Store.GetTxNonce(targetNamespace, address2));
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer, 2);
+            Assert.Equal(3, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
         }
     }
 }

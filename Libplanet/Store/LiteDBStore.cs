@@ -519,136 +519,39 @@ namespace Libplanet.Store
                 return 0;
             }
 
-            int hashSize = HashDigest<SHA256>.Size;
-            int blockIndexSize = sizeof(long);
-            int nonceSize = sizeof(long);
-            int nonceEntrySize = hashSize + blockIndexSize + nonceSize;
-
-            using (var stream = new MemoryStream())
+            using (var stream = file.OpenRead())
             {
-                file.CopyTo(stream);
-
-                if (stream.Length % nonceEntrySize != 0)
-                {
-                    throw new FileLoadException(
-                        $"Nonce file size {stream.Length} should be " +
-                        $"a multiple of nonce entry size {nonceEntrySize}");
-                }
-
-                var buffer = new byte[nonceEntrySize];
-                stream.Seek(stream.Length - buffer.Length, SeekOrigin.Begin);
+                var buffer = new byte[sizeof(long)];
                 stream.Read(buffer, 0, buffer.Length);
-
-                return BitConverter.ToInt64(buffer, hashSize + blockIndexSize);
+                return BitConverter.ToInt64(buffer, 0);
             }
         }
 
         /// <inheritdoc/>
-        public void IncreaseTxNonce<T>(string @namespace, Block<T> block)
-            where T : IAction, new()
+        public void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
         {
-            IEnumerable<Address> signers = block
-                .Transactions
-                .Select(tx => tx.Signer);
-            int hashSize = HashDigest<SHA256>.Size;
-            long blockIndex = block.Index;
+            var fileId = $"{NonceIdPrefix}{@namespace}/{signer.ToHex()}";
+            long nextNonce = GetTxNonce(@namespace, signer) + delta;
 
-            foreach (Address signer in signers)
+            if (!_db.FileStorage.Exists(fileId))
             {
-                var fileId = $"{NonceIdPrefix}{@namespace}/{signer.ToHex()}";
-                long nextNonce = GetTxNonce(@namespace, signer) + 1;
-
-                if (!_db.FileStorage.Exists(fileId))
-                {
-                    _db.FileStorage.Upload(
-                        fileId,
-                        signer.ToHex(),
-                        new MemoryStream());
-                }
-
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                using (var temp = new MemoryStream())
-                {
-                    file.CopyTo(temp);
-                    temp.Seek(0, SeekOrigin.Begin);
-                    byte[] prev = temp.ToArray();
-
-                    using (LiteFileStream stream = file.OpenWrite())
-                    {
-                        stream.Write(prev, 0, prev.Length);
-                        stream.Write(block.Hash.ToByteArray(), 0, hashSize);
-                        stream.Write(
-                            BitConverter.GetBytes(blockIndex), 0, sizeof(long));
-                        stream.Write(
-                            BitConverter.GetBytes(nextNonce), 0, sizeof(long));
-                    }
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
-        {
-            long branchPointIndex = branchPoint.Index;
-            List<LiteFileInfo> files =
-                _db.FileStorage
-                    .Find($"{NonceIdPrefix}{sourceNamespace}")
-                    .ToList();
-
-            if (!files.Any() && addressesToStrip.Any())
-            {
-                throw new NamespaceNotFoundException(
-                    sourceNamespace,
-                    "The source namespace to be forked does not exist.");
-            }
-
-            foreach (LiteFileInfo srcFile in files)
-            {
-                string destId =
-                    $"{NonceIdPrefix}{destinationNamespace}/{srcFile.Filename}";
                 _db.FileStorage.Upload(
-                    destId,
-                    srcFile.Filename,
+                    fileId,
+                    signer.ToHex(),
                     new MemoryStream());
+            }
 
-                LiteFileInfo destFile = _db.FileStorage.FindById(destId);
-                using (LiteFileStream srcStream = srcFile.OpenRead())
-                using (LiteFileStream destStream = destFile.OpenWrite())
+            LiteFileInfo file = _db.FileStorage.FindById(fileId);
+            using (var temp = new MemoryStream())
+            {
+                file.CopyTo(temp);
+                temp.Seek(0, SeekOrigin.Begin);
+                byte[] prev = temp.ToArray();
+
+                using (LiteFileStream stream = file.OpenWrite())
                 {
-                    while (srcStream.Position < srcStream.Length)
-                    {
-                        var hashBytes = new byte[HashDigest<SHA256>.Size];
-                        var indexBytes = new byte[sizeof(long)];
-                        var nonceBytes = new byte[sizeof(long)];
-
-                        srcStream.Read(hashBytes, 0, hashBytes.Length);
-                        srcStream.Read(indexBytes, 0, indexBytes.Length);
-                        srcStream.Read(nonceBytes, 0, nonceBytes.Length);
-
-                        long currentIndex =
-                            BitConverter.ToInt64(indexBytes, 0);
-
-                        if (currentIndex <= branchPointIndex)
-                        {
-                            destStream.Write(hashBytes, 0, hashBytes.Length);
-                            destStream.Write(indexBytes, 0, indexBytes.Length);
-                            destStream.Write(nonceBytes, 0, nonceBytes.Length);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (destFile.Length == 0)
-                {
-                    _db.FileStorage.Delete(destId);
+                    byte[] nonceBytes = BitConverter.GetBytes(nextNonce);
+                    stream.Write(nonceBytes, 0, nonceBytes.Length);
                 }
             }
         }

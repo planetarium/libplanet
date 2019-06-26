@@ -100,18 +100,7 @@ namespace Libplanet.Store
         public abstract long GetTxNonce(string @namespace, Address address);
 
         /// <inheritdoc/>
-        public abstract void IncreaseTxNonce<T>(
-            string @namespace,
-            Block<T> block)
-            where T : IAction, new();
-
-        /// <inheritdoc/>
-        public abstract void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new();
+        public abstract void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
 
         public long CountTransactions()
         {

@@ -22,6 +22,13 @@ To be released.
     broadcast.  [[#274], [#297]]
  -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
     (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
+ -  `IStore` became to treat a "tx nonce" mere a `long` integer instead of
+    a stack of block hashes.  [[#272], [#307]]
+     -  `IStore.IncreaseTxNonce<T>(string, Block<T>)` method was replaced by
+        `IStore.IncreaseTxNonce(string, Address, long)` method.
+     -  Removed `IStore.ForkTxNonce()` method.
+     -  `FileStore` became to occupy fewer bytes for storing tx nonces.
+        This change broke file-level backward compatibility.
 
 ### Added interfaces
 
@@ -93,6 +100,7 @@ To be released.
 [#294]: https://github.com/planetarium/libplanet/pull/294
 [#297]: https://github.com/planetarium/libplanet/pull/297
 [#303]: https://github.com/planetarium/libplanet/issues/303
+[#307]: https://github.com/planetarium/libplanet/pull/307
 [#308]: https://github.com/planetarium/libplanet/pull/308
 
 

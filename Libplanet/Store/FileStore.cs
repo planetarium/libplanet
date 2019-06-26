@@ -709,78 +709,30 @@ namespace Libplanet.Store
                 return 0;
             }
 
-            int hashSize = HashDigest<SHA256>.Size;
-            int blockIndexSize = sizeof(long);
-            int nonceSize = sizeof(long);
-            int nonceEntrySize = hashSize + blockIndexSize + nonceSize;
-
             using (Stream stream = nonceFile.OpenRead())
             {
-                if (stream.Length % nonceEntrySize != 0)
-                {
-                    throw new FileLoadException(
-                        $"Nonce file size {stream.Length} should be " +
-                        $"a multiple of nonce entry size {nonceEntrySize}");
-                }
-
-                var buffer = new byte[nonceEntrySize];
-
-                stream.Seek(-buffer.Length, SeekOrigin.End);
+                var buffer = new byte[sizeof(long)];
                 stream.Read(buffer, 0, buffer.Length);
-
-                return BitConverter.ToInt64(buffer, hashSize + blockIndexSize);
+                return BitConverter.ToInt64(buffer, 0);
             }
         }
 
         /// <inheritdoc/>
-        public override void IncreaseTxNonce<T>(
-            string @namespace,
-            Block<T> block)
+        public override void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
         {
-            IEnumerable<Address> signers = block
-                .Transactions
-                .Select(tx => tx.Signer);
-            int hashSize = HashDigest<SHA256>.Size;
-            long blockIndex = block.Index;
+            long nextNonce = GetTxNonce(@namespace, signer) + delta;
+            var nonceFile = new FileInfo(GetTxNoncePath(@namespace, signer));
 
-            foreach (Address signer in signers)
+            if (!nonceFile.Directory.Exists)
             {
-                long nextNonce = GetTxNonce(@namespace, signer) + 1;
-                var nonceFile = new FileInfo(
-                    GetTxNoncePath(@namespace, signer));
-
-                if (!nonceFile.Directory.Exists)
-                {
-                    nonceFile.Directory.Create();
-                }
-
-                using (Stream stream = nonceFile.Open(
-                    FileMode.Append, FileAccess.Write))
-                {
-                    stream.Write(block.Hash.ToByteArray(), 0, hashSize);
-                    stream.Write(
-                        BitConverter.GetBytes(blockIndex), 0, sizeof(long));
-                    stream.Write(
-                        BitConverter.GetBytes(nextNonce), 0, sizeof(long));
-                }
+                nonceFile.Directory.Create();
             }
-        }
 
-        /// <inheritdoc/>
-        public override void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-        {
-            ForkIndexedStack(
-                sourceNamespace,
-                destinationNamespace,
-                branchPoint.Index,
-                addressesToStrip,
-                GetTxNoncePath,
-                GetTxNoncePath,
-                s => GetTxNonces(s).Select(t => t.Item2));
+            using (Stream stream = nonceFile.OpenWrite())
+            {
+                byte[] nonceBytes = BitConverter.GetBytes(nextNonce);
+                stream.Write(nonceBytes, 0, nonceBytes.Length);
+            }
         }
 
         private void ForkIndexedStack(

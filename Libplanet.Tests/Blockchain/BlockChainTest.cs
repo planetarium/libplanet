@@ -1026,11 +1026,21 @@ namespace Libplanet.Tests.Blockchain
                     (x, y) => x.SetItems(y.GetUpdatedStates())
                 );
 
+            void BuildIndex(Guid id, Block<DumbAction> block)
+            {
+                string idString = id.ToString();
+                foreach (Transaction<DumbAction> tx in block.Transactions)
+                {
+                    store.IncreaseTxNonce(idString, tx.Signer);
+                }
+
+                store.AppendIndex(idString, block.Hash);
+            }
+
             // Build the store has incomplete states
             Block<DumbAction> b = TestUtils.MineGenesis<DumbAction>();
             chain.Blocks[b.Hash] = b;
-            store.IncreaseTxNonce(chainId.ToString(), b);
-            store.AppendIndex(chainId.ToString(), b.Hash);
+            BuildIndex(chainId, b);
             IImmutableDictionary<Address, object> dirty =
                 GetDirty(b.Evaluate(DateTimeOffset.UtcNow, _ => null));
             const int accountsCount = 5;
@@ -1061,8 +1071,7 @@ namespace Libplanet.Tests.Blockchain
                         dirty.Keys.ToImmutableHashSet(),
                         b
                     );
-                    store.IncreaseTxNonce(chainId.ToString(), b);
-                    store.AppendIndex(chainId.ToString(), b.Hash);
+                    BuildIndex(chainId, b);
                 }
             }
 

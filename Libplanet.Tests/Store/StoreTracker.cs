@@ -190,23 +190,10 @@ namespace Libplanet.Tests.Store
             return _store.GetTxNonce(@namespace, address);
         }
 
-        public void IncreaseTxNonce<T>(string @namespace, Block<T> block)
-            where T : IAction, new()
+        public void IncreaseTxNonce(string @namespace, Address address, long delta = 1)
         {
-            _logs.Add((nameof(IncreaseTxNonce), block.Hash, null));
-            _store.IncreaseTxNonce(@namespace, block);
-        }
-
-        public void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
-        {
-            _logs.Add((nameof(ForkTxNonce), null, null));
-            _store.ForkTxNonce(
-                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
+            _logs.Add((nameof(IncreaseTxNonce), address, delta));
+            _store.IncreaseTxNonce(@namespace, address, delta);
         }
 
         public void StageTransactionIds(IDictionary<TxId, bool> txids)
