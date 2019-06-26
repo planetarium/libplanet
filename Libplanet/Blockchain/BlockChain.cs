@@ -329,13 +329,23 @@ namespace Libplanet.Blockchain
         /// Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
         public void StageTransactions(IDictionary<Transaction<T>, bool> transactions)
         {
-            foreach (KeyValuePair<Transaction<T>, bool> kv in transactions)
-            {
-                var tx = kv.Key;
-                Transactions[tx.Id] = tx;
-            }
+            _rwlock.EnterWriteLock();
 
-            Store.StageTransactionIds(transactions.ToDictionary(kv => kv.Key.Id, kv => kv.Value));
+            try
+            {
+                foreach (KeyValuePair<Transaction<T>, bool> kv in transactions)
+                {
+                    var tx = kv.Key;
+                    Transactions[tx.Id] = tx;
+                }
+
+                Store.StageTransactionIds(
+                    transactions.ToDictionary(kv => kv.Key.Id, kv => kv.Value));
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -346,8 +356,17 @@ namespace Libplanet.Blockchain
         /// <seealso cref="StageTransactions"/>
         public void UnstageTransactions(ISet<Transaction<T>> transactions)
         {
-            Store.UnstageTransactionIds(
-                transactions.Select(tx => tx.Id).ToImmutableHashSet());
+            _rwlock.EnterWriteLock();
+
+            try
+            {
+                Store.UnstageTransactionIds(
+                    transactions.Select(tx => tx.Id).ToImmutableHashSet());
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -786,6 +805,20 @@ namespace Libplanet.Blockchain
                         evaluation.OutputStates
                     );
                 }
+            }
+        }
+
+        internal IEnumerable<TxId> GetStagedTransactionIds(bool toBroadcast)
+        {
+            _rwlock.EnterReadLock();
+
+            try
+            {
+                return Store.IterateStagedTransactionIds(toBroadcast);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
             }
         }
 
