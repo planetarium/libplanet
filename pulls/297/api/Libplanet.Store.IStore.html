@@ -1286,38 +1286,6 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/broadcast-tx/apiSpec/new?filename=Libplanet_Store_IStore_IterateBroadcastTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateBroadcastTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/broadcast-tx/Libplanet/Store/IStore.cs/#L51">View Source</a>
-  </span>
-  <a id="Libplanet_Store_IStore_IterateBroadcastTransactionIds_" data-uid="Libplanet.Store.IStore.IterateBroadcastTransactionIds*"></a>
-  <h4 id="Libplanet_Store_IStore_IterateBroadcastTransactionIds" data-uid="Libplanet.Store.IStore.IterateBroadcastTransactionIds">IterateBroadcastTransactionIds()</h4>
-  <div class="markdown level1 summary"><p>Iterates <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s to broadcast in staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IEnumerable&lt;TxId&gt; IterateBroadcastTransactionIds()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
-        <td><p><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s to broadcast.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/broadcast-tx/apiSpec/new?filename=Libplanet_Store_IStore_IterateIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -1365,19 +1333,39 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/broadcast-tx/apiSpec/new?filename=Libplanet_Store_IStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/broadcast-tx/apiSpec/new?filename=Libplanet_Store_IStore_IterateStagedTransactionIds_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/broadcast-tx/Libplanet/Store/IStore.cs/#L53">View Source</a>
   </span>
   <a id="Libplanet_Store_IStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.IStore.IterateStagedTransactionIds*"></a>
-  <h4 id="Libplanet_Store_IStore_IterateStagedTransactionIds" data-uid="Libplanet.Store.IStore.IterateStagedTransactionIds">IterateStagedTransactionIds()</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Libplanet_Store_IStore_IterateStagedTransactionIds_System_Boolean_" data-uid="Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)">IterateStagedTransactionIds(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Iterates staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">IEnumerable&lt;TxId&gt; IterateStagedTransactionIds()</code></pre>
+    <pre><code class="lang-csharp hljs">IEnumerable&lt;TxId&gt; IterateStagedTransactionIds(bool toBroadcast = false)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">toBroadcast</span></td>
+        <td><p>Whether to iterate only the <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s set to
+broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -1389,7 +1377,8 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
-        <td></td>
+        <td><p>Staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
+</td>
       </tr>
     </tbody>
   </table>

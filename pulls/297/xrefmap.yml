@@ -4459,19 +4459,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateBlockHashes
   nameWithType: BaseStore.IterateBlockHashes
-- uid: Libplanet.Store.BaseStore.IterateBroadcastTransactionIds
-  name: IterateBroadcastTransactionIds()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateBroadcastTransactionIds
-  commentId: M:Libplanet.Store.BaseStore.IterateBroadcastTransactionIds
-  fullName: Libplanet.Store.BaseStore.IterateBroadcastTransactionIds()
-  nameWithType: BaseStore.IterateBroadcastTransactionIds()
-- uid: Libplanet.Store.BaseStore.IterateBroadcastTransactionIds*
-  name: IterateBroadcastTransactionIds
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateBroadcastTransactionIds_
-  commentId: Overload:Libplanet.Store.BaseStore.IterateBroadcastTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.IterateBroadcastTransactionIds
-  nameWithType: BaseStore.IterateBroadcastTransactionIds
 - uid: Libplanet.Store.BaseStore.IterateIndex(System.String)
   name: IterateIndex(String)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndex_System_String_
@@ -4485,12 +4472,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateIndex
   nameWithType: BaseStore.IterateIndex
-- uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.BaseStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds()
-  nameWithType: BaseStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: BaseStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds_
@@ -5158,19 +5145,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.IterateBlockHashes
   nameWithType: FileStore.IterateBlockHashes
-- uid: Libplanet.Store.FileStore.IterateBroadcastTransactionIds
-  name: IterateBroadcastTransactionIds()
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateBroadcastTransactionIds
-  commentId: M:Libplanet.Store.FileStore.IterateBroadcastTransactionIds
-  fullName: Libplanet.Store.FileStore.IterateBroadcastTransactionIds()
-  nameWithType: FileStore.IterateBroadcastTransactionIds()
-- uid: Libplanet.Store.FileStore.IterateBroadcastTransactionIds*
-  name: IterateBroadcastTransactionIds
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateBroadcastTransactionIds_
-  commentId: Overload:Libplanet.Store.FileStore.IterateBroadcastTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.FileStore.IterateBroadcastTransactionIds
-  nameWithType: FileStore.IterateBroadcastTransactionIds
 - uid: Libplanet.Store.FileStore.IterateIndex(System.String)
   name: IterateIndex(String)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateIndex_System_String_
@@ -5184,12 +5158,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.IterateIndex
   nameWithType: FileStore.IterateIndex
-- uid: Libplanet.Store.FileStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.FileStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.FileStore.IterateStagedTransactionIds()
-  nameWithType: FileStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: FileStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.FileStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds_
@@ -5589,19 +5563,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateBlockHashes
   nameWithType: IStore.IterateBlockHashes
-- uid: Libplanet.Store.IStore.IterateBroadcastTransactionIds
-  name: IterateBroadcastTransactionIds()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateBroadcastTransactionIds
-  commentId: M:Libplanet.Store.IStore.IterateBroadcastTransactionIds
-  fullName: Libplanet.Store.IStore.IterateBroadcastTransactionIds()
-  nameWithType: IStore.IterateBroadcastTransactionIds()
-- uid: Libplanet.Store.IStore.IterateBroadcastTransactionIds*
-  name: IterateBroadcastTransactionIds
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateBroadcastTransactionIds_
-  commentId: Overload:Libplanet.Store.IStore.IterateBroadcastTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.IterateBroadcastTransactionIds
-  nameWithType: IStore.IterateBroadcastTransactionIds
 - uid: Libplanet.Store.IStore.IterateIndex(System.String)
   name: IterateIndex(String)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndex_System_String_
@@ -5615,12 +5576,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateIndex
   nameWithType: IStore.IterateIndex
-- uid: Libplanet.Store.IStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.IStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.IStore.IterateStagedTransactionIds()
-  nameWithType: IStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: IStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.IStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds_
@@ -6046,19 +6007,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes
   nameWithType: LiteDBStore.IterateBlockHashes
-- uid: Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds
-  name: IterateBroadcastTransactionIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBroadcastTransactionIds
-  commentId: M:Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds
-  fullName: Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds()
-  nameWithType: LiteDBStore.IterateBroadcastTransactionIds()
-- uid: Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds*
-  name: IterateBroadcastTransactionIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBroadcastTransactionIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateBroadcastTransactionIds
-  nameWithType: LiteDBStore.IterateBroadcastTransactionIds
 - uid: Libplanet.Store.LiteDBStore.IterateIndex(System.String)
   name: IterateIndex(String)
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndex_System_String_
@@ -6072,12 +6020,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateIndex
   nameWithType: LiteDBStore.IterateIndex
-- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds()
-  nameWithType: LiteDBStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: LiteDBStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_

@@ -81,14 +81,17 @@
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
-is unknown.</li>
+is unknown.  [[#280]]</li>
 <li>Added <code>IStore.ListAddresses()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.GetNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 <li><code>BlockChain&lt;T&gt;.StageTransactions</code> became to receive
 <code>IDictionary&lt;Transaction&lt;T&gt;, bool&gt;</code> instead of <code>ISet&lt;Transaction&lt;T&gt;&gt;</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
-<li><code>IStore.StageTransactionIds()</code> became to receive <code>IDictionary&lt;TxId, bool&gt;</code>
-instead of <code>ISet&lt;TxId&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>IStore.StageTransactionIds()</code> method became to receive
+<code>IDictionary&lt;TxId, bool&gt;</code> instead of <code>ISet&lt;TxId&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>IStore.IterateStagedTransactionIds()</code> method became to receive
+<code>bool toBroadcast</code> which is whether to iterate only the TxId set to
+broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 <li><code>Swarm.StartAsync()</code> method became to receive <code>broadcastTxInterval</code>
 (or <code>millisecondsBroadcastTxInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 </ul>
@@ -98,7 +101,7 @@ instead of <code>ISet&lt;TxId&gt;</code>.  [<a href="https://github.com/planetar
 <li>All <code>*Async()</code> methods belonging to <code>TurnClient</code> class became to have
 <code>cancellationToken</code> option.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 <li>Added a <code>Peer</code> constructor omitting <code>appProtocolVersion</code> parameter
-to create a <code>Peer</code> whose version is unknown.</li>
+to create a <code>Peer</code> whose version is unknown.  [[#280]]</li>
 <li>Added <code>IncompleteBlockStatesException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>Added <code>completeStates</code> option to <code>BlockChain&lt;T&gt;.GetStates()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
@@ -120,9 +123,13 @@ request messages.  [<a href="https://github.com/planetarium/libplanet/pull/277">
 <li>Added IPv6 support to <code>Libplanet.Stun.StunAddress</code>. [<a href="https://github.com/planetarium/libplanet/issues/267">#267</a>, <a href="https://github.com/planetarium/libplanet/pull/271">#271</a>]</li>
 <li><code>IStore.GetBlockStates()</code> became able to return <code>null</code> to represent an absence
 of states (i.e., incomplete states).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
-<li><code>Swarm</code> became to broadcast staged <code>Transaction</code>s periodically.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
-<li>When <code>Swarm</code> receives a TxIds message, it has been changed to request transactions
-only if there are unknown <code>TxId</code>.</li>
+<li><code>Swarm</code> became to broadcast staged <code>Transaction</code>s periodically
+so that game apps no more need to maintain their own thread to
+broadcast staged transactions.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li>Currently, Swarm sent <code>GetTxs</code> with an empty <code>txIds</code> when it receives a
+<code>TxIds</code> message and if it does not have unknown <code>TxId</code>s.  Changed so that
+the <code>GetTxs</code> message is not sent when there are no unknown <code>TxId</code>s.
+[<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -131,9 +138,9 @@ exception while stopping. [<a href="https://github.com/planetarium/libplanet/pul
 <li>Fixed a bug that <code>Swarm</code> didn't stop properly during <code>Swarm.Preload()</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
 <li>Fixed a bug where the oldest <code>TxNonce</code> of an address is not invalidated
-when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
+when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/280">#281</a>]</li>
 <li>Fixed a bug where <code>LiteDBStore.GetTxNonce()</code> method throws a
-<code>System.IO.IOException</code> after forking.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
+<code>System.IO.IOException</code> after forking.  [<a href="https://github.com/planetarium/libplanet/pull/280">#281</a>]</li>
 <li>Fixed a bug that <code>TurnClient</code> had not stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
