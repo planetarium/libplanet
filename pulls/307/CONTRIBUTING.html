@@ -155,7 +155,7 @@ Its usage is simple.  It's a CLI app that takes <em>absolute</em> paths to
 provide.
 <em>You can't build them using <code>dotnet build</code> command or <code>dotnet msbuild</code>,</em>
 because the Unity runtime is not based on .NET Core but Mono,
-which is compatible to .NET Framework 4.6.
+which is compatible with .NET Framework 4.6.
 Please be sure that Mono's <em>bin</em> directory is prior to .NET Core's one
 (or it's okay too if .NET Core is not installed at all).  Mono or .NET
 Framework's <code>msbuild</code> could try to use .NET Core's version of several
@@ -163,7 +163,7 @@ utilities during build, and this could cause some errors.</p>
 <p>The way to execute the runner binary depend on the platform.  For details,
 please read <a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a>'s README.  FYI you can use <code>-h</code>/<code>--help</code>
 option as well.</p>
-<p>To sum up, the instruction is like below (the example is assumming Linux):</p>
+<p>To sum up, the instruction is like below (the example is assuming Linux):</p>
 <pre><code>msbuild -r
 xunit-unity-runner/StandaloneLinux64 \
   &quot;`pwd`&quot;/*.Tests/bin/Debug/net461/*.Tests.dll
