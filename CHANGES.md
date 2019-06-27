@@ -9,9 +9,19 @@ To be released.
 ### Backward-incompatible interface changes
 
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
-    is unknown.
+    is unknown.  [[#280]]
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
  -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
+ -  `BlockChain<T>.StageTransactions` became to receive
+    `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
+    [[#274], [#297]]
+-  `IStore.StageTransactionIds()` method became to receive
+    `IDictionary<TxId, bool>` instead of `ISet<TxId>`.  [[#274], [#297]]
+ -  `IStore.IterateStagedTransactionIds()` method became to receive
+    `bool toBroadcast` which is whether to iterate only the TxId set to
+    broadcast.  [[#274], [#297]]
+ -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
+    (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
 
 ### Added interfaces
 
@@ -19,7 +29,7 @@ To be released.
  -  All `*Async()` methods belonging to `TurnClient` class became to have
     `cancellationToken` option.  [[#287]]
  -  Added a `Peer` constructor omitting `appProtocolVersion` parameter
-    to create a `Peer` whose version is unknown.
+    to create a `Peer` whose version is unknown.  [[#280]]
  -  Added `IncompleteBlockStatesException` class.  [[#272], [#285]]
  -  Added `completeStates` option to `BlockChain<T>.GetStates()` method.
     [[#272], [#285]]
@@ -42,6 +52,13 @@ To be released.
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
  -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
     of states (i.e., incomplete states).  [[#272], [#285]]
+ -  `Swarm` became to broadcast staged `Transaction`s periodically
+     so that game apps no more need to maintain their own thread to
+     broadcast staged transactions.  [[#274], [#297]]
+ -  Previously, `Swarm` had sent an empty `GetTxs` message when it receives
+    an empty `TxIds` from peers, and it had made the network waste bandwidth for
+    unnecessary messages.  `Swam` became to no more send such empty `GetTxs`.
+    [[#297]]
 
 ### Bug fixes
 
@@ -62,13 +79,16 @@ To be released.
 [#271]: https://github.com/planetarium/libplanet/pull/271
 [#272]: https://github.com/planetarium/libplanet/issues/272
 [#273]: https://github.com/planetarium/libplanet/issues/273
+[#274]: https://github.com/planetarium/libplanet/issues/274
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
+[#281]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
 [#294]: https://github.com/planetarium/libplanet/pull/294
+[#297]: https://github.com/planetarium/libplanet/pull/297
 
 
 Version 0.3.0

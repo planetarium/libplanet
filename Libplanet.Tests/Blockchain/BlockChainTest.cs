@@ -77,7 +77,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            _blockChain.StageTransactions(txs);
+            Dictionary<Transaction<DumbAction>, bool> toStage =
+                txs.ToDictionary(tx => tx, _ => true);
+            _blockChain.StageTransactions(toStage);
             Assert.Equal(
                 txs,
                 _blockChain.Transactions.Values.ToHashSet()
@@ -93,7 +95,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            _blockChain.StageTransactions(txs);
+            Dictionary<Transaction<DumbAction>, bool> toStage =
+                txs.ToDictionary(tx => tx, _ => true);
+            _blockChain.StageTransactions(toStage);
             HashSet<TxId> txIds = txs.Select(tx => tx.Id).ToHashSet();
             HashSet<TxId> stagedTxIds = _blockChain.Store
                 .IterateStagedTransactionIds().ToHashSet();
@@ -137,7 +141,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store
             );
             chain.StageTransactions(
-                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx1 }
+                new Dictionary<Transaction<PolymorphicAction<BaseAction>>, bool> { { tx1, true } }
             );
             var lastBlock = chain.MineBlock(_fx.Address1);
 
@@ -168,7 +172,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             chain.StageTransactions(
-                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx2 }
+                new Dictionary<Transaction<PolymorphicAction<BaseAction>>, bool> { { tx2, true } }
             );
             chain.MineBlock(_fx.Address1);
 
@@ -190,7 +194,7 @@ namespace Libplanet.Tests.Blockchain
                 }
             );
             chain.StageTransactions(
-                new HashSet<Transaction<PolymorphicAction<BaseAction>>> { tx3 }
+                new Dictionary<Transaction<PolymorphicAction<BaseAction>>, bool> { { tx3, true } }
             );
             chain.MineBlock(_fx.Address1);
             states = chain.GetStates(new List<Address> { _fx.Address1 });
@@ -842,7 +846,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Store
             );
             chain.StageTransactions(
-                new HashSet<Transaction<TestEvaluateAction>> { tx1 }
+                new Dictionary<Transaction<TestEvaluateAction>, bool> { { tx1, true } }
             );
             chain.MineBlock(_fx.Address1);
             var states = chain.GetStates(new[]
@@ -896,7 +900,9 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
             };
 
-            _blockChain.StageTransactions(txsB.ToHashSet());
+            Dictionary<Transaction<DumbAction>, bool> toStage =
+                txsB.ToDictionary(tx => tx, _ => true);
+            _blockChain.StageTransactions(toStage);
 
             Assert.Equal(3, _blockChain.GetNextTxNonce(address));
 
@@ -905,7 +911,8 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
             };
-            _blockChain.StageTransactions(txsC.ToHashSet());
+            toStage = txsC.ToHashSet().ToDictionary(tx => tx, _ => true);
+            _blockChain.StageTransactions(toStage);
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
         }

@@ -449,14 +449,34 @@ namespace Libplanet.Store
             }
         }
 
-        public override IEnumerable<TxId> IterateStagedTransactionIds()
+        /// <inheritdoc />
+        public override IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
             string stagedTxPath = GetStagedTransactionPath();
             var stagingDirectory = new DirectoryInfo(stagedTxPath);
-            if (stagingDirectory.Exists)
+
+            if (!stagingDirectory.Exists)
             {
-                var dir = new DirectoryInfo(stagedTxPath);
-                foreach (var staged in dir.EnumerateFiles())
+                yield break;
+            }
+
+            var dir = new DirectoryInfo(stagedTxPath);
+            var buffer = new byte[sizeof(bool)];
+
+            foreach (var staged in dir.EnumerateFiles())
+            {
+                bool broadcast = false;
+
+                if (toBroadcast)
+                {
+                    using (Stream stream = staged.OpenRead())
+                    {
+                        stream.Read(buffer, 0, buffer.Length);
+                        broadcast = BitConverter.ToBoolean(buffer, 0);
+                    }
+                }
+
+                if (!toBroadcast || broadcast)
                 {
                     yield return new TxId(ByteUtil.ParseHex(staged.Name));
                 }
@@ -529,14 +549,20 @@ namespace Libplanet.Store
             }
         }
 
-        public override void StageTransactionIds(ISet<TxId> txids)
+        /// <inheritdoc />
+        public override void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
-            foreach (var txid in txids)
+            foreach (var kv in txids)
             {
-                string stagedPath = GetStagedTransactionPath(txid);
+                TxId txId = kv.Key;
+                bool broadcast = kv.Value;
+                string stagedPath = GetStagedTransactionPath(txId);
                 var stagedFile = new FileInfo(stagedPath);
                 stagedFile.Directory.Create();
-                stagedFile.Create().Close();
+                using (Stream stream = stagedFile.OpenWrite())
+                {
+                    stream.Write(BitConverter.GetBytes(broadcast), 0, sizeof(bool));
+                }
             }
         }
 

@@ -111,9 +111,9 @@ namespace Libplanet.Tests.Store
             return _store.IterateIndex(@namespace);
         }
 
-        public IEnumerable<TxId> IterateStagedTransactionIds()
+        public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
-            _logs.Add((nameof(IterateStagedTransactionIds), null, null));
+            _logs.Add((nameof(IterateStagedTransactionIds), toBroadcast, null));
             return _store.IterateStagedTransactionIds();
         }
 
@@ -209,7 +209,7 @@ namespace Libplanet.Tests.Store
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
-        public void StageTransactionIds(ISet<TxId> txids)
+        public void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));
             _store.StageTransactionIds(txids);

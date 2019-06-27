@@ -325,18 +325,27 @@ namespace Libplanet.Blockchain
         /// a next <see cref="Block{T}"/> to be mined contains these
         /// <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="transactions">
-        /// <see cref="Transaction{T}"/>s to add to the pending list.</param>
-        public void StageTransactions(ISet<Transaction<T>> transactions)
+        /// <param name="transactions"> <see cref="Transaction{T}"/>s to add to the pending list.
+        /// Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
+        public void StageTransactions(IDictionary<Transaction<T>, bool> transactions)
         {
-            foreach (Transaction<T> tx in transactions)
-            {
-                Transactions[tx.Id] = tx;
-            }
+            _rwlock.EnterWriteLock();
 
-            Store.StageTransactionIds(
-                transactions.Select(tx => tx.Id).ToImmutableHashSet()
-            );
+            try
+            {
+                foreach (KeyValuePair<Transaction<T>, bool> kv in transactions)
+                {
+                    var tx = kv.Key;
+                    Transactions[tx.Id] = tx;
+                }
+
+                Store.StageTransactionIds(
+                    transactions.ToDictionary(kv => kv.Key.Id, kv => kv.Value));
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -347,8 +356,17 @@ namespace Libplanet.Blockchain
         /// <seealso cref="StageTransactions"/>
         public void UnstageTransactions(ISet<Transaction<T>> transactions)
         {
-            Store.UnstageTransactionIds(
-                transactions.Select(tx => tx.Id).ToImmutableHashSet());
+            _rwlock.EnterWriteLock();
+
+            try
+            {
+                Store.UnstageTransactionIds(
+                    transactions.Select(tx => tx.Id).ToImmutableHashSet());
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
+            }
         }
 
         /// <summary>
@@ -421,6 +439,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
         /// signed.</param>
+        /// <param name="broadcast">Whether to broadcast created transaction.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
         /// <seealso cref="Transaction{T}.Create" />
@@ -428,7 +447,8 @@ namespace Libplanet.Blockchain
             PrivateKey privateKey,
             IEnumerable<T> actions,
             IImmutableSet<Address> updatedAddresses = null,
-            DateTimeOffset? timestamp = null)
+            DateTimeOffset? timestamp = null,
+            bool broadcast = true)
         {
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
             lock (_txLock)
@@ -439,7 +459,7 @@ namespace Libplanet.Blockchain
                     actions,
                     updatedAddresses,
                     timestamp);
-                StageTransactions(new HashSet<Transaction<T>> { tx });
+                StageTransactions(new Dictionary<Transaction<T>, bool> { { tx, broadcast } });
 
                 return tx;
             }
@@ -785,6 +805,20 @@ namespace Libplanet.Blockchain
                         evaluation.OutputStates
                     );
                 }
+            }
+        }
+
+        internal IEnumerable<TxId> GetStagedTransactionIds(bool toBroadcast)
+        {
+            _rwlock.EnterReadLock();
+
+            try
+            {
+                return Store.IterateStagedTransactionIds(toBroadcast);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
             }
         }
 

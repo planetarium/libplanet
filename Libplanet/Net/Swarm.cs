@@ -452,12 +452,14 @@ namespace Libplanet.Net
         public async Task StartAsync<T>(
             BlockChain<T> blockChain,
             int millisecondsDistributeInterval = 1500,
+            int millisecondsBroadcastTxInterval = 5000,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction, new()
         {
             await StartAsync(
                 blockChain,
                 TimeSpan.FromMilliseconds(millisecondsDistributeInterval),
+                TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
                 cancellationToken
             );
         }
@@ -465,6 +467,7 @@ namespace Libplanet.Net
         public async Task StartAsync<T>(
             BlockChain<T> blockChain,
             TimeSpan distributeInterval,
+            TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default(CancellationToken))
             where T : IAction, new()
         {
@@ -539,6 +542,10 @@ namespace Libplanet.Net
                     ReceiveMessageAsync(
                         blockChain,
                         workerCancellationToken),
+                    BroadcastTxAsync(
+                        blockChain,
+                        broadcastTxInterval,
+                        cancellationToken),
                     Task.Run(() => _queuePoller.Run(), workerCancellationToken),
                 };
 
@@ -580,8 +587,8 @@ namespace Libplanet.Net
             where T : IAction, new()
         {
             _logger.Debug("Broadcast Txs.");
-            var message = new TxIds(Address, txs.Select(tx => tx.Id));
-            _broadcastQueue.Enqueue(message);
+            List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
+            BroadcastTxIds(txIds);
         }
 
         /// <summary>
@@ -976,6 +983,45 @@ namespace Libplanet.Net
             }
         }
 
+        private async Task BroadcastTxAsync<T>(
+            BlockChain<T> blockChain,
+            TimeSpan broadcastTxInterval,
+            CancellationToken cancellationToken)
+            where T : IAction, new()
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(broadcastTxInterval, cancellationToken);
+
+                    await Task.Run(
+                        () =>
+                        {
+                            List<TxId> txIds = blockChain
+                                .GetStagedTransactionIds(true)
+                                .ToList();
+
+                            if (txIds.Any())
+                            {
+                                BroadcastTxIds(txIds);
+                            }
+                        }, cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(e, "An unexpected exception occured during BroadcastTxAsync()");
+                    throw;
+                }
+            }
+        }
+
+        private void BroadcastTxIds(IEnumerable<TxId> txIds)
+        {
+            var message = new TxIds(Address, txIds);
+            _broadcastQueue.Enqueue(message);
+        }
+
         private async Task ProcessMessageAsync<T>(
             BlockChain<T> blockChain,
             Message message,
@@ -1340,6 +1386,12 @@ namespace Libplanet.Net
             IEnumerable<TxId> unknownTxIds = message.Ids
                 .Where(id => !blockChain.Transactions.ContainsKey(id));
 
+            if (!unknownTxIds.Any())
+            {
+                _logger.Debug("No txs to require.");
+                return;
+            }
+
             if (!(message.Sender is Address from))
             {
                 throw new NullReferenceException(
@@ -1356,8 +1408,8 @@ namespace Libplanet.Net
 
             IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync<T>(
                 peer, unknownTxIds, cancellationToken);
-            var toStage = new HashSet<Transaction<T>>(
-                await fetched.ToListAsync(cancellationToken));
+            List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
+            var toStage = txs.ToDictionary(tx => tx, _ => true);
 
             blockChain.StageTransactions(toStage);
             TxReceived.Set();

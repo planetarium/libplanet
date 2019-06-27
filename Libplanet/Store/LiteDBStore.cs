@@ -73,8 +73,8 @@ namespace Libplanet.Store
                 b => new Address(b.AsBinary));
         }
 
-        private LiteCollection<TxIdDoc> StagedTxIds =>
-            _db.GetCollection<TxIdDoc>("staged_txids");
+        private LiteCollection<StagedTxIdDoc> StagedTxIds =>
+            _db.GetCollection<StagedTxIdDoc>("staged_txids");
 
         /// <inheritdoc/>
         public IEnumerable<string> ListNamespaces()
@@ -163,10 +163,14 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void StageTransactionIds(ISet<TxId> txids)
+        public void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
             StagedTxIds.InsertBulk(
-                txids.Select(tid => new TxIdDoc { TxId = tid }));
+                txids.Select(kv => new StagedTxIdDoc
+                {
+                    TxId = kv.Key,
+                    Broadcast = kv.Value,
+                }));
         }
 
         /// <inheritdoc/>
@@ -176,8 +180,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TxId> IterateStagedTransactionIds()
+        public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
+            if (toBroadcast)
+            {
+                return StagedTxIds.FindAll().Where(t => t.Broadcast).Select(t => t.TxId);
+            }
+
             return StagedTxIds.FindAll().Select(t => t.TxId);
         }
 
@@ -699,11 +708,13 @@ namespace Libplanet.Store
             public HashDigest<SHA256> Hash { get; set; }
         }
 
-        private class TxIdDoc
+        private class StagedTxIdDoc
         {
             public long Id { get; set; }
 
             public TxId TxId { get; set; }
+
+            public bool Broadcast { get; set; }
         }
     }
 }
