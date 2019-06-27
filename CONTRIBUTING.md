@@ -129,7 +129,7 @@ You can build these assemblies using `msbuild -r` Mono or .NET Framework
 provide.
 *You can't build them using `dotnet build` command or `dotnet msbuild`,*
 because the Unity runtime is not based on .NET Core but Mono,
-which is compatible to .NET Framework 4.6.
+which is compatible with .NET Framework 4.6.
 Please be sure that Mono's *bin* directory is prior to .NET Core's one
 (or it's okay too if .NET Core is not installed at all).  Mono or .NET
 Framework's `msbuild` could try to use .NET Core's version of several
@@ -139,7 +139,7 @@ The way to execute the runner binary depend on the platform.  For details,
 please read [xunit-unity-runner]'s README.  FYI you can use `-h`/`--help`
 option as well.
 
-To sum up, the instruction is like below (the example is assumming Linux):
+To sum up, the instruction is like below (the example is assuming Linux):
 
     msbuild -r
     xunit-unity-runner/StandaloneLinux64 \
