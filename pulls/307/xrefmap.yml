@@ -1214,15 +1214,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
-- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name: MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable__0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset})
-  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset))
-  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset},System.Boolean)
+  name: MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>, Boolean)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_System_Collections_Generic_IEnumerable__0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__System_Nullable_System_DateTimeOffset__System_Boolean_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,System.Collections.Generic.IEnumerable{`0},System.Collections.Immutable.IImmutableSet{Libplanet.Address},System.Nullable{System.DateTimeOffset},System.Boolean)
+  name.vb: MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset), Boolean)
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable<T>, System.Collections.Immutable.IImmutableSet<Libplanet.Address>, System.Nullable<System.DateTimeOffset>, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeTransaction(Libplanet.Crypto.PrivateKey, System.Collections.Generic.IEnumerable(Of T), System.Collections.Immutable.IImmutableSet(Of Libplanet.Address), System.Nullable(Of System.DateTimeOffset), System.Boolean)
+  nameWithType: BlockChain<T>.MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>, Boolean)
+  nameWithType.vb: BlockChain(Of T).MakeTransaction(PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset), Boolean)
 - uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction*
   name: MakeTransaction
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_
@@ -1274,15 +1274,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Policy
   nameWithType: BlockChain<T>.Policy
   nameWithType.vb: BlockChain(Of T).Policy
-- uid: Libplanet.Blockchain.BlockChain`1.StageTransactions(System.Collections.Generic.ISet{Libplanet.Tx.Transaction{`0}})
-  name: StageTransactions(ISet<Transaction<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_System_Collections_Generic_ISet_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.StageTransactions(System.Collections.Generic.ISet{Libplanet.Tx.Transaction{`0}})
-  name.vb: StageTransactions(ISet(Of Transaction(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransactions(System.Collections.Generic.ISet<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransactions(System.Collections.Generic.ISet(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: BlockChain<T>.StageTransactions(ISet<Transaction<T>>)
-  nameWithType.vb: BlockChain(Of T).StageTransactions(ISet(Of Transaction(Of T)))
+- uid: Libplanet.Blockchain.BlockChain`1.StageTransactions(System.Collections.Generic.IDictionary{Libplanet.Tx.Transaction{`0},System.Boolean})
+  name: StageTransactions(IDictionary<Transaction<T>, Boolean>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_System_Collections_Generic_IDictionary_Libplanet_Tx_Transaction__0__System_Boolean__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.StageTransactions(System.Collections.Generic.IDictionary{Libplanet.Tx.Transaction{`0},System.Boolean})
+  name.vb: StageTransactions(IDictionary(Of Transaction(Of T), Boolean))
+  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransactions(System.Collections.Generic.IDictionary<Libplanet.Tx.Transaction<T>, System.Boolean>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransactions(System.Collections.Generic.IDictionary(Of Libplanet.Tx.Transaction(Of T), System.Boolean))
+  nameWithType: BlockChain<T>.StageTransactions(IDictionary<Transaction<T>, Boolean>)
+  nameWithType.vb: BlockChain(Of T).StageTransactions(IDictionary(Of Transaction(Of T), Boolean))
 - uid: Libplanet.Blockchain.BlockChain`1.StageTransactions*
   name: StageTransactions
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_
@@ -3563,24 +3563,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Swarm.StartAsync
   nameWithType: Swarm.StartAsync
-- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Threading.CancellationToken)
-  name: StartAsync<T>(BlockChain<T>, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Threading.CancellationToken)
-  name.vb: StartAsync(Of T)(BlockChain(Of T), Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.Int32, System.Threading.CancellationToken)
-  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, Int32, CancellationToken)
-  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), Int32, CancellationToken)
-- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.Threading.CancellationToken)
-  name: StartAsync<T>(BlockChain<T>, TimeSpan, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_TimeSpan_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.Threading.CancellationToken)
-  name.vb: StartAsync(Of T)(BlockChain(Of T), TimeSpan, CancellationToken)
-  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.TimeSpan, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.TimeSpan, System.Threading.CancellationToken)
-  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, TimeSpan, CancellationToken)
-  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), TimeSpan, CancellationToken)
+- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: StartAsync<T>(BlockChain<T>, Int32, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Int32,System.Threading.CancellationToken)
+  name.vb: StartAsync(Of T)(BlockChain(Of T), Int32, Int32, CancellationToken)
+  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, Int32, Int32, CancellationToken)
+  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), Int32, Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
+  name: StartAsync<T>(BlockChain<T>, TimeSpan, TimeSpan, CancellationToken)
+  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
+  name.vb: StartAsync(Of T)(BlockChain(Of T), TimeSpan, TimeSpan, CancellationToken)
+  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
+  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, TimeSpan, TimeSpan, CancellationToken)
+  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), TimeSpan, TimeSpan, CancellationToken)
 - uid: Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)
   name: StopAsync(CancellationToken)
   href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StopAsync_System_Threading_CancellationToken_
@@ -4453,12 +4453,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateIndex
   nameWithType: BaseStore.IterateIndex
-- uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.BaseStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds()
-  nameWithType: BaseStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: BaseStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds_
@@ -4566,15 +4566,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.SetBlockStates
   nameWithType: BaseStore.SetBlockStates
-- uid: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name: StageTransactionIds(ISet<TxId>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name.vb: StageTransactionIds(ISet(Of TxId))
-  fullName: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
-  nameWithType: BaseStore.StageTransactionIds(ISet<TxId>)
-  nameWithType.vb: BaseStore.StageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name: StageTransactionIds(IDictionary<TxId, Boolean>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__
+  commentId: M:Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name.vb: StageTransactionIds(IDictionary(Of TxId, Boolean))
+  fullName: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.IDictionary<Libplanet.Tx.TxId, System.Boolean>)
+  fullName.vb: Libplanet.Store.BaseStore.StageTransactionIds(System.Collections.Generic.IDictionary(Of Libplanet.Tx.TxId, System.Boolean))
+  nameWithType: BaseStore.StageTransactionIds(IDictionary<TxId, Boolean>)
+  nameWithType.vb: BaseStore.StageTransactionIds(IDictionary(Of TxId, Boolean))
 - uid: Libplanet.Store.BaseStore.StageTransactionIds*
   name: StageTransactionIds
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StageTransactionIds_
@@ -5117,12 +5117,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.IterateIndex
   nameWithType: FileStore.IterateIndex
-- uid: Libplanet.Store.FileStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.FileStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.FileStore.IterateStagedTransactionIds()
-  nameWithType: FileStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: FileStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.FileStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_IterateStagedTransactionIds_
@@ -5230,15 +5230,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.SetBlockStates
   nameWithType: FileStore.SetBlockStates
-- uid: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name: StageTransactionIds(ISet<TxId>)
-  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name.vb: StageTransactionIds(ISet(Of TxId))
-  fullName: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
-  nameWithType: FileStore.StageTransactionIds(ISet<TxId>)
-  nameWithType.vb: FileStore.StageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name: StageTransactionIds(IDictionary<TxId, Boolean>)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__
+  commentId: M:Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name.vb: StageTransactionIds(IDictionary(Of TxId, Boolean))
+  fullName: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary<Libplanet.Tx.TxId, System.Boolean>)
+  fullName.vb: Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary(Of Libplanet.Tx.TxId, System.Boolean))
+  nameWithType: FileStore.StageTransactionIds(IDictionary<TxId, Boolean>)
+  nameWithType.vb: FileStore.StageTransactionIds(IDictionary(Of TxId, Boolean))
 - uid: Libplanet.Store.FileStore.StageTransactionIds*
   name: StageTransactionIds
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_StageTransactionIds_
@@ -5513,12 +5513,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateIndex
   nameWithType: IStore.IterateIndex
-- uid: Libplanet.Store.IStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.IStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.IStore.IterateStagedTransactionIds()
-  nameWithType: IStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.IStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: IStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.IStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds_
@@ -5626,15 +5626,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.SetBlockStates
   nameWithType: IStore.SetBlockStates
-- uid: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name: StageTransactionIds(ISet<TxId>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name.vb: StageTransactionIds(ISet(Of TxId))
-  fullName: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
-  nameWithType: IStore.StageTransactionIds(ISet<TxId>)
-  nameWithType.vb: IStore.StageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name: StageTransactionIds(IDictionary<TxId, Boolean>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__
+  commentId: M:Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name.vb: StageTransactionIds(IDictionary(Of TxId, Boolean))
+  fullName: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.IDictionary<Libplanet.Tx.TxId, System.Boolean>)
+  fullName.vb: Libplanet.Store.IStore.StageTransactionIds(System.Collections.Generic.IDictionary(Of Libplanet.Tx.TxId, System.Boolean))
+  nameWithType: IStore.StageTransactionIds(IDictionary<TxId, Boolean>)
+  nameWithType.vb: IStore.StageTransactionIds(IDictionary(Of TxId, Boolean))
 - uid: Libplanet.Store.IStore.StageTransactionIds*
   name: StageTransactionIds
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StageTransactionIds_
@@ -5935,12 +5935,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateIndex
   nameWithType: LiteDBStore.IterateIndex
-- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds()
-  nameWithType: LiteDBStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  name: IterateStagedTransactionIds(Boolean)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_System_Boolean_
+  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds(System.Boolean)
+  nameWithType: LiteDBStore.IterateStagedTransactionIds(Boolean)
 - uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds*
   name: IterateStagedTransactionIds
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_
@@ -6048,15 +6048,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.SetBlockStates
   nameWithType: LiteDBStore.SetBlockStates
-- uid: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name: StageTransactionIds(ISet<TxId>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})
-  name.vb: StageTransactionIds(ISet(Of TxId))
-  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.ISet(Of Libplanet.Tx.TxId))
-  nameWithType: LiteDBStore.StageTransactionIds(ISet<TxId>)
-  nameWithType.vb: LiteDBStore.StageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name: StageTransactionIds(IDictionary<TxId, Boolean>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__
+  commentId: M:Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})
+  name.vb: StageTransactionIds(IDictionary(Of TxId, Boolean))
+  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.IDictionary<Libplanet.Tx.TxId, System.Boolean>)
+  fullName.vb: Libplanet.Store.LiteDBStore.StageTransactionIds(System.Collections.Generic.IDictionary(Of Libplanet.Tx.TxId, System.Boolean))
+  nameWithType: LiteDBStore.StageTransactionIds(IDictionary<TxId, Boolean>)
+  nameWithType.vb: LiteDBStore.StageTransactionIds(IDictionary(Of TxId, Boolean))
 - uid: Libplanet.Store.LiteDBStore.StageTransactionIds*
   name: StageTransactionIds
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_
