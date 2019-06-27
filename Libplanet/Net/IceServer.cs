@@ -61,6 +61,10 @@ namespace Libplanet.Net
 
                         return turnClient;
                     }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
                     catch (SocketException)
                     {
                         continue;
