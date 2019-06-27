@@ -118,7 +118,7 @@ builds the entire <em>Libplanet</em> solution:</p>
 </code></pre>
 <h2 id="tests-build-status-codecov">Tests <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master"><img src="https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
-Going near to the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp">code coverage</a> 100% is one of our goals.</p>
+Going near to the <a href="https://codecov.io/gh/planetarium/libplanet">code coverage</a> 100% is one of our goals.</p>
 <p>The <em>Libplanet</em> solution consists of 4 projects.  <em>Libplanet</em> and
 <em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
 and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
@@ -137,6 +137,37 @@ is set (the value looks like <code>turn://user:password@host:3478/</code>)
 these tests also run.  Otherwise, these tests are skipped.</p>
 <p>FYI there are several TURN implementations like <a href="https://github.com/coturn/coturn">Coturn</a> and <a href="https://github.com/gortc/turn">gortc/turn</a>,
 or cloud offers like <a href="https://xirsys.com/">Xirsys</a>.</p>
+<h3 id="xunit-unity-runner"><a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a></h3>
+<p>Unity is one of our platforms we primarily target to support, so we've been
+testing Libplanet on the actual Unity runtime, and you could see whether it's
+passed on <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master">Azure Pipelines</a>.</p>
+<p>However, if it fails and it does not fail on other platforms but only Unity,
+you need to run Unity tests on your own machine so that you rapidily and
+repeatedly tinker things, make a try, and immediately get feedback from them.</p>
+<p>Here's how to run Unity tests on your machine.  We've made and used
+<a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a> to run <a href="https://xunit.github.io/">Xunit</a> tests on the actual Unity runtime,
+and our build jobs on Azure Pipelines also use this.  This test runner
+is actually a Unity app, though it's not a game app.  As of June 2019,
+there are <a href="https://github.com/planetarium/xunit-unity-runner/releases/latest">executable binaries</a> for Linux, macOS, and Windows.
+Its usage is simple.  It's a CLI app that takes <em>absolute</em> paths to
+.NET assemblies (<em>.dll</em>) that consist of test classes (based on Xunit).</p>
+<p>You can build these assemblies using <code>msbuild -r</code> Mono or .NET Framework
+provide.
+<em>You can't build them using <code>dotnet build</code> command or <code>dotnet msbuild</code>,</em>
+because the Unity runtime is not based on .NET Core but Mono,
+which is compatible to .NET Framework 4.6.
+Please be sure that Mono's <em>bin</em> directory is prior to .NET Core's one
+(or it's okay too if .NET Core is not installed at all).  Mono or .NET
+Framework's <code>msbuild</code> could try to use .NET Core's version of several
+utilities during build, and this could cause some errors.</p>
+<p>The way to execute the runner binary depend on the platform.  For details,
+please read <a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a>'s README.  FYI you can use <code>-h</code>/<code>--help</code>
+option as well.</p>
+<p>To sum up, the instruction is like below (the example is assumming Linux):</p>
+<pre><code>msbuild -r
+xunit-unity-runner/StandaloneLinux64 \
+  &quot;`pwd`&quot;/*.Tests/bin/Debug/net461/*.Tests.dll
+</code></pre>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
 static analyzers.  They are automatically executed together with <code>msbuild</code>,
