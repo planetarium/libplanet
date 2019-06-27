@@ -71,6 +71,9 @@ To be released.
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
     `System.IO.IOException` after forking.  [[#281]]
  -  Fixed a bug that `TurnClient` had not stopped properly.  [[#287]]
+ -  Fixed a bug that `TurnClient` had been trying to use an already closed
+    connection. [[#303], [#308]]
+
 
 [LiteDB]: https://www.litedb.org/
 [#267]: https://github.com/planetarium/libplanet/issues/267
@@ -89,6 +92,8 @@ To be released.
 [#287]: https://github.com/planetarium/libplanet/pull/287
 [#294]: https://github.com/planetarium/libplanet/pull/294
 [#297]: https://github.com/planetarium/libplanet/pull/297
+[#303]: https://github.com/planetarium/libplanet/issues/303
+[#308]: https://github.com/planetarium/libplanet/pull/308
 
 
 Version 0.3.0

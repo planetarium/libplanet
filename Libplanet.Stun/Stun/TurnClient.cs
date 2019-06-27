@@ -24,11 +24,10 @@ namespace Libplanet.Stun
         private readonly IDictionary<byte[], TaskCompletionSource<StunMessage>>
             _responses;
 
-        private readonly AsyncProducerConsumerQueue<ConnectionAttempt>
-            _connectionAttempts;
-
-        private readonly Task _messageProcessor;
+        private readonly AsyncProducerConsumerQueue<ConnectionAttempt> _connectionAttempts;
         private readonly TcpClient _control;
+
+        private Task _messageProcessor;
 
         public TurnClient(
             string host,
@@ -42,21 +41,12 @@ namespace Libplanet.Stun
             Password = password;
 
             _relayedClients = new List<TcpClient>();
-
             _control = new TcpClient();
-
-            // TODO Should investigate about PC001 on TcpClient.Connect().
-#pragma warning disable PC001  // API not supported on all platforms
-            _control.Connect(_host, _port);
-#pragma warning restore PC001
-
             _connectionAttempts =
                 new AsyncProducerConsumerQueue<ConnectionAttempt>();
-
             _responses =
                 new Dictionary<byte[], TaskCompletionSource<StunMessage>>(
                     new ByteArrayComparer());
-            _messageProcessor = ProcessMessage();
         }
 
         public string Username { get; }
@@ -71,6 +61,8 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            await EnsureConnection();
+
             NetworkStream stream = _control.GetStream();
             StunMessage response;
             int retry = 0;
@@ -104,6 +96,8 @@ namespace Libplanet.Stun
             IPEndPoint peerAddress,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            await EnsureConnection();
+
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -123,6 +117,8 @@ namespace Libplanet.Stun
         {
             while (true)
             {
+                await EnsureConnection();
+
                 ConnectionAttempt attempt =
                     await _connectionAttempts.DequeueAsync(cancellationToken);
 
@@ -153,6 +149,8 @@ namespace Libplanet.Stun
         public async Task<IPEndPoint> GetMappedAddressAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            await EnsureConnection();
+
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request, cancellationToken);
@@ -173,6 +171,8 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            await EnsureConnection();
+
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request, cancellationToken);
@@ -212,7 +212,7 @@ namespace Libplanet.Stun
 
             try
             {
-                _messageProcessor.GetAwaiter().GetResult();
+                _messageProcessor?.GetAwaiter().GetResult();
             }
             catch (IOException)
             {
@@ -262,6 +262,15 @@ namespace Libplanet.Stun
                         $"An unexpected exception occured during parsing."
                     );
                 }
+            }
+        }
+
+        private async Task EnsureConnection()
+        {
+            if (!_control.Connected)
+            {
+                await _control.ConnectAsync(_host, _port);
+                _messageProcessor = ProcessMessage();
             }
         }
 
