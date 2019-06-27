@@ -71,7 +71,7 @@ Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/s
 -----
 
 We write as complete tests as possible to the corresponding implementation code.
-Going near to the [code coverage][2] 100% is one of our goals.
+Going near to the [code coverage][3] 100% is one of our goals.
 
 The *Libplanet* solution consists of 4 projects.  *Libplanet* and
 *Libplanet.Stun* are actual implementations.  These are built to *Libplanet.dll*
@@ -89,7 +89,7 @@ To build and run unit tests at a time execute the below command:
     dotnet test
 
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&branchName=master
-[2]: https://codecov.io/gh/planetarium/libplanet
+[3]: https://codecov.io/gh/planetarium/libplanet
 [Xunit]: https://xunit.github.io/
 
 
@@ -105,6 +105,48 @@ or cloud offers like [Xirsys].
 [Coturn]: https://github.com/coturn/coturn
 [gortc/turn]: https://github.com/gortc/turn
 [Xirsys]: https://xirsys.com/
+
+
+### [xunit-unity-runner]
+
+Unity is one of our platforms we primarily target to support, so we've been
+testing Libplanet on the actual Unity runtime, and you could see whether it's
+passed on [Azure Pipelines].
+
+However, if it fails and it does not fail on other platforms but only Unity,
+you need to run Unity tests on your own machine so that you rapidily and
+repeatedly tinker things, make a try, and immediately get feedback from them.
+
+Here's how to run Unity tests on your machine.  We've made and used
+[xunit-unity-runner] to run [Xunit] tests on the actual Unity runtime,
+and our build jobs on Azure Pipelines also use this.  This test runner
+is actually a Unity app, though it's not a game app.  As of June 2019,
+there are [executable binaries][4] for Linux, macOS, and Windows.
+Its usage is simple.  It's a CLI app that takes *absolute* paths to
+.NET assemblies (*.dll*) that consist of test classes (based on Xunit).
+
+You can build these assemblies using `msbuild -r` Mono or .NET Framework
+provide.
+*You can't build them using `dotnet build` command or `dotnet msbuild`,*
+because the Unity runtime is not based on .NET Core but Mono,
+which is compatible to .NET Framework 4.6.
+Please be sure that Mono's *bin* directory is prior to .NET Core's one
+(or it's okay too if .NET Core is not installed at all).  Mono or .NET
+Framework's `msbuild` could try to use .NET Core's version of several
+utilities during build, and this could cause some errors.
+
+The way to execute the runner binary depend on the platform.  For details,
+please read [xunit-unity-runner]'s README.  FYI you can use `-h`/`--help`
+option as well.
+
+To sum up, the instruction is like below (the example is assumming Linux):
+
+    msbuild -r
+    xunit-unity-runner/StandaloneLinux64 \
+      "`pwd`"/*.Tests/bin/Debug/net461/*.Tests.dll
+
+[xunit-unity-runner]: https://github.com/planetarium/xunit-unity-runner
+[4]: https://github.com/planetarium/xunit-unity-runner/releases/latest
 
 
 Style convention
