@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -108,26 +109,18 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Looks up a state reference, which is a <see cref="Block{T}.Hash"/>
-        /// that has the state of the <paramref name="address"/>.
+        /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
+        /// the requested <paramref name="address"/> in the specified <paramref name="namespace"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to look up a state reference.
-        /// </param>
-        /// <param name="address">The <see cref="Address"/> to look up.
-        /// </param>
-        /// <param name="lookupUntil">The upper bound (i.e., the latest block)
-        /// of the search range. <see cref="Block{T}"/>s after
-        /// <paramref name="lookupUntil"/> are ignored.</param>
-        /// <returns>A <see cref="Block{T}.Hash"/> which has the state of the
-        /// <paramref name="address"/>.</returns>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="lookupUntil"/>.</typeparam>
-        /// <seealso cref="StoreStateReference{T}"/>
-        HashDigest<SHA256>? LookupStateReference<T>(
+        /// <param name="namespace">The chain namespace.</param>
+        /// <param name="address">The <see cref="Address"/> to get state references.</param>
+        /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
+        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go last,
+        /// and the lowest index (i.e., the closest to the genesis) go first.</returns>
+        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new();
+            Address address);
 
         /// <summary>
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
@@ -142,7 +135,7 @@ namespace Libplanet.Store
         /// of the <see cref="Address"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
-        /// <seealso cref="LookupStateReference{T}"/>
+        /// <seealso cref="IterateStateReferences(string, Address)"/>
         void StoreStateReference<T>(
             string @namespace,
             IImmutableSet<Address> addresses,
@@ -172,8 +165,8 @@ namespace Libplanet.Store
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
         /// <paramref name="sourceNamespace"/> does not exist.</exception>
-        /// <seealso cref="LookupStateReference{T}"/>
-        /// <seealso cref="StoreStateReference{T}"/>
+        /// <seealso cref="IterateStateReferences(string, Address)"/>
+        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
         void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,
@@ -193,53 +186,20 @@ namespace Libplanet.Store
         /// </param>
         /// <returns>A <see cref="Transaction{T}"/> nonce. If there is no
         /// previous <see cref="Transaction{T}"/>, return 0.</returns>
-        /// <seealso cref="IncreaseTxNonce{T}"/>
+        /// <seealso cref="IncreaseTxNonce(string, Address, long)"/>
         long GetTxNonce(string @namespace, Address address);
 
         /// <summary>
-        /// Increases <see cref="Transaction{T}"/> of
-        /// <see cref="Transaction{T}.Signer"/> in the <paramref name="block"/>.
+        /// Increases (or decreases if a negative <paramref name="delta"/> is given)
+        /// the tx nonce counter for <paramref name="signer"/>.
         /// </summary>
         /// <param name="namespace">The namespace to increase
         /// <see cref="Transaction{T}"/> nonce.</param>
-        /// <param name="block">The <see cref="Block{T}"/> which has the
-        /// <see cref="Transaction{T}"/>s.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="block"/>.</typeparam>
-        /// <seealso cref="GetTxNonce"/>
-        void IncreaseTxNonce<T>(string @namespace, Block<T> block)
-            where T : IAction, new();
-
-        /// <summary>
-        /// Forks <see cref="Transaction{T}"/> nonces from
-        /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destinationNamespace"/>.
-        /// <para>This method copies <see cref="Transaction{T}"/> nonces from
-        /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destinationNamespace"/> and strips
-        /// <paramref name="addressesToStrip"/> of nonces after
-        /// <paramref name="branchPoint"/>.</para>
-        /// </summary>
-        /// <param name="sourceNamespace">The namespace of
-        /// <see cref="Transaction{T}"/> nonces to fork.</param>
-        /// <param name="destinationNamespace">The namespace of destination
-        /// <see cref="Transaction{T}"/> nonces.</param>
-        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
-        /// to fork.</param>
-        /// <param name="addressesToStrip">The set of <see cref="Address"/>es
-        /// to strip <see cref="Transaction{T}"/> nonces after forking.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="branchPoint"/>.</typeparam>
-        /// <exception cref="NamespaceNotFoundException">Thrown when the given
-        /// <paramref name="sourceNamespace"/> does not exist.</exception>
-        /// <seealso cref="GetTxNonce"/>
-        /// <seealso cref="IncreaseTxNonce{T}"/>
-        void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new();
+        /// <param name="signer">The address of the account to increase tx nonce.</param>
+        /// <param name="delta">How many to incrase the counter.  A negative number decreases
+        /// the counter.  1 by default.</param>
+        /// <seealso cref="GetTxNonce(string, Address)"/>
+        void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
 
         long CountTransactions();
 

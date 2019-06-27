@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -75,11 +76,8 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
-        public abstract HashDigest<SHA256>? LookupStateReference<T>(
-            string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new();
+        public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            string @namespace, Address address);
 
         /// <inheritdoc />
         public abstract void StoreStateReference<T>(
@@ -100,18 +98,7 @@ namespace Libplanet.Store
         public abstract long GetTxNonce(string @namespace, Address address);
 
         /// <inheritdoc/>
-        public abstract void IncreaseTxNonce<T>(
-            string @namespace,
-            Block<T> block)
-            where T : IAction, new();
-
-        /// <inheritdoc/>
-        public abstract void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new();
+        public abstract void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
 
         public long CountTransactions()
         {

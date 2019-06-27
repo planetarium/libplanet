@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -230,29 +231,37 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
-        public void LookupStateReference()
+        public void IterateStateReferences()
         {
-            Address address = Fx.Address1;
-            Block<DumbAction> prevBlock = Fx.Block3;
+            Address address = this.Fx.Address1;
 
-            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreNamespace, address, prevBlock));
+            Transaction<DumbAction> tx4 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "foo") }
+            );
+            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
 
-            Transaction<DumbAction> transaction = Fx.MakeTransaction(
-                new List<DumbAction>(),
-                new HashSet<Address> { address }.ToImmutableHashSet());
+            Transaction<DumbAction> tx5 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "bar") }
+            );
+            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
 
-            Block<DumbAction> block = TestUtils.MineNext(
-                prevBlock,
-                new[] { transaction });
+            Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address));
 
-            var updatedAddresses = new HashSet<Address> { address };
-            Fx.Store.StoreStateReference(
-                Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), block);
-
+            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx4.UpdatedAddresses, block4);
             Assert.Equal(
-                block.Hash,
-                Fx.Store.LookupStateReference(Fx.StoreNamespace, address, block));
-            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreNamespace, address, prevBlock));
+                new[] { Tuple.Create(block4.Hash, block4.Index) },
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+            );
+
+            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx5.UpdatedAddresses, block5);
+            Assert.Equal(
+                new[]
+                {
+                    Tuple.Create(block5.Hash, block5.Index),
+                    Tuple.Create(block4.Hash, block4.Index),
+                },
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+            );
         }
 
         [InlineData(0)]
@@ -426,75 +435,17 @@ namespace Libplanet.Tests.Store
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-            Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(),
-                new[] { Fx.Transaction1 });
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block1);
-
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-            Block<DumbAction> block2 = TestUtils.MineNext(
-                block1,
-                new[] { Fx.Transaction2 });
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block2);
-
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer, 5);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
-        }
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
 
-        [InlineData(0)]
-        [InlineData(1)]
-        [InlineData(2)]
-        [Theory]
-        public void ForkTxNonce(int branchPointIndex)
-        {
-            var privateKey1 = new PrivateKey();
-            var privateKey2 = new PrivateKey();
-            Address address1 = privateKey1.PublicKey.ToAddress();
-            Address address2 = privateKey2.PublicKey.ToAddress();
-            Block<DumbAction> prevBlock = Fx.Block3;
-            const string targetNamespace = "dummy";
-
-            var blocks = new List<Block<DumbAction>>
-            {
-                TestUtils.MineNext(
-                    prevBlock,
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }),
-            };
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[0],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[1],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey1) }));
-            blocks.Add(
-                TestUtils.MineNext(
-                    blocks[2],
-                    new[] { Fx.MakeTransaction(privateKey: privateKey2) }));
-
-            foreach (Block<DumbAction> block in blocks)
-            {
-                Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, block);
-            }
-
-            var branchPoint = blocks[branchPointIndex];
-            Fx.Store.ForkTxNonce(
-                Fx.StoreNamespace,
-                targetNamespace,
-                branchPoint,
-                new[] { address1, address2 }.ToImmutableHashSet());
-            Assert.Equal(
-                3,
-                Fx.Store.GetTxNonce(Fx.StoreNamespace, address1));
-            Assert.Equal(
-                branchPointIndex + 1,
-                Fx.Store.GetTxNonce(targetNamespace, address1));
-            Assert.Equal(
-                0,
-                Fx.Store.GetTxNonce(targetNamespace, address2));
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer, 2);
+            Assert.Equal(3, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
         }
     }
 }

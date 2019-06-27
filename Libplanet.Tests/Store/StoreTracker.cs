@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -152,14 +153,12 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
-        public HashDigest<SHA256>? LookupStateReference<T>(
+        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new()
+            Address address)
         {
-            _logs.Add((nameof(LookupStateReference), address, null));
-            return _store.LookupStateReference(@namespace, address, lookupUntil);
+            _logs.Add((nameof(IterateStateReferences), @namespace, address));
+            return _store.IterateStateReferences(@namespace, address);
         }
 
         public void StoreStateReference<T>(
@@ -168,6 +167,7 @@ namespace Libplanet.Tests.Store
             Block<T> block)
             where T : IAction, new()
         {
+            // FIXME: Log arguments properly (including @namespace).
             _logs.Add((nameof(StoreStateReference), block.Hash, null));
             _store.StoreStateReference(@namespace, addresses, block);
         }
@@ -179,6 +179,7 @@ namespace Libplanet.Tests.Store
             IImmutableSet<Address> addressesToStrip)
             where T : IAction, new()
         {
+            // FIXME: Log arguments properly.
             _logs.Add((nameof(ForkStateReferences), null, null));
             _store.ForkStateReferences(
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
@@ -186,27 +187,15 @@ namespace Libplanet.Tests.Store
 
         public long GetTxNonce(string @namespace, Address address)
         {
-            _logs.Add((nameof(GetTxNonce), address, null));
+            _logs.Add((nameof(GetTxNonce), @namespace, address));
             return _store.GetTxNonce(@namespace, address);
         }
 
-        public void IncreaseTxNonce<T>(string @namespace, Block<T> block)
-            where T : IAction, new()
+        public void IncreaseTxNonce(string @namespace, Address address, long delta = 1)
         {
-            _logs.Add((nameof(IncreaseTxNonce), block.Hash, null));
-            _store.IncreaseTxNonce(@namespace, block);
-        }
-
-        public void ForkTxNonce<T>(
-            string sourceNamespace,
-            string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
-        {
-            _logs.Add((nameof(ForkTxNonce), null, null));
-            _store.ForkTxNonce(
-                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
+            // FIXME: Log arguments properly (including @namespace).
+            _logs.Add((nameof(IncreaseTxNonce), address, delta));
+            _store.IncreaseTxNonce(@namespace, address, delta);
         }
 
         public void StageTransactionIds(IDictionary<TxId, bool> txids)

@@ -22,6 +22,19 @@ To be released.
     broadcast.  [[#274], [#297]]
  -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
     (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
+ -  `IStore` became to treat a "tx nonce" mere a `long` integer instead of
+    a stack of block hashes.  [[#272], [#307]]
+     -  `IStore.IncreaseTxNonce<T>(string, Block<T>)` method was replaced by
+        `IStore.IncreaseTxNonce(string, Address, long)` method.
+     -  Removed `IStore.ForkTxNonce()` method.
+     -  `FileStore` became to occupy fewer bytes for storing tx nonces.
+        This change broke file-level backward compatibility.
+ -  `IStore` became possible to look up multiple state references in a stack.
+    [[#272], [#307]]
+     -  Removed `IStore.LookupStateReference<T>()` method.
+        Instead, a newly added static class `StoreExtension` provides
+        an extension method of the same name.
+     -  Added `IStore.IterateStateReferences()` method.
 
 ### Added interfaces
 
@@ -37,6 +50,7 @@ To be released.
     IImmutableSet<Address>, DateTimeOffset?)` method.  [[#294]]
  -  Added `BlockChain<T>.GetNextTxNonce()` method which counts staged
     transactions too during nonce computation.  [[#270], [#294]]
+ -  Added `StoreExtension` static class.  [[#272], [#307]]
 
 ### Behavioral changes
 
@@ -93,6 +107,7 @@ To be released.
 [#294]: https://github.com/planetarium/libplanet/pull/294
 [#297]: https://github.com/planetarium/libplanet/pull/297
 [#303]: https://github.com/planetarium/libplanet/issues/303
+[#307]: https://github.com/planetarium/libplanet/pull/307
 [#308]: https://github.com/planetarium/libplanet/pull/308
 
 
