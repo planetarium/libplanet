@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -152,10 +153,9 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
-        public IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
+        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
-            Address address
-        )
+            Address address)
         {
             _logs.Add((nameof(IterateStateReferences), @namespace, address));
             return _store.IterateStateReferences(@namespace, address);

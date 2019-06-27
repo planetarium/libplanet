@@ -611,8 +611,8 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<(HashDigest<SHA256>, long)>
-        IterateStateReferences(string @namespace, Address address)
+        public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            string @namespace, Address address)
         {
             var addrFile = new FileInfo(
                 GetStateReferencePath(@namespace, address));
@@ -635,7 +635,10 @@ namespace Libplanet.Store
             {
                 foreach (var (hashBytes, index) in GetStateReferences(stream))
                 {
-                    yield return (new HashDigest<SHA256>(hashBytes), index);
+                    yield return Tuple.Create(
+                        new HashDigest<SHA256>(hashBytes),
+                        index
+                    );
                 }
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -75,8 +76,8 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
-        public abstract IEnumerable<(HashDigest<SHA256>, long)>
-        IterateStateReferences(string @namespace, Address address);
+        public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            string @namespace, Address address);
 
         /// <inheritdoc />
         public abstract void StoreStateReference<T>(

@@ -354,10 +354,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
+        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
-            Address address
-        )
+            Address address)
         {
             var fileId = $"{StateRefIdPrefix}{@namespace}/{address.ToHex()}";
             LiteFileInfo file = _db.FileStorage.FindById(fileId);
@@ -393,7 +392,10 @@ namespace Libplanet.Store
                     stream.Read(buffer, 0, buffer.Length);
                     byte[] hashBytes = buffer.Take(hashSize).ToArray();
                     long index = BitConverter.ToInt64(buffer, hashSize);
-                    yield return (new HashDigest<SHA256>(hashBytes), index);
+                    yield return Tuple.Create(
+                        new HashDigest<SHA256>(hashBytes),
+                        index
+                    );
                 }
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -248,13 +249,17 @@ namespace Libplanet.Tests.Store
 
             Fx.Store.StoreStateReference(Fx.StoreNamespace, tx4.UpdatedAddresses, block4);
             Assert.Equal(
-                new[] { (block4.Hash, block4.Index) },
+                new[] { Tuple.Create(block4.Hash, block4.Index) },
                 this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
             );
 
             Fx.Store.StoreStateReference(Fx.StoreNamespace, tx5.UpdatedAddresses, block5);
             Assert.Equal(
-                new[] { (block5.Hash, block5.Index), (block4.Hash, block4.Index) },
+                new[]
+                {
+                    Tuple.Create(block5.Hash, block5.Index),
+                    Tuple.Create(block4.Hash, block4.Index),
+                },
                 this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
             );
         }

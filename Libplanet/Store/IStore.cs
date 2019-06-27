@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
@@ -117,10 +118,9 @@ namespace Libplanet.Store
         /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go last,
         /// and the lowest index (i.e., the closest to the genesis) go first.</returns>
         /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
-        IEnumerable<(HashDigest<SHA256>, long)> IterateStateReferences(
+        IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
-            Address address
-        );
+            Address address);
 
         /// <summary>
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>

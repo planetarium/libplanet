@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
-using Libplanet;
 using Libplanet.Action;
 using Libplanet.Blocks;
 
@@ -38,13 +37,13 @@ namespace Libplanet.Store
                 throw new ArgumentNullException(nameof(lookupUntil));
             }
 
-            IEnumerable<(HashDigest<SHA256>, long)> stateRefs =
+            IEnumerable<Tuple<HashDigest<SHA256>, long>> stateRefs =
                 store.IterateStateReferences(@namespace, address);
-            foreach ((HashDigest<SHA256> refHash, long refIndex) in stateRefs)
+            foreach (Tuple<HashDigest<SHA256>, long> pair in stateRefs)
             {
-                if (refIndex <= lookupUntil.Index)
+                if (pair.Item2 <= lookupUntil.Index)
                 {
-                    return refHash;
+                    return pair.Item1;
                 }
             }
 
