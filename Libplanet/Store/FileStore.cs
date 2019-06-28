@@ -691,6 +691,48 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        {
+            var dir = new DirectoryInfo(GetTxNoncePath(@namespace));
+            if (!dir.Exists)
+            {
+                yield break;
+            }
+
+            foreach (DirectoryInfo upper in dir.GetDirectories())
+            {
+                if (upper.Name.Length != 4)
+                {
+                    continue;
+                }
+
+                foreach (FileInfo lower in upper.GetFiles())
+                {
+                    Address address;
+                    try
+                    {
+                        address = new Address(upper.Name + lower.Name);
+                    }
+                    catch (ArgumentException)
+                    {
+                        continue;
+                    }
+
+                    using (Stream stream = lower.OpenRead())
+                    {
+                        var buffer = new byte[sizeof(long)];
+                        stream.Read(buffer, 0, buffer.Length);
+                        long txNonce = BitConverter.ToInt64(buffer, 0);
+                        if (txNonce > 0)
+                        {
+                            yield return new KeyValuePair<Address, long>(address, txNonce);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public override long GetTxNonce(string @namespace, Address address)
         {
             var nonceFile = new FileInfo(

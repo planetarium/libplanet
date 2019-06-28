@@ -438,14 +438,37 @@ namespace Libplanet.Tests.Store
             Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Assert.Equal(
+                new Dictionary<Address, long>
+                {
+                    [Fx.Transaction1.Signer] = 1,
+                },
+                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+            );
 
             Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer, 5);
             Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Assert.Equal(
+                new Dictionary<Address, long>
+                {
+                    [Fx.Transaction1.Signer] = 1,
+                    [Fx.Transaction2.Signer] = 5,
+                },
+                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+            );
 
             Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer, 2);
             Assert.Equal(3, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
             Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Assert.Equal(
+                new Dictionary<Address, long>
+                {
+                    [Fx.Transaction1.Signer] = 3,
+                    [Fx.Transaction2.Signer] = 5,
+                },
+                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+            );
         }
     }
 }

@@ -185,6 +185,12 @@ namespace Libplanet.Tests.Store
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
+        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        {
+            _logs.Add((nameof(ListTxNonces), @namespace, null));
+            return _store.ListTxNonces(@namespace);
+        }
+
         public long GetTxNonce(string @namespace, Address address)
         {
             _logs.Add((nameof(GetTxNonce), @namespace, address));
