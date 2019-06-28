@@ -24,7 +24,7 @@ To be released.
  -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
     (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
  -  `IStore` became to treat a "tx nonce" mere a `long` integer instead of
-    a stack of block hashes.  [[#272], [#307]]
+    a stack of block hashes.  [[#272], [#307], [#309], [#310]]
      -  `IStore.IncreaseTxNonce<T>(string, Block<T>)` method was replaced by
         `IStore.IncreaseTxNonce(string, Address, long)` method.
      -  Removed `IStore.ForkTxNonce()` method.

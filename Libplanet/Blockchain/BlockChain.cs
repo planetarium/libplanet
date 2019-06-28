@@ -684,25 +684,34 @@ namespace Libplanet.Blockchain
                 }
 
                 Store.ForkStateReferences(
-                    Id.ToString(),
+                    id,
                     forked.Id.ToString(),
                     pointBlock,
                     addressesToStrip.ToImmutableHashSet());
 
-                foreach (KeyValuePair<Address, int> pair in signersToStrip)
+                foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(id))
                 {
-                    long existingNonce = Store.GetTxNonce(id, pair.Key);
-                    long forkedNonce = existingNonce - pair.Value;
-                    if (forkedNonce < 0)
+                    Address address = pair.Key;
+                    long existingNonce = pair.Value;
+                    long txNonce = existingNonce;
+                    int staleTxCount = 0;
+                    if (signersToStrip.TryGetValue(address, out staleTxCount))
+                    {
+                        txNonce -= staleTxCount;
+                    }
+
+                    if (txNonce < 0)
                     {
                         throw new InvalidOperationException(
-                            $"A tx nonce for {pair.Key} in the store seems broken.\n" +
+                            $"A tx nonce for {address} in the store seems broken.\n" +
                             $"Existing tx nonce: {existingNonce}\n" +
-                            $"Forked tx nonce: {forkedNonce} (delta: {pair.Value})"
+                            $"# of stale transactions: {staleTxCount}\n"
                         );
                     }
 
-                    Store.IncreaseTxNonce(forkedId, pair.Key, forkedNonce);
+                    // Note that at this point every address has tx nonce = 0
+                    // it's merely "setting" rather than "increasing."
+                    Store.IncreaseTxNonce(forkedId, address, txNonce);
                 }
             }
             finally
