@@ -100,7 +100,7 @@ To be released.
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
-[#281]: https://github.com/planetarium/libplanet/pull/280
+[#280]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
