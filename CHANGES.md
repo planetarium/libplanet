@@ -79,8 +79,8 @@ To be released.
 
  -  Fixed a bug that `Swarm` reported `TaskCanceledException` as an unknown
     exception while stopping. [[#275]]
- -  Fixed a bug that `Swarm` didn't stop properly during `Swarm.Preload()`.
-    [[#275]]
+ -  Fixed a bug that `Swarm` didn't stop properly during
+    `Swarm.PreloadAsync()`. [[#275]]
  -  Fixed a bug where the oldest `TxNonce` of an address is not invalidated
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
@@ -91,6 +91,8 @@ To be released.
  -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
     `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
     index of a block that does not exist locally.  [[#208], [#317]]
+ -  Fixed a bug that `Swarm` had not dial to other peer after
+    `Swarm.PreloadAsync()`.  [[#311]]
 
 
 [LiteDB]: https://www.litedb.org/
@@ -116,6 +118,7 @@ To be released.
 [#308]: https://github.com/planetarium/libplanet/pull/308
 [#309]: https://github.com/planetarium/libplanet/issues/309
 [#310]: https://github.com/planetarium/libplanet/pull/310
+[#311]: https://github.com/planetarium/libplanet/pull/311
 [#317]: https://github.com/planetarium/libplanet/pull/317
 
 

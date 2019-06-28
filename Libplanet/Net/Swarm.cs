@@ -132,6 +132,7 @@ namespace Libplanet.Net
 
             _dealers = new ConcurrentDictionary<Address, DealerSocket>();
             _router = new RouterSocket();
+            _router.Options.RouterHandover = true;
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
             _queuePoller = new NetMQPoller { _replyQueue, _broadcastQueue };
@@ -1717,10 +1718,15 @@ namespace Libplanet.Net
                 await CreatePermission(peer);
             }
 
-            if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+            // We create a new DealerSocket for each DialPeerAsync()
+            // because NetMQ doesn't handle properly previosuly connected sockets.
+            if (_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
             {
-                dealer = new DealerSocket();
+                dealer.Dispose();
             }
+
+            dealer = new DealerSocket();
+            dealer.Options.Identity = Address.ToByteArray();
 
             try
             {
