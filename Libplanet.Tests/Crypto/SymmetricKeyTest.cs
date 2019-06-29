@@ -4,6 +4,8 @@ using System.Text;
 using Libplanet.Crypto;
 using Xunit;
 
+using static Libplanet.Tests.TestUtils;
+
 namespace Libplanet.Tests.Crypto
 {
     public class SymmetricKeyTest
@@ -19,8 +21,14 @@ namespace Libplanet.Tests.Crypto
         [Fact]
         public void DecryptTest()
         {
-            var ciphertext = ByteUtil.ParseHex(
-                "1881342a2930cdc2734ae15e143a09fe5b0a5f113b0e2fcfc8d56f23c508a2890d7139c592cf4e4c76758a9b2317cb94");
+            byte[] ciphertext =
+            {
+                0x18, 0x81, 0x34, 0x2a, 0x29, 0x30, 0xcd, 0xc2, 0x73, 0x4a,
+                0xe1, 0x5e, 0x14, 0x3a, 0x09, 0xfe, 0x5b, 0x0a, 0x5f, 0x11,
+                0x3b, 0x0e, 0x2f, 0xcf, 0xc8, 0xd5, 0x6f, 0x23, 0xc5, 0x08,
+                0xa2, 0x89, 0x0d, 0x71, 0x39, 0xc5, 0x92, 0xcf, 0x4e, 0x4c,
+                0x76, 0x75, 0x8a, 0x9b, 0x23, 0x17, 0xcb, 0x94,
+            };
             var expected = Encoding.ASCII.GetBytes("a secret message");
             var aes = new SymmetricKey(KeyBytes);
             var actual = aes.Decrypt(ciphertext);

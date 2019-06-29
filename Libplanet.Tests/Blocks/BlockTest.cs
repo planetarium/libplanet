@@ -26,7 +26,10 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(0, _fx.Genesis.Index);
             Assert.Equal(0, _fx.Genesis.Difficulty);
             Assert.Null(_fx.Genesis.PreviousHash);
-            Assert.Equal(new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero), _fx.Genesis.Timestamp);
+            Assert.Equal(
+                new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero),
+                _fx.Genesis.Timestamp
+            );
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Genesis.Miner);
@@ -49,7 +52,10 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
             Assert.Equal(_fx.Genesis.Hash, _fx.Next.PreviousHash);
-            Assert.Equal(new DateTimeOffset(2018, 11, 30, 0, 0, 0, TimeSpan.Zero), _fx.Next.Timestamp);
+            Assert.Equal(
+                new DateTimeOffset(2018, 11, 30, 0, 0, 0, TimeSpan.Zero),
+                _fx.Next.Timestamp
+            );
             Assert.Equal(
                 new Address("21744f4f08db23e044178dafb8273aeb5ebe6644"),
                 _fx.Next.Miner);
@@ -186,11 +192,7 @@ namespace Libplanet.Tests.Blocks
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey1,
-                    new[]
-                    {
-                        MakeAction(addresses[0], 'A'),
-                        MakeAction(addresses[1], 'B'),
-                    }
+                    new[] { MakeAction(addresses[0], 'A'), MakeAction(addresses[1], 'B') }
                 ),
                 Transaction<DumbAction>.Create(
                     0,
@@ -216,10 +218,7 @@ namespace Libplanet.Tests.Blocks
             {
                 ActionEvaluation<DumbAction> eval = pair.Item2;
                 Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
-                Assert.Equal(
-                    blockIdx1Txs[expect.Item1].Actions[expect.Item2],
-                    eval.Action
-                );
+                Assert.Equal(blockIdx1Txs[expect.Item1].Actions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx1.Index, eval.InputContext.BlockIndex);
@@ -231,10 +230,7 @@ namespace Libplanet.Tests.Blocks
                     ),
                     randomValue
                 );
-                Assert.Equal(
-                    expect.Item3,
-                    addresses.Select(eval.OutputStates.GetState)
-                );
+                Assert.Equal(expect.Item3, addresses.Select(eval.OutputStates.GetState));
             }
 
             IImmutableDictionary<Address, object> dirty1 = blockIdx1
@@ -289,12 +285,15 @@ namespace Libplanet.Tests.Blocks
             {
                 (0, 0, new[] { "A,D", "B", "C", null, null }, _fx.TxFixture.Address1),
                 (1, 0, new[] { "A,D", "B", "C", "E", null }, _fx.TxFixture.Address2),
-                (2, 0, new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" }, _fx.TxFixture.Address3),
+                (
+                    2,
+                    0,
+                    new[] { "A,D", "B", "C", "E", "RecordRehearsal:False" },
+                    _fx.TxFixture.Address3
+                ),
             };
             Assert.Equal(expectations.Length, pairs.Length);
-            foreach (
-                var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
-            )
+            foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
             {
                 ActionEvaluation<DumbAction> eval = pair.Item2;
                 Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
@@ -313,10 +312,7 @@ namespace Libplanet.Tests.Blocks
                     ),
                     randomValue
                 );
-                Assert.Equal(
-                    expect.Item3,
-                    addresses.Select(eval.OutputStates.GetState)
-                );
+                Assert.Equal(expect.Item3, addresses.Select(eval.OutputStates.GetState));
             }
 
             IImmutableDictionary<Address, object> dirty2 = blockIdx2
