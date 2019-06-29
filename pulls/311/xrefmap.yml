@@ -4518,6 +4518,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListNamespaces
   nameWithType: BaseStore.ListNamespaces
+- uid: Libplanet.Store.BaseStore.ListTxNonces(System.String)
+  name: ListTxNonces(String)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_System_String_
+  commentId: M:Libplanet.Store.BaseStore.ListTxNonces(System.String)
+  fullName: Libplanet.Store.BaseStore.ListTxNonces(System.String)
+  nameWithType: BaseStore.ListTxNonces(String)
+- uid: Libplanet.Store.BaseStore.ListTxNonces*
+  name: ListTxNonces
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.BaseStore.ListTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ListTxNonces
+  nameWithType: BaseStore.ListTxNonces
 - uid: Libplanet.Store.BaseStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock_
@@ -5182,6 +5195,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.ListNamespaces
   nameWithType: FileStore.ListNamespaces
+- uid: Libplanet.Store.FileStore.ListTxNonces(System.String)
+  name: ListTxNonces(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ListTxNonces_System_String_
+  commentId: M:Libplanet.Store.FileStore.ListTxNonces(System.String)
+  fullName: Libplanet.Store.FileStore.ListTxNonces(System.String)
+  nameWithType: FileStore.ListTxNonces(String)
+- uid: Libplanet.Store.FileStore.ListTxNonces*
+  name: ListTxNonces
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.FileStore.ListTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.ListTxNonces
+  nameWithType: FileStore.ListTxNonces
 - uid: Libplanet.Store.FileStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_PutBlock_
@@ -5578,6 +5604,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListNamespaces
   nameWithType: IStore.ListNamespaces
+- uid: Libplanet.Store.IStore.ListTxNonces(System.String)
+  name: ListTxNonces(String)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListTxNonces_System_String_
+  commentId: M:Libplanet.Store.IStore.ListTxNonces(System.String)
+  fullName: Libplanet.Store.IStore.ListTxNonces(System.String)
+  nameWithType: IStore.ListTxNonces(String)
+- uid: Libplanet.Store.IStore.ListTxNonces*
+  name: ListTxNonces
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.IStore.ListTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ListTxNonces
+  nameWithType: IStore.ListTxNonces
 - uid: Libplanet.Store.IStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock_
@@ -6000,6 +6039,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.ListNamespaces
   nameWithType: LiteDBStore.ListNamespaces
+- uid: Libplanet.Store.LiteDBStore.ListTxNonces(System.String)
+  name: ListTxNonces(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListTxNonces_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.ListTxNonces(System.String)
+  fullName: Libplanet.Store.LiteDBStore.ListTxNonces(System.String)
+  nameWithType: LiteDBStore.ListTxNonces(String)
+- uid: Libplanet.Store.LiteDBStore.ListTxNonces*
+  name: ListTxNonces
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.LiteDBStore.ListTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.ListTxNonces
+  nameWithType: LiteDBStore.ListTxNonces
 - uid: Libplanet.Store.LiteDBStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutBlock_
