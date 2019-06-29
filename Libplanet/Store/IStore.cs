@@ -181,7 +181,7 @@ namespace Libplanet.Store
         /// <param name="namespace">The namespace to list <see cref="Address"/>es and their
         /// <see cref="Transaction{T}"/> nonces.</param>
         /// <returns>Pairs of an <see cref="Address"/> and its tx nonce.  All nonces are greater
-        /// than 0.  (If there are underlying entries having zero nonce these must be hidden.)
+        /// than 0.  (If there are underlying entries having zero nonces these must be hidden.)
         /// </returns>
         /// <seealso cref="GetTxNonce(string, Address)"/>
         IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);
