@@ -172,6 +172,7 @@ namespace Libplanet.Explorer.Controllers
             var model = new TransactionViewModel
             {
                 Id = tx.Id.ToString(),
+                Nonce = tx.Nonce,
                 Signature = tx.Signature,
                 Timestamp = tx.Timestamp,
                 Signer = tx.Signer.ToHex(),

@@ -9,6 +9,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType()
         {
+            Field(x => x.Nonce);
             Field<StringGraphType>(
                 "Signer",
                 resolve: ctx => ctx.Source.Signer.ToString()
