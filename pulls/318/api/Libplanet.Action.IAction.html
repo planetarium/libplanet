@@ -1,0 +1,899 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IAction
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IAction
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.42.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.html" title="Libplanet" class="">Libplanet</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Address.html" title="Address" class="">Address</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.AddressExtension.html" title="AddressExtension" class="">AddressExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.ByteUtil.html" title="ByteUtil" class="">ByteUtil</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.html" title="Hashcash" class="">Hashcash</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.Stamp.html" title="Hashcash.Stamp" class="">Hashcash.Stamp</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigest-1.html" title="HashDigest&lt;T&gt;" class="">HashDigest&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigestExtension.html" title="HashDigestExtension" class="">HashDigestExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Nonce.html" title="Nonce" class="">Nonce</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="">Libplanet.Action</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="">ActionEvaluation&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.AddressStateMap.html" title="AddressStateMap" class="">AddressStateMap</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAccountStateDelta.html" title="IAccountStateDelta" class="">IAccountStateDelta</a>
+                          </li>
+                          <li class="active">
+                            <a href="Libplanet.Action.IAction.html" title="IAction" class="active">IAction</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IActionContext.html" title="IActionContext" class="">IActionContext</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IRandom.html" title="IRandom" class="">IRandom</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="">MissingActionTypeException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.PolymorphicAction-1.html" title="PolymorphicAction&lt;T&gt;" class="">PolymorphicAction&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.html" title="Libplanet.Blockchain" class="">Libplanet.Blockchain</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.BlockChain-1.html" title="BlockChain&lt;T&gt;" class="">BlockChain&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.IncompleteBlockStatesException.html" title="IncompleteBlockStatesException" class="">IncompleteBlockStatesException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.MineBlockEventArgs-1.html" title="MineBlockEventArgs&lt;T&gt;" class="">MineBlockEventArgs&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.Policies.html" title="Libplanet.Blockchain.Policies" class="">Libplanet.Blockchain.Policies</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicy-1.html" title="BlockPolicy&lt;T&gt;" class="">BlockPolicy&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicyExtension.html" title="BlockPolicyExtension" class="">BlockPolicyExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html" title="IBlockPolicy&lt;T&gt;" class="">IBlockPolicy&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blocks.html" title="Libplanet.Blocks" class="">Libplanet.Blocks</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blocks.Block-1.html" title="Block&lt;T&gt;" class="">Block&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockDifficultyException.html" title="InvalidBlockDifficultyException" class="">InvalidBlockDifficultyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockException.html" title="InvalidBlockException" class="">InvalidBlockException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockHashException.html" title="InvalidBlockHashException" class="">InvalidBlockHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockIndexException.html" title="InvalidBlockIndexException" class="">InvalidBlockIndexException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockNonceException.html" title="InvalidBlockNonceException" class="">InvalidBlockNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockPreviousHashException.html" title="InvalidBlockPreviousHashException" class="">InvalidBlockPreviousHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockTimestampException.html" title="InvalidBlockTimestampException" class="">InvalidBlockTimestampException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="">Libplanet.Crypto</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Crypto.InvalidCiphertextException.html" title="InvalidCiphertextException" class="">InvalidCiphertextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PrivateKey.html" title="PrivateKey" class="">PrivateKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PublicKey.html" title="PublicKey" class="">PublicKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.SymmetricKey.html" title="SymmetricKey" class="">SymmetricKey</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Net.html" title="Libplanet.Net" class="">Libplanet.Net</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServerException.html" title="IceServerException" class="">IceServerException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Peer.html" title="Peer" class="">Peer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerNotFoundException.html" title="PeerNotFoundException" class="">PeerNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerSetDelta.html" title="PeerSetDelta" class="">PeerSetDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Swarm.html" title="Swarm" class="">Swarm</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.SwarmException.html" title="SwarmException" class="">SwarmException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Serialization.html" title="Libplanet.Serialization" class="">Libplanet.Serialization</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Serialization.BencodexFormatter-1.html" title="BencodexFormatter&lt;T&gt;" class="">BencodexFormatter&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Serialization.SerializationInfoExtension.html" title="SerializationInfoExtension" class="">SerializationInfoExtension</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Store.html" title="Libplanet.Store" class="">Libplanet.Store</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Store.BaseIndex-2.html" title="BaseIndex&lt;TKey, TVal&gt;" class="">BaseIndex&lt;TKey, TVal&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BaseStore.html" title="BaseStore" class="">BaseStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BlockSet-1.html" title="BlockSet&lt;T&gt;" class="">BlockSet&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.FileStore.html" title="FileStore" class="">FileStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.IStore.html" title="IStore" class="">IStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.LiteDBStore.html" title="LiteDBStore" class="">LiteDBStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.NamespaceNotFoundException.html" title="NamespaceNotFoundException" class="">NamespaceNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.StoreExtension.html" title="StoreExtension" class="">StoreExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.TransactionSet-1.html" title="TransactionSet&lt;T&gt;" class="">TransactionSet&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Tx.html" title="Libplanet.Tx" class="">Libplanet.Tx</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxException.html" title="InvalidTxException" class="">InvalidTxException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxSignatureException.html" title="InvalidTxSignatureException" class="">InvalidTxSignatureException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html" title="InvalidTxUpdatedAddressesException" class="">InvalidTxUpdatedAddressesException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.Transaction-1.html" title="Transaction&lt;T&gt;" class="">Transaction&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.TxId.html" title="TxId" class="">TxId</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html" title="UnexpectedlyTerminatedTxRehearsalException" class="">UnexpectedlyTerminatedTxRehearsalException</a>
+                          </li>
+                        </ul>  </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.IAction">
+  
+  
+  <h1 id="Libplanet_Action_IAction" data-uid="Libplanet.Action.IAction" class="text-break">Interface IAction
+  </h1>
+  <div class="markdown level0 summary"><p>An in-game action.  Every action should be replayable, because
+multiple nodes in a network should execute an action and get the same
+result.</p>
+<p>A “class” which implements this interface is
+analogous to a function, and its instance is analogous to a
+<a href="https://en.wikipedia.org/wiki/Partial_application">partial
+function application</a>, in other words, a function with some bound
+arguments.  Those parameters that will be bound at runtime should be
+represented as fields or properties in an action class, and bound
+argument values to these parameters should be received through
+a constructor parameters of that class.</p>
+<p>From a perspective of security, an action class belongs to
+the network protocol, and property values in an action belong to
+a node&apos;s will (i.e., a user/player&apos;s choice).
+That means if you define an action class it also defines what every
+honest node can do in the network.  Even if a malicious node changes
+their own action code it won&apos;t affect other honest nodes in
+the network.</p>
+<p>For example, where honest nodes share the common action
+<code>Heal(Target) => PreviousStates[Target] + 1</code>, suppose a malicious
+node <code>m</code> changes their own <code>Heal</code> action code to
+<code>Heal(Target) => PreviousStates[Target] + 2</code> (2 instead of 1),
+and then send an action <code>Heal(m)</code>.
+Fortunately, this action does not work as <code>m</code>&apos;s intention,
+because the changed code in itself is not used by other honest nodes,
+so they still increase only 1, not 2.  The effect of that double healing
+is a sort of “illusion” only visible to the malicious node
+alone.</p>
+<p>In conclusion, action code is a part of the protocol and it works with
+consensus in the network, so only things each node can affect the network
+in general is property values of each action they sign and send,
+not code of an action.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_IAction_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface IAction</code></pre>
+  </div>
+  <h5 id="Libplanet_Action_IAction_examples"><strong>Examples</strong></h5>
+  <p>The following example shows how to implement an action of three types
+of in-game logic:</p>
+<pre><code>using System;
+using System.Collections.Immutable;
+using Libplanet;
+using Libplanet.Action;
+
+public class MyAction : IAction
+{
+    // Declare an enum type to distinguish types of in-game logic.
+    public enum ActType { CreateCharacter, Attack, Heal }
+
+    // Declare properties (or fields) to store &quot;bound&quot; argument values.
+    public ActType Type { get; private set; }
+    public Address TargetAddress { get; private set; }
+
+    // Action must has a public parameterless constructor.
+    // Usually this is used only by Libplanet&apos;s internals.
+    public MyAction() {}
+
+    // Take argument values to &quot;bind&quot; through constructor parameters.
+    public MyAction(ActType type, Address targetAddress)
+    {
+        Type = type;
+        TargetAddress = targetAddress;
+    }
+
+    // The main game logic belongs to here.  It takes the
+    // previous states through its parameter named context,
+    // and is offered &quot;bound&quot; argument values through
+    // its own properties (or fields).
+    IAccountStateDelta IAction.Execute(IActionContext context)
+    {
+        // Gets the state immediately before this action is executed.
+        // ImmutableDictionary&lt;string, uint> is just for example,
+        // As far as it is serializable, you can store any types.
+        // (We recommend to use immutable types though.)
+        var state = (ImmutableDictionary&lt;string, uint>)
+            context.PreviousStates.GetState(TargetAddress);
+
+        // This variable purposes to store the state
+        // right after this action finishes.
+        ImmutableDictionary&lt;string, uint> nextState;
+
+        // Does different things depending on the action&apos;s type.
+        // This way is against the common principals of programming
+        // as it is just an example.  You could compare this with
+        // a better example of PolymorphicAction&lt;T> class.
+        switch (Type)
+        {
+            case ActType.CreateCharacter:
+                if (!TargetAddress.Equals(context.Signer))
+                    throw new Exception(
+                        &quot;TargetAddress of CreateCharacter action &quot; +
+                        &quot;only can be the same address to the &quot; +
+                        &quot;Transaction&lt;T>.Signer.&quot;);
+                else if (!(state is null))
+                    throw new Exception(
+                        &quot;Character was already created.&quot;);
+
+                nextState = ImmutableDictionary&lt;string, uint>.Empty
+                    .Add(&quot;hp&quot;, 20);
+                break;
+
+            case ActType.Attack:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Max(state[&quot;hp&quot;] - 5, 0));
+                break;
+
+            case ActType.Heal:
+                nextState =
+                    state.SetItem(&quot;hp&quot;, Math.Min(state[&quot;hp&quot;] + 5, 20));
+                break;
+
+            default:
+                throw new Exception(
+                    &quot;Properties are not properly initialized.&quot;);
+        }
+
+        // Builds a delta (dirty) from previous to next states, and
+        // returns it.
+        return context.PreviousStates.SetState(TargetAddress,
+            nextState);
+    }
+
+    // Side effects, i.e., any effects on other than states, are
+    // done here.
+    void IAction.Render(
+        IActionContext context,
+        IAccountStateDelta nextStates)
+    {
+        Character c;
+
+        // You could compare this with a better example of
+        // PolymorphicAction&lt;T> class.
+        switch (Type)
+        {
+            case ActType.CreateCharacter:
+                c = new Character
+                {
+                    Address = TargetAddress,
+                    Hp = 0,
+                };
+                break;
+
+            case ActType.Attack:
+            case ActType.Heal:
+                c = Character.GetByAddress(TargetAddress);
+                break;
+
+            default:
+                break;
+        }
+
+        c?.Hp = nextStates.GetState(TargetAddress)[&quot;hp&quot;];
+        c?.Draw();
+    }
+
+    // Sometimes a block to which an action belongs can be
+    // a &quot;stale.&quot;  If that action already has been rendered,
+    // it should be undone.
+    void IAction.Unrender(
+        IActionContext context,
+        IAccountStateDelta nextStates)
+    {
+        Character c = Character.GetByAddress(TargetAddress);
+
+        // You could compare this with a better example of
+        // PolymorphicAction&lt;T> class.
+        switch (Type)
+        {
+            case ActType.CreateCharacter:
+                c.Hide();
+                break;
+
+            case ActType.Attack:
+            case ActType.Heal:
+                IAccountStateDelta prevStates = context.PreviousStates;
+                c.Hp = prevStates.GetState(TargetAddress)[&quot;hp&quot;];
+                c.Draw();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // Serializes its &quot;bound arguments&quot; so that they are transmitted
+    // over network or stored to the persistent storage.
+    // It uses .NET&apos;s built-in serialization mechanism.
+    IImmutableDictionary&lt;string, object> IAction.PlainValue =>
+        ImmutableDictionary&lt;string, object>.Empty
+            .Add(&quot;type&quot;, Type)
+            .Add(&quot;target_address&quot;, TargetAddress);
+
+    // Deserializes &quot;bound arguments&quot;.  That is, it is inverse
+    // of PlainValue property.
+    void IAction.LoadPlainValue(
+        IImmutableDictionary&lt;string, object> plainValue)
+    {
+        Type = (ActType)plainValue[&quot;type&quot;];
+        TargetAddress = (Address)plainValue[&quot;target_address&quot;];
+    }
+}</code></pre>
+<p>Note that the above example has several bad practices.
+Compare this example with <a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>&apos;s
+example.</p>
+
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction_PlainValue.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.PlainValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L229">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_PlainValue_" data-uid="Libplanet.Action.IAction.PlainValue*"></a>
+  <h4 id="Libplanet_Action_IAction_PlainValue" data-uid="Libplanet.Action.IAction.PlainValue">PlainValue</h4>
+  <div class="markdown level1 summary"><p>Serializes values bound to an action, which is held by properties
+(or fields) of an action, so that they can be transmitted over
+network or saved to persistent storage.</p>
+<p>Serialized values are deserialized by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a> method
+later.</p>
+<p>It uses <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">.NET&apos;s built-in serialization mechanism</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IImmutableDictionary&lt;string, object&gt; PlainValue { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><p>A value which encodes this action's bound values (held
+by properties or fields).  It has to be <a href="https://docs.microsoft.com/en-us/dotnet/standard/serialization/">serializable</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_PlainValue_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</a></div>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L282">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_Execute_" data-uid="Libplanet.Action.IAction.Execute*"></a>
+  <h4 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_" data-uid="Libplanet.Action.IAction.Execute(Libplanet.Action.IActionContext)">Execute(IActionContext)</h4>
+  <div class="markdown level1 summary"><p>Executes the main game logic of an action.  This should be
+<em>deterministic</em>.</p>
+<p>Through the <code data-dev-comment-type="paramref" class="paramref">context</code> object,
+it receives information such as a transaction signer,
+its states immediately before the execution,
+and a deterministic random seed.</p>
+<p>Other “bound” information resides in the action
+object in itself, as its properties (or fields).</p>
+<p>A returned <a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a> object functions as
+a delta which shifts from previous states to next states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAccountStateDelta Execute(IActionContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>A context object containing addresses that
+signed the transaction, states immediately before the execution,
+and a PRNG object which produces deterministic random numbers.
+See <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> for details.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><p>A map of changed states (so-called &quot;dirty&quot;).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method should be deterministic:
+for structurally (member-wise) equal actions and <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a>s, the same result should be returned.
+Side effects should be avoided, because an action's
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method can be called more
+than once, the time it's called is difficult to predict.</p>
+<p>For changing in-memory game states or drawing graphics,
+write such code in the <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method instead.
+The <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method
+is guaranteed to be called only once, and only after an action is
+transmitted to other nodes in the network.</p>
+<p>For randomness, <em>never</em> use <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.random">Random</a>
+nor any other PRNGs provided by other than Libplanet.
+Use <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> instead.
+<a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> guarantees the same action
+has the consistent result for every node in the network.</p>
+<p>Also do not perform I/O operations such as file system access
+or networking.  These bring an action indeterministic.  You maybe
+fine to log messages for debugging purpose, but equivalent messages
+could be logged multiple times.</p>
+</div>
+  <h5 id="Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary%7BSystem.String%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L240">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_LoadPlainValue_" data-uid="Libplanet.Action.IAction.LoadPlainValue*"></a>
+  <h4 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object__" data-uid="Libplanet.Action.IAction.LoadPlainValue(System.Collections.Immutable.IImmutableDictionary{System.String,System.Object})">LoadPlainValue(IImmutableDictionary&lt;String, Object&gt;)</h4>
+  <div class="markdown level1 summary"><p>Deserializes serialized data (i.e., data <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property made), and then fills this action's properties (or fields)
+with the deserialized values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void LoadPlainValue(IImmutableDictionary&lt;string, object&gt; plainValue)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutabledictionary-2">IImmutableDictionary</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>&gt;</td>
+        <td><span class="parametername">plainValue</span></td>
+        <td><p>Data (made by <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a>
+property) to be deserialized and assigned to this action's
+properties (or fields).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_LoadPlainValue_System_Collections_Immutable_IImmutableDictionary_System_String_System_Object___seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_PlainValue">PlainValue</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L304">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_Render_" data-uid="Libplanet.Action.IAction.Render*"></a>
+  <h4 id="Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.IAction.Render(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Render(IActionContext, IAccountStateDelta)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be done right after this action is
+spread to the network or is “confirmed” (kind of)
+by each peer node.</p>
+<p>Usually, this method updates the in-memory game states
+(if exist), and then sends a signal to the UI thread (usually
+the main thread) so that the graphics on the display is redrawn.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Render(IActionContext context, IAccountStateDelta nextStates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The equivalent context object to
+what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
+That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
+the states right <em>before</em> this action executed.
+For the states after this action executed,
+use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code> argument instead.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><span class="parametername">nextStates</span></td>
+        <td><p>The states right <em>after</em> this action
+executed, which means it is equivalent to what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L328">View Source</a>
+  </span>
+  <a id="Libplanet_Action_IAction_Unrender_" data-uid="Libplanet.Action.IAction.Unrender*"></a>
+  <h4 id="Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">Unrender(IActionContext, IAccountStateDelta)</h4>
+  <div class="markdown level1 summary"><p>Does things that should be undone right after this action is
+invalidated (mostly due to a block which this action has belonged
+to becoming considered a stale).</p>
+<p>This method takes the equivalent arguments to
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method.
+</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void Unrender(IActionContext context, IAccountStateDelta nextStates)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The equivalent context object to
+what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method had received.
+That means <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_PreviousStates">PreviousStates</a> are
+the states right <em>before</em> this action executed.
+For the states after this action executed,
+use the <code data-dev-comment-type="paramref" class="paramref">nextStates</code> argument instead.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><span class="parametername">nextStates</span></td>
+        <td><p>The states right <em>after</em> this action
+executed, which means it is equivalent to what <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method returned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>As a rule of thumb, this should be the inverse of
+<a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method
+with redrawing the graphics on the display at the finish.</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/lint/apiSpec/new?filename=Libplanet_Action_IAction.md&amp;value=---%0Auid%3A%20Libplanet.Action.IAction%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/lint/Libplanet/Action/IAction.cs/#L210" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
