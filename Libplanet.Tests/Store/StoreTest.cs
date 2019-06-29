@@ -470,5 +470,15 @@ namespace Libplanet.Tests.Store
                 Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
             );
         }
+
+        [Fact]
+        public void IndexBlockHashReturnNull()
+        {
+            Fx.Store.PutBlock(Fx.Block1);
+            Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Block1.Hash);
+            var index = Fx.Store.CountIndex(Fx.StoreNamespace);
+            Assert.True(index == 1);
+            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, 2));
+        }
     }
 }

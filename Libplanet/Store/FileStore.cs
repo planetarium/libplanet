@@ -362,6 +362,13 @@ namespace Libplanet.Store
                     return null;
                 }
             }
+            else
+            {
+                if (CountIndex(@namespace) < index)
+                {
+                    return null;
+                }
+            }
 
             if (!File.Exists(GetIndexPath(@namespace)))
             {
