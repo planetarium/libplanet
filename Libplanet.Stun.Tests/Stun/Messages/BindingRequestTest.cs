@@ -14,7 +14,7 @@ namespace Libplanet.Stun.Tests.Messages
                 {
                     0xb9, 0x5e, 0x6c, 0xcd, 0xa3, 0x84, 0x74, 0xfb, 0x43, 0xe9,
                     0xae, 0xb1,
-                }
+                },
             };
             Assert.Equal(
                 new byte[]

@@ -8,7 +8,9 @@ namespace Libplanet.Stun.Tests.Attributes
         [Fact]
         public void EncodeToBytes()
         {
-            var attr = new Username("ae0633cd58ba097a1167c6d2cc4e236db52256a40d565f11edf76c02d13db93c");
+            var attr = new Username(
+                "ae0633cd58ba097a1167c6d2cc4e236db52256a40d565f11edf76c02d13db93c"
+            );
             Assert.Equal(
                 new byte[]
                 {
