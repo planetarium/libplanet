@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Libplanet.Stun.Messages;
 using Xunit;
 
-namespace Libplanet.Tests.Stun.Messages
+namespace Libplanet.Stun.Tests.Messages
 {
     public class BindingRequestSucessTest
     {
