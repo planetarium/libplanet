@@ -476,8 +476,7 @@ namespace Libplanet.Tests.Store
         {
             Fx.Store.PutBlock(Fx.Block1);
             Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Block1.Hash);
-            var index = Fx.Store.CountIndex(Fx.StoreNamespace);
-            Assert.True(index == 1);
+            Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreNamespace));
             Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, 2));
         }
     }

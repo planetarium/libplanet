@@ -90,7 +90,7 @@ To be released.
     connection. [[#303], [#308]]
  -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
     `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
-    index of a block that does not exist locally.  [[#208]]
+    index of a block that does not exist locally.  [[#208], [#317]]
 
 
 [LiteDB]: https://www.litedb.org/
@@ -116,6 +116,7 @@ To be released.
 [#308]: https://github.com/planetarium/libplanet/pull/308
 [#309]: https://github.com/planetarium/libplanet/issues/309
 [#310]: https://github.com/planetarium/libplanet/pull/310
+[#317]: https://github.com/planetarium/libplanet/pull/317
 
 
 Version 0.3.0
