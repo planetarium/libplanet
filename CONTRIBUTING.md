@@ -170,3 +170,24 @@ support EditorConfig, e.g., [Atom], [Emacs], [Vim], [VS Code].
 [Emacs]: https://github.com/editorconfig/editorconfig-emacs
 [Vim]: https://github.com/editorconfig/editorconfig-vim
 [VS Code]: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+
+Troubleshooting
+--------------
+
+### I got the error like `Fody is only supported on MSBuild 16 and above. Current version: 15.`
+
+Your .NET Core SDK version probably is outdated.  Our recommended version is: *2.2.300*.
+
+1. Download the lastest (as of June 2019) .NET Core SDK binary from the official website:
+
+   <https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300>
+
+2. Extract *.tar.gz* in proper directory.
+
+3. You could permanently add the following commands into your shell profile.
+
+    ~~~~
+    export DOTNET_ROOT="$YOUR_DOTNET_INSTALLATION_PATH/dotnet"
+    export PATH="$PATH:$DOTNET_ROOT"
+    ~~~~
+
