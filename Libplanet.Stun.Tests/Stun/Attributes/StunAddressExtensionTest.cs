@@ -3,7 +3,7 @@ using System.Net;
 using Libplanet.Stun.Attributes;
 using Xunit;
 
-namespace Libplanet.Tests.Stun.Attributes
+namespace Libplanet.Stun.Tests.Attributes
 {
     public class StunAddressExtensionTest
     {

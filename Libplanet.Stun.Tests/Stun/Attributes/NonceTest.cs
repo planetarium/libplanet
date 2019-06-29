@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Libplanet.Tests.Stun.Attributes
+namespace Libplanet.Stun.Tests.Attributes
 {
     public class NonceTest
     {
