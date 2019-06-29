@@ -19,6 +19,7 @@ namespace Libplanet.Explorer.Executable
     {
         private const string DefaultHost = "0.0.0.0";
         private const int DefaultPort = 5000;
+        private const string DefaultStoreType = "litedb";
 
         private static OptionSet options = new OptionSet
         {
@@ -134,7 +135,7 @@ namespace Libplanet.Explorer.Executable
             IStore store;
             try
             {
-                store = StoreRegistry.Get(storeTypeName ?? "file", extra[0]);
+                store = StoreRegistry.Get(storeTypeName ?? DefaultStoreType, extra[0]);
             }
             catch (StoreRegistry.StoreNotFoundException e)
             {
