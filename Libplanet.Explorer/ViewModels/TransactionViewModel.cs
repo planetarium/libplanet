@@ -8,6 +8,7 @@ namespace Libplanet.Explorer.ViewModels
     public class TransactionViewModel
     {
         public string Id { get; set; }
+        public long Nonce { get; set; }
         public byte[] Signature { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public string Signer { get; set; }
