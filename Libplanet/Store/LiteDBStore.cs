@@ -505,6 +505,27 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        {
+            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            foreach (BsonDocument doc in collection.FindAll())
+            {
+                if (doc.TryGetValue("_id", out BsonValue id) && id.IsBinary)
+                {
+                    var address = new Address(id.AsBinary);
+                    if (doc.TryGetValue("v", out BsonValue v) && v.IsInt64)
+                    {
+                        if (v.AsInt64 > 0)
+                        {
+                            yield return new KeyValuePair<Address, long>(address, v.AsInt64);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public long GetTxNonce(string @namespace, Address address)
         {
             var collectionId = $"{NonceIdPrefix}{@namespace}";

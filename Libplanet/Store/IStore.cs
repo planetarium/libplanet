@@ -175,6 +175,18 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <summary>
+        /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,
+        /// and their corresponding <see cref="Transaction{T}"/> nonces.
+        /// </summary>
+        /// <param name="namespace">The namespace to list <see cref="Address"/>es and their
+        /// <see cref="Transaction{T}"/> nonces.</param>
+        /// <returns>Pairs of an <see cref="Address"/> and its tx nonce.  All nonces are greater
+        /// than 0.  (If there are underlying entries having zero nonces these must be hidden.)
+        /// </returns>
+        /// <seealso cref="GetTxNonce(string, Address)"/>
+        IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);
+
+        /// <summary>
         /// Gets <see cref="Transaction{T}"/> nonce of the
         /// <paramref name="address"/>.
         /// </summary>

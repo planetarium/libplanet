@@ -11,6 +11,7 @@ To be released.
  -  `Peer.AppProtocolVersion` became nullable to represent `Peer` whose version
     is unknown.  [[#280]]
  -  Added `IStore.ListAddresses()` method.  [[#272], [#285]]
+ -  Added `IStore.ListTxNonces()` method. [[#272], [#309], [#310]]
  -  Removed `BlockChain<T>.GetNonce()` method.  [[#294]]
  -  `BlockChain<T>.StageTransactions` became to receive
     `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
@@ -23,7 +24,7 @@ To be released.
  -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
     (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
  -  `IStore` became to treat a "tx nonce" mere a `long` integer instead of
-    a stack of block hashes.  [[#272], [#307]]
+    a stack of block hashes.  [[#272], [#307], [#309], [#310]]
      -  `IStore.IncreaseTxNonce<T>(string, Block<T>)` method was replaced by
         `IStore.IncreaseTxNonce(string, Address, long)` method.
      -  Removed `IStore.ForkTxNonce()` method.
@@ -100,7 +101,7 @@ To be released.
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
-[#281]: https://github.com/planetarium/libplanet/pull/280
+[#280]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
@@ -109,6 +110,8 @@ To be released.
 [#303]: https://github.com/planetarium/libplanet/issues/303
 [#307]: https://github.com/planetarium/libplanet/pull/307
 [#308]: https://github.com/planetarium/libplanet/pull/308
+[#309]: https://github.com/planetarium/libplanet/issues/309
+[#310]: https://github.com/planetarium/libplanet/pull/310
 
 
 Version 0.3.0

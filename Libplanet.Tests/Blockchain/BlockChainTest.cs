@@ -480,8 +480,15 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkTxNonce()
         {
+            // An active account, so that its some recent transactions became "stale" due to a fork.
             var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.PublicKey.ToAddress();
+
+            // An inactive account, so that it has no recent transactions but only an old
+            // transaction, so that its all transactions are stale-proof (stale-resistant).
+            var lessActivePrivateKey = new PrivateKey();
+            Address lessActiveAddress = lessActivePrivateKey.PublicKey.ToAddress();
+
             var actions = new[] { new DumbAction(address, "foo") };
 
             Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
@@ -490,6 +497,7 @@ namespace Libplanet.Tests.Blockchain
             Transaction<DumbAction>[] txsA =
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey),
+                _fx.MakeTransaction(privateKey: lessActivePrivateKey),
             };
 
             Assert.Equal(0, _blockChain.GetNextTxNonce(address));
@@ -521,6 +529,7 @@ namespace Libplanet.Tests.Blockchain
 
             BlockChain<DumbAction> forked = _blockChain.Fork(b1.Hash);
             Assert.Equal(1, forked.GetNextTxNonce(address));
+            Assert.Equal(1, forked.GetNextTxNonce(lessActiveAddress));
         }
 
         [Fact]

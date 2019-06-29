@@ -95,6 +95,9 @@ namespace Libplanet.Store
             where T : IAction, new();
 
         /// <inheritdoc/>
+        public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);
+
+        /// <inheritdoc/>
         public abstract long GetTxNonce(string @namespace, Address address);
 
         /// <inheritdoc/>
