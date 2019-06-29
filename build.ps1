@@ -1,4 +1,4 @@
-#!/usr/local/bin/pwsh
+#!/usr/bin/env pwsh
 $project = "Libplanet.Explorer.Executable"
 $target = "netcoreapp2.2"
 $platforms = @("osx-x64","win-x64")

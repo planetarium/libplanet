@@ -1,4 +1,4 @@
-#!/usr/local/bin/pwsh
+#!/usr/bin/env pwsh
 if ($args.Length -lt 1) {
   $stderr = [Console]::Error.WriteLine
   $stderr.Invoke("error: Too few arguments.")
