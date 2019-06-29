@@ -88,9 +88,13 @@ To be released.
  -  Fixed a bug that `TurnClient` had not stopped properly.  [[#287]]
  -  Fixed a bug that `TurnClient` had been trying to use an already closed
     connection. [[#303], [#308]]
+ -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
+    `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
+    index of a block that does not exist locally.  [[#208], [#317]]
 
 
 [LiteDB]: https://www.litedb.org/
+[#208]: https://github.com/planetarium/libplanet/issues/208
 [#267]: https://github.com/planetarium/libplanet/issues/267
 [#269]: https://github.com/planetarium/libplanet/pull/269
 [#270]: https://github.com/planetarium/libplanet/pull/270
@@ -112,6 +116,7 @@ To be released.
 [#308]: https://github.com/planetarium/libplanet/pull/308
 [#309]: https://github.com/planetarium/libplanet/issues/309
 [#310]: https://github.com/planetarium/libplanet/pull/310
+[#317]: https://github.com/planetarium/libplanet/pull/317
 
 
 Version 0.3.0
