@@ -165,8 +165,11 @@ when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https
 <li>Fixed a bug that <code>TurnClient</code> had not stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 <li>Fixed a bug that <code>TurnClient</code> had been trying to use an already closed
 connection. [<a href="https://github.com/planetarium/libplanet/issues/303">#303</a>, <a href="https://github.com/planetarium/libplanet/pull/308">#308</a>]</li>
+<li>Fixed a bug that <code>KeyNotFoundException</code> had been thrown instead of
+<code>ArgumentOutOfRangeException</code> when <code>Blockchain&lt;T&gt;[int]</code> called while the
+index of a block that does not exist locally.  [<a href="https://github.com/planetarium/libplanet/issues/208">#208</a>, <a href="https://github.com/planetarium/libplanet/pull/317">#317</a>]</li>
 <li>Fixed a bug that <code>Swarm</code> had not dial to other peer after
-<code>Swarm.PreloadAsync()</code>.  [[#311]]</li>
+<code>Swarm.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/311">#311</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>

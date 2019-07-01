@@ -179,6 +179,21 @@ and will warn you if there are any style errors.</p>
 favorite editor.  Some recent editors have built-in support for EditorConfig,
 e.g., Rider (IntelliJ IDEA), Visual Studio.  Many editors have an extension to
 support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom</a>, <a href="https://github.com/editorconfig/editorconfig-emacs">Emacs</a>, <a href="https://github.com/editorconfig/editorconfig-vim">Vim</a>, <a href="https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig">VS Code</a>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="i-got-the-error-like-fody-is-only-supported-on-msbuild-16-and-above-current-version-15">I got the error like <code>Fody is only supported on MSBuild 16 and above. Current version: 15.</code></h3>
+<p>Your .NET Core SDK version probably is outdated.  Our recommended version is: <em>2.2.300</em>.</p>
+<ol>
+<li><p>Download the lastest (as of June 2019) .NET Core SDK binary from the official website:</p>
+<p><a href="https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300">https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300</a></p>
+</li>
+<li><p>Extract <em>.tar.gz</em> in proper directory.</p>
+</li>
+<li><p>You could permanently add the following commands into your shell profile.</p>
+<pre><code>export DOTNET_ROOT=&quot;$YOUR_DOTNET_INSTALLATION_PATH/dotnet&quot;
+export PATH=&quot;$PATH:$DOTNET_ROOT&quot;
+</code></pre>
+</li>
+</ol>
 </article>
           </div>
           
