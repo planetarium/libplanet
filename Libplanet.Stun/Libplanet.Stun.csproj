@@ -13,22 +13,31 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Serilog" Version="2.8.0" />
-    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
-    <AdditionalFiles Include="..\stylecop.json" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference
+      Include="Microsoft.DotNet.Analyzers.Compatibility"
+      Version="0.2.12-alpha">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers; buildtransitive
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="2.8.0" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
   </ItemGroup>
 </Project>

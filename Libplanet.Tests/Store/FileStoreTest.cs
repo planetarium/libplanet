@@ -29,7 +29,12 @@ namespace Libplanet.Tests.Store
         public void ReturnTransactionPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, "tx", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                Path.Combine(
+                    _fx.Path,
+                    "tx",
+                    "45a2",
+                    "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"
+                ),
                 _fileStore.GetTransactionPath(_fx.TxId1)
             );
         }
@@ -38,7 +43,12 @@ namespace Libplanet.Tests.Store
         public void ReturnBlockPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, "blocks", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                Path.Combine(
+                    _fx.Path,
+                    "blocks",
+                    "45a2",
+                    "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"
+                ),
                 _fileStore.GetBlockPath(_fx.Hash1)
             );
         }
@@ -47,7 +57,11 @@ namespace Libplanet.Tests.Store
         public void ReturnStagedTransactionPath()
         {
             Assert.Equal(
-                Path.Combine(_fx.Path, "stage", "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                Path.Combine(
+                    _fx.Path,
+                    "stage",
+                    "45a22187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"
+                ),
                 _fileStore.GetStagedTransactionPath(_fx.TxId1)
             );
         }
@@ -63,7 +77,12 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xcc,
             });
             Assert.Equal(
-                Path.Combine(_fx.Path, "states", "45a2", "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"),
+                Path.Combine(
+                    _fx.Path,
+                    "states",
+                    "45a2",
+                    "2187e2d8850bb357886958bc3e8560929ccc886958bc3e8560929ccc9ccc"
+                ),
                 _fileStore.GetStatesPath(hash)
             );
         }

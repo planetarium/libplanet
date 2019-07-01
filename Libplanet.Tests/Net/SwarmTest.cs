@@ -39,10 +39,12 @@ namespace Libplanet.Tests.Net
 
         public SwarmTest(ITestOutputHelper output)
         {
+            const string outputTemplate =
+                "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Enrich.WithThreadId()
-                .WriteTo.TestOutput(output, outputTemplate: "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}")
+                .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
@@ -249,9 +251,18 @@ namespace Libplanet.Tests.Net
                     await EnsureExchange(a, c);
                     await EnsureExchange(a, b);
 
-                    Assert.Equal(new[] { b.AsPeer, c.AsPeer }.ToImmutableHashSet(), a.ToImmutableHashSet());
-                    Assert.Equal(new[] { a.AsPeer, c.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
-                    Assert.Equal(new[] { a.AsPeer, b.AsPeer }.ToImmutableHashSet(), c.ToImmutableHashSet());
+                    Assert.Equal(
+                        new[] { b.AsPeer, c.AsPeer }.ToImmutableHashSet(),
+                        a.ToImmutableHashSet()
+                    );
+                    Assert.Equal(
+                        new[] { a.AsPeer, c.AsPeer }.ToImmutableHashSet(),
+                        b.ToImmutableHashSet()
+                    );
+                    Assert.Equal(
+                        new[] { a.AsPeer, b.AsPeer }.ToImmutableHashSet(),
+                        c.ToImmutableHashSet()
+                    );
 
                     lastDistA = a.LastDistributed;
                     aAsPeer = a.AsPeer;
@@ -963,7 +974,11 @@ namespace Libplanet.Tests.Net
             return task;
         }
 
-        private async Task EnsureRecvAsync(Swarm swarm, Peer peer = null, DateTimeOffset? lastReceived = null)
+        private async Task EnsureRecvAsync(
+            Swarm swarm,
+            Peer peer = null,
+            DateTimeOffset? lastReceived = null
+        )
         {
             Log.Debug($"Waiting to ensure recv... [{swarm.AsPeer}]");
             while (true)

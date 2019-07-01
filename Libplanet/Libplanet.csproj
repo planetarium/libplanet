@@ -43,9 +43,6 @@ https://docs.libplanet.io/</Description>
     <NoWarn>$(NoWarn);CS1591;NU5104;MEN001</NoWarn>
     <!-- FIXME: CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -56,6 +53,7 @@ https://docs.libplanet.io/</Description>
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
+    <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,22 +68,24 @@ https://docs.libplanet.io/</Description>
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
+    <PackageReference
+      Include="Microsoft.DotNet.Analyzers.Compatibility"
+      Version="0.2.12-alpha">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers; buildtransitive
+      </IncludeAssets>
     </PackageReference>
     <PackageReference Include="NetMQ" Version="4.0.0.207-pre" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>
+        runtime; build; native; contentfiles; analyzers
+      </IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
   <!-- The above hacky trick is borrowed from the following Stack Overflow

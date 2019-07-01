@@ -17,7 +17,7 @@ namespace Libplanet.Stun.Tests.Messages
                 {
                     0xf8, 0x57, 0xe3, 0x50, 0x4c, 0x8f, 0xd3, 0x9d, 0xb8, 0xca,
                     0x69, 0x83,
-                }
+                },
             };
             var ctx = new TestStunContext()
             {
