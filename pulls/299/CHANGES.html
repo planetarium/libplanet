@@ -81,9 +81,39 @@
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
-is unknown.</li>
+is unknown.  [<a href="https://github.com/planetarium/libplanet/pull/280">#280</a>]</li>
 <li>Added <code>IStore.ListAddresses()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
+<li>Added <code>IStore.ListTxNonces()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/issues/309">#309</a>, <a href="https://github.com/planetarium/libplanet/pull/310">#310</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.GetNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
+<li><code>BlockChain&lt;T&gt;.StageTransactions</code> became to receive
+<code>IDictionary&lt;Transaction&lt;T&gt;, bool&gt;</code> instead of <code>ISet&lt;Transaction&lt;T&gt;&gt;</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>IStore.StageTransactionIds()</code> method became to receive
+<code>IDictionary&lt;TxId, bool&gt;</code> instead of <code>ISet&lt;TxId&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>IStore.IterateStagedTransactionIds()</code> method became to receive
+<code>bool toBroadcast</code> which is whether to iterate only the TxId set to
+broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>Swarm.StartAsync()</code> method became to receive <code>broadcastTxInterval</code>
+(or <code>millisecondsBroadcastTxInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>IStore</code> became to treat a &quot;tx nonce&quot; mere a <code>long</code> integer instead of
+a stack of block hashes.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>, <a href="https://github.com/planetarium/libplanet/issues/309">#309</a>, <a href="https://github.com/planetarium/libplanet/pull/310">#310</a>]
+<ul>
+<li><code>IStore.IncreaseTxNonce&lt;T&gt;(string, Block&lt;T&gt;)</code> method was replaced by
+<code>IStore.IncreaseTxNonce(string, Address, long)</code> method.</li>
+<li>Removed <code>IStore.ForkTxNonce()</code> method.</li>
+<li><code>FileStore</code> became to occupy fewer bytes for storing tx nonces.
+This change broke file-level backward compatibility.</li>
+</ul>
+</li>
+<li><code>IStore</code> became possible to look up multiple state references in a stack.
+[<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>]
+<ul>
+<li>Removed <code>IStore.LookupStateReference&lt;T&gt;()</code> method.
+Instead, a newly added static class <code>StoreExtension</code> provides
+an extension method of the same name.</li>
+<li>Added <code>IStore.IterateStateReferences()</code> method.</li>
+</ul>
+</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -91,13 +121,14 @@ is unknown.</li>
 <li>All <code>*Async()</code> methods belonging to <code>TurnClient</code> class became to have
 <code>cancellationToken</code> option.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
 <li>Added a <code>Peer</code> constructor omitting <code>appProtocolVersion</code> parameter
-to create a <code>Peer</code> whose version is unknown.</li>
+to create a <code>Peer</code> whose version is unknown.  [<a href="https://github.com/planetarium/libplanet/pull/280">#280</a>]</li>
 <li>Added <code>IncompleteBlockStatesException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>Added <code>completeStates</code> option to <code>BlockChain&lt;T&gt;.GetStates()</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeTransaction(PrivateKey, IEnumerable&lt;T&gt;, IImmutableSet&lt;Address&gt;, DateTimeOffset?)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> method which counts staged
 transactions too during nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>, <a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
+<li>Added <code>StoreExtension</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -113,6 +144,13 @@ request messages.  [<a href="https://github.com/planetarium/libplanet/pull/277">
 <li>Added IPv6 support to <code>Libplanet.Stun.StunAddress</code>. [<a href="https://github.com/planetarium/libplanet/issues/267">#267</a>, <a href="https://github.com/planetarium/libplanet/pull/271">#271</a>]</li>
 <li><code>IStore.GetBlockStates()</code> became able to return <code>null</code> to represent an absence
 of states (i.e., incomplete states).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
+<li><code>Swarm</code> became to broadcast staged <code>Transaction</code>s periodically
+so that game apps no more need to maintain their own thread to
+broadcast staged transactions.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li>Previously, <code>Swarm</code> had sent an empty <code>GetTxs</code> message when it receives
+an empty <code>TxIds</code> from peers, and it had made the network waste bandwidth for
+unnecessary messages.  <code>Swam</code> became to no more send such empty <code>GetTxs</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 <li><code>BlockChain&lt;T&gt;.FindBranchPoint()</code> became to use less memory than before.
 [<a href="https://github.com/planetarium/libplanet/issues/282">#282</a>, <a href="https://github.com/planetarium/libplanet/pull/299">#299</a>]</li>
 </ul>
@@ -127,6 +165,11 @@ when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https
 <li>Fixed a bug where <code>LiteDBStore.GetTxNonce()</code> method throws a
 <code>System.IO.IOException</code> after forking.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
 <li>Fixed a bug that <code>TurnClient</code> had not stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/287">#287</a>]</li>
+<li>Fixed a bug that <code>TurnClient</code> had been trying to use an already closed
+connection. [<a href="https://github.com/planetarium/libplanet/issues/303">#303</a>, <a href="https://github.com/planetarium/libplanet/pull/308">#308</a>]</li>
+<li>Fixed a bug that <code>KeyNotFoundException</code> had been thrown instead of
+<code>ArgumentOutOfRangeException</code> when <code>Blockchain&lt;T&gt;[int]</code> called while the
+index of a block that does not exist locally.  [<a href="https://github.com/planetarium/libplanet/issues/208">#208</a>, <a href="https://github.com/planetarium/libplanet/pull/317">#317</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
