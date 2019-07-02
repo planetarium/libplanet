@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Tx;
 
@@ -135,6 +136,9 @@ namespace Libplanet.Store
         /// of the <see cref="Address"/>.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="block"/>.</typeparam>
+        /// <remarks>State reference must be stored in the same order as the blocks. For now,
+        /// it is assumed that this is only called by
+        /// <see cref="BlockChain{T}.Append(Block{T}, DateTimeOffset, bool)"/> method.</remarks>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
         void StoreStateReference<T>(
             string @namespace,
