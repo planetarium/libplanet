@@ -28,6 +28,8 @@ namespace Libplanet.Explorer.GraphTypes
             );
             Field(x => x.Timestamp);
             Field<ListGraphType<ActionType<T>>>("Actions");
+
+            Name = "Transaction";
         }
     }
 }

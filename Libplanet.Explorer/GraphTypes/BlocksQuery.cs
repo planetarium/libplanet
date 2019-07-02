@@ -26,7 +26,9 @@ namespace Libplanet.Explorer.GraphTypes
                     return _chain.FirstOrDefault(x => (ulong)x.Index == index);
                 }
             );
+
             _chain = chain;
+            Name = "BlockQuery";
         }
     }
 }
