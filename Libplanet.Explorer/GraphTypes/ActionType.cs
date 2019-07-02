@@ -23,6 +23,8 @@ namespace Libplanet.Explorer.GraphTypes
                     return result;
                 }
             );
+
+            Name = "Action";
         }
     }
 }
