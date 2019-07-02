@@ -49,7 +49,7 @@ namespace Libplanet.Explorer.Controllers
         [HttpGet("/")]
         public IActionResult GetRoot()
         {
-            return Redirect("/graphiql.html");
+            return Redirect("/playground.html");
         }
 
         [HttpPost("/graphql/")]
