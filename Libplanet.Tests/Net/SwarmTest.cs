@@ -934,17 +934,13 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
-                await StartAsync(receiverSwarm);
-
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await receiverSwarm.PreloadAsync(receiverChain);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
             }
             finally
             {
-                await Task.WhenAll(
-                    minerSwarm.StopAsync(),
-                    receiverSwarm.StopAsync());
+                await minerSwarm.StopAsync();
             }
         }
 
