@@ -42,7 +42,7 @@ To be released.
  -  Methods  in `Swarm` that had taken a parameter of `BlockChain<T>` type
     became to neither longer take `BlockChain<T>` nor a generic method.
     Because the `Swarm` constructor takes it instead.  [[#324]]
- -  `Swarm` is not `ICollection<Peer>` anymore. [[#326]]
+ -  `Swarm` does not implement `ICollection<Peer>` anymore.  [[#326]]
 
 ### Added interfaces
 
