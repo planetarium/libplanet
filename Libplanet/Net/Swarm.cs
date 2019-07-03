@@ -66,6 +66,7 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
+        private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
 
         static Swarm()
@@ -443,32 +444,28 @@ namespace Libplanet.Net
                     CancellationTokenSource.CreateLinkedTokenSource(
                         _workerCancellationTokenSource.Token, cancellationToken
                     ).Token;
+                _cancellationToken = workerCancellationToken;
 
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
                     await PreloadAsync(
-                        cancellationToken: workerCancellationToken);
+                        cancellationToken: _cancellationToken);
                 }
 
                 var tasks = new List<Task>
                 {
-                    RepeatDeltaDistributionAsync(
-                        distributeInterval,
-                        workerCancellationToken),
-                    ReceiveMessageAsync(
-                        workerCancellationToken),
-                    BroadcastTxAsync(
-                        broadcastTxInterval,
-                        cancellationToken),
-                    Task.Run(() => _queuePoller.Run(), workerCancellationToken),
+                    RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken),
+                    ReceiveMessageAsync(_cancellationToken),
+                    BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
+                    Task.Run(() => _queuePoller.Run(), _cancellationToken),
                 };
 
                 if (behindNAT)
                 {
-                    tasks.Add(BindingProxies(workerCancellationToken));
-                    tasks.Add(RefreshAllocate(workerCancellationToken));
-                    tasks.Add(RefreshPermissions(workerCancellationToken));
+                    tasks.Add(BindingProxies(_cancellationToken));
+                    tasks.Add(RefreshAllocate(_cancellationToken));
+                    tasks.Add(RefreshPermissions(_cancellationToken));
                 }
 
                 await await Task.WhenAny(tasks);
