@@ -242,6 +242,8 @@ namespace Libplanet.Net
             }
         }
 
+        internal ICollection<Peer> Peers => _peers.Keys;
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
