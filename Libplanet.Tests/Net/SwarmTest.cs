@@ -258,8 +258,12 @@ namespace Libplanet.Tests.Net
 
                     await b.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, b);
-                    Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), a.ToImmutableHashSet());
-                    Assert.Equal(new[] { a.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
+                    Assert.Equal(
+                        new[] { b.AsPeer }.ToImmutableHashSet(),
+                        a.Peers.ToImmutableHashSet());
+                    Assert.Equal(
+                        new[] { a.AsPeer }.ToImmutableHashSet(),
+                        b.Peers.ToImmutableHashSet());
 
                     await c.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, c);
@@ -267,15 +271,15 @@ namespace Libplanet.Tests.Net
 
                     Assert.Equal(
                         new[] { b.AsPeer, c.AsPeer }.ToImmutableHashSet(),
-                        a.ToImmutableHashSet()
+                        a.Peers.ToImmutableHashSet()
                     );
                     Assert.Equal(
                         new[] { a.AsPeer, c.AsPeer }.ToImmutableHashSet(),
-                        b.ToImmutableHashSet()
+                        b.Peers.ToImmutableHashSet()
                     );
                     Assert.Equal(
                         new[] { a.AsPeer, b.AsPeer }.ToImmutableHashSet(),
-                        c.ToImmutableHashSet()
+                        c.Peers.ToImmutableHashSet()
                     );
 
                     lastDistA = a.LastDistributed;
@@ -292,8 +296,8 @@ namespace Libplanet.Tests.Net
                 await EnsureRecvAsync(c, aAsPeer, a.LastDistributed);
                 await EnsureExchange(b, c);
 
-                Assert.Equal(new[] { c.AsPeer }.ToImmutableHashSet(), b.ToImmutableHashSet());
-                Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), c.ToImmutableHashSet());
+                Assert.Equal(new[] { c.AsPeer }.ToImmutableHashSet(), b.Peers.ToImmutableHashSet());
+                Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), c.Peers.ToImmutableHashSet());
             }
             finally
             {
@@ -344,8 +348,8 @@ namespace Libplanet.Tests.Net
                     await b.AddPeersAsync(new[] { peer });
                 }
 
-                Assert.Equal(new[] { c.AsPeer }, a.ToArray());
-                Assert.Equal(new[] { d.AsPeer }, b.ToArray());
+                Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
+                Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
             }
             finally
             {
@@ -900,8 +904,8 @@ namespace Libplanet.Tests.Net
 
                 await EnsureExchange(swarmA, swarmB);
 
-                Assert.Contains(swarmA.AsPeer, swarmB);
-                Assert.Contains(swarmB.AsPeer, swarmA);
+                Assert.Contains(swarmA.AsPeer, swarmB.Peers);
+                Assert.Contains(swarmB.AsPeer, swarmA.Peers);
             }
             finally
             {

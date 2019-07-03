@@ -42,6 +42,7 @@ To be released.
  -  Methods  in `Swarm` that had taken a parameter of `BlockChain<T>` type
     became to neither longer take `BlockChain<T>` nor a generic method.
     Because the `Swarm` constructor takes it instead.  [[#324]]
+ -  `Swarm` does not implement `ICollection<Peer>` anymore.  [[#326]]
 
 ### Added interfaces
 
@@ -127,7 +128,7 @@ To be released.
 [#311]: https://github.com/planetarium/libplanet/pull/311
 [#317]: https://github.com/planetarium/libplanet/pull/317
 [#324]: https://github.com/planetarium/libplanet/pull/324
-
+[#326]: https://github.com/planetarium/libplanet/pull/326
 
 Version 0.3.0
 -------------
