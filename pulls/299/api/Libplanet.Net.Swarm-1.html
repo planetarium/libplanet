@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Swarm
+    <title>Class Swarm&lt;T&gt;
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Swarm
+    <meta name="title" content="Class Swarm&lt;T&gt;
    | Libplanet ">
     <meta name="generator" content="docfx 2.42.1.0">
     
@@ -267,7 +267,7 @@
                             <a href="Libplanet.Net.PeerSetDelta.html" title="PeerSetDelta" class="">PeerSetDelta</a>
                           </li>
                           <li class="active">
-                            <a href="Libplanet.Net.Swarm.html" title="Swarm" class="active">Swarm</a>
+                            <a href="Libplanet.Net.Swarm-1.html" title="Swarm&lt;T&gt;" class="active">Swarm&lt;T&gt;</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.SwarmException.html" title="SwarmException" class="">SwarmException</a>
@@ -358,17 +358,17 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Swarm">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.Swarm`1">
   
   
-  <h1 id="Libplanet_Net_Swarm" data-uid="Libplanet.Net.Swarm" class="text-break">Class Swarm
+  <h1 id="Libplanet_Net_Swarm_1" data-uid="Libplanet.Net.Swarm`1" class="text-break">Class Swarm&lt;T&gt;
   </h1>
   <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">Swarm</span></div>
+    <div class="level1"><span class="xref">Swarm&lt;T&gt;</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -402,26 +402,41 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Net_Swarm_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_Swarm_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Swarm : ICollection&lt;Peer&gt;, IEnumerable&lt;Peer&gt;, IEnumerable</code></pre>
+    <pre><code class="lang-csharp hljs">public class Swarm&lt;T&gt; : ICollection&lt;Peer&gt;, IEnumerable&lt;Peer&gt;, IEnumerable where T : IAction, new()</code></pre>
   </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.%23ctor(Libplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.IceServer%7D%2CSystem.EventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.%23ctor(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.IceServer%7D%2CSystem.EventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L77">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L79">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm__ctor_" data-uid="Libplanet.Net.Swarm.#ctor*"></a>
-  <h4 id="Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(PrivateKey, Int32, Int32, Int32, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
+  <a id="Libplanet_Net_Swarm_1__ctor_" data-uid="Libplanet.Net.Swarm`1.#ctor*"></a>
+  <h4 id="Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(BlockChain&lt;T&gt;, PrivateKey, Int32, Int32, Int32, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Swarm(PrivateKey privateKey, int appProtocolVersion, int millisecondsDialTimeout = 15000, int millisecondsLinger = 1000, string host = null, int? listenPort = default(int? ), DateTimeOffset? createdAt = default(DateTimeOffset? ), IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, int appProtocolVersion, int millisecondsDialTimeout = 15000, int millisecondsLinger = 1000, string host = null, int? listenPort = default(int? ), DateTimeOffset? createdAt = default(DateTimeOffset? ), IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -433,6 +448,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">privateKey</span></td>
@@ -482,18 +502,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.%23ctor(Libplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.TimeSpan%2CSystem.TimeSpan%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.IceServer%7D%2CSystem.EventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.%23ctor(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.TimeSpan%2CSystem.TimeSpan%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Collections.Generic.IEnumerable%7BLibplanet.Net.IceServer%7D%2CSystem.EventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L101">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L105">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm__ctor_" data-uid="Libplanet.Net.Swarm.#ctor*"></a>
-  <h4 id="Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
+  <a id="Libplanet_Net_Swarm_1__ctor_" data-uid="Libplanet.Net.Swarm`1.#ctor*"></a>
+  <h4 id="Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(BlockChain&lt;T&gt;, PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Swarm(PrivateKey privateKey, int appProtocolVersion, TimeSpan dialTimeout, TimeSpan linger, string host = null, int? listenPort = default(int? ), DateTimeOffset? createdAt = default(DateTimeOffset? ), IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, int appProtocolVersion, TimeSpan dialTimeout, TimeSpan linger, string host = null, int? listenPort = default(int? ), DateTimeOffset? createdAt = default(DateTimeOffset? ), IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,6 +525,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
+        <td><span class="parametername">blockChain</span></td>
+        <td></td>
+      </tr>
       <tr>
         <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
         <td><span class="parametername">privateKey</span></td>
@@ -556,13 +581,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Address.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Address.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L193">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L199">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Address_" data-uid="Libplanet.Net.Swarm.Address*"></a>
-  <h4 id="Libplanet_Net_Swarm_Address" data-uid="Libplanet.Net.Swarm.Address">Address</h4>
+  <a id="Libplanet_Net_Swarm_1_Address_" data-uid="Libplanet.Net.Swarm`1.Address*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Address" data-uid="Libplanet.Net.Swarm`1.Address">Address</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -586,13 +611,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L195">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L201">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_AsPeer_" data-uid="Libplanet.Net.Swarm.AsPeer*"></a>
-  <h4 id="Libplanet_Net_Swarm_AsPeer" data-uid="Libplanet.Net.Swarm.AsPeer">AsPeer</h4>
+  <a id="Libplanet_Net_Swarm_1_AsPeer_" data-uid="Libplanet.Net.Swarm`1.AsPeer*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_AsPeer" data-uid="Libplanet.Net.Swarm`1.AsPeer">AsPeer</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -616,13 +641,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_BlockReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.BlockReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_BlockReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BlockReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L211">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L217">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_BlockReceived_" data-uid="Libplanet.Net.Swarm.BlockReceived*"></a>
-  <h4 id="Libplanet_Net_Swarm_BlockReceived" data-uid="Libplanet.Net.Swarm.BlockReceived">BlockReceived</h4>
+  <a id="Libplanet_Net_Swarm_1_BlockReceived_" data-uid="Libplanet.Net.Swarm`1.BlockReceived*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BlockReceived" data-uid="Libplanet.Net.Swarm`1.BlockReceived">BlockReceived</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -646,13 +671,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Count.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Count.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L187">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L193">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Count_" data-uid="Libplanet.Net.Swarm.Count*"></a>
-  <h4 id="Libplanet_Net_Swarm_Count" data-uid="Libplanet.Net.Swarm.Count">Count</h4>
+  <a id="Libplanet_Net_Swarm_1_Count_" data-uid="Libplanet.Net.Swarm`1.Count*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Count" data-uid="Libplanet.Net.Swarm`1.Count">Count</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -676,13 +701,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_DeltaDistributed.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.DeltaDistributed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_DeltaDistributed.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.DeltaDistributed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L207">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L213">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_DeltaDistributed_" data-uid="Libplanet.Net.Swarm.DeltaDistributed*"></a>
-  <h4 id="Libplanet_Net_Swarm_DeltaDistributed" data-uid="Libplanet.Net.Swarm.DeltaDistributed">DeltaDistributed</h4>
+  <a id="Libplanet_Net_Swarm_1_DeltaDistributed_" data-uid="Libplanet.Net.Swarm`1.DeltaDistributed*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_DeltaDistributed" data-uid="Libplanet.Net.Swarm`1.DeltaDistributed">DeltaDistributed</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -706,13 +731,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_DeltaReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.DeltaReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_DeltaReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.DeltaReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L205">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L211">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_DeltaReceived_" data-uid="Libplanet.Net.Swarm.DeltaReceived*"></a>
-  <h4 id="Libplanet_Net_Swarm_DeltaReceived" data-uid="Libplanet.Net.Swarm.DeltaReceived">DeltaReceived</h4>
+  <a id="Libplanet_Net_Swarm_1_DeltaReceived_" data-uid="Libplanet.Net.Swarm`1.DeltaReceived*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_DeltaReceived" data-uid="Libplanet.Net.Swarm`1.DeltaReceived">DeltaReceived</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -736,13 +761,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_EndPoint.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.EndPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_EndPoint.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.EndPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L191">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L197">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_EndPoint_" data-uid="Libplanet.Net.Swarm.EndPoint*"></a>
-  <h4 id="Libplanet_Net_Swarm_EndPoint" data-uid="Libplanet.Net.Swarm.EndPoint">EndPoint</h4>
+  <a id="Libplanet_Net_Swarm_1_EndPoint_" data-uid="Libplanet.Net.Swarm`1.EndPoint*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_EndPoint" data-uid="Libplanet.Net.Swarm`1.EndPoint">EndPoint</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -766,13 +791,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_IsReadOnly.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.IsReadOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_IsReadOnly.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.IsReadOnly%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L189">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L195">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_IsReadOnly_" data-uid="Libplanet.Net.Swarm.IsReadOnly*"></a>
-  <h4 id="Libplanet_Net_Swarm_IsReadOnly" data-uid="Libplanet.Net.Swarm.IsReadOnly">IsReadOnly</h4>
+  <a id="Libplanet_Net_Swarm_1_IsReadOnly_" data-uid="Libplanet.Net.Swarm`1.IsReadOnly*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_IsReadOnly" data-uid="Libplanet.Net.Swarm`1.IsReadOnly">IsReadOnly</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -796,13 +821,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_LastDistributed.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.LastDistributed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastDistributed.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastDistributed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L215">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L221">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_LastDistributed_" data-uid="Libplanet.Net.Swarm.LastDistributed*"></a>
-  <h4 id="Libplanet_Net_Swarm_LastDistributed" data-uid="Libplanet.Net.Swarm.LastDistributed">LastDistributed</h4>
+  <a id="Libplanet_Net_Swarm_1_LastDistributed_" data-uid="Libplanet.Net.Swarm`1.LastDistributed*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_LastDistributed" data-uid="Libplanet.Net.Swarm`1.LastDistributed">LastDistributed</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -826,13 +851,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_LastReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.LastReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L213">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L219">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_LastReceived_" data-uid="Libplanet.Net.Swarm.LastReceived*"></a>
-  <h4 id="Libplanet_Net_Swarm_LastReceived" data-uid="Libplanet.Net.Swarm.LastReceived">LastReceived</h4>
+  <a id="Libplanet_Net_Swarm_1_LastReceived_" data-uid="Libplanet.Net.Swarm`1.LastReceived*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_LastReceived" data-uid="Libplanet.Net.Swarm`1.LastReceived">LastReceived</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -856,13 +881,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_LastSeenTimestamps.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.LastSeenTimestamps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastSeenTimestamps.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastSeenTimestamps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L217">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L223">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_LastSeenTimestamps_" data-uid="Libplanet.Net.Swarm.LastSeenTimestamps*"></a>
-  <h4 id="Libplanet_Net_Swarm_LastSeenTimestamps" data-uid="Libplanet.Net.Swarm.LastSeenTimestamps">LastSeenTimestamps</h4>
+  <a id="Libplanet_Net_Swarm_1_LastSeenTimestamps_" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_LastSeenTimestamps" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps">LastSeenTimestamps</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -886,14 +911,14 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L226">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L232">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Running_" data-uid="Libplanet.Net.Swarm.Running*"></a>
-  <h4 id="Libplanet_Net_Swarm_Running" data-uid="Libplanet.Net.Swarm.Running">Running</h4>
-  <div class="markdown level1 summary"><p>Whether this <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a> instance is running.</p>
+  <a id="Libplanet_Net_Swarm_1_Running_" data-uid="Libplanet.Net.Swarm`1.Running*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Running" data-uid="Libplanet.Net.Swarm`1.Running">Running</h4>
+  <div class="markdown level1 summary"><p>Whether this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance is running.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -917,13 +942,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_TxReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.TxReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_TxReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.TxReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L209">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L215">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_TxReceived_" data-uid="Libplanet.Net.Swarm.TxReceived*"></a>
-  <h4 id="Libplanet_Net_Swarm_TxReceived" data-uid="Libplanet.Net.Swarm.TxReceived">TxReceived</h4>
+  <a id="Libplanet_Net_Swarm_1_TxReceived_" data-uid="Libplanet.Net.Swarm`1.TxReceived*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_TxReceived" data-uid="Libplanet.Net.Swarm`1.TxReceived">TxReceived</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -949,13 +974,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Add_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Add(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Add_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Add(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L328">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L334">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Add_" data-uid="Libplanet.Net.Swarm.Add*"></a>
-  <h4 id="Libplanet_Net_Swarm_Add_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm.Add(Libplanet.Net.Peer)">Add(Peer)</h4>
+  <a id="Libplanet_Net_Swarm_1_Add_" data-uid="Libplanet.Net.Swarm`1.Add*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Add_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm`1.Add(Libplanet.Net.Peer)">Add(Peer)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -981,13 +1006,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AddPeersAsync(System.Collections.Generic.IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BSystem.DateTimeOffset%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L250">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L256">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_AddPeersAsync_" data-uid="Libplanet.Net.Swarm.AddPeersAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;DateTimeOffset&gt;, CancellationToken)</h4>
+  <a id="Libplanet_Net_Swarm_1_AddPeersAsync_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">AddPeersAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;DateTimeOffset&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1038,19 +1063,18 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_BroadcastBlocks__1_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block___0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.BroadcastBlocks%60%601(System.Collections.Generic.IEnumerable%7BLibplanet.Blocks.Block%7B%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastBlocks_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastBlocks(System.Collections.Generic.IEnumerable%7BLibplanet.Blocks.Block%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L574">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L572">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_BroadcastBlocks_" data-uid="Libplanet.Net.Swarm.BroadcastBlocks*"></a>
-  <h4 id="Libplanet_Net_Swarm_BroadcastBlocks__1_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block___0___" data-uid="Libplanet.Net.Swarm.BroadcastBlocks``1(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{``0}})">BroadcastBlocks&lt;T&gt;(IEnumerable&lt;Block&lt;T&gt;&gt;)</h4>
+  <a id="Libplanet_Net_Swarm_1_BroadcastBlocks_" data-uid="Libplanet.Net.Swarm`1.BroadcastBlocks*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BroadcastBlocks_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastBlocks(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})">BroadcastBlocks(IEnumerable&lt;Block&lt;T&gt;&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void BroadcastBlocks&lt;T&gt;(IEnumerable&lt;Block&lt;T&gt;&gt; blocks)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public void BroadcastBlocks(IEnumerable&lt;Block&lt;T&gt;&gt; blocks)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1069,36 +1093,20 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_BroadcastTxs__1_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction___0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.BroadcastTxs%60%601(System.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%60%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastTxs_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastTxs(System.Collections.Generic.IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L586">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L583">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_BroadcastTxs_" data-uid="Libplanet.Net.Swarm.BroadcastTxs*"></a>
-  <h4 id="Libplanet_Net_Swarm_BroadcastTxs__1_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction___0___" data-uid="Libplanet.Net.Swarm.BroadcastTxs``1(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{``0}})">BroadcastTxs&lt;T&gt;(IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
+  <a id="Libplanet_Net_Swarm_1_BroadcastTxs_" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_BroadcastTxs_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})">BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void BroadcastTxs&lt;T&gt;(IEnumerable&lt;Transaction&lt;T&gt;&gt; txs)
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public void BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt; txs)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1117,30 +1125,15 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Clear.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Clear.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L359">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L365">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Clear_" data-uid="Libplanet.Net.Swarm.Clear*"></a>
-  <h4 id="Libplanet_Net_Swarm_Clear" data-uid="Libplanet.Net.Swarm.Clear">Clear()</h4>
+  <a id="Libplanet_Net_Swarm_1_Clear_" data-uid="Libplanet.Net.Swarm`1.Clear*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Clear" data-uid="Libplanet.Net.Swarm`1.Clear">Clear()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1149,13 +1142,13 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Contains_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Contains(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Contains_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Contains(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L364">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L370">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Contains_" data-uid="Libplanet.Net.Swarm.Contains*"></a>
-  <h4 id="Libplanet_Net_Swarm_Contains_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm.Contains(Libplanet.Net.Peer)">Contains(Peer)</h4>
+  <a id="Libplanet_Net_Swarm_1_Contains_" data-uid="Libplanet.Net.Swarm`1.Contains*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Contains_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm`1.Contains(Libplanet.Net.Peer)">Contains(Peer)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1196,13 +1189,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_CopyTo_Libplanet_Net_Peer___System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_CopyTo_Libplanet_Net_Peer___System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.CopyTo(Libplanet.Net.Peer%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L369">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L375">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_CopyTo_" data-uid="Libplanet.Net.Swarm.CopyTo*"></a>
-  <h4 id="Libplanet_Net_Swarm_CopyTo_Libplanet_Net_Peer___System_Int32_" data-uid="Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer[],System.Int32)">CopyTo(Peer[], Int32)</h4>
+  <a id="Libplanet_Net_Swarm_1_CopyTo_" data-uid="Libplanet.Net.Swarm`1.CopyTo*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_CopyTo_Libplanet_Net_Peer___System_Int32_" data-uid="Libplanet.Net.Swarm`1.CopyTo(Libplanet.Net.Peer[],System.Int32)">CopyTo(Peer[], Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1233,13 +1226,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L170">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L176">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Finalize_" data-uid="Libplanet.Net.Swarm.Finalize*"></a>
-  <h4 id="Libplanet_Net_Swarm_Finalize" data-uid="Libplanet.Net.Swarm.Finalize">Finalize()</h4>
+  <a id="Libplanet_Net_Swarm_1_Finalize_" data-uid="Libplanet.Net.Swarm`1.Finalize*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Finalize" data-uid="Libplanet.Net.Swarm`1.Finalize">Finalize()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1248,13 +1241,13 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L437">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L443">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_GetEnumerator_" data-uid="Libplanet.Net.Swarm.GetEnumerator*"></a>
-  <h4 id="Libplanet_Net_Swarm_GetEnumerator" data-uid="Libplanet.Net.Swarm.GetEnumerator">GetEnumerator()</h4>
+  <a id="Libplanet_Net_Swarm_1_GetEnumerator_" data-uid="Libplanet.Net.Swarm`1.GetEnumerator*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_GetEnumerator" data-uid="Libplanet.Net.Swarm`1.GetEnumerator">GetEnumerator()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1278,20 +1271,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_PreloadAsync__1_Libplanet_Blockchain_BlockChain___0__System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.PreloadAsync%60%601(Libplanet.Blockchain.BlockChain%7B%60%600%7D%2CSystem.IProgress%7BLibplanet.Net.BlockDownloadState%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PreloadAsync(System.IProgress%7BLibplanet.Net.BlockDownloadState%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L613">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L604">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_PreloadAsync_" data-uid="Libplanet.Net.Swarm.PreloadAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_PreloadAsync__1_Libplanet_Blockchain_BlockChain___0__System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm.PreloadAsync``1(Libplanet.Blockchain.BlockChain{``0},System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)">PreloadAsync&lt;T&gt;(BlockChain&lt;T&gt;, IProgress&lt;BlockDownloadState&gt;, CancellationToken)</h4>
+  <a id="Libplanet_Net_Swarm_1_PreloadAsync_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)">PreloadAsync(IProgress&lt;BlockDownloadState&gt;, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Preemptively downloads blocks from registered <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>s.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task PreloadAsync&lt;T&gt;(BlockChain&lt;T&gt; blockChain, IProgress&lt;BlockDownloadState&gt; progress = null, CancellationToken cancellationToken = default(CancellationToken))
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task PreloadAsync(IProgress&lt;BlockDownloadState&gt; progress = null, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1303,12 +1295,6 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
-        <td><span class="parametername">blockChain</span></td>
-        <td><p>A <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> instance to synchronize.</p>
-</td>
-      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.iprogress-1">IProgress</a>&lt;<a class="xref" href="Libplanet.Net.BlockDownloadState.html">BlockDownloadState</a>&gt;</td>
         <td><span class="parametername">progress</span></td>
@@ -1341,32 +1327,15 @@ You only can <code>await</code> until the method is completed.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type. It should match
-to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>'s type parameter.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_Remove_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_Remove_Libplanet_Net_Peer_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Remove(Libplanet.Net.Peer)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L442">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L448">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_Remove_" data-uid="Libplanet.Net.Swarm.Remove*"></a>
-  <h4 id="Libplanet_Net_Swarm_Remove_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)">Remove(Peer)</h4>
+  <a id="Libplanet_Net_Swarm_1_Remove_" data-uid="Libplanet.Net.Swarm`1.Remove*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_Remove_Libplanet_Net_Peer_" data-uid="Libplanet.Net.Swarm`1.Remove(Libplanet.Net.Peer)">Remove(Peer)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1407,19 +1376,18 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.StartAsync%60%601(Libplanet.Blockchain.BlockChain%7B%60%600%7D%2CSystem.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(System.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L452">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L458">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_StartAsync_" data-uid="Libplanet.Net.Swarm.StartAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Int32,System.Threading.CancellationToken)">StartAsync&lt;T&gt;(BlockChain&lt;T&gt;, Int32, Int32, CancellationToken)</h4>
+  <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)">StartAsync(Int32, Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StartAsync&lt;T&gt;(BlockChain&lt;T&gt; blockChain, int millisecondsDistributeInterval = 1500, int millisecondsBroadcastTxInterval = 5000, CancellationToken cancellationToken = default(CancellationToken))
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task StartAsync(int millisecondsDistributeInterval = 1500, int millisecondsBroadcastTxInterval = 5000, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1431,11 +1399,6 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
-        <td><span class="parametername">blockChain</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">millisecondsDistributeInterval</span></td>
@@ -1468,36 +1431,20 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.StartAsync%60%601(Libplanet.Blockchain.BlockChain%7B%60%600%7D%2CSystem.TimeSpan%2CSystem.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(System.TimeSpan%2CSystem.TimeSpan%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L467">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L470">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_StartAsync_" data-uid="Libplanet.Net.Swarm.StartAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)">StartAsync&lt;T&gt;(BlockChain&lt;T&gt;, TimeSpan, TimeSpan, CancellationToken)</h4>
+  <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)">StartAsync(TimeSpan, TimeSpan, CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Task StartAsync&lt;T&gt;(BlockChain&lt;T&gt; blockChain, TimeSpan distributeInterval, TimeSpan broadcastTxInterval, CancellationToken cancellationToken = default(CancellationToken))
-    where T : IAction, new()</code></pre>
+    <pre><code class="lang-csharp hljs">public Task StartAsync(TimeSpan distributeInterval, TimeSpan broadcastTxInterval, CancellationToken cancellationToken = default(CancellationToken))</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1509,11 +1456,6 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain</a>&lt;T&gt;</td>
-        <td><span class="parametername">blockChain</span></td>
-        <td></td>
-      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></td>
         <td><span class="parametername">distributeInterval</span></td>
@@ -1546,30 +1488,15 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
       </tr>
     </tbody>
   </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_StopAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_StopAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StopAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L394">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L400">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_StopAsync_" data-uid="Libplanet.Net.Swarm.StopAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_StopAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)">StopAsync(CancellationToken)</h4>
+  <a id="Libplanet_Net_Swarm_1_StopAsync_" data-uid="Libplanet.Net.Swarm`1.StopAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_StopAsync_System_Threading_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StopAsync(System.Threading.CancellationToken)">StopAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1610,14 +1537,14 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L248">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L254">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_WaitForRunningAsync_" data-uid="Libplanet.Net.Swarm.WaitForRunningAsync*"></a>
-  <h4 id="Libplanet_Net_Swarm_WaitForRunningAsync" data-uid="Libplanet.Net.Swarm.WaitForRunningAsync">WaitForRunningAsync()</h4>
-  <div class="markdown level1 summary"><p>Waits until this <a class="xref" href="Libplanet.Net.Swarm.html">Swarm</a> instance gets started to run.</p>
+  <a id="Libplanet_Net_Swarm_1_WaitForRunningAsync_" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_WaitForRunningAsync" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync">WaitForRunningAsync()</h4>
+  <div class="markdown level1 summary"><p>Waits until this <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> instance gets started to run.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1635,7 +1562,7 @@ to <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
-        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> completed when <a class="xref" href="Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Running">Running</a>
+        <td><p>A <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> completed when <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running">Running</a>
 property becomes <code>true</code>.</p>
 </td>
       </tr>
@@ -1645,12 +1572,12 @@ property becomes <code>true</code>.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_DifferentVersionPeerEncountered.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.DifferentVersionPeerEncountered%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.DifferentVersionPeerEncountered%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L185">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L191">View Source</a>
   </span>
-  <h4 id="Libplanet_Net_Swarm_DifferentVersionPeerEncountered" data-uid="Libplanet.Net.Swarm.DifferentVersionPeerEncountered">DifferentVersionPeerEncountered</h4>
+  <h4 id="Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered" data-uid="Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered">DifferentVersionPeerEncountered</h4>
   <div class="markdown level1 summary"><p>The <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.eventhandler">EventHandler</a> called when the different version of
 <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> is discovered.</p>
 </div>
@@ -1678,13 +1605,13 @@ property becomes <code>true</code>.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L447">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L453">View Source</a>
   </span>
-  <a id="Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator*"></a>
-  <h4 id="Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
+  <a id="Libplanet_Net_Swarm_1_System_Collections_IEnumerable_GetEnumerator_" data-uid="Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator*"></a>
+  <h4 id="Libplanet_Net_Swarm_1_System_Collections_IEnumerable_GetEnumerator" data-uid="Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1724,7 +1651,7 @@ property becomes <code>true</code>.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/reduce-memory-consumption-282/apiSpec/new?filename=Libplanet_Net_Swarm_1.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/planetarium/libplanet/blob/reduce-memory-consumption-282/Libplanet/Net/Swarm.cs/#L31" class="contribution-link">View Source</a>
