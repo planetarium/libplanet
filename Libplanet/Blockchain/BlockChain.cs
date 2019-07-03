@@ -807,6 +807,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
+                Store.DeleteNamespace(Id.ToString());
                 Id = other.Id;
                 Blocks = new BlockSet<T>(Store);
                 Transactions = new TransactionSet<T>(Store);
