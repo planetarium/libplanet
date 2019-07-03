@@ -37,7 +37,8 @@ To be released.
         an extension method of the same name.
      -  Added `IStore.IterateStateReferences()` method.
  -  `Swarm` constructor became to receive `BlockChain<T>`.  [[#324]]
- -  `Swarm` became to have type parameter `T`.  [[#324]]
+ -  `Swarm` became to have type parameter `T` that reprsents action type as
+    like as `BlockChain<T>`.  [[#324]]
  -  Methods that take `BlockChain<T>` as a parameter in `Swarm` no longer take
     `BlockChain<T>`. And they are no longer the generic methods.  [[#324]]
 
