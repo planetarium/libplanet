@@ -28,7 +28,8 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm : ICollection<Peer>
+    public class Swarm<T> : ICollection<Peer>
+        where T : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -41,6 +42,7 @@ namespace Libplanet.Net
         private readonly IDictionary<Peer, DateTimeOffset> _peers;
         private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
+        private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
@@ -75,6 +77,7 @@ namespace Libplanet.Net
         }
 
         public Swarm(
+            BlockChain<T> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
@@ -86,6 +89,7 @@ namespace Libplanet.Net
             EventHandler<DifferentProtocolVersionEventArgs>
                 differentVersionPeerEncountered = null)
             : this(
+                  blockChain,
                   privateKey,
                   appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
@@ -99,6 +103,7 @@ namespace Libplanet.Net
         }
 
         public Swarm(
+            BlockChain<T> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
             TimeSpan dialTimeout,
@@ -112,8 +117,8 @@ namespace Libplanet.Net
         {
             Running = false;
 
-            _privateKey = privateKey
-                ?? throw new ArgumentNullException(nameof(privateKey));
+            _blockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
+            _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             _dialTimeout = dialTimeout;
             _peers = new ConcurrentDictionary<Peer, DateTimeOffset>();
             _removedPeers = new ConcurrentDictionary<Peer, DateTimeOffset>();
@@ -161,7 +166,7 @@ namespace Libplanet.Net
             }
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
-            _logger = Log.ForContext<Swarm>()
+            _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
             _replyQueue.ReceiveReady += DoReply;
@@ -222,7 +227,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Whether this <see cref="Swarm"/> instance is running.
+        /// Whether this <see cref="Swarm{T}"/> instance is running.
         /// </summary>
         public bool Running
         {
@@ -242,7 +247,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Waits until this <see cref="Swarm"/> instance gets started to run.
+        /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
         /// <returns>A <see cref="Task"/> completed when <see cref="Running"/>
         /// property becomes <c>true</c>.</returns>
@@ -450,27 +455,22 @@ namespace Libplanet.Net
             return GetEnumerator();
         }
 
-        public async Task StartAsync<T>(
-            BlockChain<T> blockChain,
+        public async Task StartAsync(
             int millisecondsDistributeInterval = 1500,
             int millisecondsBroadcastTxInterval = 5000,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             await StartAsync(
-                blockChain,
                 TimeSpan.FromMilliseconds(millisecondsDistributeInterval),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
                 cancellationToken
             );
         }
 
-        public async Task StartAsync<T>(
-            BlockChain<T> blockChain,
+        public async Task StartAsync(
             TimeSpan distributeInterval,
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             if (Running)
             {
@@ -531,7 +531,6 @@ namespace Libplanet.Net
                 {
                     Running = true;
                     await PreloadAsync(
-                        blockChain,
                         cancellationToken: workerCancellationToken);
                 }
 
@@ -541,10 +540,8 @@ namespace Libplanet.Net
                         distributeInterval,
                         workerCancellationToken),
                     ReceiveMessageAsync(
-                        blockChain,
                         workerCancellationToken),
                     BroadcastTxAsync(
-                        blockChain,
                         broadcastTxInterval,
                         cancellationToken),
                     Task.Run(() => _queuePoller.Run(), workerCancellationToken),
@@ -572,8 +569,7 @@ namespace Libplanet.Net
             }
         }
 
-        public void BroadcastBlocks<T>(IEnumerable<Block<T>> blocks)
-            where T : IAction, new()
+        public void BroadcastBlocks(IEnumerable<Block<T>> blocks)
         {
             _logger.Debug("Trying to broadcast blocks...");
             var message = new BlockHashes(
@@ -584,8 +580,7 @@ namespace Libplanet.Net
             _logger.Debug("Block broadcasting complete.");
         }
 
-        public void BroadcastTxs<T>(IEnumerable<Transaction<T>> txs)
-            where T : IAction, new()
+        public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
         {
             _logger.Debug("Broadcast Txs.");
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
@@ -595,9 +590,6 @@ namespace Libplanet.Net
         /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
-        /// <param name="blockChain">
-        /// A <see cref="BlockChain{T}"/> instance to synchronize.
-        /// </param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
@@ -605,23 +597,18 @@ namespace Libplanet.Net
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
         /// </param>
-        /// <typeparam name="T">An <see cref="IAction"/> type. It should match
-        /// to <see cref="BlockChain{T}"/>'s type parameter.</typeparam>
         /// <returns>
         /// A task without value.
         /// You only can <c>await</c> until the method is completed.
         /// </returns>
-        public async Task PreloadAsync<T>(
-            BlockChain<T> blockChain,
+        public async Task PreloadAsync(
             IProgress<BlockDownloadState> progress = null,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             IAsyncEnumerable<(Peer, long?)> peersWithLength =
                 DialToExistingPeers(cancellationToken).Select(
                     pp => (pp.Item1, pp.Item2.TipIndex));
             await SyncBehindsBlocksFromPeersAsync(
-                blockChain,
                 peersWithLength,
                 progress,
                 cancellationToken);
@@ -664,10 +651,9 @@ namespace Libplanet.Net
             }
         }
 
-        internal IAsyncEnumerable<Block<T>> GetBlocksAsync<T>(
+        internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes)
-            where T : IAction, new()
         {
             if (!_peers.ContainsKey(peer))
             {
@@ -718,11 +704,10 @@ namespace Libplanet.Net
             });
         }
 
-        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync<T>(
+        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync(
             Peer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             if (!_peers.ContainsKey(peer))
             {
@@ -865,12 +850,10 @@ namespace Libplanet.Net
             });
         }
 
-        private async Task SyncBehindsBlocksFromPeersAsync<T>(
-            BlockChain<T> blockChain,
+        private async Task SyncBehindsBlocksFromPeersAsync(
             IAsyncEnumerable<(Peer, long?)> peersWithLength,
             IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
-            where T : IAction, new()
         {
             // Implement it directly with AggreateAsync()
             // because there is no IAsyncEnumerable<T>.MaxAsync().
@@ -881,17 +864,16 @@ namespace Libplanet.Net
                     cancellationToken);
 
             if (longestPeerWithLength != null &&
-                !(blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
+                !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
             {
                 BlockChain<T> synced = await SyncPreviousBlocksAsync(
-                    blockChain,
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
                     cancellationToken);
-                if (!synced.Id.Equals(blockChain.Id))
+                if (!synced.Id.Equals(_blockChain.Id))
                 {
-                    blockChain.Swap(synced);
+                    _blockChain.Swap(synced);
                 }
             }
         }
@@ -918,9 +900,8 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ReceiveMessageAsync<T>(
-            BlockChain<T> blockChain, CancellationToken cancellationToken)
-            where T : IAction, new()
+        private async Task ReceiveMessageAsync(
+            CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -952,7 +933,6 @@ namespace Libplanet.Net
                             // it's still async because some method it relies
                             // are async yet.
                             await ProcessMessageAsync(
-                                blockChain,
                                 message,
                                 cancellationToken
                             );
@@ -975,20 +955,16 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-#pragma warning disable MEN002 // Line is too long
                         "An unexpected exception occured during ReceiveMessageAsync()"
-#pragma warning restore MEN002 // Line is too long
                     );
                     throw;
                 }
             }
         }
 
-        private async Task BroadcastTxAsync<T>(
-            BlockChain<T> blockChain,
+        private async Task BroadcastTxAsync(
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken)
-            where T : IAction, new()
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -999,7 +975,7 @@ namespace Libplanet.Net
                     await Task.Run(
                         () =>
                         {
-                            List<TxId> txIds = blockChain
+                            List<TxId> txIds = _blockChain
                                 .GetStagedTransactionIds(true)
                                 .ToList();
 
@@ -1023,11 +999,9 @@ namespace Libplanet.Net
             _broadcastQueue.Enqueue(message);
         }
 
-        private async Task ProcessMessageAsync<T>(
-            BlockChain<T> blockChain,
+        private async Task ProcessMessageAsync(
             Message message,
             CancellationToken cancellationToken)
-            where T : IAction, new()
         {
             switch (message)
             {
@@ -1036,7 +1010,7 @@ namespace Libplanet.Net
                         _logger.Debug($"Ping received.");
                         var reply = new Pong(
                             _appProtocolVersion,
-                            blockChain.Tip?.Index)
+                            _blockChain.Tip?.Index)
                         {
                             Identity = ping.Identity,
                         };
@@ -1055,7 +1029,7 @@ namespace Libplanet.Net
                 case GetBlockHashes getBlockHashes:
                     {
                         IEnumerable<HashDigest<SHA256>> hashes =
-                            blockChain.FindNextHashes(
+                            _blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop);
                         var reply = new BlockHashes(Address, hashes)
@@ -1068,27 +1042,25 @@ namespace Libplanet.Net
 
                 case GetBlocks getBlocks:
                     {
-                        TransferBlocks(blockChain, getBlocks);
+                        TransferBlocks(getBlocks);
                         break;
                     }
 
                 case GetTxs getTxs:
                     {
-                        TransferTxs(blockChain, getTxs);
+                        TransferTxs(getTxs);
                         break;
                     }
 
                 case TxIds txIds:
                     {
-                        await ProcessTxIds(
-                            txIds, blockChain, cancellationToken);
+                        await ProcessTxIds(txIds, cancellationToken);
                         break;
                     }
 
                 case BlockHashes blockHashes:
                     {
-                        await ProcessBlockHashes(
-                            blockHashes, blockChain, cancellationToken);
+                        await ProcessBlockHashes(blockHashes, cancellationToken);
                         break;
                     }
 
@@ -1098,11 +1070,9 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ProcessBlockHashes<T>(
+        private async Task ProcessBlockHashes(
             BlockHashes message,
-            BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             if (!(message.Sender is Address from))
             {
@@ -1121,7 +1091,7 @@ namespace Libplanet.Net
             _logger.Debug(
                 $"Trying to GetBlocksAsync() " +
                 $"(using {message.Hashes.Count()} hashes)");
-            IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync<T>(
+            IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
                 message.Hashes
             );
@@ -1135,9 +1105,7 @@ namespace Libplanet.Net
             {
                 using (await _blockSyncMutex.LockAsync(cancellationToken))
                 {
-                    await AppendBlocksAsync(
-                        blockChain, peer, blocks, cancellationToken
-                        );
+                    await AppendBlocksAsync(peer, blocks, cancellationToken);
                     _logger.Debug("Append complete.");
                 }
             }
@@ -1148,20 +1116,18 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<BlockChain<T>> SyncPreviousBlocksAsync<T>(
-            BlockChain<T> blockChain,
+        private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
-            where T : IAction, new()
         {
             // Fix the tip here because it may change while receiving the block
             // hashes.
-            Block<T> tip = blockChain.Tip;
+            Block<T> tip = _blockChain.Tip;
 
             _logger.Debug("Trying to find branchpoint...");
-            BlockLocator locator = blockChain.GetBlockLocator();
+            BlockLocator locator = _blockChain.GetBlockLocator();
             _logger.Debug($"Locator's count: {locator.Count()}");
             IEnumerable<HashDigest<SHA256>> hashes = (
                 await GetBlockHashesAsync(
@@ -1173,7 +1139,7 @@ namespace Libplanet.Net
                 _logger.Debug(
                     $"Peer[{peer}] didn't return any hashes. " +
                     $"ignored.");
-                return blockChain;
+                return _blockChain;
             }
 
             HashDigest<SHA256> branchPoint = hashes.First();
@@ -1187,23 +1153,23 @@ namespace Libplanet.Net
             if (tip is null || branchPoint.Equals(tip.Hash))
             {
                 _logger.Debug("it doesn't need fork.");
-                synced = blockChain;
+                synced = _blockChain;
             }
 
             // FIXME BlockChain.Blocks.ContainsKey() can be very
             // expensive.
             // we can omit this clause if assume every chain shares
             // same genesis block...
-            else if (!blockChain.Blocks.ContainsKey(branchPoint))
+            else if (!_blockChain.Blocks.ContainsKey(branchPoint))
             {
                 synced = new BlockChain<T>(
-                    blockChain.Policy,
-                    blockChain.Store);
+                    _blockChain.Policy,
+                    _blockChain.Store);
             }
             else
             {
                 _logger.Debug("Forking needed. trying to fork...");
-                synced = blockChain.Fork(branchPoint);
+                synced = _blockChain.Fork(branchPoint);
                 _logger.Debug("Forking complete. ");
             }
 
@@ -1249,24 +1215,21 @@ namespace Libplanet.Net
             return synced;
         }
 
-        private async Task AppendBlocksAsync<T>(
-            BlockChain<T> blockChain,
+        private async Task AppendBlocksAsync(
             Peer peer,
             List<Block<T>> blocks,
             CancellationToken cancellationToken
         )
-            where T : IAction, new()
         {
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
             Block<T> latest = blocks.Last();
-            Block<T> tip = blockChain.Tip;
+            Block<T> tip = _blockChain.Tip;
 
             if (tip is null || latest.Index > tip.Index)
             {
                 _logger.Debug("Trying to fill up previous blocks...");
                 BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
-                    blockChain,
                     peer,
                     oldest.PreviousHash,
                     null,
@@ -1279,10 +1242,10 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug("Sync is done.");
-                if (!previousBlocks.Id.Equals(blockChain.Id))
+                if (!previousBlocks.Id.Equals(_blockChain.Id))
                 {
                     _logger.Debug("trying to swapping chain...");
-                    blockChain.Swap(previousBlocks);
+                    _blockChain.Swap(previousBlocks);
                     _logger.Debug("Swapping complete");
                 }
             }
@@ -1296,13 +1259,12 @@ namespace Libplanet.Net
             BlockReceived.Set();
         }
 
-        private async Task FillBlocksAsync<T>(
+        private async Task FillBlocksAsync(
             Peer peer,
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
-            where T : IAction, new()
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -1329,10 +1291,8 @@ namespace Libplanet.Net
                     $"(tip: {blockChain.Tip?.Hash})"
                 );
 
-                await GetBlocksAsync<T>(
-                    peer,
-                    hashesAsArray
-                ).ForEachAsync(
+                await GetBlocksAsync(peer, hashesAsArray)
+                    .ForEachAsync(
                     block =>
                     {
                         _logger.Debug(
@@ -1359,10 +1319,9 @@ namespace Libplanet.Net
             }
         }
 
-        private void TransferTxs<T>(BlockChain<T> blockChain, GetTxs getTxs)
-            where T : IAction, new()
+        private void TransferTxs(GetTxs getTxs)
         {
-            IDictionary<TxId, Transaction<T>> txs = blockChain.Transactions;
+            IDictionary<TxId, Transaction<T>> txs = _blockChain.Transactions;
             foreach (var txid in getTxs.TxIds)
             {
                 if (txs.TryGetValue(txid, out Transaction<T> tx))
@@ -1376,16 +1335,14 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task ProcessTxIds<T>(
+        private async Task ProcessTxIds(
             TxIds message,
-            BlockChain<T> blockChain,
             CancellationToken cancellationToken = default(CancellationToken))
-            where T : IAction, new()
         {
             _logger.Debug("Trying to fetch txs...");
 
             IEnumerable<TxId> unknownTxIds = message.Ids
-                .Where(id => !blockChain.Transactions.ContainsKey(id));
+                .Where(id => !_blockChain.Transactions.ContainsKey(id));
 
             if (!unknownTxIds.Any())
             {
@@ -1407,20 +1364,17 @@ namespace Libplanet.Net
                 return;
             }
 
-            IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync<T>(
+            IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync(
                 peer, unknownTxIds, cancellationToken);
             List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
             var toStage = txs.ToDictionary(tx => tx, _ => true);
 
-            blockChain.StageTransactions(toStage);
+            _blockChain.StageTransactions(toStage);
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
         }
 
-        private void TransferBlocks<T>(
-            BlockChain<T> blockChain,
-            GetBlocks getData)
-            where T : IAction, new()
+        private void TransferBlocks(GetBlocks getData)
         {
             _logger.Debug("Trying to transfer blocks...");
 
@@ -1428,7 +1382,7 @@ namespace Libplanet.Net
 
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (blockChain.Blocks.TryGetValue(hash, out Block<T> block))
+                if (_blockChain.Blocks.TryGetValue(hash, out Block<T> block))
                 {
                     byte[] payload = block.ToBencodex(true, true);
                     blocks.Add(payload);
