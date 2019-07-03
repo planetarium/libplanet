@@ -723,7 +723,8 @@
   </span>
   <a id="Libplanet_Store_LiteDBStore_DeleteNamespace_" data-uid="Libplanet.Store.LiteDBStore.DeleteNamespace*"></a>
   <h4 id="Libplanet_Store_LiteDBStore_DeleteNamespace_System_String_" data-uid="Libplanet.Store.LiteDBStore.DeleteNamespace(System.String)">DeleteNamespace(String)</h4>
-  <div class="markdown level1 summary"><p>Delete index, tx nonce and state references on given namespace.
+  <div class="markdown level1 summary"><p>Deletes an index, tx nonce and state references in the given
+<code data-dev-comment-type="paramref" class="paramref">namespace</code>.
 it also deletes namespace itself.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -749,6 +750,11 @@ it also deletes namespace itself.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Libplanet_Store_LiteDBStore_DeleteNamespace_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not delete blocks or transactions that belong to
+the index of the <code data-dev-comment-type="paramref" class="paramref">namespace</code>, but only the index,
+tx nonces, and state references.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/feature/delete-namespace/apiSpec/new?filename=Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
