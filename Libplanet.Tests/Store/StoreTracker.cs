@@ -68,6 +68,12 @@ namespace Libplanet.Tests.Store
             return _store.ListAddresses(@namespace);
         }
 
+        public void DeleteNamespace(string @namespace)
+        {
+            _logs.Add((nameof(DeleteNamespace), @namespace, null));
+            _store.DeleteNamespace(@namespace);
+        }
+
         public bool DeleteTransaction(TxId txid)
         {
             _logs.Add((nameof(DeleteTransaction), txid, null));

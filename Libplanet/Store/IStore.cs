@@ -28,6 +28,13 @@ namespace Libplanet.Store
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
         /// <summary>
+        /// Delete index, tx nonce and state references on given namespace.
+        /// it also deletes namespace itself.
+        /// </summary>
+        /// <param name="namespace">The namespace to delete.</param>
+        void DeleteNamespace(string @namespace);
+
+        /// <summary>
         /// Lists all addresses that have ever had states.
         /// </summary>
         /// <param name="namespace">The namespace to list addresses.</param>
