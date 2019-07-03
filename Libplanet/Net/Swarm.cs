@@ -28,7 +28,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T> : ICollection<Peer>
+    public class Swarm<T>
         where T : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
@@ -190,10 +190,6 @@ namespace Libplanet.Net
         public event EventHandler<DifferentProtocolVersionEventArgs>
             DifferentVersionPeerEncountered;
 
-        public int Count => _peers.Count;
-
-        public bool IsReadOnly => false;
-
         public DnsEndPoint EndPoint { get; private set; }
 
         public Address Address => _privateKey.PublicKey.ToAddress();
@@ -331,72 +327,6 @@ namespace Libplanet.Net
             return addedPeers;
         }
 
-        public void Add(Peer item)
-        {
-            if (Running)
-            {
-                try
-                {
-                    DialPeerAsync(item, CancellationToken.None).Wait();
-                    _peers[item] = DateTimeOffset.UtcNow;
-                }
-                catch (AggregateException e)
-                {
-                    e.Handle((x) =>
-                    {
-                        if (!(x is DifferentAppProtocolVersionException))
-                        {
-                            return false;
-                        }
-
-                        _logger.Error(
-                            e,
-                            $"Protocol Version is different ({item}).");
-                        return true;
-                    });
-                }
-            }
-            else
-            {
-                _peers[item] = DateTimeOffset.UtcNow;
-            }
-        }
-
-        public void Clear()
-        {
-            _peers.Clear();
-        }
-
-        public bool Contains(Peer item)
-        {
-            return _peers.ContainsKey(item);
-        }
-
-        public void CopyTo(Peer[] array, int arrayIndex)
-        {
-            if (array == null)
-            {
-                throw new ArgumentNullException(nameof(array));
-            }
-
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            if (array.Length < Count + arrayIndex)
-            {
-                throw new ArgumentException();
-            }
-
-            int index = arrayIndex;
-            foreach (Peer peer in this)
-            {
-                array[index] = peer;
-                index++;
-            }
-        }
-
         public async Task StopAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -438,21 +368,6 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Stopped.");
-        }
-
-        public IEnumerator<Peer> GetEnumerator()
-        {
-            return _peers.Keys.GetEnumerator();
-        }
-
-        public bool Remove(Peer item)
-        {
-            return _peers.Remove(item);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public async Task StartAsync(
