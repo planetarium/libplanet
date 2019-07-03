@@ -114,6 +114,12 @@ an extension method of the same name.</li>
 <li>Added <code>IStore.IterateStateReferences()</code> method.</li>
 </ul>
 </li>
+<li><code>Swarm</code> constructor became to receive <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
+<li><code>Swarm</code> became to have type parameter <code>T</code> to represent an action type as
+like as <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
+<li>Methods  in <code>Swarm</code> that had taken a parameter of <code>BlockChain&lt;T&gt;</code> type
+became to neither longer take <code>BlockChain&lt;T&gt;</code> nor a generic method.
+Because the <code>Swarm</code> constructor takes it instead.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>

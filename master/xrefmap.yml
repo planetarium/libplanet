@@ -3205,438 +3205,541 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerSetDelta.ToString
   nameWithType: PeerSetDelta.ToString
-- uid: Libplanet.Net.Swarm
+- uid: Libplanet.Net.Swarm`1
+  name: Swarm<T>
+  href: api/Libplanet.Net.Swarm-1.html
+  commentId: T:Libplanet.Net.Swarm`1
+  name.vb: Swarm(Of T)
+  fullName: Libplanet.Net.Swarm<T>
+  fullName.vb: Libplanet.Net.Swarm(Of T)
+  nameWithType: Swarm<T>
+  nameWithType.vb: Swarm(Of T)
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name: Swarm(BlockChain<T>, PrivateKey, Int32, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, Int32, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, Int32, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, Int32, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name: Swarm(BlockChain<T>, PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.TimeSpan, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.TimeSpan, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+- uid: Libplanet.Net.Swarm`1.#ctor*
   name: Swarm
-  href: api/Libplanet.Net.Swarm.html
-  commentId: T:Libplanet.Net.Swarm
-  fullName: Libplanet.Net.Swarm
-  nameWithType: Swarm
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name: Swarm(PrivateKey, Int32, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name.vb: Swarm(PrivateKey, Int32, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
-  nameWithType: Swarm.Swarm(PrivateKey, Int32, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
-- uid: Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name: Swarm(PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_Libplanet_Crypto_PrivateKey_System_Int32_System_TimeSpan_System_TimeSpan_System_String_System_Nullable_System_Int32__System_Nullable_System_DateTimeOffset__System_Collections_Generic_IEnumerable_Libplanet_Net_IceServer__System_EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
-  commentId: M:Libplanet.Net.Swarm.#ctor(Libplanet.Crypto.PrivateKey,System.Int32,System.TimeSpan,System.TimeSpan,System.String,System.Nullable{System.Int32},System.Nullable{System.DateTimeOffset},System.Collections.Generic.IEnumerable{Libplanet.Net.IceServer},System.EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name.vb: Swarm(PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
-  fullName: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.TimeSpan, System.String, System.Nullable<System.Int32>, System.Nullable<System.DateTimeOffset>, System.Collections.Generic.IEnumerable<Libplanet.Net.IceServer>, System.EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
-  fullName.vb: Libplanet.Net.Swarm.Swarm(Libplanet.Crypto.PrivateKey, System.Int32, System.TimeSpan, System.TimeSpan, System.String, System.Nullable(Of System.Int32), System.Nullable(Of System.DateTimeOffset), System.Collections.Generic.IEnumerable(Of Libplanet.Net.IceServer), System.EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
-  nameWithType: Swarm.Swarm(PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  nameWithType.vb: Swarm.Swarm(PrivateKey, Int32, TimeSpan, TimeSpan, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
-- uid: Libplanet.Net.Swarm.#ctor*
-  name: Swarm
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm__ctor_
-  commentId: Overload:Libplanet.Net.Swarm.#ctor
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_
+  commentId: Overload:Libplanet.Net.Swarm`1.#ctor
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Swarm
-  nameWithType: Swarm.Swarm
-- uid: Libplanet.Net.Swarm.Add(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.Swarm
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm
+  nameWithType: Swarm<T>.Swarm
+  nameWithType.vb: Swarm(Of T).Swarm
+- uid: Libplanet.Net.Swarm`1.Add(Libplanet.Net.Peer)
   name: Add(Peer)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Add_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Swarm.Add(Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Swarm.Add(Libplanet.Net.Peer)
-  nameWithType: Swarm.Add(Peer)
-- uid: Libplanet.Net.Swarm.Add*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Add_Libplanet_Net_Peer_
+  commentId: M:Libplanet.Net.Swarm`1.Add(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.Add(Libplanet.Net.Peer)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Add(Libplanet.Net.Peer)
+  nameWithType: Swarm<T>.Add(Peer)
+  nameWithType.vb: Swarm(Of T).Add(Peer)
+- uid: Libplanet.Net.Swarm`1.Add*
   name: Add
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Add_
-  commentId: Overload:Libplanet.Net.Swarm.Add
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Add_
+  commentId: Overload:Libplanet.Net.Swarm`1.Add
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Add
-  nameWithType: Swarm.Add
-- uid: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.Add
+  fullName.vb: Libplanet.Net.Swarm(Of T).Add
+  nameWithType: Swarm<T>.Add
+  nameWithType.vb: Swarm(Of T).Add
+- uid: Libplanet.Net.Swarm`1.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)
   name: AddPeersAsync(IEnumerable<Peer>, Nullable<DateTimeOffset>, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AddPeersAsync_System_Collections_Generic_IEnumerable_Libplanet_Net_Peer__System_Nullable_System_DateTimeOffset__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.AddPeersAsync(System.Collections.Generic.IEnumerable{Libplanet.Net.Peer},System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)
   name.vb: AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTimeOffset), CancellationToken)
-  fullName: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Nullable<System.DateTimeOffset>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of System.DateTimeOffset), System.Threading.CancellationToken)
-  nameWithType: Swarm.AddPeersAsync(IEnumerable<Peer>, Nullable<DateTimeOffset>, CancellationToken)
-  nameWithType.vb: Swarm.AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTimeOffset), CancellationToken)
-- uid: Libplanet.Net.Swarm.AddPeersAsync*
+  fullName: Libplanet.Net.Swarm<T>.AddPeersAsync(System.Collections.Generic.IEnumerable<Libplanet.Net.Peer>, System.Nullable<System.DateTimeOffset>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).AddPeersAsync(System.Collections.Generic.IEnumerable(Of Libplanet.Net.Peer), System.Nullable(Of System.DateTimeOffset), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.AddPeersAsync(IEnumerable<Peer>, Nullable<DateTimeOffset>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).AddPeersAsync(IEnumerable(Of Peer), Nullable(Of DateTimeOffset), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.AddPeersAsync*
   name: AddPeersAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AddPeersAsync_
-  commentId: Overload:Libplanet.Net.Swarm.AddPeersAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AddPeersAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.AddPeersAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.AddPeersAsync
-  nameWithType: Swarm.AddPeersAsync
-- uid: Libplanet.Net.Swarm.Address
+  fullName: Libplanet.Net.Swarm<T>.AddPeersAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).AddPeersAsync
+  nameWithType: Swarm<T>.AddPeersAsync
+  nameWithType.vb: Swarm(Of T).AddPeersAsync
+- uid: Libplanet.Net.Swarm`1.Address
   name: Address
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Address
-  commentId: P:Libplanet.Net.Swarm.Address
-  fullName: Libplanet.Net.Swarm.Address
-  nameWithType: Swarm.Address
-- uid: Libplanet.Net.Swarm.Address*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Address
+  commentId: P:Libplanet.Net.Swarm`1.Address
+  fullName: Libplanet.Net.Swarm<T>.Address
+  fullName.vb: Libplanet.Net.Swarm(Of T).Address
+  nameWithType: Swarm<T>.Address
+  nameWithType.vb: Swarm(Of T).Address
+- uid: Libplanet.Net.Swarm`1.Address*
   name: Address
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Address_
-  commentId: Overload:Libplanet.Net.Swarm.Address
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Address_
+  commentId: Overload:Libplanet.Net.Swarm`1.Address
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Address
-  nameWithType: Swarm.Address
-- uid: Libplanet.Net.Swarm.AsPeer
+  fullName: Libplanet.Net.Swarm<T>.Address
+  fullName.vb: Libplanet.Net.Swarm(Of T).Address
+  nameWithType: Swarm<T>.Address
+  nameWithType.vb: Swarm(Of T).Address
+- uid: Libplanet.Net.Swarm`1.AsPeer
   name: AsPeer
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AsPeer
-  commentId: P:Libplanet.Net.Swarm.AsPeer
-  fullName: Libplanet.Net.Swarm.AsPeer
-  nameWithType: Swarm.AsPeer
-- uid: Libplanet.Net.Swarm.AsPeer*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AsPeer
+  commentId: P:Libplanet.Net.Swarm`1.AsPeer
+  fullName: Libplanet.Net.Swarm<T>.AsPeer
+  fullName.vb: Libplanet.Net.Swarm(Of T).AsPeer
+  nameWithType: Swarm<T>.AsPeer
+  nameWithType.vb: Swarm(Of T).AsPeer
+- uid: Libplanet.Net.Swarm`1.AsPeer*
   name: AsPeer
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_AsPeer_
-  commentId: Overload:Libplanet.Net.Swarm.AsPeer
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_AsPeer_
+  commentId: Overload:Libplanet.Net.Swarm`1.AsPeer
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.AsPeer
-  nameWithType: Swarm.AsPeer
-- uid: Libplanet.Net.Swarm.BlockReceived
+  fullName: Libplanet.Net.Swarm<T>.AsPeer
+  fullName.vb: Libplanet.Net.Swarm(Of T).AsPeer
+  nameWithType: Swarm<T>.AsPeer
+  nameWithType.vb: Swarm(Of T).AsPeer
+- uid: Libplanet.Net.Swarm`1.BlockReceived
   name: BlockReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BlockReceived
-  commentId: P:Libplanet.Net.Swarm.BlockReceived
-  fullName: Libplanet.Net.Swarm.BlockReceived
-  nameWithType: Swarm.BlockReceived
-- uid: Libplanet.Net.Swarm.BlockReceived*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockReceived
+  commentId: P:Libplanet.Net.Swarm`1.BlockReceived
+  fullName: Libplanet.Net.Swarm<T>.BlockReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockReceived
+  nameWithType: Swarm<T>.BlockReceived
+  nameWithType.vb: Swarm(Of T).BlockReceived
+- uid: Libplanet.Net.Swarm`1.BlockReceived*
   name: BlockReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BlockReceived_
-  commentId: Overload:Libplanet.Net.Swarm.BlockReceived
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockReceived_
+  commentId: Overload:Libplanet.Net.Swarm`1.BlockReceived
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.BlockReceived
-  nameWithType: Swarm.BlockReceived
-- uid: Libplanet.Net.Swarm.BroadcastBlocks*
+  fullName: Libplanet.Net.Swarm<T>.BlockReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).BlockReceived
+  nameWithType: Swarm<T>.BlockReceived
+  nameWithType.vb: Swarm(Of T).BlockReceived
+- uid: Libplanet.Net.Swarm`1.BroadcastBlocks(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
+  name: BroadcastBlocks(IEnumerable<Block<T>>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlocks_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block__0___
+  commentId: M:Libplanet.Net.Swarm`1.BroadcastBlocks(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{`0}})
+  name.vb: BroadcastBlocks(IEnumerable(Of Block(Of T)))
+  fullName: Libplanet.Net.Swarm<T>.BroadcastBlocks(System.Collections.Generic.IEnumerable<Libplanet.Blocks.Block<T>>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlocks(System.Collections.Generic.IEnumerable(Of Libplanet.Blocks.Block(Of T)))
+  nameWithType: Swarm<T>.BroadcastBlocks(IEnumerable<Block<T>>)
+  nameWithType.vb: Swarm(Of T).BroadcastBlocks(IEnumerable(Of Block(Of T)))
+- uid: Libplanet.Net.Swarm`1.BroadcastBlocks*
   name: BroadcastBlocks
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastBlocks_
-  commentId: Overload:Libplanet.Net.Swarm.BroadcastBlocks
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlocks_
+  commentId: Overload:Libplanet.Net.Swarm`1.BroadcastBlocks
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.BroadcastBlocks
-  nameWithType: Swarm.BroadcastBlocks
-- uid: Libplanet.Net.Swarm.BroadcastBlocks``1(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{``0}})
-  name: BroadcastBlocks<T>(IEnumerable<Block<T>>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastBlocks__1_System_Collections_Generic_IEnumerable_Libplanet_Blocks_Block___0___
-  commentId: M:Libplanet.Net.Swarm.BroadcastBlocks``1(System.Collections.Generic.IEnumerable{Libplanet.Blocks.Block{``0}})
-  name.vb: BroadcastBlocks(Of T)(IEnumerable(Of Block(Of T)))
-  fullName: Libplanet.Net.Swarm.BroadcastBlocks<T>(System.Collections.Generic.IEnumerable<Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Net.Swarm.BroadcastBlocks(Of T)(System.Collections.Generic.IEnumerable(Of Libplanet.Blocks.Block(Of T)))
-  nameWithType: Swarm.BroadcastBlocks<T>(IEnumerable<Block<T>>)
-  nameWithType.vb: Swarm.BroadcastBlocks(Of T)(IEnumerable(Of Block(Of T)))
-- uid: Libplanet.Net.Swarm.BroadcastTxs*
+  fullName: Libplanet.Net.Swarm<T>.BroadcastBlocks
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlocks
+  nameWithType: Swarm<T>.BroadcastBlocks
+  nameWithType.vb: Swarm(Of T).BroadcastBlocks
+- uid: Libplanet.Net.Swarm`1.BroadcastTxs(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name: BroadcastTxs(IEnumerable<Transaction<T>>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastTxs_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Net.Swarm`1.BroadcastTxs(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{`0}})
+  name.vb: BroadcastTxs(IEnumerable(Of Transaction(Of T)))
+  fullName: Libplanet.Net.Swarm<T>.BroadcastTxs(System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastTxs(System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: Swarm<T>.BroadcastTxs(IEnumerable<Transaction<T>>)
+  nameWithType.vb: Swarm(Of T).BroadcastTxs(IEnumerable(Of Transaction(Of T)))
+- uid: Libplanet.Net.Swarm`1.BroadcastTxs*
   name: BroadcastTxs
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastTxs_
-  commentId: Overload:Libplanet.Net.Swarm.BroadcastTxs
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastTxs_
+  commentId: Overload:Libplanet.Net.Swarm`1.BroadcastTxs
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.BroadcastTxs
-  nameWithType: Swarm.BroadcastTxs
-- uid: Libplanet.Net.Swarm.BroadcastTxs``1(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{``0}})
-  name: BroadcastTxs<T>(IEnumerable<Transaction<T>>)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_BroadcastTxs__1_System_Collections_Generic_IEnumerable_Libplanet_Tx_Transaction___0___
-  commentId: M:Libplanet.Net.Swarm.BroadcastTxs``1(System.Collections.Generic.IEnumerable{Libplanet.Tx.Transaction{``0}})
-  name.vb: BroadcastTxs(Of T)(IEnumerable(Of Transaction(Of T)))
-  fullName: Libplanet.Net.Swarm.BroadcastTxs<T>(System.Collections.Generic.IEnumerable<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Net.Swarm.BroadcastTxs(Of T)(System.Collections.Generic.IEnumerable(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: Swarm.BroadcastTxs<T>(IEnumerable<Transaction<T>>)
-  nameWithType.vb: Swarm.BroadcastTxs(Of T)(IEnumerable(Of Transaction(Of T)))
-- uid: Libplanet.Net.Swarm.Clear
+  fullName: Libplanet.Net.Swarm<T>.BroadcastTxs
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastTxs
+  nameWithType: Swarm<T>.BroadcastTxs
+  nameWithType.vb: Swarm(Of T).BroadcastTxs
+- uid: Libplanet.Net.Swarm`1.Clear
   name: Clear()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Clear
-  commentId: M:Libplanet.Net.Swarm.Clear
-  fullName: Libplanet.Net.Swarm.Clear()
-  nameWithType: Swarm.Clear()
-- uid: Libplanet.Net.Swarm.Clear*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Clear
+  commentId: M:Libplanet.Net.Swarm`1.Clear
+  fullName: Libplanet.Net.Swarm<T>.Clear()
+  fullName.vb: Libplanet.Net.Swarm(Of T).Clear()
+  nameWithType: Swarm<T>.Clear()
+  nameWithType.vb: Swarm(Of T).Clear()
+- uid: Libplanet.Net.Swarm`1.Clear*
   name: Clear
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Clear_
-  commentId: Overload:Libplanet.Net.Swarm.Clear
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Clear_
+  commentId: Overload:Libplanet.Net.Swarm`1.Clear
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Clear
-  nameWithType: Swarm.Clear
-- uid: Libplanet.Net.Swarm.Contains(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.Clear
+  fullName.vb: Libplanet.Net.Swarm(Of T).Clear
+  nameWithType: Swarm<T>.Clear
+  nameWithType.vb: Swarm(Of T).Clear
+- uid: Libplanet.Net.Swarm`1.Contains(Libplanet.Net.Peer)
   name: Contains(Peer)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Contains_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Swarm.Contains(Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Swarm.Contains(Libplanet.Net.Peer)
-  nameWithType: Swarm.Contains(Peer)
-- uid: Libplanet.Net.Swarm.Contains*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Contains_Libplanet_Net_Peer_
+  commentId: M:Libplanet.Net.Swarm`1.Contains(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.Contains(Libplanet.Net.Peer)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Contains(Libplanet.Net.Peer)
+  nameWithType: Swarm<T>.Contains(Peer)
+  nameWithType.vb: Swarm(Of T).Contains(Peer)
+- uid: Libplanet.Net.Swarm`1.Contains*
   name: Contains
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Contains_
-  commentId: Overload:Libplanet.Net.Swarm.Contains
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Contains_
+  commentId: Overload:Libplanet.Net.Swarm`1.Contains
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Contains
-  nameWithType: Swarm.Contains
-- uid: Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer[],System.Int32)
+  fullName: Libplanet.Net.Swarm<T>.Contains
+  fullName.vb: Libplanet.Net.Swarm(Of T).Contains
+  nameWithType: Swarm<T>.Contains
+  nameWithType.vb: Swarm(Of T).Contains
+- uid: Libplanet.Net.Swarm`1.CopyTo(Libplanet.Net.Peer[],System.Int32)
   name: CopyTo(Peer[], Int32)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_CopyTo_Libplanet_Net_Peer___System_Int32_
-  commentId: M:Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer[],System.Int32)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_CopyTo_Libplanet_Net_Peer___System_Int32_
+  commentId: M:Libplanet.Net.Swarm`1.CopyTo(Libplanet.Net.Peer[],System.Int32)
   name.vb: CopyTo(Peer(), Int32)
-  fullName: Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer[], System.Int32)
-  fullName.vb: Libplanet.Net.Swarm.CopyTo(Libplanet.Net.Peer(), System.Int32)
-  nameWithType: Swarm.CopyTo(Peer[], Int32)
-  nameWithType.vb: Swarm.CopyTo(Peer(), Int32)
-- uid: Libplanet.Net.Swarm.CopyTo*
+  fullName: Libplanet.Net.Swarm<T>.CopyTo(Libplanet.Net.Peer[], System.Int32)
+  fullName.vb: Libplanet.Net.Swarm(Of T).CopyTo(Libplanet.Net.Peer(), System.Int32)
+  nameWithType: Swarm<T>.CopyTo(Peer[], Int32)
+  nameWithType.vb: Swarm(Of T).CopyTo(Peer(), Int32)
+- uid: Libplanet.Net.Swarm`1.CopyTo*
   name: CopyTo
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_CopyTo_
-  commentId: Overload:Libplanet.Net.Swarm.CopyTo
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_CopyTo_
+  commentId: Overload:Libplanet.Net.Swarm`1.CopyTo
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.CopyTo
-  nameWithType: Swarm.CopyTo
-- uid: Libplanet.Net.Swarm.Count
+  fullName: Libplanet.Net.Swarm<T>.CopyTo
+  fullName.vb: Libplanet.Net.Swarm(Of T).CopyTo
+  nameWithType: Swarm<T>.CopyTo
+  nameWithType.vb: Swarm(Of T).CopyTo
+- uid: Libplanet.Net.Swarm`1.Count
   name: Count
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Count
-  commentId: P:Libplanet.Net.Swarm.Count
-  fullName: Libplanet.Net.Swarm.Count
-  nameWithType: Swarm.Count
-- uid: Libplanet.Net.Swarm.Count*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Count
+  commentId: P:Libplanet.Net.Swarm`1.Count
+  fullName: Libplanet.Net.Swarm<T>.Count
+  fullName.vb: Libplanet.Net.Swarm(Of T).Count
+  nameWithType: Swarm<T>.Count
+  nameWithType.vb: Swarm(Of T).Count
+- uid: Libplanet.Net.Swarm`1.Count*
   name: Count
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Count_
-  commentId: Overload:Libplanet.Net.Swarm.Count
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Count_
+  commentId: Overload:Libplanet.Net.Swarm`1.Count
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Count
-  nameWithType: Swarm.Count
-- uid: Libplanet.Net.Swarm.DeltaDistributed
+  fullName: Libplanet.Net.Swarm<T>.Count
+  fullName.vb: Libplanet.Net.Swarm(Of T).Count
+  nameWithType: Swarm<T>.Count
+  nameWithType.vb: Swarm(Of T).Count
+- uid: Libplanet.Net.Swarm`1.DeltaDistributed
   name: DeltaDistributed
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DeltaDistributed
-  commentId: P:Libplanet.Net.Swarm.DeltaDistributed
-  fullName: Libplanet.Net.Swarm.DeltaDistributed
-  nameWithType: Swarm.DeltaDistributed
-- uid: Libplanet.Net.Swarm.DeltaDistributed*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DeltaDistributed
+  commentId: P:Libplanet.Net.Swarm`1.DeltaDistributed
+  fullName: Libplanet.Net.Swarm<T>.DeltaDistributed
+  fullName.vb: Libplanet.Net.Swarm(Of T).DeltaDistributed
+  nameWithType: Swarm<T>.DeltaDistributed
+  nameWithType.vb: Swarm(Of T).DeltaDistributed
+- uid: Libplanet.Net.Swarm`1.DeltaDistributed*
   name: DeltaDistributed
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DeltaDistributed_
-  commentId: Overload:Libplanet.Net.Swarm.DeltaDistributed
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DeltaDistributed_
+  commentId: Overload:Libplanet.Net.Swarm`1.DeltaDistributed
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.DeltaDistributed
-  nameWithType: Swarm.DeltaDistributed
-- uid: Libplanet.Net.Swarm.DeltaReceived
+  fullName: Libplanet.Net.Swarm<T>.DeltaDistributed
+  fullName.vb: Libplanet.Net.Swarm(Of T).DeltaDistributed
+  nameWithType: Swarm<T>.DeltaDistributed
+  nameWithType.vb: Swarm(Of T).DeltaDistributed
+- uid: Libplanet.Net.Swarm`1.DeltaReceived
   name: DeltaReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DeltaReceived
-  commentId: P:Libplanet.Net.Swarm.DeltaReceived
-  fullName: Libplanet.Net.Swarm.DeltaReceived
-  nameWithType: Swarm.DeltaReceived
-- uid: Libplanet.Net.Swarm.DeltaReceived*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DeltaReceived
+  commentId: P:Libplanet.Net.Swarm`1.DeltaReceived
+  fullName: Libplanet.Net.Swarm<T>.DeltaReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).DeltaReceived
+  nameWithType: Swarm<T>.DeltaReceived
+  nameWithType.vb: Swarm(Of T).DeltaReceived
+- uid: Libplanet.Net.Swarm`1.DeltaReceived*
   name: DeltaReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DeltaReceived_
-  commentId: Overload:Libplanet.Net.Swarm.DeltaReceived
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DeltaReceived_
+  commentId: Overload:Libplanet.Net.Swarm`1.DeltaReceived
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.DeltaReceived
-  nameWithType: Swarm.DeltaReceived
-- uid: Libplanet.Net.Swarm.DifferentVersionPeerEncountered
+  fullName: Libplanet.Net.Swarm<T>.DeltaReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).DeltaReceived
+  nameWithType: Swarm<T>.DeltaReceived
+  nameWithType.vb: Swarm(Of T).DeltaReceived
+- uid: Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered
   name: DifferentVersionPeerEncountered
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_DifferentVersionPeerEncountered
-  commentId: E:Libplanet.Net.Swarm.DifferentVersionPeerEncountered
-  fullName: Libplanet.Net.Swarm.DifferentVersionPeerEncountered
-  nameWithType: Swarm.DifferentVersionPeerEncountered
-- uid: Libplanet.Net.Swarm.EndPoint
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered
+  commentId: E:Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered
+  fullName: Libplanet.Net.Swarm<T>.DifferentVersionPeerEncountered
+  fullName.vb: Libplanet.Net.Swarm(Of T).DifferentVersionPeerEncountered
+  nameWithType: Swarm<T>.DifferentVersionPeerEncountered
+  nameWithType.vb: Swarm(Of T).DifferentVersionPeerEncountered
+- uid: Libplanet.Net.Swarm`1.EndPoint
   name: EndPoint
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_EndPoint
-  commentId: P:Libplanet.Net.Swarm.EndPoint
-  fullName: Libplanet.Net.Swarm.EndPoint
-  nameWithType: Swarm.EndPoint
-- uid: Libplanet.Net.Swarm.EndPoint*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_EndPoint
+  commentId: P:Libplanet.Net.Swarm`1.EndPoint
+  fullName: Libplanet.Net.Swarm<T>.EndPoint
+  fullName.vb: Libplanet.Net.Swarm(Of T).EndPoint
+  nameWithType: Swarm<T>.EndPoint
+  nameWithType.vb: Swarm(Of T).EndPoint
+- uid: Libplanet.Net.Swarm`1.EndPoint*
   name: EndPoint
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_EndPoint_
-  commentId: Overload:Libplanet.Net.Swarm.EndPoint
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_EndPoint_
+  commentId: Overload:Libplanet.Net.Swarm`1.EndPoint
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.EndPoint
-  nameWithType: Swarm.EndPoint
-- uid: Libplanet.Net.Swarm.Finalize
+  fullName: Libplanet.Net.Swarm<T>.EndPoint
+  fullName.vb: Libplanet.Net.Swarm(Of T).EndPoint
+  nameWithType: Swarm<T>.EndPoint
+  nameWithType.vb: Swarm(Of T).EndPoint
+- uid: Libplanet.Net.Swarm`1.Finalize
   name: Finalize()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Finalize
-  commentId: M:Libplanet.Net.Swarm.Finalize
-  fullName: Libplanet.Net.Swarm.Finalize()
-  nameWithType: Swarm.Finalize()
-- uid: Libplanet.Net.Swarm.Finalize*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Finalize
+  commentId: M:Libplanet.Net.Swarm`1.Finalize
+  fullName: Libplanet.Net.Swarm<T>.Finalize()
+  fullName.vb: Libplanet.Net.Swarm(Of T).Finalize()
+  nameWithType: Swarm<T>.Finalize()
+  nameWithType.vb: Swarm(Of T).Finalize()
+- uid: Libplanet.Net.Swarm`1.Finalize*
   name: Finalize
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Finalize_
-  commentId: Overload:Libplanet.Net.Swarm.Finalize
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Finalize_
+  commentId: Overload:Libplanet.Net.Swarm`1.Finalize
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Finalize
-  nameWithType: Swarm.Finalize
-- uid: Libplanet.Net.Swarm.GetEnumerator
+  fullName: Libplanet.Net.Swarm<T>.Finalize
+  fullName.vb: Libplanet.Net.Swarm(Of T).Finalize
+  nameWithType: Swarm<T>.Finalize
+  nameWithType.vb: Swarm(Of T).Finalize
+- uid: Libplanet.Net.Swarm`1.GetEnumerator
   name: GetEnumerator()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetEnumerator
-  commentId: M:Libplanet.Net.Swarm.GetEnumerator
-  fullName: Libplanet.Net.Swarm.GetEnumerator()
-  nameWithType: Swarm.GetEnumerator()
-- uid: Libplanet.Net.Swarm.GetEnumerator*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_GetEnumerator
+  commentId: M:Libplanet.Net.Swarm`1.GetEnumerator
+  fullName: Libplanet.Net.Swarm<T>.GetEnumerator()
+  fullName.vb: Libplanet.Net.Swarm(Of T).GetEnumerator()
+  nameWithType: Swarm<T>.GetEnumerator()
+  nameWithType.vb: Swarm(Of T).GetEnumerator()
+- uid: Libplanet.Net.Swarm`1.GetEnumerator*
   name: GetEnumerator
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_GetEnumerator_
-  commentId: Overload:Libplanet.Net.Swarm.GetEnumerator
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_GetEnumerator_
+  commentId: Overload:Libplanet.Net.Swarm`1.GetEnumerator
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.GetEnumerator
-  nameWithType: Swarm.GetEnumerator
-- uid: Libplanet.Net.Swarm.IsReadOnly
+  fullName: Libplanet.Net.Swarm<T>.GetEnumerator
+  fullName.vb: Libplanet.Net.Swarm(Of T).GetEnumerator
+  nameWithType: Swarm<T>.GetEnumerator
+  nameWithType.vb: Swarm(Of T).GetEnumerator
+- uid: Libplanet.Net.Swarm`1.IsReadOnly
   name: IsReadOnly
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_IsReadOnly
-  commentId: P:Libplanet.Net.Swarm.IsReadOnly
-  fullName: Libplanet.Net.Swarm.IsReadOnly
-  nameWithType: Swarm.IsReadOnly
-- uid: Libplanet.Net.Swarm.IsReadOnly*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_IsReadOnly
+  commentId: P:Libplanet.Net.Swarm`1.IsReadOnly
+  fullName: Libplanet.Net.Swarm<T>.IsReadOnly
+  fullName.vb: Libplanet.Net.Swarm(Of T).IsReadOnly
+  nameWithType: Swarm<T>.IsReadOnly
+  nameWithType.vb: Swarm(Of T).IsReadOnly
+- uid: Libplanet.Net.Swarm`1.IsReadOnly*
   name: IsReadOnly
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_IsReadOnly_
-  commentId: Overload:Libplanet.Net.Swarm.IsReadOnly
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_IsReadOnly_
+  commentId: Overload:Libplanet.Net.Swarm`1.IsReadOnly
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.IsReadOnly
-  nameWithType: Swarm.IsReadOnly
-- uid: Libplanet.Net.Swarm.LastDistributed
+  fullName: Libplanet.Net.Swarm<T>.IsReadOnly
+  fullName.vb: Libplanet.Net.Swarm(Of T).IsReadOnly
+  nameWithType: Swarm<T>.IsReadOnly
+  nameWithType.vb: Swarm(Of T).IsReadOnly
+- uid: Libplanet.Net.Swarm`1.LastDistributed
   name: LastDistributed
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastDistributed
-  commentId: P:Libplanet.Net.Swarm.LastDistributed
-  fullName: Libplanet.Net.Swarm.LastDistributed
-  nameWithType: Swarm.LastDistributed
-- uid: Libplanet.Net.Swarm.LastDistributed*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastDistributed
+  commentId: P:Libplanet.Net.Swarm`1.LastDistributed
+  fullName: Libplanet.Net.Swarm<T>.LastDistributed
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastDistributed
+  nameWithType: Swarm<T>.LastDistributed
+  nameWithType.vb: Swarm(Of T).LastDistributed
+- uid: Libplanet.Net.Swarm`1.LastDistributed*
   name: LastDistributed
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastDistributed_
-  commentId: Overload:Libplanet.Net.Swarm.LastDistributed
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastDistributed_
+  commentId: Overload:Libplanet.Net.Swarm`1.LastDistributed
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.LastDistributed
-  nameWithType: Swarm.LastDistributed
-- uid: Libplanet.Net.Swarm.LastReceived
+  fullName: Libplanet.Net.Swarm<T>.LastDistributed
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastDistributed
+  nameWithType: Swarm<T>.LastDistributed
+  nameWithType.vb: Swarm(Of T).LastDistributed
+- uid: Libplanet.Net.Swarm`1.LastReceived
   name: LastReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastReceived
-  commentId: P:Libplanet.Net.Swarm.LastReceived
-  fullName: Libplanet.Net.Swarm.LastReceived
-  nameWithType: Swarm.LastReceived
-- uid: Libplanet.Net.Swarm.LastReceived*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived
+  commentId: P:Libplanet.Net.Swarm`1.LastReceived
+  fullName: Libplanet.Net.Swarm<T>.LastReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastReceived
+  nameWithType: Swarm<T>.LastReceived
+  nameWithType.vb: Swarm(Of T).LastReceived
+- uid: Libplanet.Net.Swarm`1.LastReceived*
   name: LastReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastReceived_
-  commentId: Overload:Libplanet.Net.Swarm.LastReceived
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived_
+  commentId: Overload:Libplanet.Net.Swarm`1.LastReceived
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.LastReceived
-  nameWithType: Swarm.LastReceived
-- uid: Libplanet.Net.Swarm.LastSeenTimestamps
+  fullName: Libplanet.Net.Swarm<T>.LastReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastReceived
+  nameWithType: Swarm<T>.LastReceived
+  nameWithType.vb: Swarm(Of T).LastReceived
+- uid: Libplanet.Net.Swarm`1.LastSeenTimestamps
   name: LastSeenTimestamps
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastSeenTimestamps
-  commentId: P:Libplanet.Net.Swarm.LastSeenTimestamps
-  fullName: Libplanet.Net.Swarm.LastSeenTimestamps
-  nameWithType: Swarm.LastSeenTimestamps
-- uid: Libplanet.Net.Swarm.LastSeenTimestamps*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastSeenTimestamps
+  commentId: P:Libplanet.Net.Swarm`1.LastSeenTimestamps
+  fullName: Libplanet.Net.Swarm<T>.LastSeenTimestamps
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastSeenTimestamps
+  nameWithType: Swarm<T>.LastSeenTimestamps
+  nameWithType.vb: Swarm(Of T).LastSeenTimestamps
+- uid: Libplanet.Net.Swarm`1.LastSeenTimestamps*
   name: LastSeenTimestamps
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_LastSeenTimestamps_
-  commentId: Overload:Libplanet.Net.Swarm.LastSeenTimestamps
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastSeenTimestamps_
+  commentId: Overload:Libplanet.Net.Swarm`1.LastSeenTimestamps
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.LastSeenTimestamps
-  nameWithType: Swarm.LastSeenTimestamps
-- uid: Libplanet.Net.Swarm.PreloadAsync*
+  fullName: Libplanet.Net.Swarm<T>.LastSeenTimestamps
+  fullName.vb: Libplanet.Net.Swarm(Of T).LastSeenTimestamps
+  nameWithType: Swarm<T>.LastSeenTimestamps
+  nameWithType.vb: Swarm(Of T).LastSeenTimestamps
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
+  name: PreloadAsync(IProgress<BlockDownloadState>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
+  name.vb: PreloadAsync(IProgress(Of BlockDownloadState), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.IProgress<Libplanet.Net.BlockDownloadState>, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.IProgress(Of Libplanet.Net.BlockDownloadState), System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(IProgress<BlockDownloadState>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(IProgress(Of BlockDownloadState), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_PreloadAsync_
-  commentId: Overload:Libplanet.Net.Swarm.PreloadAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.PreloadAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.PreloadAsync
-  nameWithType: Swarm.PreloadAsync
-- uid: Libplanet.Net.Swarm.PreloadAsync``1(Libplanet.Blockchain.BlockChain{``0},System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
-  name: PreloadAsync<T>(BlockChain<T>, IProgress<BlockDownloadState>, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_PreloadAsync__1_Libplanet_Blockchain_BlockChain___0__System_IProgress_Libplanet_Net_BlockDownloadState__System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.PreloadAsync``1(Libplanet.Blockchain.BlockChain{``0},System.IProgress{Libplanet.Net.BlockDownloadState},System.Threading.CancellationToken)
-  name.vb: PreloadAsync(Of T)(BlockChain(Of T), IProgress(Of BlockDownloadState), CancellationToken)
-  fullName: Libplanet.Net.Swarm.PreloadAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.IProgress<Libplanet.Net.BlockDownloadState>, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.PreloadAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.IProgress(Of Libplanet.Net.BlockDownloadState), System.Threading.CancellationToken)
-  nameWithType: Swarm.PreloadAsync<T>(BlockChain<T>, IProgress<BlockDownloadState>, CancellationToken)
-  nameWithType.vb: Swarm.PreloadAsync(Of T)(BlockChain(Of T), IProgress(Of BlockDownloadState), CancellationToken)
-- uid: Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync
+  nameWithType: Swarm<T>.PreloadAsync
+  nameWithType.vb: Swarm(Of T).PreloadAsync
+- uid: Libplanet.Net.Swarm`1.Remove(Libplanet.Net.Peer)
   name: Remove(Peer)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Remove_Libplanet_Net_Peer_
-  commentId: M:Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)
-  fullName: Libplanet.Net.Swarm.Remove(Libplanet.Net.Peer)
-  nameWithType: Swarm.Remove(Peer)
-- uid: Libplanet.Net.Swarm.Remove*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Remove_Libplanet_Net_Peer_
+  commentId: M:Libplanet.Net.Swarm`1.Remove(Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Swarm<T>.Remove(Libplanet.Net.Peer)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Remove(Libplanet.Net.Peer)
+  nameWithType: Swarm<T>.Remove(Peer)
+  nameWithType.vb: Swarm(Of T).Remove(Peer)
+- uid: Libplanet.Net.Swarm`1.Remove*
   name: Remove
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Remove_
-  commentId: Overload:Libplanet.Net.Swarm.Remove
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Remove_
+  commentId: Overload:Libplanet.Net.Swarm`1.Remove
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Remove
-  nameWithType: Swarm.Remove
-- uid: Libplanet.Net.Swarm.Running
+  fullName: Libplanet.Net.Swarm<T>.Remove
+  fullName.vb: Libplanet.Net.Swarm(Of T).Remove
+  nameWithType: Swarm<T>.Remove
+  nameWithType.vb: Swarm(Of T).Remove
+- uid: Libplanet.Net.Swarm`1.Running
   name: Running
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Running
-  commentId: P:Libplanet.Net.Swarm.Running
-  fullName: Libplanet.Net.Swarm.Running
-  nameWithType: Swarm.Running
-- uid: Libplanet.Net.Swarm.Running*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running
+  commentId: P:Libplanet.Net.Swarm`1.Running
+  fullName: Libplanet.Net.Swarm<T>.Running
+  fullName.vb: Libplanet.Net.Swarm(Of T).Running
+  nameWithType: Swarm<T>.Running
+  nameWithType.vb: Swarm(Of T).Running
+- uid: Libplanet.Net.Swarm`1.Running*
   name: Running
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_Running_
-  commentId: Overload:Libplanet.Net.Swarm.Running
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Running_
+  commentId: Overload:Libplanet.Net.Swarm`1.Running
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.Running
-  nameWithType: Swarm.Running
-- uid: Libplanet.Net.Swarm.StartAsync*
+  fullName: Libplanet.Net.Swarm<T>.Running
+  fullName.vb: Libplanet.Net.Swarm(Of T).Running
+  nameWithType: Swarm<T>.Running
+  nameWithType.vb: Swarm(Of T).Running
+- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: StartAsync(Int32, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(Int32, Int32, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
+  name: StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(TimeSpan, TimeSpan, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync*
   name: StartAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync_
-  commentId: Overload:Libplanet.Net.Swarm.StartAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.StartAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.StartAsync
-  nameWithType: Swarm.StartAsync
-- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Int32,System.Threading.CancellationToken)
-  name: StartAsync<T>(BlockChain<T>, Int32, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_Int32_System_Int32_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.Int32,System.Int32,System.Threading.CancellationToken)
-  name.vb: StartAsync(Of T)(BlockChain(Of T), Int32, Int32, CancellationToken)
-  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.Int32, System.Int32, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.Int32, System.Int32, System.Threading.CancellationToken)
-  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, Int32, Int32, CancellationToken)
-  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), Int32, Int32, CancellationToken)
-- uid: Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
-  name: StartAsync<T>(BlockChain<T>, TimeSpan, TimeSpan, CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StartAsync__1_Libplanet_Blockchain_BlockChain___0__System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.StartAsync``1(Libplanet.Blockchain.BlockChain{``0},System.TimeSpan,System.TimeSpan,System.Threading.CancellationToken)
-  name.vb: StartAsync(Of T)(BlockChain(Of T), TimeSpan, TimeSpan, CancellationToken)
-  fullName: Libplanet.Net.Swarm.StartAsync<T>(Libplanet.Blockchain.BlockChain<T>, System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm.StartAsync(Of T)(Libplanet.Blockchain.BlockChain(Of T), System.TimeSpan, System.TimeSpan, System.Threading.CancellationToken)
-  nameWithType: Swarm.StartAsync<T>(BlockChain<T>, TimeSpan, TimeSpan, CancellationToken)
-  nameWithType.vb: Swarm.StartAsync(Of T)(BlockChain(Of T), TimeSpan, TimeSpan, CancellationToken)
-- uid: Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync
+  nameWithType: Swarm<T>.StartAsync
+  nameWithType.vb: Swarm(Of T).StartAsync
+- uid: Libplanet.Net.Swarm`1.StopAsync(System.Threading.CancellationToken)
   name: StopAsync(CancellationToken)
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StopAsync_System_Threading_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)
-  fullName: Libplanet.Net.Swarm.StopAsync(System.Threading.CancellationToken)
-  nameWithType: Swarm.StopAsync(CancellationToken)
-- uid: Libplanet.Net.Swarm.StopAsync*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StopAsync_System_Threading_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StopAsync(System.Threading.CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StopAsync(System.Threading.CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StopAsync(System.Threading.CancellationToken)
+  nameWithType: Swarm<T>.StopAsync(CancellationToken)
+  nameWithType.vb: Swarm(Of T).StopAsync(CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StopAsync*
   name: StopAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_StopAsync_
-  commentId: Overload:Libplanet.Net.Swarm.StopAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StopAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.StopAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.StopAsync
-  nameWithType: Swarm.StopAsync
-- uid: Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator
+  fullName: Libplanet.Net.Swarm<T>.StopAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).StopAsync
+  nameWithType: Swarm<T>.StopAsync
+  nameWithType.vb: Swarm(Of T).StopAsync
+- uid: Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator
   name: IEnumerable.GetEnumerator()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator
-  commentId: M:Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator
   name.vb: System.Collections.IEnumerable.GetEnumerator()
-  fullName: Libplanet.Net.Swarm.System.Collections.IEnumerable.GetEnumerator()
-  nameWithType: Swarm.IEnumerable.GetEnumerator()
-  nameWithType.vb: Swarm.System.Collections.IEnumerable.GetEnumerator()
-- uid: Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator*
+  fullName: Libplanet.Net.Swarm<T>.System.Collections.IEnumerable.GetEnumerator()
+  fullName.vb: Libplanet.Net.Swarm(Of T).System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: Swarm<T>.IEnumerable.GetEnumerator()
+  nameWithType.vb: Swarm(Of T).System.Collections.IEnumerable.GetEnumerator()
+- uid: Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator*
   name: IEnumerable.GetEnumerator
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_System_Collections_IEnumerable_GetEnumerator_
-  commentId: Overload:Libplanet.Net.Swarm.System#Collections#IEnumerable#GetEnumerator
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Libplanet.Net.Swarm`1.System#Collections#IEnumerable#GetEnumerator
   isSpec: "True"
   name.vb: System.Collections.IEnumerable.GetEnumerator
-  fullName: Libplanet.Net.Swarm.System.Collections.IEnumerable.GetEnumerator
-  nameWithType: Swarm.IEnumerable.GetEnumerator
-  nameWithType.vb: Swarm.System.Collections.IEnumerable.GetEnumerator
-- uid: Libplanet.Net.Swarm.TxReceived
+  fullName: Libplanet.Net.Swarm<T>.System.Collections.IEnumerable.GetEnumerator
+  fullName.vb: Libplanet.Net.Swarm(Of T).System.Collections.IEnumerable.GetEnumerator
+  nameWithType: Swarm<T>.IEnumerable.GetEnumerator
+  nameWithType.vb: Swarm(Of T).System.Collections.IEnumerable.GetEnumerator
+- uid: Libplanet.Net.Swarm`1.TxReceived
   name: TxReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived
-  commentId: P:Libplanet.Net.Swarm.TxReceived
-  fullName: Libplanet.Net.Swarm.TxReceived
-  nameWithType: Swarm.TxReceived
-- uid: Libplanet.Net.Swarm.TxReceived*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TxReceived
+  commentId: P:Libplanet.Net.Swarm`1.TxReceived
+  fullName: Libplanet.Net.Swarm<T>.TxReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).TxReceived
+  nameWithType: Swarm<T>.TxReceived
+  nameWithType.vb: Swarm(Of T).TxReceived
+- uid: Libplanet.Net.Swarm`1.TxReceived*
   name: TxReceived
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_TxReceived_
-  commentId: Overload:Libplanet.Net.Swarm.TxReceived
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TxReceived_
+  commentId: Overload:Libplanet.Net.Swarm`1.TxReceived
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.TxReceived
-  nameWithType: Swarm.TxReceived
-- uid: Libplanet.Net.Swarm.WaitForRunningAsync
+  fullName: Libplanet.Net.Swarm<T>.TxReceived
+  fullName.vb: Libplanet.Net.Swarm(Of T).TxReceived
+  nameWithType: Swarm<T>.TxReceived
+  nameWithType.vb: Swarm(Of T).TxReceived
+- uid: Libplanet.Net.Swarm`1.WaitForRunningAsync
   name: WaitForRunningAsync()
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_WaitForRunningAsync
-  commentId: M:Libplanet.Net.Swarm.WaitForRunningAsync
-  fullName: Libplanet.Net.Swarm.WaitForRunningAsync()
-  nameWithType: Swarm.WaitForRunningAsync()
-- uid: Libplanet.Net.Swarm.WaitForRunningAsync*
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_WaitForRunningAsync
+  commentId: M:Libplanet.Net.Swarm`1.WaitForRunningAsync
+  fullName: Libplanet.Net.Swarm<T>.WaitForRunningAsync()
+  fullName.vb: Libplanet.Net.Swarm(Of T).WaitForRunningAsync()
+  nameWithType: Swarm<T>.WaitForRunningAsync()
+  nameWithType.vb: Swarm(Of T).WaitForRunningAsync()
+- uid: Libplanet.Net.Swarm`1.WaitForRunningAsync*
   name: WaitForRunningAsync
-  href: api/Libplanet.Net.Swarm.html#Libplanet_Net_Swarm_WaitForRunningAsync_
-  commentId: Overload:Libplanet.Net.Swarm.WaitForRunningAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_WaitForRunningAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.WaitForRunningAsync
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm.WaitForRunningAsync
-  nameWithType: Swarm.WaitForRunningAsync
+  fullName: Libplanet.Net.Swarm<T>.WaitForRunningAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).WaitForRunningAsync
+  nameWithType: Swarm<T>.WaitForRunningAsync
+  nameWithType.vb: Swarm(Of T).WaitForRunningAsync
 - uid: Libplanet.Net.SwarmException
   name: SwarmException
   href: api/Libplanet.Net.SwarmException.html
