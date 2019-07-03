@@ -82,8 +82,8 @@ To be released.
     an empty `TxIds` from peers, and it had made the network waste bandwidth for
     unnecessary messages.  `Swam` became to no more send such empty `GetTxs`.
     [[#297]]
- -  `BlockChain<T>.Swap()` became to delete an index, tx nonces and state
-    references in the previous chain. [[#329]]
+ -  `BlockChain<T>.Swap()` became to delete an index, tx nonces, and state
+    references in the replaced chain. [[#329]]
 
 ### Bug fixes
 
