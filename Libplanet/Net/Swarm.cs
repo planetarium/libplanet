@@ -225,6 +225,12 @@ namespace Libplanet.Net
         }
 
         /// <summary>
+        /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
+        /// synchronizes with.
+        /// </summary>
+        public BlockChain<T> BlockChain => _blockChain;
+
+        /// <summary>
         /// Whether this <see cref="Swarm{T}"/> instance is running.
         /// </summary>
         public bool Running

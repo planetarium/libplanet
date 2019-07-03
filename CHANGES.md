@@ -97,6 +97,7 @@ Released on July 8, 2019.
  -  Added `BlockChain<T>.GetNextTxNonce()` method which counts staged
     transactions too during nonce computation.  [[#270], [#294]]
  -  Added `StoreExtension` static class.  [[#272], [#307]]
+ -  Added `Swarm<T>.BlockChain` property.
 
 ### Behavioral changes
 

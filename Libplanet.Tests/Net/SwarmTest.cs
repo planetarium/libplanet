@@ -96,6 +96,14 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public void BlockChain()
+        {
+            Assert.Same(_blockchains[0], _swarms[0].BlockChain);
+            Assert.Same(_blockchains[1], _swarms[1].BlockChain);
+            Assert.Same(_blockchains[2], _swarms[2].BlockChain);
+        }
+
         [Fact(Timeout = Timeout)]
         public async Task CanNotStartTwice()
         {
