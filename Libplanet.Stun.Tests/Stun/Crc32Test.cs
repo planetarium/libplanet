@@ -3,7 +3,7 @@ using System.Text;
 using Libplanet.Stun;
 using Xunit;
 
-namespace Libplanet.Tests.Stun
+namespace Libplanet.Stun.Tests
 {
     public class Crc32Test
     {
