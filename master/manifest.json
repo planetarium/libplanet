@@ -765,7 +765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "CF1461ThGsZZxsFtT2IvPA=="
+          "hash": "iL3paFX/7pi+GY37pIdmiw=="
         }
       },
       "is_incremental": false,
@@ -777,7 +777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.LiteDBStore.html",
-          "hash": "kXFVFxeJKZraof37Y7dcCw=="
+          "hash": "x9Vkz0ZB/2/yxqpdnpk5rg=="
         }
       },
       "is_incremental": false,
