@@ -117,5 +117,8 @@ namespace Libplanet.Store
             string @namespace,
             HashDigest<SHA256> hash
         );
+
+        /// <inheritdoc/>
+        public abstract void DeleteNamespace(string @namespace);
     }
 }

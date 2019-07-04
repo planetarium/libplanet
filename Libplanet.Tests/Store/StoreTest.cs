@@ -37,6 +37,34 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void DeleteNamespace()
+        {
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                TestUtils.MineGenesis<DumbAction>(),
+                new[] { Fx.Transaction1 });
+            Fx.Store.AppendIndex(Fx.StoreNamespace, block1.Hash);
+            Fx.Store.AppendIndex("asdf", block1.Hash);
+            Address[] addresses = Enumerable.Repeat<object>(null, 8)
+                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .ToArray();
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                addresses.Take(3).ToImmutableHashSet(),
+                block1
+            );
+            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
+
+            Fx.Store.DeleteNamespace(Fx.StoreNamespace);
+
+            Assert.Equal(
+                new[] { "asdf" }.ToImmutableHashSet(),
+                Fx.Store.ListNamespaces().ToImmutableHashSet()
+            );
+            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());
+            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
+        }
+
+        [Fact]
         public void ListAddresses()
         {
             Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());

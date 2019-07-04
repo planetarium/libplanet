@@ -85,6 +85,18 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public void DeleteNamespace(string @namespace)
+        {
+            _db.DropCollection(IndexCollection(@namespace).Name);
+            _db.DropCollection($"{NonceIdPrefix}{@namespace}");
+
+            foreach (LiteFileInfo file in _db.FileStorage.Find($"{StateRefIdPrefix}{@namespace}"))
+            {
+                _db.FileStorage.Delete(file.Id);
+            }
+        }
+
+        /// <inheritdoc/>
         public long CountIndex(string @namespace)
         {
             return IndexCollection(@namespace).Count();

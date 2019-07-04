@@ -43,6 +43,7 @@ To be released.
     became to neither longer take `BlockChain<T>` nor a generic method.
     Because the `Swarm` constructor takes it instead.  [[#324]]
  -  `Swarm` does not implement `ICollection<Peer>` anymore.  [[#326]]
+ -  Added `IStore.DeleteNamespace()` method. [[#329]]
 
 ### Added interfaces
 
@@ -81,6 +82,8 @@ To be released.
     an empty `TxIds` from peers, and it had made the network waste bandwidth for
     unnecessary messages.  `Swam` became to no more send such empty `GetTxs`.
     [[#297]]
+ -  `BlockChain<T>.Swap()` became to delete an index, tx nonces, and state
+    references in the replaced chain. [[#329]]
 
 ### Bug fixes
 
@@ -129,6 +132,7 @@ To be released.
 [#317]: https://github.com/planetarium/libplanet/pull/317
 [#324]: https://github.com/planetarium/libplanet/pull/324
 [#326]: https://github.com/planetarium/libplanet/pull/326
+[#329]: https://github.com/planetarium/libplanet/pull/329
 
 Version 0.3.0
 -------------

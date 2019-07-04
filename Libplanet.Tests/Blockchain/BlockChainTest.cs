@@ -629,7 +629,13 @@ namespace Libplanet.Tests.Blockchain
                 );
                 fork.Append(forkTip, DateTimeOffset.UtcNow, render: false);
 
+                string previousNamespace = _blockChain.Id.ToString();
                 _blockChain.Swap(fork);
+
+                Assert.Empty(_blockChain.Store.IterateIndex(previousNamespace));
+                Assert.Empty(_blockChain.Store.ListAddresses(previousNamespace));
+                Assert.Empty(_blockChain.Store.ListTxNonces(previousNamespace));
+
                 var renders = DumbAction.RenderRecords.Value;
 
                 int actionsCountA = txsA.Sum(

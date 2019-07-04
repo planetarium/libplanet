@@ -178,6 +178,29 @@ namespace Libplanet.Store
             }
         }
 
+        /// <inheritdoc/>
+        public override void DeleteNamespace(string @namespace)
+        {
+            var indexFile = new FileInfo(GetIndexPath(@namespace));
+            var txNonceDir = new DirectoryInfo(GetTxNoncePath(@namespace));
+            var stateRefsDir = new DirectoryInfo(GetStateReferencePath(@namespace));
+
+            if (indexFile.Exists)
+            {
+                indexFile.Delete();
+            }
+
+            if (txNonceDir.Exists)
+            {
+                txNonceDir.Delete(true);
+            }
+
+            if (stateRefsDir.Exists)
+            {
+                stateRefsDir.Delete(true);
+            }
+        }
+
         public override long AppendIndex(
             string @namespace,
             HashDigest<SHA256> hash
