@@ -667,6 +667,47 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteNamespace_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteNamespace(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L122">View Source</a>
+  </span>
+  <a id="Libplanet_Store_BaseStore_DeleteNamespace_" data-uid="Libplanet.Store.BaseStore.DeleteNamespace*"></a>
+  <h4 id="Libplanet_Store_BaseStore_DeleteNamespace_System_String_" data-uid="Libplanet.Store.BaseStore.DeleteNamespace(System.String)">DeleteNamespace(String)</h4>
+  <div class="markdown level1 summary"><p>Deletes an index, tx nonces, and state references in the given
+<code data-dev-comment-type="paramref" class="paramref">namespace</code>.
+It also deletes namespace itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void DeleteNamespace(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Store_BaseStore_DeleteNamespace_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not delete blocks or transactions that belong to
+the index of the <code data-dev-comment-type="paramref" class="paramref">namespace</code>, but only the index,
+tx nonces, and state references.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
