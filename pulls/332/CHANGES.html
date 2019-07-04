@@ -122,7 +122,9 @@ became to neither longer take <code>BlockChain&lt;T&gt;</code> nor a generic met
 Because the <code>Swarm&lt;T&gt;</code> constructor takes it instead.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> does not implement <code>ICollection&lt;Peer&gt;</code> anymore.  [<a href="https://github.com/planetarium/libplanet/pull/326">#326</a>]</li>
 <li>Added <code>IStore.DeleteNamespace()</code> method. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
-<li>Removed <code>BlockChain&lt;T&gt;</code> constructor that receives <code>id</code>.  [[#TBD]]</li>
+<li>Removed the <code>id</code> parameter from the <code>BlockChain&lt;T&gt;</code> constructor, and it
+became to automatically detect an appropriate <code>BlockChain&lt;T&gt;.Id</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/279">#279</a>, <a href="https://github.com/planetarium/libplanet/pull/332">#332</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -165,8 +167,6 @@ references in the replaced chain. [<a href="https://github.com/planetarium/libpl
 <li>Reduced the memory footprint of <code>BlockChain&lt;T&gt;.FindBranchPoint()</code> method
 under the circumstances that the height of
 the <code>BlockChain&lt;T&gt;</code> object is high.  [<a href="https://github.com/planetarium/libplanet/issues/282">#282</a>, <a href="https://github.com/planetarium/libplanet/pull/299">#299</a>]</li>
-<li><code>BlockChain&lt;T&gt;.Id</code> became to be automatically selected as the longest
-chain. [[#TBD]]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
