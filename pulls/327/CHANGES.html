@@ -161,6 +161,9 @@ unnecessary messages.  <code>Swam</code> became to no more send such empty <code
 [<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Swap()</code> became to delete an index, tx nonces, and state
 references in the replaced chain. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
+<li>Reduced the memory footprint of <code>BlockChain&lt;T&gt;.FindBranchPoint()</code> method
+under the circumstances that the height of
+the <code>BlockChain&lt;T&gt;</code> object is high.  [<a href="https://github.com/planetarium/libplanet/issues/282">#282</a>, <a href="https://github.com/planetarium/libplanet/pull/299">#299</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
