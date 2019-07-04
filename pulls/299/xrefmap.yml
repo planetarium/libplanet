@@ -4258,6 +4258,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteIndex
   nameWithType: BaseStore.DeleteIndex
+- uid: Libplanet.Store.BaseStore.DeleteNamespace(System.String)
+  name: DeleteNamespace(String)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteNamespace_System_String_
+  commentId: M:Libplanet.Store.BaseStore.DeleteNamespace(System.String)
+  fullName: Libplanet.Store.BaseStore.DeleteNamespace(System.String)
+  nameWithType: BaseStore.DeleteNamespace(String)
+- uid: Libplanet.Store.BaseStore.DeleteNamespace*
+  name: DeleteNamespace
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteNamespace_
+  commentId: Overload:Libplanet.Store.BaseStore.DeleteNamespace
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.DeleteNamespace
+  nameWithType: BaseStore.DeleteNamespace
 - uid: Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_
@@ -4802,6 +4815,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.FileStore.DeleteIndex
   nameWithType: FileStore.DeleteIndex
+- uid: Libplanet.Store.FileStore.DeleteNamespace(System.String)
+  name: DeleteNamespace(String)
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_DeleteNamespace_System_String_
+  commentId: M:Libplanet.Store.FileStore.DeleteNamespace(System.String)
+  fullName: Libplanet.Store.FileStore.DeleteNamespace(System.String)
+  nameWithType: FileStore.DeleteNamespace(String)
+- uid: Libplanet.Store.FileStore.DeleteNamespace*
+  name: DeleteNamespace
+  href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_DeleteNamespace_
+  commentId: Overload:Libplanet.Store.FileStore.DeleteNamespace
+  isSpec: "True"
+  fullName: Libplanet.Store.FileStore.DeleteNamespace
+  nameWithType: FileStore.DeleteNamespace
 - uid: Libplanet.Store.FileStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.FileStore.html#Libplanet_Store_FileStore_DeleteTransaction_Libplanet_Tx_TxId_
@@ -5344,6 +5370,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteIndex
   nameWithType: IStore.DeleteIndex
+- uid: Libplanet.Store.IStore.DeleteNamespace(System.String)
+  name: DeleteNamespace(String)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteNamespace_System_String_
+  commentId: M:Libplanet.Store.IStore.DeleteNamespace(System.String)
+  fullName: Libplanet.Store.IStore.DeleteNamespace(System.String)
+  nameWithType: IStore.DeleteNamespace(String)
+- uid: Libplanet.Store.IStore.DeleteNamespace*
+  name: DeleteNamespace
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteNamespace_
+  commentId: Overload:Libplanet.Store.IStore.DeleteNamespace
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.DeleteNamespace
+  nameWithType: IStore.DeleteNamespace
 - uid: Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTransaction_Libplanet_Tx_TxId_
@@ -5766,6 +5805,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.DeleteIndex
   nameWithType: LiteDBStore.DeleteIndex
+- uid: Libplanet.Store.LiteDBStore.DeleteNamespace(System.String)
+  name: DeleteNamespace(String)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteNamespace_System_String_
+  commentId: M:Libplanet.Store.LiteDBStore.DeleteNamespace(System.String)
+  fullName: Libplanet.Store.LiteDBStore.DeleteNamespace(System.String)
+  nameWithType: LiteDBStore.DeleteNamespace(String)
+- uid: Libplanet.Store.LiteDBStore.DeleteNamespace*
+  name: DeleteNamespace
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteNamespace_
+  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteNamespace
+  isSpec: "True"
+  fullName: Libplanet.Store.LiteDBStore.DeleteNamespace
+  nameWithType: LiteDBStore.DeleteNamespace
 - uid: Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_
