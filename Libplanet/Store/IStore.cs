@@ -28,9 +28,9 @@ namespace Libplanet.Store
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
         /// <summary>
-        /// Deletes an index, tx nonce and state references in the given
+        /// Deletes an index, tx nonces, and state references in the given
         /// <paramref name="namespace"/>.
-        /// it also deletes namespace itself.
+        /// It also deletes namespace itself.
         /// </summary>
         /// <param name="namespace">The namespace to delete.</param>
         /// <remarks>This does not delete blocks or transactions that belong to

@@ -634,6 +634,7 @@ namespace Libplanet.Tests.Blockchain
 
                 Assert.Empty(_blockChain.Store.IterateIndex(previousNamespace));
                 Assert.Empty(_blockChain.Store.ListAddresses(previousNamespace));
+                Assert.Empty(_blockChain.Store.ListTxNonces(previousNamespace));
 
                 var renders = DumbAction.RenderRecords.Value;
 
