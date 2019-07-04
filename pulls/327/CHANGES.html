@@ -120,6 +120,8 @@ like as <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetar
 <li>Methods  in <code>Swarm</code> that had taken a parameter of <code>BlockChain&lt;T&gt;</code> type
 became to neither longer take <code>BlockChain&lt;T&gt;</code> nor a generic method.
 Because the <code>Swarm</code> constructor takes it instead.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
+<li><code>Swarm</code> does not implement <code>ICollection&lt;Peer&gt;</code> anymore.  [<a href="https://github.com/planetarium/libplanet/pull/326">#326</a>]</li>
+<li>Added <code>IStore.DeleteNamespace()</code> method. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -157,6 +159,8 @@ broadcast staged transactions.  [<a href="https://github.com/planetarium/libplan
 an empty <code>TxIds</code> from peers, and it had made the network waste bandwidth for
 unnecessary messages.  <code>Swam</code> became to no more send such empty <code>GetTxs</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Swap()</code> became to delete an index, tx nonces, and state
+references in the replaced chain. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -176,6 +180,8 @@ connection. [<a href="https://github.com/planetarium/libplanet/issues/303">#303<
 index of a block that does not exist locally.  [<a href="https://github.com/planetarium/libplanet/issues/208">#208</a>, <a href="https://github.com/planetarium/libplanet/pull/317">#317</a>]</li>
 <li>Fixed a bug that <code>Swarm</code> had not dial to other peer after
 <code>Swarm.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/311">#311</a>]</li>
+<li>Fixed an issue where unknown exceptions occurred when receiving a message.
+[<a href="https://github.com/planetarium/libplanet/pull/321">#321</a>, <a href="https://github.com/planetarium/libplanet/pull/327">#327</a>]</li>
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
