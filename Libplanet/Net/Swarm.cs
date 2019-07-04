@@ -58,7 +58,7 @@ namespace Libplanet.Net
 
         private readonly NetMQQueue<Message> _replyQueue;
         private readonly NetMQQueue<Message> _broadcastQueue;
-        private readonly NetMQPoller _queuePoller;
+        private readonly NetMQPoller _poller;
 
         private readonly ILogger _logger;
 
@@ -66,6 +66,7 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
+        private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
 
         static Swarm()
@@ -140,7 +141,7 @@ namespace Libplanet.Net
             _router.Options.RouterHandover = true;
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
-            _queuePoller = new NetMQPoller { _replyQueue, _broadcastQueue };
+            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
             _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
@@ -169,6 +170,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
+            _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
             _broadcastQueue.ReceiveReady += DoBroadcast;
         }
@@ -338,7 +340,6 @@ namespace Libplanet.Net
             {
                 if (Running)
                 {
-                    _router.Dispose();
                     _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
                     DistributeDelta(false);
 
@@ -349,14 +350,16 @@ namespace Libplanet.Net
 
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
+                    _router.ReceiveReady -= ReceiveMessage;
 
-                    if (_queuePoller.IsRunning)
+                    if (_poller.IsRunning)
                     {
-                        _queuePoller.Dispose();
+                        _poller.Dispose();
                     }
 
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
+                    _router.Dispose();
 
                     foreach (DealerSocket s in _dealers.Values)
                     {
@@ -443,32 +446,26 @@ namespace Libplanet.Net
                     CancellationTokenSource.CreateLinkedTokenSource(
                         _workerCancellationTokenSource.Token, cancellationToken
                     ).Token;
+                _cancellationToken = workerCancellationToken;
 
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
-                    await PreloadAsync(
-                        cancellationToken: workerCancellationToken);
+                    await PreloadAsync(cancellationToken: _cancellationToken);
                 }
 
                 var tasks = new List<Task>
                 {
-                    RepeatDeltaDistributionAsync(
-                        distributeInterval,
-                        workerCancellationToken),
-                    ReceiveMessageAsync(
-                        workerCancellationToken),
-                    BroadcastTxAsync(
-                        broadcastTxInterval,
-                        cancellationToken),
-                    Task.Run(() => _queuePoller.Run(), workerCancellationToken),
+                    RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken),
+                    BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
+                    Task.Run(() => _poller.Run(), _cancellationToken),
                 };
 
                 if (behindNAT)
                 {
-                    tasks.Add(BindingProxies(workerCancellationToken));
-                    tasks.Add(RefreshAllocate(workerCancellationToken));
-                    tasks.Add(RefreshPermissions(workerCancellationToken));
+                    tasks.Add(BindingProxies(_cancellationToken));
+                    tasks.Add(RefreshAllocate(_cancellationToken));
+                    tasks.Add(RefreshPermissions(_cancellationToken));
                 }
 
                 await await Task.WhenAny(tasks);
@@ -814,68 +811,6 @@ namespace Libplanet.Net
                 await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
                 await Task.WhenAll(
                     _peers.Keys.Select(CreatePermission));
-            }
-        }
-
-        private async Task ReceiveMessageAsync(
-            CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    NetMQMessage raw;
-                    try
-                    {
-                        raw = await _router.ReceiveMultipartMessageAsync(
-                            timeout: TimeSpan.FromMilliseconds(100),
-                            cancellationToken: cancellationToken);
-                    }
-                    catch (TimeoutException)
-                    {
-                        // Ignore this exception because it's expected
-                        // when there is no received message in duration.
-                        continue;
-                    }
-
-                    _logger.Verbose($"The raw message[{raw}] has received.");
-                    Message message = Message.Parse(raw, reply: false);
-                    _logger.Debug($"The message[{message}] has parsed.");
-
-                    // Queue a task per message to avoid blocking.
-                    #pragma warning disable CS4014
-                    Task.Run(
-                        async () =>
-                        {
-                            // it's still async because some method it relies
-                            // are async yet.
-                            await ProcessMessageAsync(
-                                message,
-                                cancellationToken
-                            );
-                        },
-                        cancellationToken);
-                    #pragma warning restore CS4014
-                }
-                catch (InvalidMessageException e)
-                {
-                    _logger.Error(
-                        e,
-                        "Could not parse NetMQMessage properly; ignore."
-                    );
-                }
-                catch (TaskCanceledException e)
-                {
-                    _logger.Information(e, "Task was canceled.");
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(
-                        e,
-                        "An unexpected exception occured during ReceiveMessageAsync()"
-                    );
-                    throw;
-                }
             }
         }
 
@@ -1693,6 +1628,32 @@ namespace Libplanet.Net
                 DistributeDelta(i % 10 == 0);
                 await Task.Delay(interval, cancellationToken);
                 i = (i + 1) % 10;
+            }
+        }
+
+        private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
+        {
+            try
+            {
+                NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
+
+                _logger.Verbose($"The raw message[{raw}] has received.");
+                Message message = Message.Parse(raw, reply: false);
+                _logger.Debug($"The message[{message}] has parsed.");
+
+                // it's still async because some method it relies are async yet.
+                Task.Run(
+                    async () => { await ProcessMessageAsync(message, _cancellationToken); },
+                    _cancellationToken);
+            }
+            catch (InvalidMessageException ex)
+            {
+                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "An unexpected exception occured during ReceiveMessage().");
+                throw;
             }
         }
 

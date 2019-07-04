@@ -106,6 +106,8 @@ To be released.
     index of a block that does not exist locally.  [[#208], [#317]]
  -  Fixed a bug that `Swarm` had not dial to other peer after
     `Swarm.PreloadAsync()`.  [[#311]]
+ -  Fixed an issue where unknown exceptions occurred when `Swarm<T>` receiving
+    a message.  [[#321], [#327]]
 
 
 [LiteDB]: https://www.litedb.org/
@@ -135,8 +137,10 @@ To be released.
 [#310]: https://github.com/planetarium/libplanet/pull/310
 [#311]: https://github.com/planetarium/libplanet/pull/311
 [#317]: https://github.com/planetarium/libplanet/pull/317
+[#321]: https://github.com/planetarium/libplanet/pull/321
 [#324]: https://github.com/planetarium/libplanet/pull/324
 [#326]: https://github.com/planetarium/libplanet/pull/326
+[#327]: https://github.com/planetarium/libplanet/pull/327
 [#329]: https://github.com/planetarium/libplanet/pull/329
 
 Version 0.3.0
