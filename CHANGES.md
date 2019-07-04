@@ -84,6 +84,9 @@ To be released.
     [[#297]]
  -  `BlockChain<T>.Swap()` became to delete an index, tx nonces, and state
     references in the replaced chain. [[#329]]
+ -  Reduced the memory footprint of `BlockChain<T>.FindBranchPoint()` method
+    under the circumstances that the height of
+    the `BlockChain<T>` object is high.  [[#282], [#299]]
 
 ### Bug fixes
 
@@ -119,10 +122,12 @@ To be released.
 [#277]: https://github.com/planetarium/libplanet/pull/277
 [#280]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
+[#282]: https://github.com/planetarium/libplanet/issues/282
 [#285]: https://github.com/planetarium/libplanet/pull/285
 [#287]: https://github.com/planetarium/libplanet/pull/287
 [#294]: https://github.com/planetarium/libplanet/pull/294
 [#297]: https://github.com/planetarium/libplanet/pull/297
+[#299]: https://github.com/planetarium/libplanet/pull/299
 [#303]: https://github.com/planetarium/libplanet/issues/303
 [#307]: https://github.com/planetarium/libplanet/pull/307
 [#308]: https://github.com/planetarium/libplanet/pull/308
