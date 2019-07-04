@@ -21,7 +21,7 @@ To be released.
  -  `IStore.IterateStagedTransactionIds()` method became to receive
     `bool toBroadcast` which is whether to iterate only the TxId set to
     broadcast.  [[#274], [#297]]
- -  `Swarm.StartAsync()` method became to receive `broadcastTxInterval`
+ -  `Swarm<T>.StartAsync()` method became to receive `broadcastTxInterval`
     (or `millisecondsBroadcastTxInterval`) parameter.  [[#274], [#297]]
  -  `IStore` became to treat a "tx nonce" mere a `long` integer instead of
     a stack of block hashes.  [[#272], [#307], [#309], [#310]]
@@ -36,13 +36,13 @@ To be released.
         Instead, a newly added static class `StoreExtension` provides
         an extension method of the same name.
      -  Added `IStore.IterateStateReferences()` method.
- -  `Swarm` constructor became to receive `BlockChain<T>`.  [[#324]]
  -  `Swarm` became to have type parameter `T` to represent an action type as
     like as `BlockChain<T>`.  [[#324]]
- -  Methods  in `Swarm` that had taken a parameter of `BlockChain<T>` type
+ -  `Swarm<T>` constructor became to receive `BlockChain<T>`.  [[#324]]
+ -  Methods  in `Swarm<T>` that had taken a parameter of `BlockChain<T>` type
     became to neither longer take `BlockChain<T>` nor a generic method.
-    Because the `Swarm` constructor takes it instead.  [[#324]]
- -  `Swarm` does not implement `ICollection<Peer>` anymore.  [[#326]]
+    Because the `Swarm<T>` constructor takes it instead.  [[#324]]
+ -  `Swarm<T>` does not implement `ICollection<Peer>` anymore.  [[#326]]
  -  Added `IStore.DeleteNamespace()` method. [[#329]]
 
 ### Added interfaces
@@ -66,21 +66,21 @@ To be released.
  -  `BlockChain<T>.GetStates()` method became to throw
     `IncompleteBlockStatesException` if its `Store` lacks the states of a block
     that a requested address lastly updated.  [[#272], [#285]]
- -  A message `Swarm` makes became to have multiple blocks within it, which
+ -  A message `Swarm<T>` makes became to have multiple blocks within it, which
     means round trips on the network are now much reduced.  [[#273], [#276]]
  -  `Message.Block` has been replaced by `Message.Blocks` and the magic number
     has been changed to `0x0a`.  [[#276]]
- -  Improved performance of `Swarm`'s response time to `GetBlockHashes`
+ -  Improved performance of `Swarm<T>`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
  -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
     of states (i.e., incomplete states).  [[#272], [#285]]
- -  `Swarm` became to broadcast staged `Transaction`s periodically
+ -  `Swarm<T>` became to broadcast staged `Transaction`s periodically
      so that game apps no more need to maintain their own thread to
      broadcast staged transactions.  [[#274], [#297]]
- -  Previously, `Swarm` had sent an empty `GetTxs` message when it receives
+ -  Previously, `Swarm<T>` had sent an empty `GetTxs` message when it receives
     an empty `TxIds` from peers, and it had made the network waste bandwidth for
-    unnecessary messages.  `Swam` became to no more send such empty `GetTxs`.
+    unnecessary messages.  `Swam<T>` became to no more send such empty `GetTxs`.
     [[#297]]
  -  `BlockChain<T>.Swap()` became to delete an index, tx nonces, and state
     references in the replaced chain. [[#329]]
@@ -90,10 +90,10 @@ To be released.
 
 ### Bug fixes
 
- -  Fixed a bug that `Swarm` reported `TaskCanceledException` as an unknown
+ -  Fixed a bug that `Swarm<T>` reported `TaskCanceledException` as an unknown
     exception while stopping. [[#275]]
- -  Fixed a bug that `Swarm` didn't stop properly during
-    `Swarm.PreloadAsync()`. [[#275]]
+ -  Fixed a bug that `Swarm<T>` didn't stop properly during
+    `Swarm<T>.PreloadAsync()`. [[#275]]
  -  Fixed a bug where the oldest `TxNonce` of an address is not invalidated
     when forking using `FileStore.ForkTxNonce()` method.  [[#281]]
  -  Fixed a bug where `LiteDBStore.GetTxNonce()` method throws a
@@ -104,11 +104,10 @@ To be released.
  -  Fixed a bug that `KeyNotFoundException` had been thrown instead of
     `ArgumentOutOfRangeException` when `Blockchain<T>[int]` called while the
     index of a block that does not exist locally.  [[#208], [#317]]
- -  Fixed a bug that `Swarm` had not dial to other peer after
-    `Swarm.PreloadAsync()`.  [[#311]]
+ -  Fixed a bug that `Swarm<T>` had not dial to other peer after
+    `Swarm<T>.PreloadAsync()`.  [[#311]]
  -  Fixed an issue where unknown exceptions occurred when `Swarm<T>` receiving
     a message.  [[#321], [#327]]
-
 
 [LiteDB]: https://www.litedb.org/
 [#208]: https://github.com/planetarium/libplanet/issues/208
