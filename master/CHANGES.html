@@ -93,7 +93,7 @@ is unknown.  [<a href="https://github.com/planetarium/libplanet/pull/280">#280</
 <li><code>IStore.IterateStagedTransactionIds()</code> method became to receive
 <code>bool toBroadcast</code> which is whether to iterate only the TxId set to
 broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
-<li><code>Swarm.StartAsync()</code> method became to receive <code>broadcastTxInterval</code>
+<li><code>Swarm&lt;T&gt;.StartAsync()</code> method became to receive <code>broadcastTxInterval</code>
 (or <code>millisecondsBroadcastTxInterval</code>) parameter.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 <li><code>IStore</code> became to treat a &quot;tx nonce&quot; mere a <code>long</code> integer instead of
 a stack of block hashes.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>, <a href="https://github.com/planetarium/libplanet/issues/309">#309</a>, <a href="https://github.com/planetarium/libplanet/pull/310">#310</a>]
@@ -114,13 +114,13 @@ an extension method of the same name.</li>
 <li>Added <code>IStore.IterateStateReferences()</code> method.</li>
 </ul>
 </li>
-<li><code>Swarm</code> constructor became to receive <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
 <li><code>Swarm</code> became to have type parameter <code>T</code> to represent an action type as
 like as <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
-<li>Methods  in <code>Swarm</code> that had taken a parameter of <code>BlockChain&lt;T&gt;</code> type
+<li><code>Swarm&lt;T&gt;</code> constructor became to receive <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
+<li>Methods  in <code>Swarm&lt;T&gt;</code> that had taken a parameter of <code>BlockChain&lt;T&gt;</code> type
 became to neither longer take <code>BlockChain&lt;T&gt;</code> nor a generic method.
-Because the <code>Swarm</code> constructor takes it instead.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
-<li><code>Swarm</code> does not implement <code>ICollection&lt;Peer&gt;</code> anymore.  [<a href="https://github.com/planetarium/libplanet/pull/326">#326</a>]</li>
+Because the <code>Swarm&lt;T&gt;</code> constructor takes it instead.  [<a href="https://github.com/planetarium/libplanet/pull/324">#324</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> does not implement <code>ICollection&lt;Peer&gt;</code> anymore.  [<a href="https://github.com/planetarium/libplanet/pull/326">#326</a>]</li>
 <li>Added <code>IStore.DeleteNamespace()</code> method. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
@@ -143,21 +143,21 @@ transactions too during nonce computation.  [<a href="https://github.com/planeta
 <li><code>BlockChain&lt;T&gt;.GetStates()</code> method became to throw
 <code>IncompleteBlockStatesException</code> if its <code>Store</code> lacks the states of a block
 that a requested address lastly updated.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
-<li>A message <code>Swarm</code> makes became to have multiple blocks within it, which
+<li>A message <code>Swarm&lt;T&gt;</code> makes became to have multiple blocks within it, which
 means round trips on the network are now much reduced.  [<a href="https://github.com/planetarium/libplanet/issues/273">#273</a>, <a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
 <li><code>Message.Block</code> has been replaced by <code>Message.Blocks</code> and the magic number
 has been changed to <code>0x0a</code>.  [<a href="https://github.com/planetarium/libplanet/pull/276">#276</a>]</li>
-<li>Improved performance of <code>Swarm</code>'s response time to <code>GetBlockHashes</code>
+<li>Improved performance of <code>Swarm&lt;T&gt;</code>'s response time to <code>GetBlockHashes</code>
 request messages.  [<a href="https://github.com/planetarium/libplanet/pull/277">#277</a>]</li>
 <li>Added IPv6 support to <code>Libplanet.Stun.StunAddress</code>. [<a href="https://github.com/planetarium/libplanet/issues/267">#267</a>, <a href="https://github.com/planetarium/libplanet/pull/271">#271</a>]</li>
 <li><code>IStore.GetBlockStates()</code> became able to return <code>null</code> to represent an absence
 of states (i.e., incomplete states).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/285">#285</a>]</li>
-<li><code>Swarm</code> became to broadcast staged <code>Transaction</code>s periodically
+<li><code>Swarm&lt;T&gt;</code> became to broadcast staged <code>Transaction</code>s periodically
 so that game apps no more need to maintain their own thread to
 broadcast staged transactions.  [<a href="https://github.com/planetarium/libplanet/issues/274">#274</a>, <a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
-<li>Previously, <code>Swarm</code> had sent an empty <code>GetTxs</code> message when it receives
+<li>Previously, <code>Swarm&lt;T&gt;</code> had sent an empty <code>GetTxs</code> message when it receives
 an empty <code>TxIds</code> from peers, and it had made the network waste bandwidth for
-unnecessary messages.  <code>Swam</code> became to no more send such empty <code>GetTxs</code>.
+unnecessary messages.  <code>Swam&lt;T&gt;</code> became to no more send such empty <code>GetTxs</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/297">#297</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Swap()</code> became to delete an index, tx nonces, and state
 references in the replaced chain. [<a href="https://github.com/planetarium/libplanet/pull/329">#329</a>]</li>
@@ -167,10 +167,10 @@ the <code>BlockChain&lt;T&gt;</code> object is high.  [<a href="https://github.c
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
-<li>Fixed a bug that <code>Swarm</code> reported <code>TaskCanceledException</code> as an unknown
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> reported <code>TaskCanceledException</code> as an unknown
 exception while stopping. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
-<li>Fixed a bug that <code>Swarm</code> didn't stop properly during
-<code>Swarm.PreloadAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> didn't stop properly during
+<code>Swarm&lt;T&gt;.PreloadAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
 <li>Fixed a bug where the oldest <code>TxNonce</code> of an address is not invalidated
 when forking using <code>FileStore.ForkTxNonce()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/281">#281</a>]</li>
 <li>Fixed a bug where <code>LiteDBStore.GetTxNonce()</code> method throws a
@@ -181,8 +181,8 @@ connection. [<a href="https://github.com/planetarium/libplanet/issues/303">#303<
 <li>Fixed a bug that <code>KeyNotFoundException</code> had been thrown instead of
 <code>ArgumentOutOfRangeException</code> when <code>Blockchain&lt;T&gt;[int]</code> called while the
 index of a block that does not exist locally.  [<a href="https://github.com/planetarium/libplanet/issues/208">#208</a>, <a href="https://github.com/planetarium/libplanet/pull/317">#317</a>]</li>
-<li>Fixed a bug that <code>Swarm</code> had not dial to other peer after
-<code>Swarm.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/311">#311</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had not dial to other peer after
+<code>Swarm&lt;T&gt;.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/311">#311</a>]</li>
 <li>Fixed an issue where unknown exceptions occurred when <code>Swarm&lt;T&gt;</code> receiving
 a message.  [<a href="https://github.com/planetarium/libplanet/pull/321">#321</a>, <a href="https://github.com/planetarium/libplanet/pull/327">#327</a>]</li>
 </ul>
