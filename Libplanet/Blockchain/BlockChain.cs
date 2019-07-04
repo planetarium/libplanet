@@ -23,11 +23,11 @@ namespace Libplanet.Blockchain
         private readonly object _txLock;
 
         public BlockChain(IBlockPolicy<T> policy, IStore store)
-            : this(policy, store, Guid.NewGuid())
+            : this(policy, store, GetCanonicalChain(store) ?? Guid.NewGuid())
         {
         }
 
-        public BlockChain(IBlockPolicy<T> policy, IStore store, Guid id)
+        internal BlockChain(IBlockPolicy<T> policy, IStore store, Guid id)
         {
             Id = id;
             Policy = policy;
@@ -35,8 +35,7 @@ namespace Libplanet.Blockchain
             Blocks = new BlockSet<T>(store);
             Transactions = new TransactionSet<T>(store);
 
-            _rwlock = new ReaderWriterLockSlim(
-                LockRecursionPolicy.SupportsRecursion);
+            _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
         }
 
@@ -462,6 +461,24 @@ namespace Libplanet.Blockchain
                 StageTransactions(new Dictionary<Transaction<T>, bool> { { tx, broadcast } });
 
                 return tx;
+            }
+        }
+
+        // FIXME it should be separated into separate class (like IConsensus).
+        internal static Guid? GetCanonicalChain(IStore store)
+        {
+            string @namespace = store
+                .ListNamespaces()
+                .OrderByDescending(store.CountIndex)
+                .FirstOrDefault();
+
+            if (@namespace is null)
+            {
+                return null;
+            }
+            else
+            {
+                return new Guid(@namespace);
             }
         }
 

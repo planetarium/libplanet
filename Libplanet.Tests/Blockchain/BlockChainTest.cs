@@ -987,6 +987,34 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(actions, transaction.Actions);
         }
 
+        [Fact]
+        public void GetCanonicalChain()
+        {
+            Assert.Null(BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
+
+            Block<DumbAction> block1 = TestUtils.MineGenesis<DumbAction>();
+            Block<DumbAction> block2 = TestUtils.MineNext(block1);
+            Block<DumbAction> block3 = TestUtils.MineNext(block2);
+            Guid id1 = Guid.NewGuid();
+            Guid id2 = Guid.NewGuid();
+
+            foreach (Block<DumbAction> b in new[] { block1 })
+            {
+                _fx.Store.AppendIndex(id1.ToString(), b.Hash);
+                _fx.Store.PutBlock(b);
+            }
+
+            Assert.Equal(id1, BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
+
+            foreach (Block<DumbAction> b in new[] { block2, block3 })
+            {
+                _fx.Store.AppendIndex(id2.ToString(), b.Hash);
+                _fx.Store.PutBlock(b);
+            }
+
+            Assert.Equal(id2, BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
+        }
+
         /// <summary>
         /// Builds a fixture that has incomplete states for blocks other
         /// than the tip, to test <c>GetStates()</c> method's
