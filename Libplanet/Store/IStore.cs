@@ -20,10 +20,12 @@ namespace Libplanet.Store
         long CountIndex(string @namespace);
 
         /// <summary>
-        /// Iterate indexes of the namespaces.
+        /// Lists all block hashes in the <parmaref name="namespace"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to iterate indexes.</param>
-        /// <returns>All indexes in descending order by height.</returns>
+        /// <param name="namespace">The namespace of the index that contains block hashes to
+        /// iterate.</param>
+        /// <returns>Block hashes in the index of the <paramref name="namespace"/>, in ascending
+        /// order; the genesis block goes first, and the tip block goes last.</returns>
         IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);
 
         HashDigest<SHA256>? IndexBlockHash(string @namespace, long index);
