@@ -44,6 +44,9 @@ To be released.
     Because the `Swarm<T>` constructor takes it instead.  [[#324]]
  -  `Swarm<T>` does not implement `ICollection<Peer>` anymore.  [[#326]]
  -  Added `IStore.DeleteNamespace()` method. [[#329]]
+ -  Removed the `id` parameter from the `BlockChain<T>` constructor, and it
+    became to automatically detect an appropriate `BlockChain<T>.Id`.
+    [[#279], [#332]]
 
 ### Added interfaces
 
@@ -121,6 +124,7 @@ To be released.
 [#275]: https://github.com/planetarium/libplanet/pull/275
 [#276]: https://github.com/planetarium/libplanet/pull/276
 [#277]: https://github.com/planetarium/libplanet/pull/277
+[#279]: https://github.com/planetarium/libplanet/issues/279
 [#280]: https://github.com/planetarium/libplanet/pull/280
 [#281]: https://github.com/planetarium/libplanet/pull/281
 [#282]: https://github.com/planetarium/libplanet/issues/282
@@ -141,6 +145,7 @@ To be released.
 [#326]: https://github.com/planetarium/libplanet/pull/326
 [#327]: https://github.com/planetarium/libplanet/pull/327
 [#329]: https://github.com/planetarium/libplanet/pull/329
+[#332]: https://github.com/planetarium/libplanet/pull/332
 
 Version 0.3.0
 -------------

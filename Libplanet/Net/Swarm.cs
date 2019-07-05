@@ -1014,9 +1014,9 @@ namespace Libplanet.Net
             // same genesis block...
             else if (!_blockChain.Blocks.ContainsKey(branchPoint))
             {
-                synced = new BlockChain<T>(
-                    _blockChain.Policy,
-                    _blockChain.Store);
+                // Create a whole new chain because the branch point doesn't exist on
+                // the current chain.
+                synced = new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
             }
             else
             {
