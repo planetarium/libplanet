@@ -88,7 +88,7 @@ action "dist:release-note" {
 
 action "dist:nuget" {
   uses = "docker://mcr.microsoft.com/dotnet/core/sdk:2.2"
-  needs = ["dist:pack", "dist:release-note"]
+  needs = ["dist:pack", "dist:release-note", "dist:github-release"]
   runs = [".github/bin/dist-nuget.sh"]
   secrets = [
     "NUGET_API_KEY"
