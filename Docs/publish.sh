@@ -42,6 +42,7 @@ if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
   slug="pulls/$pr_number"
 else
   if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && \
+     [ "$GITHUB_REF" = "${GITHUB_REF#refs/tags/}" ] &&
      [ "$GITHUB_REF" != refs/heads/master ] && \
      [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ]; then
     echo "This branch is not for releases, so docs won't be published." \

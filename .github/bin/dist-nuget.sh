@@ -23,6 +23,7 @@ fi
 # and the branch is for releases (master or maintenance-*).
 # shellcheck disable=SC2235
 if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ] || (
+    [ "$GITHUB_REF" = "${GITHUB_REF#refs/tags/}" ] &&
     [ "$GITHUB_REF" != refs/heads/master ] &&
     [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ] ); then
   alias dotnet="echo DRY-RUN: dotnet"
