@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.4.0
 -------------
 
-To be released.
+Released on July 8, 2019.
 
 ### Backward-incompatible interface changes
 
