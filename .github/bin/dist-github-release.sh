@@ -46,6 +46,11 @@ if [ ! -f "$nupkg_path" ]; then
   exit 1
 fi
 
+if command -v apk; then
+  apk add --no-cache ca-certificates
+  update-ca-certificates
+fi
+
 wget -O /tmp/github-release.tar.bz2 \
   https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
 tar xvfj /tmp/github-release.tar.bz2 -C /tmp
