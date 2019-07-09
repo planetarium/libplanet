@@ -28,8 +28,9 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T>
-        where T : IAction, new()
+    public class Swarm<TTxAction, TBlockAction>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -42,7 +43,7 @@ namespace Libplanet.Net
         private readonly IDictionary<Peer, DateTimeOffset> _peers;
         private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
-        private readonly BlockChain<T> _blockChain;
+        private readonly BlockChain<TTxAction, TBlockAction> _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly RouterSocket _router;
         private readonly IDictionary<Address, DealerSocket> _dealers;
@@ -78,7 +79,7 @@ namespace Libplanet.Net
         }
 
         public Swarm(
-            BlockChain<T> blockChain,
+            BlockChain<TTxAction, TBlockAction> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
             int millisecondsDialTimeout = 15000,
@@ -104,7 +105,7 @@ namespace Libplanet.Net
         }
 
         public Swarm(
-            BlockChain<T> blockChain,
+            BlockChain<TTxAction, TBlockAction> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
             TimeSpan dialTimeout,
@@ -167,7 +168,7 @@ namespace Libplanet.Net
             }
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
-            _logger = Log.ForContext<Swarm<T>>()
+            _logger = Log.ForContext<Swarm<TTxAction, TBlockAction>>()
                 .ForContext("SwarmId", loggerId);
 
             _router.ReceiveReady += ReceiveMessage;
@@ -225,7 +226,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Whether this <see cref="Swarm{T}"/> instance is running.
+        /// Whether this <see cref="Swarm{TTxAction, TBlockAction}"/> instance is running.
         /// </summary>
         public bool Running
         {
@@ -247,7 +248,8 @@ namespace Libplanet.Net
         internal ICollection<Peer> Peers => _peers.Keys;
 
         /// <summary>
-        /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
+        /// Waits until this <see cref="Swarm{TTxAction, TBlockAction}"/> instance gets started to
+        /// run.
         /// </summary>
         /// <returns>A <see cref="Task"/> completed when <see cref="Running"/>
         /// property becomes <c>true</c>.</returns>
@@ -483,7 +485,7 @@ namespace Libplanet.Net
             }
         }
 
-        public void BroadcastBlocks(IEnumerable<Block<T>> blocks)
+        public void BroadcastBlocks(IEnumerable<Block<TTxAction>> blocks)
         {
             _logger.Debug("Trying to broadcast blocks...");
             var message = new BlockHashes(
@@ -494,7 +496,7 @@ namespace Libplanet.Net
             _logger.Debug("Block broadcasting complete.");
         }
 
-        public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
+        public void BroadcastTxs(IEnumerable<Transaction<TTxAction>> txs)
         {
             _logger.Debug("Broadcast Txs.");
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
@@ -565,7 +567,7 @@ namespace Libplanet.Net
             }
         }
 
-        internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        internal IAsyncEnumerable<Block<TTxAction>> GetBlocksAsync(
             Peer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes)
         {
@@ -575,7 +577,7 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return new AsyncEnumerable<Block<T>>(async yield =>
+            return new AsyncEnumerable<Block<TTxAction>>(async yield =>
             {
                 CancellationToken yieldToken = yield.CancellationToken;
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
@@ -602,7 +604,7 @@ namespace Libplanet.Net
                         {
                             foreach (byte[] payload in blockMessage.Payloads)
                             {
-                                Block<T> block = Block<T>.FromBencodex(payload);
+                                Block<TTxAction> block = Block<TTxAction>.FromBencodex(payload);
                                 await yield.ReturnAsync(block);
                                 hashCount--;
                             }
@@ -618,7 +620,7 @@ namespace Libplanet.Net
             });
         }
 
-        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync(
+        internal IAsyncEnumerable<Transaction<TTxAction>> GetTxsAsync(
             Peer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -629,7 +631,7 @@ namespace Libplanet.Net
                     $"The peer[{peer.Address}] could not be found.");
             }
 
-            return new AsyncEnumerable<Transaction<T>>(async yield =>
+            return new AsyncEnumerable<Transaction<TTxAction>>(async yield =>
             {
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
@@ -650,7 +652,7 @@ namespace Libplanet.Net
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Tx parsed)
                         {
-                            Transaction<T> tx = Transaction<T>.FromBencodex(
+                            Transaction<TTxAction> tx = Transaction<TTxAction>.FromBencodex(
                                 parsed.Payload);
                             await yield.ReturnAsync(tx);
                             hashCount--;
@@ -780,7 +782,7 @@ namespace Libplanet.Net
             if (longestPeerWithLength != null &&
                 !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
             {
-                BlockChain<T> synced = await SyncPreviousBlocksAsync(
+                BlockChain<TTxAction, TBlockAction> synced = await SyncPreviousBlocksAsync(
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
@@ -943,12 +945,12 @@ namespace Libplanet.Net
             _logger.Debug(
                 $"Trying to GetBlocksAsync() " +
                 $"(using {message.Hashes.Count()} hashes)");
-            IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
+            IAsyncEnumerable<Block<TTxAction>> fetched = GetBlocksAsync(
                 peer,
                 message.Hashes
             );
 
-            List<Block<T>> blocks = await fetched.ToListAsync(
+            List<Block<TTxAction>> blocks = await fetched.ToListAsync(
                 cancellationToken
             );
             _logger.Debug("GetBlocksAsync() complete.");
@@ -968,7 +970,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
+        private async Task<BlockChain<TTxAction, TBlockAction>> SyncPreviousBlocksAsync(
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
@@ -976,7 +978,7 @@ namespace Libplanet.Net
         {
             // Fix the tip here because it may change while receiving the block
             // hashes.
-            Block<T> tip = _blockChain.Tip;
+            Block<TTxAction> tip = _blockChain.Tip;
 
             _logger.Debug("Trying to find branchpoint...");
             BlockLocator locator = _blockChain.GetBlockLocator();
@@ -1001,7 +1003,7 @@ namespace Libplanet.Net
                 $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
             );
 
-            BlockChain<T> synced;
+            BlockChain<TTxAction, TBlockAction> synced;
             if (tip is null || branchPoint.Equals(tip.Hash))
             {
                 _logger.Debug("it doesn't need fork.");
@@ -1016,7 +1018,8 @@ namespace Libplanet.Net
             {
                 // Create a whole new chain because the branch point doesn't exist on
                 // the current chain.
-                synced = new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
+                synced = new BlockChain<TTxAction, TBlockAction>(
+                    _blockChain.Policy, _blockChain.Store, Guid.NewGuid());
             }
             else
             {
@@ -1069,26 +1072,26 @@ namespace Libplanet.Net
 
         private async Task AppendBlocksAsync(
             Peer peer,
-            List<Block<T>> blocks,
+            List<Block<TTxAction>> blocks,
             CancellationToken cancellationToken
         )
         {
             // We assume that the blocks are sorted in order.
-            Block<T> oldest = blocks.First();
-            Block<T> latest = blocks.Last();
-            Block<T> tip = _blockChain.Tip;
+            Block<TTxAction> oldest = blocks.First();
+            Block<TTxAction> latest = blocks.Last();
+            Block<TTxAction> tip = _blockChain.Tip;
 
             if (tip is null || latest.Index > tip.Index)
             {
                 _logger.Debug("Trying to fill up previous blocks...");
-                BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
+                BlockChain<TTxAction, TBlockAction> previousBlocks = await SyncPreviousBlocksAsync(
                     peer,
                     oldest.PreviousHash,
                     null,
                     cancellationToken);
                 _logger.Debug("Filled up. trying to concatenation...");
 
-                foreach (Block<T> block in blocks)
+                foreach (Block<TTxAction> block in blocks)
                 {
                     previousBlocks.Append(block);
                 }
@@ -1113,7 +1116,7 @@ namespace Libplanet.Net
 
         private async Task FillBlocksAsync(
             Peer peer,
-            BlockChain<T> blockChain,
+            BlockChain<TTxAction, TBlockAction> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken)
@@ -1173,10 +1176,10 @@ namespace Libplanet.Net
 
         private void TransferTxs(GetTxs getTxs)
         {
-            IDictionary<TxId, Transaction<T>> txs = _blockChain.Transactions;
+            IDictionary<TxId, Transaction<TTxAction>> txs = _blockChain.Transactions;
             foreach (var txid in getTxs.TxIds)
             {
-                if (txs.TryGetValue(txid, out Transaction<T> tx))
+                if (txs.TryGetValue(txid, out Transaction<TTxAction> tx))
                 {
                     Message response = new Messages.Tx(tx.ToBencodex(true))
                     {
@@ -1216,9 +1219,9 @@ namespace Libplanet.Net
                 return;
             }
 
-            IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync(
+            IAsyncEnumerable<Transaction<TTxAction>> fetched = GetTxsAsync(
                 peer, unknownTxIds, cancellationToken);
-            List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
+            List<Transaction<TTxAction>> txs = await fetched.ToListAsync(cancellationToken);
             var toStage = txs.ToDictionary(tx => tx, _ => true);
 
             _blockChain.StageTransactions(toStage);
@@ -1234,7 +1237,7 @@ namespace Libplanet.Net
 
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (_blockChain.Blocks.TryGetValue(hash, out Block<T> block))
+                if (_blockChain.Blocks.TryGetValue(hash, out Block<TTxAction> block))
                 {
                     byte[] payload = block.ToBencodex(true, true);
                     blocks.Add(payload);

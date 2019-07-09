@@ -16,24 +16,25 @@ using Libplanet.Tx;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
-    public class BlockChain<T> : IReadOnlyList<Block<T>>
-        where T : IAction, new()
+    public class BlockChain<TTxAction, TBlockAction> : IReadOnlyList<Block<TTxAction>>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         private readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
 
-        public BlockChain(IBlockPolicy<T> policy, IStore store)
+        public BlockChain(IBlockPolicy<TTxAction, TBlockAction> policy, IStore store)
             : this(policy, store, GetCanonicalChain(store) ?? Guid.NewGuid())
         {
         }
 
-        internal BlockChain(IBlockPolicy<T> policy, IStore store, Guid id)
+        internal BlockChain(IBlockPolicy<TTxAction, TBlockAction> policy, IStore store, Guid id)
         {
             Id = id;
             Policy = policy;
             Store = store;
-            Blocks = new BlockSet<T>(store);
-            Transactions = new TransactionSet<T>(store);
+            Blocks = new BlockSet<TTxAction>(store);
+            Transactions = new TransactionSet<TTxAction>(store);
 
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
@@ -44,9 +45,9 @@ namespace Libplanet.Blockchain
             _rwlock?.Dispose();
         }
 
-        public IBlockPolicy<T> Policy { get; }
+        public IBlockPolicy<TTxAction, TBlockAction> Policy { get; }
 
-        public Block<T> Tip
+        public Block<TTxAction> Tip
         {
             get
             {
@@ -64,37 +65,39 @@ namespace Libplanet.Blockchain
         public Guid Id { get; private set; }
 
         /// <summary>
-        /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
-        /// storage, including orphan <see cref="Block{T}"/>s.
-        /// Keys are <see cref="Block{T}.Hash"/>es and values are
-        /// their corresponding <see cref="Block{T}"/>s.
+        /// All <see cref="Block{TTxaction}"/>s in the
+        /// <see cref="BlockChain{TTxaction, TBlockAction}"/>
+        /// storage, including orphan <see cref="Block{TTxaction}"/>s.
+        /// Keys are <see cref="Block{TTxaction}.Hash"/>es and values are
+        /// their corresponding <see cref="Block{TTxaction}"/>s.
         /// </summary>
-        public IDictionary<HashDigest<SHA256>, Block<T>> Blocks
+        public IDictionary<HashDigest<SHA256>, Block<TTxAction>> Blocks
         {
             get; private set;
         }
 
         /// <summary>
-        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
-        /// storage, including orphan <see cref="Transaction{T}"/>s.
-        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
-        /// their corresponding <see cref="Transaction{T}"/>s.
+        /// All <see cref="Transaction{TTxaction}"/>s in the
+        /// <see cref="BlockChain{TTxaction, TBlockAction}"/>
+        /// storage, including orphan <see cref="Transaction{TTxaction}"/>s.
+        /// Keys are <see cref="Transaction{TTxaction}.Id"/>s and values are
+        /// their corresponding <see cref="Transaction{TTxaction}"/>s.
         /// </summary>
-        public IDictionary<TxId, Transaction<T>> Transactions
+        public IDictionary<TxId, Transaction<TTxAction>> Transactions
         {
             get; private set;
         }
 
         /// <inheritdoc/>
-        int IReadOnlyCollection<Block<T>>.Count =>
+        int IReadOnlyCollection<Block<TTxAction>>.Count =>
             checked((int)Store.CountIndex(Id.ToString()));
 
         internal IStore Store { get; }
 
         /// <inheritdoc/>
-        public Block<T> this[int index] => this[(long)index];
+        public Block<TTxAction> this[int index] => this[(long)index];
 
-        public Block<T> this[long index]
+        public Block<TTxAction> this[long index]
         {
             get
             {
@@ -120,7 +123,7 @@ namespace Libplanet.Blockchain
         }
 
         public void Validate(
-            IReadOnlyList<Block<T>> blocks,
+            IReadOnlyList<Block<TTxAction>> blocks,
             DateTimeOffset currentTime
         )
         {
@@ -133,7 +136,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        public IEnumerator<Block<T>> GetEnumerator()
+        public IEnumerator<Block<TTxAction>> GetEnumerator()
         {
             try
             {
@@ -160,14 +163,14 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the state of the given <paramref name="addresses"/> in the
-        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain{TTxaction, TBlockAction}"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="addresses">The list of <see cref="Address"/>es to get
         /// their states.</param>
-        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// <param name="offset">The <see cref="HashDigest{TTxaction}"/> of the block to
         /// start finding the state. It will be The tip of the
-        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
-        /// <param name="completeStates">When the <see cref="BlockChain{T}"/>
+        /// <see cref="BlockChain{TTxaction, TBlockAction}"/> if it is <c>null</c>.</param>
+        /// <param name="completeStates">When the <see cref="BlockChain{TTxaction, TBlockAction}"/>
         /// instance does not contain states dirty of the block which lastly
         /// updated states of a requested address, this option makes
         /// the incomplete states calculated and filled on the fly.
@@ -179,7 +182,7 @@ namespace Libplanet.Blockchain
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
-        /// the <see cref="BlockChain{T}"/> instance does not contain
+        /// the <see cref="BlockChain{TTxaction, TBlockAction}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
         /// address, because actions in the block have never been executed.
         /// If <paramref name="completeStates"/> option is turned on
@@ -212,7 +215,7 @@ namespace Libplanet.Blockchain
                 return states;
             }
 
-            Block<T> block = Blocks[offset.Value];
+            Block<TTxAction> block = Blocks[offset.Value];
 
             ImmutableHashSet<Address> requestedAddresses =
                 addresses.ToImmutableHashSet();
@@ -241,14 +244,14 @@ namespace Libplanet.Blockchain
                     {
                         // Calculates and fills the incomplete states
                         // on the fly.
-                        foreach (Block<T> b in this)
+                        foreach (Block<TTxAction> b in this)
                         {
                             if (!(Store.GetBlockStates(b.Hash) is null))
                             {
                                 continue;
                             }
 
-                            ActionEvaluation<T>[] evaluations =
+                            ActionEvaluation<TTxAction>[] evaluations =
                                 b.Evaluate(
                                     DateTimeOffset.UtcNow,
                                     a => GetStates(
@@ -290,16 +293,16 @@ namespace Libplanet.Blockchain
         /// the <paramref name="block"/> is confirmed (and thus all states
         /// reflect changes in the <paramref name="block"/>).</para>
         /// </summary>
-        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
+        /// <param name="block">A next <see cref="Block{TTxaction}"/>, which is mined,
         /// to add.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{T}.Nonce"/> is different from
+        /// <see cref="Transaction{TTxaction}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block) =>
+        /// <see cref="Transaction{TTxaction}.Signer"/>.</exception>
+        public void Append(Block<TTxAction> block) =>
             Append(block, DateTimeOffset.UtcNow);
 
         /// <summary>
@@ -310,33 +313,33 @@ namespace Libplanet.Blockchain
         /// the <paramref name="block"/> is confirmed (and thus all states
         /// reflect changes in the <paramref name="block"/>).</para>
         /// </summary>
-        /// <param name="block">A next <see cref="Block{T}"/>, which is mined,
+        /// <param name="block">A next <see cref="Block{TTxaction}"/>, which is mined,
         /// to add.</param>
         /// <param name="currentTime">The current time.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{T}.Nonce"/> is different from
+        /// <see cref="Transaction{TTxaction}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{T}.Signer"/>.</exception>
-        public void Append(Block<T> block, DateTimeOffset currentTime) =>
+        /// <see cref="Transaction{TTxaction}.Signer"/>.</exception>
+        public void Append(Block<TTxAction> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, render: true);
 
         /// <summary>
         /// Adds <paramref name="transactions"/> to the pending list so that
-        /// a next <see cref="Block{T}"/> to be mined contains these
+        /// a next <see cref="Block{TTxaction}"/> to be mined contains these
         /// <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="transactions"> <see cref="Transaction{T}"/>s to add to the pending list.
-        /// Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
-        public void StageTransactions(IDictionary<Transaction<T>, bool> transactions)
+        /// <param name="transactions"> <see cref="Transaction{TTxaction}"/>s to add to the pending
+        /// list. Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
+        public void StageTransactions(IDictionary<Transaction<TTxAction>, bool> transactions)
         {
             _rwlock.EnterWriteLock();
 
             try
             {
-                foreach (KeyValuePair<Transaction<T>, bool> kv in transactions)
+                foreach (KeyValuePair<Transaction<TTxAction>, bool> kv in transactions)
                 {
                     var tx = kv.Key;
                     Transactions[tx.Id] = tx;
@@ -354,10 +357,10 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Removes <paramref name="transactions"/> from the pending list.
         /// </summary>
-        /// <param name="transactions"><see cref="Transaction{T}"/>s
+        /// <param name="transactions"><see cref="Transaction{TTxaction}"/>s
         /// to remove from the pending list.</param>
         /// <seealso cref="StageTransactions"/>
-        public void UnstageTransactions(ISet<Transaction<T>> transactions)
+        public void UnstageTransactions(ISet<Transaction<TTxAction>> transactions)
         {
             _rwlock.EnterWriteLock();
 
@@ -373,22 +376,22 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets next <see cref="Transaction{T}.Nonce"/> of the address.
+        /// Gets next <see cref="Transaction{TTxaction}.Nonce"/> of the address.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> from which to obtain the
-        /// <see cref="Transaction{T}.Nonce"/> value.</param>
-        /// <returns>The next <see cref="Transaction{T}.Nonce"/> value of the
+        /// <see cref="Transaction{TTxaction}.Nonce"/> value.</param>
+        /// <returns>The next <see cref="Transaction{TTxaction}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
         {
             long nonce = Store.GetTxNonce(Id.ToString(), address);
 
-            IEnumerable<Transaction<T>> stagedTxs = Store
+            IEnumerable<Transaction<TTxAction>> stagedTxs = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
+                .Select(Store.GetTransaction<TTxAction>)
                 .Where(tx => tx.Signer.Equals(address));
 
-            foreach (Transaction<T> tx in stagedTxs)
+            foreach (Transaction<TTxAction> tx in stagedTxs)
             {
                 if (nonce <= tx.Nonce)
                 {
@@ -399,7 +402,7 @@ namespace Libplanet.Blockchain
             return nonce;
         }
 
-        public Block<T> MineBlock(
+        public Block<TTxAction> MineBlock(
             Address miner,
             DateTimeOffset currentTime
         )
@@ -411,11 +414,11 @@ namespace Libplanet.Blockchain
                 @namespace,
                 index - 1
             );
-            IEnumerable<Transaction<T>> transactions = Store
+            IEnumerable<Transaction<TTxAction>> transactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>);
+                .Select(Store.GetTransaction<TTxAction>);
 
-            Block<T> block = Block<T>.Mine(
+            Block<TTxAction> block = Block<TTxAction>.Mine(
                 index: index,
                 difficulty: difficulty,
                 miner: miner,
@@ -428,11 +431,11 @@ namespace Libplanet.Blockchain
             return block;
         }
 
-        public Block<T> MineBlock(Address miner) =>
+        public Block<TTxAction> MineBlock(Address miner) =>
             MineBlock(miner, DateTimeOffset.UtcNow);
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
+        /// Creates a new <see cref="Transaction{TTxaction}"/> and stage the transaction.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
@@ -440,15 +443,15 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
         /// <paramref name="actions"/>.</param>
-        /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
-        /// signed.</param>
+        /// <param name="timestamp">The time this <see cref="Transaction{TTxaction}"/> is created
+        /// and signed.</param>
         /// <param name="broadcast">Whether to broadcast created transaction.</param>
-        /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
+        /// <returns>A created new <see cref="Transaction{TTxaction}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
-        /// <seealso cref="Transaction{T}.Create" />
-        public Transaction<T> MakeTransaction(
+        /// <seealso cref="Transaction{TTxaction}.Create" />
+        public Transaction<TTxAction> MakeTransaction(
             PrivateKey privateKey,
-            IEnumerable<T> actions,
+            IEnumerable<TTxAction> actions,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null,
             bool broadcast = true)
@@ -456,13 +459,14 @@ namespace Libplanet.Blockchain
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
             lock (_txLock)
             {
-                Transaction<T> tx = Transaction<T>.Create(
+                Transaction<TTxAction> tx = Transaction<TTxAction>.Create(
                     GetNextTxNonce(privateKey.PublicKey.ToAddress()),
                     privateKey,
                     actions,
                     updatedAddresses,
                     timestamp);
-                StageTransactions(new Dictionary<Transaction<T>, bool> { { tx, broadcast } });
+                StageTransactions(
+                    new Dictionary<Transaction<TTxAction>, bool> { { tx, broadcast } });
 
                 return tx;
             }
@@ -487,13 +491,13 @@ namespace Libplanet.Blockchain
         }
 
         internal void Append(
-            Block<T> block,
+            Block<TTxAction> block,
             DateTimeOffset currentTime,
             bool render
         )
         {
             _rwlock.EnterUpgradeableReadLock();
-            ActionEvaluation<T>[] evaluations;
+            ActionEvaluation<TTxAction>[] evaluations;
             try
             {
                 InvalidBlockException e =
@@ -549,10 +553,10 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal void ValidateNonce(Block<T> block)
+        internal void ValidateNonce(Block<TTxAction> block)
         {
             var nonces = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions)
+            foreach (Transaction<TTxAction> tx in block.Transactions)
             {
                 Address signer = tx.Signer;
                 if (!nonces.TryGetValue(signer, out long nonce))
@@ -665,16 +669,16 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal BlockChain<T> Fork(HashDigest<SHA256> point)
+        internal BlockChain<TTxAction, TBlockAction> Fork(HashDigest<SHA256> point)
         {
             return Fork(point, DateTimeOffset.UtcNow);
         }
 
-        internal BlockChain<T> Fork(
+        internal BlockChain<TTxAction, TBlockAction> Fork(
             HashDigest<SHA256> point,
             DateTimeOffset currentTime)
         {
-            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
+            var forked = new BlockChain<TTxAction, TBlockAction>(Policy, Store, Guid.NewGuid());
             string id = Id.ToString();
             string forkedId = forked.Id.ToString();
             try
@@ -689,13 +693,13 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Block<T> pointBlock = Blocks[point];
+                Block<TTxAction> pointBlock = Blocks[point];
 
                 var addressesToStrip = new HashSet<Address>();
                 var signersToStrip = new Dictionary<Address, int>();
 
                 for (
-                    Block<T> block = Tip;
+                    Block<TTxAction> block = Tip;
                     block.PreviousHash is HashDigest<SHA256> hash
                     && !block.Hash.Equals(point);
                     block = Blocks[hash])
@@ -773,7 +777,7 @@ namespace Libplanet.Blockchain
                 while (current is HashDigest<SHA256> hash)
                 {
                     hashes.Add(hash);
-                    Block<T> currentBlock = Blocks[hash];
+                    Block<TTxAction> currentBlock = Blocks[hash];
 
                     if (currentBlock.Index == 0)
                     {
@@ -800,14 +804,14 @@ namespace Libplanet.Blockchain
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         // we need to add a synchronization mechanism to handle this correctly.
-        internal void Swap(BlockChain<T> other)
+        internal void Swap(BlockChain<TTxAction, TBlockAction> other)
         {
             // Finds the branch point.
-            Block<T> topmostCommon = null;
+            Block<TTxAction> topmostCommon = null;
             long shorterHeight =
                 Math.Min(this.LongCount(), other.LongCount()) - 1;
             for (
-                Block<T> t = this[shorterHeight], o = other[shorterHeight];
+                Block<TTxAction> t = this[shorterHeight], o = other[shorterHeight];
                 t.PreviousHash is HashDigest<SHA256> tp &&
                     o.PreviousHash is HashDigest<SHA256> op;
                 t = Blocks[tp], o = other.Blocks[op]
@@ -822,7 +826,7 @@ namespace Libplanet.Blockchain
 
             // Unrender stale actions.
             for (
-                Block<T> b = Tip;
+                Block<TTxAction> b = Tip;
                 !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
                     b.PreviousHash is HashDigest<SHA256> ph;
                 b = Blocks[ph]
@@ -846,8 +850,8 @@ namespace Libplanet.Blockchain
 
                 Store.DeleteNamespace(Id.ToString());
                 Id = other.Id;
-                Blocks = new BlockSet<T>(Store);
-                Transactions = new TransactionSet<T>(Store);
+                Blocks = new BlockSet<TTxAction>(Store);
+                Transactions = new TransactionSet<TTxAction>(Store);
             }
             finally
             {
@@ -855,11 +859,11 @@ namespace Libplanet.Blockchain
             }
 
             // Render actions that had been behind.
-            IEnumerable<Block<T>> blocksToRender =
-                topmostCommon is Block<T> branchPoint
+            IEnumerable<Block<TTxAction>> blocksToRender =
+                topmostCommon is Block<TTxAction> branchPoint
                     ? this.SkipWhile(b => b.Index <= branchPoint.Index)
                     : this;
-            foreach (Block<T> b in blocksToRender)
+            foreach (Block<TTxAction> b in blocksToRender)
             {
                 var actions = b.EvaluateActionsPerTx(a =>
                     GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
@@ -889,8 +893,8 @@ namespace Libplanet.Blockchain
         }
 
         private void SetStates(
-            Block<T> block,
-            IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
+            Block<TTxAction> block,
+            IReadOnlyList<ActionEvaluation<TTxAction>> actionEvaluations,
             bool buildIndices
         )
         {

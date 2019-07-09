@@ -156,7 +156,8 @@ namespace Libplanet.Store
         /// <paramref name="block"/>.</typeparam>
         /// <remarks>State reference must be stored in the same order as the blocks. For now,
         /// it is assumed that this is only called by
-        /// <see cref="BlockChain{T}.Append(Block{T}, DateTimeOffset, bool)"/> method.</remarks>
+        /// <see cref="BlockChain{TTxAction, TBlockAction}.Append(
+        /// Block{TTxAction}, DateTimeOffset, bool)"/> method.</remarks>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
         void StoreStateReference<T>(
             string @namespace,

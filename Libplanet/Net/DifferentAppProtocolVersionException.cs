@@ -4,7 +4,7 @@ namespace Libplanet.Net
 {
     /// <summary>
     /// The exception that is thrown when the version of the
-    /// <see cref="Peer" /> that <see cref="Swarm{T}" /> is trying to connect
+    /// <see cref="Peer" /> that <see cref="Swarm{TTxAction, TBlockAction}" /> is trying to connect
     /// to is different.
     /// </summary>
     [Serializable]
@@ -15,10 +15,10 @@ namespace Libplanet.Net
         /// <see cref="DifferentAppProtocolVersionException"/> class.
         /// </summary>
         /// <param name="expectedVersion">The protocol version of the current
-        /// <see cref="Swarm{T}"/>.</param>
+        /// <see cref="Swarm{TTxAction, TBlockAction}"/>.</param>
         /// <param name="actualVersion">The protocol version of the
-        /// <see cref="Peer"/> that <see cref="Swarm{T}" /> is trying to connect
-        /// to.</param>
+        /// <see cref="Peer"/> that <see cref="Swarm{TTxAction, TBlockAction}" /> is trying to
+        /// connect to.</param>
         /// <param name="message">Specifies an <see cref="Exception.Message"/>.
         /// </param>
         public DifferentAppProtocolVersionException(
@@ -33,13 +33,13 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// The protocol version of the current <see cref="Swarm{T}"/>.
+        /// The protocol version of the current <see cref="Swarm{TTxAction, TBlockAction}"/>.
         /// </summary>
         public int ExpectedVersion { get; }
 
         /// <summary>
         /// The protocol version of the <see cref="Peer"/> that the
-        /// <see cref="Swarm{T}" /> is trying to connect to.
+        /// <see cref="Swarm{TTxAction, TBlockAction}" /> is trying to connect to.
         /// </summary>
         public int ActualVersion { get; }
     }

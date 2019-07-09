@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         private readonly ITestOutputHelper _output;
 
         private List<Block<DumbAction>> _blocks;
-        private IBlockPolicy<DumbAction> _policy;
+        private IBlockPolicy<DumbAction, DumbAction> _policy;
         private List<Transaction<DumbAction>> _emptyTransaction;
         private Block<DumbAction> _genesis;
         private Block<DumbAction> _validNext;
@@ -30,7 +30,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         {
             _output = output;
             _blocks = new List<Block<DumbAction>>();
-            _policy = new BlockPolicy<DumbAction>(
+            _policy = new BlockPolicy<DumbAction, DumbAction>(
                 TimeSpan.FromMilliseconds(5000),
                 1024,
                 128);
@@ -49,34 +49,34 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<DumbAction>(tenSec, 1024, 128);
+            var a = new BlockPolicy<DumbAction, DumbAction>(tenSec, 1024, 128);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<DumbAction>(65000);
+            var b = new BlockPolicy<DumbAction, DumbAction>(65000);
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
 
-            var c = new BlockPolicy<DumbAction>();
+            var c = new BlockPolicy<DumbAction, DumbAction>();
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(tenSec.Negate(), 1024, 128));
+                () => new BlockPolicy<DumbAction, DumbAction>(tenSec.Negate(), 1024, 128));
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(-5));
+                () => new BlockPolicy<DumbAction, DumbAction>(-5));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(tenSec, 0, 128));
+                new BlockPolicy<DumbAction, DumbAction>(tenSec, 0, 128));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(tenSec, 1024, 1024));
+                new BlockPolicy<DumbAction, DumbAction>(tenSec, 1024, 1024));
         }
 
         [Fact]
         public void GetNextBlockDifficulty()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
+            var policy = new BlockPolicy<DumbAction, DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
             Block<DumbAction>[] blocks = MineBlocks(
                 new[] { (0, 0), (1, 1024), (3, 1032), (7, 1040), (9, 1040), (13, 1048) }
             ).ToArray();
@@ -229,7 +229,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateBlocks()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
+            var policy = new BlockPolicy<DumbAction, DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
 
             // The genesis block must has the index #0.
             Assert.IsType<InvalidBlockIndexException>(

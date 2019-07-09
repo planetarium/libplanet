@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
@@ -9,11 +10,16 @@ namespace Libplanet.Blockchain.Policies
     /// valid, and to suggest how difficult a <see cref="Block{T}.Nonce"/>
     /// for a <see cref="Block{T}"/> to be mined.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// <typeparam name="TTxAction">An <see cref="IAction"/> type used for
+    /// <see cref="Transaction{T}"/>.  It should match to <see cref="Block{T}"/>'s type parameter.
+    /// </typeparam>
+    /// <typeparam name="TBlockAction">An <see cref="IAction"/> type used when mining.
+    /// It should match to <see cref="Block{T}"/>'s type parameter.
+    /// </typeparam>
     /// <seealso cref="BlockPolicyExtension"/>
-    public interface IBlockPolicy<T>
-        where T : IAction, new()
+    public interface IBlockPolicy<TTxAction, TBlockAction>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         /// <summary>
         /// Checks if <paramref name="nextBlock"/> is invalid, and if that
@@ -28,10 +34,10 @@ namespace Libplanet.Blockchain.Policies
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
-        /// <seealso cref="BlockPolicyExtension.ValidateBlocks{T}"/>
+        /// <seealso cref="BlockPolicyExtension.ValidateBlocks{TTxAction, TBlockAction}"/>
         InvalidBlockException ValidateNextBlock(
-            IReadOnlyList<Block<T>> blocks,
-            Block<T> nextBlock);
+            IReadOnlyList<Block<TTxAction>> blocks,
+            Block<TTxAction> nextBlock);
 
         /// <summary>
         /// Determines a right <see cref="Block{T}.Difficulty"/>
@@ -42,6 +48,6 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks);
+        long GetNextBlockDifficulty(IReadOnlyList<Block<TTxAction>> blocks);
     }
 }

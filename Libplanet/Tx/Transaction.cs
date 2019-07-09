@@ -22,7 +22,7 @@ namespace Libplanet.Tx
     /// Each game usually defines its own concrete class which implements
     /// <see cref="IAction"/>, and uses it for this type parameter.
     /// This type parameter is aligned with <see cref="Blocks.Block{T}"/>'s
-    /// and <see cref="Blockchain.BlockChain{T}"/>'s type parameters.
+    /// and <see cref="Blockchain.BlockChain{TTxAction, TBlockAction}"/>'s type parameters.
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
