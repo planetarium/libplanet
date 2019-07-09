@@ -224,25 +224,20 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanExchangePeer()
+        public async Task ExchangePeer()
         {
             BlockChain<DumbAction> chain = _blockchains[0];
+            var swarms = Enumerable.Range(0, 20).Select(
+                _ => new Swarm<DumbAction>(
+                    chain,
+                    new PrivateKey(),
+                    1,
+                    host: IPAddress.Loopback.ToString()))
+                .ToArray();
 
-            var a = new Swarm<DumbAction>(
-                chain,
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString());
-            var b = new Swarm<DumbAction>(
-                chain,
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString());
-            var c = new Swarm<DumbAction>(
-                chain,
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString());
+            var a = swarms[0];
+            var b = swarms[1];
+            var c = swarms[2];
 
             DateTimeOffset lastDistA;
             Peer aAsPeer;
@@ -251,35 +246,22 @@ namespace Libplanet.Tests.Net
             {
                 try
                 {
-                    await StartAsync(a);
-                    await StartAsync(b);
-                    await StartAsync(c);
+                    await swarms.ParallelForEachAsync(s => StartAsync(s));
+                    await swarms.Skip(3).ParallelForEachAsync(
+                        s => s.AddPeersAsync(new[] { a.AsPeer }));
 
                     await b.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, b);
-                    Assert.Equal(
-                        new[] { b.AsPeer }.ToImmutableHashSet(),
-                        a.Peers.ToImmutableHashSet());
-                    Assert.Equal(
-                        new[] { a.AsPeer }.ToImmutableHashSet(),
-                        b.Peers.ToImmutableHashSet());
+                    Assert.Contains(a.AsPeer, b.Peers);
+                    Assert.Contains(b.AsPeer, a.Peers);
 
                     await c.AddPeersAsync(new[] { a.AsPeer });
                     await EnsureExchange(a, c);
                     await EnsureExchange(a, b);
 
-                    Assert.Equal(
-                        new[] { b.AsPeer, c.AsPeer }.ToImmutableHashSet(),
-                        a.Peers.ToImmutableHashSet()
-                    );
-                    Assert.Equal(
-                        new[] { a.AsPeer, c.AsPeer }.ToImmutableHashSet(),
-                        b.Peers.ToImmutableHashSet()
-                    );
-                    Assert.Equal(
-                        new[] { a.AsPeer, b.AsPeer }.ToImmutableHashSet(),
-                        c.Peers.ToImmutableHashSet()
-                    );
+                    Assert.Contains(c.AsPeer, a.Peers);
+                    Assert.Contains(c.AsPeer, b.Peers);
+                    Assert.Contains(b.AsPeer, c.Peers);
 
                     lastDistA = a.LastDistributed;
                     aAsPeer = a.AsPeer;
@@ -295,13 +277,12 @@ namespace Libplanet.Tests.Net
                 await EnsureRecvAsync(c, aAsPeer, a.LastDistributed);
                 await EnsureExchange(b, c);
 
-                Assert.Equal(new[] { c.AsPeer }.ToImmutableHashSet(), b.Peers.ToImmutableHashSet());
-                Assert.Equal(new[] { b.AsPeer }.ToImmutableHashSet(), c.Peers.ToImmutableHashSet());
+                Assert.DoesNotContain(a.AsPeer, b.Peers);
+                Assert.DoesNotContain(a.AsPeer, c.Peers);
             }
             finally
             {
-                await b.StopAsync();
-                await c.StopAsync();
+                await swarms.Skip(1).ParallelForEachAsync(s => s.StopAsync());
             }
         }
 
