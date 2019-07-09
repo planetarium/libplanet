@@ -22,6 +22,12 @@ namespace Libplanet.Blockchain.Policies
         where TBlockAction : IAction, new()
     {
         /// <summary>
+        /// Gets a list of block actions to execute when appending a block.
+        /// </summary>
+        /// <returns>A list of <see cref="IAction"/>s for a miner.</returns>
+        IList<TBlockAction> BlockActions { get; }
+
+        /// <summary>
         /// Checks if <paramref name="nextBlock"/> is invalid, and if that
         /// returns the reason.
         /// <para>Note that it returns <c>null</c> when

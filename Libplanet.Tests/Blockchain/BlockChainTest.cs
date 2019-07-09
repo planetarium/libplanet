@@ -1166,6 +1166,8 @@ namespace Libplanet.Tests.Blockchain
                 _exceptionToThrow = exceptionToThrow;
             }
 
+            public IList<TBlockAction> BlockActions => new List<TBlockAction>();
+
             public long GetNextBlockDifficulty(IReadOnlyList<Block<TTxAction>> blocks) =>
                 blocks.Any() ? 1 : 0;
 
