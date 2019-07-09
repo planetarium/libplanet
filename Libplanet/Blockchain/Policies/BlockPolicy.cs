@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
-    /// A default implementation of <see cref="IBlockPolicy{T}"/> interface.
+    /// A default implementation of <see cref="IBlockPolicy{TTxAction, TBlockAction}"/> interface.
     /// </summary>
-    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    public class BlockPolicy<T> : IBlockPolicy<T>
-        where T : IAction, new()
+    /// <typeparam name="TTxAction">An <see cref="IAction"/> type for <see cref="Transaction{T}"/>.
+    /// It should match to <see cref="Block{TTxAction, TBlockAction}"/>'s type parameter.
+    /// </typeparam>
+    /// <typeparam name="TBlockAction">An <see cref="IAction"/> type for
+    /// <see cref="Block{TTxAction,TBlockAction}"/>.  It should match to
+    /// <see cref="Block{TTxAction, TBlockAction}"/>'s type parameter.</typeparam>
+    public class BlockPolicy<TTxAction, TBlockAction> : IBlockPolicy<TTxAction, TBlockAction>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
+        /// Creates a <see cref="BlockPolicy{TTxAction, TBlockAction}"/> with configuring
         /// <see cref="BlockInterval"/> in milliseconds,
         /// <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
@@ -40,7 +46,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <summary>
-        /// Creates a <see cref="BlockPolicy{T}"/> with configuring
+        /// Creates a <see cref="BlockPolicy{TTxAction, TBlockAction}"/> with configuring
         /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
@@ -86,12 +92,13 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <summary>
-        /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
-        /// It is usually from 20 to 30 seconds.
+        /// An appropriate interval between consecutive
+        /// <see cref="Block{TTxAction, TBlockAction}"/>s. It is usually from 20 to 30 seconds.
         /// <para>If a previous interval took longer than this
-        /// <see cref="GetNextBlockDifficulty(IReadOnlyList{Block{T}})"/> method
-        /// raises the <see cref="Block{T}.Difficulty"/>.  If it took shorter
-        /// than this <see cref="Block{T}.Difficulty"/> is dropped.</para>
+        /// <see cref="GetNextBlockDifficulty(IReadOnlyList{Block{TTxAction, TBlockAction}})"/>
+        /// method raises the <see cref="Block{TTxAction, TBlockAction}.Difficulty"/>.  If it took
+        /// shorter than this <see cref="Block{TTxAction, TBlockAction}.Difficulty"/> is dropped.
+        /// </para>
         /// </summary>
         public TimeSpan BlockInterval { get; }
 
@@ -101,13 +108,13 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public InvalidBlockException ValidateNextBlock(
-            IReadOnlyList<Block<T>> blocks,
-            Block<T> nextBlock)
+            IReadOnlyList<Block<TTxAction, TBlockAction>> blocks,
+            Block<TTxAction, TBlockAction> nextBlock)
         {
             int index = blocks.Count;
             long difficulty = GetNextBlockDifficulty(blocks);
 
-            Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
+            Block<TTxAction, TBlockAction> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
             DateTimeOffset? prevTimestamp = lastBlock?.Timestamp;
 
@@ -154,7 +161,7 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
+        public long GetNextBlockDifficulty(IReadOnlyList<Block<TTxAction, TBlockAction>> blocks)
         {
             int index = blocks.Count;
 

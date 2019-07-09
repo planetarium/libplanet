@@ -319,7 +319,8 @@ namespace Libplanet.Store
             return true;
         }
 
-        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+        public override Block<TTxAction, TBlockAction> GetBlock<TTxAction, TBlockAction>(
+            HashDigest<SHA256> blockHash)
         {
             var blockFile = new FileInfo(GetBlockPath(blockHash));
             if (!blockFile.Exists)
@@ -340,7 +341,7 @@ namespace Libplanet.Store
                     );
                 }
 
-                return new Block<T>(
+                return new Block<TTxAction, TBlockAction>(
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
                     nonce: new Nonce(rawBlock.Nonce),
@@ -348,10 +349,10 @@ namespace Libplanet.Store
                     previousHash: previousHash,
                     timestamp: DateTimeOffset.ParseExact(
                         rawBlock.Timestamp,
-                        Block<T>.TimestampFormat,
+                        Block<TTxAction, TBlockAction>.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
+                    transactions: GetTransactions<TTxAction>(rawBlock.Transactions)
                 );
             }
         }
@@ -544,7 +545,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc />
-        public override void PutBlock<T>(Block<T> block)
+        public override void PutBlock<TTxAction, TBlockAction>(Block<TTxAction, TBlockAction> block)
         {
             foreach (var tx in block.Transactions)
             {
@@ -671,10 +672,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void StoreStateReference<T>(
+        public override void StoreStateReference<TTxAction, TBlockAction>(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
+            Block<TTxAction, TBlockAction> block)
         {
             HashDigest<SHA256> blockHash = block.Hash;
             long blockIndex = block.Index;
@@ -701,10 +702,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void ForkStateReferences<T>(
+        public override void ForkStateReferences<TTxAction, TBlockAction>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
+            Block<TTxAction, TBlockAction> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
             ForkIndexedStack(

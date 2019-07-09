@@ -107,14 +107,14 @@ namespace Libplanet.Tests.Store
         public void StoreStateReference()
         {
             Address address = address;
-            Block<DumbAction> prevBlock = _fx.Block3;
+            Block<DumbAction, DumbAction> prevBlock = _fx.Block3;
 
             Transaction<DumbAction> transaction = _fx.MakeTransaction(
                 new List<DumbAction>(),
                 new HashSet<Address> { address }.ToImmutableHashSet());
             var txs = new[] { transaction };
 
-            var blocks = new List<Block<DumbAction>>
+            var blocks = new List<Block<DumbAction, DumbAction>>
             {
                 TestUtils.MineNext(prevBlock, txs),
             };
@@ -124,7 +124,7 @@ namespace Libplanet.Tests.Store
             var stateReferenceFile = new FileInfo(path);
             Assert.False(stateReferenceFile.Exists);
 
-            foreach (Block<DumbAction> block in blocks)
+            foreach (Block<DumbAction, DumbAction> block in blocks)
             {
                 var updatedAddresses = new HashSet<Address> { address };
                 _fx.Store.StoreStateReference(

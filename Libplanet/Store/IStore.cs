@@ -55,8 +55,8 @@ namespace Libplanet.Store
 
         /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
-        /// a next <see cref="Block{T}"/> to be mined contains the corresponding
-        /// <see cref="Transaction{T}"/>s.
+        /// a next <see cref="Block{TTxAction, TBlockAction}"/> to be mined contains the
+        /// corresponding <see cref="Transaction{T}"/>s.
         /// </summary>
         /// <param name="txids"><see cref="TxId"/>s to add to pending list. Keys are
         /// <see cref="TxId"/>s and values are whether to broadcast.</param>
@@ -84,25 +84,30 @@ namespace Libplanet.Store
 
         IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new();
+        Block<TTxAction, TBlockAction> GetBlock<TTxAction, TBlockAction>(
+            HashDigest<SHA256> blockHash)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <summary>
         /// Puts the given <paramref name="block"/> in to the store.
         /// </summary>
-        /// <param name="block">A <see cref="Block{T}"/> to put into the store.
-        /// </param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <param name="block">A <see cref="Block{TTxAction, TBlockAction}"/> to put into the
+        /// store.</param>
+        /// <typeparam name="TTxAction">An <see cref="IAction"/> for <see cref="Transaction{T}"/>
         /// <paramref name="block"/>.</typeparam>
-        void PutBlock<T>(Block<T> block)
-            where T : IAction, new();
+        /// <typeparam name="TBlockAction">An <see cref="IAction"/> for
+        /// <see cref="Block{TTxAction, TBlockAction}"/> <paramref name="block"/>.</typeparam>
+        void PutBlock<TTxAction, TBlockAction>(Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         bool DeleteBlock(HashDigest<SHA256> blockHash);
 
         /// <summary>
         /// Gets the states updated by actions in the inquired block.
         /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.
+        /// <param name="blockHash"><see cref="Block{TTxAction, TBlockAction}.Hash"/> to query.
         /// </param>
         /// <returns>The states updated by actions in the inquired block.
         /// If actions definitely do not update any addresses it returns
@@ -128,21 +133,23 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
-        /// the requested <paramref name="address"/> in the specified <paramref name="namespace"/>.
-        /// </summary>
+        /// Gets pairs of a state reference and a corresponding
+        /// <see cref="Block{TTxAction, TBlockAction}.Index"/> of the requested
+        /// <paramref name="address"/> in the specified <paramref name="namespace"/>.</summary>
         /// <param name="namespace">The chain namespace.</param>
         /// <param name="address">The <see cref="Address"/> to get state references.</param>
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
-        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go last,
-        /// and the lowest index (i.e., the closest to the genesis) go first.</returns>
-        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        /// <see cref="Block{TTxAction, TBlockAction}.Index"/>.  The highest index
+        /// (i.e., the closest to the tip) go last, and the lowest index
+        /// (i.e., the closest to the genesis) go first.</returns>
+        /// <seealso cref="StoreStateReference{TTxAction, TBlockAction}(string,
+        /// IImmutableSet{Address}, Block{TTxAction, TBlockAction})"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
             Address address);
 
         /// <summary>
-        /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
+        /// Stores a state reference, which is a <see cref="Block{TTxAction, TBlockAction}.Hash"/>
         /// that has the state of the <see cref="Address"/> for each updated
         /// <see cref="Address"/>es by the <see cref="Transaction{T}"/>s in the
         /// <paramref name="block"/>.</summary>
@@ -150,23 +157,27 @@ namespace Libplanet.Store
         /// </param>
         /// <param name="addresses">The <see cref="Address"/>es to store state
         /// reference.</param>
-        /// <param name="block">The <see cref="Block{T}"/> which has the state
+        /// <param name="block">The <see cref="Block{TTxAction, TBlockAction}"/> which has the state
         /// of the <see cref="Address"/>.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <typeparam name="TTxAction">An <see cref="IAction"/> for <see cref="Transaction{T}"/>
         /// <paramref name="block"/>.</typeparam>
+        /// <typeparam name="TBlockAction">An <see cref="IAction"/> for
+        /// <see cref="Block{TTxAction, TBlockAction}"/> <paramref name="block"/>.</typeparam>
         /// <remarks>State reference must be stored in the same order as the blocks. For now,
         /// it is assumed that this is only called by
-        /// <see cref="BlockChain{T}.Append(Block{T}, DateTimeOffset, bool)"/> method.</remarks>
+        /// <see cref="BlockChain{TTxAction, TBlockAction}.Append(Block{TTxAction, TBlockAction},
+        /// DateTimeOffset, bool)"/> method.</remarks>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
-        void StoreStateReference<T>(
+        void StoreStateReference<TTxAction, TBlockAction>(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new();
+            Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <summary>
-        /// Forks state references, which are <see cref="Block{T}.Hash"/>es that
-        /// have the state of the <see cref="Address"/>es, from
+        /// Forks state references, which are <see cref="Block{TTxAction, TBlockAction}.Hash"/>es
+        /// that have the state of the <see cref="Address"/>es, from
         /// <paramref name="sourceNamespace"/> to
         /// <paramref name="destinationNamespace"/>.
         /// <para>This method copies state references from
@@ -179,22 +190,27 @@ namespace Libplanet.Store
         /// fork.</param>
         /// <param name="destinationNamespace">The namespace of destination
         /// state references.</param>
-        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// <param name="branchPoint">The branch point <see cref="Block{TTxAction, TBlockAction}"/>
         /// to fork.</param>
         /// <param name="addressesToStrip">The set of <see cref="Address"/>es
-        /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// to strip <see cref="Block{TTxAction, TBlockAction}.Hash"/> after forking.</param>
+        /// <typeparam name="TTxAction">An <see cref="IAction"/> for <see cref="Transaction{T}"/>
         /// <paramref name="branchPoint"/>.</typeparam>
+        /// <typeparam name="TBlockAction">An <see cref="IAction"/> for
+        /// <see cref="Block{TTxAction, TBlockAction}"/> used with<paramref name="branchPoint"/>.
+        /// </typeparam>
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
         /// <paramref name="sourceNamespace"/> does not exist.</exception>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
-        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
-        void ForkStateReferences<T>(
+        /// <seealso cref="StoreStateReference{TTxAction, TBlockAction}(string,
+        /// IImmutableSet{Address}, Block{TTxAction, TBlockAction})"/>
+        void ForkStateReferences<TTxAction, TBlockAction>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
+            Block<TTxAction, TBlockAction> branchPoint,
             IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new();
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <summary>
         /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,

@@ -57,12 +57,15 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new();
+        public abstract Block<TTxAction, TBlockAction> GetBlock<TTxAction, TBlockAction>(
+            HashDigest<SHA256> blockHash)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <inheritdoc />
-        public abstract void PutBlock<T>(Block<T> block)
-            where T : IAction, new();
+        public abstract void PutBlock<TTxAction, TBlockAction>(Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
 
@@ -80,19 +83,21 @@ namespace Libplanet.Store
             string @namespace, Address address);
 
         /// <inheritdoc />
-        public abstract void StoreStateReference<T>(
+        public abstract void StoreStateReference<TTxAction, TBlockAction>(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new();
+            Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <inheritdoc />
-        public abstract void ForkStateReferences<T>(
+        public abstract void ForkStateReferences<TTxAction, TBlockAction>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
+            Block<TTxAction, TBlockAction> branchPoint,
             IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new();
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new();
 
         /// <inheritdoc/>
         public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);

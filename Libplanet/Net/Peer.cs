@@ -10,7 +10,7 @@ namespace Libplanet.Net
     /// <summary>
     /// A representation of peer node.
     /// </summary>
-    /// <seealso cref="Swarm{T}"/>
+    /// <seealso cref="Swarm{TTxAction, TBlockAction}"/>
     [Serializable]
     [Equals]
     public class Peer : ISerializable
@@ -92,7 +92,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The corresponding application protocol version of this peer.
         /// </summary>
-        /// <seealso cref="Swarm{T}.DifferentVersionPeerEncountered"/>
+        /// <seealso cref="Swarm{TTxAction, TBlockAction}.DifferentVersionPeerEncountered"/>
         [IgnoreDuringEquals]
         [Pure]
         public int? AppProtocolVersion { get; }

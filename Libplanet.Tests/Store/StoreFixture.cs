@@ -69,7 +69,7 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            Block1 = TestUtils.MineGenesis<DumbAction>();
+            Block1 = TestUtils.MineGenesis<DumbAction, DumbAction>();
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
 
@@ -95,11 +95,11 @@ namespace Libplanet.Tests.Store
 
         public HashDigest<SHA256> Hash3 { get; }
 
-        public Block<DumbAction> Block1 { get; }
+        public Block<DumbAction, DumbAction> Block1 { get; }
 
-        public Block<DumbAction> Block2 { get; }
+        public Block<DumbAction, DumbAction> Block2 { get; }
 
-        public Block<DumbAction> Block3 { get; }
+        public Block<DumbAction, DumbAction> Block3 { get; }
 
         public Transaction<DumbAction> Transaction1 { get; }
 

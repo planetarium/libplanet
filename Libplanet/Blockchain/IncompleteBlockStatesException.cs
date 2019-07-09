@@ -5,7 +5,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Blockchain
 {
     /// <summary>
-    /// The exception that is thrown when a <see cref="BlockChain{T}"/> have
+    /// The exception that is thrown when a <see cref="BlockChain{TTxAction, TBlockAction}"/> have
     /// not calculated the complete states for all blocks, but an operation
     /// that needs some lacked states is requested.
     /// </summary>
@@ -31,8 +31,9 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
-        /// a <see cref="BlockChain{T}"/> lacks the states.
+        /// The <see cref="Block{TTxAction, TBlockAction}.Hash"/> of
+        /// <see cref="Block{TTxAction, TBlockAction}"/> that a
+        /// <see cref="BlockChain{TTxAction, TBlockAction}"/> lacks the states.
         /// </summary>
         public HashDigest<SHA256> BlockHash { get; }
     }

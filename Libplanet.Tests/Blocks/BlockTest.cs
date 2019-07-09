@@ -47,7 +47,8 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis);
+            Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> next =
+                MineNext(_fx.Genesis);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
@@ -166,8 +167,9 @@ namespace Libplanet.Tests.Blocks
                 0x2a, 0x4a, 0x9b, 0xfc, 0xf9, 0xcb, 0x54, 0x26, 0x3d, 0xfa,
                 0x4f, 0x5c, 0xbc, 0x65, 0x65, 0x65,
             };
-            Block<PolymorphicAction<BaseAction>> actual =
-                Block<PolymorphicAction<BaseAction>>.FromBencodex(encoded);
+            Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> actual =
+                Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>.FromBencodex(
+                    encoded);
             Assert.Equal(_fx.HasTx, actual);
         }
 
@@ -184,7 +186,7 @@ namespace Libplanet.Tests.Blocks
             DumbAction MakeAction(Address address, char identifier) =>
                 new DumbAction(address, identifier.ToString(), false, true);
 
-            Block<DumbAction> genesis = MineGenesis<DumbAction>();
+            Block<DumbAction, DumbAction> genesis = MineGenesis<DumbAction, DumbAction>();
             Assert.Empty(genesis.EvaluateActionsPerTx(address => null));
 
             Transaction<DumbAction>[] blockIdx1Txs =
@@ -200,7 +202,7 @@ namespace Libplanet.Tests.Blocks
                     new[] { MakeAction(addresses[2], 'C') }
                 ),
             };
-            Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs);
+            Block<DumbAction, DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs);
             var pairs = blockIdx1
                 .EvaluateActionsPerTx(address => null)
                 .ToImmutableArray();
@@ -277,7 +279,7 @@ namespace Libplanet.Tests.Blocks
                 ),
             };
 
-            Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
+            Block<DumbAction, DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
             pairs = blockIdx2
                 .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
                 .ToImmutableArray();
@@ -346,8 +348,8 @@ namespace Libplanet.Tests.Blocks
                 new byte[10]
             );
             var invalidTx = new Transaction<DumbAction>(rawTx);
-            Block<DumbAction> invalidBlock = MineNext(
-                MineGenesis<DumbAction>(),
+            Block<DumbAction, DumbAction> invalidBlock = MineNext(
+                MineGenesis<DumbAction, DumbAction>(),
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
@@ -381,8 +383,8 @@ namespace Libplanet.Tests.Blocks
                     sig
                 )
             );
-            Block<DumbAction> invalidBlock = MineNext(
-                MineGenesis<DumbAction>(),
+            Block<DumbAction, DumbAction> invalidBlock = MineNext(
+                MineGenesis<DumbAction, DumbAction>(),
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
@@ -421,7 +423,8 @@ namespace Libplanet.Tests.Blocks
                     sig
                 )
             );
-            Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
+            Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> invalidBlock =
+                MineNext(
                 _fx.Genesis,
                 new List<Transaction<PolymorphicAction<BaseAction>>>
                 {
@@ -437,7 +440,7 @@ namespace Libplanet.Tests.Blocks
         public void CanDetectInvalidTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            var block = Block<DumbAction>.Mine(
+            var block = Block<DumbAction, DumbAction>.Mine(
                 _fx.Next.Index,
                 _fx.Next.Difficulty,
                 _fx.Next.Miner.Value,
@@ -457,7 +460,8 @@ namespace Libplanet.Tests.Blocks
         public void DetectInvalidNonce()
         {
             const int easyDifficulty = 4;
-            var invalidBlock = new Block<PolymorphicAction<BaseAction>>(
+            var invalidBlock =
+                new Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: easyDifficulty,
                 nonce: new Nonce(new byte[] { 0x00 }),
@@ -473,20 +477,21 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidDifficulty()
         {
-            var invalidGenesis = new Block<DumbAction>(
+            var invalidGenesis = new Block<DumbAction, DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: 1, // invalid
                 nonce: _fx.Genesis.Nonce,
                 miner: _fx.Genesis.Miner,
                 previousHash: _fx.Genesis.PreviousHash,
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: MineGenesis<DumbAction>().Transactions
+                transactions: MineGenesis<DumbAction, DumbAction>().Transactions
             );
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                 invalidGenesis.Validate(DateTimeOffset.UtcNow)
             );
 
-            var invalidNext = new Block<PolymorphicAction<BaseAction>>(
+            var invalidNext =
+                new Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: 0, // invalid
                 nonce: _fx.Next.Nonce,
@@ -503,21 +508,22 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void DetectInvalidPreviousHash()
         {
-            var invalidGenesis = new Block<DumbAction>(
+            var invalidGenesis = new Block<DumbAction, DumbAction>(
                 index: _fx.Genesis.Index,
                 difficulty: _fx.Genesis.Difficulty,
                 nonce: _fx.Genesis.Nonce,
                 miner: _fx.Genesis.Miner,
                 previousHash: new HashDigest<SHA256>(GetRandomBytes(32)), // invalid
                 timestamp: _fx.Genesis.Timestamp,
-                transactions: MineGenesis<DumbAction>().Transactions
+                transactions: MineGenesis<DumbAction, DumbAction>().Transactions
             );
 
             Assert.Throws<InvalidBlockPreviousHashException>(() =>
                 invalidGenesis.Validate(DateTimeOffset.UtcNow)
             );
 
-            var invalidNext = new Block<PolymorphicAction<BaseAction>>(
+            var invalidNext =
+                new Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(
                 index: _fx.Next.Index,
                 difficulty: _fx.Next.Difficulty,
                 nonce: _fx.Next.Nonce,
@@ -574,8 +580,10 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void CanCompareToOtherBlock()
         {
-            Block<PolymorphicAction<BaseAction>> sameBlock1 = _fx.Genesis;
-            var sameBlock2 = new Block<PolymorphicAction<BaseAction>>(
+            Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> sameBlock1 =
+                _fx.Genesis;
+            var sameBlock2 =
+                new Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(
                 index: sameBlock1.Index,
                 difficulty: sameBlock1.Difficulty,
                 nonce: sameBlock1.Nonce,
@@ -584,7 +592,8 @@ namespace Libplanet.Tests.Blocks
                 timestamp: sameBlock1.Timestamp,
                 transactions: sameBlock1.Transactions
             );
-            Block<PolymorphicAction<BaseAction>> differentBlock = _fx.Next;
+            Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> differentBlock =
+                _fx.Next;
 
             Assert.Equal(sameBlock1, sameBlock2);
             Assert.NotEqual(sameBlock2, differentBlock);

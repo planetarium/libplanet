@@ -20,23 +20,23 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         private readonly ITestOutputHelper _output;
 
-        private List<Block<DumbAction>> _blocks;
-        private IBlockPolicy<DumbAction> _policy;
+        private List<Block<DumbAction, DumbAction>> _blocks;
+        private IBlockPolicy<DumbAction, DumbAction> _policy;
         private List<Transaction<DumbAction>> _emptyTransaction;
-        private Block<DumbAction> _genesis;
-        private Block<DumbAction> _validNext;
+        private Block<DumbAction, DumbAction> _genesis;
+        private Block<DumbAction, DumbAction> _validNext;
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
             _output = output;
-            _blocks = new List<Block<DumbAction>>();
-            _policy = new BlockPolicy<DumbAction>(
+            _blocks = new List<Block<DumbAction, DumbAction>>();
+            _policy = new BlockPolicy<DumbAction, DumbAction>(
                 TimeSpan.FromMilliseconds(5000),
                 1024,
                 128);
             _emptyTransaction = new List<Transaction<DumbAction>>();
-            _genesis = TestUtils.MineGenesis<DumbAction>();
-            _validNext = Block<DumbAction>.Mine(
+            _genesis = TestUtils.MineGenesis<DumbAction, DumbAction>();
+            _validNext = Block<DumbAction, DumbAction>.Mine(
                 1,
                 1024,
                 _genesis.Miner.Value,
@@ -49,35 +49,35 @@ namespace Libplanet.Tests.Blockchain.Policies
         public void Constructors()
         {
             var tenSec = new TimeSpan(0, 0, 10);
-            var a = new BlockPolicy<DumbAction>(tenSec, 1024, 128);
+            var a = new BlockPolicy<DumbAction, DumbAction>(tenSec, 1024, 128);
             Assert.Equal(tenSec, a.BlockInterval);
 
-            var b = new BlockPolicy<DumbAction>(65000);
+            var b = new BlockPolicy<DumbAction, DumbAction>(65000);
             Assert.Equal(
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
 
-            var c = new BlockPolicy<DumbAction>();
+            var c = new BlockPolicy<DumbAction, DumbAction>();
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);
 
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(tenSec.Negate(), 1024, 128));
+                () => new BlockPolicy<DumbAction, DumbAction>(tenSec.Negate(), 1024, 128));
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => new BlockPolicy<DumbAction>(-5));
+                () => new BlockPolicy<DumbAction, DumbAction>(-5));
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(tenSec, 0, 128));
+                new BlockPolicy<DumbAction, DumbAction>(tenSec, 0, 128));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
-                new BlockPolicy<DumbAction>(tenSec, 1024, 1024));
+                new BlockPolicy<DumbAction, DumbAction>(tenSec, 1024, 1024));
         }
 
         [Fact]
         public void GetNextBlockDifficulty()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
-            Block<DumbAction>[] blocks = MineBlocks(
+            var policy = new BlockPolicy<DumbAction, DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
+            Block<DumbAction, DumbAction>[] blocks = MineBlocks(
                 new[] { (0, 0), (1, 1024), (3, 1032), (7, 1040), (9, 1040), (13, 1048) }
             ).ToArray();
 
@@ -117,7 +117,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _policy.ValidateNextBlock(_blocks, _genesis);
             _blocks.Add(_genesis);
 
-            var validNextBlock = Block<DumbAction>.Mine(
+            var validNextBlock = Block<DumbAction, DumbAction>.Mine(
                 1,
                 1,
                 _genesis.Miner.Value,
@@ -130,7 +130,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateNextBlockGenesis()
         {
-            var validGenesis = TestUtils.MineGenesis<DumbAction>();
+            var validGenesis = TestUtils.MineGenesis<DumbAction, DumbAction>();
             Assert.Null(
                 _policy.ValidateNextBlock(_blocks, validGenesis));
 
@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             Assert.IsType<InvalidBlockIndexException>(
                 _policy.ValidateNextBlock(_blocks, invalidIndexGenesis));
 
-            var invalidPreviousHashGenesis = new Block<DumbAction>(
+            var invalidPreviousHashGenesis = new Block<DumbAction, DumbAction>(
                  0,
                  0,
                  new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
@@ -158,7 +158,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _blocks.Add(_genesis);
             _blocks.Add(_validNext);
 
-            var invalidIndexBlock = Block<DumbAction>.Mine(
+            var invalidIndexBlock = Block<DumbAction, DumbAction>.Mine(
                 1,
                 1,
                 _genesis.Miner.Value,
@@ -175,7 +175,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _blocks.Add(_genesis);
             _blocks.Add(_validNext);
 
-            var invalidDifficultyBlock = Block<DumbAction>.Mine(
+            var invalidDifficultyBlock = Block<DumbAction, DumbAction>.Mine(
                 2,
                 1,
                 _genesis.Miner.Value,
@@ -194,7 +194,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _blocks.Add(_genesis);
             _blocks.Add(_validNext);
 
-            var invalidPreviousHashBlock = Block<DumbAction>.Mine(
+            var invalidPreviousHashBlock = Block<DumbAction, DumbAction>.Mine(
                 2,
                 1032,
                 _genesis.Miner.Value,
@@ -213,7 +213,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _blocks.Add(_genesis);
             _blocks.Add(_validNext);
 
-            var invalidPreviousTimestamp = Block<DumbAction>.Mine(
+            var invalidPreviousTimestamp = Block<DumbAction, DumbAction>.Mine(
                 2,
                 1032,
                 _genesis.Miner.Value,
@@ -229,7 +229,7 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateBlocks()
         {
-            var policy = new BlockPolicy<DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
+            var policy = new BlockPolicy<DumbAction, DumbAction>(new TimeSpan(3, 0, 0), 1024, 128);
 
             // The genesis block must has the index #0.
             Assert.IsType<InvalidBlockIndexException>(
@@ -346,7 +346,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             );
         }
 
-        private IEnumerable<Block<DumbAction>> MineBlocks(
+        private IEnumerable<Block<DumbAction, DumbAction>> MineBlocks(
             (int, int)[] blockArgs,
             Func<BlockFields, BlockFields> interprocess = null
         )
@@ -377,7 +377,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                     timestamp = fields.Timestamp;
                 }
 
-                Block<DumbAction> block = Block<DumbAction>.Mine(
+                Block<DumbAction, DumbAction> block = Block<DumbAction, DumbAction>.Mine(
                     i,
                     difficulty,
                     miner,

@@ -15,8 +15,9 @@ using Libplanet.Tx;
 namespace Libplanet.Blocks
 {
     [Equals]
-    public class Block<T> : ISerializable
-        where T : IAction, new()
+    public class Block<TTxAction, TBlockAction> : ISerializable
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
 
@@ -30,7 +31,7 @@ namespace Libplanet.Blocks
             Address? miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<TTxAction>> transactions)
         {
             Index = index;
             Difficulty = difficulty;
@@ -62,7 +63,7 @@ namespace Libplanet.Blocks
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
                     .Cast<Dictionary<string, object>>()
-                    .Select(d => new Transaction<T>(new RawTransaction(d)))
+                    .Select(d => new Transaction<TTxAction>(new RawTransaction(d)))
                     .ToList()
                 )
         {
@@ -89,20 +90,20 @@ namespace Libplanet.Blocks
         public DateTimeOffset Timestamp { get; }
 
         [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> Transactions { get; }
+        public IEnumerable<Transaction<TTxAction>> Transactions { get; }
 
-        public static Block<T> Mine(
+        public static Block<TTxAction, TBlockAction> Mine(
             long index,
             long difficulty,
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<TTxAction>> transactions)
         {
             // FIXME: We need to fix this to solve
             // https://github.com/planetarium/libplanet/issues/244.
-            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
-            Block<T> MakeBlock(Nonce n) => new Block<T>(
+            Transaction<TTxAction>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
+            Block<TTxAction, TBlockAction> MakeBlock(Nonce n) => new Block<TTxAction, TBlockAction>(
                 index,
                 difficulty,
                 n,
@@ -118,18 +119,18 @@ namespace Libplanet.Blocks
             return MakeBlock(nonce);
         }
 
-        public static Block<T> FromBencodex(byte[] encoded)
+        public static Block<TTxAction, TBlockAction> FromBencodex(byte[] encoded)
         {
-            var serializer = new BencodexFormatter<Block<T>>();
+            var serializer = new BencodexFormatter<Block<TTxAction, TBlockAction>>();
             using (var stream = new MemoryStream(encoded))
             {
-                return (Block<T>)serializer.Deserialize(stream);
+                return (Block<TTxAction, TBlockAction>)serializer.Deserialize(stream);
             }
         }
 
         public byte[] ToBencodex(bool hash, bool transactionData)
         {
-            var serializer = new BencodexFormatter<Block<T>>
+            var serializer = new BencodexFormatter<Block<TTxAction, TBlockAction>>
             {
                 Context = new StreamingContext(
                     StreamingContextStates.All,
@@ -165,16 +166,16 @@ namespace Libplanet.Blocks
         /// </returns>
         [Pure]
         public
-        IEnumerable<(Transaction<T>, ActionEvaluation<T>)>
+        IEnumerable<(Transaction<TTxAction>, ActionEvaluation<TTxAction>)>
         EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
         {
             IAccountStateDelta delta =
                 new AccountStateDeltaImpl(
                     accountStateGetter ?? (a => null)
                 );
-            foreach (Transaction<T> tx in Transactions)
+            foreach (Transaction<TTxAction> tx in Transactions)
             {
-                IEnumerable<ActionEvaluation<T>> evaluations =
+                IEnumerable<ActionEvaluation<TTxAction>> evaluations =
                     tx.EvaluateActionsGradually(
                         Hash,
                         Index,
@@ -218,7 +219,7 @@ namespace Libplanet.Blocks
         /// for example, it is too easy.</exception>
         /// <exception cref="InvalidBlockPreviousHashException">Thrown when
         /// <see cref="PreviousHash"/> is invalid so that
-        /// the <see cref="Block{T}"/>s are not continuous.</exception>
+        /// the <see cref="Block{TTxAction, TBlockAction}"/>s are not continuous.</exception>
         /// <exception cref="InvalidBlockNonceException">Thrown when
         /// the <see cref="Nonce"/> does not satisfy its
         /// <see cref="Difficulty"/> level.</exception>
@@ -233,13 +234,13 @@ namespace Libplanet.Blocks
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
-        public IEnumerable<ActionEvaluation<T>> Evaluate(
+        public IEnumerable<ActionEvaluation<TTxAction>> Evaluate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter
         )
         {
             Validate(currentTime);
-            (Transaction<T>, ActionEvaluation<T>)[] txEvaluations =
+            (Transaction<TTxAction>, ActionEvaluation<TTxAction>)[] txEvaluations =
                 EvaluateActionsPerTx(accountStateGetter).ToArray();
 
             var txUpdatedAddressesPairs = txEvaluations
@@ -251,7 +252,7 @@ namespace Libplanet.Blocks
                         )
                     );
             foreach (
-                (Transaction<T> tx, IImmutableSet<Address> updatedAddresses)
+                (Transaction<TTxAction> tx, IImmutableSet<Address> updatedAddresses)
                 in txUpdatedAddressesPairs)
             {
                 if (!tx.UpdatedAddresses.IsSupersetOf(updatedAddresses))
@@ -356,7 +357,7 @@ namespace Libplanet.Blocks
                 );
             }
 
-            foreach (Transaction<T> tx in Transactions)
+            foreach (Transaction<TTxAction> tx in Transactions)
             {
                 tx.Validate();
             }

@@ -13,7 +13,8 @@ namespace Libplanet.Tests.Blocks
         {
             TxFixture = new TxFixture();
 
-            Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
+            Genesis = TestUtils
+                .MineGenesis<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>();
             Next = TestUtils.MineNext(
                 Genesis,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 }
@@ -34,10 +35,13 @@ namespace Libplanet.Tests.Blocks
 
         internal TxFixture TxFixture { get; }
 
-        internal Block<PolymorphicAction<BaseAction>> Genesis { get; }
+        internal Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> Genesis
+        {
+            get;
+        }
 
-        internal Block<PolymorphicAction<BaseAction>> Next { get; }
+        internal Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> Next { get; }
 
-        internal Block<PolymorphicAction<BaseAction>> HasTx { get; }
+        internal Block<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>> HasTx { get; }
     }
 }

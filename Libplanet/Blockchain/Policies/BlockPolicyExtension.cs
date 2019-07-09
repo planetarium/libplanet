@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
     /// <summary>
     /// This extension class enables some convenient methods (sugar for
-    /// the most part) to deal with <see cref="IBlockPolicy{T}"/>.
+    /// the most part) to deal with <see cref="IBlockPolicy{TTxAction, TBlockAction}"/>.
     /// </summary>
-    /// <seealso cref="IBlockPolicy{T}"/>
+    /// <seealso cref="IBlockPolicy{TTxAction, TBlockAction}"/>
     public static class BlockPolicyExtension
     {
         /// <summary>
@@ -18,28 +19,33 @@ namespace Libplanet.Blockchain.Policies
         /// <para>Note that it returns <c>null</c> when blocks are
         /// <em>valid</em>.</para>
         /// </summary>
-        /// <param name="policy"><see cref="IBlockPolicy{T}"/> to used for
+        /// <param name="policy"><see cref="IBlockPolicy{TTxAction, TBlockAction}"/> to used for
         /// validation <paramref name="blocks"/>.</param>
-        /// <param name="blocks">Consecutive <see cref="Block{T}"/>s to
+        /// <param name="blocks">Consecutive <see cref="Block{TTxAction, TBlockAction}"/>s to
         /// validate.</param>
         /// <param name="currentTime">The current time to be used to validate
-        /// of <see cref="Block{T}.Timestamp"/>s.
+        /// of <see cref="Block{TTxAction, TBlockAction}.Timestamp"/>s.
         /// Usually <see cref="DateTimeOffset.UtcNow"/> is used.</param>
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
-        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
-        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-        /// <seealso cref="IBlockPolicy{T}"/>
-        /// <seealso cref="IBlockPolicy{T}.ValidateNextBlock"/>
-        public static InvalidBlockException ValidateBlocks<T>(
-            this IBlockPolicy<T> policy,
-            IReadOnlyList<Block<T>> blocks,
+        /// <typeparam name="TTxAction">An <see cref="IAction"/> type for
+        /// <see cref="Transaction{T}"/>.  It should match to
+        /// <see cref="Block{TTxAction, TBlockAction}"/>'s type parameter.</typeparam>
+        /// <typeparam name="TBlockAction">An <see cref="IAction"/> type for
+        /// <see cref="Block{TTxAction,TBlockAction}"/>.  It should match to
+        /// <see cref="Block{TTxAction, TBlockAction}"/>'s type parameter.</typeparam>
+        /// <seealso cref="IBlockPolicy{TTxAction, TBlockAction}"/>
+        /// <seealso cref="IBlockPolicy{TTxAction, TBlockAction}.ValidateNextBlock"/>
+        public static InvalidBlockException ValidateBlocks<TTxAction, TBlockAction>(
+            this IBlockPolicy<TTxAction, TBlockAction> policy,
+            IReadOnlyList<Block<TTxAction, TBlockAction>> blocks,
             DateTimeOffset currentTime)
-            where T : IAction, new()
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
-            var tempBlocks = new List<Block<T>>();
-            foreach (Block<T> block in blocks)
+            var tempBlocks = new List<Block<TTxAction, TBlockAction>>();
+            foreach (Block<TTxAction, TBlockAction> block in blocks)
             {
                 InvalidBlockException exception =
                     policy.ValidateNextBlock(tempBlocks, block);

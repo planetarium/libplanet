@@ -260,8 +260,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new()
+        public Block<TTxAction, TBlockAction> GetBlock<TTxAction, TBlockAction>(
+            HashDigest<SHA256> blockHash)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             LiteFileInfo file =
                 _db.FileStorage.FindById(BlockFileId(blockHash));
@@ -286,7 +288,7 @@ namespace Libplanet.Store
                         new HashDigest<SHA256>(rawBlock.PreviousHash);
                 }
 
-                return new Block<T>(
+                return new Block<TTxAction, TBlockAction>(
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
                     nonce: new Nonce(rawBlock.Nonce),
@@ -294,19 +296,20 @@ namespace Libplanet.Store
                     previousHash: previousHash,
                     timestamp: DateTimeOffset.ParseExact(
                         rawBlock.Timestamp,
-                        Block<T>.TimestampFormat,
+                        Block<TTxAction, TBlockAction>.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
+                    transactions: GetTransactions<TTxAction>(rawBlock.Transactions)
                 );
             }
         }
 
         /// <inheritdoc/>
-        public void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public void PutBlock<TTxAction, TBlockAction>(Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
-            foreach (Transaction<T> tx in block.Transactions)
+            foreach (Transaction<TTxAction> tx in block.Transactions)
             {
                 PutTransaction(tx);
             }
@@ -413,11 +416,12 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void StoreStateReference<T>(
+        public void StoreStateReference<TTxAction, TBlockAction>(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new()
+            Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             int hashSize = HashDigest<SHA256>.Size;
             byte[] hashBytes = block.Hash.ToByteArray();
@@ -453,12 +457,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void ForkStateReferences<T>(
+        public void ForkStateReferences<TTxAction, TBlockAction>(
             string srcNamespace,
             string destNamespace,
-            Block<T> branchPoint,
+            Block<TTxAction, TBlockAction> branchPoint,
             IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             long branchPointIndex = branchPoint.Index;
             List<LiteFileInfo> files =

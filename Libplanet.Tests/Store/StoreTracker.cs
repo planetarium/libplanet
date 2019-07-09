@@ -80,11 +80,13 @@ namespace Libplanet.Tests.Store
             return _store.DeleteTransaction(txid);
         }
 
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new()
+        public Block<TTxAction, TBlockAction> GetBlock<TTxAction, TBlockAction>(
+            HashDigest<SHA256> blockHash)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             _logs.Add((nameof(GetBlock), blockHash, null));
-            return _store.GetBlock<T>(blockHash);
+            return _store.GetBlock<TTxAction, TBlockAction>(blockHash);
         }
 
         public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
@@ -136,11 +138,12 @@ namespace Libplanet.Tests.Store
             return _store.ListNamespaces();
         }
 
-        public void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public void PutBlock<TTxAction, TBlockAction>(Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             _logs.Add((nameof(PutBlock), block, null));
-            _store.PutBlock<T>(block);
+            _store.PutBlock<TTxAction, TBlockAction>(block);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)
@@ -167,23 +170,25 @@ namespace Libplanet.Tests.Store
             return _store.IterateStateReferences(@namespace, address);
         }
 
-        public void StoreStateReference<T>(
+        public void StoreStateReference<TTxAction, TBlockAction>(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new()
+            Block<TTxAction, TBlockAction> block)
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             // FIXME: Log arguments properly (including @namespace).
             _logs.Add((nameof(StoreStateReference), block.Hash, null));
             _store.StoreStateReference(@namespace, addresses, block);
         }
 
-        public void ForkStateReferences<T>(
+        public void ForkStateReferences<TTxAction, TBlockAction>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
+            Block<TTxAction, TBlockAction> branchPoint,
             IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             // FIXME: Log arguments properly.
             _logs.Add((nameof(ForkStateReferences), null, null));

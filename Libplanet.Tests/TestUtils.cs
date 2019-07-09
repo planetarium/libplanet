@@ -79,32 +79,34 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        internal static Block<T> MineGenesis<T>()
-            where T : IAction, new()
+        internal static Block<TTxAction, TBlockAction> MineGenesis<TTxAction, TBlockAction>()
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
-            return new Block<T>(
+            return new Block<TTxAction, TBlockAction>(
                 index: 0,
                 difficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
                 miner: GenesisMinerAddress,
                 previousHash: null,
                 timestamp: timestamp,
-                transactions: new List<Transaction<T>>()
+                transactions: new List<Transaction<TTxAction>>()
             );
         }
 
-        internal static Block<T> MineNext<T>(
-            Block<T> previousBlock,
-            IEnumerable<Transaction<T>> txs = null,
+        internal static Block<TTxAction, TBlockAction> MineNext<TTxAction, TBlockAction>(
+            Block<TTxAction, TBlockAction> previousBlock,
+            IEnumerable<Transaction<TTxAction>> txs = null,
             byte[] nonce = null,
             long difficulty = 1
         )
-            where T : IAction, new()
+            where TTxAction : IAction, new()
+            where TBlockAction : IAction, new()
         {
             if (txs == null)
             {
-                txs = new List<Transaction<T>>();
+                txs = new List<Transaction<TTxAction>>();
             }
 
             long index = previousBlock.Index + 1;
@@ -114,7 +116,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
             if (nonce == null)
             {
-                return Block<T>.Mine(
+                return Block<TTxAction, TBlockAction>.Mine(
                     index: index,
                     difficulty: difficulty,
                     miner: miner,
@@ -124,7 +126,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 );
             }
 
-            return new Block<T>(
+            return new Block<TTxAction, TBlockAction>(
                 index: index,
                 difficulty: difficulty,
                 nonce: new Nonce(nonce),

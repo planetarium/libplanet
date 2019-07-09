@@ -3,14 +3,15 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Blockchain
 {
-    public class MineBlockEventArgs<T>
-        where T : IAction, new()
+    public class MineBlockEventArgs<TTxAction, TBlockAction>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
-        public MineBlockEventArgs(Block<T> block)
+        public MineBlockEventArgs(Block<TTxAction, TBlockAction> block)
         {
             Block = block;
         }
 
-        public Block<T> Block { get; }
+        public Block<TTxAction, TBlockAction> Block { get; }
     }
 }

@@ -8,8 +8,10 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Store
 {
-    public class BlockSet<T> : BaseIndex<HashDigest<SHA256>, Block<T>>
-        where T : IAction, new()
+    public class BlockSet<TTxAction, TBlockAction>
+        : BaseIndex<HashDigest<SHA256>, Block<TTxAction, TBlockAction>>
+        where TTxAction : IAction, new()
+        where TBlockAction : IAction, new()
     {
         public BlockSet(IStore store)
             : base(store)
@@ -19,20 +21,20 @@ namespace Libplanet.Store
         public override ICollection<HashDigest<SHA256>> Keys =>
             Store.IterateBlockHashes().ToList();
 
-        public override ICollection<Block<T>> Values =>
+        public override ICollection<Block<TTxAction, TBlockAction>> Values =>
             Store.IterateBlockHashes()
-                .Select(Store.GetBlock<T>)
+                .Select(Store.GetBlock<TTxAction, TBlockAction>)
                 .ToList();
 
         public override int Count => (int)Store.CountBlocks();
 
         public override bool IsReadOnly => false;
 
-        public override Block<T> this[HashDigest<SHA256> key]
+        public override Block<TTxAction, TBlockAction> this[HashDigest<SHA256> key]
         {
             get
             {
-                Block<T> block = Store.GetBlock<T>(key);
+                Block<TTxAction, TBlockAction> block = Store.GetBlock<TTxAction, TBlockAction>(key);
                 if (block == null)
                 {
                     throw new KeyNotFoundException();
@@ -56,7 +58,7 @@ namespace Libplanet.Store
         }
 
         public override bool Contains(
-            KeyValuePair<HashDigest<SHA256>, Block<T>> item)
+            KeyValuePair<HashDigest<SHA256>, Block<TTxAction, TBlockAction>> item)
         {
             return Store.IterateBlockHashes().Contains(item.Key);
         }

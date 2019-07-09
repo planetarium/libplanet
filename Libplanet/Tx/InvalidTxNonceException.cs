@@ -6,7 +6,7 @@ namespace Libplanet.Tx
 {
     /// <summary>
     /// The exception that is thrown when the <see cref="Transaction{T}.Nonce"/>
-    /// is different from <see cref="BlockChain{T}.GetNextTxNonce"/> result of
+    /// is different from <see cref="BlockChain{TTxAction, TBlockAction}.GetNextTxNonce"/> result of
     /// the <see cref="Transaction{T}.Signer"/>.
     /// </summary>
     [Serializable]
@@ -19,8 +19,9 @@ namespace Libplanet.Tx
         /// <param name="txid">The invalid <see cref="Transaction{T}"/>'s
         /// <see cref="Transaction{T}.Id"/>.  It is automatically included to
         /// the <see cref="Exception.Message"/> string.</param>
-        /// <param name="expectedNonce"><see cref="BlockChain{T}.GetNextTxNonce"/>
-        /// result of the <see cref="Transaction{T}.Signer"/>.</param>
+        /// <param name="expectedNonce">
+        /// <see cref="BlockChain{TTxAction, TBlockAction}.GetNextTxNonce"/> result of the
+        /// <see cref="Transaction{T}.Signer"/>.</param>
         /// <param name="improperNonce">The actual
         /// <see cref="Transaction{T}.Nonce"/>.</param>
         /// <param name="message">The message that describes the error.</param>
@@ -44,7 +45,7 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// <see cref="BlockChain{T}.GetNextTxNonce"/> result of the
+        /// <see cref="BlockChain{TTxAction, TBlockAction}.GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.
         /// </summary>
         public long ExpectedNonce { get; }

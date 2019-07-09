@@ -9,6 +9,9 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `Block<T>` became to `Block<TTxAction, TBlockAction>` and type parameters
+    of related classes and methods became to also `<TTxAction, TBlockAction>`.
+
 ### Added interfaces
 
 ### Behavioral changes

@@ -39,8 +39,8 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void DeleteNamespace()
         {
-            Block<DumbAction> block1 = TestUtils.MineNext(
-                TestUtils.MineGenesis<DumbAction>(),
+            Block<DumbAction, DumbAction> block1 = TestUtils.MineNext(
+                TestUtils.MineGenesis<DumbAction, DumbAction>(),
                 new[] { Fx.Transaction1 });
             Fx.Store.AppendIndex(Fx.StoreNamespace, block1.Hash);
             Fx.Store.AppendIndex("asdf", block1.Hash);
@@ -105,9 +105,9 @@ namespace Libplanet.Tests.Store
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block3.Hash));
             Assert.False(Fx.Store.DeleteBlock(Fx.Block1.Hash));
 
             Fx.Store.PutBlock(Fx.Block1);
@@ -120,9 +120,9 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block3.Hash));
 
             Fx.Store.PutBlock(Fx.Block2);
             Assert.Equal(2, Fx.Store.CountBlocks());
@@ -135,11 +135,11 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateBlockHashes().ToHashSet());
             Assert.Equal(
                 Fx.Block1,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+                Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block3.Hash));
 
             Assert.True(Fx.Store.DeleteBlock(Fx.Block1.Hash));
             Assert.Equal(1, Fx.Store.CountBlocks());
@@ -149,11 +149,11 @@ namespace Libplanet.Tests.Store
                     Fx.Block2.Hash,
                 },
                 Fx.Store.IterateBlockHashes().ToHashSet());
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block1.Hash));
             Assert.Equal(
                 Fx.Block2,
-                Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
-            Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+                Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlock<DumbAction, DumbAction>(Fx.Block3.Hash));
         }
 
         [Fact]
@@ -266,12 +266,12 @@ namespace Libplanet.Tests.Store
             Transaction<DumbAction> tx4 = Fx.MakeTransaction(
                 new DumbAction[] { new DumbAction(address, "foo") }
             );
-            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
+            Block<DumbAction, DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
 
             Transaction<DumbAction> tx5 = Fx.MakeTransaction(
                 new DumbAction[] { new DumbAction(address, "bar") }
             );
-            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
+            Block<DumbAction, DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
 
             Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address));
 
@@ -300,7 +300,7 @@ namespace Libplanet.Tests.Store
         {
             Address address1 = Fx.Address1;
             Address address2 = Fx.Address2;
-            Block<DumbAction> prevBlock = Fx.Block3;
+            Block<DumbAction, DumbAction> prevBlock = Fx.Block3;
             const string targetNamespace = "dummy";
 
             Transaction<DumbAction> tx1 = Fx.MakeTransaction(
@@ -312,7 +312,7 @@ namespace Libplanet.Tests.Store
                 new HashSet<Address> { address2 }.ToImmutableHashSet());
 
             var txs1 = new[] { tx1 };
-            var blocks = new List<Block<DumbAction>>
+            var blocks = new List<Block<DumbAction, DumbAction>>
             {
                 TestUtils.MineNext(prevBlock, txs1),
             };
@@ -320,7 +320,7 @@ namespace Libplanet.Tests.Store
             blocks.Add(TestUtils.MineNext(blocks[1], txs1));
 
             HashSet<Address> updatedAddresses;
-            foreach (Block<DumbAction> block in blocks)
+            foreach (Block<DumbAction, DumbAction> block in blocks)
             {
                 updatedAddresses = new HashSet<Address> { address1 };
                 Fx.Store.StoreStateReference(
