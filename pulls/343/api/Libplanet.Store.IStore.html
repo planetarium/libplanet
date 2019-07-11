@@ -1369,8 +1369,8 @@ the requested <code data-dev-comment-type="paramref" class="paramref">address</c
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
         <td><p><em>Ordered</em> pairs of a state reference and a corresponding
-<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>.  The highest index (i.e., the closest to the tip) go last,
-and the lowest index (i.e., the closest to the genesis) go first.</p>
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>.  The highest index (i.e., the closest to the tip) go
+first and the lowest index (i.e., the closest to the genesis) go last.</p>
 </td>
       </tr>
     </tbody>
@@ -1795,7 +1795,7 @@ of the <a class="xref" href="Libplanet.Address.html">Address</a>.</p>
   <h5 id="Libplanet_Store_IStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>State reference must be stored in the same order as the blocks. For now,
 it is assumed that this is only called by
-<span class="xref">Libplanet.Blockchain.BlockChain`1.Append(Libplanet.Blocks.Block{`0},System.DateTimeOffset,System.Boolean)</span> method.</p>
+<a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Append_Libplanet_Blocks_Block__0__">Append(Block&lt;T&gt;)</a> method.</p>
 </div>
   <h5 id="Libplanet_Store_IStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0___seealso">See Also</h5>
   <div class="seealso">

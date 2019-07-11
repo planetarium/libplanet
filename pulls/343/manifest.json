@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "DyZIPZsLoSUJuoIMiblcJw=="
+          "hash": "it2Eg5RjRlB61WHTEFObAg=="
         }
       },
       "is_incremental": false,
@@ -189,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.BlockChain-1.html",
-          "hash": "lB3tcxIwCtlPKQRjO/XKhw=="
+          "hash": "JECX35kOnAB5cO1tR8BTMg=="
         }
       },
       "is_incremental": false,
@@ -633,7 +633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "UTR/XDgB6hGZywuTxqgu0Q=="
+          "hash": "dxA4a6Djf5eWdUThc5Mjjw=="
         }
       },
       "is_incremental": false,
@@ -729,7 +729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.BaseStore.html",
-          "hash": "uxl9ChxOGVCMdCYlETX90g=="
+          "hash": "mJQ8QckFB7SEbrG9tuYi0A=="
         }
       },
       "is_incremental": false,
@@ -753,7 +753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.FileStore.html",
-          "hash": "SlI9nxqyedimhobc444Mjw=="
+          "hash": "DiQ4FzTp+lXCoLWqv2UBSg=="
         }
       },
       "is_incremental": false,
@@ -765,7 +765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "5LwS9HUFssmxwYsArzywnw=="
+          "hash": "pHc8HaebwgBeFOWZear0Ug=="
         }
       },
       "is_incremental": false,
@@ -777,7 +777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.LiteDBStore.html",
-          "hash": "mw21s8quOcvAI+n9QVCSZQ=="
+          "hash": "gA3Wo6kCgl7Q5hyNfatXMQ=="
         }
       },
       "is_incremental": false,
@@ -801,7 +801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.StoreExtension.html",
-          "hash": "3LReP0q/J0FdEK+m4nF8Rw=="
+          "hash": "uRCZOOigfmaFmVwLBHVByA=="
         }
       },
       "is_incremental": false,

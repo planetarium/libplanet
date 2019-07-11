@@ -407,7 +407,7 @@
     <a href="https://github.com/planetarium/libplanet/new/trusted-peers/apiSpec/new?filename=Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtension.LookupStateReference%60%601(Libplanet.Store.IStore%2CSystem.String%2CLibplanet.Address%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/trusted-peers/Libplanet/Store/StoreExtension.cs/#L28">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/trusted-peers/Libplanet/Store/StoreExtension.cs/#L29">View Source</a>
   </span>
   <a id="Libplanet_Store_StoreExtension_LookupStateReference_" data-uid="Libplanet.Store.StoreExtension.LookupStateReference*"></a>
   <h4 id="Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.StoreExtension.LookupStateReference``1(Libplanet.Store.IStore,System.String,Libplanet.Address,Libplanet.Blocks.Block{``0})">LookupStateReference&lt;T&gt;(IStore, String, Address, Block&lt;T&gt;)</h4>
@@ -417,7 +417,7 @@ an action mutating the <code data-dev-comment-type="paramref" class="paramref">a
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static HashDigest&lt;SHA256&gt;? LookupStateReference&lt;T&gt;(this IStore store, string namespace, Address address, Block&lt;T&gt; lookupUntil)
+    <pre><code class="lang-csharp hljs">public static Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt; LookupStateReference&lt;T&gt;(this IStore store, string namespace, Address address, Block&lt;T&gt; lookupUntil)
     where T : IAction, new()</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -467,9 +467,10 @@ an action mutating the <code data-dev-comment-type="paramref" class="paramref">a
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
-        <td><p>A <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> which has the state of
-the <code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;</td>
+        <td><p>Returns a nullable tuple consisting of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash">Hash</a> and
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with the state of the
+address.</p>
 </td>
       </tr>
     </tbody>
