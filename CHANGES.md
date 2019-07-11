@@ -8,11 +8,18 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `StoreExtension.LookupStateReference<T>()` method became to return
+    `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
+    and `Block<T>.Index`.  [[#350]]
+
 ### Added interfaces
 
 ### Behavioral changes
 
 ### Bug fixes
+
+
+[#350]: https://github.com/planetarium/libplanet/pull/350
 
 
 Version 0.4.1

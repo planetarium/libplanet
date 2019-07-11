@@ -18,27 +18,15 @@ namespace Libplanet.Store
         /// <param name="address">The <see cref="Address"/> to look up.</param>
         /// <param name="lookupUntil">The upper bound (i.e., the latest block) of the search range.
         /// <see cref="Block{T}"/>s after <paramref name="lookupUntil"/> are ignored.</param>
-        /// <returns>A <see cref="Block{T}.Hash"/> which has the state of
-        /// the <paramref name="address"/>.</returns>
+        /// <returns>Returns a nullable tuple consisting of <see cref="Block{T}.Hash"/> and
+        /// <see cref="Block{T}.Index"/> of the <see cref="Block{T}"/> with the state of the
+        /// address.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="lookupUntil"/>.</typeparam>
         /// <seealso
         /// cref="IStore.StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
         /// <seealso cref="IStore.IterateStateReferences(string, Address)"/>
-        public static HashDigest<SHA256>? LookupStateReference<T>(
-            this IStore store,
-            string @namespace,
-            Address address,
-            Block<T> lookupUntil)
-            where T : IAction, new()
-        {
-            Tuple<HashDigest<SHA256>, long> sr = store.
-                LookupStateReferenceWithIndex(@namespace, address, lookupUntil);
-
-            return sr?.Item1;
-        }
-
-        internal static Tuple<HashDigest<SHA256>, long> LookupStateReferenceWithIndex<T>(
+        public static Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             this IStore store,
             string @namespace,
             Address address,
