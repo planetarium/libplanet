@@ -79,6 +79,11 @@
 <h2 id="version-050">Version 0.5.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
+<ul>
+<li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
+<code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
+and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
+</ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
