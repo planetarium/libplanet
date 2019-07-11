@@ -78,14 +78,6 @@
 
 <h2 id="version-041">Version 0.4.1</h2>
 <p>To be released.</p>
-<h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
-<ul>
-<li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
-<code>(HashDigest&lt;SHA256&gt;, long)?</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
-and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/346">#346</a>]</li>
-</ul>
-<h3 id="added-interfaces">Added interfaces</h3>
-<h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the GetStates method does not return the latest state
@@ -93,7 +85,7 @@ when there are multiple addresses.  [<a href="https://github.com/planetarium/lib
 </ul>
 <h2 id="version-040">Version 0.4.0</h2>
 <p>Released on July 8, 2019.</p>
-<h3 id="backward-incompatible-interface-changes-1">Backward-incompatible interface changes</h3>
+<h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
 <li><code>Peer.AppProtocolVersion</code> became nullable to represent <code>Peer</code> whose version
 is unknown.  [<a href="https://github.com/planetarium/libplanet/pull/280">#280</a>]</li>
@@ -141,7 +133,7 @@ Because the <code>Swarm&lt;T&gt;</code> constructor takes it instead.  [<a href=
 became to automatically detect an appropriate <code>BlockChain&lt;T&gt;.Id</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/279">#279</a>, <a href="https://github.com/planetarium/libplanet/pull/332">#332</a>]</li>
 </ul>
-<h3 id="added-interfaces-1">Added interfaces</h3>
+<h3 id="added-interfaces">Added interfaces</h3>
 <ul>
 <li>Added <code>LiteDBStore</code> backend that uses <a href="https://www.litedb.org/">LiteDB</a> under the hood.  [<a href="https://github.com/planetarium/libplanet/pull/269">#269</a>]</li>
 <li>All <code>*Async()</code> methods belonging to <code>TurnClient</code> class became to have
@@ -156,7 +148,7 @@ to create a <code>Peer</code> whose version is unknown.  [<a href="https://githu
 transactions too during nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>, <a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 <li>Added <code>StoreExtension</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>]</li>
 </ul>
-<h3 id="behavioral-changes-1">Behavioral changes</h3>
+<h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>BlockChain&lt;T&gt;.GetStates()</code> method became to throw
 <code>IncompleteBlockStatesException</code> if its <code>Store</code> lacks the states of a block
@@ -206,7 +198,7 @@ a message.  [<a href="https://github.com/planetarium/libplanet/pull/321">#321</a
 </ul>
 <h2 id="version-030">Version 0.3.0</h2>
 <p>Released on May 31, 2019.</p>
-<h3 id="backward-incompatible-interface-changes-2">Backward-incompatible interface changes</h3>
+<h3 id="backward-incompatible-interface-changes-1">Backward-incompatible interface changes</h3>
 <ul>
 <li>Added <code>IAction.Render(IActionContext, IAccountStateDelta)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
@@ -259,7 +251,7 @@ related classes method parameters and field types have changed accordingly.</li>
 <li>Added <code>IStore.IncreaseTxNonce&lt;T&gt;(string, Block&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/246">#246</a>]</li>
 <li>Added <code>IStore.ForkTxNonce&lt;T&gt;(string, string, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/246">#246</a>]</li>
 </ul>
-<h3 id="added-interfaces-2">Added interfaces</h3>
+<h3 id="added-interfaces-1">Added interfaces</h3>
 <ul>
 <li><code>BlockChain&lt;T&gt;</code> became to implement <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
 <li>Added <code>Swarm.DifferentVersionPeerEncountered</code> event handler that can handle
@@ -287,7 +279,7 @@ messages when a <code>Swarm</code> instance is requested to terminate.</li>
 caught. [<a href="https://github.com/planetarium/libplanet/issues/133">#133</a>, <a href="https://github.com/planetarium/libplanet/pull/251">#251</a>]</li>
 <li>Added <code>InvalidTxNonceException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/246">#246</a>]</li>
 </ul>
-<h3 id="behavioral-changes-2">Behavioral changes</h3>
+<h3 id="behavioral-changes-1">Behavioral changes</h3>
 <ul>
 <li><code>Swarm.StartAsync()</code> now receives the height of blocks (tip <code>Index</code>) from
 other known peers and synchronizes the blocks if necessary
