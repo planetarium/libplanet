@@ -8,8 +8,8 @@ To be released.
 
 ### Bug fixes
 
- -  Fixed a bug where the GetStates method does not return the latest state
-    when there are multiple addresses.  [[#346]]
+ -  Fixed a bug where the `BlockChain<T>.GetStates()` method had not returned
+    the latest state when there are multiple addresses.  [[#346]]
 
 [#346]: https://github.com/planetarium/libplanet/pull/346
 
