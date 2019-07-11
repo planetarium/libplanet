@@ -118,7 +118,7 @@ namespace Libplanet.Tests.Net.Messages
                msg.FrameCount
             );
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
-            Assert.Equal(accountsCount, BitConverter.ToInt32(msg[headerSize + 1].Buffer));
+            Assert.Equal(accountsCount, BitConverter.ToInt32(msg[headerSize + 1].Buffer, 0));
             for (int i = 0; i < accountsCount; i++)
             {
                 int offset = stateRefsOffset + 1 + (i * 4);
@@ -127,7 +127,7 @@ namespace Libplanet.Tests.Net.Messages
                 Assert.Contains(address, accounts);
 
                 Assert.Equal(4, msg[offset + 1].BufferSize);
-                Assert.Equal(2, BitConverter.ToInt32(msg[offset + 1].Buffer));
+                Assert.Equal(2, BitConverter.ToInt32(msg[offset + 1].Buffer, 0));
 
                 Assert.Equal(HashDigest<SHA256>.Size, msg[offset + 2].BufferSize);
                 Assert.Equal(stateRefs[address][0], new HashDigest<SHA256>(msg[offset + 2].Buffer));
@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Net.Messages
             }
 
             Assert.Empty(accounts);
-            Assert.Equal(signersCount, BitConverter.ToInt32(msg[txNoncesOffset].Buffer));
+            Assert.Equal(signersCount, BitConverter.ToInt32(msg[txNoncesOffset].Buffer, 0));
 
             for (int i = 0; i < signersCount; i++)
             {
@@ -148,7 +148,7 @@ namespace Libplanet.Tests.Net.Messages
                 Assert.Contains(address, signers);
 
                 Assert.Equal(8, msg[offset + 1].BufferSize);
-                Assert.Equal(txNonces[address], BitConverter.ToInt64(msg[offset + 1].Buffer));
+                Assert.Equal(txNonces[address], BitConverter.ToInt64(msg[offset + 1].Buffer, 0));
 
                 signers.Remove(address);
             }
@@ -156,7 +156,7 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Empty(signers);
             Assert.Equal(
                 compressedBlockStates.Count,
-                BitConverter.ToInt32(msg[blockStatesOffset].Buffer)
+                BitConverter.ToInt32(msg[blockStatesOffset].Buffer, 0)
             );
 
             var formatter = new BinaryFormatter();
@@ -166,7 +166,7 @@ namespace Libplanet.Tests.Net.Messages
 
                 var hash = new HashDigest<SHA256>(msg[offset].Buffer);
                 Assert.Contains(hash, compressedBlockStates);
-                Assert.Equal(1, BitConverter.ToInt32(msg[offset + 1].Buffer));
+                Assert.Equal(1, BitConverter.ToInt32(msg[offset + 1].Buffer, 0));
 
                 var addr = new Address(msg[offset + 2].Buffer);
                 Assert.Equal(compressedBlockStates[hash].Keys.First(), addr);
@@ -191,7 +191,7 @@ namespace Libplanet.Tests.Net.Messages
             RecentStates missing = new RecentStates(blockHash, null, null, null);
             msg = missing.ToNetMQMessage(privKey);
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
-            Assert.Equal(-1, BitConverter.ToInt32(msg[headerSize + 1].Buffer));
+            Assert.Equal(-1, BitConverter.ToInt32(msg[headerSize + 1].Buffer, 0));
 
             parsed = new RecentStates(missing.ToNetMQMessage(privKey).Skip(headerSize).ToArray());
             Assert.Equal(blockHash, parsed.BlockHash);

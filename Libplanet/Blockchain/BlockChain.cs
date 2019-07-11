@@ -321,7 +321,7 @@ namespace Libplanet.Blockchain
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
         public void Append(Block<T> block, DateTimeOffset currentTime) =>
-            Append(block, currentTime, render: true);
+            Append(block, currentTime, evaluateActions: true, renderActions: true);
 
         /// <summary>
         /// Adds <paramref name="transactions"/> to the pending list so that
@@ -489,11 +489,21 @@ namespace Libplanet.Blockchain
         internal void Append(
             Block<T> block,
             DateTimeOffset currentTime,
-            bool render
+            bool evaluateActions,
+            bool renderActions
         )
         {
+            if (!evaluateActions && renderActions)
+            {
+                throw new ArgumentException(
+                    $"{nameof(renderActions)} option requires {nameof(evaluateActions)} " +
+                    "to be turned on.",
+                    nameof(renderActions)
+                );
+            }
+
             _rwlock.EnterUpgradeableReadLock();
-            ActionEvaluation<T>[] evaluations;
+            ActionEvaluation<T>[] evaluations = null;
             try
             {
                 InvalidBlockException e =
@@ -507,18 +517,23 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip =
                     Store.IndexBlockHash(Id.ToString(), -1);
 
-                ValidateNonce(block);
-
-                evaluations = block.Evaluate(
-                    currentTime,
-                    a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
-                ).ToArray();
+                if (evaluateActions)
+                {
+                    ValidateNonce(block);
+                    evaluations = block.Evaluate(
+                        currentTime,
+                        a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
+                    ).ToArray();
+                }
 
                 _rwlock.EnterWriteLock();
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block, evaluations, buildIndices: true);
+                    if (!(evaluations is null))
+                    {
+                        SetStates(block, evaluations, buildIndices: true);
+                    }
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -537,7 +552,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (render)
+            if (!(evaluations is null) && renderActions)
             {
                 foreach (var evaluation in evaluations)
                 {
@@ -800,7 +815,7 @@ namespace Libplanet.Blockchain
         // FIXME it's very dangerous because replacing Id means
         // ALL blocks (referenced by MineBlock(), etc.) will be changed.
         // we need to add a synchronization mechanism to handle this correctly.
-        internal void Swap(BlockChain<T> other)
+        internal void Swap(BlockChain<T> other, bool render)
         {
             // Finds the branch point.
             Block<T> topmostCommon = null;
@@ -820,23 +835,26 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            // Unrender stale actions.
-            for (
-                Block<T> b = Tip;
-                !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
-                    b.PreviousHash is HashDigest<SHA256> ph;
-                b = Blocks[ph]
-            )
+            if (render)
             {
-                var actions = b.EvaluateActionsPerTx(a =>
-                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                ).Reverse();
-                foreach (var (_, evaluation) in actions)
+                // Unrender stale actions.
+                for (
+                    Block<T> b = Tip;
+                    !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
+                        b.PreviousHash is HashDigest<SHA256> ph;
+                    b = Blocks[ph]
+                )
                 {
-                    evaluation.Action.Unrender(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
-                    );
+                    var actions = b.EvaluateActionsPerTx(a =>
+                        GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
+                    ).Reverse();
+                    foreach (var (_, evaluation) in actions)
+                    {
+                        evaluation.Action.Unrender(
+                            evaluation.InputContext,
+                            evaluation.OutputStates
+                        );
+                    }
                 }
             }
 
@@ -854,22 +872,25 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            // Render actions that had been behind.
-            IEnumerable<Block<T>> blocksToRender =
-                topmostCommon is Block<T> branchPoint
-                    ? this.SkipWhile(b => b.Index <= branchPoint.Index)
-                    : this;
-            foreach (Block<T> b in blocksToRender)
+            if (render)
             {
-                var actions = b.EvaluateActionsPerTx(a =>
-                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                );
-                foreach (var (_, evaluation) in actions)
+                // Render actions that had been behind.
+                IEnumerable<Block<T>> blocksToRender =
+                    topmostCommon is Block<T> branchPoint
+                        ? this.SkipWhile(b => b.Index <= branchPoint.Index)
+                        : this;
+                foreach (Block<T> b in blocksToRender)
                 {
-                    evaluation.Action.Render(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
+                    var actions = b.EvaluateActionsPerTx(a =>
+                        GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
                     );
+                    foreach (var (_, evaluation) in actions)
+                    {
+                        evaluation.Action.Render(
+                            evaluation.InputContext,
+                            evaluation.OutputStates
+                        );
+                    }
                 }
             }
         }

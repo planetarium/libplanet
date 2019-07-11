@@ -134,7 +134,10 @@ namespace Libplanet.Tests.Net
 
             Assert.False(swarm.Running);
 
-            Assert.False(task.IsFaulted);
+            Assert.False(
+                task.IsFaulted,
+                $"A task was faulted due to an exception: {task.Exception}"
+            );
         }
 
         [Fact(Timeout = Timeout)]
@@ -942,7 +945,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
-                await receiverSwarm.PreloadAsync(receiverChain);
+                await receiverSwarm.PreloadAsync();
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
             }
@@ -1001,6 +1004,93 @@ namespace Libplanet.Tests.Net
                 await Task.WhenAll(
                     minerSwarm.StopAsync(),
                     receiverSwarm.StopAsync());
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PreloadWithTrustedPeers()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+            PrivateKey[] signers =
+                Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
+            Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
+                => new PrivateKey().PublicKey.ToAddress()
+            ).ToArray();
+            (PrivateKey, Address)[] fixturePairs =
+                signers.Zip(targets, ValueTuple.Create).ToArray();
+
+            HashDigest<SHA256>? deepBlockHash = null;
+
+            for (int i = 0; i < 2; i++)
+            {
+                int j = 0;
+                Block<DumbAction> block = null;
+                foreach ((PrivateKey signer, Address target) in fixturePairs)
+                {
+                    minerChain.MakeTransaction(
+                        signer,
+                        new[] { new DumbAction(target, $"Item{i}.{j}") }
+                    );
+                    block = minerChain.MineBlock(minerSwarm.Address);
+                    j++;
+                }
+
+                if (i < 1)
+                {
+                    deepBlockHash = block?.Hash;
+                }
+            }
+
+            Assert.NotNull(deepBlockHash);
+
+            try
+            {
+                await StartAsync(minerSwarm);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
+
+                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
+
+                await receiverSwarm.PreloadAsync(
+                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
+                );
+
+                Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                int i = 0;
+                foreach (Address target in targets)
+                {
+                    foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
+                    {
+                        var chainType = ReferenceEquals(chain, minerChain) ? "M" : "R";
+                        var states = chain.GetStates(
+                            new[] { target },
+                            completeStates: false
+                        );
+                        Assert.Single(states);
+                        Assert.Equal(
+                            $"({chainType}) Item0.{i},Item1.{i}",
+                            $"({chainType}) {states[target]}"
+                        );
+                    }
+
+                    Assert.Throws<IncompleteBlockStatesException>(() =>
+                        receiverChain.GetStates(
+                            new[] { target },
+                            deepBlockHash,
+                            completeStates: false
+                        )
+                    );
+                    i++;
+                }
+            }
+            finally
+            {
+                await minerSwarm.StopAsync();
+                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
             }
         }
 
