@@ -1,0 +1,2418 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class FileStore
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class FileStore
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.42.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.html" title="Libplanet" class="">Libplanet</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Address.html" title="Address" class="">Address</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.AddressExtension.html" title="AddressExtension" class="">AddressExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.ByteUtil.html" title="ByteUtil" class="">ByteUtil</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.html" title="Hashcash" class="">Hashcash</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Hashcash.Stamp.html" title="Hashcash.Stamp" class="">Hashcash.Stamp</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigest-1.html" title="HashDigest&lt;T&gt;" class="">HashDigest&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.HashDigestExtension.html" title="HashDigestExtension" class="">HashDigestExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Nonce.html" title="Nonce" class="">Nonce</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="">Libplanet.Action</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionEvaluation-1.html" title="ActionEvaluation&lt;T&gt;" class="">ActionEvaluation&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.AddressStateMap.html" title="AddressStateMap" class="">AddressStateMap</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAccountStateDelta.html" title="IAccountStateDelta" class="">IAccountStateDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IAction.html" title="IAction" class="">IAction</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IActionContext.html" title="IActionContext" class="">IActionContext</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.IRandom.html" title="IRandom" class="">IRandom</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.MissingActionTypeException.html" title="MissingActionTypeException" class="">MissingActionTypeException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Action.PolymorphicAction-1.html" title="PolymorphicAction&lt;T&gt;" class="">PolymorphicAction&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.html" title="Libplanet.Blockchain" class="">Libplanet.Blockchain</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.BlockChain-1.html" title="BlockChain&lt;T&gt;" class="">BlockChain&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.IncompleteBlockStatesException.html" title="IncompleteBlockStatesException" class="">IncompleteBlockStatesException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.MineBlockEventArgs-1.html" title="MineBlockEventArgs&lt;T&gt;" class="">MineBlockEventArgs&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blockchain.Policies.html" title="Libplanet.Blockchain.Policies" class="">Libplanet.Blockchain.Policies</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicy-1.html" title="BlockPolicy&lt;T&gt;" class="">BlockPolicy&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicyExtension.html" title="BlockPolicyExtension" class="">BlockPolicyExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html" title="IBlockPolicy&lt;T&gt;" class="">IBlockPolicy&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Blocks.html" title="Libplanet.Blocks" class="">Libplanet.Blocks</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Blocks.Block-1.html" title="Block&lt;T&gt;" class="">Block&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockDifficultyException.html" title="InvalidBlockDifficultyException" class="">InvalidBlockDifficultyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockException.html" title="InvalidBlockException" class="">InvalidBlockException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockHashException.html" title="InvalidBlockHashException" class="">InvalidBlockHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockIndexException.html" title="InvalidBlockIndexException" class="">InvalidBlockIndexException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockNonceException.html" title="InvalidBlockNonceException" class="">InvalidBlockNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockPreviousHashException.html" title="InvalidBlockPreviousHashException" class="">InvalidBlockPreviousHashException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Blocks.InvalidBlockTimestampException.html" title="InvalidBlockTimestampException" class="">InvalidBlockTimestampException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="">Libplanet.Crypto</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Crypto.InvalidCiphertextException.html" title="InvalidCiphertextException" class="">InvalidCiphertextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PrivateKey.html" title="PrivateKey" class="">PrivateKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.PublicKey.html" title="PublicKey" class="">PublicKey</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Crypto.SymmetricKey.html" title="SymmetricKey" class="">SymmetricKey</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Net.html" title="Libplanet.Net" class="">Libplanet.Net</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.IceServerException.html" title="IceServerException" class="">IceServerException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.InvalidMessageException.html" title="InvalidMessageException" class="">InvalidMessageException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.NoSwarmContextException.html" title="NoSwarmContextException" class="">NoSwarmContextException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Peer.html" title="Peer" class="">Peer</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerNotFoundException.html" title="PeerNotFoundException" class="">PeerNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.PeerSetDelta.html" title="PeerSetDelta" class="">PeerSetDelta</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.Swarm-1.html" title="Swarm&lt;T&gt;" class="">Swarm&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Net.SwarmException.html" title="SwarmException" class="">SwarmException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Serialization.html" title="Libplanet.Serialization" class="">Libplanet.Serialization</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Serialization.BencodexFormatter-1.html" title="BencodexFormatter&lt;T&gt;" class="">BencodexFormatter&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Serialization.SerializationInfoExtension.html" title="SerializationInfoExtension" class="">SerializationInfoExtension</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Store.html" title="Libplanet.Store" class="">Libplanet.Store</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Store.BaseIndex-2.html" title="BaseIndex&lt;TKey, TVal&gt;" class="">BaseIndex&lt;TKey, TVal&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BaseStore.html" title="BaseStore" class="">BaseStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.BlockSet-1.html" title="BlockSet&lt;T&gt;" class="">BlockSet&lt;T&gt;</a>
+                          </li>
+                          <li class="active">
+                            <a href="Libplanet.Store.FileStore.html" title="FileStore" class="active">FileStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.IStore.html" title="IStore" class="">IStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.LiteDBStore.html" title="LiteDBStore" class="">LiteDBStore</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.NamespaceNotFoundException.html" title="NamespaceNotFoundException" class="">NamespaceNotFoundException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.StoreExtension.html" title="StoreExtension" class="">StoreExtension</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Store.TransactionSet-1.html" title="TransactionSet&lt;T&gt;" class="">TransactionSet&lt;T&gt;</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="Libplanet.Tx.html" title="Libplanet.Tx" class="">Libplanet.Tx</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxException.html" title="InvalidTxException" class="">InvalidTxException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxSignatureException.html" title="InvalidTxSignatureException" class="">InvalidTxSignatureException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.InvalidTxUpdatedAddressesException.html" title="InvalidTxUpdatedAddressesException" class="">InvalidTxUpdatedAddressesException</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.Transaction-1.html" title="Transaction&lt;T&gt;" class="">Transaction&lt;T&gt;</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.TxId.html" title="TxId" class="">TxId</a>
+                          </li>
+                          <li class="">
+                            <a href="Libplanet.Tx.UnexpectedlyTerminatedTxRehearsalException.html" title="UnexpectedlyTerminatedTxRehearsalException" class="">UnexpectedlyTerminatedTxRehearsalException</a>
+                          </li>
+                        </ul>  </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Store.FileStore">
+  
+  
+  <h1 id="Libplanet_Store_FileStore" data-uid="Libplanet.Store.FileStore" class="text-break">Class FileStore
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Libplanet.Store.BaseStore.html">BaseStore</a></div>
+    <div class="level2"><span class="xref">FileStore</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountTransactions">BaseStore.CountTransactions()</a>
+    </div>
+    <div>
+      <a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountBlocks">BaseStore.CountBlocks()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Store_FileStore_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class FileStore : BaseStore, IStore</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore__ctor_" data-uid="Libplanet.Store.FileStore.#ctor*"></a>
+  <h4 id="Libplanet_Store_FileStore__ctor_System_String_" data-uid="Libplanet.Store.FileStore.#ctor(System.String)">FileStore(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileStore(string path)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">path</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.AppendIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L204">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_AppendIndex_" data-uid="Libplanet.Store.FileStore.AppendIndex*"></a>
+  <h4 id="Libplanet_Store_FileStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.AppendIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">AppendIndex(String, HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long AppendIndex(string namespace, HashDigest&lt;SHA256&gt; hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">hash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_AppendIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.AppendIndex(String, HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_CountIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.CountIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L248">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_CountIndex_" data-uid="Libplanet.Store.FileStore.CountIndex*"></a>
+  <h4 id="Libplanet_Store_FileStore_CountIndex_System_String_" data-uid="Libplanet.Store.FileStore.CountIndex(System.String)">CountIndex(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long CountIndex(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountIndex_System_String_">BaseStore.CountIndex(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteBlock(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L298">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_DeleteBlock_" data-uid="Libplanet.Store.FileStore.DeleteBlock*"></a>
+  <h4 id="Libplanet_Store_FileStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.DeleteBlock(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteBlock(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteBlock(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.DeleteBlock(HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteIndex(System.String%2CLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L220">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_DeleteIndex_" data-uid="Libplanet.Store.FileStore.DeleteIndex*"></a>
+  <h4 id="Libplanet_Store_FileStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.DeleteIndex(System.String,Libplanet.HashDigest{System.Security.Cryptography.SHA256})">DeleteIndex(String, HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteIndex(string namespace, HashDigest&lt;SHA256&gt; hash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">hash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteIndex_System_String_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.DeleteIndex(String, HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteNamespace_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteNamespace(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L182">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_DeleteNamespace_" data-uid="Libplanet.Store.FileStore.DeleteNamespace*"></a>
+  <h4 id="Libplanet_Store_FileStore_DeleteNamespace_System_String_" data-uid="Libplanet.Store.FileStore.DeleteNamespace(System.String)">DeleteNamespace(String)</h4>
+  <div class="markdown level1 summary"><p>Deletes an index, tx nonces, and state references in the given
+<code data-dev-comment-type="paramref" class="paramref">namespace</code>.
+It also deletes namespace itself.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void DeleteNamespace(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to delete.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteNamespace_System_String_">BaseStore.DeleteNamespace(String)</a></div>
+  <h5 id="Libplanet_Store_FileStore_DeleteNamespace_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This does not delete blocks or transactions that belong to
+the index of the <code data-dev-comment-type="paramref" class="paramref">namespace</code>, but only the index,
+tx nonces, and state references.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L310">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_DeleteTransaction_" data-uid="Libplanet.Store.FileStore.DeleteTransaction*"></a>
+  <h4 id="Libplanet_Store_FileStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool DeleteTransaction(TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_">BaseStore.DeleteTransaction(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_ForkStateReferences__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.ForkStateReferences%60%601(System.String%2CSystem.String%2CLibplanet.Blocks.Block%7B%60%600%7D%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L704">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_ForkStateReferences_" data-uid="Libplanet.Store.FileStore.ForkStateReferences*"></a>
+  <h4 id="Libplanet_Store_FileStore_ForkStateReferences__1_System_String_System_String_Libplanet_Blocks_Block___0__System_Collections_Immutable_IImmutableSet_Libplanet_Address__" data-uid="Libplanet.Store.FileStore.ForkStateReferences``1(System.String,System.String,Libplanet.Blocks.Block{``0},System.Collections.Immutable.IImmutableSet{Libplanet.Address})">ForkStateReferences&lt;T&gt;(String, String, Block&lt;T&gt;, IImmutableSet&lt;Address&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ForkStateReferences&lt;T&gt;(string sourceNamespace, string destinationNamespace, Block&lt;T&gt; branchPoint, IImmutableSet&lt;Address&gt; addressesToStrip)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">sourceNamespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">destinationNamespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">branchPoint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addressesToStrip</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.ForkStateReferences&lt;T&gt;(System.String, System.String, Libplanet.Blocks.Block&lt;T&gt;, System.Collections.Immutable.IImmutableSet&lt;Libplanet.Address&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlock%60%601(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L322">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetBlock_" data-uid="Libplanet.Store.FileStore.GetBlock*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetBlock``1(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Block&lt;T&gt; GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt; blockHash)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlockPath.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlockPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L85">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetBlockPath_" data-uid="Libplanet.Store.FileStore.GetBlockPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetBlockPath" data-uid="Libplanet.Store.FileStore.GetBlockPath">GetBlockPath()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetBlockPath()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlockPath_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlockPath(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L76">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetBlockPath_" data-uid="Libplanet.Store.FileStore.GetBlockPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetBlockPath_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetBlockPath(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockPath(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetBlockPath(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L604">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetBlockStates_" data-uid="Libplanet.Store.FileStore.GetBlockStates*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override AddressStateMap GetBlockStates(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__">BaseStore.GetBlockStates(HashDigest&lt;SHA256&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetIndexPath_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetIndexPath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L123">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetIndexPath_" data-uid="Libplanet.Store.FileStore.GetIndexPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetIndexPath_System_String_" data-uid="Libplanet.Store.FileStore.GetIndexPath(System.String)">GetIndexPath(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetIndexPath(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStagedTransactionPath.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStagedTransactionPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L100">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStagedTransactionPath_" data-uid="Libplanet.Store.FileStore.GetStagedTransactionPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStagedTransactionPath" data-uid="Libplanet.Store.FileStore.GetStagedTransactionPath">GetStagedTransactionPath()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStagedTransactionPath()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStagedTransactionPath_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStagedTransactionPath(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L92">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStagedTransactionPath_" data-uid="Libplanet.Store.FileStore.GetStagedTransactionPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStagedTransactionPath_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.GetStagedTransactionPath(Libplanet.Tx.TxId)">GetStagedTransactionPath(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStagedTransactionPath(TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStateReferencePath_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStateReferencePath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L132">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStateReferencePath_" data-uid="Libplanet.Store.FileStore.GetStateReferencePath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStateReferencePath_System_String_" data-uid="Libplanet.Store.FileStore.GetStateReferencePath(System.String)">GetStateReferencePath(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStateReferencePath(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStateReferencePath_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStateReferencePath(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L140">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStateReferencePath_" data-uid="Libplanet.Store.FileStore.GetStateReferencePath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStateReferencePath_System_String_Libplanet_Address_" data-uid="Libplanet.Store.FileStore.GetStateReferencePath(System.String,Libplanet.Address)">GetStateReferencePath(String, Address)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStateReferencePath(string namespace, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStatesPath.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStatesPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L116">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStatesPath_" data-uid="Libplanet.Store.FileStore.GetStatesPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStatesPath" data-uid="Libplanet.Store.FileStore.GetStatesPath">GetStatesPath()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStatesPath()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetStatesPath_Libplanet_HashDigest_System_Security_Cryptography_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetStatesPath(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L107">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetStatesPath_" data-uid="Libplanet.Store.FileStore.GetStatesPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetStatesPath_Libplanet_HashDigest_System_Security_Cryptography_SHA256__" data-uid="Libplanet.Store.FileStore.GetStatesPath(Libplanet.HashDigest{System.Security.Cryptography.SHA256})">GetStatesPath(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetStatesPath(HashDigest&lt;SHA256&gt; key)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">key</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L359">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTransaction_" data-uid="Libplanet.Store.FileStore.GetTransaction*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Transaction&lt;T&gt; GetTransaction&lt;T&gt;(TxId txid)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_">BaseStore.GetTransaction&lt;T&gt;(TxId)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTransactionPath.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTransactionPath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L69">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTransactionPath_" data-uid="Libplanet.Store.FileStore.GetTransactionPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTransactionPath" data-uid="Libplanet.Store.FileStore.GetTransactionPath">GetTransactionPath()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetTransactionPath()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTransactionPath_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTransactionPath(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L60">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTransactionPath_" data-uid="Libplanet.Store.FileStore.GetTransactionPath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTransactionPath_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.FileStore.GetTransactionPath(Libplanet.Tx.TxId)">GetTransactionPath(TxId)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetTransactionPath(TxId txid)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTxNonce_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTxNonce(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L763">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTxNonce_" data-uid="Libplanet.Store.FileStore.GetTxNonce*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTxNonce_System_String_Libplanet_Address_" data-uid="Libplanet.Store.FileStore.GetTxNonce(System.String,Libplanet.Address)">GetTxNonce(String, Address)</h4>
+  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce of the
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override long GetTxNonce(string namespace, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to get
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to get
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><p>A <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce. If there is no
+previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, return 0.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_GetTxNonce_System_String_Libplanet_Address_">BaseStore.GetTxNonce(String, Address)</a></div>
+  <h5 id="Libplanet_Store_FileStore_GetTxNonce_System_String_Libplanet_Address__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_IncreaseTxNonce_System_String_Libplanet_Address_System_Int64_">IncreaseTxNonce</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTxNoncePath_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTxNoncePath(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L151">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTxNoncePath_" data-uid="Libplanet.Store.FileStore.GetTxNoncePath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTxNoncePath_System_String_" data-uid="Libplanet.Store.FileStore.GetTxNoncePath(System.String)">GetTxNoncePath(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetTxNoncePath(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_GetTxNoncePath_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.GetTxNoncePath(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L159">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_GetTxNoncePath_" data-uid="Libplanet.Store.FileStore.GetTxNoncePath*"></a>
+  <h4 id="Libplanet_Store_FileStore_GetTxNoncePath_System_String_Libplanet_Address_" data-uid="Libplanet.Store.FileStore.GetTxNoncePath(System.String,Libplanet.Address)">GetTxNoncePath(String, Address)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetTxNoncePath(string namespace, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IncreaseTxNonce_System_String_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IncreaseTxNonce(System.String%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L782">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IncreaseTxNonce_" data-uid="Libplanet.Store.FileStore.IncreaseTxNonce*"></a>
+  <h4 id="Libplanet_Store_FileStore_IncreaseTxNonce_System_String_Libplanet_Address_System_Int64_" data-uid="Libplanet.Store.FileStore.IncreaseTxNonce(System.String,Libplanet.Address,System.Int64)">IncreaseTxNonce(String, Address, Int64)</h4>
+  <div class="markdown level1 summary"><p>Increases (or decreases if a negative <code data-dev-comment-type="paramref" class="paramref">delta</code> is given)
+the tx nonce counter for <code data-dev-comment-type="paramref" class="paramref">signer</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void IncreaseTxNonce(string namespace, Address signer, long delta = 1L)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to increase
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">signer</span></td>
+        <td><p>The address of the account to increase tx nonce.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">delta</span></td>
+        <td><p>How many to incrase the counter.  A negative number decreases
+the counter.  1 by default.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IncreaseTxNonce_System_String_Libplanet_Address_System_Int64_">BaseStore.IncreaseTxNonce(String, Address, Int64)</a></div>
+  <h5 id="Libplanet_Store_FileStore_IncreaseTxNonce_System_String_Libplanet_Address_System_Int64__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_">GetTxNonce</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="Libplanet.Address.html">Address</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IndexBlockHash_System_String_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IndexBlockHash(System.String%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L374">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IndexBlockHash_" data-uid="Libplanet.Store.FileStore.IndexBlockHash*"></a>
+  <h4 id="Libplanet_Store_FileStore_IndexBlockHash_System_String_System_Int64_" data-uid="Libplanet.Store.FileStore.IndexBlockHash(System.String,System.Int64)">IndexBlockHash(String, Int64)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override HashDigest&lt;SHA256&gt;? IndexBlockHash(string namespace, long index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IndexBlockHash_System_String_System_Int64_">BaseStore.IndexBlockHash(String, Int64)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L416">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IterateBlockHashes_" data-uid="Libplanet.Store.FileStore.IterateBlockHashes*"></a>
+  <h4 id="Libplanet_Store_FileStore_IterateBlockHashes" data-uid="Libplanet.Store.FileStore.IterateBlockHashes">IterateBlockHashes()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateBlockHashes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateBlockHashes">BaseStore.IterateBlockHashes()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IterateIndex_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateIndex(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L449">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IterateIndex_" data-uid="Libplanet.Store.FileStore.IterateIndex*"></a>
+  <h4 id="Libplanet_Store_FileStore_IterateIndex_System_String_" data-uid="Libplanet.Store.FileStore.IterateIndex(System.String)">IterateIndex(String)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;HashDigest&lt;SHA256&gt;&gt; IterateIndex(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndex_System_String_">BaseStore.IterateIndex(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IterateStagedTransactionIds_System_Boolean_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L480">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.FileStore.IterateStagedTransactionIds*"></a>
+  <h4 id="Libplanet_Store_FileStore_IterateStagedTransactionIds_System_Boolean_" data-uid="Libplanet.Store.FileStore.IterateStagedTransactionIds(System.Boolean)">IterateStagedTransactionIds(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Iterates staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;TxId&gt; IterateStagedTransactionIds(bool toBroadcast)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">toBroadcast</span></td>
+        <td><p>Whether to iterate only the <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s set to
+broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
+        <td><p>Staged <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds_System_Boolean_">BaseStore.IterateStagedTransactionIds(Boolean)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IterateStateReferences_System_String_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateStateReferences(System.String%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L641">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IterateStateReferences_" data-uid="Libplanet.Store.FileStore.IterateStateReferences*"></a>
+  <h4 id="Libplanet_Store_FileStore_IterateStateReferences_System_String_Libplanet_Address_" data-uid="Libplanet.Store.FileStore.IterateStateReferences(System.String,Libplanet.Address)">IterateStateReferences(String, Address)</h4>
+  <div class="markdown level1 summary"><p>Gets pairs of a state reference and a corresponding <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a> of
+the requested <code data-dev-comment-type="paramref" class="paramref">address</code> in the specified <code data-dev-comment-type="paramref" class="paramref">namespace</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;&gt; IterateStateReferences(string namespace, Address address)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The chain namespace.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">address</span></td>
+        <td><p>The <a class="xref" href="Libplanet.Address.html">Address</a> to get state references.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><p><em>Ordered</em> pairs of a state reference and a corresponding
+<a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Index">Index</a>.  The highest index (i.e., the closest to the tip) go last,
+and the lowest index (i.e., the closest to the genesis) go first.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_System_String_Libplanet_Address_">BaseStore.IterateStateReferences(String, Address)</a></div>
+  <h5 id="Libplanet_Store_FileStore_IterateStateReferences_System_String_Libplanet_Address__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__">StoreStateReference&lt;T&gt;</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L513">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_IterateTransactionIds_" data-uid="Libplanet.Store.FileStore.IterateTransactionIds*"></a>
+  <h4 id="Libplanet_Store_FileStore_IterateTransactionIds" data-uid="Libplanet.Store.FileStore.IterateTransactionIds">IterateTransactionIds()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;TxId&gt; IterateTransactionIds()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateTransactionIds">BaseStore.IterateTransactionIds()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_ListAddresses_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.ListAddresses(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L269">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_ListAddresses_" data-uid="Libplanet.Store.FileStore.ListAddresses*"></a>
+  <h4 id="Libplanet_Store_FileStore_ListAddresses_System_String_" data-uid="Libplanet.Store.FileStore.ListAddresses(System.String)">ListAddresses(String)</h4>
+  <div class="markdown level1 summary"><p>Lists all addresses that have ever had states.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;Address&gt; ListAddresses(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to list addresses.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><p>All addresses in an arbitrary order.  The order might
+be vary for each call.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAddresses_System_String_">BaseStore.ListAddresses(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_ListNamespaces.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.ListNamespaces%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L171">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_ListNamespaces_" data-uid="Libplanet.Store.FileStore.ListNamespaces*"></a>
+  <h4 id="Libplanet_Store_FileStore_ListNamespaces" data-uid="Libplanet.Store.FileStore.ListNamespaces">ListNamespaces()</h4>
+  <div class="markdown level1 summary"><p>Lists existing namespaces.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;string&gt; ListNamespaces()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><p>Existing namespaces.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListNamespaces">BaseStore.ListNamespaces()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_ListTxNonces_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.ListTxNonces(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L721">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_ListTxNonces_" data-uid="Libplanet.Store.FileStore.ListTxNonces*"></a>
+  <h4 id="Libplanet_Store_FileStore_ListTxNonces_System_String_" data-uid="Libplanet.Store.FileStore.ListTxNonces(System.String)">ListTxNonces(String)</h4>
+  <div class="markdown level1 summary"><p>Lists all <a class="xref" href="Libplanet.Address.html">Address</a>es that have ever signed <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>,
+and their corresponding <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;KeyValuePair&lt;Address, long&gt;&gt; ListTxNonces(string namespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td><p>The namespace to list <a class="xref" href="Libplanet.Address.html">Address</a>es and their
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> nonces.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2">KeyValuePair</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a>&gt;&gt;</td>
+        <td><p>Pairs of an <a class="xref" href="Libplanet.Address.html">Address</a> and its tx nonce.  All nonces are greater
+than 0.  (If there are underlying entries having zero nonces these must be hidden.)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_System_String_">BaseStore.ListTxNonces(String)</a></div>
+  <h5 id="Libplanet_Store_FileStore_ListTxNonces_System_String__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_GetTxNonce_System_String_Libplanet_Address_">GetTxNonce</a>(<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>, <a class="xref" href="Libplanet.Address.html">Address</a>)</div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L547">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_PutBlock_" data-uid="Libplanet.Store.FileStore.PutBlock*"></a>
+  <h4 id="Libplanet_Store_FileStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.FileStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutBlock&lt;T&gt;(Block&lt;T&gt; block)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutBlock&lt;T&gt;(Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L567">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_PutTransaction_" data-uid="Libplanet.Store.FileStore.PutTransaction*"></a>
+  <h4 id="Libplanet_Store_FileStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.FileStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void PutTransaction&lt;T&gt;(Transaction&lt;T&gt; tx)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction</a>&lt;T&gt;</td>
+        <td><span class="parametername">tx</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.PutTransaction&lt;T&gt;(Libplanet.Tx.Transaction&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.SetBlockStates(Libplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L622">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_SetBlockStates_" data-uid="Libplanet.Store.FileStore.SetBlockStates*"></a>
+  <h4 id="Libplanet_Store_FileStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.FileStore.SetBlockStates(Libplanet.HashDigest{System.Security.Cryptography.SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetBlockStates(HashDigest&lt;SHA256&gt; blockHash, AddressStateMap states)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.cryptography.sha256">SHA256</a>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></td>
+        <td><span class="parametername">states</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_System_Security_Cryptography_SHA256__Libplanet_Action_AddressStateMap_">BaseStore.SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary%7BLibplanet.Tx.TxId%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L580">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_StageTransactionIds_" data-uid="Libplanet.Store.FileStore.StageTransactionIds*"></a>
+  <h4 id="Libplanet_Store_FileStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__" data-uid="Libplanet.Store.FileStore.StageTransactionIds(System.Collections.Generic.IDictionary{Libplanet.Tx.TxId,System.Boolean})">StageTransactionIds(IDictionary&lt;TxId, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Adds <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s to the pending list so that
+a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to be mined contains the corresponding
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>s.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void StageTransactionIds(IDictionary&lt;TxId, bool&gt; txids)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.idictionary-2">IDictionary</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
+        <td><span class="parametername">txids</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s to add to pending list. Keys are
+<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s and values are whether to broadcast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StageTransactionIds_System_Collections_Generic_IDictionary_Libplanet_Tx_TxId_System_Boolean__">BaseStore.StageTransactionIds(IDictionary&lt;TxId, Boolean&gt;)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.StoreStateReference%60%601(System.String%2CSystem.Collections.Immutable.IImmutableSet%7BLibplanet.Address%7D%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L674">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_StoreStateReference_" data-uid="Libplanet.Store.FileStore.StoreStateReference*"></a>
+  <h4 id="Libplanet_Store_FileStore_StoreStateReference__1_System_String_System_Collections_Immutable_IImmutableSet_Libplanet_Address__Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.FileStore.StoreStateReference``1(System.String,System.Collections.Immutable.IImmutableSet{Libplanet.Address},Libplanet.Blocks.Block{``0})">StoreStateReference&lt;T&gt;(String, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void StoreStateReference&lt;T&gt;(string namespace, IImmutableSet&lt;Address&gt; addresses, Block&lt;T&gt; block)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">namespace</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
+        <td><span class="parametername">addresses</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;</td>
+        <td><span class="parametername">block</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">Libplanet.Store.BaseStore.StoreStateReference&lt;T&gt;(System.String, System.Collections.Immutable.IImmutableSet&lt;Libplanet.Address&gt;, Libplanet.Blocks.Block&lt;T&gt;)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore.UnstageTransactionIds(System.Collections.Generic.ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L596">View Source</a>
+  </span>
+  <a id="Libplanet_Store_FileStore_UnstageTransactionIds_" data-uid="Libplanet.Store.FileStore.UnstageTransactionIds*"></a>
+  <h4 id="Libplanet_Store_FileStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.FileStore.UnstageTransactionIds(System.Collections.Generic.ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(ISet&lt;TxId&gt;)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void UnstageTransactionIds(ISet&lt;TxId&gt; txids)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iset-1">ISet</a>&lt;<a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>&gt;</td>
+        <td><span class="parametername">txids</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_UnstageTransactionIds_System_Collections_Generic_ISet_Libplanet_Tx_TxId__">BaseStore.UnstageTransactionIds(ISet&lt;TxId&gt;)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_System_String_Libplanet_Address_Libplanet_Blocks_Block___0__">StoreExtension.LookupStateReference&lt;T&gt;(IStore, String, Address, Block&lt;T&gt;)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/port-0.4.1/apiSpec/new?filename=Libplanet_Store_FileStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.FileStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/port-0.4.1/Libplanet/Store/FileStore.cs/#L19" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
