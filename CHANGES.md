@@ -16,9 +16,13 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` became to have two more message types: `GetRecentStates` (`0x0b`)
+    and `RecentStates` (`0x0c`).  [[#272], [#343]]
+
 ### Bug fixes
 
 
+[#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
 
 
