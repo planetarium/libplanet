@@ -416,21 +416,21 @@ namespace Libplanet.Tests.Blockchain
             forked.Append(fb2);
 
             Assert.Equal(
-                b1.Hash,
-                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+                Tuple.Create(b1.Hash, b1.Index),
+                forked.Store.LookupStateReferenceWithIndex(fId, addr1, forked.Tip));
             Assert.Null(
-                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+                forked.Store.LookupStateReferenceWithIndex(fId, addr2, forked.Tip));
 
             // Fork from b2.
             forked = _blockChain.Fork(b2.Hash);
             fId = forked.Id.ToString();
 
             Assert.Equal(
-                b1.Hash,
-                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
+                Tuple.Create(b1.Hash, b1.Index),
+                forked.Store.LookupStateReferenceWithIndex(fId, addr1, forked.Tip));
             Assert.Equal(
-                b2.Hash,
-                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
+                Tuple.Create(b2.Hash, b2.Index),
+                forked.Store.LookupStateReferenceWithIndex(fId, addr2, forked.Tip));
         }
 
         [Fact]
@@ -786,9 +786,9 @@ namespace Libplanet.Tests.Blockchain
 
                 while (true)
                 {
-                    HashDigest<SHA256>? sr =
-                        store.LookupStateReference(@namespace, address, block);
-                    if (sr is HashDigest<SHA256> reference)
+                    Tuple<HashDigest<SHA256>, long> sr =
+                        store.LookupStateReferenceWithIndex(@namespace, address, block);
+                    if (sr?.Item1 is HashDigest<SHA256> reference)
                     {
                         refs.Add(reference);
                         block = chain.Blocks[reference];
@@ -840,6 +840,35 @@ namespace Libplanet.Tests.Blockchain
             {
                 Assert.Equal(stateRefs[address], ListStateReferences(address));
             }
+        }
+
+        [Fact]
+        public void GetStatesReturnsLatestStatesWhenMultipleAddresses()
+        {
+            var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
+            var addresses = privateKeys.Select(k => k.PublicKey.ToAddress()).ToList();
+            var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), _fx.Store);
+            var states = chain.GetStates(addresses);
+            Assert.Equal(new AddressStateMap(), states);
+
+            var privateKeysAndAddresses10 = privateKeys.Zip(addresses, (k, a) => (k, a));
+            foreach (var (key, address) in privateKeysAndAddresses10)
+            {
+                chain.MakeTransaction(key, new[] { new DumbAction(address, "1") });
+            }
+
+            chain.MineBlock(addresses[0]);
+            states = chain.GetStates(addresses);
+
+            foreach (var address in addresses)
+            {
+                Assert.Equal("1", states[address]);
+            }
+
+            chain.MakeTransaction(privateKeys[0], new[] { new DumbAction(addresses[0], "2") });
+            chain.MineBlock(addresses[0]);
+            states = chain.GetStates(addresses);
+            Assert.Equal("1,2", states[addresses[0]]);
         }
 
         [Fact]

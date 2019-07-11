@@ -6,6 +6,12 @@ Version 0.4.1
 
 To be released.
 
+### Bug fixes
+
+ -  Fixed a bug where the GetStates method does not return the latest state
+    when there are multiple addresses.  [[#346]]
+
+[#346]: https://github.com/planetarium/libplanet/pull/346
 
 Version 0.4.0
 -------------
