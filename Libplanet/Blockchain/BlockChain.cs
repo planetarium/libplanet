@@ -216,17 +216,21 @@ namespace Libplanet.Blockchain
 
             ImmutableHashSet<Address> requestedAddresses =
                 addresses.ToImmutableHashSet();
-            var hashValues = new HashSet<HashDigest<SHA256>>();
+            var stateReferences = new HashSet<Tuple<HashDigest<SHA256>, long>>();
 
             foreach (var address in requestedAddresses)
             {
-                var hashDigest = Store.LookupStateReference(
+                Tuple<HashDigest<SHA256>, long> sr = Store.LookupStateReferenceWithIndex(
                     Id.ToString(), address, block);
-                if (!(hashDigest is null))
+                if (!(sr is null))
                 {
-                    hashValues.Add(hashDigest.Value);
+                    stateReferences.Add(sr);
                 }
             }
+
+            IEnumerable<HashDigest<SHA256>> hashValues = stateReferences
+                .OrderByDescending(sr => sr.Item2)
+                .Select(sr => sr.Item1);
 
             foreach (var hashValue in hashValues)
             {
