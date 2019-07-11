@@ -47,31 +47,31 @@ namespace Libplanet.Tests.Store
             Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block4)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
             );
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block5)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
             );
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block6)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
             );
 
             fx.Store.StoreStateReference(fx.StoreNamespace, tx5.UpdatedAddresses, block5);
-            Assert.Null(fx.Store.LookupStateReferenceWithIndex(
+            Assert.Null(fx.Store.LookupStateReference(
                 fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block4)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
             );
             Assert.Equal(
                 Tuple.Create(block5.Hash, block5.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block5)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
             );
             Assert.Equal(
                 Tuple.Create(block5.Hash, block5.Index),
-                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block6)
+                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
             );
         }
     }

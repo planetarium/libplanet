@@ -417,9 +417,9 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                forked.Store.LookupStateReferenceWithIndex(fId, addr1, forked.Tip));
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
             Assert.Null(
-                forked.Store.LookupStateReferenceWithIndex(fId, addr2, forked.Tip));
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
 
             // Fork from b2.
             forked = _blockChain.Fork(b2.Hash);
@@ -427,10 +427,10 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
-                forked.Store.LookupStateReferenceWithIndex(fId, addr1, forked.Tip));
+                forked.Store.LookupStateReference(fId, addr1, forked.Tip));
             Assert.Equal(
                 Tuple.Create(b2.Hash, b2.Index),
-                forked.Store.LookupStateReferenceWithIndex(fId, addr2, forked.Tip));
+                forked.Store.LookupStateReference(fId, addr2, forked.Tip));
         }
 
         [Fact]
@@ -787,7 +787,7 @@ namespace Libplanet.Tests.Blockchain
                 while (true)
                 {
                     Tuple<HashDigest<SHA256>, long> sr =
-                        store.LookupStateReferenceWithIndex(@namespace, address, block);
+                        store.LookupStateReference(@namespace, address, block);
                     if (sr?.Item1 is HashDigest<SHA256> reference)
                     {
                         refs.Add(reference);

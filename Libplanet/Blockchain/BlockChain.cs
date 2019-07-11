@@ -220,7 +220,7 @@ namespace Libplanet.Blockchain
 
             foreach (var address in requestedAddresses)
             {
-                Tuple<HashDigest<SHA256>, long> sr = Store.LookupStateReferenceWithIndex(
+                Tuple<HashDigest<SHA256>, long> sr = Store.LookupStateReference(
                     Id.ToString(), address, block);
                 if (!(sr is null))
                 {

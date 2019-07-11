@@ -350,13 +350,13 @@ namespace Libplanet.Tests.Store
 
             Assert.Equal(
                 Tuple.Create(blocks[2].Hash, blocks[2].Index),
-                Fx.Store.LookupStateReferenceWithIndex(Fx.StoreNamespace, address1, blocks[3]));
+                Fx.Store.LookupStateReference(Fx.StoreNamespace, address1, blocks[3]));
             Assert.Equal(
                 Tuple.Create(blocks[3].Hash, blocks[3].Index),
-                Fx.Store.LookupStateReferenceWithIndex(Fx.StoreNamespace, address2, blocks[3]));
+                Fx.Store.LookupStateReference(Fx.StoreNamespace, address2, blocks[3]));
             Assert.Equal(
                     Tuple.Create(blocks[branchPointIndex].Hash, blocks[branchPointIndex].Index),
-                    Fx.Store.LookupStateReferenceWithIndex(targetNamespace, address1, blocks[3]));
+                    Fx.Store.LookupStateReference(targetNamespace, address1, blocks[3]));
             Assert.Null(
                     Fx.Store.LookupStateReference(targetNamespace, address2, blocks[3]));
         }
