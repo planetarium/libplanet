@@ -1,7 +1,6 @@
 Libplanet changelog
 ===================
 
-
 Version 0.5.0
 -------------
 
@@ -14,6 +13,19 @@ To be released.
 ### Behavioral changes
 
 ### Bug fixes
+
+
+Version 0.4.1
+-------------
+
+Released on July 11, 2019.
+
+### Bug fixes
+
+ -  Fixed a bug where the `BlockChain<T>.GetStates()` method had not returned
+    the latest state when there are multiple addresses.  [[#346]]
+
+[#346]: https://github.com/planetarium/libplanet/pull/346
 
 
 Version 0.4.0

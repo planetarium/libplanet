@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
@@ -46,31 +46,32 @@ namespace Libplanet.Tests.Store
             fx.Store.StoreStateReference(fx.StoreNamespace, tx4.UpdatedAddresses, block4);
             Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(
-                block4.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
+                Tuple.Create(block4.Hash, block4.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block4)
             );
             Assert.Equal(
-                block4.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
+                Tuple.Create(block4.Hash, block4.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block5)
             );
             Assert.Equal(
-                block4.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
+                Tuple.Create(block4.Hash, block4.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block6)
             );
 
             fx.Store.StoreStateReference(fx.StoreNamespace, tx5.UpdatedAddresses, block5);
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
+            Assert.Null(fx.Store.LookupStateReferenceWithIndex(
+                fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(
-                block4.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
+                Tuple.Create(block4.Hash, block4.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block4)
             );
             Assert.Equal(
-                block5.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
+                Tuple.Create(block5.Hash, block5.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block5)
             );
             Assert.Equal(
-                block5.Hash,
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
+                Tuple.Create(block5.Hash, block5.Index),
+                fx.Store.LookupStateReferenceWithIndex(fx.StoreNamespace, address, block6)
             );
         }
     }

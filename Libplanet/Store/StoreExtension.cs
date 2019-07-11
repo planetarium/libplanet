@@ -32,6 +32,19 @@ namespace Libplanet.Store
             Block<T> lookupUntil)
             where T : IAction, new()
         {
+            Tuple<HashDigest<SHA256>, long> sr = store.
+                LookupStateReferenceWithIndex(@namespace, address, lookupUntil);
+
+            return sr?.Item1;
+        }
+
+        internal static Tuple<HashDigest<SHA256>, long> LookupStateReferenceWithIndex<T>(
+            this IStore store,
+            string @namespace,
+            Address address,
+            Block<T> lookupUntil)
+            where T : IAction, new()
+        {
             if (lookupUntil is null)
             {
                 throw new ArgumentNullException(nameof(lookupUntil));
@@ -43,7 +56,7 @@ namespace Libplanet.Store
             {
                 if (pair.Item2 <= lookupUntil.Index)
                 {
-                    return pair.Item1;
+                    return Tuple.Create(pair.Item1, pair.Item2);
                 }
             }
 
