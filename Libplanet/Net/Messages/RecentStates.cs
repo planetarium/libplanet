@@ -56,7 +56,7 @@ namespace Libplanet.Net.Messages
             BlockHash = new HashDigest<SHA256>(it.Current.Buffer);
 
             it.MoveNext();
-            int accountsCount = BitConverter.ToInt32(it.Current.Buffer, 0);
+            int accountsCount = it.Current.ConvertToInt32();
 
             if (accountsCount < 0)
             {
@@ -75,7 +75,7 @@ namespace Libplanet.Net.Messages
                 var address = new Address(it.Current.Buffer);
 
                 it.MoveNext();
-                int stateRefsLength = BitConverter.ToInt32(it.Current.Buffer, 0);
+                int stateRefsLength = it.Current.ConvertToInt32();
                 List<HashDigest<SHA256>> refs = new List<HashDigest<SHA256>>(stateRefsLength);
 
                 for (int k = 0; k < stateRefsLength; k++)
@@ -88,7 +88,7 @@ namespace Libplanet.Net.Messages
             }
 
             it.MoveNext();
-            int signersCount = BitConverter.ToInt32(it.Current.Buffer, 0);
+            int signersCount = it.Current.ConvertToInt32();
 
             var txNonces = new Dictionary<Address, long>(accountsCount);
 
@@ -98,11 +98,11 @@ namespace Libplanet.Net.Messages
                 var address = new Address(it.Current.Buffer);
 
                 it.MoveNext();
-                txNonces[address] = BitConverter.ToInt64(it.Current.Buffer, 0);
+                txNonces[address] = it.Current.ConvertToInt64();
             }
 
             it.MoveNext();
-            int blocksLength = BitConverter.ToInt32(it.Current.Buffer, 0);  // This is not height!
+            int blocksLength = it.Current.ConvertToInt32();  // This is not height!
 
             var blockStates =
                 new Dictionary<HashDigest<SHA256>, IImmutableDictionary<Address, object>>(
@@ -115,7 +115,7 @@ namespace Libplanet.Net.Messages
                 var blockHash = new HashDigest<SHA256>(it.Current.Buffer);
 
                 it.MoveNext();
-                int statesLength = BitConverter.ToInt32(it.Current.Buffer, 0);
+                int statesLength = it.Current.ConvertToInt32();
 
                 var states = new Dictionary<Address, object>(statesLength);
                 for (int k = 0; k < statesLength; k++)
@@ -168,18 +168,22 @@ namespace Libplanet.Net.Messages
                 yield return new NetMQFrame(BlockHash.ToByteArray());
                 if (Missing)
                 {
-                    yield return new NetMQFrame(BitConverter.GetBytes(-1));
+                    yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(-1));
                     yield break;
                 }
 
-                yield return new NetMQFrame(BitConverter.GetBytes(StateReferences.Count));
+                yield return new NetMQFrame(
+                    NetworkOrderBitsConverter.GetBytes(StateReferences.Count)
+                );
 
                 foreach (var pair in StateReferences)
                 {
                     yield return new NetMQFrame(pair.Key.ToByteArray());
 
                     IImmutableList<HashDigest<SHA256>> stateRefs = pair.Value;
-                    yield return new NetMQFrame(BitConverter.GetBytes(stateRefs.Count));
+                    yield return new NetMQFrame(
+                        NetworkOrderBitsConverter.GetBytes(stateRefs.Count)
+                    );
 
                     foreach (HashDigest<SHA256> blockHash in stateRefs)
                     {
@@ -187,22 +191,22 @@ namespace Libplanet.Net.Messages
                     }
                 }
 
-                yield return new NetMQFrame(BitConverter.GetBytes(TxNonces.Count));
+                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(TxNonces.Count));
 
                 foreach (var pair in TxNonces)
                 {
                     yield return new NetMQFrame(pair.Key.ToByteArray());
-                    yield return new NetMQFrame(BitConverter.GetBytes(pair.Value));
+                    yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(pair.Value));
                 }
 
-                yield return new NetMQFrame(BitConverter.GetBytes(BlockStates.Count));
+                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(BlockStates.Count));
                 var formatter = new BinaryFormatter();
                 foreach (var blockState in BlockStates)
                 {
                     yield return new NetMQFrame(blockState.Key.ToByteArray());
 
                     IImmutableDictionary<Address, object> states = blockState.Value;
-                    yield return new NetMQFrame(BitConverter.GetBytes(states.Count));
+                    yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(states.Count));
 
                     foreach (var addressState in states)
                     {
