@@ -1046,55 +1046,7 @@ namespace Libplanet.Net
 
                 case GetRecentStates getRecentStates:
                     {
-                        HashDigest<SHA256> blockHash = getRecentStates.BlockHash;
-                        IImmutableDictionary<HashDigest<SHA256>,
-                            IImmutableDictionary<Address, object>
-                        > blockStates = null;
-                        IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
-                            stateRefs = null;
-                        IImmutableDictionary<Address, long> txNonces = null;
-
-                        if (_blockChain.Blocks.ContainsKey(blockHash))
-                        {
-                            // FIXME: Swarm should not directly access to the IStore instance,
-                            // but BlockChain<T> should have an indirect interface to its underlying
-                            // store.
-                            IStore store = _blockChain.Store;
-                            string ns = _blockChain.Id.ToString();
-
-                            IImmutableSet<Address> addresses =
-                                store.ListAddresses(ns).ToImmutableHashSet();
-
-                            stateRefs = addresses.Select(address =>
-                            {
-                                ImmutableList<HashDigest<SHA256>> refs =
-                                    store.IterateStateReferences(ns, address).Select(
-                                        p => p.Item1
-                                    ).Reverse().ToImmutableList();
-                                return
-                                    new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
-                                        address, refs
-                                    );
-                            }).ToImmutableDictionary();
-                            txNonces = store.ListTxNonces(ns).ToImmutableDictionary();
-
-                            blockStates = stateRefs.Values
-                                .Select(refs => refs.Last())
-                                .Select(bh =>
-                                    new KeyValuePair<
-                                        HashDigest<SHA256>,
-                                        IImmutableDictionary<Address, object>
-                                    >(bh, store.GetBlockStates(bh))
-                                )
-                                .ToImmutableDictionary();
-                        }
-
-                        var reply = new RecentStates(blockHash, blockStates, stateRefs, txNonces)
-                        {
-                            Identity = getRecentStates.Identity,
-                        };
-                        _replyQueue.Enqueue(reply);
-
+                        TransferRecentStates(getRecentStates);
                         break;
                     }
 
@@ -1481,6 +1433,58 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Transfer complete.");
+        }
+
+        private void TransferRecentStates(GetRecentStates getRecentStates)
+        {
+            HashDigest<SHA256> blockHash = getRecentStates.BlockHash;
+            IImmutableDictionary<HashDigest<SHA256>,
+                IImmutableDictionary<Address, object>
+            > blockStates = null;
+            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+                stateRefs = null;
+            IImmutableDictionary<Address, long> txNonces = null;
+
+            if (_blockChain.Blocks.ContainsKey(blockHash))
+            {
+                // FIXME: Swarm should not directly access to the IStore instance,
+                // but BlockChain<T> should have an indirect interface to its underlying
+                // store.
+                IStore store = _blockChain.Store;
+                string ns = _blockChain.Id.ToString();
+
+                IImmutableSet<Address> addresses =
+                    store.ListAddresses(ns).ToImmutableHashSet();
+
+                stateRefs = addresses.Select(address =>
+                {
+                    ImmutableList<HashDigest<SHA256>> refs =
+                        store.IterateStateReferences(ns, address).Select(
+                            p => p.Item1
+                        ).Reverse().ToImmutableList();
+                    return
+                        new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
+                            address, refs
+                        );
+                }).ToImmutableDictionary();
+                txNonces = store.ListTxNonces(ns).ToImmutableDictionary();
+
+                blockStates = stateRefs.Values
+                    .Select(refs => refs.Last())
+                    .Select(bh =>
+                        new KeyValuePair<
+                            HashDigest<SHA256>,
+                            IImmutableDictionary<Address, object>
+                        >(bh, store.GetBlockStates(bh))
+                    )
+                    .ToImmutableDictionary();
+            }
+
+            var reply = new RecentStates(blockHash, blockStates, stateRefs, txNonces)
+            {
+                Identity = getRecentStates.Identity,
+            };
+            _replyQueue.Enqueue(reply);
         }
 
         private async Task ProcessDeltaAsync(
