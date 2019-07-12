@@ -163,6 +163,56 @@ namespace Libplanet.Net.Messages
 
         protected override IEnumerable<NetMQFrame> DataFrames
         {
+            /*
+            Note that the data frames this property returns omit the very first three frames
+            of (message type, public key, signature).  See also Message.ToNetMQMessage() method.
+
+            | 1. BlockHash (32 bytes; SHA-256 digest)
+            |   The requested block hash which corresponds to
+            |   the given GetRecentStates.BlockHash value.
+            +
+            | 2. StateReferences.Count (4 bytes; 32-bit integer in big endian)
+            |   The number of the accounts of the following state references (3) in the payload.
+            |   When Missing = true, this contains -1 and no data frames follow at all.
+            +
+            | 3. StateReferences [unordered]
+            | | 3.1. Key (20 bytes; account address)
+            | |   The account address of the following state references (3.3).
+            | +
+            | | 3.2. Value.Count (4 bytes; 32-bit integer in big endian)
+            | |   The length of the following state references (3.3).
+            | +
+            | | 3.3. Value [descending order; the recent block goes first & the oldest goes last]
+            | | | 3.3.1. (32 bytes; SHA-256 digest)
+            | | |   A state reference of the account (3.1).
+            +
+            | 4. TxNonces.Count (4 bytes; 32-bit integer in big endian)
+            |   The number of the following tx nonces (5) in the payload.
+            +
+            | 5. TxNonces [unordered]
+            | | 5.1. Key (20 bytes; account address)
+            | |   An account address that corresponds to the following tx nonce (5.2).
+            | +
+            | | 5.2. Value (8 bytes; 64-bit integer in big endian)
+            | |   The current tx nonce of the above account (5.1).
+            +
+            | 6. BlockStates.Count (4 bytes; 32-bit integer in big endian)
+            |   The number of the following block states (7) in the payload.
+            +
+            | 7. BlockStates [unordered]
+            | | 7.1. Key (32 bytes; SHA-256 digest)
+            | |   A block hash having the following states delta (7.3).
+            | +
+            | | 7.2. Value.Count (4 bytes; 32-bit integer in big endian)
+            | |   The number of accounts whose states changed in the following delta (7.3).
+            | +
+            | | 7.3. Value [unordered]
+            | | | 7.3.1. Key (20 bytes; account address)
+            | | |   An account address having the following updated state (7.3.2).
+            | | +
+            | | | 7.3.2. Value (varying bytes; .NET binary serialization format)
+            | | |   An updated state of the account (7.3.1).
+            */
             get
             {
                 yield return new NetMQFrame(BlockHash.ToByteArray());

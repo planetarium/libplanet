@@ -50,6 +50,8 @@ namespace Libplanet.Tests.Net.Messages
         [Fact]
         public void DataFrames()
         {
+            // This test lengthens long... Please read the brief description of the entire payload
+            // structure from the comment in the RecentStates.DataFrames property code.
             ISet<Address> accounts = Enumerable.Repeat(0, 5).Select(_ =>
                 new PrivateKey().PublicKey.ToAddress()
             ).ToHashSet();
