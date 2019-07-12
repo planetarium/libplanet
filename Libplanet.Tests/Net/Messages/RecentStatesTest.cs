@@ -45,11 +45,6 @@ namespace Libplanet.Tests.Net.Messages
                     null
                 )
             );
-            Address a = new PrivateKey().PublicKey.ToAddress();
-            var blockStates = emptyBlockStates.Add(
-                default,
-                ImmutableDictionary<Address, object>.Empty
-            );
         }
 
         [Fact]
