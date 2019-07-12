@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
@@ -102,7 +103,9 @@ namespace Libplanet.Blocks
         {
             // FIXME: We need to fix this to solve
             // https://github.com/planetarium/libplanet/issues/244.
-            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
+            ImmutableArray<Transaction<T>> orderedTxs =
+                transactions.OrderBy(tx => tx.Id.ToHex()).ToImmutableArray();
+
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
