@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using NetMQ;
