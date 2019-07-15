@@ -519,7 +519,7 @@ namespace Libplanet.Blockchain
 
                 if (evaluateActions)
                 {
-                    ValidateNonce(block);
+                    ValidateTxNonces(block);
                     evaluations = block.Evaluate(
                         currentTime,
                         a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
@@ -564,7 +564,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal void ValidateNonce(Block<T> block)
+        internal void ValidateTxNonces(Block<T> block)
         {
             var nonces = new Dictionary<Address, long>();
             foreach (Transaction<T> tx in block.Transactions)

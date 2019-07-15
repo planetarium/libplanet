@@ -989,7 +989,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ValidateNonce()
+        public void ValidateTxNonces()
         {
             var privateKey = new PrivateKey();
             var actions = new[] { new DumbAction() };
@@ -1003,7 +1003,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
             Block<DumbAction> b1 = TestUtils.MineNext(genesis, txsA);
-            _blockChain.ValidateNonce(b1);
+            _blockChain.ValidateTxNonces(b1);
 
             Transaction<DumbAction>[] txsB =
             {
@@ -1011,7 +1011,7 @@ namespace Libplanet.Tests.Blockchain
             };
             Block<DumbAction> b2 = TestUtils.MineNext(genesis, txsB);
             Assert.Throws<InvalidTxNonceException>(() =>
-                _blockChain.ValidateNonce(b2));
+                _blockChain.ValidateTxNonces(b2));
         }
 
         [Fact]
