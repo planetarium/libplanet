@@ -406,7 +406,7 @@ namespace Libplanet.Net
         /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
         /// already <see cref="Running"/>.</exception>
         /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
-        /// blocks to caught in the network this method could lead unexpected behaviors, because
+        /// blocks to caught in the network this method could lead to unexpected behaviors, because
         /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
         /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
@@ -534,7 +534,7 @@ namespace Libplanet.Net
         /// An instance that receives progress updates for block downloads.
         /// </param>
         /// <param name="trustedStateValidators">
-        /// If any peer in this set is reachable and there is no built up
+        /// If any peer in this set is reachable and there are no built-up
         /// blocks in a current node, <see cref="Swarm{T}"/> receives the latest
         /// states of the major blockchain from that trusted peer,
         /// which is also calculated by that peer, instead of autonomously
