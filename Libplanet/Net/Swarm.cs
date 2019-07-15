@@ -875,8 +875,8 @@ namespace Libplanet.Net
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
-                    cancellationToken,
-                    evaluateActions: render
+                    evaluateActions: render,
+                    cancellationToken: cancellationToken
                 );
                 if (!synced.Id.Equals(_blockChain.Id))
                 {
@@ -1130,8 +1130,8 @@ namespace Libplanet.Net
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            CancellationToken cancellationToken,
-            bool evaluateActions
+            bool evaluateActions,
+            CancellationToken cancellationToken
         )
         {
             // Fix the tip here because it may change while receiving the block
@@ -1197,8 +1197,8 @@ namespace Libplanet.Net
                         synced,
                         stop,
                         progress,
-                        cancellationToken,
-                        evaluateActions
+                        evaluateActions,
+                        cancellationToken
                     );
                     break;
                 }
@@ -1251,8 +1251,8 @@ namespace Libplanet.Net
                     peer,
                     oldest.PreviousHash,
                     null,
-                    cancellationToken,
-                    evaluateActions: true
+                    evaluateActions: true,
+                    cancellationToken: cancellationToken
                 );
                 _logger.Debug("Filled up. trying to concatenation...");
 
@@ -1284,8 +1284,8 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            CancellationToken cancellationToken,
-            bool evaluateActions
+            bool evaluateActions,
+            CancellationToken cancellationToken
         )
         {
             while (!cancellationToken.IsCancellationRequested)
