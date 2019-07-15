@@ -1110,7 +1110,7 @@ synchronizes with.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.immutable.iimmutableset-1">IImmutableSet</a>&lt;<a class="xref" href="Libplanet.Address.html">Address</a>&gt;</td>
         <td><span class="parametername">trustedStateValidators</span></td>
-        <td><p>If any peer in this set is reachable and there is no built up
+        <td><p>If any peer in this set is reachable and there are no built-up
 blocks in a current node, <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> receives the latest
 states of the major blockchain from that trusted peer,
 which is also calculated by that peer, instead of autonomously
@@ -1274,7 +1274,7 @@ that this operation should be canceled.</p>
   </table>
   <h5 id="Libplanet_Net_Swarm_1_StartAsync_System_TimeSpan_System_TimeSpan_System_Threading_CancellationToken__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If the <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockChain">BlockChain</a> has no blocks at all or there are long behind
-blocks to caught in the network this method could lead unexpected behaviors, because
+blocks to caught in the network this method could lead to unexpected behaviors, because
 this tries to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> <em>all</em> actions in the behind blocks
 so that there are a lot of calls to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_">Render(IActionContext, IAccountStateDelta)</a> method in a short
 period of time.  This can lead a game startup slow.  If you want to omit rendering of
