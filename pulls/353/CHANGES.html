@@ -87,39 +87,42 @@ and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
 <li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> now takes target peer to sync blockchain with as its</p>
-<p>argument. If the target field is leaved empty, <code>Swarm&lt;T&gt;</code> automatically sync with</p>
-<p>closest peer that is connected. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<p>argument. If the target field is leaved empty, <code>Swarm&lt;T&gt;</code> automatically syncs with</p>
+<p>closest connected peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 <li><p><code>AddPeersAsync</code> removed. Use <code>Swarm&lt;T&gt;.BootstrapAsync()</code> to make connection</p>
 <p>with seed peer. Unlike <code>Swarm&lt;T&gt;.AddPeersAsync()</code>, <code>Swarm&lt;T&gt;.BootstrapAsync()</code></p>
-<p>should be called after <code>Swarm&lt;T&gt;.StartAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<p>should be called after <code>Swarm&lt;T&gt;.StartAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p><code>Swarm&lt;T&gt;.BroadcastTxs()</code> removed. Transactions are broadcasted automatically.</p>
-<p>[<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>Swarm&lt;T&gt;.BroadcastTxs()</code> removed. Transactions are now broadcasted</p>
+<p>automatically. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li><p><code>Swarm&lt;T&gt;</code> will not blocked waiting a reply. It receives reply using <code>NetMQPoller</code>. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>Swarm&lt;T&gt;</code> does not create a block waiting a reply. It receives reply using</p>
+<p><code>NetMQPoller</code>. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p><code>PeerSetDelta</code> will not be used. All method using <code>PeerSetDelta</code> removed, and</p>
-<p>replaced. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>PeerSetDelta</code> will not be used. All method using <code>PeerSetDelta</code> removed, or</p>
+<p>replaced. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p>Peer connection does not maintained. It will be disposed right after receiving reply,</p>
-<p>or timeout. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p>Peer connection does not maintained anymore. It is disposed right after reply received,</p>
+<p>or timeout occurred. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 <li><p><code>Swarm&lt;T&gt;</code> does not communicate with all the peers on the network directly. Choosing</p>
-<p>and connecting to the peers is done via Kademlia protocol. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<p>and connecting to the peers are done via Kademlia protocol. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p><code>Message.Pong</code> does not carry blockchain's tip index. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>Swarm&lt;T&gt;.StartAsync()</code> does not run <code>Swarm&lt;T&gt;.PreloadAsync()</code> anymore. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p><code>Message.BlockHashes</code> and <code>Message.TxIds</code> do not carry sender information. [<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>Message.Pong</code> does not carry blockchain's tip index. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+</li>
+<li><p><code>Message.BlockHashes</code> and <code>Message.TxIds</code> do not carry sender information. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
-<li><p>Added <code>cancellationToken</code> option to <code>Task.Delay()</code> in <code>Swarm&lt;T&gt;.RefreshPermissions()</code></p>
-<p>[<a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</p>
+<li><p><code>cancellationToken</code> option added to <code>Task.Delay()</code> in <code>Swarm&lt;T&gt;.RefreshPermissions()</code></p>
+<p>[<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
