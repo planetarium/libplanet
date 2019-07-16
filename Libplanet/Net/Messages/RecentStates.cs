@@ -16,17 +16,15 @@ namespace Libplanet.Net.Messages
                 HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>
             > blockStates,
-            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateReferences,
-            IImmutableDictionary<Address, long> txNonces
+            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateReferences
         )
         {
             BlockHash = blockHash;
 
-            if (blockStates is null && stateReferences is null && txNonces is null)
+            if (blockStates is null && stateReferences is null)
             {
                 BlockStates = null;
                 StateReferences = null;
-                TxNonces = null;
                 return;
             }
 
@@ -38,14 +36,9 @@ namespace Libplanet.Net.Messages
             {
                 throw new ArgumentNullException(nameof(stateReferences));
             }
-            else if (txNonces is null)
-            {
-                throw new ArgumentNullException(nameof(txNonces));
-            }
 
             BlockStates = blockStates;
             StateReferences = stateReferences;
-            TxNonces = txNonces;
         }
 
         public RecentStates(NetMQFrame[] frames)
@@ -62,7 +55,6 @@ namespace Libplanet.Net.Messages
             {
                 BlockStates = null;
                 StateReferences = null;
-                TxNonces = null;
                 return;
             }
 
@@ -85,20 +77,6 @@ namespace Libplanet.Net.Messages
                 }
 
                 stateRefs[address] = refs.ToImmutableList();
-            }
-
-            it.MoveNext();
-            int signersCount = it.Current.ConvertToInt32();
-
-            var txNonces = new Dictionary<Address, long>(accountsCount);
-
-            for (int j = 0; j < signersCount; j++)
-            {
-                it.MoveNext();
-                var address = new Address(it.Current.Buffer);
-
-                it.MoveNext();
-                txNonces[address] = it.Current.ConvertToInt64();
             }
 
             it.MoveNext();
@@ -135,7 +113,6 @@ namespace Libplanet.Net.Messages
 
             BlockStates = blockStates.ToImmutableDictionary();
             StateReferences = stateRefs.ToImmutableDictionary();
-            TxNonces = txNonces.ToImmutableDictionary();
         }
 
         public HashDigest<SHA256> BlockHash { get; }
@@ -156,8 +133,6 @@ namespace Libplanet.Net.Messages
         {
             get;
         }
-
-        public IImmutableDictionary<Address, long> TxNonces { get; }
 
         protected override MessageType Type => MessageType.RecentStates;
 
@@ -186,31 +161,21 @@ namespace Libplanet.Net.Messages
             | | | 3.3.1. (32 bytes; SHA-256 digest)
             | | |   A state reference of the account (3.1).
             +
-            | 4. TxNonces.Count (4 bytes; 32-bit integer in big endian)
-            |   The number of the following tx nonces (5) in the payload.
-            +
-            | 5. TxNonces [unordered]
-            | | 5.1. Key (20 bytes; account address)
-            | |   An account address that corresponds to the following tx nonce (5.2).
-            | +
-            | | 5.2. Value (8 bytes; 64-bit integer in big endian)
-            | |   The current tx nonce of the above account (5.1).
-            +
-            | 6. BlockStates.Count (4 bytes; 32-bit integer in big endian)
+            | 4. BlockStates.Count (4 bytes; 32-bit integer in big endian)
             |   The number of the following block states (7) in the payload.
             +
-            | 7. BlockStates [unordered]
-            | | 7.1. Key (32 bytes; SHA-256 digest)
+            | 5. BlockStates [unordered]
+            | | 5.1. Key (32 bytes; SHA-256 digest)
             | |   A block hash having the following states delta (7.3).
             | +
-            | | 7.2. Value.Count (4 bytes; 32-bit integer in big endian)
+            | | 5.2. Value.Count (4 bytes; 32-bit integer in big endian)
             | |   The number of accounts whose states changed in the following delta (7.3).
             | +
-            | | 7.3. Value [unordered]
-            | | | 7.3.1. Key (20 bytes; account address)
+            | | 5.3. Value [unordered]
+            | | | 5.3.1. Key (20 bytes; account address)
             | | |   An account address having the following updated state (7.3.2).
             | | +
-            | | | 7.3.2. Value (varying bytes; .NET binary serialization format)
+            | | | 5.3.2. Value (varying bytes; .NET binary serialization format)
             | | |   An updated state of the account (7.3.1).
             */
             get
@@ -239,14 +204,6 @@ namespace Libplanet.Net.Messages
                     {
                         yield return new NetMQFrame(blockHash.ToByteArray());
                     }
-                }
-
-                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(TxNonces.Count));
-
-                foreach (var pair in TxNonces)
-                {
-                    yield return new NetMQFrame(pair.Key.ToByteArray());
-                    yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(pair.Value));
                 }
 
                 yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(BlockStates.Count));

@@ -256,7 +256,7 @@ namespace Libplanet.Blockchain
                                         b.PreviousHash
                                     ).GetValueOrDefault(a)
                                 ).ToArray();
-                            SetStates(b, evaluations, buildIndices: false);
+                            SetStates(b, evaluations, buildStateReferences: false);
                         }
 
                         blockStates = Store.GetBlockStates(hashValue);
@@ -514,12 +514,32 @@ namespace Libplanet.Blockchain
                     throw e;
                 }
 
-                HashDigest<SHA256>? tip =
-                    Store.IndexBlockHash(Id.ToString(), -1);
+                string ns = Id.ToString();
+                HashDigest<SHA256>? tip = Store.IndexBlockHash(ns, -1);
+
+                var nonceDeltas = new Dictionary<Address, long>();
+                foreach (Transaction<T> tx1 in block.Transactions)
+                {
+                    Address txSigner = tx1.Signer;
+                    nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
+
+                    long expectedNonce = nonceDelta + Store.GetTxNonce(Id.ToString(), txSigner);
+
+                    if (!expectedNonce.Equals(tx1.Nonce))
+                    {
+                        throw new InvalidTxNonceException(
+                            tx1.Id,
+                            expectedNonce,
+                            tx1.Nonce,
+                            "Transaction nonce is invalid."
+                        );
+                    }
+
+                    nonceDeltas[txSigner] = nonceDelta + 1;
+                }
 
                 if (evaluateActions)
                 {
-                    ValidateTxNonces(block);
                     evaluations = block.Evaluate(
                         currentTime,
                         a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
@@ -530,12 +550,17 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Blocks[block.Hash] = block;
-                    if (!(evaluations is null))
+                    foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
-                        SetStates(block, evaluations, buildIndices: true);
+                        Store.IncreaseTxNonce(ns, pair.Key, pair.Value);
                     }
 
-                    Store.AppendIndex(Id.ToString(), block.Hash);
+                    if (!(evaluations is null))
+                    {
+                        SetStates(block, evaluations, buildStateReferences: true);
+                    }
+
+                    Store.AppendIndex(ns, block.Hash);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -561,31 +586,6 @@ namespace Libplanet.Blockchain
                         evaluation.OutputStates
                     );
                 }
-            }
-        }
-
-        internal void ValidateTxNonces(Block<T> block)
-        {
-            var nonces = new Dictionary<Address, long>();
-            foreach (Transaction<T> tx in block.Transactions)
-            {
-                Address signer = tx.Signer;
-                if (!nonces.TryGetValue(signer, out long nonce))
-                {
-                    nonce =
-                        Store.GetTxNonce(Id.ToString(), signer);
-                }
-
-                if (!nonce.Equals(tx.Nonce))
-                {
-                    throw new InvalidTxNonceException(
-                        tx.Id,
-                        nonce,
-                        tx.Nonce,
-                        "Transaction nonce is invalid.");
-                }
-
-                nonces[signer] = nonce + 1;
             }
         }
 
@@ -912,7 +912,7 @@ namespace Libplanet.Blockchain
         private void SetStates(
             Block<T> block,
             IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
-            bool buildIndices
+            bool buildStateReferences
         )
         {
             HashDigest<SHA256> blockHash = block.Hash;
@@ -939,16 +939,9 @@ namespace Libplanet.Blockchain
                 new AddressStateMap(totalDelta)
             );
 
-            if (buildIndices)
+            if (buildStateReferences)
             {
-                string chainId = Id.ToString();
-                Store.StoreStateReference(chainId, updatedAddresses, block);
-                IEnumerable<(Address, int)> signers = block
-                    .Transactions.GroupBy(tx => tx.Signer).Select(g => (g.Key, g.Count()));
-                foreach ((Address signer, int txCount) in signers)
-                {
-                    Store.IncreaseTxNonce(chainId, signer, txCount);
-                }
+                Store.StoreStateReference(Id.ToString(), updatedAddresses, block);
             }
         }
     }

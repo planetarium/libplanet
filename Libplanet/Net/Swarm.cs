@@ -919,10 +919,6 @@ namespace Libplanet.Net
                         // store.
                         IStore store = BlockChain.Store;
                         string ns = BlockChain.Id.ToString();
-                        foreach (KeyValuePair<Address, long> pair in recentStates.TxNonces)
-                        {
-                            store.IncreaseTxNonce(ns, pair.Key, pair.Value);
-                        }
 
                         foreach (var pair in recentStates.StateReferences)
                         {
@@ -1443,7 +1439,6 @@ namespace Libplanet.Net
             > blockStates = null;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
-            IImmutableDictionary<Address, long> txNonces = null;
 
             if (_blockChain.Blocks.ContainsKey(blockHash))
             {
@@ -1464,7 +1459,6 @@ namespace Libplanet.Net
                             address, refs
                         );
                 }).ToImmutableDictionary();
-                txNonces = store.ListTxNonces(ns).ToImmutableDictionary();
 
                 blockStates = stateRefs.Values
                     .Select(refs => refs.Last())
@@ -1477,7 +1471,7 @@ namespace Libplanet.Net
                     .ToImmutableDictionary();
             }
 
-            var reply = new RecentStates(blockHash, blockStates, stateRefs, txNonces)
+            var reply = new RecentStates(blockHash, blockStates, stateRefs)
             {
                 Identity = getRecentStates.Identity,
             };

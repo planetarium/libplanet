@@ -67,7 +67,7 @@ namespace Libplanet.Net.Messages
 
             /// <summary>
             /// A reply to <see cref="GetRecentStates"/>.
-            /// Contains the calculated recent states, transaction nonces, and state references.
+            /// Contains the calculated recent states and state references.
             /// </summary>
             RecentStates = 0x0c,
         }

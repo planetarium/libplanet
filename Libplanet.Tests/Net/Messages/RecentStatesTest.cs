@@ -25,23 +25,13 @@ namespace Libplanet.Tests.Net.Messages
                 new RecentStates(
                     default,
                     null,
-                    ImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>.Empty,
-                    ImmutableDictionary<Address, long>.Empty
+                    ImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>.Empty
                 )
             );
             Assert.Throws<ArgumentNullException>(() =>
                 new RecentStates(
                     default,
                     emptyBlockStates,
-                    null,
-                    ImmutableDictionary<Address, long>.Empty
-                )
-            );
-            Assert.Throws<ArgumentNullException>(() =>
-                new RecentStates(
-                    default,
-                    emptyBlockStates,
-                    ImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>.Empty,
                     null
                 )
             );
@@ -56,10 +46,6 @@ namespace Libplanet.Tests.Net.Messages
                 new PrivateKey().PublicKey.ToAddress()
             ).ToHashSet();
             int accountsCount = accounts.Count;
-            ISet<Address> signers = Enumerable.Repeat(0, 10).Select(_ =>
-                new PrivateKey().PublicKey.ToAddress()
-            ).ToHashSet();
-            int signersCount = signers.Count;
             var privKey = new PrivateKey();
 
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -94,21 +80,16 @@ namespace Libplanet.Tests.Net.Messages
                         .ToImmutableList();
                     return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(a, states);
                 }).ToImmutableDictionary();
-            IImmutableDictionary<Address, long> txNonces = signers.Select(a =>
-                new KeyValuePair<Address, long>(a, 1)
-            ).ToImmutableDictionary();
 
             RecentStates reply = new RecentStates(
                 blockHash,
                 compressedBlockStates,
-                stateRefs,
-                txNonces
+                stateRefs
             );
             NetMQMessage msg = reply.ToNetMQMessage(privKey);
             const int headerSize = 3;  // type, pubkey, sig
             int stateRefsOffset = headerSize + 1;
-            int txNoncesOffset = stateRefsOffset + 1 + (accountsCount * 4);
-            int blockStatesOffset = txNoncesOffset + 1 + (signersCount * 2);
+            int blockStatesOffset = stateRefsOffset + 1 + (accountsCount * 4);
             Assert.Equal(
                blockStatesOffset + 1 + (compressedBlockStates.Count * 4),
                msg.FrameCount
@@ -134,22 +115,6 @@ namespace Libplanet.Tests.Net.Messages
             }
 
             Assert.Empty(accounts);
-            Assert.Equal(signersCount, msg[txNoncesOffset].ConvertToInt32());
-
-            for (int i = 0; i < signersCount; i++)
-            {
-                int offset = txNoncesOffset + 1 + (i * 2);
-                Assert.Equal(Address.Size, msg[offset].BufferSize);
-                Address address = new Address(msg[offset].Buffer);
-                Assert.Contains(address, signers);
-
-                Assert.Equal(8, msg[offset + 1].BufferSize);
-                Assert.Equal(txNonces[address], msg[offset + 1].ConvertToInt64());
-
-                signers.Remove(address);
-            }
-
-            Assert.Empty(signers);
             Assert.Equal(compressedBlockStates.Count, msg[blockStatesOffset].ConvertToInt32());
 
             var formatter = new BinaryFormatter();
@@ -179,9 +144,8 @@ namespace Libplanet.Tests.Net.Messages
             Assert.False(parsed.Missing);
             Assert.Equal(compressedBlockStates, parsed.BlockStates);
             Assert.Equal(stateRefs, parsed.StateReferences);
-            Assert.Equal(txNonces, parsed.TxNonces);
 
-            RecentStates missing = new RecentStates(blockHash, null, null, null);
+            RecentStates missing = new RecentStates(blockHash, null, null);
             msg = missing.ToNetMQMessage(privKey);
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
             Assert.Equal(-1, msg[headerSize + 1].ConvertToInt32());

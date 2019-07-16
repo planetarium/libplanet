@@ -1002,16 +1002,31 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
             };
-            Block<DumbAction> b1 = TestUtils.MineNext(genesis, txsA);
-            _blockChain.ValidateTxNonces(b1);
+            Block<DumbAction> b1 = TestUtils.MineNext(genesis, txsA, difficulty: 1024);
+            _blockChain.Append(b1);
 
             Transaction<DumbAction>[] txsB =
             {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
+            };
+            Block<DumbAction> b2 = TestUtils.MineNext(b1, txsB, difficulty: 1024);
+            _blockChain.Append(b2);
+
+            // Invalid if nonce is too low
+            Transaction<DumbAction>[] txsC =
+            {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
-            Block<DumbAction> b2 = TestUtils.MineNext(genesis, txsB);
-            Assert.Throws<InvalidTxNonceException>(() =>
-                _blockChain.ValidateTxNonces(b2));
+            Block<DumbAction> b3a = TestUtils.MineNext(b2, txsC, difficulty: 1024);
+            Assert.Throws<InvalidTxNonceException>(() => _blockChain.Append(b3a));
+
+            // Invalid if nonce is too high
+            Transaction<DumbAction>[] txsD =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 4),
+            };
+            Block<DumbAction> b3b = TestUtils.MineNext(b2, txsD, difficulty: 1024);
+            Assert.Throws<InvalidTxNonceException>(() => _blockChain.Append(b3b));
         }
 
         [Fact]
