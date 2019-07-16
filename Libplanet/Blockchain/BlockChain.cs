@@ -251,7 +251,7 @@ namespace Libplanet.Blockchain
                                 continue;
                             }
 
-                            ActionEvaluation<TTxAction>[] evaluations =
+                            ActionEvaluation<TTxAction>[] txActionEvaluations =
                                 b.Evaluate(
                                     DateTimeOffset.UtcNow,
                                     a => GetStates(
@@ -259,7 +259,17 @@ namespace Libplanet.Blockchain
                                         b.PreviousHash
                                     ).GetValueOrDefault(a)
                                 ).ToArray();
-                            SetStates(b, evaluations, buildIndices: false);
+
+                            ActionEvaluation<TBlockAction>[] blockActionEvaluations =
+                                EvaluateBlockAction(block, txActionEvaluations).ToArray();
+
+                            IAccountStateDelta lastStates;
+                            ImmutableHashSet<Address> updatedAddresses;
+
+                            (lastStates, updatedAddresses) = GetStatesAndUpdatedAddresses(
+                                txActionEvaluations, blockActionEvaluations);
+
+                            SetStates(b, lastStates, updatedAddresses, buildIndices: false);
                         }
 
                         blockStates = Store.GetBlockStates(hashValue);
@@ -497,7 +507,8 @@ namespace Libplanet.Blockchain
         )
         {
             _rwlock.EnterUpgradeableReadLock();
-            ActionEvaluation<TTxAction>[] evaluations;
+            ActionEvaluation<TTxAction>[] txActionEvaluations;
+            ActionEvaluation<TBlockAction>[] blockActionEvaluations;
             try
             {
                 InvalidBlockException e =
@@ -513,16 +524,26 @@ namespace Libplanet.Blockchain
 
                 ValidateNonce(block);
 
-                evaluations = block.Evaluate(
+                txActionEvaluations = block.Evaluate(
                     currentTime,
                     a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
                 ).ToArray();
+                blockActionEvaluations = EvaluateBlockAction(block, txActionEvaluations).ToArray();
+
+                var actionEvaluations = txActionEvaluations;
+                var b = actionEvaluations;
+
+                IAccountStateDelta lastStates;
+                ImmutableHashSet<Address> updatedAddresses;
+
+                (lastStates, updatedAddresses) =
+                    GetStatesAndUpdatedAddresses(txActionEvaluations, blockActionEvaluations);
 
                 _rwlock.EnterWriteLock();
                 try
                 {
                     Blocks[block.Hash] = block;
-                    SetStates(block, evaluations, buildIndices: true);
+                    SetStates(block, lastStates, updatedAddresses, buildIndices: true);
 
                     Store.AppendIndex(Id.ToString(), block.Hash);
                     ISet<TxId> txIds = block.Transactions
@@ -543,12 +564,14 @@ namespace Libplanet.Blockchain
 
             if (render)
             {
-                foreach (var evaluation in evaluations)
+                foreach (var evaluation in txActionEvaluations)
                 {
-                    evaluation.Action.Render(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
-                    );
+                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                }
+
+                foreach (var evaluation in blockActionEvaluations)
+                {
+                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
                 }
             }
         }
@@ -832,15 +855,21 @@ namespace Libplanet.Blockchain
                 b = Blocks[ph]
             )
             {
-                var actions = b.EvaluateActionsPerTx(a =>
-                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                ).Reverse();
-                foreach (var (_, evaluation) in actions)
+                ImmutableList<ActionEvaluation<TTxAction>> txEvaluations = b.EvaluateActionsPerTx(
+                        a => GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                    .Select(p => p.Item2)
+                    .ToImmutableList();
+
+                foreach (var evaluation in txEvaluations.Reverse())
                 {
-                    evaluation.Action.Unrender(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
-                    );
+                    evaluation.Action.Unrender(evaluation.InputContext, evaluation.OutputStates);
+                }
+
+                IEnumerable<ActionEvaluation<TBlockAction>> blockActionEvaluations =
+                    EvaluateBlockAction(b, txEvaluations);
+                foreach (var evaluation in blockActionEvaluations)
+                {
+                    evaluation.Action.Unrender(evaluation.InputContext, evaluation.OutputStates);
                 }
             }
 
@@ -865,15 +894,20 @@ namespace Libplanet.Blockchain
                     : this;
             foreach (Block<TTxAction> b in blocksToRender)
             {
-                var actions = b.EvaluateActionsPerTx(a =>
-                    GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                );
-                foreach (var (_, evaluation) in actions)
+                ImmutableList<ActionEvaluation<TTxAction>> txEvaluations = b.EvaluateActionsPerTx(
+                        a => GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                    .Select(p => p.Item2)
+                    .ToImmutableList();
+                foreach (var evaluation in txEvaluations)
                 {
-                    evaluation.Action.Render(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
-                    );
+                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                }
+
+                IEnumerable<ActionEvaluation<TBlockAction>> blockActionEvaluations =
+                    EvaluateBlockAction(b, txEvaluations);
+                foreach (var evaluation in blockActionEvaluations)
+                {
+                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
                 }
             }
         }
@@ -892,23 +926,74 @@ namespace Libplanet.Blockchain
             }
         }
 
+        private IEnumerable<ActionEvaluation<TBlockAction>> EvaluateBlockAction(
+            Block<TTxAction> block,
+            IReadOnlyList<ActionEvaluation<TTxAction>> txActionEvaluations)
+        {
+            IAccountStateDelta lastStates;
+            ImmutableHashSet<Address> updatedAddresses;
+
+            (lastStates, updatedAddresses) = GetStatesAndUpdatedAddresses(
+                txActionEvaluations, null);
+
+            Address miner = block.Miner.GetValueOrDefault();
+
+            var minerState = GetStates(new[] { miner }).GetValueOrDefault(miner);
+
+            if (lastStates is null)
+            {
+                lastStates = new AccountStateDeltaImpl(a => minerState);
+            }
+            else if (lastStates.GetState(miner) is null)
+            {
+                lastStates = lastStates.SetState(miner, minerState);
+            }
+
+            return ActionEvaluation<TBlockAction>.EvaluateActionsGradually(
+                block.Hash,
+                block.Index,
+                lastStates,
+                miner,
+                miner,
+                Array.Empty<byte>(),
+                Policy.BlockActions.ToImmutableList());
+        }
+
+        private
+            (IAccountStateDelta, ImmutableHashSet<Address>)
+            GetStatesAndUpdatedAddresses(
+                IReadOnlyList<ActionEvaluation<TTxAction>> txActionEvaluations,
+                IReadOnlyList<ActionEvaluation<TBlockAction>> blockActionEvaluations)
+        {
+            IAccountStateDelta states = null;
+            ImmutableHashSet<Address> updatedAddresses = ImmutableHashSet<Address>.Empty;
+
+            if (blockActionEvaluations?.Count > 0)
+            {
+                states = blockActionEvaluations[blockActionEvaluations.Count - 1].OutputStates;
+                updatedAddresses = blockActionEvaluations
+                    .Select(a => a.OutputStates.UpdatedAddresses)
+                    .Aggregate(ImmutableHashSet<Address>.Empty, (a, b) => a.Union(b));
+            }
+            else if (txActionEvaluations?.Count > 0)
+            {
+                states = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
+                updatedAddresses = txActionEvaluations
+                    .Select(a => a.OutputStates.UpdatedAddresses)
+                    .Aggregate(ImmutableHashSet<Address>.Empty, (a, b) => a.Union(b));
+            }
+
+            return (states, updatedAddresses);
+        }
+
         private void SetStates(
             Block<TTxAction> block,
-            IReadOnlyList<ActionEvaluation<TTxAction>> actionEvaluations,
+            IAccountStateDelta lastStates,
+            ImmutableHashSet<Address> updatedAddresses,
             bool buildIndices
         )
         {
             HashDigest<SHA256> blockHash = block.Hash;
-            IAccountStateDelta lastStates = actionEvaluations.Count > 0
-                ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
-                : null;
-            ImmutableHashSet<Address> updatedAddresses =
-                actionEvaluations.Select(
-                    a => a.OutputStates.UpdatedAddresses
-                ).Aggregate(
-                    ImmutableHashSet<Address>.Empty,
-                    (a, b) => a.Union(b)
-                );
             ImmutableDictionary<Address, object> totalDelta =
                 updatedAddresses.Select(
                     a => new KeyValuePair<Address, object>(

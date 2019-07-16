@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Security.Cryptography;
+using Libplanet.Tx;
+
 namespace Libplanet.Action
 {
     /// <summary>
@@ -46,5 +53,80 @@ namespace Libplanet.Action
         /// The result states that <see cref="Action"/> makes.
         /// </summary>
         public IAccountStateDelta OutputStates { get; }
+
+        internal static IEnumerable<ActionEvaluation<T>> EvaluateActionsGradually(
+            HashDigest<SHA256> blockHash,
+            long blockIndex,
+            IAccountStateDelta previousStates,
+            Address minerAddress,
+            Address signer,
+            byte[] signature,
+            IImmutableList<T> actions,
+            bool rehearsal = false)
+        {
+            ActionContext CreateActionContext(
+                IAccountStateDelta prevStates,
+                int randomSeed
+            ) =>
+                new ActionContext(
+                    signer: signer,
+                    miner: minerAddress,
+                    blockIndex: blockIndex,
+                    previousStates: prevStates,
+                    randomSeed: randomSeed,
+                    rehearsal: rehearsal
+                );
+
+            int seed =
+                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
+                (signature.Any() ? BitConverter.ToInt32(signature, 0) : 0);
+            IAccountStateDelta states = previousStates;
+            foreach (T action in actions)
+            {
+                ActionContext context =
+                    CreateActionContext(states, seed);
+                IAccountStateDelta nextStates;
+                try
+                {
+                    nextStates = action.Execute(context);
+                }
+                catch (Exception e)
+                {
+                    if (!rehearsal)
+                    {
+                        throw;
+                    }
+
+                    var msg =
+                        $"The action {action} threw an exception during its " +
+                        "rehearsal.  It is probably because the logic of the " +
+                        $"action {action} is not enough generic so that it " +
+                        "can cover every case including rehearsal mode.\n" +
+                        "The IActionContext.Rehearsal property also might be " +
+                        "useful to make the action can deal with the case of " +
+                        "rehearsal mode.\n" +
+                        "See also this exception's InnerException property.";
+                    throw new UnexpectedlyTerminatedTxRehearsalException(
+                        action, msg, e
+                    );
+                }
+
+                // As IActionContext.Random is stateful, we cannot reuse
+                // the context which is once consumed by Execute().
+                ActionContext equivalentContext =
+                    CreateActionContext(states, seed);
+
+                yield return new ActionEvaluation<T>(
+                    action,
+                    equivalentContext,
+                    nextStates
+                );
+                states = nextStates;
+                unchecked
+                {
+                    seed++;
+                }
+            }
+        }
     }
 }
