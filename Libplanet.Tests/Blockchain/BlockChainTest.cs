@@ -207,8 +207,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void Append()
         {
-            DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
-            MinerReward.RenderRecords.Value = ImmutableList<MinerReward.RenderRecord>.Empty;
+            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
             Address[] addresses = Enumerable.Repeat(0, 4)
                 .Select(_ => new PrivateKey().PublicKey.ToAddress())
@@ -247,9 +247,10 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Contains(b1, _blockChain);
                 Assert.Equal(new[] { b0, b1 }, _blockChain.ToArray());
                 var renders = DumbAction.RenderRecords.Value;
+                var renderActions = renders.Select(r => (DumbAction)r.Action).ToArray();
                 Assert.Equal(4, renders.Count);
                 Assert.True(renders.All(r => r.Render));
-                Assert.Equal("foo", renders[0].Action.Item);
+                Assert.Equal("foo", renderActions[0].Item);
                 Assert.Equal(1, renders[0].Context.BlockIndex);
                 Assert.Equal(
                     new string[] { null, null, null, null },
@@ -259,7 +260,7 @@ namespace Libplanet.Tests.Blockchain
                     new[] { "foo", null, null, null },
                     addresses.Select(renders[0].NextStates.GetState)
                 );
-                Assert.Equal("bar", renders[1].Action.Item);
+                Assert.Equal("bar", renderActions[1].Item);
                 Assert.Equal(1, renders[1].Context.BlockIndex);
                 Assert.Equal(
                     addresses.Select(renders[0].NextStates.GetState),
@@ -269,7 +270,7 @@ namespace Libplanet.Tests.Blockchain
                     new[] { "foo", "bar", null, null },
                     addresses.Select(renders[1].NextStates.GetState)
                 );
-                Assert.Equal("baz", renders[2].Action.Item);
+                Assert.Equal("baz", renderActions[2].Item);
                 Assert.Equal(1, renders[2].Context.BlockIndex);
                 Assert.Equal(
                     addresses.Select(renders[1].NextStates.GetState),
@@ -279,7 +280,7 @@ namespace Libplanet.Tests.Blockchain
                     new[] { "foo", "bar", "baz", null },
                     addresses.Select(renders[2].NextStates.GetState)
                 );
-                Assert.Equal("qux", renders[3].Action.Item);
+                Assert.Equal("qux", renderActions[3].Item);
                 Assert.Equal(1, renders[3].Context.BlockIndex);
                 Assert.Equal(
                     addresses.Select(renders[2].NextStates.GetState),
@@ -310,8 +311,8 @@ namespace Libplanet.Tests.Blockchain
             }
             finally
             {
-                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<MinerReward.RenderRecord>.Empty;
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -638,8 +639,8 @@ namespace Libplanet.Tests.Blockchain
 
             try
             {
-                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<MinerReward.RenderRecord>.Empty;
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
                 Block<DumbAction> forkTip = TestUtils.MineNext(
                     fork.Tip,
@@ -657,6 +658,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Empty(_blockChain.Store.ListTxNonces(previousNamespace));
 
                 var renders = DumbAction.RenderRecords.Value;
+                var renderActions = renders.Select(r => (DumbAction)r.Action).ToArray();
 
                 int actionsCountA = txsA.Sum(
                     a => a.Sum(tx => tx.Actions.Count)
@@ -667,13 +669,13 @@ namespace Libplanet.Tests.Blockchain
                 Assert.True(renders.Take(actionsCountA).All(r => r.Unrender));
                 Assert.True(renders.Skip(actionsCountA).All(r => r.Render));
 
-                Assert.Equal("qux", renders[0].Action.Item);
-                Assert.Equal("baz", renders[1].Action.Item);
-                Assert.Equal("bar", renders[2].Action.Item);
-                Assert.Equal("foo", renders[3].Action.Item);
-                Assert.Equal("fork-foo", renders[4].Action.Item);
-                Assert.Equal("fork-bar", renders[5].Action.Item);
-                Assert.Equal("fork-baz", renders[6].Action.Item);
+                Assert.Equal("qux", renderActions[0].Item);
+                Assert.Equal("baz", renderActions[1].Item);
+                Assert.Equal("bar", renderActions[2].Item);
+                Assert.Equal("foo", renderActions[3].Item);
+                Assert.Equal("fork-foo", renderActions[4].Item);
+                Assert.Equal("fork-bar", renderActions[5].Item);
+                Assert.Equal("fork-baz", renderActions[6].Item);
 
                 var minerAddress = TestUtils.GenesisMinerAddress;
                 var blockRenders = MinerReward.RenderRecords.Value;
@@ -685,8 +687,8 @@ namespace Libplanet.Tests.Blockchain
             }
             finally
             {
-                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
-                MinerReward.RenderRecords.Value = ImmutableList<MinerReward.RenderRecord>.Empty;
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -1349,23 +1351,6 @@ namespace Libplanet.Tests.Blockchain
                     Context = context,
                     NextStates = nextStates,
                 });
-            }
-
-            public struct RenderRecord
-            {
-                public bool Render { get; set; }
-
-                public bool Unrender
-                {
-                    get => !Render;
-                    set => Render = !value;
-                }
-
-                public IAction Action { get; set; }
-
-                public IActionContext Context { get; set; }
-
-                public IAccountStateDelta NextStates { get; set; }
             }
         }
     }
