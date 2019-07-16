@@ -11,15 +11,25 @@ To be released.
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
+ -  The `IBlockPolicy<T>` became to `IBlockPolicy<TTxAction, TBlockAction>`
+    to add `IBlockPolicy.BlockActions` property. Accordingly, `BlockChain<T>`
+    and `Swarm<T>` became `BlockChain<TTxAction, TBlockAction>`, and
+    `Swarm<TTxAction, TBlockAction>`, respectively.  [[#319], [#357]]
 
 ### Added interfaces
 
 ### Behavioral changes
 
+ - `BlockChain<TTxAction, TBlockAction>` became to evaluate
+   `IBlockPolicy<TTxAction, TBlockAction>.BlockActions` and set the
+   state when a mined block is appended to the chain.  [[#319], [#357]]
+
 ### Bug fixes
 
 
+[#319]: https://github.com/planetarium/libplanet/issues/319
 [#350]: https://github.com/planetarium/libplanet/pull/350
+[#357]: https://github.com/planetarium/libplanet/pull/357
 
 
 Version 0.4.1
