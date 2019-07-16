@@ -66,7 +66,7 @@ Released on July 8, 2019.
  -  `BlockChain<T>.StageTransactions` became to receive
     `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
     [[#274], [#297]]
--  `IStore.StageTransactionIds()` method became to receive
+ -  `IStore.StageTransactionIds()` method became to receive
     `IDictionary<TxId, bool>` instead of `ISet<TxId>`.  [[#274], [#297]]
  -  `IStore.IterateStagedTransactionIds()` method became to receive
     `bool toBroadcast` which is whether to iterate only the TxId set to

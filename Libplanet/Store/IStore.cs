@@ -230,7 +230,7 @@ namespace Libplanet.Store
         /// <param name="namespace">The namespace to increase
         /// <see cref="Transaction{T}"/> nonce.</param>
         /// <param name="signer">The address of the account to increase tx nonce.</param>
-        /// <param name="delta">How many to incrase the counter.  A negative number decreases
+        /// <param name="delta">How many to increase the counter.  A negative number decreases
         /// the counter.  1 by default.</param>
         /// <seealso cref="GetTxNonce(string, Address)"/>
         void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
