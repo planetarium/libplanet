@@ -163,14 +163,14 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Gets the state of the given <paramref name="addresses"/> in the
-        /// <see cref="BlockChain{TTxaction, TBlockAction}"/> from <paramref name="offset"/>.
+        /// <see cref="BlockChain{TTxAction, TBlockAction}"/> from <paramref name="offset"/>.
         /// </summary>
         /// <param name="addresses">The list of <see cref="Address"/>es to get
         /// their states.</param>
-        /// <param name="offset">The <see cref="HashDigest{TTxaction}"/> of the block to
+        /// <param name="offset">The <see cref="HashDigest{TTxAction}"/> of the block to
         /// start finding the state. It will be The tip of the
-        /// <see cref="BlockChain{TTxaction, TBlockAction}"/> if it is <c>null</c>.</param>
-        /// <param name="completeStates">When the <see cref="BlockChain{TTxaction, TBlockAction}"/>
+        /// <see cref="BlockChain{TTxAction, TBlockAction}"/> if it is <c>null</c>.</param>
+        /// <param name="completeStates">When the <see cref="BlockChain{TTxAction, TBlockAction}"/>
         /// instance does not contain states dirty of the block which lastly
         /// updated states of a requested address, this option makes
         /// the incomplete states calculated and filled on the fly.
@@ -182,7 +182,7 @@ namespace Libplanet.Blockchain
         /// <returns>The <see cref="AddressStateMap"/> of given
         /// <paramref name="addresses"/>.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
-        /// the <see cref="BlockChain{TTxaction, TBlockAction}"/> instance does not contain
+        /// the <see cref="BlockChain{TTxAction, TBlockAction}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
         /// address, because actions in the block have never been executed.
         /// If <paramref name="completeStates"/> option is turned on
@@ -303,15 +303,15 @@ namespace Libplanet.Blockchain
         /// the <paramref name="block"/> is confirmed (and thus all states
         /// reflect changes in the <paramref name="block"/>).</para>
         /// </summary>
-        /// <param name="block">A next <see cref="Block{TTxaction}"/>, which is mined,
+        /// <param name="block">A next <see cref="Block{TTxAction}"/>, which is mined,
         /// to add.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{TTxaction}.Nonce"/> is different from
+        /// <see cref="Transaction{TTxAction}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{TTxaction}.Signer"/>.</exception>
+        /// <see cref="Transaction{TTxAction}.Signer"/>.</exception>
         public void Append(Block<TTxAction> block) =>
             Append(block, DateTimeOffset.UtcNow);
 
@@ -323,25 +323,25 @@ namespace Libplanet.Blockchain
         /// the <paramref name="block"/> is confirmed (and thus all states
         /// reflect changes in the <paramref name="block"/>).</para>
         /// </summary>
-        /// <param name="block">A next <see cref="Block{TTxaction}"/>, which is mined,
+        /// <param name="block">A next <see cref="Block{TTxAction}"/>, which is mined,
         /// to add.</param>
         /// <param name="currentTime">The current time.</param>
         /// <exception cref="InvalidBlockException">Thrown when the given
         /// <paramref name="block"/> is invalid, in itself or according to
         /// the <see cref="Policy"/>.</exception>
         /// <exception cref="InvalidTxNonceException">Thrown when the
-        /// <see cref="Transaction{TTxaction}.Nonce"/> is different from
+        /// <see cref="Transaction{TTxAction}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
-        /// <see cref="Transaction{TTxaction}.Signer"/>.</exception>
+        /// <see cref="Transaction{TTxAction}.Signer"/>.</exception>
         public void Append(Block<TTxAction> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, render: true);
 
         /// <summary>
         /// Adds <paramref name="transactions"/> to the pending list so that
-        /// a next <see cref="Block{TTxaction}"/> to be mined contains these
+        /// a next <see cref="Block{TTxAction}"/> to be mined contains these
         /// <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="transactions"> <see cref="Transaction{TTxaction}"/>s to add to the pending
+        /// <param name="transactions"> <see cref="Transaction{TTxAction}"/>s to add to the pending
         /// list. Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
         public void StageTransactions(IDictionary<Transaction<TTxAction>, bool> transactions)
         {
@@ -367,7 +367,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Removes <paramref name="transactions"/> from the pending list.
         /// </summary>
-        /// <param name="transactions"><see cref="Transaction{TTxaction}"/>s
+        /// <param name="transactions"><see cref="Transaction{TTxAction}"/>s
         /// to remove from the pending list.</param>
         /// <seealso cref="StageTransactions"/>
         public void UnstageTransactions(ISet<Transaction<TTxAction>> transactions)
@@ -386,11 +386,11 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets next <see cref="Transaction{TTxaction}.Nonce"/> of the address.
+        /// Gets next <see cref="Transaction{TTxAction}.Nonce"/> of the address.
         /// </summary>
         /// <param name="address">The <see cref="Address"/> from which to obtain the
-        /// <see cref="Transaction{TTxaction}.Nonce"/> value.</param>
-        /// <returns>The next <see cref="Transaction{TTxaction}.Nonce"/> value of the
+        /// <see cref="Transaction{TTxAction}.Nonce"/> value.</param>
+        /// <returns>The next <see cref="Transaction{TTxAction}.Nonce"/> value of the
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
         {
@@ -445,7 +445,7 @@ namespace Libplanet.Blockchain
             MineBlock(miner, DateTimeOffset.UtcNow);
 
         /// <summary>
-        /// Creates a new <see cref="Transaction{TTxaction}"/> and stage the transaction.
+        /// Creates a new <see cref="Transaction{TTxAction}"/> and stage the transaction.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
@@ -453,12 +453,12 @@ namespace Libplanet.Blockchain
         /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose states affected by
         /// <paramref name="actions"/>.</param>
-        /// <param name="timestamp">The time this <see cref="Transaction{TTxaction}"/> is created
+        /// <param name="timestamp">The time this <see cref="Transaction{TTxAction}"/> is created
         /// and signed.</param>
         /// <param name="broadcast">Whether to broadcast created transaction.</param>
-        /// <returns>A created new <see cref="Transaction{TTxaction}"/> signed by the given
+        /// <returns>A created new <see cref="Transaction{TTxAction}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
-        /// <seealso cref="Transaction{TTxaction}.Create" />
+        /// <seealso cref="Transaction{TTxAction}.Create" />
         public Transaction<TTxAction> MakeTransaction(
             PrivateKey privateKey,
             IEnumerable<TTxAction> actions,
