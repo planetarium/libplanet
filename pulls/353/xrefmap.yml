@@ -2994,6 +2994,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.Peer.AppProtocolVersion
   nameWithType: Peer.AppProtocolVersion
+- uid: Libplanet.Net.Protocols.Peer.Deserialize(System.Byte[])
+  name: Deserialize(Byte[])
+  href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_Deserialize_System_Byte___
+  commentId: M:Libplanet.Net.Protocols.Peer.Deserialize(System.Byte[])
+  name.vb: Deserialize(Byte())
+  fullName: Libplanet.Net.Protocols.Peer.Deserialize(System.Byte[])
+  fullName.vb: Libplanet.Net.Protocols.Peer.Deserialize(System.Byte())
+  nameWithType: Peer.Deserialize(Byte[])
+  nameWithType.vb: Peer.Deserialize(Byte())
+- uid: Libplanet.Net.Protocols.Peer.Deserialize*
+  name: Deserialize
+  href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_Deserialize_
+  commentId: Overload:Libplanet.Net.Protocols.Peer.Deserialize
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.Peer.Deserialize
+  nameWithType: Peer.Deserialize
 - uid: Libplanet.Net.Protocols.Peer.EndPoint
   name: EndPoint
   href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_EndPoint
@@ -3033,6 +3049,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Protocols.Peer.PublicKey
   nameWithType: Peer.PublicKey
+- uid: Libplanet.Net.Protocols.Peer.Serialize
+  name: Serialize()
+  href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_Serialize
+  commentId: M:Libplanet.Net.Protocols.Peer.Serialize
+  fullName: Libplanet.Net.Protocols.Peer.Serialize()
+  nameWithType: Peer.Serialize()
+- uid: Libplanet.Net.Protocols.Peer.Serialize*
+  name: Serialize
+  href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_Serialize_
+  commentId: Overload:Libplanet.Net.Protocols.Peer.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.Peer.Serialize
+  nameWithType: Peer.Serialize
 - uid: Libplanet.Net.Protocols.Peer.ToString
   name: ToString()
   href: api/Libplanet.Net.Protocols.Peer.html#Libplanet_Net_Protocols_Peer_ToString
