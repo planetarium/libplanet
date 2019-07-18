@@ -1485,24 +1485,22 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction)
   nameWithType: BlockPolicy<TTxAction, TBlockAction>
   nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(System.Collections.Generic.IEnumerable{`1},System.Int32,System.Int64,System.Int32)
-  name: BlockPolicy(IEnumerable<TBlockAction>, Int32, Int64, Int32)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2__ctor_System_Collections_Generic_IEnumerable__1__System_Int32_System_Int64_System_Int32_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(System.Collections.Generic.IEnumerable{`1},System.Int32,System.Int64,System.Int32)
-  name.vb: BlockPolicy(IEnumerable(Of TBlockAction), Int32, Int64, Int32)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(System.Collections.Generic.IEnumerable<TBlockAction>, System.Int32, System.Int64, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(System.Collections.Generic.IEnumerable(Of TBlockAction), System.Int32, System.Int64, System.Int32)
-  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(IEnumerable<TBlockAction>, Int32, Int64, Int32)
-  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(IEnumerable(Of TBlockAction), Int32, Int64, Int32)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(System.Collections.Generic.IEnumerable{`1},System.TimeSpan,System.Int64,System.Int32)
-  name: BlockPolicy(IEnumerable<TBlockAction>, TimeSpan, Int64, Int32)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2__ctor_System_Collections_Generic_IEnumerable__1__System_TimeSpan_System_Int64_System_Int32_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(System.Collections.Generic.IEnumerable{`1},System.TimeSpan,System.Int64,System.Int32)
-  name.vb: BlockPolicy(IEnumerable(Of TBlockAction), TimeSpan, Int64, Int32)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(System.Collections.Generic.IEnumerable<TBlockAction>, System.TimeSpan, System.Int64, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(System.Collections.Generic.IEnumerable(Of TBlockAction), System.TimeSpan, System.Int64, System.Int32)
-  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(IEnumerable<TBlockAction>, TimeSpan, Int64, Int32)
-  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(IEnumerable(Of TBlockAction), TimeSpan, Int64, Int32)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(`1,System.Int32,System.Int64,System.Int32)
+  name: BlockPolicy(TBlockAction, Int32, Int64, Int32)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2__ctor__1_System_Int32_System_Int64_System_Int32_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(`1,System.Int32,System.Int64,System.Int32)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(TBlockAction, System.Int32, System.Int64, System.Int32)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(TBlockAction, System.Int32, System.Int64, System.Int32)
+  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(TBlockAction, Int32, Int64, Int32)
+  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(TBlockAction, Int32, Int64, Int32)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(`1,System.TimeSpan,System.Int64,System.Int32)
+  name: BlockPolicy(TBlockAction, TimeSpan, Int64, Int32)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2__ctor__1_System_TimeSpan_System_Int64_System_Int32_
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor(`1,System.TimeSpan,System.Int64,System.Int32)
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(TBlockAction, System.TimeSpan, System.Int64, System.Int32)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(TBlockAction, System.TimeSpan, System.Int64, System.Int32)
+  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockPolicy(TBlockAction, TimeSpan, Int64, Int32)
+  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy(TBlockAction, TimeSpan, Int64, Int32)
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`2.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2__ctor_
@@ -1512,23 +1510,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy
   nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockPolicy
   nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockPolicy
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.BlockActions
-  name: BlockActions
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2_BlockActions
-  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`2.BlockActions
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockActions
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockActions
-  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockActions
-  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockActions
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.BlockActions*
-  name: BlockActions
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2_BlockActions_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`2.BlockActions
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.BlockAction
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2_BlockAction
+  commentId: P:Libplanet.Blockchain.Policies.BlockPolicy`2.BlockAction
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockAction
+  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockAction
+  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockAction
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`2.BlockAction*
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2_BlockAction_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`2.BlockAction
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockActions
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockActions
-  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockActions
-  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockActions
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<TTxAction, TBlockAction>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of TTxAction, TBlockAction).BlockAction
+  nameWithType: BlockPolicy<TTxAction, TBlockAction>.BlockAction
+  nameWithType.vb: BlockPolicy(Of TTxAction, TBlockAction).BlockAction
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`2.BlockInterval
   name: BlockInterval
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-2.html#Libplanet_Blockchain_Policies_BlockPolicy_2_BlockInterval
@@ -1613,23 +1611,23 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of TTxAction, TBlockAction)
   nameWithType: IBlockPolicy<TTxAction, TBlockAction>
   nameWithType.vb: IBlockPolicy(Of TTxAction, TBlockAction)
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockActions
-  name: BlockActions
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html#Libplanet_Blockchain_Policies_IBlockPolicy_2_BlockActions
-  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockActions
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<TTxAction, TBlockAction>.BlockActions
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of TTxAction, TBlockAction).BlockActions
-  nameWithType: IBlockPolicy<TTxAction, TBlockAction>.BlockActions
-  nameWithType.vb: IBlockPolicy(Of TTxAction, TBlockAction).BlockActions
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockActions*
-  name: BlockActions
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html#Libplanet_Blockchain_Policies_IBlockPolicy_2_BlockActions_
-  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockActions
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockAction
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html#Libplanet_Blockchain_Policies_IBlockPolicy_2_BlockAction
+  commentId: P:Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockAction
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<TTxAction, TBlockAction>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of TTxAction, TBlockAction).BlockAction
+  nameWithType: IBlockPolicy<TTxAction, TBlockAction>.BlockAction
+  nameWithType.vb: IBlockPolicy(Of TTxAction, TBlockAction).BlockAction
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockAction*
+  name: BlockAction
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html#Libplanet_Blockchain_Policies_IBlockPolicy_2_BlockAction_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`2.BlockAction
   isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<TTxAction, TBlockAction>.BlockActions
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of TTxAction, TBlockAction).BlockActions
-  nameWithType: IBlockPolicy<TTxAction, TBlockAction>.BlockActions
-  nameWithType.vb: IBlockPolicy(Of TTxAction, TBlockAction).BlockActions
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<TTxAction, TBlockAction>.BlockAction
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of TTxAction, TBlockAction).BlockAction
+  nameWithType: IBlockPolicy<TTxAction, TBlockAction>.BlockAction
+  nameWithType.vb: IBlockPolicy(Of TTxAction, TBlockAction).BlockAction
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`2.GetNextBlockDifficulty(System.Collections.Generic.IReadOnlyList{Libplanet.Blocks.Block{`0}})
   name: GetNextBlockDifficulty(IReadOnlyList<Block<TTxAction>>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html#Libplanet_Blockchain_Policies_IBlockPolicy_2_GetNextBlockDifficulty_System_Collections_Generic_IReadOnlyList_Libplanet_Blocks_Block__0___

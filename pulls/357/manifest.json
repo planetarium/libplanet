@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Address.html",
-          "hash": "mUhig0REwYsnf4faacWbuw=="
+          "hash": "7Hh3gbI5J04UngGwz7f7NA=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.BlockPolicy-2.html",
-          "hash": "wA4971l/wXhs9I0cSKP4qA=="
+          "hash": "QZjkXDQyYczmQzbvcRp4fA=="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blockchain.Policies.IBlockPolicy-2.html",
-          "hash": "u5T2/j9gdH5ltJTck/Nc1w=="
+          "hash": "Dyy1m5C1P12Po4ahbjPxjw=="
         }
       },
       "is_incremental": false,
