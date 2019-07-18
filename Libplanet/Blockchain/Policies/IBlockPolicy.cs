@@ -17,15 +17,15 @@ namespace Libplanet.Blockchain.Policies
     /// It should match to <see cref="Block{T}"/>'s type parameter.
     /// </typeparam>
     /// <seealso cref="BlockPolicyExtension"/>
-    public interface IBlockPolicy<TTxAction, TBlockAction>
+    public interface IBlockPolicy<TTxAction, out TBlockAction>
         where TTxAction : IAction, new()
         where TBlockAction : IAction, new()
     {
         /// <summary>
-        /// Gets a list of block actions to execute when appending a block.
+        /// Gets a block action to execute when appending a block.
         /// </summary>
         /// <returns>A list of <see cref="IAction"/>s for a miner.</returns>
-        IList<TBlockAction> BlockActions { get; }
+        TBlockAction BlockAction { get; }
 
         /// <summary>
         /// Checks if <paramref name="nextBlock"/> is invalid, and if that

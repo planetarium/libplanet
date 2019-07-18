@@ -949,6 +949,13 @@ namespace Libplanet.Blockchain
                 lastStates = lastStates.SetState(miner, minerState);
             }
 
+            var actions = new List<TBlockAction>();
+
+            if (!Equals(Policy.BlockAction, default(TBlockAction)))
+            {
+                actions.Add(Policy.BlockAction);
+            }
+
             return ActionEvaluation<TBlockAction>.EvaluateActionsGradually(
                 block.Hash,
                 block.Index,
@@ -956,7 +963,7 @@ namespace Libplanet.Blockchain
                 miner,
                 miner,
                 Array.Empty<byte>(),
-                Policy.BlockActions.ToImmutableList());
+                actions.ToImmutableList());
         }
 
         private

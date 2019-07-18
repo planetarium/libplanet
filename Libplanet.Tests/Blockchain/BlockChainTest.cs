@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain
         {
             _fx = new FileStoreFixture();
             _blockChain = new BlockChain<DumbAction, MinerReward>(
-                new BlockPolicy<DumbAction, MinerReward>(new[] { new MinerReward(1) }),
+                new BlockPolicy<DumbAction, MinerReward>(new MinerReward(1)),
                 _fx.Store
             );
         }
@@ -1083,9 +1083,9 @@ namespace Libplanet.Tests.Blockchain
             var privateKey2 = new PrivateKey();
             var address2 = privateKey2.PublicKey.ToAddress();
 
-            var blockActions = new[] { new DumbAction(address1, "foo"),  };
+            var blockAction = new DumbAction(address1, "foo");
             BlockPolicy<DumbAction, DumbAction> policy =
-                new BlockPolicy<DumbAction, DumbAction>(blockActions);
+                new BlockPolicy<DumbAction, DumbAction>(blockAction);
 
             var blockChain = new BlockChain<DumbAction, DumbAction>(policy, _fx.Store);
 
@@ -1229,7 +1229,7 @@ namespace Libplanet.Tests.Blockchain
                 _exceptionToThrow = exceptionToThrow;
             }
 
-            public IList<TBlockAction> BlockActions => new List<TBlockAction>();
+            public TBlockAction BlockAction => default(TBlockAction);
 
             public long GetNextBlockDifficulty(IReadOnlyList<Block<TTxAction>> blocks) =>
                 blocks.Any() ? 1 : 0;

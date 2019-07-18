@@ -27,7 +27,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
-        /// <param name="blockActions">A list of <see cref="IAction"/>s for a miner.</param>
+        /// <param name="blockAction">A <see cref="IAction"/>s to execute when appending a block.
+        /// </param>
         /// <param name="blockIntervalMilliseconds">Configures
         /// <see cref="BlockInterval"/> in milliseconds.
         /// 5000 milliseconds by default.
@@ -37,12 +38,12 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         public BlockPolicy(
-            IEnumerable<TBlockAction> blockActions = null,
+            TBlockAction blockAction = default(TBlockAction),
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128)
             : this(
-                blockActions,
+                blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
                 minimumDifficulty,
                 difficultyBoundDivisor)
@@ -54,7 +55,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
-        /// <param name="blockActions">A list of <see cref="IAction"/>s for a miner.</param>
+        /// <param name="blockAction">A <see cref="IAction"/>s to execute when appending a block.
+        /// </param>
         /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
         /// </param>
         /// <param name="minimumDifficulty">Configures
@@ -62,7 +64,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>.</param>
         public BlockPolicy(
-            IEnumerable<TBlockAction> blockActions,
+            TBlockAction blockAction,
             TimeSpan blockInterval,
             long minimumDifficulty,
             int difficultyBoundDivisor)
@@ -92,9 +94,7 @@ namespace Libplanet.Blockchain.Policies
                     message);
             }
 
-            BlockActions = blockActions is null
-                ? new List<TBlockAction>()
-                : blockActions.ToList();
+            BlockAction = blockAction;
             BlockInterval = blockInterval;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
@@ -111,7 +111,7 @@ namespace Libplanet.Blockchain.Policies
         public TimeSpan BlockInterval { get; }
 
         /// <inheritdoc/>
-        public IList<TBlockAction> BlockActions { get; }
+        public TBlockAction BlockAction { get; }
 
         private long MinimumDifficulty { get; }
 
