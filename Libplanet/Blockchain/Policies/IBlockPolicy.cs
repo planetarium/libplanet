@@ -13,18 +13,16 @@ namespace Libplanet.Blockchain.Policies
     /// <typeparam name="TTxAction">An <see cref="IAction"/> type used for
     /// <see cref="Transaction{T}"/>.  It should match to <see cref="Block{T}"/>'s type parameter.
     /// </typeparam>
-    /// <typeparam name="TBlockAction">An <see cref="IAction"/> type used when mining.
-    /// It should match to <see cref="Block{T}"/>'s type parameter.
-    /// </typeparam>
+    /// <typeparam name="TBlockAction">An <see cref="IAction"/> type for
+    /// <see cref="IBlockPolicy{TTxAction,TBlockAction}.BlockAction"/>.</typeparam>
     /// <seealso cref="BlockPolicyExtension"/>
     public interface IBlockPolicy<TTxAction, out TBlockAction>
         where TTxAction : IAction, new()
         where TBlockAction : IAction, new()
     {
         /// <summary>
-        /// Gets a block action to execute when appending a block.
+        /// A block action to execute and be rendered for every block.
         /// </summary>
-        /// <returns>A list of <see cref="IAction"/>s for a miner.</returns>
         TBlockAction BlockAction { get; }
 
         /// <summary>

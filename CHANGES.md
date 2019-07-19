@@ -12,7 +12,7 @@ To be released.
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
  -  The `IBlockPolicy<T>` became to `IBlockPolicy<TTxAction, TBlockAction>`
-    to add `IBlockPolicy.BlockActions` property. Accordingly, `BlockChain<T>`
+    to add `IBlockPolicy.BlockAction` property. Accordingly, `BlockChain<T>`
     and `Swarm<T>` became `BlockChain<TTxAction, TBlockAction>`, and
     `Swarm<TTxAction, TBlockAction>`, respectively.  [[#319], [#357]]
 
@@ -21,8 +21,8 @@ To be released.
 ### Behavioral changes
 
  - `BlockChain<TTxAction, TBlockAction>` became to evaluate
-   `IBlockPolicy<TTxAction, TBlockAction>.BlockActions` and set the
-   state when a mined block is appended to the chain.  [[#319], [#357]]
+   `IBlockPolicy<TTxAction, TBlockAction>.BlockAction` and set the
+   state when a block is appended to the chain.  [[#319], [#357]]
 
 ### Bug fixes
 
