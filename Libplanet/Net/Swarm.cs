@@ -1462,6 +1462,7 @@ namespace Libplanet.Net
 
                 blockStates = stateRefs.Values
                     .Select(refs => refs.Last())
+                    .ToImmutableHashSet()
                     .Select(bh =>
                         new KeyValuePair<
                             HashDigest<SHA256>,
