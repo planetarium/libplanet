@@ -37,6 +37,24 @@ namespace Libplanet.Tests.Tx
                     0x9f, 0x5f,
                 }
             );
+            PrivateKey4 = new PrivateKey(
+                new byte[]
+                {
+                    0x0e, 0x7c, 0x4d, 0x5b, 0x05, 0x49, 0x3c, 0x5b, 0x7b, 0xd5,
+                    0x8d, 0x39, 0x79, 0x53, 0x44, 0x37, 0x26, 0xce, 0x0f, 0xce,
+                    0xb1, 0x0f, 0x5e, 0x63, 0x08, 0x9a, 0x64, 0xcd, 0x8c, 0x79,
+                    0x81, 0xbe,
+                }
+            );
+            PrivateKey5 = new PrivateKey(
+                new byte[]
+                {
+                    0x27, 0xd6, 0xc0, 0xc8, 0xf4, 0x5a, 0x7e, 0xef, 0xf7, 0x68,
+                    0xb4, 0x12, 0x67, 0x9b, 0x92, 0xf8, 0x55, 0xaf, 0xe9, 0x52,
+                    0x8f, 0x23, 0xc8, 0xf2, 0x4f, 0xfc, 0xa6, 0x45, 0x2c, 0x71,
+                    0x7e, 0xfb,
+                }
+            );
             var recipient = new Address(PrivateKey1.PublicKey);
             var timestamp = new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
 
@@ -73,17 +91,29 @@ namespace Libplanet.Tests.Tx
 
         public PrivateKey PrivateKey3 { get; }
 
+        public PrivateKey PrivateKey4 { get; }
+
+        public PrivateKey PrivateKey5 { get; }
+
         public PublicKey PublicKey1 => PrivateKey1.PublicKey;
 
         public PublicKey PublicKey2 => PrivateKey2.PublicKey;
 
         public PublicKey PublicKey3 => PrivateKey3.PublicKey;
 
+        public PublicKey PublicKey4 => PrivateKey4.PublicKey;
+
+        public PublicKey PublicKey5 => PrivateKey5.PublicKey;
+
         public Address Address1 => PublicKey1.ToAddress();
 
         public Address Address2 => PublicKey2.ToAddress();
 
         public Address Address3 => PublicKey3.ToAddress();
+
+        public Address Address4 => PublicKey4.ToAddress();
+
+        public Address Address5 => PublicKey5.ToAddress();
 
         public Transaction<PolymorphicAction<BaseAction>> Tx { get; }
 
