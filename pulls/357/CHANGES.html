@@ -50,7 +50,7 @@
                           <a href="articles/design.html" title="Design">Design</a>
                       </li>
                       <li>
-                          <a href="api/Libplanet.html" title="API Reference">API Reference</a>
+                          <a href="api/Libplanet.yml" title="API Reference">API Reference</a>
                       </li>
                       <li>
                           <a href="CHANGES.html" title="Changelog">Changelog</a>
@@ -84,7 +84,7 @@
 <code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
 <li>The <code>IBlockPolicy&lt;T&gt;</code> became to <code>IBlockPolicy&lt;TTxAction, TBlockAction&gt;</code>
-to add <code>IBlockPolicy.BlockActions</code> property. Accordingly, <code>BlockChain&lt;T&gt;</code>
+to add <code>IBlockPolicy.BlockAction</code> property. Accordingly, <code>BlockChain&lt;T&gt;</code>
 and <code>Swarm&lt;T&gt;</code> became <code>BlockChain&lt;TTxAction, TBlockAction&gt;</code>, and
 <code>Swarm&lt;TTxAction, TBlockAction&gt;</code>, respectively.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/357">#357</a>]</li>
 </ul>
@@ -92,8 +92,8 @@ and <code>Swarm&lt;T&gt;</code> became <code>BlockChain&lt;TTxAction, TBlockActi
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>BlockChain&lt;TTxAction, TBlockAction&gt;</code> became to evaluate
-<code>IBlockPolicy&lt;TTxAction, TBlockAction&gt;.BlockActions</code> and set the
-state when a mined block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/357">#357</a>]</li>
+<code>IBlockPolicy&lt;TTxAction, TBlockAction&gt;.BlockAction</code> and set the
+state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/357">#357</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h2 id="version-041">Version 0.4.1</h2>
