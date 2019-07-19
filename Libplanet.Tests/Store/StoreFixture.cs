@@ -113,11 +113,12 @@ namespace Libplanet.Tests.Store
             IEnumerable<DumbAction> actions = null,
             ImmutableHashSet<Address> updatedAddresses = null,
             long nonce = 0,
-            PrivateKey privateKey = null
+            PrivateKey privateKey = null,
+            DateTimeOffset? timestamp = null
         )
         {
             privateKey = privateKey ?? new PrivateKey();
-            var timestamp =
+            timestamp = timestamp ??
                 new DateTimeOffset(2018, 11, 21, 0, 0, 0, TimeSpan.Zero);
             return Transaction<DumbAction>.Create(
                 nonce,
