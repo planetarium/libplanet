@@ -951,7 +951,7 @@ namespace Libplanet.Blockchain
 
             var actions = new List<TBlockAction>();
 
-            if (!Equals(Policy.BlockAction, default(TBlockAction)))
+            if (!Equals(Policy.BlockAction, null))
             {
                 actions.Add(Policy.BlockAction);
             }

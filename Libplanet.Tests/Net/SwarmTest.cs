@@ -47,7 +47,7 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
-            var policy = new BlockPolicy<DumbAction, DumbAction>();
+            var policy = new BlockPolicy<DumbAction, DumbAction>(null);
             _fx1 = new FileStoreFixture();
             _fx2 = new FileStoreFixture();
             _fx3 = new FileStoreFixture();

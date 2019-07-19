@@ -58,7 +58,7 @@ namespace Libplanet.Tests.Blockchain.Policies
                 new TimeSpan(0, 1, 5),
                 b.BlockInterval);
 
-            var c = new BlockPolicy<DumbAction, DumbAction>();
+            var c = new BlockPolicy<DumbAction, DumbAction>(null);
             Assert.Equal(
                 new TimeSpan(0, 0, 5),
                 c.BlockInterval);

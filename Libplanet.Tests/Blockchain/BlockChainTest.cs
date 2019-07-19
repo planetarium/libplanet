@@ -138,7 +138,7 @@ namespace Libplanet.Tests.Blockchain
 
             var chain =
                 new BlockChain<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(
-                new BlockPolicy<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(),
+                new BlockPolicy<PolymorphicAction<BaseAction>, PolymorphicAction<BaseAction>>(null),
                 _fx.Store
             );
             chain.StageTransactions(
@@ -916,7 +916,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             var chain = new BlockChain<TestEvaluateAction, TestEvaluateAction>(
-                new BlockPolicy<TestEvaluateAction, TestEvaluateAction>(),
+                new BlockPolicy<TestEvaluateAction, TestEvaluateAction>(null),
                 _fx.Store
             );
             chain.StageTransactions(

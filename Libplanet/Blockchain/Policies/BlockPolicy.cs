@@ -38,7 +38,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         public BlockPolicy(
-            TBlockAction blockAction = default(TBlockAction),
+            TBlockAction blockAction,
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128)
