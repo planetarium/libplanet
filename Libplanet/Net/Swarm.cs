@@ -612,10 +612,41 @@ namespace Libplanet.Net
                 );
 
             // FIXME: This method should take an IProcess<T>.
-            await SyncRecentStatesFromTrustedPeersAsync(
-                trustedPeersWithTip,
+            bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                trustedPeersWithTip.ToImmutableList(),
                 cancellationToken
             );
+
+            if (!received)
+            {
+                // FIXME: Swam should not directly access to the IStore instance,
+                // but BlockChain<T> should have an indirect interface to its underlying store.
+                IStore store = _blockChain.Store;
+
+                foreach (Block<T> block in _blockChain)
+                {
+                    if (store.GetBlockStates(block.Hash) is null)
+                    {
+                        AccountStateGetter stateGetter;
+                        if (block.PreviousHash is null)
+                        {
+                            stateGetter = _ => null;
+                        }
+                        else
+                        {
+                            stateGetter = a =>
+                                _blockChain.GetStates(
+                                    new[] { a },
+                                    block.PreviousHash
+                                ).GetValueOrDefault(a);
+                        }
+
+                        IReadOnlyList<ActionEvaluation<T>> evaluations =
+                            block.Evaluate(DateTimeOffset.UtcNow, stateGetter).ToImmutableList();
+                        _blockChain.SetStates(block, evaluations, buildStateReferences: true);
+                    }
+                }
+            }
         }
 
         internal async Task<IEnumerable<HashDigest<SHA256>>>
@@ -683,14 +714,16 @@ namespace Libplanet.Net
                         $"Required block count: {hashCount}. {yieldToken}");
                     while (hashCount > 0 && !yieldToken.IsCancellationRequested)
                     {
-                        _logger.Debug("Receiving block...");
+                        _logger.Debug("Starts to receive blocks from {0}.", peer);
                         NetMQMessage response =
                         await socket.ReceiveMultipartMessageAsync(
                             cancellationToken: yieldToken);
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Blocks blockMessage)
                         {
-                            foreach (byte[] payload in blockMessage.Payloads)
+                            IList<byte[]> payloads = blockMessage.Payloads;
+                            _logger.Debug("Received {0} blocks from {0}.", payloads.Count, peer);
+                            foreach (byte[] payload in payloads)
                             {
                                 Block<T> block = Block<T>.FromBencodex(payload);
                                 await yield.ReturnAsync(block);
@@ -861,7 +894,7 @@ namespace Libplanet.Net
             bool render
         )
         {
-            // Implement it directly with AggreateAsync()
+            // Implement it directly with AggregateAsync()
             // because there is no IAsyncEnumerable<T>.MaxAsync().
             (Peer, long?)? longestPeerWithLength = peersWithHeight.Aggregate(
                 default((Peer, long?)?),
@@ -885,19 +918,26 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task SyncRecentStatesFromTrustedPeersAsync(
-            IEnumerable<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
+        private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
+            IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
             CancellationToken cancellationToken)
         {
+            _logger.Debug(
+                "Starts to find a peer to request recent states (candidates: {0} trusted peers).",
+                trustedPeersWithTip.Count
+            );
             foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
             {
                 var request = new GetRecentStates(blockHash);
+                _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
+                    _logger.Debug("Requests recent states to a peer ({0}).", peer);
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(_privateKey),
                         cancellationToken: cancellationToken
                     );
+                    _logger.Debug("Requested recent states to a peer ({0}).", peer);
                     NetMQMessage reply;
                     try
                     {
@@ -905,9 +945,15 @@ namespace Libplanet.Net
                             timeout: TimeSpan.FromSeconds(30),
                             cancellationToken: cancellationToken
                         );
+                        _logger.Debug("Received recent states from a peer ({0}).", peer);
                     }
-                    catch (TimeoutException)
+                    catch (TimeoutException e)
                     {
+                        _logger.Error(
+                            "Failed to receive recent states from a peer ({0}): {1}",
+                            peer,
+                            e
+                        );
                         continue;
                     }
 
@@ -920,6 +966,7 @@ namespace Libplanet.Net
                         IStore store = BlockChain.Store;
                         string ns = BlockChain.Id.ToString();
 
+                        _logger.Debug("Starts to store state refs received from {0}.", peer);
                         foreach (var pair in recentStates.StateReferences)
                         {
                             IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
@@ -929,15 +976,26 @@ namespace Libplanet.Net
                             }
                         }
 
+                        _logger.Debug("Starts to store block states received from {0}.", peer);
                         foreach (var pair in recentStates.BlockStates)
                         {
                             store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
                         }
 
-                        break;
+                        _logger.Debug("Finished to store received state refs and block states.");
+                        return true;
                     }
+
+                    _logger.Debug(
+                        "A message received from {0} is not a RecentStates but {1}.",
+                        peer,
+                        parsedMessage
+                    );
                 }
             }
+
+            _logger.Warning("Failed to receive states from trusted peers.");
+            return false;
         }
 
         private async Task RefreshAllocate(CancellationToken cancellationToken)
@@ -1859,7 +1917,18 @@ namespace Libplanet.Net
 
                 // it's still async because some method it relies are async yet.
                 Task.Run(
-                    async () => { await ProcessMessageAsync(message, _cancellationToken); },
+                    async () =>
+                    {
+                        try
+                        {
+                            await ProcessMessageAsync(message, _cancellationToken);
+                        }
+                        catch (Exception exc)
+                        {
+                            _logger.Error("Something went wrong during message parsing: {0}", exc);
+                            throw;
+                        }
+                    },
                     _cancellationToken);
             }
             catch (InvalidMessageException ex)

@@ -909,7 +909,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private void SetStates(
+        internal void SetStates(
             Block<T> block,
             IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
             bool buildStateReferences

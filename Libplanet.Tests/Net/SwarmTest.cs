@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -1007,8 +1008,10 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact(Timeout = Timeout)]
-        public async Task PreloadWithTrustedPeers()
+        [Theory(Timeout = Timeout)]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task PreloadWithTrustedPeers(bool trust)
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
@@ -1054,9 +1057,10 @@ namespace Libplanet.Tests.Net
 
                 DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
 
-                await receiverSwarm.PreloadAsync(
-                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
-                );
+                IImmutableSet<Address> trustedPeers = trust
+                    ? new[] { minerSwarm.Address }.ToImmutableHashSet()
+                    : ImmutableHashSet<Address>.Empty;
+                await receiverSwarm.PreloadAsync(trustedStateValidators: trustedPeers);
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
@@ -1077,13 +1081,25 @@ namespace Libplanet.Tests.Net
                         );
                     }
 
-                    Assert.Throws<IncompleteBlockStatesException>(() =>
-                        receiverChain.GetStates(
-                            new[] { target },
-                            deepBlockHash,
-                            completeStates: false
-                        )
+                    AddressStateMap TryToGetDeepStates() => receiverChain.GetStates(
+                        new[] { target },
+                        deepBlockHash,
+                        completeStates: false
                     );
+
+                    if (trust)
+                    {
+                        Assert.Throws<IncompleteBlockStatesException>(
+                            () => TryToGetDeepStates()
+                        );
+                    }
+                    else
+                    {
+                        var deepStates = TryToGetDeepStates();
+                        Assert.Single(deepStates);
+                        Assert.Equal($"Item0.{i}", deepStates[target]);
+                    }
+
                     i++;
                 }
             }
