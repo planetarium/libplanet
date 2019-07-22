@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -19,7 +20,12 @@ namespace Libplanet.Blockchain
     public class BlockChain<T> : IReadOnlyList<Block<T>>
         where T : IAction, new()
     {
-        private readonly ReaderWriterLockSlim _rwlock;
+        // FIXME: The _rwlock field should be private.
+        [SuppressMessage(
+            "StyleCop.CSharp.OrderingRules",
+            "SA1401:FieldsMustBePrivate",
+            Justification = "Temporary visibility.")]
+        internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
 
         public BlockChain(IBlockPolicy<T> policy, IStore store)
