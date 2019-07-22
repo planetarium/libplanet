@@ -1428,8 +1428,10 @@ namespace Libplanet.Net
             // Re-staging existing txs.
             ImmutableHashSet<TxId> existingTxIds = message.Ids.Except(newTxIds)
                 .ToImmutableHashSet();
+
+            // We should not broadcast these txs to prevent infinite echo.
             _blockChain.StageTransactions(
-                existingTxIds.ToDictionary(txId => _blockChain.Transactions[txId], _ => true)
+                existingTxIds.ToDictionary(txId => _blockChain.Transactions[txId], _ => false)
             );
 
             if (!newTxIds.Any())
