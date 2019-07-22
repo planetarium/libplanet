@@ -23,6 +23,8 @@ To be released.
     a feasible user interface so that they can decide whom to trust
     for themselves.
     [[#272], [#343]]
+ -  Added `StoreExtension.ListAllStateReferences(this IStore, string)` extension
+    method.  [[#363]]
 
 ### Behavioral changes
 
@@ -42,6 +44,7 @@ To be released.
 
 [#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
+[#363]: https://github.com/planetarium/libplanet/pull/363
 [#365]: https://github.com/planetarium/libplanet/pull/365
 [#366]: https://github.com/planetarium/libplanet/pull/366
 

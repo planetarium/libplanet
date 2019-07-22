@@ -134,8 +134,8 @@ namespace Libplanet.Store
         /// <param name="namespace">The chain namespace.</param>
         /// <param name="address">The <see cref="Address"/> to get state references.</param>
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
-        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go
-        /// first and the lowest index (i.e., the closest to the genesis) go last.</returns>
+        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) goes
+        /// first and the lowest index (i.e., the closest to the genesis) goes last.</returns>
         /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
