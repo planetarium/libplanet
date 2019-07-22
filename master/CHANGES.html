@@ -50,7 +50,7 @@
                           <a href="articles/design.html" title="Design">Design</a>
                       </li>
                       <li>
-                          <a href="api/Libplanet.html" title="API Reference">API Reference</a>
+                          <a href="api/Libplanet.yml" title="API Reference">API Reference</a>
                       </li>
                       <li>
                           <a href="CHANGES.html" title="Changelog">Changelog</a>
@@ -85,7 +85,24 @@
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
+<ul>
+<li>Added <code>trustedStateValidators</code> option to <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.
+If any peer in this set is reachable and there is no built up blockchain
+in a current node, <code>Swarm&lt;T&gt;</code> receives the latest states of the major
+blockchain from that trusted peer, which is also calculated by that peer,
+instead of autonomously calculating the states from scratch.
+Note that this option is intended to be exposed to end users through
+a feasible user interface so that they can decide whom to trust
+for themselves.
+[<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>BlockChain&lt;T&gt;.PreloadAsync()</code> method became to omit rendering of
+<code>IAction</code>s in the preloaded behind blocks.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to have two more message types: <code>GetRecentStates</code> (<code>0x0b</code>)
+and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
@@ -158,6 +175,7 @@ to create a <code>Peer</code> whose version is unknown.  [<a href="https://githu
 <li>Added <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> method which counts staged
 transactions too during nonce computation.  [<a href="https://github.com/planetarium/libplanet/pull/270">#270</a>, <a href="https://github.com/planetarium/libplanet/pull/294">#294</a>]</li>
 <li>Added <code>StoreExtension</code> static class.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/307">#307</a>]</li>
+<li>Added <code>Swarm&lt;T&gt;.BlockChain</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
 </ul>
 <h3 id="behavioral-changes-1">Behavioral changes</h3>
 <ul>
