@@ -1542,17 +1542,7 @@ namespace Libplanet.Net
                     IStore store = _blockChain.Store;
                     string ns = _blockChain.Id.ToString();
 
-                    stateRefs = store.ListAddresses(ns).Select(address =>
-                    {
-                        ImmutableList<HashDigest<SHA256>> refs =
-                            store.IterateStateReferences(ns, address).Select(
-                                p => p.Item1
-                            ).Reverse().ToImmutableList();
-                        return
-                            new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
-                                address, refs
-                            );
-                    }).ToImmutableDictionary();
+                    stateRefs = store.ListAllStateReferences(ns);
 
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
