@@ -194,12 +194,13 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
+            IEnumerable<StagedTxIdDoc> docs = StagedTxIds.FindAll();
             if (toBroadcast)
             {
-                return StagedTxIds.FindAll().Where(t => t.Broadcast).Select(t => t.TxId);
+                docs = docs.Where(d => d.Broadcast);
             }
 
-            return StagedTxIds.FindAll().Select(t => t.TxId);
+            return docs.Select(d => d.TxId).Distinct();
         }
 
         /// <inheritdoc/>
