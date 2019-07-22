@@ -30,12 +30,16 @@ To be released.
     `IAction`s in the preloaded behind blocks.  [[#272], [#343]]
  -  `Swarm<T>` became to have two more message types: `GetRecentStates` (`0x0b`)
     and `RecentStates` (`0x0c`).  [[#272], [#343]]
+ -  `BlockChain<T>.MineBlock()` and `BlockChain<T>.GetNextTxNonce()` methods
+    became to ignore transactions that didn't follow `Transaction<T>.Nonce`
+    sequentially and treat them as pendings.  [[#365]]
 
 ### Bug fixes
 
 
 [#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
+[#365]: https://github.com/planetarium/libplanet/pull/365
 
 
 Version 0.4.1
