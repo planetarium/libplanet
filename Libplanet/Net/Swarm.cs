@@ -619,32 +619,54 @@ namespace Libplanet.Net
 
             if (!received)
             {
-                // FIXME: Swam should not directly access to the IStore instance,
-                // but BlockChain<T> should have an indirect interface to its underlying store.
-                IStore store = _blockChain.Store;
-
-                foreach (Block<T> block in _blockChain)
+                ReaderWriterLockSlim rwlock = _blockChain._rwlock;
+                rwlock.EnterUpgradeableReadLock();
+                try
                 {
-                    if (store.GetBlockStates(block.Hash) is null)
-                    {
-                        AccountStateGetter stateGetter;
-                        if (block.PreviousHash is null)
-                        {
-                            stateGetter = _ => null;
-                        }
-                        else
-                        {
-                            stateGetter = a =>
-                                _blockChain.GetStates(
-                                    new[] { a },
-                                    block.PreviousHash
-                                ).GetValueOrDefault(a);
-                        }
+                    // FIXME: Swam should not directly access to the IStore instance,
+                    // but BlockChain<T> should have an indirect interface to its underlying store.
+                    IStore store = _blockChain.Store;
 
-                        IReadOnlyList<ActionEvaluation<T>> evaluations =
-                            block.Evaluate(DateTimeOffset.UtcNow, stateGetter).ToImmutableList();
-                        _blockChain.SetStates(block, evaluations, buildStateReferences: true);
+                    foreach (Block<T> block in _blockChain)
+                    {
+                        if (store.GetBlockStates(block.Hash) is null)
+                        {
+                            AccountStateGetter stateGetter;
+                            if (block.PreviousHash is null)
+                            {
+                                stateGetter = _ => null;
+                            }
+                            else
+                            {
+                                stateGetter = a =>
+                                    _blockChain.GetStates(
+                                        new[] { a },
+                                        block.PreviousHash
+                                    ).GetValueOrDefault(a);
+                            }
+
+                            IReadOnlyList<ActionEvaluation<T>> evaluations =
+                                block.Evaluate(DateTimeOffset.UtcNow, stateGetter)
+                                    .ToImmutableList();
+                            rwlock.EnterWriteLock();
+                            try
+                            {
+                                _blockChain.SetStates(
+                                    block,
+                                    evaluations,
+                                    buildStateReferences: true
+                                );
+                            }
+                            finally
+                            {
+                                rwlock.ExitWriteLock();
+                            }
+                        }
                     }
+                }
+                finally
+                {
+                    rwlock.ExitUpgradeableReadLock();
                 }
             }
         }
@@ -960,29 +982,40 @@ namespace Libplanet.Net
                     Message parsedMessage = Message.Parse(reply, reply: true);
                     if (parsedMessage is RecentStates recentStates && !recentStates.Missing)
                     {
-                        // FIXME: Swarm should not directly access to the IStore instance,
-                        // but BlockChain<T> should have an indirect interface to its underlying
-                        // store.
-                        IStore store = BlockChain.Store;
-                        string ns = BlockChain.Id.ToString();
-
-                        _logger.Debug("Starts to store state refs received from {0}.", peer);
-                        foreach (var pair in recentStates.StateReferences)
+                        ReaderWriterLockSlim rwlock = BlockChain._rwlock;
+                        rwlock.EnterWriteLock();
+                        try
                         {
-                            IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
-                            foreach (HashDigest<SHA256> bHash in pair.Value)
+                            // FIXME: Swarm should not directly access to the IStore instance,
+                            // but BlockChain<T> should have an indirect interface to its underlying
+                            // store.
+                            IStore store = BlockChain.Store;
+                            string ns = BlockChain.Id.ToString();
+
+                            _logger.Debug("Starts to store state refs received from {0}.", peer);
+                            foreach (var pair in recentStates.StateReferences)
                             {
-                                store.StoreStateReference(ns, address, store.GetBlock<T>(bHash));
+                                IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
+                                foreach (HashDigest<SHA256> bHash in pair.Value)
+                                {
+                                    Block<T> block = store.GetBlock<T>(bHash);
+                                    store.StoreStateReference(ns, address, block);
+                                }
+                            }
+
+                            _logger.Debug("Starts to store block states received from {0}.", peer);
+                            foreach (var pair in recentStates.BlockStates)
+                            {
+                                store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
                             }
                         }
-
-                        _logger.Debug("Starts to store block states received from {0}.", peer);
-                        foreach (var pair in recentStates.BlockStates)
+                        finally
                         {
-                            store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                            rwlock.ExitWriteLock();
                         }
 
-                        _logger.Debug("Finished to store received state refs and block states.");
+                        _logger.Debug(
+                            "Finished to store received state refs and block states.");
                         return true;
                     }
 
@@ -1501,34 +1534,43 @@ namespace Libplanet.Net
 
             if (_blockChain.Blocks.ContainsKey(blockHash))
             {
-                // FIXME: Swarm should not directly access to the IStore instance,
-                // but BlockChain<T> should have an indirect interface to its underlying
-                // store.
-                IStore store = _blockChain.Store;
-                string ns = _blockChain.Id.ToString();
-
-                stateRefs = store.ListAddresses(ns).Select(address =>
+                ReaderWriterLockSlim rwlock = _blockChain._rwlock;
+                rwlock.EnterReadLock();
+                try
                 {
-                    ImmutableList<HashDigest<SHA256>> refs =
-                        store.IterateStateReferences(ns, address).Select(
-                            p => p.Item1
-                        ).Reverse().ToImmutableList();
-                    return
-                        new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
-                            address, refs
-                        );
-                }).ToImmutableDictionary();
+                    // FIXME: Swarm should not directly access to the IStore instance,
+                    // but BlockChain<T> should have an indirect interface to its underlying
+                    // store.
+                    IStore store = _blockChain.Store;
+                    string ns = _blockChain.Id.ToString();
 
-                blockStates = stateRefs.Values
-                    .Select(refs => refs.Last())
-                    .ToImmutableHashSet()
-                    .Select(bh =>
-                        new KeyValuePair<
-                            HashDigest<SHA256>,
-                            IImmutableDictionary<Address, object>
-                        >(bh, store.GetBlockStates(bh))
-                    )
-                    .ToImmutableDictionary();
+                    stateRefs = store.ListAddresses(ns).Select(address =>
+                    {
+                        ImmutableList<HashDigest<SHA256>> refs =
+                            store.IterateStateReferences(ns, address).Select(
+                                p => p.Item1
+                            ).Reverse().ToImmutableList();
+                        return
+                            new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
+                                address, refs
+                            );
+                    }).ToImmutableDictionary();
+
+                    blockStates = stateRefs.Values
+                        .Select(refs => refs.Last())
+                        .ToImmutableHashSet()
+                        .Select(bh =>
+                            new KeyValuePair<
+                                HashDigest<SHA256>,
+                                IImmutableDictionary<Address, object>
+                            >(bh, store.GetBlockStates(bh))
+                        )
+                        .ToImmutableDictionary();
+                }
+                finally
+                {
+                    rwlock.ExitReadLock();
+                }
             }
 
             var reply = new RecentStates(blockHash, blockStates, stateRefs)
