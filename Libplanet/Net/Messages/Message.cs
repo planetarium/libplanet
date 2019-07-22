@@ -16,7 +16,7 @@ namespace Libplanet.Net.Messages
             Ping = 0x01,
 
             /// <summary>
-            /// Reply of `Ping`.
+            /// A reply to <see cref="Ping"/>.
             /// </summary>
             Pong = 0x02,
 
@@ -59,6 +59,17 @@ namespace Libplanet.Net.Messages
             /// Message containing serialized transaction.
             /// </summary>
             Tx = 0x10,
+
+            /// <summary>
+            /// Request to query calculated states.
+            /// </summary>
+            GetRecentStates = 0x0b,
+
+            /// <summary>
+            /// A reply to <see cref="GetRecentStates"/>.
+            /// Contains the calculated recent states and state references.
+            /// </summary>
+            RecentStates = 0x0c,
         }
 
         public byte[] Identity { get; set; }
@@ -102,6 +113,8 @@ namespace Libplanet.Net.Messages
                 { MessageType.GetTxs, typeof(GetTxs) },
                 { MessageType.Blocks, typeof(Blocks) },
                 { MessageType.Tx, typeof(Tx) },
+                { MessageType.GetRecentStates, typeof(GetRecentStates) },
+                { MessageType.RecentStates, typeof(RecentStates) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))

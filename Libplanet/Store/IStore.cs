@@ -134,8 +134,8 @@ namespace Libplanet.Store
         /// <param name="namespace">The chain namespace.</param>
         /// <param name="address">The <see cref="Address"/> to get state references.</param>
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
-        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go last,
-        /// and the lowest index (i.e., the closest to the genesis) go first.</returns>
+        /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) go
+        /// first and the lowest index (i.e., the closest to the genesis) go last.</returns>
         /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
@@ -156,7 +156,7 @@ namespace Libplanet.Store
         /// <paramref name="block"/>.</typeparam>
         /// <remarks>State reference must be stored in the same order as the blocks. For now,
         /// it is assumed that this is only called by
-        /// <see cref="BlockChain{T}.Append(Block{T}, DateTimeOffset, bool)"/> method.</remarks>
+        /// <see cref="BlockChain{T}.Append(Block{T})"/> method.</remarks>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
         void StoreStateReference<T>(
             string @namespace,
@@ -230,7 +230,7 @@ namespace Libplanet.Store
         /// <param name="namespace">The namespace to increase
         /// <see cref="Transaction{T}"/> nonce.</param>
         /// <param name="signer">The address of the account to increase tx nonce.</param>
-        /// <param name="delta">How many to incrase the counter.  A negative number decreases
+        /// <param name="delta">How many to increase the counter.  A negative number decreases
         /// the counter.  1 by default.</param>
         /// <seealso cref="GetTxNonce(string, Address)"/>
         void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);

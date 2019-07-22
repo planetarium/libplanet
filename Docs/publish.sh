@@ -73,6 +73,7 @@ for _ in 1 2 3; do
   git -C /tmp/gh-pages add "/tmp/gh-pages/$slug"
 
   latest_version="$(git tag --sort -v:refname | head -n1)"
+  commit_hash="$(git log -n1 --pretty=%H)"
   tag="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/tags\///g')"
   if [ "$(git tag -l)" = "" ] || [ "$latest_version" = "$tag" ]; then
     index="$(cat "/tmp/gh-pages/$slug/index.html")"
@@ -87,7 +88,7 @@ for _ in 1 2 3; do
 
   git -C /tmp/gh-pages commit \
     --allow-empty \
-    -m "Publish docs from $GITHUB_SHA"
+    -m "Publish docs from $commit_hash"
 
   if git -C /tmp/gh-pages push origin gh-pages; then
     break

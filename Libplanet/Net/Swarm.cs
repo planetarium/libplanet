@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,6 +17,7 @@ using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
+using Libplanet.Store;
 using Libplanet.Stun;
 using Libplanet.Tx;
 using NetMQ;
@@ -225,6 +225,12 @@ namespace Libplanet.Net
         }
 
         /// <summary>
+        /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
+        /// synchronizes with.
+        /// </summary>
+        public BlockChain<T> BlockChain => _blockChain;
+
+        /// <summary>
         /// Whether this <see cref="Swarm{T}"/> instance is running.
         /// </summary>
         public bool Running
@@ -387,6 +393,26 @@ namespace Libplanet.Net
             );
         }
 
+        /// <summary>
+        /// Joins to the peer-to-peer network and starts to periodically synchronize
+        /// the <see cref="BlockChain"/>.
+        /// </summary>
+        /// <param name="distributeInterval">The time period of peer exchange.</param>
+        /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="SwarmException">Thrown when this <see cref="Swarm{T}"/> instance is
+        /// already <see cref="Running"/>.</exception>
+        /// <remarks>If the <see cref="BlockChain"/> has no blocks at all or there are long behind
+        /// blocks to caught in the network this method could lead to unexpected behaviors, because
+        /// this tries to <see cref="IAction.Render"/> <em>all</em> actions in the behind blocks
+        /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
+        /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
+        /// these actions in the behind blocks use <see cref=
+        /// "PreloadAsync(IProgress{BlockDownloadState}, IImmutableSet{Address}, CancellationToken)"
+        /// /> method too.</remarks>
         public async Task StartAsync(
             TimeSpan distributeInterval,
             TimeSpan broadcastTxInterval,
@@ -451,7 +477,7 @@ namespace Libplanet.Net
                 using (await _runningMutex.LockAsync())
                 {
                     Running = true;
-                    await PreloadAsync(cancellationToken: _cancellationToken);
+                    await PreloadAsync(render: true, cancellationToken: _cancellationToken);
                 }
 
                 var tasks = new List<Task>
@@ -507,6 +533,15 @@ namespace Libplanet.Net
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
+        /// <param name="trustedStateValidators">
+        /// If any peer in this set is reachable and there are no built-up
+        /// blocks in a current node, <see cref="Swarm{T}"/> receives the latest
+        /// states of the major blockchain from that trusted peer,
+        /// which is also calculated by that peer, instead of autonomously
+        /// calculating the states from scratch. Note that this option is
+        /// intended to be exposed to end users through a feasible user
+        /// interface so that they can decide whom to trust for themselves.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -515,17 +550,103 @@ namespace Libplanet.Net
         /// A task without value.
         /// You only can <c>await</c> until the method is completed.
         /// </returns>
-        public async Task PreloadAsync(
+        /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
+        /// If you want to render all <see cref="IAction"/>s from the genesis block to the recent
+        /// blocks use <see cref="StartAsync(TimeSpan, TimeSpan, CancellationToken)"/> method
+        /// instead.</remarks>
+        public Task PreloadAsync(
             IProgress<BlockDownloadState> progress = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            IImmutableSet<Address> trustedStateValidators = null,
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
         {
-            IAsyncEnumerable<(Peer, long?)> peersWithLength =
-                DialToExistingPeers(cancellationToken).Select(
-                    pp => (pp.Item1, pp.Item2.TipIndex));
+            return PreloadAsync(
+                render: false,
+                progress: progress,
+                trustedStateValidators: trustedStateValidators,
+                cancellationToken: cancellationToken
+            );
+        }
+
+        internal async Task PreloadAsync(
+            bool render,
+            IProgress<BlockDownloadState> progress = null,
+            IImmutableSet<Address> trustedStateValidators = null,
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
+        {
+            if (trustedStateValidators is null)
+            {
+                trustedStateValidators = ImmutableHashSet<Address>.Empty;
+            }
+
+            IList<(Peer, long? TipIndex)> peersWithHeight =
+                await DialToExistingPeers(cancellationToken).Select(pp =>
+                    (pp.Item1, pp.Item2.TipIndex)
+                ).ToListAsync(cancellationToken);
             await SyncBehindsBlocksFromPeersAsync(
-                peersWithLength,
+                peersWithHeight,
                 progress,
-                cancellationToken);
+                cancellationToken,
+                render
+            );
+
+            if (_blockChain.Tip is null)
+            {
+                // If there is no blocks in the network (or no consensus at least)
+                // it doesn't need to receive states from other peers at all.
+                return;
+            }
+
+            var height = _blockChain.Tip.Index;
+
+            IEnumerable<(Peer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
+                peersWithHeight.Where(pair =>
+                    trustedStateValidators.Contains(pair.Item1.Address) &&
+                    !(pair.Item2 is null) &&
+                    pair.Item2 <= height
+                ).OrderByDescending(pair =>
+                    pair.Item2
+                ).Select(pair =>
+                    (pair.Item1, _blockChain[pair.Item2.Value].Hash)
+                );
+
+            // FIXME: This method should take an IProcess<T>.
+            bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                trustedPeersWithTip.ToImmutableList(),
+                cancellationToken
+            );
+
+            if (!received)
+            {
+                // FIXME: Swam should not directly access to the IStore instance,
+                // but BlockChain<T> should have an indirect interface to its underlying store.
+                IStore store = _blockChain.Store;
+
+                foreach (Block<T> block in _blockChain)
+                {
+                    if (store.GetBlockStates(block.Hash) is null)
+                    {
+                        AccountStateGetter stateGetter;
+                        if (block.PreviousHash is null)
+                        {
+                            stateGetter = _ => null;
+                        }
+                        else
+                        {
+                            stateGetter = a =>
+                                _blockChain.GetStates(
+                                    new[] { a },
+                                    block.PreviousHash
+                                ).GetValueOrDefault(a);
+                        }
+
+                        IReadOnlyList<ActionEvaluation<T>> evaluations =
+                            block.Evaluate(DateTimeOffset.UtcNow, stateGetter).ToImmutableList();
+                        _blockChain.SetStates(block, evaluations, buildStateReferences: true);
+                    }
+                }
+            }
         }
 
         internal async Task<IEnumerable<HashDigest<SHA256>>>
@@ -593,14 +714,16 @@ namespace Libplanet.Net
                         $"Required block count: {hashCount}. {yieldToken}");
                     while (hashCount > 0 && !yieldToken.IsCancellationRequested)
                     {
-                        _logger.Debug("Receiving block...");
+                        _logger.Debug("Starts to receive blocks from {0}.", peer);
                         NetMQMessage response =
                         await socket.ReceiveMultipartMessageAsync(
                             cancellationToken: yieldToken);
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Blocks blockMessage)
                         {
-                            foreach (byte[] payload in blockMessage.Payloads)
+                            IList<byte[]> payloads = blockMessage.Payloads;
+                            _logger.Debug("Received {0} blocks from {0}.", payloads.Count, peer);
+                            foreach (byte[] payload in payloads)
                             {
                                 Block<T> block = Block<T>.FromBencodex(payload);
                                 await yield.ReturnAsync(block);
@@ -765,17 +888,18 @@ namespace Libplanet.Net
         }
 
         private async Task SyncBehindsBlocksFromPeersAsync(
-            IAsyncEnumerable<(Peer, long?)> peersWithLength,
+            IEnumerable<(Peer, long?)> peersWithHeight,
             IProgress<BlockDownloadState> progress,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            bool render
+        )
         {
-            // Implement it directly with AggreateAsync()
+            // Implement it directly with AggregateAsync()
             // because there is no IAsyncEnumerable<T>.MaxAsync().
-            (Peer, long?)? longestPeerWithLength =
-                await peersWithLength.AggregateAsync(
-                    default((Peer, long?)?),
-                    (p, c) => (p?.Item2 > c.Item2) ? p : c,
-                    cancellationToken);
+            (Peer, long?)? longestPeerWithLength = peersWithHeight.Aggregate(
+                default((Peer, long?)?),
+                (p, c) => p?.Item2 > c.Item2 ? p : c
+            );
 
             if (longestPeerWithLength != null &&
                 !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
@@ -784,12 +908,94 @@ namespace Libplanet.Net
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
-                    cancellationToken);
+                    evaluateActions: render,
+                    cancellationToken: cancellationToken
+                );
                 if (!synced.Id.Equals(_blockChain.Id))
                 {
-                    _blockChain.Swap(synced);
+                    _blockChain.Swap(synced, render);
                 }
             }
+        }
+
+        private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
+            IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
+            CancellationToken cancellationToken)
+        {
+            _logger.Debug(
+                "Starts to find a peer to request recent states (candidates: {0} trusted peers).",
+                trustedPeersWithTip.Count
+            );
+            foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
+            {
+                var request = new GetRecentStates(blockHash);
+                _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
+                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
+                {
+                    _logger.Debug("Requests recent states to a peer ({0}).", peer);
+                    await socket.SendMultipartMessageAsync(
+                        request.ToNetMQMessage(_privateKey),
+                        cancellationToken: cancellationToken
+                    );
+                    _logger.Debug("Requested recent states to a peer ({0}).", peer);
+                    NetMQMessage reply;
+                    try
+                    {
+                        reply = await socket.ReceiveMultipartMessageAsync(
+                            timeout: TimeSpan.FromSeconds(30),
+                            cancellationToken: cancellationToken
+                        );
+                        _logger.Debug("Received recent states from a peer ({0}).", peer);
+                    }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            "Failed to receive recent states from a peer ({0}): {1}",
+                            peer,
+                            e
+                        );
+                        continue;
+                    }
+
+                    Message parsedMessage = Message.Parse(reply, reply: true);
+                    if (parsedMessage is RecentStates recentStates && !recentStates.Missing)
+                    {
+                        // FIXME: Swarm should not directly access to the IStore instance,
+                        // but BlockChain<T> should have an indirect interface to its underlying
+                        // store.
+                        IStore store = BlockChain.Store;
+                        string ns = BlockChain.Id.ToString();
+
+                        _logger.Debug("Starts to store state refs received from {0}.", peer);
+                        foreach (var pair in recentStates.StateReferences)
+                        {
+                            IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
+                            foreach (HashDigest<SHA256> bHash in pair.Value)
+                            {
+                                store.StoreStateReference(ns, address, store.GetBlock<T>(bHash));
+                            }
+                        }
+
+                        _logger.Debug("Starts to store block states received from {0}.", peer);
+                        foreach (var pair in recentStates.BlockStates)
+                        {
+                            store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                        }
+
+                        _logger.Debug("Finished to store received state refs and block states.");
+                        return true;
+                    }
+
+                    _logger.Debug(
+                        "A message received from {0} is not a RecentStates but {1}.",
+                        peer,
+                        parsedMessage
+                    );
+                }
+            }
+
+            _logger.Warning("Failed to receive states from trusted peers.");
+            return false;
         }
 
         private async Task RefreshAllocate(CancellationToken cancellationToken)
@@ -892,6 +1098,12 @@ namespace Libplanet.Net
                         break;
                     }
 
+                case GetRecentStates getRecentStates:
+                    {
+                        TransferRecentStates(getRecentStates);
+                        break;
+                    }
+
                 case GetBlocks getBlocks:
                     {
                         TransferBlocks(getBlocks);
@@ -972,7 +1184,9 @@ namespace Libplanet.Net
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            CancellationToken cancellationToken)
+            bool evaluateActions,
+            CancellationToken cancellationToken
+        )
         {
             // Fix the tip here because it may change while receiving the block
             // hashes.
@@ -1033,7 +1247,13 @@ namespace Libplanet.Net
                 try
                 {
                     await FillBlocksAsync(
-                        peer, synced, stop, progress, cancellationToken);
+                        peer,
+                        synced,
+                        stop,
+                        progress,
+                        evaluateActions,
+                        cancellationToken
+                    );
                     break;
                 }
 
@@ -1085,7 +1305,9 @@ namespace Libplanet.Net
                     peer,
                     oldest.PreviousHash,
                     null,
-                    cancellationToken);
+                    evaluateActions: true,
+                    cancellationToken: cancellationToken
+                );
                 _logger.Debug("Filled up. trying to concatenation...");
 
                 foreach (Block<T> block in blocks)
@@ -1097,7 +1319,7 @@ namespace Libplanet.Net
                 if (!previousBlocks.Id.Equals(_blockChain.Id))
                 {
                     _logger.Debug("trying to swapping chain...");
-                    _blockChain.Swap(previousBlocks);
+                    _blockChain.Swap(previousBlocks, render: true);
                     _logger.Debug("Swapping complete");
                 }
             }
@@ -1116,7 +1338,9 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
-            CancellationToken cancellationToken)
+            bool evaluateActions,
+            CancellationToken cancellationToken
+        )
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -1156,8 +1380,10 @@ namespace Libplanet.Net
                         blockChain.Append(
                             block,
                             DateTimeOffset.UtcNow,
-                            render: false
+                            evaluateActions: evaluateActions,
+                            renderActions: false
                         );
+
                         received++;
                         progress?.Report(new BlockDownloadState
                         {
@@ -1261,6 +1487,54 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Transfer complete.");
+        }
+
+        private void TransferRecentStates(GetRecentStates getRecentStates)
+        {
+            HashDigest<SHA256> blockHash = getRecentStates.BlockHash;
+            IImmutableDictionary<HashDigest<SHA256>,
+                IImmutableDictionary<Address, object>
+            > blockStates = null;
+            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+                stateRefs = null;
+
+            if (_blockChain.Blocks.ContainsKey(blockHash))
+            {
+                // FIXME: Swarm should not directly access to the IStore instance,
+                // but BlockChain<T> should have an indirect interface to its underlying
+                // store.
+                IStore store = _blockChain.Store;
+                string ns = _blockChain.Id.ToString();
+
+                stateRefs = store.ListAddresses(ns).Select(address =>
+                {
+                    ImmutableList<HashDigest<SHA256>> refs =
+                        store.IterateStateReferences(ns, address).Select(
+                            p => p.Item1
+                        ).Reverse().ToImmutableList();
+                    return
+                        new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
+                            address, refs
+                        );
+                }).ToImmutableDictionary();
+
+                blockStates = stateRefs.Values
+                    .Select(refs => refs.Last())
+                    .ToImmutableHashSet()
+                    .Select(bh =>
+                        new KeyValuePair<
+                            HashDigest<SHA256>,
+                            IImmutableDictionary<Address, object>
+                        >(bh, store.GetBlockStates(bh))
+                    )
+                    .ToImmutableDictionary();
+            }
+
+            var reply = new RecentStates(blockHash, blockStates, stateRefs)
+            {
+                Identity = getRecentStates.Identity,
+            };
+            _replyQueue.Enqueue(reply);
         }
 
         private async Task ProcessDeltaAsync(
@@ -1643,7 +1917,18 @@ namespace Libplanet.Net
 
                 // it's still async because some method it relies are async yet.
                 Task.Run(
-                    async () => { await ProcessMessageAsync(message, _cancellationToken); },
+                    async () =>
+                    {
+                        try
+                        {
+                            await ProcessMessageAsync(message, _cancellationToken);
+                        }
+                        catch (Exception exc)
+                        {
+                            _logger.Error("Something went wrong during message parsing: {0}", exc);
+                            throw;
+                        }
+                    },
                     _cancellationToken);
             }
             catch (InvalidMessageException ex)

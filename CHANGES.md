@@ -14,11 +14,27 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `trustedStateValidators` option to `Swarm<T>.PreloadAsync()` method.
+    If any peer in this set is reachable and there is no built up blockchain
+    in a current node, `Swarm<T>` receives the latest states of the major
+    blockchain from that trusted peer, which is also calculated by that peer,
+    instead of autonomously calculating the states from scratch.
+    Note that this option is intended to be exposed to end users through
+    a feasible user interface so that they can decide whom to trust
+    for themselves.
+    [[#272], [#343]]
+
 ### Behavioral changes
+
+ -  `BlockChain<T>.PreloadAsync()` method became to omit rendering of
+    `IAction`s in the preloaded behind blocks.  [[#272], [#343]]
+ -  `Swarm<T>` became to have two more message types: `GetRecentStates` (`0x0b`)
+    and `RecentStates` (`0x0c`).  [[#272], [#343]]
 
 ### Bug fixes
 
 
+[#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
 
 
@@ -50,7 +66,7 @@ Released on July 8, 2019.
  -  `BlockChain<T>.StageTransactions` became to receive
     `IDictionary<Transaction<T>, bool>` instead of `ISet<Transaction<T>>`.
     [[#274], [#297]]
--  `IStore.StageTransactionIds()` method became to receive
+ -  `IStore.StageTransactionIds()` method became to receive
     `IDictionary<TxId, bool>` instead of `ISet<TxId>`.  [[#274], [#297]]
  -  `IStore.IterateStagedTransactionIds()` method became to receive
     `bool toBroadcast` which is whether to iterate only the TxId set to
@@ -97,6 +113,7 @@ Released on July 8, 2019.
  -  Added `BlockChain<T>.GetNextTxNonce()` method which counts staged
     transactions too during nonce computation.  [[#270], [#294]]
  -  Added `StoreExtension` static class.  [[#272], [#307]]
+ -  Added `Swarm<T>.BlockChain` property.  [[#272], [#343]]
 
 ### Behavioral changes
 

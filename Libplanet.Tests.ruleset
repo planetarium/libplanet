@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet
+  Name="Rules for Libplanet.Tests"
+  Description="Code analysis rules for Libplanet.Tests.csproj."
+  ToolsVersion="10.0">
+
+  <Rules
+    AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis"
+    RuleNamespace="Microsoft.Rules.Managed">
+
+    <!-- Single line comment should begin with a space. -->
+    <Rule Id="SA1005" Action="None" />
+    <!-- Closing parenthesis should be on line of opening parenthesis -->
+    <Rule Id="SA1112" Action="None" />
+    <!-- Single-line comment should be preceded by blank line. -->
+    <Rule Id="SA1515" Action="None" />
+    <!-- TODO: Write copyright -->
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1652" Action="None" />
+    <!-- Allow field name to begin with an underscore. -->
+    <Rule Id="SA1309" Action="None" />
+    <!-- Allow an expression not to declare parenthese. -->
+    <Rule Id="SA1407" Action="None" />
+    <!-- Allow a rich text in a XML doc comment's <summary>. -->
+    <Rule Id="SA1462" Action="None" />
+    <Rule Id="SA1642" Action="None" />
+    <!-- Every property's docs doesn't have to start with "Gets", because
+    it's ridiculous. -->
+    <Rule Id="SA1623" Action="None" />
+    <!--Allow to call an instance member of the local class or a base class is
+    not prefixed with 'this.'. -->
+    <Rule Id="SA1101" Action="None" />
+    <!--Allow closing parenthesis to be placed in new line. -->
+    <Rule Id="SA1009" Action="None" />
+    <Rule Id="SA1111" Action="None" />
+    <!-- TODO: Documentation -->
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1601" Action="None" />
+    <Rule Id="SA0001" Action="None" />
+  </Rules>
+
+  <Rules AnalyzerId="Menees.Analyzers" RuleNamespace="Menees.Analyzers">
+    <Rule Id="MEN002" Action="Warning" />
+    <Rule Id="MEN007" Action="None" />
+    <Rule Id="MEN009" Action="Warning" />
+    <Rule Id="MEN010" Action="None" />
+    <Rule Id="MEN011" Action="None" />
+  </Rules>
+</RuleSet>
