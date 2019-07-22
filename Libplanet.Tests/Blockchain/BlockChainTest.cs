@@ -1299,24 +1299,6 @@ namespace Libplanet.Tests.Blockchain
             return (addresses, new[] { b0, b1 });
         }
 
-        private sealed class NullPolicy<T> : IBlockPolicy<T>
-            where T : IAction, new()
-        {
-            private readonly InvalidBlockException _exceptionToThrow;
-
-            public NullPolicy(InvalidBlockException exceptionToThrow = null)
-            {
-                _exceptionToThrow = exceptionToThrow;
-            }
-
-            public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
-                blocks.Any() ? 1 : 0;
-
-            public InvalidBlockException ValidateNextBlock(
-                IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) =>
-                _exceptionToThrow;
-        }
-
         private sealed class TestEvaluateAction : IAction
         {
             public static readonly Address SignerKey =
