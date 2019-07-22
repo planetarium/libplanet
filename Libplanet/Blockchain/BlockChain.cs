@@ -137,7 +137,7 @@ namespace Libplanet.Blockchain
         {
             try
             {
-                _rwlock.EnterReadLock();
+                _rwlock.EnterUpgradeableReadLock();
 
                 IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
                     Id.ToString()
@@ -149,7 +149,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 
@@ -220,8 +220,17 @@ namespace Libplanet.Blockchain
 
             foreach (var address in requestedAddresses)
             {
-                Tuple<HashDigest<SHA256>, long> sr = Store.LookupStateReference(
-                    Id.ToString(), address, block);
+                Tuple<HashDigest<SHA256>, long> sr;
+                _rwlock.EnterReadLock();
+                try
+                {
+                    sr = Store.LookupStateReference(Id.ToString(), address, block);
+                }
+                finally
+                {
+                    _rwlock.ExitReadLock();
+                }
+
                 if (!(sr is null))
                 {
                     stateReferences.Add(sr);
@@ -256,7 +265,17 @@ namespace Libplanet.Blockchain
                                         b.PreviousHash
                                     ).GetValueOrDefault(a)
                                 ).ToArray();
-                            SetStates(b, evaluations, buildStateReferences: false);
+
+                            _rwlock.EnterWriteLock();
+
+                            try
+                            {
+                                SetStates(b, evaluations, buildStateReferences: false);
+                            }
+                            finally
+                            {
+                                _rwlock.ExitWriteLock();
+                            }
                         }
 
                         blockStates = Store.GetBlockStates(hashValue);
