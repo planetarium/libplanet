@@ -1037,8 +1037,6 @@ namespace Libplanet.Net
                                 .GetStagedTransactionIds(true)
                                 .ToList();
 
-                            Log.Debug($"TxIds: {string.Join(", ", txIds)}");
-
                             if (txIds.Any())
                             {
                                 BroadcastTxIds(txIds);
@@ -1425,13 +1423,6 @@ namespace Libplanet.Net
                 .Where(id => !_blockChain.Transactions.ContainsKey(id))
                 .ToImmutableHashSet();
 
-            // Re-staging existing txs.
-            ImmutableHashSet<TxId> existingTxIds = message.Ids.Except(newTxIds)
-                .ToImmutableHashSet();
-            _blockChain.StageTransactions(
-                existingTxIds.ToDictionary(txId => _blockChain.Transactions[txId], _ => true)
-            );
-
             if (!newTxIds.Any())
             {
                 _logger.Debug("No txs to require.");
@@ -1456,7 +1447,6 @@ namespace Libplanet.Net
                 peer, newTxIds, cancellationToken);
             List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
             var toStage = txs.ToDictionary(tx => tx, _ => true);
-            _logger.Debug($"Txs fetched. [count: {toStage}]");
 
             _blockChain.StageTransactions(toStage);
             TxReceived.Set();

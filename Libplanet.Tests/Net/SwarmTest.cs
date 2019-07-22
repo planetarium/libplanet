@@ -731,51 +731,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task RestageWhenTxIdReceived()
-        {
-            Swarm<DumbAction> swarmA = _swarms[0];
-            Swarm<DumbAction> swarmB = _swarms[1];
-
-            BlockChain<DumbAction> chainA = _blockchains[0];
-            BlockChain<DumbAction> chainB = _blockchains[1];
-
-            Transaction<DumbAction>[] txs = new[]
-            {
-                Transaction<DumbAction>.Create(
-                    0,
-                    new PrivateKey(),
-                    new DumbAction[] { }),
-                Transaction<DumbAction>.Create(
-                    0,
-                    new PrivateKey(),
-                    new DumbAction[] { }),
-            };
-
-            chainA.StageTransactions(txs.ToDictionary(tx => tx, _ => true));
-
-            // chainB also knows `txs[1]`, but it didn't stage.
-            chainB.Transactions[txs[1].Id] = txs[1];
-
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                // Broadcast tx swarmA to swarmB
-                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
-                await Task.Delay(TimeSpan.FromSeconds(3));
-                Assert.Contains(txs[0].Id, chainB.GetStagedTransactionIds(true));
-                Assert.Contains(txs[1].Id, chainB.GetStagedTransactionIds(true));
-            }
-            finally
-            {
-                await Task.WhenAll(
-                    swarmA.StopAsync(),
-                    swarmB.StopAsync());
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
             Swarm<DumbAction> swarmA = _swarms[0];
