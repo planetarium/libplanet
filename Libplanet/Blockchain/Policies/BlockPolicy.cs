@@ -20,6 +20,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
+        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// </param>
         /// <param name="blockIntervalMilliseconds">Configures
         /// <see cref="BlockInterval"/> in milliseconds.
         /// 5000 milliseconds by default.
@@ -29,10 +31,12 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
         public BlockPolicy(
+            IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128)
             : this(
+                blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
                 minimumDifficulty,
                 difficultyBoundDivisor)
@@ -44,6 +48,8 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="BlockInterval"/>, <see cref="MinimumDifficulty"/> and
         /// <see cref="DifficultyBoundDivisor"/>.
         /// </summary>
+        /// <param name="blockAction">A block action to execute and be rendered for every block.
+        /// </param>
         /// <param name="blockInterval">Configures <see cref="BlockInterval"/>.
         /// </param>
         /// <param name="minimumDifficulty">Configures
@@ -51,6 +57,7 @@ namespace Libplanet.Blockchain.Policies
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>.</param>
         public BlockPolicy(
+            IAction blockAction,
             TimeSpan blockInterval,
             long minimumDifficulty,
             int difficultyBoundDivisor)
@@ -80,10 +87,14 @@ namespace Libplanet.Blockchain.Policies
                     message);
             }
 
+            BlockAction = blockAction;
             BlockInterval = blockInterval;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
         }
+
+        /// <inheritdoc/>
+        public IAction BlockAction { get; }
 
         /// <summary>
         /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
