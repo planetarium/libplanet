@@ -11,6 +11,9 @@ To be released.
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
+ -  Added `IBlockPolicy<T>.BlockAction` property.  [[#319], [#367]]
+ -  Removed the type parameter of `ActionEvaluation`.  [[#319], [#367]]
+ -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
 
 ### Added interfaces
 
@@ -37,6 +40,8 @@ To be released.
  -  `BlockChain<T>.MineBlock()` and `BlockChain<T>.GetNextTxNonce()` methods
     became to ignore transactions that didn't follow `Transaction<T>.Nonce`
     sequentially and treat them as pendings.  [[#365]]
+ - `BlockChain<T>` became to evaluate `IBlockPolicy<T>.BlockAction` and set the
+   state when a block is appended to the chain.  [[#319], [#367]]
 
 ### Bug fixes
 
@@ -44,11 +49,13 @@ To be released.
     duplicated transaction ids.  [[#366]]
 
 
+[#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
 [#363]: https://github.com/planetarium/libplanet/pull/363
 [#365]: https://github.com/planetarium/libplanet/pull/365
 [#366]: https://github.com/planetarium/libplanet/pull/366
+[#367]: https://github.com/planetarium/libplanet/pull/367
 
 
 Version 0.4.1
