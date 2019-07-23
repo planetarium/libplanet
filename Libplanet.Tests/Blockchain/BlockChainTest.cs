@@ -48,6 +48,61 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void MineBlockWithPendingTxs()
+        {
+            var keys = new[]
+            {
+                new PrivateKey(),
+                new PrivateKey(),
+                new PrivateKey(),
+            };
+
+            var txs = new[]
+            {
+                Transaction<DumbAction>.Create(
+                    0,
+                    keys[0],
+                    new DumbAction[] { }),
+                Transaction<DumbAction>.Create(
+                    1,
+                    keys[0],
+                    new DumbAction[] { }),
+
+                // pending txs1
+                Transaction<DumbAction>.Create(
+                    1,
+                    keys[1],
+                    new DumbAction[] { }),
+                Transaction<DumbAction>.Create(
+                    2,
+                    keys[1],
+                    new DumbAction[] { }),
+
+                // pending txs2
+                Transaction<DumbAction>.Create(
+                    0,
+                    keys[2],
+                    new DumbAction[] { }),
+                Transaction<DumbAction>.Create(
+                    2,
+                    keys[2],
+                    new DumbAction[] { }),
+            };
+
+            _blockChain.StageTransactions(txs.ToDictionary(tx => tx, _ => false));
+            Block<DumbAction> block = _blockChain.MineBlock(_fx.Address1);
+            Assert.Contains(block, _blockChain);
+            Assert.Contains(txs[0], block.Transactions);
+            Assert.Contains(txs[1], block.Transactions);
+            Assert.DoesNotContain(txs[2], block.Transactions);
+            Assert.DoesNotContain(txs[3], block.Transactions);
+            Assert.Contains(txs[4], block.Transactions);
+            Assert.DoesNotContain(txs[5], block.Transactions);
+            Assert.Contains(txs[2].Id, _blockChain.GetStagedTransactionIds(false));
+            Assert.Contains(txs[3].Id, _blockChain.GetStagedTransactionIds(false));
+        }
+
+        [Fact]
         public void CanFindBlockByIndex()
         {
             // use assignment to snooze compiler error (CS0201)
@@ -986,6 +1041,24 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransactions(toStage);
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
+
+            Transaction<DumbAction>[] txsD =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
+            };
+            _blockChain.StageTransactions(txsD.ToDictionary(tx => tx, _ => true));
+
+            Assert.Equal(4, _blockChain.GetNextTxNonce(address));
+
+            Transaction<DumbAction>[] txsE =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 4),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 7),
+            };
+            _blockChain.StageTransactions(txsE.ToDictionary(tx => tx, _ => true));
+
+            Assert.Equal(6, _blockChain.GetNextTxNonce(address));
         }
 
         [Fact]

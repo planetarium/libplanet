@@ -401,18 +401,22 @@ namespace Libplanet.Blockchain
         public long GetNextTxNonce(Address address)
         {
             long nonce = Store.GetTxNonce(Id.ToString(), address);
-
             IEnumerable<Transaction<T>> stagedTxs = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
-                .Where(tx => tx.Signer.Equals(address));
+                .Where(tx => tx.Signer.Equals(address))
+                .OrderBy(tx => tx.Nonce);
 
-            foreach (Transaction<T> tx in stagedTxs)
+            long prevNonce = nonce - 1;
+            foreach (long n in stagedTxs.Select(tx => tx.Nonce))
             {
-                if (nonce <= tx.Nonce)
+                if (n != prevNonce + 1)
                 {
-                    nonce = tx.Nonce + 1;
+                    return prevNonce + 1;
                 }
+
+                nonce = n + 1;
+                prevNonce = n;
             }
 
             return nonce;
@@ -432,7 +436,8 @@ namespace Libplanet.Blockchain
             );
             IEnumerable<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>);
+                .Select(Store.GetTransaction<T>)
+                .Where(tx => tx.Nonce < GetNextTxNonce(tx.Signer));
 
             Block<T> block = Block<T>.Mine(
                 index: index,
