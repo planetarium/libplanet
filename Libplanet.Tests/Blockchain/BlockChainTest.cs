@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain
         {
             _fx = new FileStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
-                new BlockPolicy<DumbAction>(),
+                new BlockPolicy<DumbAction>(new MinerReward(1)),
                 _fx.Store
             );
         }
@@ -261,6 +261,7 @@ namespace Libplanet.Tests.Blockchain
         public void Append()
         {
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
             (
                 IImmutableDictionary<Address, object> expectedStates,
@@ -269,6 +270,7 @@ namespace Libplanet.Tests.Blockchain
             Address[] addresses = expectedStates.Keys.ToArray();
 
             Assert.Empty(_blockChain.Blocks);
+            Assert.Empty(MinerReward.RenderRecords.Value);
             try
             {
                 _blockChain.Append(blocks[0]);
@@ -288,7 +290,7 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal("foo", actions[0].Item);
                 Assert.Equal(1, renders[0].Context.BlockIndex);
                 Assert.Equal(
-                    new string[] { null, null, null, null },
+                    new object[] { null, null, null, null },
                     addresses.Select(renders[0].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
@@ -325,10 +327,29 @@ namespace Libplanet.Tests.Blockchain
                     expectedStates.Values,
                     addresses.Select(renders[3].NextStates.GetState)
                 );
+
+                var minerAddress = TestUtils.GenesisMinerAddress;
+                var blockRenders = MinerReward.RenderRecords.Value;
+
+                Assert.Equal(2, _blockChain.GetStates(new[] { minerAddress })[minerAddress]);
+                Assert.Equal(2, blockRenders.Count);
+                Assert.True(blockRenders.All(r => r.Render));
+                Assert.Equal(0, blockRenders[0].Context.BlockIndex);
+                Assert.Equal(1, blockRenders[1].Context.BlockIndex);
+
+                Assert.Null(blockRenders[0].Context.PreviousStates.GetState(minerAddress));
+                Assert.Equal(1, blockRenders[0].NextStates.GetState(minerAddress));
+                Assert.Equal(
+                    1,
+                    blockRenders[1].Context.PreviousStates.GetState(minerAddress));
+                Assert.Equal(
+                    2,
+                    blockRenders[1].NextStates.GetState(minerAddress));
             }
             finally
             {
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -392,6 +413,7 @@ namespace Libplanet.Tests.Blockchain
             );
 
             _blockChain.ExecuteActions(blocks[1], true);
+            expectedStates = expectedStates.Add(TestUtils.GenesisMinerAddress, 2);
             Assert.Equal(
                 expectedStates.ToImmutableDictionary(),
                 _blockChain.Store.GetBlockStates(blocks[1].Hash)
@@ -714,6 +736,7 @@ namespace Libplanet.Tests.Blockchain
             try
             {
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
                 Block<DumbAction> forkTip = TestUtils.MineNext(
                     fork.Tip,
@@ -743,6 +766,9 @@ namespace Libplanet.Tests.Blockchain
                 );
                 int actionsCountB = txsB.Sum(tx => tx.Actions.Count);
 
+                int totalBlockCount = (int)_blockChain[-1].Index + 1;
+                int unRenderBlockCount = 2;
+
                 if (render)
                 {
                     Assert.Equal(actionsCountB + actionsCountA, renders.Count);
@@ -756,6 +782,16 @@ namespace Libplanet.Tests.Blockchain
                     Assert.Equal("fork-foo", actions[4].Item);
                     Assert.Equal("fork-bar", actions[5].Item);
                     Assert.Equal("fork-baz", actions[6].Item);
+
+                    var minerAddress = TestUtils.GenesisMinerAddress;
+                    var blockRenders = MinerReward.RenderRecords.Value;
+
+                    Assert.Equal(
+                        totalBlockCount,
+                        _blockChain.GetStates(new[] { minerAddress })[minerAddress]);
+                    Assert.Equal(totalBlockCount, blockRenders.Count);
+                    Assert.True(blockRenders.Take(unRenderBlockCount).All(r => r.Unrender));
+                    Assert.True(blockRenders.Skip(unRenderBlockCount).All(r => r.Render));
                 }
                 else
                 {
@@ -765,6 +801,7 @@ namespace Libplanet.Tests.Blockchain
             finally
             {
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
@@ -1181,6 +1218,40 @@ namespace Libplanet.Tests.Blockchain
             }
 
             Assert.Equal(id2, BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
+        }
+
+        [Fact]
+        public void ExecuteBlockAction()
+        {
+            var privateKey1 = new PrivateKey();
+            var address1 = privateKey1.PublicKey.ToAddress();
+
+            var privateKey2 = new PrivateKey();
+            var address2 = privateKey2.PublicKey.ToAddress();
+
+            var blockAction = new DumbAction(address1, "foo");
+            BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(blockAction);
+
+            var blockChain = new BlockChain<DumbAction>(policy, _fx.Store);
+
+            blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });
+            blockChain.MineBlock(address1);
+
+            var states = blockChain.GetStates(new[] { address1, address2 });
+
+            Assert.Equal(0, blockChain.GetNextTxNonce(address1));
+            Assert.Equal(1, blockChain.GetNextTxNonce(address2));
+            Assert.Equal("foo", states[address1]);
+            Assert.Equal("baz", states[address2]);
+
+            blockChain.MakeTransaction(privateKey1, new[] { new DumbAction(address1, "bar") });
+            blockChain.MineBlock(address1);
+            states = blockChain.GetStates(new[] { address1, address2 });
+
+            Assert.Equal(1, blockChain.GetNextTxNonce(address1));
+            Assert.Equal(1, blockChain.GetNextTxNonce(address2));
+            Assert.Equal("foo,bar,foo", states[address1]);
+            Assert.Equal("baz", states[address2]);
         }
 
         /// <summary>

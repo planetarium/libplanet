@@ -263,14 +263,19 @@ namespace Libplanet.Blockchain
                                 continue;
                             }
 
-                            ActionEvaluation[] evaluations =
+                            List<ActionEvaluation> evaluations =
                                 b.Evaluate(
                                     DateTimeOffset.UtcNow,
                                     a => GetStates(
                                         new[] { a },
                                         b.PreviousHash
                                     ).GetValueOrDefault(a)
-                                ).ToArray();
+                                ).ToList();
+
+                            if (!(Policy.BlockAction is null))
+                            {
+                                evaluations.Add(EvaluateBlockAction(b, evaluations));
+                            }
 
                             _rwlock.EnterWriteLock();
 
@@ -625,9 +630,12 @@ namespace Libplanet.Blockchain
                         GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a);
                 }
 
-                return block
+                ImmutableList<ActionEvaluation> txEvaluations = block
                     .Evaluate(DateTimeOffset.UtcNow, stateGetter)
                     .ToImmutableList();
+                return Policy.BlockAction is IAction
+                    ? txEvaluations.Add(EvaluateBlockAction(block, txEvaluations))
+                    : txEvaluations;
             }
 
             IReadOnlyList<ActionEvaluation> evaluations = null;
@@ -660,6 +668,47 @@ namespace Libplanet.Blockchain
                     );
                 }
             }
+        }
+
+        internal ActionEvaluation EvaluateBlockAction(
+            Block<T> block,
+            IReadOnlyList<ActionEvaluation> txActionEvaluations)
+        {
+            if (Policy.BlockAction is null)
+            {
+                var message = "To evaluate block action, Policy.BlockAction must not be null.";
+                throw new InvalidOperationException(message);
+            }
+
+            IAccountStateDelta lastStates = null;
+
+            if (txActionEvaluations.Count > 0)
+            {
+                lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
+            }
+
+            Address miner = block.Miner.GetValueOrDefault();
+
+            var minerState = GetStates(new[] { miner }, block.PreviousHash)
+                .GetValueOrDefault(miner);
+
+            if (lastStates is null)
+            {
+                lastStates = new AccountStateDeltaImpl(a => minerState);
+            }
+            else if (lastStates.GetState(miner) is null)
+            {
+                lastStates = lastStates.SetState(miner, minerState);
+            }
+
+            return ActionEvaluation.EvaluateActionsGradually(
+                block.Hash,
+                block.Index,
+                lastStates,
+                miner,
+                miner,
+                Array.Empty<byte>(),
+                new[] { Policy.BlockAction }.ToImmutableList()).First();
         }
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
@@ -918,10 +967,18 @@ namespace Libplanet.Blockchain
                     b = Blocks[ph]
                 )
                 {
-                    var actions = b.EvaluateActionsPerTx(a =>
-                        GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                    ).Reverse();
-                    foreach (var (_, evaluation) in actions)
+                    List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
+                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                        .Select(te => te.Item2).ToList();
+
+                    if (Policy.BlockAction is IAction)
+                    {
+                        evaluations.Add(EvaluateBlockAction(b, evaluations));
+                    }
+
+                    evaluations.Reverse();
+
+                    foreach (var evaluation in evaluations)
                     {
                         evaluation.Action.Unrender(
                             evaluation.InputContext,
@@ -954,10 +1011,16 @@ namespace Libplanet.Blockchain
                         : this;
                 foreach (Block<T> b in blocksToRender)
                 {
-                    var actions = b.EvaluateActionsPerTx(a =>
-                        GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a)
-                    );
-                    foreach (var (_, evaluation) in actions)
+                    List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
+                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                        .Select(te => te.Item2).ToList();
+
+                    if (Policy.BlockAction is IAction)
+                    {
+                        evaluations.Add(EvaluateBlockAction(b, evaluations));
+                    }
+
+                    foreach (var evaluation in evaluations)
                     {
                         evaluation.Action.Render(
                             evaluation.InputContext,

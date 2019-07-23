@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
-            var policy = new BlockPolicy<DumbAction>();
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             _fx1 = new FileStoreFixture();
             _fx2 = new FileStoreFixture();
             _fx3 = new FileStoreFixture();
@@ -1056,6 +1056,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
                 IImmutableSet<Address> trustedPeers = trust
                     ? new[] { minerSwarm.Address }.ToImmutableHashSet()
@@ -1063,6 +1064,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedPeers);
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
+                Assert.Empty(MinerReward.RenderRecords.Value);
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
                 int i = 0;
                 foreach (Address target in targets)
@@ -1102,11 +1104,21 @@ namespace Libplanet.Tests.Net
 
                     i++;
                 }
+
+                foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
+                {
+                    var minerState = chain.GetStates(
+                        new[] { minerSwarm.Address },
+                        completeStates: false);
+                    Assert.Single(minerState);
+                    Assert.Equal(20, minerState[minerSwarm.Address]);
+                }
             }
             finally
             {
                 await minerSwarm.StopAsync();
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
