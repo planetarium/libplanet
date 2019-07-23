@@ -533,7 +533,6 @@ namespace Libplanet.Blockchain
             }
 
             _rwlock.EnterUpgradeableReadLock();
-            ActionEvaluation<T>[] evaluations = null;
             try
             {
                 InvalidBlockException e =
@@ -568,14 +567,6 @@ namespace Libplanet.Blockchain
                     nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
-                if (evaluateActions)
-                {
-                    evaluations = block.Evaluate(
-                        currentTime,
-                        a => GetStates(new[] { a }, tip).GetValueOrDefault(a)
-                    ).ToArray();
-                }
-
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -583,11 +574,6 @@ namespace Libplanet.Blockchain
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
                         Store.IncreaseTxNonce(ns, pair.Key, pair.Value);
-                    }
-
-                    if (!(evaluations is null))
-                    {
-                        SetStates(block, evaluations, buildStateReferences: true);
                     }
 
                     Store.AppendIndex(ns, block.Hash);
@@ -607,8 +593,65 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (!(evaluations is null) && renderActions)
+            if (evaluateActions)
             {
+                ExecuteActions(block, renderActions);
+            }
+        }
+
+        /// <summary>
+        /// Evaluates actions in the given <paramref name="block"/> and fills states with the
+        /// results, and renders them if <paramref name="render"/> is turned on.
+        /// </summary>
+        /// <param name="block">A block to execute.</param>
+        /// <param name="render">Whether to render actions.  This is not idempotent; even if
+        /// the given <paramref name="block"/> has executed before in the blockchain,
+        /// its actions are rendered anyway.</param>
+        /// <remarks>This method is idempotent (except for rendering).  If the given
+        /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
+        /// </remarks>
+        internal void ExecuteActions(Block<T> block, bool render)
+        {
+            IReadOnlyList<ActionEvaluation<T>> EvaluateActions()
+            {
+                AccountStateGetter stateGetter;
+                if (block.PreviousHash is null)
+                {
+                    stateGetter = _ => null;
+                }
+                else
+                {
+                    stateGetter = a =>
+                        GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a);
+                }
+
+                return block
+                    .Evaluate(DateTimeOffset.UtcNow, stateGetter)
+                    .ToImmutableList();
+            }
+
+            IReadOnlyList<ActionEvaluation<T>> evaluations = null;
+            if (Store.GetBlockStates(block.Hash) is null)
+            {
+                evaluations = EvaluateActions();
+                _rwlock.EnterWriteLock();
+                try
+                {
+                    SetStates(block, evaluations, buildStateReferences: true);
+                }
+                finally
+                {
+                    _rwlock.ExitWriteLock();
+                }
+            }
+
+            if (render)
+            {
+                if (evaluations is null)
+                {
+                    evaluations = EvaluateActions();
+                }
+
                 foreach (var evaluation in evaluations)
                 {
                     evaluation.Action.Render(
