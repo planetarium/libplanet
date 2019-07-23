@@ -25,6 +25,8 @@ To be released.
     [[#272], [#343]]
  -  Added `StoreExtension.ListAllStateReferences(this IStore, string)` extension
     method.  [[#363]]
+ -  `Address` class became to implement `IComparable<Address>` and
+    `IComparable` interfaces.  [[#363]]
 
 ### Behavioral changes
 

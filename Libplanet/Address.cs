@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Libplanet
     /// <seealso cref="PublicKey"/>
     [Serializable]
     [Equals]
-    public struct Address : ISerializable
+    public struct Address : ISerializable, IComparable<Address>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -208,6 +209,37 @@ namespace Libplanet
             StreamingContext context)
         {
             info.AddValue("address", _byteArray.ToArray());
+        }
+
+        int IComparable<Address>.CompareTo(Address other)
+        {
+            ImmutableArray<byte> self = ByteArray, operand = other.ByteArray;
+
+            for (int i = 0; i < Size; i++)
+            {
+                int cmp = ((IComparable<byte>)self[i]).CompareTo(operand[i]);
+                if (cmp != 0)
+                {
+                    return cmp;
+                }
+            }
+
+            return 0;
+        }
+
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj is Address other)
+            {
+                return ((IComparable<Address>)this).CompareTo(other);
+            }
+
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            throw new ArgumentException(nameof(obj));
         }
 
         private static string ToChecksumAddress(string hex)
