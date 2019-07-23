@@ -619,54 +619,9 @@ namespace Libplanet.Net
 
             if (!received)
             {
-                ReaderWriterLockSlim rwlock = _blockChain._rwlock;
-                rwlock.EnterUpgradeableReadLock();
-                try
+                foreach (Block<T> block in _blockChain)
                 {
-                    // FIXME: Swam should not directly access to the IStore instance,
-                    // but BlockChain<T> should have an indirect interface to its underlying store.
-                    IStore store = _blockChain.Store;
-
-                    foreach (Block<T> block in _blockChain)
-                    {
-                        if (store.GetBlockStates(block.Hash) is null)
-                        {
-                            AccountStateGetter stateGetter;
-                            if (block.PreviousHash is null)
-                            {
-                                stateGetter = _ => null;
-                            }
-                            else
-                            {
-                                stateGetter = a =>
-                                    _blockChain.GetStates(
-                                        new[] { a },
-                                        block.PreviousHash
-                                    ).GetValueOrDefault(a);
-                            }
-
-                            IReadOnlyList<ActionEvaluation<T>> evaluations =
-                                block.Evaluate(DateTimeOffset.UtcNow, stateGetter)
-                                    .ToImmutableList();
-                            rwlock.EnterWriteLock();
-                            try
-                            {
-                                _blockChain.SetStates(
-                                    block,
-                                    evaluations,
-                                    buildStateReferences: true
-                                );
-                            }
-                            finally
-                            {
-                                rwlock.ExitWriteLock();
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    rwlock.ExitUpgradeableReadLock();
+                    _blockChain.ExecuteActions(block, render: false);
                 }
             }
         }
