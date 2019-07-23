@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using Xunit;
@@ -220,6 +221,40 @@ namespace Libplanet.Tests
             }
 
             Assert.Equal(deserializedAddress, expectedAddress);
+        }
+
+        [Fact]
+        public void Compare()
+        {
+            var random = new System.Random();
+            var buffer = new byte[20];
+            Address[] addresses = Enumerable.Repeat(0, 50).Select(_ =>
+            {
+                random.NextBytes(buffer);
+                return new Address(buffer);
+            }).ToArray();
+            for (int i = 1; i < addresses.Length; i++)
+            {
+                IComparable<Address> left = addresses[i - 1];
+                Address right = addresses[i];
+                string leftString = addresses[i - 1].ToHex().ToLower(),
+                       rightString = right.ToHex().ToLower();
+                Assert.Equal(
+                    Math.Min(Math.Max(left.CompareTo(right), 1), -1),
+                    Math.Min(Math.Max(leftString.CompareTo(rightString), 1), -1)
+                );
+                Assert.Equal(
+                    left.CompareTo(right),
+                    (left as IComparable).CompareTo(right)
+                );
+            }
+
+            Assert.Throws<ArgumentNullException>(() =>
+                (addresses[0] as IComparable).CompareTo(null)
+            );
+            Assert.Throws<ArgumentException>(() =>
+                (addresses[0] as IComparable).CompareTo("invalid")
+            );
         }
     }
 }
