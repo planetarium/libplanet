@@ -521,70 +521,16 @@ namespace Libplanet.Tx
             bool rehearsal = false
         )
         {
-            ActionContext CreateActionContext(
-                IAccountStateDelta prevStates,
-                int randomSeed
-            ) =>
-                new ActionContext(
-                    signer: Signer,
-                    miner: minerAddress,
-                    blockIndex: blockIndex,
-                    previousStates: prevStates,
-                    randomSeed: randomSeed,
-                    rehearsal: rehearsal
-                );
-
-            int seed =
-                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                (Signature.Any() ? BitConverter.ToInt32(Signature, 0) : 0);
-            IAccountStateDelta states = previousStates;
-            foreach (T action in Actions)
-            {
-                ActionContext context =
-                    CreateActionContext(states, seed);
-                IAccountStateDelta nextStates;
-                try
-                {
-                    nextStates = action.Execute(context);
-                }
-                catch (Exception e)
-                {
-                    if (!rehearsal)
-                    {
-                        throw;
-                    }
-
-                    var msg =
-                        $"The action {action} threw an exception during its " +
-                        "rehearsal.  It is probably because the logic of the " +
-                        $"action {action} is not enough generic so that it " +
-                        "can cover every case including rehearsal mode.\n" +
-                        "The IActionContext.Rehearsal property also might be " +
-                        "useful to make the action can deal with the case of " +
-                        "rehearsal mode.\n" +
-                        "See also this exception's InnerException property.";
-                    throw new UnexpectedlyTerminatedTxRehearsalException(
-                        action, msg, e
-                    );
-                }
-
-                // As IActionContext.Random is stateful, we cannot reuse
-                // the context which is once consumed by Execute().
-                ActionContext equivalentContext =
-                    CreateActionContext(states, seed);
-
-                yield return new ActionEvaluation(
-                    action,
-                    equivalentContext,
-                    nextStates
-                );
-                states = nextStates;
-                unchecked
-                {
-                    seed++;
-                }
-            }
-        }
+            return ActionEvaluation.EvaluateActionsGradually(
+                blockHash,
+                blockIndex,
+                previousStates,
+                minerAddress,
+                Signer,
+                Signature,
+                Actions.Select(a => (IAction)a).ToImmutableList(),
+                rehearsal);
+       }
 
         /// <summary>
         /// Executes the <see cref="Actions"/> and gets the result states.
