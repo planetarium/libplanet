@@ -1055,7 +1055,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
-                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
                 IImmutableSet<Address> trustedPeers = trust
                     ? new[] { minerSwarm.Address }.ToImmutableHashSet()
@@ -1106,7 +1106,7 @@ namespace Libplanet.Tests.Net
             finally
             {
                 await minerSwarm.StopAsync();
-                DumbAction.RenderRecords.Value = ImmutableList<DumbAction.RenderRecord>.Empty;
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
         }
 
