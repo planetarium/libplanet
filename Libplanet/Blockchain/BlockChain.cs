@@ -263,7 +263,7 @@ namespace Libplanet.Blockchain
                                 continue;
                             }
 
-                            ActionEvaluation<T>[] evaluations =
+                            ActionEvaluation[] evaluations =
                                 b.Evaluate(
                                     DateTimeOffset.UtcNow,
                                     a => GetStates(
@@ -612,7 +612,7 @@ namespace Libplanet.Blockchain
         /// </remarks>
         internal void ExecuteActions(Block<T> block, bool render)
         {
-            IReadOnlyList<ActionEvaluation<T>> EvaluateActions()
+            IReadOnlyList<ActionEvaluation> EvaluateActions()
             {
                 AccountStateGetter stateGetter;
                 if (block.PreviousHash is null)
@@ -630,7 +630,7 @@ namespace Libplanet.Blockchain
                     .ToImmutableList();
             }
 
-            IReadOnlyList<ActionEvaluation<T>> evaluations = null;
+            IReadOnlyList<ActionEvaluation> evaluations = null;
             if (Store.GetBlockStates(block.Hash) is null)
             {
                 evaluations = EvaluateActions();
@@ -984,7 +984,7 @@ namespace Libplanet.Blockchain
 
         internal void SetStates(
             Block<T> block,
-            IReadOnlyList<ActionEvaluation<T>> actionEvaluations,
+            IReadOnlyList<ActionEvaluation> actionEvaluations,
             bool buildStateReferences
         )
         {

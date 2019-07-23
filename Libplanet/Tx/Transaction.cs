@@ -512,7 +512,7 @@ namespace Libplanet.Tx
         /// <c>false</c>.
         /// </exception>
         [Pure]
-        public IEnumerable<ActionEvaluation<T>>
+        public IEnumerable<ActionEvaluation>
         EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
@@ -573,7 +573,7 @@ namespace Libplanet.Tx
                 ActionContext equivalentContext =
                     CreateActionContext(states, seed);
 
-                yield return new ActionEvaluation<T>(
+                yield return new ActionEvaluation(
                     action,
                     equivalentContext,
                     nextStates
@@ -634,7 +634,7 @@ namespace Libplanet.Tx
                 rehearsal: rehearsal
             );
 
-            ActionEvaluation<T> lastEvaluation;
+            ActionEvaluation lastEvaluation;
             try
             {
                 lastEvaluation = evaluations.Last();

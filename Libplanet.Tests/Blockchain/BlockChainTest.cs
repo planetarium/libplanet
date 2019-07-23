@@ -1231,7 +1231,7 @@ namespace Libplanet.Tests.Blockchain
             Address signer = privateKey.PublicKey.ToAddress();
 
             IImmutableDictionary<Address, object> GetDirty(
-                IEnumerable<ActionEvaluation<DumbAction>> evaluations) =>
+                IEnumerable<ActionEvaluation> evaluations) =>
                 evaluations.Select(
                     a => a.OutputStates
                 ).Aggregate(

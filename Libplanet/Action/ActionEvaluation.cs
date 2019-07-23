@@ -2,15 +2,12 @@ namespace Libplanet.Action
 {
     /// <summary>
     /// A record type to represent an evaluation plan and result of
-    /// a single action (<typeparamref name="T"/>).
+    /// a single action.
     /// </summary>
-    /// <typeparam name="T">A concrete type that implements
-    /// <see cref="IAction"/>.</typeparam>
-    public class ActionEvaluation<T>
-        where T : IAction, new()
+    public class ActionEvaluation
     {
         /// <summary>
-        /// Creates an <see cref="ActionEvaluation{T}"/> instance
+        /// Creates an <see cref="ActionEvaluation"/> instance
         /// with filling properties.
         /// </summary>
         /// <param name="action">An action to evaluate.</param>
@@ -19,7 +16,7 @@ namespace Libplanet.Action
         /// <param name="outputStates">The result states that
         /// <paramref name="action"/> makes.</param>
         public ActionEvaluation(
-            T action,
+            IAction action,
             IActionContext inputContext,
             IAccountStateDelta outputStates
         )
@@ -32,7 +29,7 @@ namespace Libplanet.Action
         /// <summary>
         /// An action to evaluate.
         /// </summary>
-        public T Action { get; }
+        public IAction Action { get; }
 
         /// <summary>
         /// An input <see cref="IActionContext"/> to evaluate

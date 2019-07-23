@@ -216,7 +216,7 @@ namespace Libplanet.Tests.Blocks
                 var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create)
             )
             {
-                ActionEvaluation<DumbAction> eval = pair.Item2;
+                ActionEvaluation eval = pair.Item2;
                 Assert.Equal(blockIdx1Txs[expect.Item1], pair.Item1);
                 Assert.Equal(blockIdx1Txs[expect.Item1].Actions[expect.Item2], eval.Action);
                 Assert.Equal(expect.Item4, eval.InputContext.Signer);
@@ -295,7 +295,7 @@ namespace Libplanet.Tests.Blocks
             Assert.Equal(expectations.Length, pairs.Length);
             foreach (var (expect, pair) in expectations.Zip(pairs, ValueTuple.Create))
             {
-                ActionEvaluation<DumbAction> eval = pair.Item2;
+                ActionEvaluation eval = pair.Item2;
                 Assert.Equal(blockIdx2Txs[expect.Item1], pair.Item1);
                 Assert.Equal(
                     blockIdx2Txs[expect.Item1].Actions[expect.Item2],
