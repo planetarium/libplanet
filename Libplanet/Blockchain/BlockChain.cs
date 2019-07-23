@@ -272,7 +272,7 @@ namespace Libplanet.Blockchain
                                     ).GetValueOrDefault(a)
                                 ).ToList();
 
-                            if (!(Policy.BlockAction is null))
+                            if (Policy.BlockAction is IAction)
                             {
                                 evaluations.Add(EvaluateBlockAction(b, evaluations));
                             }
