@@ -413,6 +413,29 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void StoreStageOnce()
+        {
+            Fx.Store.PutTransaction(Fx.Transaction1);
+            Fx.Store.PutTransaction(Fx.Transaction2);
+
+            var txIds = new HashSet<TxId>()
+            {
+                Fx.Transaction1.Id,
+                Fx.Transaction2.Id,
+            };
+
+            Dictionary<TxId, bool> toStage = txIds.ToDictionary(txId => txId, _ => true);
+
+            Fx.Store.StageTransactionIds(toStage);
+            Fx.Store.StageTransactionIds(
+                new Dictionary<TxId, bool> { { Fx.Transaction1.Id, true } });
+
+            Assert.Equal(
+                new[] { Fx.Transaction1.Id, Fx.Transaction2.Id }.OrderBy(txId => txId.ToHex()),
+                Fx.Store.IterateStagedTransactionIds(false).OrderBy(txId => txId.ToHex()));
+        }
+
+        [Fact]
         public void IterateStagedTransactionIdsToBroadcast()
         {
             var toStage = new Dictionary<TxId, bool>
