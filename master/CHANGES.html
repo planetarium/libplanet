@@ -107,6 +107,10 @@ became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonc
 sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where the <code>LiteDBStore.IterateStagedTransactionIds()</code> returns
+duplicated transaction ids.  [<a href="https://github.com/planetarium/libplanet/pull/366">#366</a>]</li>
+</ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
 <h3 id="bug-fixes-1">Bug fixes</h3>
