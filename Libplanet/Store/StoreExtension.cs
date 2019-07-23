@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -49,6 +50,29 @@ namespace Libplanet.Store
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Lists all accounts, that have any states, in the given <paramref name="namespace"/> and
+        /// their state references.
+        /// </summary>
+        /// <param name="store">A store object.</param>
+        /// <param name="namespace">The namespace to look up state references.</param>
+        /// <returns>A dictionary of account addresses to lists of their corresponding state
+        /// references.  Each list of state references is in ascending order, i.e., the block
+        /// closest to the genesis goes first and the block closest to the tip goes last.</returns>
+        public static IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+        ListAllStateReferences(this IStore store, string @namespace)
+        {
+            return store.ListAddresses(@namespace).Select(address =>
+            {
+                ImmutableList<HashDigest<SHA256>> refs = store
+                    .IterateStateReferences(@namespace, address)
+                    .Select(p => p.Item1)
+                    .Reverse()
+                    .ToImmutableList();
+                return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(address, refs);
+            }).ToImmutableDictionary();
         }
     }
 }
