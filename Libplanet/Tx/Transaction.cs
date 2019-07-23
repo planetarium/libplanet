@@ -528,7 +528,7 @@ namespace Libplanet.Tx
                 minerAddress,
                 Signer,
                 Signature,
-                Actions.Select(a => (IAction)a).ToImmutableList(),
+                Actions.Cast<IAction>().ToImmutableList(),
                 rehearsal);
        }
 
