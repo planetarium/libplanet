@@ -477,7 +477,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits
-        /// an action, input context, and output states for each step.
+        /// <see cref="ActionEvaluation"/> for each step.
         /// <para>If the needed value is only the final states,
         /// use <see cref="EvaluateActions"/> method instead.</para>
         /// </summary>
@@ -497,8 +497,8 @@ namespace Libplanet.Tx
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
-        /// <returns>Enumerates an action, input context, and
-        /// output states for each one in <see cref="Actions"/>.
+        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
+        /// <see cref="Actions"/>.
         /// The order is the same to the <see cref="Actions"/>.
         /// Note that each <see cref="IActionContext.Random"/> object has
         /// a unconsumed state.

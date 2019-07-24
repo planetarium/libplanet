@@ -51,6 +51,40 @@ namespace Libplanet.Action
         /// </summary>
         public IAccountStateDelta OutputStates { get; }
 
+        /// <summary>
+        /// Executes the <paramref name="actions"/> step by step, and emits
+        /// <see cref="ActionEvaluation"/> for each step.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="Libplanet.Blocks.Block{T}.Hash"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this <see cref="Transaction{T}"/> will
+        /// belong to.</param>
+        /// <param name="blockIndex">The <see cref="Libplanet.Blocks.Block{T}.Index"/> of
+        /// <see cref="Libplanet.Blocks.Block{T}"/> that this <see cref="Transaction{T}"/> will
+        /// belong to.</param>
+        /// <param name="previousStates">The states immediately before <paramref name="actions"/>
+        /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are
+        /// remained to the returned next states.</param>
+        /// <param name="minerAddress">An address of block miner.</param>
+        /// <param name="signer">Signer of the <paramref name="actions"/>.</param>
+        /// <param name="signature"><see cref="Transaction{T}"/> signature used to generate random
+        /// seeds.</param>
+        /// <param name="actions">Actions to evaluate.</param>
+        /// <param name="rehearsal">Pass <c>true</c> if it is intended
+        /// to be dry-run (i.e., the returned result will be never used).
+        /// The default value is <c>false</c>.</param>
+        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
+        /// <paramref name="actions"/>.  The order is the same to the <paramref name="actions"/>.
+        /// Note that each <see cref="IActionContext.Random"/> object
+        /// has a unconsumed state.
+        /// </returns>
+        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// Thrown when one of <paramref name="actions"/> throws some
+        /// exception during <paramref name="rehearsal"/> mode.
+        /// The actual exception that an <see cref="IAction"/> threw
+        /// is stored in its <see cref="Exception.InnerException"/> property.
+        /// It is never thrown if the <paramref name="rehearsal"/> option is
+        /// <c>false</c>.
+        /// </exception>
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
