@@ -263,11 +263,7 @@ namespace Libplanet.Tests.Blockchain
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
-            (
-                IImmutableDictionary<Address, object> expectedStates,
-                Block<DumbAction>[] blocks
-            ) = MakeFixturesForAppendTests();
-            Address[] addresses = expectedStates.Keys.ToArray();
+            (Address[] addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
 
             Assert.Empty(_blockChain.Blocks);
             Assert.Empty(MinerReward.RenderRecords.Value);
@@ -290,11 +286,11 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal("foo", actions[0].Item);
                 Assert.Equal(1, renders[0].Context.BlockIndex);
                 Assert.Equal(
-                    new object[] { null, null, null, null },
+                    new object[] { null, null, null, null, 1 },
                     addresses.Select(renders[0].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
-                    new[] { "foo", null, null, null },
+                    new object[] { "foo", null, null, null, 1 },
                     addresses.Select(renders[0].NextStates.GetState)
                 );
                 Assert.Equal("bar", actions[1].Item);
@@ -304,7 +300,7 @@ namespace Libplanet.Tests.Blockchain
                     addresses.Select(renders[1].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
-                    new[] { "foo", "bar", null, null },
+                    new object[] { "foo", "bar", null, null, 1 },
                     addresses.Select(renders[1].NextStates.GetState)
                 );
                 Assert.Equal("baz", actions[2].Item);
@@ -314,7 +310,7 @@ namespace Libplanet.Tests.Blockchain
                     addresses.Select(renders[2].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
-                    new[] { "foo", "bar", "baz", null },
+                    new object[] { "foo", "bar", "baz", null, 1 },
                     addresses.Select(renders[2].NextStates.GetState)
                 );
                 Assert.Equal("qux", actions[3].Item);
@@ -324,11 +320,11 @@ namespace Libplanet.Tests.Blockchain
                     addresses.Select(renders[3].Context.PreviousStates.GetState)
                 );
                 Assert.Equal(
-                    expectedStates.Values,
+                    new object[] { "foo", "bar", "baz", "qux", 1 },
                     addresses.Select(renders[3].NextStates.GetState)
                 );
 
-                var minerAddress = TestUtils.GenesisMinerAddress;
+                var minerAddress = addresses[4];
                 var blockRenders = MinerReward.RenderRecords.Value;
 
                 Assert.Equal(2, _blockChain.GetStates(new[] { minerAddress })[minerAddress]);
@@ -403,7 +399,7 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ExecuteActions()
         {
-            (var expectedStates, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
             _blockChain.Append(blocks[0]);
             _blockChain.Append(
                 blocks[1],
@@ -412,8 +408,16 @@ namespace Libplanet.Tests.Blockchain
                 renderActions: false
             );
 
+            var expectedStates = new Dictionary<Address, object>
+            {
+                { addresses[0], "foo" },
+                { addresses[1], "bar" },
+                { addresses[2], "baz" },
+                { addresses[3], "qux" },
+                { addresses[4], 2 },
+            };
+
             _blockChain.ExecuteActions(blocks[1], true);
-            expectedStates = expectedStates.Add(TestUtils.GenesisMinerAddress, 2);
             Assert.Equal(
                 expectedStates.ToImmutableDictionary(),
                 _blockChain.Store.GetBlockStates(blocks[1].Hash)
@@ -673,8 +677,7 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public void Swap(bool render)
         {
-            (var expectedStates, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
-            Address[] addresses = expectedStates.Keys.ToArray();
+            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
             foreach (Block<DumbAction> block in blocks)
             {
                 _blockChain.Append(block);
@@ -783,7 +786,7 @@ namespace Libplanet.Tests.Blockchain
                     Assert.Equal("fork-bar", actions[5].Item);
                     Assert.Equal("fork-baz", actions[6].Item);
 
-                    var minerAddress = TestUtils.GenesisMinerAddress;
+                    var minerAddress = addresses[4];
                     var blockRenders = MinerReward.RenderRecords.Value;
 
                     Assert.Equal(
@@ -1257,14 +1260,14 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void EvaluateBlockAction()
         {
-            (_, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
             _blockChain.Append(
                 blocks[0],
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderActions: false);
 
-            var miner = TestUtils.GenesisMinerAddress;
+            var miner = addresses[4];
             var blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[0], null);
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal(1, blockActionEvaluation.OutputStates.GetState(miner));
@@ -1392,14 +1395,14 @@ namespace Libplanet.Tests.Blockchain
             return (signer, addresses, chain);
         }
 
-        private (ImmutableSortedDictionary<Address, object>, Block<DumbAction>[])
+        private (Address[], Block<DumbAction>[])
         MakeFixturesForAppendTests()
         {
-            Address[] addresses = Enumerable.Repeat(0, 4)
+            Address[] addresses = Enumerable.Repeat(0, 5)
                 .Select(_ => new PrivateKey().PublicKey.ToAddress())
                 .OrderBy(a => a)
                 .ToArray();
-            Block<DumbAction> b0 = TestUtils.MineGenesis<DumbAction>();
+            Block<DumbAction> b0 = TestUtils.MineGenesis<DumbAction>(addresses[4]);
 
             Transaction<DumbAction>[] txs =
             {
@@ -1423,14 +1426,7 @@ namespace Libplanet.Tests.Blockchain
                 )
             );
 
-            var expectedStates = new SortedDictionary<Address, object>
-            {
-                { addresses[0], "foo" },
-                { addresses[1], "bar" },
-                { addresses[2], "baz" },
-                { addresses[3], "qux" },
-            };
-            return (expectedStates.ToImmutableSortedDictionary(), new[] { b0, b1 });
+            return (addresses, new[] { b0, b1 });
         }
 
         private sealed class TestEvaluateAction : IAction
