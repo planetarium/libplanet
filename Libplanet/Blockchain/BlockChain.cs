@@ -682,7 +682,7 @@ namespace Libplanet.Blockchain
 
             IAccountStateDelta lastStates = null;
 
-            if (txActionEvaluations.Count > 0)
+            if (!(txActionEvaluations is null) && txActionEvaluations.Count > 0)
             {
                 lastStates = txActionEvaluations[txActionEvaluations.Count - 1].OutputStates;
             }

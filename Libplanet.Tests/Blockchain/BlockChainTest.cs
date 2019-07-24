@@ -1221,7 +1221,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void ExecuteBlockAction()
+        public void MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
             var address1 = privateKey1.PublicKey.ToAddress();
@@ -1252,6 +1252,36 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
             Assert.Equal("foo,bar,foo", states[address1]);
             Assert.Equal("baz", states[address2]);
+        }
+
+        [Fact]
+        public void EvaluateBlockAction()
+        {
+            (_, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            _blockChain.Append(
+                blocks[0],
+                DateTimeOffset.UtcNow,
+                evaluateActions: false,
+                renderActions: false);
+
+            var miner = TestUtils.GenesisMinerAddress;
+            var blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[0], null);
+            Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
+            Assert.Equal(1, blockActionEvaluation.OutputStates.GetState(miner));
+
+            _blockChain.ExecuteActions(blocks[0], true);
+            _blockChain.Append(
+                blocks[1],
+                DateTimeOffset.UtcNow,
+                evaluateActions: false,
+                renderActions: false);
+
+            var txEvaluations = blocks[1].EvaluateActionsPerTx(a =>
+                    _blockChain.GetStates(new[] { a }, blocks[1].PreviousHash).GetValueOrDefault(a))
+                .Select(te => te.Item2).ToList();
+            blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[1], txEvaluations);
+
+            Assert.Equal(2, blockActionEvaluation.OutputStates.GetState(miner));
         }
 
         /// <summary>
