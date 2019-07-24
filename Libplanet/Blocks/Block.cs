@@ -165,7 +165,7 @@ namespace Libplanet.Blocks
         /// </returns>
         [Pure]
         public
-        IEnumerable<(Transaction<T>, ActionEvaluation)>
+        IEnumerable<Tuple<Transaction<T>, ActionEvaluation>>
         EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
         {
             IAccountStateDelta delta =
@@ -182,7 +182,7 @@ namespace Libplanet.Blocks
                         Miner.Value);
                 foreach (var evaluation in evaluations)
                 {
-                    yield return (tx, evaluation);
+                    yield return Tuple.Create(tx, evaluation);
                     delta = evaluation.OutputStates;
                 }
 
@@ -239,7 +239,7 @@ namespace Libplanet.Blocks
         )
         {
             Validate(currentTime);
-            (Transaction<T>, ActionEvaluation)[] txEvaluations =
+            Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
                 EvaluateActionsPerTx(accountStateGetter).ToArray();
 
             var txUpdatedAddressesPairs = txEvaluations

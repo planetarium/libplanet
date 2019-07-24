@@ -120,12 +120,7 @@ jobs:
       turnServerUrl: $(turnServerUrl)
       testDisplayName: StandaloneOSX *.Tests.dll
       testCommand: |-
-        /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX \
-          --exclude-method Libplanet.Tests.Blocks.BlockTest.EvaluateActionsPerTx
-      # FIXME: For unknown reason, on Unity methods returning ValueTuple<...>
-      #        cause MissingMethodException exception.  We should diagnose
-      #        this and make Unity builds to run these tests too.
-      #        See also: https://git.io/fjBDY
+        /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX
   timeoutInMinutes: 30
 
 - job: Linux_NETCore
