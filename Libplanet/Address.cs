@@ -208,7 +208,7 @@ namespace Libplanet
             SerializationInfo info,
             StreamingContext context)
         {
-            info.AddValue("address", _byteArray.ToArray());
+            info.AddValue("address", ToByteArray());
         }
 
         int IComparable<Address>.CompareTo(Address other)

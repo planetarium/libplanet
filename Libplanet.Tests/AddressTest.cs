@@ -201,7 +201,7 @@ namespace Libplanet.Tests
         }
 
         [Fact]
-        public void CanSerializeAndDeserialize()
+        public void SerializeAndDeserialize()
         {
             // Serialize and deserialize to and from memory
             var expectedAddress = new Address(
@@ -221,6 +221,21 @@ namespace Libplanet.Tests
             }
 
             Assert.Equal(deserializedAddress, expectedAddress);
+        }
+
+        [Fact]
+        public void SerializeAndDeserializeWithDefault()
+        {
+            var defaultAddress = default(Address);
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                formatter.Serialize(memoryStream, defaultAddress);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                var deserializedAddress = (Address)formatter.Deserialize(memoryStream);
+                Assert.Equal(default, deserializedAddress);
+            }
         }
 
         [Fact]

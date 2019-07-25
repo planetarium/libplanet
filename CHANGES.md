@@ -47,6 +47,8 @@ To be released.
 
  -  Fixed a bug where the `LiteDBStore.IterateStagedTransactionIds()` returns
     duplicated transaction ids.  [[#366]]
+ -  Fixed a bug that `NullReferenceException` occurred when serializing default
+    `Address`.  [[#369]]
 
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
@@ -56,6 +58,7 @@ To be released.
 [#365]: https://github.com/planetarium/libplanet/pull/365
 [#366]: https://github.com/planetarium/libplanet/pull/366
 [#367]: https://github.com/planetarium/libplanet/pull/367
+[#369]: https://github.com/planetarium/libplanet/pull/369
 
 
 Version 0.4.1
