@@ -146,7 +146,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Executes every <see cref="IAction"/> in the
         /// <see cref="Transactions"/> step by step, and emits a pair of
-        /// a transaction, and an <see cref="ActionEvaluation{T}"/>
+        /// a transaction, and an <see cref="ActionEvaluation"/>
         /// for each step.
         /// </summary>
         /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/>
@@ -154,7 +154,7 @@ namespace Libplanet.Blocks
         /// A <c>null</c> value, which is default, means a constant function
         /// that returns <c>null</c>.</param>
         /// <returns>Enumerates pair of a transaction, and
-        /// <see cref="ActionEvaluation{T}"/> for each action.
+        /// <see cref="ActionEvaluation"/> for each action.
         /// The order of pairs are the same to
         /// the <see cref="Transactions"/> and their
         /// <see cref="Transaction{T}.Actions"/> (e.g., tx&#xb9;-act&#xb9;,
@@ -165,7 +165,7 @@ namespace Libplanet.Blocks
         /// </returns>
         [Pure]
         public
-        IEnumerable<(Transaction<T>, ActionEvaluation<T>)>
+        IEnumerable<Tuple<Transaction<T>, ActionEvaluation>>
         EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
         {
             IAccountStateDelta delta =
@@ -174,7 +174,7 @@ namespace Libplanet.Blocks
                 );
             foreach (Transaction<T> tx in Transactions)
             {
-                IEnumerable<ActionEvaluation<T>> evaluations =
+                IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
                         Hash,
                         Index,
@@ -182,7 +182,7 @@ namespace Libplanet.Blocks
                         Miner.Value);
                 foreach (var evaluation in evaluations)
                 {
-                    yield return (tx, evaluation);
+                    yield return Tuple.Create(tx, evaluation);
                     delta = evaluation.OutputStates;
                 }
 
@@ -197,7 +197,7 @@ namespace Libplanet.Blocks
         /// <para>It throws an <see cref="InvalidBlockException"/> or
         /// an <see cref="InvalidTxException"/> if there is any
         /// integrity error.</para>
-        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation{T}"/>
+        /// <para>Otherwise it enumerates an <see cref="ActionEvaluation"/>
         /// for each <see cref="IAction"/>.</para>
         /// </summary>
         /// <param name="currentTime">The current time to validate
@@ -205,7 +205,7 @@ namespace Libplanet.Blocks
         /// <param name="accountStateGetter">The getter of previous states.
         /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
-        /// <returns>An <see cref="ActionEvaluation{T}"/> for each
+        /// <returns>An <see cref="ActionEvaluation"/> for each
         /// <see cref="IAction"/>.</returns>
         /// <exception cref="InvalidBlockTimestampException">Thrown when
         /// the <see cref="Timestamp"/> is invalid, for example, it is the far
@@ -233,13 +233,13 @@ namespace Libplanet.Blocks
         /// any <see cref="IAction"/> of <see cref="Transactions"/> tries
         /// to update the states of <see cref="Address"/>es not included
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
-        public IEnumerable<ActionEvaluation<T>> Evaluate(
+        public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
             AccountStateGetter accountStateGetter
         )
         {
             Validate(currentTime);
-            (Transaction<T>, ActionEvaluation<T>)[] txEvaluations =
+            Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
                 EvaluateActionsPerTx(accountStateGetter).ToArray();
 
             var txUpdatedAddressesPairs = txEvaluations

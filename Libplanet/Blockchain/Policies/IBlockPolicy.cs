@@ -16,6 +16,11 @@ namespace Libplanet.Blockchain.Policies
         where T : IAction, new()
     {
         /// <summary>
+        /// A block action to execute and be rendered for every block.
+        /// </summary>
+        IAction BlockAction { get; }
+
+        /// <summary>
         /// Checks if <paramref name="nextBlock"/> is invalid, and if that
         /// returns the reason.
         /// <para>Note that it returns <c>null</c> when

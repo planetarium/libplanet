@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 
@@ -177,23 +176,6 @@ namespace Libplanet.Tests.Common.Action
                 hashCode = (hashCode * 397) ^ RecordRehearsal.GetHashCode();
                 return hashCode;
             }
-        }
-
-        public struct RenderRecord
-        {
-            public bool Render { get; set; }
-
-            public bool Unrender
-            {
-                get => !Render;
-                set => Render = !value;
-            }
-
-            public DumbAction Action { get; set; }
-
-            public IActionContext Context { get; set; }
-
-            public IAccountStateDelta NextStates { get; set; }
         }
     }
 }

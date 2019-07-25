@@ -16,6 +16,8 @@ namespace Libplanet.Tests.Blockchain
             _exceptionToThrow = exceptionToThrow;
         }
 
+        public IAction BlockAction => null;
+
         public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
             blocks.Any() ? 1 : 0;
 

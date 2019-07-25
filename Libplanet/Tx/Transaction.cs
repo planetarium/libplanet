@@ -477,7 +477,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits
-        /// an action, input context, and output states for each step.
+        /// <see cref="ActionEvaluation"/> for each step.
         /// <para>If the needed value is only the final states,
         /// use <see cref="EvaluateActions"/> method instead.</para>
         /// </summary>
@@ -497,8 +497,8 @@ namespace Libplanet.Tx
         /// <param name="rehearsal">Pass <c>true</c> if it is intended
         /// to be dry-run (i.e., the returned result will be never used).
         /// The default value is <c>false</c>.</param>
-        /// <returns>Enumerates an action, input context, and
-        /// output states for each one in <see cref="Actions"/>.
+        /// <returns>Enumerates <see cref="ActionEvaluation"/>s for each one in
+        /// <see cref="Actions"/>.
         /// The order is the same to the <see cref="Actions"/>.
         /// Note that each <see cref="IActionContext.Random"/> object has
         /// a unconsumed state.
@@ -512,7 +512,7 @@ namespace Libplanet.Tx
         /// <c>false</c>.
         /// </exception>
         [Pure]
-        public IEnumerable<ActionEvaluation<T>>
+        public IEnumerable<ActionEvaluation>
         EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
@@ -521,70 +521,16 @@ namespace Libplanet.Tx
             bool rehearsal = false
         )
         {
-            ActionContext CreateActionContext(
-                IAccountStateDelta prevStates,
-                int randomSeed
-            ) =>
-                new ActionContext(
-                    signer: Signer,
-                    miner: minerAddress,
-                    blockIndex: blockIndex,
-                    previousStates: prevStates,
-                    randomSeed: randomSeed,
-                    rehearsal: rehearsal
-                );
-
-            int seed =
-                BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                (Signature.Any() ? BitConverter.ToInt32(Signature, 0) : 0);
-            IAccountStateDelta states = previousStates;
-            foreach (T action in Actions)
-            {
-                ActionContext context =
-                    CreateActionContext(states, seed);
-                IAccountStateDelta nextStates;
-                try
-                {
-                    nextStates = action.Execute(context);
-                }
-                catch (Exception e)
-                {
-                    if (!rehearsal)
-                    {
-                        throw;
-                    }
-
-                    var msg =
-                        $"The action {action} threw an exception during its " +
-                        "rehearsal.  It is probably because the logic of the " +
-                        $"action {action} is not enough generic so that it " +
-                        "can cover every case including rehearsal mode.\n" +
-                        "The IActionContext.Rehearsal property also might be " +
-                        "useful to make the action can deal with the case of " +
-                        "rehearsal mode.\n" +
-                        "See also this exception's InnerException property.";
-                    throw new UnexpectedlyTerminatedTxRehearsalException(
-                        action, msg, e
-                    );
-                }
-
-                // As IActionContext.Random is stateful, we cannot reuse
-                // the context which is once consumed by Execute().
-                ActionContext equivalentContext =
-                    CreateActionContext(states, seed);
-
-                yield return new ActionEvaluation<T>(
-                    action,
-                    equivalentContext,
-                    nextStates
-                );
-                states = nextStates;
-                unchecked
-                {
-                    seed++;
-                }
-            }
-        }
+            return ActionEvaluation.EvaluateActionsGradually(
+                blockHash,
+                blockIndex,
+                previousStates,
+                minerAddress,
+                Signer,
+                Signature,
+                Actions.Cast<IAction>().ToImmutableList(),
+                rehearsal);
+       }
 
         /// <summary>
         /// Executes the <see cref="Actions"/> and gets the result states.
@@ -634,7 +580,7 @@ namespace Libplanet.Tx
                 rehearsal: rehearsal
             );
 
-            ActionEvaluation<T> lastEvaluation;
+            ActionEvaluation lastEvaluation;
             try
             {
                 lastEvaluation = evaluations.Last();

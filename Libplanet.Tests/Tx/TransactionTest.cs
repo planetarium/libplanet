@@ -643,7 +643,7 @@ namespace Libplanet.Tests.Tx
 
                 for (int i = 0; i < evaluations.Length; i++)
                 {
-                    ActionEvaluation<DumbAction> eval = evaluations[i];
+                    ActionEvaluation eval = evaluations[i];
                     Assert.Equal(actions[i], eval.Action);
                     Assert.Equal(_fx.Address1, eval.InputContext.Signer);
                     Assert.Equal(addresses[0], eval.InputContext.Miner);

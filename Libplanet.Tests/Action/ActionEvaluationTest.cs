@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Action
         public void Constructor()
         {
             Address address = new PrivateKey().PublicKey.ToAddress();
-            var evaluation = new ActionEvaluation<DumbAction>(
+            var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(
                     address,
@@ -25,9 +25,10 @@ namespace Libplanet.Tests.Action
                     a => a.Equals(address) ? "item" : null
                 )
             );
+            var action = (DumbAction)evaluation.Action;
 
-            Assert.Equal(address, evaluation.Action.TargetAddress);
-            Assert.Equal("item", evaluation.Action.Item);
+            Assert.Equal(address, action.TargetAddress);
+            Assert.Equal("item", action.Item);
             Assert.Equal(address, evaluation.InputContext.Signer);
             Assert.Equal(address, evaluation.InputContext.Miner);
             Assert.Equal(1, evaluation.InputContext.BlockIndex);

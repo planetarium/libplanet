@@ -79,7 +79,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        internal static Block<T> MineGenesis<T>()
+        internal static Block<T> MineGenesis<T>(Address? miner = null)
             where T : IAction, new()
         {
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
@@ -87,7 +87,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 index: 0,
                 difficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                miner: GenesisMinerAddress,
+                miner: miner ?? GenesisMinerAddress,
                 previousHash: null,
                 timestamp: timestamp,
                 transactions: new List<Transaction<T>>()
