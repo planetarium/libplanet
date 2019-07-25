@@ -83,6 +83,9 @@
 <li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
 <code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li>Removed the type parameter of <code>ActionEvaluation</code>.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -109,6 +112,8 @@ and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> methods
 became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonce</code>
 sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
+<li><code>BlockChain&lt;T&gt;</code> became to evaluate <code>IBlockPolicy&lt;T&gt;.BlockAction</code> and set the
+state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
