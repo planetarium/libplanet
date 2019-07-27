@@ -738,6 +738,14 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.Append(block);
             }
 
+            PrivateKey privateKey = new PrivateKey(new byte[]
+            {
+                0xa8, 0x21, 0xc7, 0xc2, 0x08, 0xa9, 0x1e, 0x53, 0xbb, 0xb2,
+                0x71, 0x15, 0xf4, 0x23, 0x5d, 0x82, 0x33, 0x44, 0xd1, 0x16,
+                0x82, 0x04, 0x13, 0xb6, 0x30, 0xe7, 0x96, 0x4f, 0x22, 0xe0,
+                0xec, 0xe0,
+            });
+
             BlockChain<DumbAction> fork =
                 _blockChain.Fork(_blockChain.Tip.Hash);
 
@@ -745,25 +753,41 @@ namespace Libplanet.Tests.Blockchain
             {
                 new[]
                 {
-                    _fx.MakeTransaction(new[]
-                    {
-                        new DumbAction(addresses[0], "foo"),
-                    }),
-                    _fx.MakeTransaction(new[]
-                    {
-                        new DumbAction(addresses[1], "bar"),
-                    }),
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            new DumbAction(addresses[0], "foo"),
+                        },
+                        timestamp: DateTimeOffset.MinValue,
+                        nonce: 2,
+                        privateKey: privateKey),
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            new DumbAction(addresses[1], "bar"),
+                        },
+                        timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                        nonce: 3,
+                        privateKey: privateKey),
                 },
                 new[]
                 {
-                    _fx.MakeTransaction(new[]
-                    {
-                        new DumbAction(addresses[2], "baz"),
-                    }),
-                    _fx.MakeTransaction(new[]
-                    {
-                        new DumbAction(addresses[3], "qux"),
-                    }),
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            new DumbAction(addresses[2], "baz"),
+                        },
+                        timestamp: DateTimeOffset.MinValue,
+                        nonce: 4,
+                        privateKey: privateKey),
+                    _fx.MakeTransaction(
+                        new[]
+                        {
+                            new DumbAction(addresses[3], "qux"),
+                        },
+                        timestamp: DateTimeOffset.MinValue.AddSeconds(4),
+                        nonce: 5,
+                        privateKey: privateKey),
                 },
             };
 
@@ -780,15 +804,23 @@ namespace Libplanet.Tests.Blockchain
 
             Transaction<DumbAction>[] txsB =
             {
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addresses[0], "fork-foo"),
-                }),
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addresses[1], "fork-bar"),
-                    new DumbAction(addresses[2], "fork-baz"),
-                }),
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[0], "fork-foo"),
+                    },
+                    timestamp: DateTimeOffset.MinValue,
+                    nonce: 2,
+                    privateKey: privateKey),
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[1], "fork-bar"),
+                        new DumbAction(addresses[2], "fork-baz"),
+                    },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                    nonce: 3,
+                    privateKey: privateKey),
             };
 
             try
@@ -1421,24 +1453,44 @@ namespace Libplanet.Tests.Blockchain
         private (Address[], Block<DumbAction>[])
         MakeFixturesForAppendTests()
         {
-            Address[] addresses = Enumerable.Repeat(0, 5)
-                .Select(_ => new PrivateKey().PublicKey.ToAddress())
-                .OrderBy(a => a)
-                .ToArray();
+            Address[] addresses =
+            {
+                _fx.Address1,
+                _fx.Address2,
+                _fx.Address3,
+                _fx.Address4,
+                _fx.Address5,
+            };
             Block<DumbAction> b0 = TestUtils.MineGenesis<DumbAction>(addresses[4]);
+
+            PrivateKey privateKey = new PrivateKey(new byte[]
+            {
+                0xa8, 0x21, 0xc7, 0xc2, 0x08, 0xa9, 0x1e, 0x53, 0xbb, 0xb2,
+                0x71, 0x15, 0xf4, 0x23, 0x5d, 0x82, 0x33, 0x44, 0xd1, 0x16,
+                0x82, 0x04, 0x13, 0xb6, 0x30, 0xe7, 0x96, 0x4f, 0x22, 0xe0,
+                0xec, 0xe0,
+            });
 
             Transaction<DumbAction>[] txs =
             {
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addresses[0], "foo"),
-                    new DumbAction(addresses[1], "bar"),
-                }),
-                _fx.MakeTransaction(new[]
-                {
-                    new DumbAction(addresses[2], "baz"),
-                    new DumbAction(addresses[3], "qux"),
-                }),
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[0], "foo"),
+                        new DumbAction(addresses[1], "bar"),
+                    },
+                    timestamp: DateTimeOffset.MinValue,
+                    nonce: 0,
+                    privateKey: privateKey),
+                _fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(addresses[2], "baz"),
+                        new DumbAction(addresses[3], "qux"),
+                    },
+                    timestamp: DateTimeOffset.MinValue,
+                    nonce: 1,
+                    privateKey: privateKey),
             };
             Block<DumbAction> b1 = TestUtils.MineNext(
                 b0,
