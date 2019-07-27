@@ -394,6 +394,22 @@ namespace Libplanet.Blocks
                 );
             }
 
+            if (Transactions.Any())
+            {
+                string beforeTxId = Transactions.First().Id.ToString();
+                foreach (Transaction<T> tx in Transactions.Skip(1))
+                {
+                    if (beforeTxId.CompareTo(tx.Id.ToString()) > 0)
+                    {
+                        throw new InvalidBlockTransactionsException(
+                            $"transactions of {Hash} aren't sorted by Transaction<T>.Id"
+                        );
+                    }
+
+                    beforeTxId = tx.Id.ToString();
+                }
+            }
+
             foreach (Transaction<T> tx in Transactions)
             {
                 tx.Validate();
