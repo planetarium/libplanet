@@ -114,6 +114,9 @@ became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonc
 sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
 <li><code>BlockChain&lt;T&gt;</code> became to evaluate <code>IBlockPolicy&lt;T&gt;.BlockAction</code> and set the
 state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>Block&lt;T&gt;.Mine(long, long, Address, HashDigest&lt;SHA256&gt;?, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</code> became to sort transactions by the id of it.
+Also <code>Block&lt;T&gt;.Validate(DateTimeOffset)</code> became to validate that
+the transactions are sorted by the id [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
