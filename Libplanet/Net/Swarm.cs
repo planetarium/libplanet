@@ -580,6 +580,8 @@ namespace Libplanet.Net
                 trustedStateValidators = ImmutableHashSet<Address>.Empty;
             }
 
+            Block<T> initialTip = _blockChain.Tip;
+
             IList<(Peer, long? TipIndex)> peersWithHeight =
                 await DialToExistingPeers(cancellationToken).Select(pp =>
                     (pp.Item1, pp.Item2.TipIndex)
@@ -619,8 +621,16 @@ namespace Libplanet.Net
 
             if (!received)
             {
-                foreach (Block<T> block in _blockChain)
+                long initHeight = initialTip is null || _blockChain[initialTip.Index] != initialTip
+                    ? 0
+                    : initialTip.Index;
+                foreach (Block<T> block in _blockChain.Skip((int)initHeight))
                 {
+                    if (block.Index < initHeight)
+                    {
+                        continue;
+                    }
+
                     _blockChain.ExecuteActions(block, render: false);
                 }
             }
