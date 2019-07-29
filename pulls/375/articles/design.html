@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet design | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet design | Libplanet ">
+    <meta name="generator" content="docfx 2.42.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.yml" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="active">
+                      <a href="design.html" title="Design" class="active">Design</a>
+                    </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-design">Libplanet design</h1>
+
+<p>Libplanet is a network/storage library for <a href="https://en.wikipedia.org/wiki/Peer-to-peer">peer-to-peer</a> distributed
+multiplayer games.  From the perspective of this library's user,
+it can be similar to a client library of a <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">PaaS</a> for games,
+except that autonomous nodes run by gamers communicate with
+each other without any authority of the centralized server.</p>
+<p>Under the hood, because we need to prevent malicious nodes in the network from
+corrupting network autonomy, the library utilizes <a href="https://en.wikipedia.org/wiki/Digital_signature">digital signature</a>,
+<a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance">BFT</a> consensus, and data replication, or simply <a href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>.</p>
+<p>Implementing blockchain and BFT consensus for peer-to-peer distributed
+multiplayer games is highly complicated, requires a lot of code to
+be written, and is difficult and tedious to test.  For the future of
+decentralized online games, rather than every single game making such redundant
+effort, it will be more cost-efficient to make a high quality open source
+library for commonly performed tasks.</p>
+<h2 id="platform-and-packaging">Platform and packaging</h2>
+<p>Presently, Libplanet is a .NET library in order to be used along with <a href="https://unity3d.com/">Unity</a>,
+one of the most popular multiplatform game engines.  (We have a long-running
+roadmap to support other platforms, though.)</p>
+<p>However, Libplanet is not only a Unity plugin distributed through
+the <a href="https://assetstore.unity.com/">Unity Asset Store</a>, but also a standard .NET library distributed through
+<a href="https://www.nuget.org/">NuGet</a>.  Because, as <a href="https://en.bitcoin.it/wiki/Mining">block mining</a> is indispensable for running
+a decentralized public network, mining-only headless nodes need to exist besides
+game clients that also act as nodes. A peer-to-peer distributed multiplayer game
+based on Libplanet can be packaged as both: a Unity based game application for
+multiplatform gaming devices (e.g., Android, iOS, macOS, Windows), and a mining
+<a href="https://en.wikipedia.org/wiki/Daemon_(computing)">daemon</a> runnable on miners' machines (e.g., Linux).</p>
+<p>For the maximum compatibility and portability, we currently target
+<a href="https://docs.microsoft.com/en-us/dotnet/standard/net-standard">.NET Standard</a> 2.0.</p>
+<h2 id="transactions-and-actions">Transactions and actions</h2>
+<p>Every action that happened in a game built on Libplanet should be recorded in
+the blockchain.  Although trivial things like chatting between players could be
+an exception as these do not affect rules or incentives of a game, actions such
+as a character's movement, battle, progression (i.e., exp), item drops,
+reinforcements, breakages, trades, that are non-trivial and affect game states
+should be recorded to the append-only log.  Each log has its own digital
+signature to prove that the corresponding gamer is responsible.</p>
+<p>We call the unit of such pair of log and its signature a
+@&quot;Libplanet.Tx.Transaction`1&quot;, and it consists of multiple
+@&quot;Libplanet.Tx.Transaction`1.Actions&quot;.  How transactions and actions grouped is
+left to a game engineer's discretion.  For example, if there are four actions
+like <em>A</em> to <em>D</em>, these can be grouped altogether (e.g., <em>{A, B, C, D}</em>),
+or be into two or three groups (e.g., <em>{A} &amp; {B, C, D}</em>), or rather have
+their sole group (e.g., <em>{A} &amp; {B} &amp; {C} &amp; {D}</em>).</p>
+<p>The primary purpose of separating transactions and actions is to have
+the flexible granularity of synchronization between nodes in the network.
+An actor can at most put one signed transaction into a block. A transaction
+included in a block is confirmed by other nodes in the network
+when the block is mined.  It is also known as <a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">consensus</a>
+in distributed systems.</p>
+<p>It takes 5 to 20 seconds to mine a block.  It means that if we group four
+actions <em>A</em> to <em>D</em> into four distinct transactions like <em>{A} &amp; {B} &amp; {C} &amp; {D}</em>
+it must take 20 seconds to 80 seconds until four actions are all confirmed in
+the network.  On the other hand, if we group the actions into a single
+transaction like <em>{A, B, C, D}</em> it takes only 5 seconds
+at best to 20 seconds even at worst.</p>
+<p>Does it imply the best practice is to put as many actions as possible into
+as few transactions as possible?  Unfortunately it is not that simple.</p>
+<p>Putting many actions into few transactions decreases the immediacy of
+each action.  To other nodes (gamers), it looks like there is no change at
+all for a while, and then suddenly many things happening at once.
+Grouping actions into transactions is a balance between throughput and latency,
+so different strategies should be chosen for the goal that a game aims to.</p>
+<p>There is another reason to group actions into transactions besides latency
+control.  It is so that actions made by different players can interact with
+each other.
+For example, in a card game, right after a player ends their turn, they need to
+wait until the opponent ends their turn.  Even if it is desirable to increase
+throughput, it is nonsense to group two turns of actions into one transaction.
+A player's next turn can start only after the opponent's current turn is
+determined.  From this perspective, a transaction represents a unit of
+dependency, rather than a unit of throughput.</p>
+<p>At a code level, another difference between @&quot;Libplanet.Tx.Transaction`1&quot; and
+@&quot;Libplanet.Action.IAction&quot; is that @&quot;Libplanet.Tx.Transaction`1&quot; is not
+extensible whereas @&quot;Libplanet.Action.IAction&quot; is.  By design, an extension
+point for game engineers is @&quot;Libplanet.Action.IAction&quot;.  To sum up,
+@&quot;Libplanet.Tx.Transaction`1&quot; purposes to control synchronization on
+the network and @&quot;Libplanet.Action.IAction&quot; purposes to implement the actual
+game logic.</p>
+<h2 id="accounts-and-addresses">Accounts and addresses</h2>
+<p>Libplanet creates digital signatures to find which player node made each
+transaction, without relying on the authority of a centralized server.
+In the similar fashion to <a href="https://bitcoin.org/">Bitcoin</a> and <a href="https://www.ethereum.org/">Ethereum</a>, a transaction is signed
+with <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>, and a pair of each player's sole @&quot;Libplanet.Crypto.PrivateKey&quot;
+and @&quot;Libplanet.Crypto.PublicKey&quot; used to sign transactions construct
+an <em>account</em>.  Since a pair of keys for an account is <em>chosen</em> at offline,
+the process of so-called &quot;account creation&quot; can be omitted.</p>
+<p>An account can also be identified through the @&quot;Libplanet.Address&quot; which is
+derived from the corresponding @&quot;Libplanet.Crypto.PublicKey&quot;.  It is shorter
+than @&quot;Libplanet.Crypto.PublicKey&quot; and follows the same form to Ethereum's.
+This means key pairs that have used for Ethereum can be reused for
+Libplanet-backed games too.  For example, a game can raise funding or receive
+donations through Ethereum and then reward people when the game is released.</p>
+<h2 id="actions-and-states">Actions and states</h2>
+<p>Every account starts with an empty state. The current state of the account is
+determined by actions that belong to the transactions signed by the account
+along with other actions that refer to the account. This means state is not
+stored in the blockchain, but only the actions that change the state are.</p>
+<p>However, from a game engineer's view, Libplanet probably looks like its
+blockchain store states as well. Libplanet exposes methods to query the current
+state of an account by computing the effect of actions under the hood. Since
+Libplanet's internal workings to calculate states will be further optimized
+at storage and network levels soon, game engineers are encouraged to use
+Libplanet's states API rather than implementing a similar function.</p>
+<p>Since all state changes need to be represented through actions, every object
+stored in states should be immutable.  Although the storage API accepts
+mutable objects too, in this way collaborators might not understand that every
+state change needs to be represented by an action.</p>
+<p>A state needs to be serializable as it is transmitted over the network and
+sometimes cached in storage. Therefore, every game object that represents states
+must be marked with <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.serializableattribute">SerializableAttribute</a>.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/bugfix/remove-receive-mutex/Docs/articles/design.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
