@@ -26,6 +26,7 @@ namespace Libplanet.Stun
 
         private readonly AsyncProducerConsumerQueue<ConnectionAttempt> _connectionAttempts;
         private readonly TcpClient _control;
+        private readonly AsyncLock _connMutex;
 
         private Task _messageProcessor;
 
@@ -47,6 +48,7 @@ namespace Libplanet.Stun
             _responses =
                 new Dictionary<byte[], TaskCompletionSource<StunMessage>>(
                     new ByteArrayComparer());
+            _connMutex = new AsyncLock();
         }
 
         public string Username { get; }
@@ -267,10 +269,13 @@ namespace Libplanet.Stun
 
         private async Task EnsureConnection()
         {
-            if (!_control.Connected)
+            using (await _connMutex.LockAsync())
             {
-                await _control.ConnectAsync(_host, _port);
-                _messageProcessor = ProcessMessage();
+                if (!_control.Connected)
+                {
+                    await _control.ConnectAsync(_host, _port);
+                    _messageProcessor = ProcessMessage();
+                }
             }
         }
 
