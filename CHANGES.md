@@ -51,6 +51,8 @@ To be released.
     `Address`.  [[#369]]
  -  Removed unnecessary mutex in `Swarm<T>` to avoid continuous delays in peer
     registration in some situations.  [[#375]]
+ -  Fixed a bug that `TurnClient` had thrown `SocketException` saying
+    `A connect request was made on an already connected socket`.  [[#376]]
  -  Fixed a bug that `TurnClient` had thrown `KeyNotFoundException` and
     `IOException` on startup.  [[#377], [#378]]
 
@@ -65,6 +67,7 @@ To be released.
 [#375]: https://github.com/planetarium/libplanet/pull/375
 [#377]: https://github.com/planetarium/libplanet/issues/377
 [#378]: https://github.com/planetarium/libplanet/pull/378
+[#376]: https://github.com/planetarium/libplanet/pull/376
 
 
 Version 0.4.1
