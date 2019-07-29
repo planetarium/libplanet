@@ -50,7 +50,6 @@ namespace Libplanet.Net
 
         private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
-        private readonly AsyncLock _receiveMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
@@ -143,7 +142,6 @@ namespace Libplanet.Net
             _broadcastQueue = new NetMQQueue<Message>();
             _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
-            _receiveMutex = new AsyncLock();
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
 
@@ -1584,25 +1582,21 @@ namespace Libplanet.Net
 
             _logger.Debug($"Received the delta[{delta}].");
 
-            using (await _receiveMutex.LockAsync(cancellationToken))
+            await ApplyDelta(delta, cancellationToken);
+
+            bool alreadyReceived =
+                LastSeenTimestamps.TryGetValue(
+                    delta.Sender,
+                    out DateTimeOffset existingTimestamp) &&
+                existingTimestamp > delta.Timestamp;
+
+            if (!alreadyReceived)
             {
-                _logger.Debug($"Trying to apply the delta[{delta}]...");
-                await ApplyDelta(delta, cancellationToken);
-
-                bool alreadyReceived =
-                    LastSeenTimestamps.TryGetValue(
-                        delta.Sender,
-                        out DateTimeOffset existingTimestamp) &&
-                    existingTimestamp > delta.Timestamp;
-
-                if (!alreadyReceived)
-                {
-                    LastReceived = delta.Timestamp;
-                    LastSeenTimestamps[delta.Sender] = delta.Timestamp;
-                }
-
-                DeltaReceived.Set();
+                LastReceived = delta.Timestamp;
+                LastSeenTimestamps[delta.Sender] = delta.Timestamp;
             }
+
+            DeltaReceived.Set();
 
             _logger.Debug($"The delta[{delta}] has been applied.");
         }
