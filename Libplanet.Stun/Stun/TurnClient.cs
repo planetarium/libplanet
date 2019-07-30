@@ -72,7 +72,7 @@ namespace Libplanet.Stun
             {
                 var request = new AllocateRequest((int)lifetime.TotalSeconds);
                 await SendMessageAsync(stream, request, cancellationToken);
-                response = await _responses[request.TransactionId].Task;
+                response = await ReceiveMessage(request.TransactionId);
 
                 if (response is AllocateErrorResponse allocError)
                 {
@@ -103,8 +103,7 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
             await SendMessageAsync(stream, request, cancellationToken);
-            StunMessage response =
-                await _responses[request.TransactionId].Task;
+            StunMessage response = await ReceiveMessage(request.TransactionId);
 
             if (response is CreatePermissionErrorResponse)
             {
@@ -156,8 +155,7 @@ namespace Libplanet.Stun
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
             await SendMessageAsync(stream, request, cancellationToken);
-            StunMessage response =
-                await _responses[request.TransactionId].Task;
+            StunMessage response = await ReceiveMessage(request.TransactionId);
 
             if (response is BindingSuccessResponse success)
             {
@@ -179,8 +177,7 @@ namespace Libplanet.Stun
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
             await SendMessageAsync(stream, request, cancellationToken);
 
-            StunMessage response =
-                await _responses[request.TransactionId].Task;
+            StunMessage response = await ReceiveMessage(request.TransactionId);
             if (response is RefreshSuccessResponse success)
             {
                 return TimeSpan.FromSeconds(success.Lifetime);
@@ -254,7 +251,6 @@ namespace Libplanet.Stun
                         out TaskCompletionSource<StunMessage> tcs))
                     {
                         tcs.SetResult(message);
-                        _responses.Remove(message.TransactionId);
                     }
                 }
                 catch (Exception e)
@@ -277,6 +273,14 @@ namespace Libplanet.Stun
                     _messageProcessor = ProcessMessage();
                 }
             }
+        }
+
+        private async Task<StunMessage> ReceiveMessage(byte[] transactionId)
+        {
+            StunMessage response = await _responses[transactionId].Task;
+            _responses.Remove(transactionId);
+
+            return response;
         }
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>
