@@ -620,7 +620,7 @@ namespace Libplanet.Net
             if (!received)
             {
                 long initHeight =
-                    initialTip is null || _blockChain[initialTip.Index].Equals(initialTip)
+                    initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index;
                 foreach (Block<T> block in _blockChain.Skip((int)initHeight))
