@@ -591,7 +591,7 @@ namespace Libplanet.Net
                 render
             );
 
-            if (_blockChain.Tip is null)
+            if (_blockChain.Tip is null || render)
             {
                 // If there is no blocks in the network (or no consensus at least)
                 // it doesn't need to receive states from other peers at all.
@@ -619,7 +619,8 @@ namespace Libplanet.Net
 
             if (!received)
             {
-                long initHeight = initialTip is null || _blockChain[initialTip.Index] != initialTip
+                long initHeight =
+                    initialTip is null || _blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index;
                 foreach (Block<T> block in _blockChain.Skip((int)initHeight))
