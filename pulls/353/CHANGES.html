@@ -84,11 +84,11 @@
 <code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</p>
 </li>
-<li><p><code>Swarm&lt;T&gt;.AddPeersAsync()</code> method became internal method. To connect with</p>
-<p>seed peers, use <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+<li><p><code>Swarm&lt;T&gt;.AddPeersAsync()</code> method became internal method. To connect with
+seed peers, use <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> is not automatically called at <code>Swarm&lt;T&gt;.StartAsync()</code></p>
-<p>anymore. The method should be called manually after <code>Swarm&lt;T&gt;.StartAsync()</code> and <code>Swarm&lt;T&gt;.BootstrapAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> is not automatically called at <code>Swarm&lt;T&gt;.StartAsync()</code>
+anymore. The method should be called manually after <code>Swarm&lt;T&gt;.StartAsync()</code> and <code>Swarm&lt;T&gt;.BootstrapAsync()</code>. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 <li><p>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</p>
 </li>
@@ -109,8 +109,8 @@ a feasible user interface so that they can decide whom to trust
 for themselves.
 [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</p>
 </li>
-<li><p>Added <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method to connect with seed peers. The method</p>
-<p>should be called after <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+<li><p>Added <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method to connect with seed peers. The method
+should be called after <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 <li><p>Added <code>StoreExtension.ListAllStateReferences(this IStore, string)</code> extension
 method.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</p>
@@ -127,11 +127,13 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]<
 <li><p><code>Swarm&lt;T&gt;</code> became to have two more message types: <code>GetRecentStates</code> (<code>0x0b</code>)
 and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</p>
 </li>
-<li><p>Peers now connected via Kademlia protocol. Peers are now selectively connected to</p>
-<p>each peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+<li><p><code>Swarm&lt;T&gt;.StartAsync()</code> does not call <code>Swarm&lt;T&gt;.PreloadAsync()</code> anymore. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
-<li><p>TxIds and Blocks are now broadcasted to selected peers from routing table of the host</p>
-<p>peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+<li><p>Peers now connected via Kademlia protocol. Peers are now selectively connected to
+each peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
+</li>
+<li><p>TxIds and Blocks are now broadcasted to selected peers from routing table of the host
+peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
 <li><p><code>NetMQPoller</code> is not used anymore. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
 </li>
