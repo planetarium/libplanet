@@ -76,7 +76,9 @@ https://docs.libplanet.io/</Description>
         runtime; build; native; contentfiles; analyzers; buildtransitive
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NetMQ" Version="4.0.0.207-pre" />
+    <PackageReference
+      Include="Planetarium.NetMQ"
+      Version="4.0.0.253-planetarium" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.1-beta.61">
