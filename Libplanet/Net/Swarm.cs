@@ -1965,8 +1965,17 @@ namespace Libplanet.Net
             Message msg = e.Queue.Dequeue();
             _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
-            _router.SendMultipartMessage(netMQMessage);
-            _logger.Debug($"Replied.");
+
+            // FIXME The current timeout value(5sec) is arbitrary.
+            // We should make this configurable or fix it to an unneeded structure.
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(5), netMQMessage))
+            {
+                _logger.Debug($"Message[{msg}] replied.");
+            }
+            else
+            {
+                _logger.Debug($"Message[{msg}] replying failed.");
+            }
         }
 
         private void CheckStarted()
