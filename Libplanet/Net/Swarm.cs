@@ -2026,23 +2026,33 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task Poll(ISocketPollable pollable, CancellationToken cancellation)
+        private async Task Poll(ISocketPollable pollable, CancellationToken cancellationToken)
         {
-            await Task.Run(() =>
-            {
-                while (!cancellation.IsCancellationRequested)
+            await Task.Run(
+                () =>
                 {
-                    try
+                    while (!cancellationToken.IsCancellationRequested && !pollable.IsDisposed)
                     {
-                        pollable.Socket.Poll();
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        // Just finish this task when any object has been disposed.
-                        break;
-                    }
-                }
-            });
+                        try
+                        {
+                            pollable.Socket.Poll();
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            break;
+                        }
+                        catch (TerminatingException)
+                        {
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.Error(e, "An unexpected expcetion occurred during polling.");
+                            continue;
+                        }
+                     }
+                },
+                cancellationToken);
         }
     }
 }
