@@ -51,8 +51,8 @@ To be released.
     `Address`.  [[#369]]
  -  Removed unnecessary mutex in `Swarm<T>` to avoid continuous delays in peer
     registration in some situations.  [[#375]]
- -  Fixed a bug that `TurnClient` throws `KeyNotFoundException` and
-    `IOException` when startup.  [[#377], [#378]]
+ -  Fixed a bug that `TurnClient` had thrown `KeyNotFoundException` and
+    `IOException` on startup.  [[#377], [#378]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
