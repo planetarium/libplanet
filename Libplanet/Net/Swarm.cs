@@ -57,7 +57,6 @@ namespace Libplanet.Net
 
         private readonly NetMQQueue<Message> _replyQueue;
         private readonly NetMQQueue<Message> _broadcastQueue;
-        private readonly NetMQPoller _poller;
 
         private readonly ILogger _logger;
 
@@ -65,6 +64,7 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
+        private CancellationTokenSource _pollerCancellationTokenSource;
         private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
 
@@ -140,7 +140,6 @@ namespace Libplanet.Net
             _router.Options.RouterHandover = true;
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
-            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
@@ -171,6 +170,8 @@ namespace Libplanet.Net
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
             _broadcastQueue.ReceiveReady += DoBroadcast;
+
+            _pollerCancellationTokenSource = new CancellationTokenSource();
         }
 
         ~Swarm()
@@ -347,19 +348,12 @@ namespace Libplanet.Net
                     _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
                     DistributeDelta(false);
 
-                    if (_broadcastQueue.Any() || _replyQueue.Any())
-                    {
-                        await Task.Delay(_linger, cancellationToken);
-                    }
+                    await Task.Delay(_linger);
+                    _pollerCancellationTokenSource?.Cancel();
 
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
-
-                    if (_poller.IsRunning)
-                    {
-                        _poller.Dispose();
-                    }
 
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
@@ -482,7 +476,9 @@ namespace Libplanet.Net
                 {
                     RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken),
                     BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
-                    Task.Run(() => _poller.Run(), _cancellationToken),
+                    Poll(_router, _pollerCancellationTokenSource.Token),
+                    Poll(_broadcastQueue, _pollerCancellationTokenSource.Token),
+                    Poll(_replyQueue, _pollerCancellationTokenSource.Token),
                 };
 
                 if (behindNAT)
@@ -2024,6 +2020,25 @@ namespace Libplanet.Net
 
                 await _turnClient.CreatePermissionAsync(ep);
             }
+        }
+
+        private async Task Poll(ISocketPollable pollable, CancellationToken cancellation)
+        {
+            await Task.Run(() =>
+            {
+                while (!cancellation.IsCancellationRequested)
+                {
+                    try
+                    {
+                        pollable.Socket.Poll();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        // Just finish this task when any object has been disposed.
+                        break;
+                    }
+                }
+            });
         }
     }
 }
