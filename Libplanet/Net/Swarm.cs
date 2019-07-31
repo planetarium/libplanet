@@ -1939,11 +1939,15 @@ namespace Libplanet.Net
             // FIXME Should replace with PUB/SUB model.
             try
             {
-                Task.WhenAll(
-                    _dealers.Values.Select(s =>
-                        Task.Run(() => s.SendMultipartMessage(netMQMessage))
-                    )
-                ).Wait();
+                // FIXME The current timeout value(5sec) is arbitrary.
+                // We should make this configurable or fix it to an unneeded structure.
+                _dealers.Values.ParallelForEachAsync(async s =>
+                {
+                    await Task.Run(() =>
+                    {
+                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(5), netMQMessage);
+                    });
+                });
             }
             catch (TimeoutException ex)
             {
