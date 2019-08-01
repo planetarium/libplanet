@@ -6,17 +6,25 @@ namespace Libplanet.Net.Messages
 {
     internal class GetRecentStates : Message
     {
-        public GetRecentStates(HashDigest<SHA256> blockHash)
+        public GetRecentStates(HashDigest<SHA256>? @base, HashDigest<SHA256> target)
         {
-            BlockHash = blockHash;
+            BaseBlockHash = @base;
+            TargetBlockHash = target;
         }
 
         public GetRecentStates(NetMQFrame[] frames)
-            : this(new HashDigest<SHA256>(frames[0].Buffer))
+            : this(
+                frames.Length > 1
+                    ? new HashDigest<SHA256>(frames[1].Buffer)
+                    : (HashDigest<SHA256>?)null,
+                new HashDigest<SHA256>(frames[0].Buffer)
+            )
         {
         }
 
-        public HashDigest<SHA256> BlockHash { get; }
+        public HashDigest<SHA256>? BaseBlockHash { get; }
+
+        public HashDigest<SHA256> TargetBlockHash { get; }
 
         protected override MessageType Type => MessageType.GetRecentStates;
 
@@ -24,7 +32,11 @@ namespace Libplanet.Net.Messages
         {
             get
             {
-                yield return new NetMQFrame(BlockHash.ToByteArray());
+                yield return new NetMQFrame(TargetBlockHash.ToByteArray());
+                if (BaseBlockHash is HashDigest<SHA256> @base)
+                {
+                    yield return new NetMQFrame(@base.ToByteArray());
+                }
             }
         }
     }
