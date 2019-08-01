@@ -27,8 +27,9 @@ To be released.
     a feasible user interface so that they can decide whom to trust
     for themselves.
     [[#272], [#343]]
- -  Added `StoreExtension.ListAllStateReferences(this IStore, string)` extension
-    method.  [[#363]]
+ -  Added `StoreExtension.ListAllStateReferences(this IStore, string,
+    HashDigest<SHA256>?, HashDigest<SHA256>?)` extension method.
+    [[#363], [#384], [#385]]
  -  `Address` class became to implement `IComparable<Address>` and
     `IComparable` interfaces.  [[#363]]
 
@@ -68,6 +69,7 @@ To be released.
 [#375]: https://github.com/planetarium/libplanet/pull/375
 [#377]: https://github.com/planetarium/libplanet/issues/377
 [#378]: https://github.com/planetarium/libplanet/pull/378
+[#384]: https://github.com/planetarium/libplanet/issues/384
 [#385]: https://github.com/planetarium/libplanet/pull/385
 [#386]: https://github.com/planetarium/libplanet/pull/366
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
