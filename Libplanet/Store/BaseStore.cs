@@ -103,12 +103,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
 
-        public long CountTransactions()
+        public virtual long CountTransactions()
         {
             return IterateTransactionIds().LongCount();
         }
 
-        public long CountBlocks()
+        public virtual long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
         }

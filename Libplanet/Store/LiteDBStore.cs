@@ -20,7 +20,7 @@ namespace Libplanet.Store
     /// <see cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class LiteDBStore : IStore, IDisposable
+    public class LiteDBStore : BaseStore, IDisposable
     {
         private const string TxIdPrefix = "tx/";
 
@@ -77,7 +77,7 @@ namespace Libplanet.Store
             _db.GetCollection<StagedTxIdDoc>("staged_txids");
 
         /// <inheritdoc/>
-        public IEnumerable<string> ListNamespaces()
+        public override IEnumerable<string> ListNamespaces()
         {
             return _db.GetCollectionNames()
                 .Where(name => name.StartsWith(IndexColPrefix))
@@ -85,7 +85,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void DeleteNamespace(string @namespace)
+        public override void DeleteNamespace(string @namespace)
         {
             _db.DropCollection(IndexCollection(@namespace).Name);
             _db.DropCollection($"{NonceIdPrefix}{@namespace}");
@@ -97,13 +97,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public long CountIndex(string @namespace)
+        public override long CountIndex(string @namespace)
         {
             return IndexCollection(@namespace).Count();
         }
 
         /// <inheritdoc/>
-        public IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace)
+        public override IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace)
         {
             return IndexCollection(@namespace)
                 .FindAll()
@@ -111,7 +111,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public HashDigest<SHA256>? IndexBlockHash(string @namespace, long index)
+        public override HashDigest<SHA256>? IndexBlockHash(string @namespace, long index)
         {
             if (index < 0)
             {
@@ -127,14 +127,14 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public long AppendIndex(string @namespace, HashDigest<SHA256> hash)
+        public override long AppendIndex(string @namespace, HashDigest<SHA256> hash)
         {
             return IndexCollection(@namespace)
                        .Insert(new HashDoc { Hash = hash }) - 1;
         }
 
         /// <inheritdoc/>
-        public bool DeleteIndex(string @namespace, HashDigest<SHA256> hash)
+        public override bool DeleteIndex(string @namespace, HashDigest<SHA256> hash)
         {
             int deleted = IndexCollection(@namespace)
                 .Delete(i => i.Hash.Equals(hash));
@@ -142,7 +142,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Address> ListAddresses(string @namespace)
+        public override IEnumerable<Address> ListAddresses(string @namespace)
         {
             var prefix = $"{StateRefIdPrefix}{@namespace}/";
             foreach (LiteFileInfo fileInfo in _db.FileStorage.Find(prefix))
@@ -175,7 +175,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void StageTransactionIds(IDictionary<TxId, bool> txids)
+        public override void StageTransactionIds(IDictionary<TxId, bool> txids)
         {
             StagedTxIds.InsertBulk(
                 txids.Select(kv => new StagedTxIdDoc
@@ -186,13 +186,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void UnstageTransactionIds(ISet<TxId> txids)
+        public override void UnstageTransactionIds(ISet<TxId> txids)
         {
             StagedTxIds.Delete(tx => txids.Contains(tx.TxId));
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
+        public override IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
         {
             IEnumerable<StagedTxIdDoc> docs = StagedTxIds.FindAll();
             if (toBroadcast)
@@ -204,7 +204,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<TxId> IterateTransactionIds()
+        public override IEnumerable<TxId> IterateTransactionIds()
         {
             return _db.FileStorage
                 .Find(TxIdPrefix)
@@ -212,8 +212,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public Transaction<T> GetTransaction<T>(TxId txid)
-            where T : IAction, new()
+        public override Transaction<T> GetTransaction<T>(TxId txid)
         {
             LiteFileInfo file = _db.FileStorage.FindById(TxFileId(txid));
             if (file is null)
@@ -230,20 +229,19 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void PutTransaction<T>(Transaction<T> tx)
-            where T : IAction, new()
+        public override void PutTransaction<T>(Transaction<T> tx)
         {
             UploadFile(TxFileId(tx.Id), tx.Id.ToHex(), tx.ToBencodex(true));
         }
 
         /// <inheritdoc/>
-        public bool DeleteTransaction(TxId txid)
+        public override bool DeleteTransaction(TxId txid)
         {
             return _db.FileStorage.Delete(TxFileId(txid));
         }
 
         /// <inheritdoc/>
-        public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
             return _db.FileStorage
                 .Find("block/")
@@ -252,8 +250,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new()
+        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
         {
             LiteFileInfo file =
                 _db.FileStorage.FindById(BlockFileId(blockHash));
@@ -295,8 +292,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void PutBlock<T>(Block<T> block)
-            where T : IAction, new()
+        public override void PutBlock<T>(Block<T> block)
         {
             foreach (Transaction<T> tx in block.Transactions)
             {
@@ -311,13 +307,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public bool DeleteBlock(HashDigest<SHA256> blockHash)
+        public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
             return _db.FileStorage.Delete(BlockFileId(blockHash));
         }
 
         /// <inheritdoc/>
-        public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
+        public override AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
         {
             LiteFileInfo file =
                 _db.FileStorage.FindById(BlockStateFileId(blockHash));
@@ -336,7 +332,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void SetBlockStates(
+        public override void SetBlockStates(
             HashDigest<SHA256> blockHash,
             AddressStateMap states)
         {
@@ -353,7 +349,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+        public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
             Address address)
         {
@@ -400,11 +396,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void StoreStateReference<T>(
+        public override void StoreStateReference<T>(
             string @namespace,
             IImmutableSet<Address> addresses,
             Block<T> block)
-            where T : IAction, new()
         {
             int hashSize = HashDigest<SHA256>.Size;
             byte[] hashBytes = block.Hash.ToByteArray();
@@ -440,12 +435,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void ForkStateReferences<T>(
+        public override void ForkStateReferences<T>(
             string srcNamespace,
             string destNamespace,
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
-            where T : IAction, new()
         {
             long branchPointIndex = branchPoint.Index;
             List<LiteFileInfo> files =
@@ -504,7 +498,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
         {
             var collectionId = $"{NonceIdPrefix}{@namespace}";
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
@@ -525,7 +519,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public long GetTxNonce(string @namespace, Address address)
+        public override long GetTxNonce(string @namespace, Address address)
         {
             var collectionId = $"{NonceIdPrefix}{@namespace}";
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
@@ -535,7 +529,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
+        public override void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
         {
             long nextNonce = GetTxNonce(@namespace, signer) + delta;
             var collectionId = $"{NonceIdPrefix}{@namespace}";
@@ -545,13 +539,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public long CountTransactions()
+        public override long CountTransactions()
         {
             return _db.FileStorage.Find(TxIdPrefix).Count();
         }
 
         /// <inheritdoc/>
-        public long CountBlocks()
+        public override long CountBlocks()
         {
             return _db.FileStorage.Find("block/").Count();
         }
