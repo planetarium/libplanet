@@ -603,6 +603,7 @@ namespace Libplanet.Net
             // FIXME: This method should take an IProcess<T>.
             bool received = await SyncRecentStatesFromTrustedPeersAsync(
                 trustedPeersWithTip.ToImmutableList(),
+                initialTip?.Hash,
                 cancellationToken
             );
 
@@ -895,6 +896,7 @@ namespace Libplanet.Net
 
         private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
             IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
+            HashDigest<SHA256>? baseBlockHash,
             CancellationToken cancellationToken)
         {
             _logger.Debug(
@@ -903,7 +905,7 @@ namespace Libplanet.Net
             );
             foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
             {
-                var request = new GetRecentStates(blockHash);
+                var request = new GetRecentStates(baseBlockHash, blockHash);
                 _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
@@ -1477,14 +1479,15 @@ namespace Libplanet.Net
 
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
-            HashDigest<SHA256> blockHash = getRecentStates.BlockHash;
+            HashDigest<SHA256>? @base = getRecentStates.BaseBlockHash;
+            HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>
             > blockStates = null;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
 
-            if (_blockChain.Blocks.ContainsKey(blockHash))
+            if (_blockChain.Blocks.ContainsKey(target))
             {
                 ReaderWriterLockSlim rwlock = _blockChain._rwlock;
                 rwlock.EnterReadLock();
@@ -1496,7 +1499,11 @@ namespace Libplanet.Net
                     IStore store = _blockChain.Store;
                     string ns = _blockChain.Id.ToString();
 
-                    stateRefs = store.ListAllStateReferences(ns);
+                    stateRefs = store.ListAllStateReferences(
+                        ns,
+                        onlyAfter: @base,
+                        ignoreAfter: target
+                    );
 
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
@@ -1515,7 +1522,7 @@ namespace Libplanet.Net
                 }
             }
 
-            var reply = new RecentStates(blockHash, blockStates, stateRefs)
+            var reply = new RecentStates(target, blockStates, stateRefs)
             {
                 Identity = getRecentStates.Identity,
             };
