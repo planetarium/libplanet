@@ -1930,13 +1930,13 @@ namespace Libplanet.Net
             // FIXME Should replace with PUB/SUB model.
             try
             {
-                // FIXME The current timeout value(5sec) is arbitrary.
+                // FIXME The current timeout value(1 sec) is arbitrary.
                 // We should make this configurable or fix it to an unneeded structure.
                 _dealers.Values.ParallelForEachAsync(async s =>
                 {
                     await Task.Run(() =>
                     {
-                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(5), netMQMessage);
+                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage);
                     });
                 });
             }
@@ -1961,9 +1961,9 @@ namespace Libplanet.Net
             _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
 
-            // FIXME The current timeout value(5sec) is arbitrary.
+            // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(5), netMQMessage))
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
             {
                 _logger.Debug($"Message[{msg}] replied.");
             }
