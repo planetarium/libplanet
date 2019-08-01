@@ -8,6 +8,7 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  Added `IStore.GetBlockIndex()` method.  [[#385]]
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
@@ -23,8 +24,9 @@ To be released.
     a feasible user interface so that they can decide whom to trust
     for themselves.
     [[#272], [#343]]
- -  Added `StoreExtension.ListAllStateReferences(this IStore, string)` extension
-    method.  [[#363]]
+ -  Added `StoreExtension.ListAllStateReferences(this IStore, string,
+    HashDigest<SHA256>?, HashDigest<SHA256>?)` extension method.
+    [[#363], [#384], [#385]]
  -  `Address` class became to implement `IComparable<Address>` and
     `IComparable` interfaces.  [[#363]]
 
@@ -50,6 +52,8 @@ To be released.
 [#363]: https://github.com/planetarium/libplanet/pull/363
 [#365]: https://github.com/planetarium/libplanet/pull/365
 [#366]: https://github.com/planetarium/libplanet/pull/366
+[#384]: https://github.com/planetarium/libplanet/issues/384
+[#385]: https://github.com/planetarium/libplanet/pull/385
 [#386]: https://github.com/planetarium/libplanet/pull/366
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 

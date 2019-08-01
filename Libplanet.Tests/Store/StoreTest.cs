@@ -108,6 +108,9 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
             Assert.False(Fx.Store.DeleteBlock(Fx.Block1.Hash));
 
             Fx.Store.PutBlock(Fx.Block1);
@@ -123,6 +126,9 @@ namespace Libplanet.Tests.Store
                 Fx.Store.GetBlock<DumbAction>(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
 
             Fx.Store.PutBlock(Fx.Block2);
             Assert.Equal(2, Fx.Store.CountBlocks());
@@ -140,6 +146,9 @@ namespace Libplanet.Tests.Store
                 Fx.Block2,
                 Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
+            Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
 
             Assert.True(Fx.Store.DeleteBlock(Fx.Block1.Hash));
             Assert.Equal(1, Fx.Store.CountBlocks());
@@ -154,6 +163,9 @@ namespace Libplanet.Tests.Store
                 Fx.Block2,
                 Fx.Store.GetBlock<DumbAction>(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlock<DumbAction>(Fx.Block3.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
+            Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
+            Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -57,8 +58,40 @@ namespace Libplanet.Store
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
-        public abstract Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-            where T : IAction, new();
+        /// <inheritdoc/>
+        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+            where T : IAction, new()
+        {
+            if (GetRawBlock(blockHash) is RawBlock rawBlock)
+            {
+                HashDigest<SHA256>? prevHash = rawBlock.PreviousHash is byte[] h
+                    ? new HashDigest<SHA256>(h)
+                    : (HashDigest<SHA256>?)null;
+                return new Block<T>(
+                    index: rawBlock.Index,
+                    difficulty: rawBlock.Difficulty,
+                    nonce: new Nonce(rawBlock.Nonce),
+                    miner: new Address(rawBlock.Miner),
+                    previousHash: prevHash,
+                    timestamp: DateTimeOffset.ParseExact(
+                        rawBlock.Timestamp,
+                        Block<T>.TimestampFormat,
+                        CultureInfo.InvariantCulture
+                    ).ToUniversalTime(),
+                    transactions: rawBlock.Transactions
+                        .Cast<byte[]>()
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes)))
+                );
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc/>
+        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
+        {
+            return GetRawBlock(blockHash)?.Index;
+        }
 
         /// <inheritdoc />
         public abstract void PutBlock<T>(Block<T> block)
@@ -103,12 +136,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
 
-        public long CountTransactions()
+        public virtual long CountTransactions()
         {
             return IterateTransactionIds().LongCount();
         }
 
-        public long CountBlocks()
+        public virtual long CountBlocks()
         {
             return IterateBlockHashes().LongCount();
         }
@@ -120,5 +153,7 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void DeleteNamespace(string @namespace);
+
+        internal abstract RawBlock? GetRawBlock(HashDigest<SHA256> blockHash);
     }
 }
