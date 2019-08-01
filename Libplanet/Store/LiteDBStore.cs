@@ -233,16 +233,7 @@ namespace Libplanet.Store
         public void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new()
         {
-            using (var stream = new MemoryStream())
-            {
-                byte[] encoded = tx.ToBencodex(true);
-                stream.Write(encoded, 0, encoded.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(
-                    TxFileId(tx.Id),
-                    tx.Id.ToHex(),
-                    stream);
-            }
+            UploadFile(TxFileId(tx.Id), tx.Id.ToHex(), tx.ToBencodex(true));
         }
 
         /// <inheritdoc/>
@@ -312,16 +303,11 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            using (var stream = new MemoryStream())
-            {
-                byte[] encoded = block.ToBencodex(true, false);
-                stream.Write(encoded, 0, encoded.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(
-                    BlockFileId(block.Hash),
-                    ByteUtil.Hex(block.Hash.ToByteArray()),
-                    stream);
-            }
+            UploadFile(
+                BlockFileId(block.Hash),
+                ByteUtil.Hex(block.Hash.ToByteArray()),
+                block.ToBencodex(true, false)
+            );
         }
 
         /// <inheritdoc/>
@@ -358,11 +344,11 @@ namespace Libplanet.Store
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, states);
-                stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(
+                UploadFile(
                     BlockStateFileId(blockHash),
                     ByteUtil.Hex(blockHash.ToByteArray()),
-                    stream);
+                    stream
+                );
             }
         }
 
@@ -599,6 +585,41 @@ namespace Libplanet.Store
                 .Cast<byte[]>()
                 .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 .Where(tx => tx != null);
+        }
+
+        // As LiteDB's file storage seems unstable, we need to repeat trying to save a file
+        // until we ensure it's actually saved.
+        // https://github.com/mbdavid/LiteDB/issues/1268
+        private void UploadFile(string fileId, string filename, Stream stream)
+        {
+            bool IsFiledUploaded()
+            {
+                if (_db.FileStorage.FindById(fileId) is LiteFileInfo file && file.Length > 0)
+                {
+                    using (LiteFileStream f = file.OpenRead())
+                    {
+                        var buffer = new byte[1];
+                        return f.Read(buffer, 0, 1) > 0;
+                    }
+                }
+
+                return false;
+            }
+
+            do
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                _db.FileStorage.Upload(fileId, filename, stream);
+            }
+            while (!IsFiledUploaded());
+        }
+
+        private void UploadFile(string fileId, string filename, byte[] bytes)
+        {
+            using (var stream = new MemoryStream(bytes))
+            {
+                UploadFile(fileId, filename, stream);
+            }
         }
 
         private LiteCollection<HashDoc> IndexCollection(string @namespace)
