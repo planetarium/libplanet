@@ -1032,7 +1032,6 @@ namespace Libplanet.Net
                 catch (Exception e)
                 {
                     _logger.Error(e, "An unexpected exception occured during BroadcastTxAsync()");
-                    throw;
                 }
             }
         }
@@ -1920,7 +1919,6 @@ namespace Libplanet.Net
             catch (Exception ex)
             {
                 _logger.Error(ex, "An unexpected exception occured during ReceiveMessage().");
-                throw;
             }
         }
 
