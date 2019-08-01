@@ -311,12 +311,9 @@ namespace Libplanet.Net
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
-                        _logger.Error(
-                            e,
-                            $"DialPeerAsync({peer}) failed. ignored."
-                        );
+                        _logger.Warning($"DialPeerAsync({peer}) timeout. ignored.");
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
