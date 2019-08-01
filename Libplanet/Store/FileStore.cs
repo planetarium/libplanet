@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -317,43 +316,6 @@ namespace Libplanet.Store
 
             txFile.Delete();
             return true;
-        }
-
-        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-        {
-            var blockFile = new FileInfo(GetBlockPath(blockHash));
-            if (!blockFile.Exists)
-            {
-                return null;
-            }
-
-            using (Stream stream = blockFile.OpenRead())
-            {
-                var formatter = new BencodexFormatter<RawBlock>();
-                RawBlock rawBlock = (RawBlock)formatter.Deserialize(stream);
-                HashDigest<SHA256>? previousHash = null;
-
-                if (rawBlock.PreviousHash != null)
-                {
-                    previousHash = new HashDigest<SHA256>?(
-                        new HashDigest<SHA256>(rawBlock.PreviousHash)
-                    );
-                }
-
-                return new Block<T>(
-                    index: rawBlock.Index,
-                    difficulty: rawBlock.Difficulty,
-                    nonce: new Nonce(rawBlock.Nonce),
-                    miner: new Address(rawBlock.Miner),
-                    previousHash: previousHash,
-                    timestamp: DateTimeOffset.ParseExact(
-                        rawBlock.Timestamp,
-                        Block<T>.TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
-                );
-            }
         }
 
         public override Transaction<T> GetTransaction<T>(TxId txid)
@@ -796,6 +758,21 @@ namespace Libplanet.Store
             }
         }
 
+        internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
+        {
+            var blockFile = new FileInfo(GetBlockPath(blockHash));
+            if (!blockFile.Exists)
+            {
+                return null;
+            }
+
+            using (Stream stream = blockFile.OpenRead())
+            {
+                var formatter = new BencodexFormatter<RawBlock>();
+                return (RawBlock)formatter.Deserialize(stream);
+            }
+        }
+
         private void ForkIndexedStack(
             string sourceNamespace,
             string destinationNamespace,
@@ -916,17 +893,6 @@ namespace Libplanet.Store
             }
 
             return stream;
-        }
-
-        private IEnumerable<Transaction<T>> GetTransactions<T>(
-            IEnumerable transactions
-        )
-            where T : IAction, new()
-        {
-            return transactions
-                .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
-                .Where(tx => tx != null);
         }
 
         private bool CopyDirectory(

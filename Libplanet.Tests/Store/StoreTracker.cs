@@ -87,6 +87,12 @@ namespace Libplanet.Tests.Store
             return _store.GetBlock<T>(blockHash);
         }
 
+        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
+        {
+            _logs.Add((nameof(GetBlockIndex), blockHash, null));
+            return _store.GetBlockIndex(blockHash);
+        }
+
         public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
         {
             _logs.Add((nameof(GetBlockStates), blockHash, null));

@@ -8,6 +8,7 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  Added `IStore.GetBlockIndex()` method.  [[#385]]
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
@@ -50,6 +51,7 @@ To be released.
 [#363]: https://github.com/planetarium/libplanet/pull/363
 [#365]: https://github.com/planetarium/libplanet/pull/365
 [#366]: https://github.com/planetarium/libplanet/pull/366
+[#385]: https://github.com/planetarium/libplanet/pull/385
 [#386]: https://github.com/planetarium/libplanet/pull/366
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
