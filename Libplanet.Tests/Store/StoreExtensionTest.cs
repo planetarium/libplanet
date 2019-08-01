@@ -116,9 +116,10 @@ namespace Libplanet.Tests.Store
             chain.Append(block5);
             chain.Append(block6);
 
-            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> refs =
-                fx.Store.ListAllStateReferences(chain.Id.ToString());
+            string chainId = chain.Id.ToString();
+            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> refs;
 
+            refs = fx.Store.ListAllStateReferences(chainId);
             Assert.Equal(
                 new HashSet<Address> { address1, address2, address3 },
                 refs.Keys.ToHashSet()
@@ -126,6 +127,16 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { block4.Hash, block5.Hash }, refs[address1]);
             Assert.Equal(new[] { block4.Hash }, refs[address2]);
             Assert.Equal(new[] { block5.Hash }, refs[address3]);
+
+            refs = fx.Store.ListAllStateReferences(chainId, onlyAfter: block5.Hash);
+            Assert.Equal(new HashSet<Address> { address1, address3 }, refs.Keys.ToHashSet());
+            Assert.Equal(new[] { block5.Hash }, refs[address1]);
+            Assert.Equal(new[] { block5.Hash }, refs[address3]);
+
+            refs = fx.Store.ListAllStateReferences(chainId, ignoreAfter: block4.Hash);
+            Assert.Equal(new HashSet<Address> { address1, address2, }, refs.Keys.ToHashSet());
+            Assert.Equal(new[] { block4.Hash }, refs[address1]);
+            Assert.Equal(new[] { block4.Hash }, refs[address2]);
         }
     }
 }
