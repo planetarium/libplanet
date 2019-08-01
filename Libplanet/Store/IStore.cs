@@ -84,8 +84,29 @@ namespace Libplanet.Store
 
         IEnumerable<HashDigest<SHA256>> IterateBlockHashes();
 
+        /// <summary>
+        /// Gets the corresponding stored <see cref="Block{T}"/> to the given
+        /// <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <returns>A found block, or <c>null</c> if no block having such
+        /// <paramref name="blockHash"/> is stored.</returns>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
         Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction, new();
+
+        /// <summary>
+        /// Gets a stored block's <see cref="Block{T}.Index"/> by its <see cref="Block{T}.Hash"/>.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <remarks>
+        /// It provides only limited information, but can be called without any type parameter
+        /// unlike <see cref="GetBlock{T}(HashDigest{SHA256})"/>.
+        /// </remarks>
+        /// <returns>A found block's <see cref="Block{T}.Index"/>, or <c>null</c> if no block having
+        /// such <paramref name="blockHash"/> is stored.</returns>
+        long? GetBlockIndex(HashDigest<SHA256> blockHash);
 
         /// <summary>
         /// Puts the given <paramref name="block"/> in to the store.

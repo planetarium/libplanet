@@ -250,48 +250,6 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
-        {
-            LiteFileInfo file =
-                _db.FileStorage.FindById(BlockFileId(blockHash));
-
-            if (file is null)
-            {
-                return null;
-            }
-
-            using (var stream = new MemoryStream())
-            {
-                file.CopyTo(stream);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var formatter = new BencodexFormatter<RawBlock>();
-                RawBlock rawBlock = (RawBlock)formatter.Deserialize(stream);
-                HashDigest<SHA256>? previousHash = null;
-
-                if (rawBlock.PreviousHash != null)
-                {
-                    previousHash =
-                        new HashDigest<SHA256>(rawBlock.PreviousHash);
-                }
-
-                return new Block<T>(
-                    index: rawBlock.Index,
-                    difficulty: rawBlock.Difficulty,
-                    nonce: new Nonce(rawBlock.Nonce),
-                    miner: new Address(rawBlock.Miner),
-                    previousHash: previousHash,
-                    timestamp: DateTimeOffset.ParseExact(
-                        rawBlock.Timestamp,
-                        Block<T>.TimestampFormat,
-                        CultureInfo.InvariantCulture
-                    ).ToUniversalTime(),
-                    transactions: GetTransactions<T>(rawBlock.Transactions)
-                );
-            }
-        }
-
-        /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
             foreach (Transaction<T> tx in block.Transactions)
@@ -553,6 +511,25 @@ namespace Libplanet.Store
         public void Dispose()
         {
             _db?.Dispose();
+        }
+
+        internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
+        {
+            LiteFileInfo file =
+                _db.FileStorage.FindById(BlockFileId(blockHash));
+            if (file is null)
+            {
+                return null;
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                file.CopyTo(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+
+                var formatter = new BencodexFormatter<RawBlock>();
+                return (RawBlock)formatter.Deserialize(stream);
+            }
         }
 
         private string TxFileId(TxId txid)
