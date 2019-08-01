@@ -57,6 +57,7 @@ namespace Libplanet.Net
 
         private readonly NetMQQueue<Message> _replyQueue;
         private readonly NetMQQueue<Message> _broadcastQueue;
+        private readonly NetMQPoller _poller;
 
         private readonly ILogger _logger;
 
@@ -64,7 +65,6 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
-        private CancellationTokenSource _pollerCancellationTokenSource;
         private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
 
@@ -140,6 +140,7 @@ namespace Libplanet.Net
             _router.Options.RouterHandover = true;
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
+            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
@@ -170,8 +171,6 @@ namespace Libplanet.Net
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
             _broadcastQueue.ReceiveReady += DoBroadcast;
-
-            _pollerCancellationTokenSource = new CancellationTokenSource();
         }
 
         ~Swarm()
@@ -312,12 +311,9 @@ namespace Libplanet.Net
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
-                        _logger.Error(
-                            e,
-                            $"DialPeerAsync({peer}) failed. ignored."
-                        );
+                        _logger.Warning($"DialPeerAsync({peer}) timeout. ignored.");
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -349,7 +345,6 @@ namespace Libplanet.Net
                     DistributeDelta(false);
 
                     await Task.Delay(_linger);
-                    _pollerCancellationTokenSource?.Cancel();
 
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
@@ -476,9 +471,7 @@ namespace Libplanet.Net
                 {
                     RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken),
                     BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
-                    Poll(_router, _pollerCancellationTokenSource.Token),
-                    Poll(_broadcastQueue, _pollerCancellationTokenSource.Token),
-                    Poll(_replyQueue, _pollerCancellationTokenSource.Token),
+                    Task.Run(() => _poller.Run(), _cancellationToken),
                 };
 
                 if (behindNAT)
@@ -1039,7 +1032,6 @@ namespace Libplanet.Net
                 catch (Exception e)
                 {
                     _logger.Error(e, "An unexpected exception occured during BroadcastTxAsync()");
-                    throw;
                 }
             }
         }
@@ -1927,7 +1919,6 @@ namespace Libplanet.Net
             catch (Exception ex)
             {
                 _logger.Error(ex, "An unexpected exception occured during ReceiveMessage().");
-                throw;
             }
         }
 
@@ -1939,13 +1930,13 @@ namespace Libplanet.Net
             // FIXME Should replace with PUB/SUB model.
             try
             {
-                // FIXME The current timeout value(5sec) is arbitrary.
+                // FIXME The current timeout value(1 sec) is arbitrary.
                 // We should make this configurable or fix it to an unneeded structure.
                 _dealers.Values.ParallelForEachAsync(async s =>
                 {
                     await Task.Run(() =>
                     {
-                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(5), netMQMessage);
+                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage);
                     });
                 });
             }
@@ -1969,8 +1960,17 @@ namespace Libplanet.Net
             Message msg = e.Queue.Dequeue();
             _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
-            _router.SendMultipartMessage(netMQMessage);
-            _logger.Debug($"Replied.");
+
+            // FIXME The current timeout value(1 sec) is arbitrary.
+            // We should make this configurable or fix it to an unneeded structure.
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
+            {
+                _logger.Debug($"Message[{msg}] replied.");
+            }
+            else
+            {
+                _logger.Debug($"Message[{msg}] replying failed.");
+            }
         }
 
         private void CheckStarted()
@@ -2024,35 +2024,6 @@ namespace Libplanet.Net
 
                 await _turnClient.CreatePermissionAsync(ep);
             }
-        }
-
-        private async Task Poll(ISocketPollable pollable, CancellationToken cancellationToken)
-        {
-            await Task.Run(
-                () =>
-                {
-                    while (!cancellationToken.IsCancellationRequested && !pollable.IsDisposed)
-                    {
-                        try
-                        {
-                            pollable.Socket.Poll();
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            break;
-                        }
-                        catch (TerminatingException)
-                        {
-                            break;
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "An unexpected expcetion occurred during polling.");
-                            continue;
-                        }
-                     }
-                },
-                cancellationToken);
         }
     }
 }
