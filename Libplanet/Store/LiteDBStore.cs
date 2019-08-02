@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,6 +12,7 @@ using Libplanet.Blocks;
 using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
+using Serilog;
 
 namespace Libplanet.Store
 {
@@ -29,6 +29,8 @@ namespace Libplanet.Store
         private const string StateRefIdPrefix = "stateref/";
 
         private const string NonceIdPrefix = "nonce_";
+
+        private readonly ILogger _logger;
 
         private readonly LiteDatabase _db;
 
@@ -53,6 +55,8 @@ namespace Libplanet.Store
             {
                 throw new ArgumentNullException(nameof(path));
             }
+
+            _logger = Log.ForContext<LiteDBStore>();
 
             var connectionString = new ConnectionString
             {
@@ -235,6 +239,11 @@ namespace Libplanet.Store
                 byte[] bytes = stream.ToArray();
                 if (bytes.Length < 1)
                 {
+                    _logger.Warning(
+                        "The data file for the transaction {TxId} seems corrupted; " +
+                        "it will be treated nonexistent and removed at all.",
+                        txid
+                    );
                     DeleteTransaction(txid);
                     return null;
                 }
