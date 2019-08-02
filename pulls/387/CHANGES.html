@@ -119,7 +119,8 @@ sequentially and treat them as pendings.  [<a href="https://github.com/planetari
 duplicated transaction ids.  [<a href="https://github.com/planetarium/libplanet/pull/366">#366</a>]</li>
 <li>Fixed a <code>LiteDBStore</code> bug that blocks or transactions had got corrupted
 sometimes.  Instead, <code>LiteDBStore.GetTransaction()</code> became possible to
-return <code>null</code> even for already stored transactions.
+return <code>null</code> even for already stored transactions, and for that case,
+a warning will be logged through Serilog.
 [<a href="https://github.com/planetarium/libplanet/pull/386">#386</a>, <a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
