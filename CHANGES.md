@@ -34,6 +34,7 @@ To be released.
     [[#363], [#384], [#385]]
  -  `Address` class became to implement `IComparable<Address>` and
     `IComparable` interfaces.  [[#363]]
+ -  Added `BlockChain<T>.BlockHashes` property.  [[#389]]
 
 ### Behavioral changes
 
@@ -78,6 +79,7 @@ To be released.
 [#385]: https://github.com/planetarium/libplanet/pull/385
 [#386]: https://github.com/planetarium/libplanet/pull/386
 [#387]: https://github.com/planetarium/libplanet/pull/387
+[#389]: https://github.com/planetarium/libplanet/pull/389
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
