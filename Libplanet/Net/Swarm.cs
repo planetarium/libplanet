@@ -613,8 +613,9 @@ namespace Libplanet.Net
                     initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index;
-                foreach (Block<T> block in _blockChain.Skip((int)initHeight))
+                foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
+                    Block<T> block = _blockChain.Blocks[hash];
                     if (block.Index < initHeight)
                     {
                         continue;
