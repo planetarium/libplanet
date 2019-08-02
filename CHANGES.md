@@ -12,6 +12,8 @@ To be released.
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
+ -  `LiteDBStore()` constructor became to have a new option named `flush` and turned on by default.
+    [[#387], [LiteDB #1268]]
 
 ### Added interfaces
 
@@ -45,7 +47,7 @@ To be released.
  -  Fixed a bug where the `LiteDBStore.IterateStagedTransactionIds()` returns
     duplicated transaction ids.  [[#366]]
  -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
-    sometimes.  [[#386], [LiteDB #1268]]
+    sometimes.  [[#386], [#387], [LiteDB #1268]]
 
 [#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350
@@ -54,7 +56,8 @@ To be released.
 [#366]: https://github.com/planetarium/libplanet/pull/366
 [#384]: https://github.com/planetarium/libplanet/issues/384
 [#385]: https://github.com/planetarium/libplanet/pull/385
-[#386]: https://github.com/planetarium/libplanet/pull/366
+[#386]: https://github.com/planetarium/libplanet/pull/386
+[#387]: https://github.com/planetarium/libplanet/pull/387
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
