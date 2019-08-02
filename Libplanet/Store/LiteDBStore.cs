@@ -234,10 +234,10 @@ namespace Libplanet.Store
 
             using (var stream = new MemoryStream())
             {
-                file.CopyTo(stream);
-                stream.Seek(0, SeekOrigin.Begin);
-                byte[] bytes = stream.ToArray();
-                if (bytes.Length < 1)
+                DownloadFile(file, stream);
+
+                var bytes = stream.ToArray();
+                if (bytes.Length != file.Length)
                 {
                     _logger.Warning(
                         "The data file for the transaction {TxId} seems corrupted; " +
@@ -306,7 +306,7 @@ namespace Libplanet.Store
 
             using (var stream = new MemoryStream())
             {
-                file.CopyTo(stream);
+                DownloadFile(file, stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 var formatter = new BinaryFormatter();
                 return (AddressStateMap)formatter.Deserialize(stream);
@@ -359,7 +359,7 @@ namespace Libplanet.Store
                 // Note that a stream made by file.OpenRead() does not support
                 // .Seek() operation --- although it implements the interface,
                 // the method throws a NotSupportedException.
-                file.CopyTo(stream);
+                DownloadFile(file, stream);
 
                 var buffer = new byte[stateReferenceSize];
                 long position = stream.Seek(0, SeekOrigin.End);
@@ -403,7 +403,7 @@ namespace Libplanet.Store
                 LiteFileInfo file = _db.FileStorage.FindById(fileId);
                 using (var temp = new MemoryStream())
                 {
-                    file.CopyTo(temp);
+                    DownloadFile(file, temp);
                     temp.Seek(0, SeekOrigin.Begin);
                     byte[] prev = temp.ToArray();
 
@@ -549,7 +549,7 @@ namespace Libplanet.Store
 
             using (var stream = new MemoryStream())
             {
-                file.CopyTo(stream);
+                DownloadFile(file, stream);
                 stream.Seek(0, SeekOrigin.Begin);
 
                 var formatter = new BencodexFormatter<RawBlock>();
@@ -589,6 +589,16 @@ namespace Libplanet.Store
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 _db.FileStorage.Upload(fileId, filename, stream);
+            }
+        }
+
+        private void DownloadFile(LiteFileInfo file, Stream stream)
+        {
+            file.CopyTo(stream);
+
+            if (stream.Length > file.Length)
+            {
+                stream.SetLength(file.Length);
             }
         }
 
