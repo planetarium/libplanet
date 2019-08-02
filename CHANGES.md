@@ -58,7 +58,9 @@ To be released.
  -  Fixed a bug that `TurnClient` had thrown `KeyNotFoundException` and
     `IOException` on startup.  [[#377], [#378]]
  -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
-    sometimes.  [[#386], [#387], [LiteDB #1268]]
+    sometimes.  Instead, `LiteDBStore.GetTransaction()` became possible to
+    return `null` even for already stored transactions.
+    [[#386], [#387], [LiteDB #1268]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
