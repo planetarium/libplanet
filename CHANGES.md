@@ -48,7 +48,8 @@ To be released.
     duplicated transaction ids.  [[#366]]
  -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
     sometimes.  Instead, `LiteDBStore.GetTransaction()` became possible to
-    return `null` even for already stored transactions.
+    return `null` even for already stored transactions, and for that case,
+    a warning will be logged through Serilog.
     [[#386], [#387], [LiteDB #1268]]
 
 [#343]: https://github.com/planetarium/libplanet/pull/343
