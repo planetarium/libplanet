@@ -47,7 +47,9 @@ To be released.
  -  Fixed a bug where the `LiteDBStore.IterateStagedTransactionIds()` returns
     duplicated transaction ids.  [[#366]]
  -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
-    sometimes.  [[#386], [#387], [LiteDB #1268]]
+    sometimes.  Instead, `LiteDBStore.GetTransaction()` became possible to
+    return `null` even for already stored transactions.
+    [[#386], [#387], [LiteDB #1268]]
 
 [#343]: https://github.com/planetarium/libplanet/pull/343
 [#350]: https://github.com/planetarium/libplanet/pull/350

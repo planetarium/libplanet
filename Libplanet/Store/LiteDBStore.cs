@@ -232,7 +232,14 @@ namespace Libplanet.Store
             {
                 file.CopyTo(stream);
                 stream.Seek(0, SeekOrigin.Begin);
-                return Transaction<T>.FromBencodex(stream.ToArray());
+                byte[] bytes = stream.ToArray();
+                if (bytes.Length < 1)
+                {
+                    DeleteTransaction(txid);
+                    return null;
+                }
+
+                return Transaction<T>.FromBencodex(bytes);
             }
         }
 
