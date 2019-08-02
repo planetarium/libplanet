@@ -46,10 +46,7 @@ namespace Libplanet.Store
 
         public abstract bool Contains(KeyValuePair<TKey, TVal> item);
 
-        public bool ContainsKey(TKey key)
-        {
-            return Keys.Contains(key);
-        }
+        public abstract bool ContainsKey(TKey key);
 
         public void CopyTo(KeyValuePair<TKey, TVal>[] array, int arrayIndex)
         {
