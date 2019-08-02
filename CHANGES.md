@@ -15,6 +15,8 @@ To be released.
  -  Added `IBlockPolicy<T>.BlockAction` property.  [[#319], [#367]]
  -  Removed the type parameter of `ActionEvaluation`.  [[#319], [#367]]
  -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
+ -  `LiteDBStore()` constructor became to have a new option named `flush` and turned on by default.
+    [[#387], [LiteDB #1268]]
 
 ### Added interfaces
 
@@ -56,7 +58,7 @@ To be released.
  -  Fixed a bug that `TurnClient` had thrown `KeyNotFoundException` and
     `IOException` on startup.  [[#377], [#378]]
  -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
-    sometimes.  [[#386], [LiteDB #1268]]
+    sometimes.  [[#386], [#387], [LiteDB #1268]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -71,7 +73,8 @@ To be released.
 [#378]: https://github.com/planetarium/libplanet/pull/378
 [#384]: https://github.com/planetarium/libplanet/issues/384
 [#385]: https://github.com/planetarium/libplanet/pull/385
-[#386]: https://github.com/planetarium/libplanet/pull/366
+[#386]: https://github.com/planetarium/libplanet/pull/386
+[#387]: https://github.com/planetarium/libplanet/pull/387
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 

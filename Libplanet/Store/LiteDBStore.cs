@@ -40,7 +40,14 @@ namespace Libplanet.Store
         /// Enables or disables double write check to ensure durability.
         /// </param>
         /// <param name="cacheSize">Max number of pages in the cache.</param>
-        public LiteDBStore(string path, bool journal = true, int cacheSize = 50000)
+        /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
+        /// </param>
+        public LiteDBStore(
+            string path,
+            bool journal = true,
+            int cacheSize = 50000,
+            bool flush = true
+        )
         {
             if (path is null)
             {
@@ -52,6 +59,7 @@ namespace Libplanet.Store
                 Filename = path,
                 Journal = journal,
                 CacheSize = cacheSize,
+                Flush = flush,
             };
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
@@ -298,7 +306,8 @@ namespace Libplanet.Store
             {
                 var formatter = new BinaryFormatter();
                 formatter.Serialize(stream, states);
-                UploadFile(
+                stream.Seek(0, SeekOrigin.Begin);
+                _db.FileStorage.Upload(
                     BlockStateFileId(blockHash),
                     ByteUtil.Hex(blockHash.ToByteArray()),
                     stream
@@ -558,38 +567,12 @@ namespace Libplanet.Store
                 .Where(tx => tx != null);
         }
 
-        // As LiteDB's file storage seems unstable, we need to repeat trying to save a file
-        // until we ensure it's actually saved.
-        // https://github.com/mbdavid/LiteDB/issues/1268
-        private void UploadFile(string fileId, string filename, Stream stream)
-        {
-            bool IsFiledUploaded()
-            {
-                if (_db.FileStorage.FindById(fileId) is LiteFileInfo file && file.Length > 0)
-                {
-                    using (LiteFileStream f = file.OpenRead())
-                    {
-                        var buffer = new byte[1];
-                        return f.Read(buffer, 0, 1) > 0;
-                    }
-                }
-
-                return false;
-            }
-
-            do
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(fileId, filename, stream);
-            }
-            while (!IsFiledUploaded());
-        }
-
         private void UploadFile(string fileId, string filename, byte[] bytes)
         {
             using (var stream = new MemoryStream(bytes))
             {
-                UploadFile(fileId, filename, stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                _db.FileStorage.Upload(fileId, filename, stream);
             }
         }
 
