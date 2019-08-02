@@ -86,7 +86,7 @@
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
 <li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and turned on by default.
 [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
-<li><code>BaseIndex.ContainsKey</code> became <code>abstract</code> method.  [[#TBD]]</li>
+<li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -114,9 +114,9 @@ and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> methods
 became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonce</code>
 sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
-<li><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code>
+<li><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code> methods
 became O(1) time complexity through omitting iteration and relying
-own retrieve implementations.  [[#TBD]]</li>
+own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
