@@ -17,6 +17,7 @@ To be released.
  -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
  -  `LiteDBStore()` constructor became to have a new option named `flush` and turned on by default.
     [[#387], [LiteDB #1268]]
+ -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
 
 ### Added interfaces
 
@@ -47,6 +48,9 @@ To be released.
     sequentially and treat them as pendings.  [[#365]]
  - `BlockChain<T>` became to evaluate `IBlockPolicy<T>.BlockAction` and set the
    state when a block is appended to the chain.  [[#319], [#367]]
+ -  `BlockSet<T>.ContainsKey()` and `TransactionSet<T>.ContainsKey()` methods
+    became O(1) time complexity through omitting iteration and relying
+    own retrieve implementations.  [[#390]]
 
 ### Bug fixes
 
@@ -80,6 +84,7 @@ To be released.
 [#386]: https://github.com/planetarium/libplanet/pull/386
 [#387]: https://github.com/planetarium/libplanet/pull/387
 [#389]: https://github.com/planetarium/libplanet/pull/389
+[#390]: https://github.com/planetarium/libplanet/pull/390
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 

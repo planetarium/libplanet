@@ -61,6 +61,11 @@ namespace Libplanet.Store
             return Store.IterateBlockHashes().Contains(item.Key);
         }
 
+        public override bool ContainsKey(HashDigest<SHA256> key)
+        {
+            return Store.GetBlock<T>(key) is Block<T>;
+        }
+
         public override bool Remove(HashDigest<SHA256> key)
         {
             return Store.DeleteBlock(key);
