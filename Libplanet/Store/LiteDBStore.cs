@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.Text;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
@@ -26,9 +27,11 @@ namespace Libplanet.Store
 
         private const string IndexColPrefix = "index_";
 
-        private const string StateRefIdPrefix = "stateref/";
+        private const string StateRefIdPrefix = "stateref_";
 
         private const string NonceIdPrefix = "nonce_";
+
+        private static HashAlgorithm namespaceHasher = MD5.Create();
 
         private readonly ILogger _logger;
 
@@ -101,11 +104,7 @@ namespace Libplanet.Store
         {
             _db.DropCollection(IndexCollection(@namespace).Name);
             _db.DropCollection($"{NonceIdPrefix}{@namespace}");
-
-            foreach (LiteFileInfo file in _db.FileStorage.Find($"{StateRefIdPrefix}{@namespace}"))
-            {
-                _db.FileStorage.Delete(file.Id);
-            }
+            _db.DropCollection(StateRefId(@namespace));
         }
 
         /// <inheritdoc/>
@@ -156,34 +155,11 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<Address> ListAddresses(string @namespace)
         {
-            var prefix = $"{StateRefIdPrefix}{@namespace}/";
-            foreach (LiteFileInfo fileInfo in _db.FileStorage.Find(prefix))
-            {
-                string fileId = fileInfo.Id;
-                int slashIndex = fileId.LastIndexOf('/');
-                if (slashIndex < 0)
-                {
-                    continue;
-                }
-
-                string addressHex = fileId.Substring(slashIndex + 1);
-                if (addressHex.Length < Address.Size * 2)
-                {
-                    continue;
-                }
-
-                Address address;
-                try
-                {
-                    address = new Address(addressHex);
-                }
-                catch (ArgumentException)
-                {
-                    continue;
-                }
-
-                yield return address;
-            }
+            string collId = StateRefId(@namespace);
+            return _db.GetCollection<StateRefDoc>(collId)
+                .Find(Query.All("Address", Query.Ascending))
+                .Select(doc => doc.Address)
+                .ToImmutableHashSet();
         }
 
         /// <inheritdoc/>
@@ -336,46 +312,18 @@ namespace Libplanet.Store
             string @namespace,
             Address address)
         {
-            var fileId = $"{StateRefIdPrefix}{@namespace}/{address.ToHex()}";
-            LiteFileInfo file = _db.FileStorage.FindById(fileId);
-
-            if (file is null || file.Length == 0)
-            {
-                yield break;
-            }
-
-            int hashSize = HashDigest<SHA256>.Size;
-            int stateReferenceSize = hashSize + sizeof(long);
-            if (file.Length % stateReferenceSize != 0)
-            {
-                throw new FileLoadException(
-                    $"State references file's size ({file.Length}) should be multiple of " +
-                    $"state reference entry size {stateReferenceSize})."
-                );
-            }
-
-            using (var stream = new MemoryStream())
-            {
-                // Note that a stream made by file.OpenRead() does not support
-                // .Seek() operation --- although it implements the interface,
-                // the method throws a NotSupportedException.
-                DownloadFile(file, stream);
-
-                var buffer = new byte[stateReferenceSize];
-                long position = stream.Seek(0, SeekOrigin.End);
-
-                for (var i = 1; position - buffer.Length >= 0; i++)
-                {
-                    position = stream.Seek(-buffer.Length * i, SeekOrigin.End);
-                    stream.Read(buffer, 0, buffer.Length);
-                    byte[] hashBytes = buffer.Take(hashSize).ToArray();
-                    long index = BitConverter.ToInt64(buffer, hashSize);
-                    yield return Tuple.Create(
-                        new HashDigest<SHA256>(hashBytes),
-                        index
-                    );
-                }
-            }
+            string collId = StateRefId(@namespace);
+            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+            string addressString = address.ToHex().ToLower();
+            IEnumerable<StateRefDoc> stateRefs = coll.Find(
+                Query.And(
+                    Query.EQ("AddressString", addressString),
+                    Query.All("BlockIndex", Query.Descending)
+                )
+            );
+            return stateRefs
+                .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex))
+                .OrderByDescending(pair => pair.Item2);
         }
 
         /// <inheritdoc/>
@@ -384,37 +332,18 @@ namespace Libplanet.Store
             IImmutableSet<Address> addresses,
             Block<T> block)
         {
-            int hashSize = HashDigest<SHA256>.Size;
-            byte[] hashBytes = block.Hash.ToByteArray();
-            byte[] indexBytes = BitConverter.GetBytes(block.Index);
-
-            foreach (Address address in addresses)
-            {
-                string addrHex = address.ToHex();
-                var fileId = $"{StateRefIdPrefix}{@namespace}/{addrHex}";
-                if (!_db.FileStorage.Exists(fileId))
+            string collId = StateRefId(@namespace);
+            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+            coll.InsertBulk(
+                addresses.Select(addr => new StateRefDoc
                 {
-                    _db.FileStorage.Upload(
-                        fileId,
-                        addrHex,
-                        new MemoryStream());
-                }
-
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                using (var temp = new MemoryStream())
-                {
-                    DownloadFile(file, temp);
-                    temp.Seek(0, SeekOrigin.Begin);
-                    byte[] prev = temp.ToArray();
-
-                    using (LiteFileStream stream = file.OpenWrite())
-                    {
-                        stream.Write(prev, 0, prev.Length);
-                        stream.Write(hashBytes, 0, hashSize);
-                        stream.Write(indexBytes, 0, sizeof(long));
-                    }
-                }
-            }
+                    Address = addr,
+                    BlockIndex = block.Index,
+                    BlockHash = block.Hash,
+                })
+            );
+            coll.EnsureIndex("AddressString");
+            coll.EnsureIndex("BlockIndex");
         }
 
         /// <inheritdoc/>
@@ -424,59 +353,19 @@ namespace Libplanet.Store
             Block<T> branchPoint,
             IImmutableSet<Address> addressesToStrip)
         {
-            long branchPointIndex = branchPoint.Index;
-            List<LiteFileInfo> files =
-                _db.FileStorage
-                    .Find($"{StateRefIdPrefix}{srcNamespace}")
-                    .ToList();
+            string srcCollId = StateRefId(srcNamespace);
+            string dstCollId = StateRefId(destNamespace);
+            LiteCollection<StateRefDoc> srcColl = _db.GetCollection<StateRefDoc>(srcCollId),
+                                        dstColl = _db.GetCollection<StateRefDoc>(dstCollId);
 
-            if (!files.Any() && addressesToStrip.Any())
+            dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
+
+            if (dstColl.Count() < 1 && addressesToStrip.Any())
             {
                 throw new NamespaceNotFoundException(
                     srcNamespace,
-                    "The source namespace to be forked does not exist.");
-            }
-
-            foreach (LiteFileInfo srcFile in files)
-            {
-                string destId =
-                    $"{StateRefIdPrefix}{destNamespace}/{srcFile.Filename}";
-                _db.FileStorage.Upload(
-                    destId,
-                    srcFile.Filename,
-                    new MemoryStream());
-
-                LiteFileInfo destFile = _db.FileStorage.FindById(destId);
-                using (LiteFileStream srcStream = srcFile.OpenRead())
-                using (LiteFileStream destStream = destFile.OpenWrite())
-                {
-                    while (srcStream.Position < srcStream.Length)
-                    {
-                        var hashBytes = new byte[HashDigest<SHA256>.Size];
-                        var indexBytes = new byte[sizeof(long)];
-
-                        srcStream.Read(hashBytes, 0, hashBytes.Length);
-                        srcStream.Read(indexBytes, 0, indexBytes.Length);
-
-                        long currentIndex =
-                            BitConverter.ToInt64(indexBytes, 0);
-
-                        if (currentIndex <= branchPointIndex)
-                        {
-                            destStream.Write(hashBytes, 0, hashBytes.Length);
-                            destStream.Write(indexBytes, 0, indexBytes.Length);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                if (destFile.Length == 0)
-                {
-                    _db.FileStorage.Delete(destId);
-                }
+                    "The source namespace to be forked does not exist."
+                );
             }
         }
 
@@ -572,6 +461,13 @@ namespace Libplanet.Store
             return $"state/{blockHash}";
         }
 
+        private string StateRefId(string @namespace)
+        {
+            string ns =
+                ByteUtil.Hex(namespaceHasher.ComputeHash(Encoding.UTF8.GetBytes(@namespace)));
+            return $"{StateRefIdPrefix}{ns}";
+        }
+
         private IEnumerable<Transaction<T>> GetTransactions<T>(
             IEnumerable transactions
         )
@@ -605,6 +501,46 @@ namespace Libplanet.Store
         private LiteCollection<HashDoc> IndexCollection(string @namespace)
         {
             return _db.GetCollection<HashDoc>($"{IndexColPrefix}{@namespace}");
+        }
+
+        internal class StateRefDoc
+        {
+            public string AddressString { get; set; }
+
+            public long BlockIndex { get; set; }
+
+            public string BlockHashString { get; set; }
+
+            [BsonId]
+            public string Id => AddressString + BlockHashString;
+
+            [BsonIgnore]
+            public Address Address
+            {
+                get
+                {
+                    return new Address(AddressString);
+                }
+
+                set
+                {
+                    AddressString = value.ToHex().ToLower();
+                }
+            }
+
+            [BsonIgnore]
+            public HashDigest<SHA256> BlockHash
+            {
+                get
+                {
+                    return HashDigest<SHA256>.FromString(BlockHashString);
+                }
+
+                set
+                {
+                    BlockHashString = value.ToString();
+                }
+            }
         }
 
         private class HashDoc
