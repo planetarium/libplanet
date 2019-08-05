@@ -18,6 +18,8 @@ To be released.
  -  `LiteDBStore()` constructor became to have a new option named `flush` and turned on by default.
     [[#387], [LiteDB #1268]]
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
+ -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
+    became to long type.  [[#396], [#399]]
 
 ### Added interfaces
 
@@ -53,6 +55,8 @@ To be released.
     own retrieve implementations.  [[#390]]
  -  The way `LiteDBStore` stores state references became efficient,
     but the file-level backward compatibility was also broken.  [[#395], [#398]]
+ -  `PreloadAsync` became to report total block download status instead of
+    chunked download status.  [[#396], [#399]]
 
 ### Bug fixes
 
@@ -88,7 +92,9 @@ To be released.
 [#389]: https://github.com/planetarium/libplanet/pull/389
 [#390]: https://github.com/planetarium/libplanet/pull/390
 [#395]: https://github.com/planetarium/libplanet/issues/395
+[#396]: https://github.com/planetarium/libplanet/issues/396
 [#398]: https://github.com/planetarium/libplanet/pull/398
+[#399]: https://github.com/planetarium/libplanet/pull/399
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 

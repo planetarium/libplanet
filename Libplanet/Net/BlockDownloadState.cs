@@ -11,12 +11,12 @@ namespace Libplanet.Net
         /// <summary>
         /// Total number of blocks to receive in the current batch.
         /// </summary>
-        public int TotalBlockCount { get; internal set; }
+        public long TotalBlockCount { get; internal set; }
 
         /// <summary>
         /// The number of currently received blocks.
         /// </summary>
-        public int ReceivedBlockCount { get; internal set; }
+        public long ReceivedBlockCount { get; internal set; }
 
         /// <summary>
         /// The hash digest of the block just received.

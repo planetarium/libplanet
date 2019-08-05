@@ -881,10 +881,15 @@ namespace Libplanet.Net
             if (longestPeerWithLength != null &&
                 !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
             {
+                long currentTipIndex = _blockChain.Tip?.Index ?? -1;
+                long peerIndex = longestPeerWithLength?.Item2 ?? -1;
+                long totalBlockCount = peerIndex - currentTipIndex;
+
                 BlockChain<T> synced = await SyncPreviousBlocksAsync(
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
+                    totalBlockCount,
                     evaluateActions: render,
                     cancellationToken: cancellationToken
                 );
@@ -1172,6 +1177,7 @@ namespace Libplanet.Net
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
         )
@@ -1239,6 +1245,7 @@ namespace Libplanet.Net
                         synced,
                         stop,
                         progress,
+                        totalBlockCount,
                         evaluateActions,
                         cancellationToken
                     );
@@ -1293,6 +1300,7 @@ namespace Libplanet.Net
                     peer,
                     oldest.PreviousHash,
                     null,
+                    blocks.Count,
                     evaluateActions: true,
                     cancellationToken: cancellationToken
                 );
@@ -1326,10 +1334,12 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
         )
         {
+            long receivedBlockCount = 0;
             while (!cancellationToken.IsCancellationRequested)
             {
                 BlockLocator locator = blockChain.GetBlockLocator();
@@ -1349,7 +1359,6 @@ namespace Libplanet.Net
                 }
 
                 int hashCount = hashesAsArray.Count();
-                int received = 0;
                 _logger.Debug(
                     $"Required hashes (count: {hashCount}). " +
                     $"(tip: {blockChain.Tip?.Hash})"
@@ -1371,12 +1380,11 @@ namespace Libplanet.Net
                             evaluateActions: evaluateActions,
                             renderActions: false
                         );
-
-                        received++;
+                        receivedBlockCount++;
                         progress?.Report(new BlockDownloadState
                         {
-                            TotalBlockCount = hashCount,
-                            ReceivedBlockCount = received,
+                            TotalBlockCount = totalBlockCount,
+                            ReceivedBlockCount = receivedBlockCount,
                             ReceivedBlockHash = block.Hash,
                         });
                         _logger.Debug($"Block[{block.Hash}] is appended.");
