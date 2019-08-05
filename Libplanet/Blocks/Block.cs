@@ -104,7 +104,7 @@ namespace Libplanet.Blocks
             // FIXME: We need to fix this to solve
             // https://github.com/planetarium/libplanet/issues/244.
             ImmutableArray<Transaction<T>> orderedTxs =
-                transactions.OrderBy(tx => tx.Id.ToHex()).ToImmutableArray();
+                transactions.OrderBy(tx => tx.Id).ToImmutableArray();
 
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
@@ -396,17 +396,17 @@ namespace Libplanet.Blocks
 
             if (Transactions.Any())
             {
-                string beforeTxId = Transactions.First().Id.ToString();
+                TxId beforeTxId = Transactions.First().Id;
                 foreach (Transaction<T> tx in Transactions.Skip(1))
                 {
-                    if (beforeTxId.CompareTo(tx.Id.ToString()) > 0)
+                    if (beforeTxId.CompareTo(tx.Id) > 0)
                     {
                         throw new InvalidBlockTransactionsException(
                             $"transactions of {Hash} aren't sorted by Transaction<T>.Id"
                         );
                     }
 
-                    beforeTxId = tx.Id.ToString();
+                    beforeTxId = tx.Id;
                 }
             }
 
