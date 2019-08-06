@@ -80,12 +80,13 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
+<li>Added <code>IStore.GetBlockIndex()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</li>
 <li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
 <code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
 and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
-<li>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
-<li>Removed the type parameter of <code>ActionEvaluation</code>.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
-<li><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and turned on by default.
+[<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
+<li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -98,12 +99,11 @@ Note that this option is intended to be exposed to end users through
 a feasible user interface so that they can decide whom to trust
 for themselves.
 [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
-<li>Added <code>StoreExtension.ListAllStateReferences(this IStore, string)</code> extension
-method.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</li>
+<li>Added <code>StoreExtension.ListAllStateReferences(this IStore, string, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> extension method.
+[<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>, <a href="https://github.com/planetarium/libplanet/issues/384">#384</a>, <a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</li>
 <li><code>Address</code> class became to implement <code>IComparable&lt;Address&gt;</code> and
 <code>IComparable</code> interfaces.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</li>
-<li><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;?, IImmutableSet&lt;Address&gt;, CancellationToken)</code> will report progresses per each phases
-through <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.BlockHashes</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/389">#389</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -114,19 +114,21 @@ and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> methods
 became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonce</code>
 sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
-<li><code>BlockChain&lt;T&gt;</code> became to evaluate <code>IBlockPolicy&lt;T&gt;.BlockAction</code> and set the
-state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code> methods
+became O(1) time complexity through omitting iteration and relying
+own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
+<li>The way <code>LiteDBStore</code> stores state references became efficient,
+but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the <code>LiteDBStore.IterateStagedTransactionIds()</code> returns
 duplicated transaction ids.  [<a href="https://github.com/planetarium/libplanet/pull/366">#366</a>]</li>
-<li>Fixed a bug that <code>NullReferenceException</code> occurred when serializing default
-<code>Address</code>.  [<a href="https://github.com/planetarium/libplanet/pull/369">#369</a>]</li>
-<li>Removed unnecessary mutex in <code>Swarm&lt;T&gt;</code> to avoid continuous delays in peer
-registration in some situations.  [<a href="https://github.com/planetarium/libplanet/pull/375">#375</a>]</li>
-<li>Fixed a bug that <code>TurnClient</code> had thrown <code>KeyNotFoundException</code> and
-<code>IOException</code> on startup.  [<a href="https://github.com/planetarium/libplanet/issues/377">#377</a>, <a href="https://github.com/planetarium/libplanet/pull/378">#378</a>]</li>
+<li>Fixed a <code>LiteDBStore</code> bug that blocks or transactions had got corrupted
+sometimes.  Instead, <code>LiteDBStore.GetTransaction()</code> became possible to
+return <code>null</code> even for already stored transactions, and for that case,
+a warning will be logged through Serilog.
+[<a href="https://github.com/planetarium/libplanet/pull/386">#386</a>, <a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
