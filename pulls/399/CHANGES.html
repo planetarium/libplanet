@@ -88,7 +88,7 @@ and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium
 [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 <li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 <li><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
-became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+became to long type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -119,6 +119,8 @@ sequentially and treat them as pendings.  [<a href="https://github.com/planetari
 <li><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code> methods
 became O(1) time complexity through omitting iteration and relying
 own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
+<li>The way <code>LiteDBStore</code> stores state references became efficient,
+but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</li>
 <li><code>PreloadAsync</code> became to report total block download status instead of
 chunked download status.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
 </ul>
