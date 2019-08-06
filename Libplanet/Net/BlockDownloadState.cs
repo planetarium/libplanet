@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
@@ -6,8 +7,13 @@ namespace Libplanet.Net
     /// A container that indicates the progress of a block download.
     /// </summary>
     [Equals]
-    public class BlockDownloadState
+    public class BlockDownloadState : PreloadState
     {
+        public BlockDownloadState()
+            : base(PreloadPhase.BlockDownload, 3)
+        {
+        }
+
         /// <summary>
         /// Total number of blocks to receive in the current batch.
         /// </summary>

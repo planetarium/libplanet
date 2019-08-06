@@ -398,7 +398,7 @@ namespace Libplanet.Net
         /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(IProgress{BlockDownloadState}, IImmutableSet{Address}, CancellationToken)"
+        /// "PreloadAsync(IProgress{PreloadState}, IImmutableSet{Address}, CancellationToken)"
         /// /> method too.</remarks>
         public async Task StartAsync(
             TimeSpan distributeInterval,
@@ -542,7 +542,7 @@ namespace Libplanet.Net
         /// blocks use <see cref="StartAsync(TimeSpan, TimeSpan, CancellationToken)"/> method
         /// instead.</remarks>
         public Task PreloadAsync(
-            IProgress<BlockDownloadState> progress = null,
+            IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
@@ -557,7 +557,7 @@ namespace Libplanet.Net
 
         internal async Task PreloadAsync(
             bool render,
-            IProgress<BlockDownloadState> progress = null,
+            IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
@@ -600,8 +600,8 @@ namespace Libplanet.Net
                     (pair.Item1, _blockChain[pair.Item2.Value].Hash)
                 );
 
-            // FIXME: This method should take an IProcess<T>.
             bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                progress,
                 trustedPeersWithTip.ToImmutableList(),
                 initialTip?.Hash,
                 cancellationToken
@@ -613,6 +613,7 @@ namespace Libplanet.Net
                     initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index + 1;
+                int count = 0, totalCount = _blockChain.BlockHashes.Count() - (int)initHeight;
                 foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
                     Block<T> block = _blockChain.Blocks[hash];
@@ -622,6 +623,12 @@ namespace Libplanet.Net
                     }
 
                     _blockChain.ExecuteActions(block, render: false);
+                    progress?.Report(new ActionExecutionState()
+                    {
+                        TotalBlockCount = totalCount,
+                        ExecutedBlockCount = ++count,
+                        ExecutedBlockHash = block.Hash,
+                    });
                 }
             }
         }
@@ -901,6 +908,7 @@ namespace Libplanet.Net
         }
 
         private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
+            IProgress<PreloadState> progress,
             IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
             HashDigest<SHA256>? baseBlockHash,
             CancellationToken cancellationToken)
@@ -953,6 +961,7 @@ namespace Libplanet.Net
                             IStore store = BlockChain.Store;
                             string ns = BlockChain.Id.ToString();
 
+                            int count = 0, totalCount = recentStates.StateReferences.Count;
                             _logger.Debug("Starts to store state refs received from {0}.", peer);
                             foreach (var pair in recentStates.StateReferences)
                             {
@@ -962,12 +971,27 @@ namespace Libplanet.Net
                                     Block<T> block = store.GetBlock<T>(bHash);
                                     store.StoreStateReference(ns, address, block);
                                 }
+
+                                progress?.Report(new StateReferenceDownloadState()
+                                {
+                                    TotalStateReferenceCount = totalCount,
+                                    ReceivedStateReferenceCount = ++count,
+                                    ReceivedAddress = pair.Key,
+                                });
                             }
 
+                            count = 0;
+                            totalCount = recentStates.BlockStates.Count;
                             _logger.Debug("Starts to store block states received from {0}.", peer);
                             foreach (var pair in recentStates.BlockStates)
                             {
                                 store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                                progress?.Report(new BlockStateDownloadState()
+                                {
+                                    TotalBlockStateCount = totalCount,
+                                    ReceivedBlockStateCount = ++count,
+                                    ReceivedBlockHash = pair.Key,
+                                });
                             }
                         }
                         finally
