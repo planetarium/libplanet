@@ -128,6 +128,7 @@ namespace Libplanet.Blockchain
 
         internal IStore Store { get; }
 
+        // It's virtually a constant in production, but used for unit tests.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
         /// <inheritdoc/>
