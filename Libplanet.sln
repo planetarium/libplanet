@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet", "Libplanet\Libp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Tests", "Libplanet.Tests\Libplanet.Tests.csproj", "{3BA7D9BE-EBBF-432E-9880-0E2D2C17FCF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Benchmarks", "Libplanet.Benchmarks\Libplanet.Benchmarks.csproj", "{E010FB5E-0D68-4AF7-B632-5DB6B902F158}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{5C2B23E2-C286-412D-ADE1-F6796B7083DE}.Release|x64.Build.0 = Release|Any CPU
 		{5C2B23E2-C286-412D-ADE1-F6796B7083DE}.Release|x86.ActiveCfg = Release|Any CPU
 		{5C2B23E2-C286-412D-ADE1-F6796B7083DE}.Release|x86.Build.0 = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|x64.Build.0 = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Debug|x86.Build.0 = Debug|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x64.ActiveCfg = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x64.Build.0 = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x86.ActiveCfg = Release|Any CPU
+		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

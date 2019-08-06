@@ -170,3 +170,24 @@ jobs:
   - template: .azure-pipelines/windows-net461.yml
     parameters:
       configuration: $(configuration)
+
+- job: Windows_NETCore_Benchmark
+  pool:
+    vmImage: windows-2019
+  steps:
+  - task: UseDotNet@2
+    displayName: Install .NET Core SDK
+    inputs:
+      packageType: sdk
+      version: 2.2.203
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+  - task: CmdLine@2
+    displayName: dotnet --version
+    inputs:
+      script: dotnet --version
+  - task: CmdLine@2
+    displayName: Benchmarks
+    inputs:
+      script: |
+        pushd Libplanet.Benchmarks
+        dotnet run -c Release -- -f *

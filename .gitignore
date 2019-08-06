@@ -30,6 +30,7 @@ _UpgradeReport_Files/
 [Pp]ackages/
 mono_crash.*.json
 FodyWeavers.xsd
+BenchmarkDotNet.Artifacts
 
 Thumbs.db
 Desktop.ini
