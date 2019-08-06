@@ -46,6 +46,8 @@ To be released.
  -  `BlockSet<T>.ContainsKey()` and `TransactionSet<T>.ContainsKey()` methods
     became O(1) time complexity through omitting iteration and relying
     own retrieve implementations.  [[#390]]
+ -  The way `LiteDBStore` stores state references became efficient,
+    but the file-level backward compatibility was also broken.  [[#395], [#398]]
 
 ### Bug fixes
 
@@ -68,6 +70,8 @@ To be released.
 [#387]: https://github.com/planetarium/libplanet/pull/387
 [#389]: https://github.com/planetarium/libplanet/pull/389
 [#390]: https://github.com/planetarium/libplanet/pull/390
+[#395]: https://github.com/planetarium/libplanet/issues/395
+[#398]: https://github.com/planetarium/libplanet/pull/398
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
