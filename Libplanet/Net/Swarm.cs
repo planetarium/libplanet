@@ -612,7 +612,7 @@ namespace Libplanet.Net
                 long initHeight =
                     initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
-                    : initialTip.Index;
+                    : initialTip.Index + 1;
                 foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
                     Block<T> block = _blockChain.Blocks[hash];
