@@ -1008,8 +1008,8 @@ namespace Libplanet.Tests.Net
                 minerChain.MineBlock(_fx1.Address1);
             }
 
-            var actualStates = new List<BlockDownloadState>();
-            var progress = new Progress<BlockDownloadState>(state =>
+            var actualStates = new List<PreloadState>();
+            var progress = new Progress<PreloadState>(state =>
             {
                 lock (actualStates)
                 {
@@ -1032,7 +1032,7 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
 
-                BlockDownloadState[] expectedStates = minerChain.Select((b, i) =>
+                PreloadState[] expectedStates = minerChain.Select((b, i) =>
                 {
                     return new BlockDownloadState
                     {
@@ -1041,7 +1041,15 @@ namespace Libplanet.Tests.Net
                         ReceivedBlockCount = i + 1,
                     };
                 }).ToArray();
-                expectedStates[10].TotalBlockCount = 11;
+                (expectedStates[10] as BlockDownloadState).TotalBlockCount = 11;
+
+                expectedStates = expectedStates.Concat(minerChain.Select(
+                    (b, i) => new ActionExecutionState()
+                    {
+                        ExecutedBlockHash = b.Hash,
+                        TotalBlockCount = 11,
+                        ExecutedBlockCount = i + 1,
+                    })).ToArray();
 
                 Assert.Equal(expectedStates, actualStates);
             }
