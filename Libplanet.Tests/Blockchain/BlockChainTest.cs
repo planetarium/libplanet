@@ -465,11 +465,12 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     stop: block2.Hash));
+
+            _blockChain.FindNextHashesChunkSize = 2;
             Assert.Equal(
                 new[] { block0.Hash, block1.Hash },
                 _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash }),
-                    count: 2));
+                    new BlockLocator(new[] { block0.Hash })));
         }
 
         [Fact]

@@ -1022,6 +1022,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
+                minerChain.FindNextHashesChunkSize = 2;
                 await receiverSwarm.PreloadAsync(progress);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
