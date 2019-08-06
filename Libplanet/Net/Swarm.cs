@@ -311,12 +311,9 @@ namespace Libplanet.Net
                             $"DialPeerAsync({peer}) failed. ignored."
                         );
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
-                        _logger.Error(
-                            e,
-                            $"DialPeerAsync({peer}) failed. ignored."
-                        );
+                        _logger.Warning($"DialPeerAsync({peer}) timeout. ignored.");
                     }
                     catch (DifferentAppProtocolVersionException e)
                     {
@@ -347,19 +344,11 @@ namespace Libplanet.Net
                     _removedPeers[AsPeer] = DateTimeOffset.UtcNow;
                     DistributeDelta(false);
 
-                    if (_broadcastQueue.Any() || _replyQueue.Any())
-                    {
-                        await Task.Delay(_linger, cancellationToken);
-                    }
+                    await Task.Delay(_linger);
 
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
-
-                    if (_poller.IsRunning)
-                    {
-                        _poller.Dispose();
-                    }
 
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
@@ -591,7 +580,7 @@ namespace Libplanet.Net
                 render
             );
 
-            if (_blockChain.Tip is null)
+            if (_blockChain.Tip is null || render)
             {
                 // If there is no blocks in the network (or no consensus at least)
                 // it doesn't need to receive states from other peers at all.
@@ -614,16 +603,19 @@ namespace Libplanet.Net
             // FIXME: This method should take an IProcess<T>.
             bool received = await SyncRecentStatesFromTrustedPeersAsync(
                 trustedPeersWithTip.ToImmutableList(),
+                initialTip?.Hash,
                 cancellationToken
             );
 
             if (!received)
             {
-                long initHeight = initialTip is null || _blockChain[initialTip.Index] != initialTip
+                long initHeight =
+                    initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
-                    : initialTip.Index;
-                foreach (Block<T> block in _blockChain.Skip((int)initHeight))
+                    : initialTip.Index + 1;
+                foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
+                    Block<T> block = _blockChain.Blocks[hash];
                     if (block.Index < initHeight)
                     {
                         continue;
@@ -889,10 +881,15 @@ namespace Libplanet.Net
             if (longestPeerWithLength != null &&
                 !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
             {
+                long currentTipIndex = _blockChain.Tip?.Index ?? -1;
+                long peerIndex = longestPeerWithLength?.Item2 ?? -1;
+                long totalBlockCount = peerIndex - currentTipIndex;
+
                 BlockChain<T> synced = await SyncPreviousBlocksAsync(
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
+                    totalBlockCount,
                     evaluateActions: render,
                     cancellationToken: cancellationToken
                 );
@@ -905,6 +902,7 @@ namespace Libplanet.Net
 
         private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
             IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
+            HashDigest<SHA256>? baseBlockHash,
             CancellationToken cancellationToken)
         {
             _logger.Debug(
@@ -913,7 +911,7 @@ namespace Libplanet.Net
             );
             foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
             {
-                var request = new GetRecentStates(blockHash);
+                var request = new GetRecentStates(baseBlockHash, blockHash);
                 _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
@@ -1042,7 +1040,6 @@ namespace Libplanet.Net
                 catch (Exception e)
                 {
                     _logger.Error(e, "An unexpected exception occured during BroadcastTxAsync()");
-                    throw;
                 }
             }
         }
@@ -1180,6 +1177,7 @@ namespace Libplanet.Net
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
         )
@@ -1247,6 +1245,7 @@ namespace Libplanet.Net
                         synced,
                         stop,
                         progress,
+                        totalBlockCount,
                         evaluateActions,
                         cancellationToken
                     );
@@ -1301,6 +1300,7 @@ namespace Libplanet.Net
                     peer,
                     oldest.PreviousHash,
                     null,
+                    blocks.Count,
                     evaluateActions: true,
                     cancellationToken: cancellationToken
                 );
@@ -1334,10 +1334,12 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
+            long totalBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
         )
         {
+            long receivedBlockCount = 0;
             while (!cancellationToken.IsCancellationRequested)
             {
                 BlockLocator locator = blockChain.GetBlockLocator();
@@ -1357,7 +1359,6 @@ namespace Libplanet.Net
                 }
 
                 int hashCount = hashesAsArray.Count();
-                int received = 0;
                 _logger.Debug(
                     $"Required hashes (count: {hashCount}). " +
                     $"(tip: {blockChain.Tip?.Hash})"
@@ -1379,12 +1380,11 @@ namespace Libplanet.Net
                             evaluateActions: evaluateActions,
                             renderActions: false
                         );
-
-                        received++;
+                        receivedBlockCount++;
                         progress?.Report(new BlockDownloadState
                         {
-                            TotalBlockCount = hashCount,
-                            ReceivedBlockCount = received,
+                            TotalBlockCount = totalBlockCount,
+                            ReceivedBlockCount = receivedBlockCount,
                             ReceivedBlockHash = block.Hash,
                         });
                         _logger.Debug($"Block[{block.Hash}] is appended.");
@@ -1488,14 +1488,15 @@ namespace Libplanet.Net
 
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
-            HashDigest<SHA256> blockHash = getRecentStates.BlockHash;
+            HashDigest<SHA256>? @base = getRecentStates.BaseBlockHash;
+            HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>
             > blockStates = null;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
 
-            if (_blockChain.Blocks.ContainsKey(blockHash))
+            if (_blockChain.Blocks.ContainsKey(target))
             {
                 ReaderWriterLockSlim rwlock = _blockChain._rwlock;
                 rwlock.EnterReadLock();
@@ -1507,7 +1508,11 @@ namespace Libplanet.Net
                     IStore store = _blockChain.Store;
                     string ns = _blockChain.Id.ToString();
 
-                    stateRefs = store.ListAllStateReferences(ns);
+                    stateRefs = store.ListAllStateReferences(
+                        ns,
+                        onlyAfter: @base,
+                        ignoreAfter: target
+                    );
 
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
@@ -1526,7 +1531,7 @@ namespace Libplanet.Net
                 }
             }
 
-            var reply = new RecentStates(blockHash, blockStates, stateRefs)
+            var reply = new RecentStates(target, blockStates, stateRefs)
             {
                 Identity = getRecentStates.Identity,
             };
@@ -1930,7 +1935,6 @@ namespace Libplanet.Net
             catch (Exception ex)
             {
                 _logger.Error(ex, "An unexpected exception occured during ReceiveMessage().");
-                throw;
             }
         }
 
@@ -1942,11 +1946,15 @@ namespace Libplanet.Net
             // FIXME Should replace with PUB/SUB model.
             try
             {
-                Task.WhenAll(
-                    _dealers.Values.Select(s =>
-                        Task.Run(() => s.SendMultipartMessage(netMQMessage))
-                    )
-                ).Wait();
+                // FIXME The current timeout value(1 sec) is arbitrary.
+                // We should make this configurable or fix it to an unneeded structure.
+                _dealers.Values.ParallelForEachAsync(async s =>
+                {
+                    await Task.Run(() =>
+                    {
+                        s.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage);
+                    });
+                });
             }
             catch (TimeoutException ex)
             {
@@ -1968,8 +1976,17 @@ namespace Libplanet.Net
             Message msg = e.Queue.Dequeue();
             _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey);
-            _router.SendMultipartMessage(netMQMessage);
-            _logger.Debug($"Replied.");
+
+            // FIXME The current timeout value(1 sec) is arbitrary.
+            // We should make this configurable or fix it to an unneeded structure.
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
+            {
+                _logger.Debug($"Message[{msg}] replied.");
+            }
+            else
+            {
+                _logger.Debug($"Message[{msg}] replying failed.");
+            }
         }
 
         private void CheckStarted()

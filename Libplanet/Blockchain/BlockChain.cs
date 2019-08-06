@@ -91,11 +91,45 @@ namespace Libplanet.Blockchain
             get; private set;
         }
 
+        /// <summary>
+        /// All <see cref="Block{T}.Hash"/>es in the current index.  The genesis block's hash goes
+        /// first, and the tip goes last.
+        /// </summary>
+        public IEnumerable<HashDigest<SHA256>> BlockHashes
+        {
+            get
+            {
+                try
+                {
+                    _rwlock.EnterUpgradeableReadLock();
+
+                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndex(
+                        Id.ToString()
+                    );
+
+                    // NOTE: The reason why this does not simply return indices, but iterates over
+                    // indices and yields hashes step by step instead, is that we need to ensure
+                    // the read lock held until the whole iteration completes.
+                    foreach (HashDigest<SHA256> hash in indices)
+                    {
+                        yield return hash;
+                    }
+                }
+                finally
+                {
+                    _rwlock.ExitUpgradeableReadLock();
+                }
+            }
+        }
+
         /// <inheritdoc/>
         int IReadOnlyCollection<Block<T>>.Count =>
             checked((int)Store.CountIndex(Id.ToString()));
 
         internal IStore Store { get; }
+
+        // It's virtually a constant in production, but used for unit tests.
+        internal int FindNextHashesChunkSize { get; set; } = 500;
 
         /// <inheritdoc/>
         public Block<T> this[int index] => this[(long)index];
@@ -141,22 +175,7 @@ namespace Libplanet.Blockchain
 
         public IEnumerator<Block<T>> GetEnumerator()
         {
-            try
-            {
-                _rwlock.EnterUpgradeableReadLock();
-
-                IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
-                    Id.ToString()
-                );
-                foreach (HashDigest<SHA256> hash in indexes)
-                {
-                    yield return Blocks[hash];
-                }
-            }
-            finally
-            {
-                _rwlock.ExitUpgradeableReadLock();
-            }
+            return BlockHashes.Select(hash => Blocks[hash]).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -759,9 +778,9 @@ namespace Libplanet.Blockchain
 
         internal IEnumerable<HashDigest<SHA256>> FindNextHashes(
             BlockLocator locator,
-            HashDigest<SHA256>? stop = null,
-            int count = 500)
+            HashDigest<SHA256>? stop = null)
         {
+            int count = FindNextHashesChunkSize;
             try
             {
                 _rwlock.EnterReadLock();

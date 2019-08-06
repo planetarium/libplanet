@@ -8,12 +8,18 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  Added `IStore.GetBlockIndex()` method.  [[#385]]
  -  `StoreExtension.LookupStateReference<T>()` method became to return
     `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
     and `Block<T>.Index`.  [[#350]]
  -  Added `IBlockPolicy<T>.BlockAction` property.  [[#319], [#367]]
  -  Removed the type parameter of `ActionEvaluation`.  [[#319], [#367]]
  -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
+ -  `LiteDBStore()` constructor became to have a new option named `flush` and turned on by default.
+    [[#387], [LiteDB #1268]]
+ -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
+ -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
+    became to `Int64` type.  [[#396], [#399]]
 
 ### Added interfaces
 
@@ -26,10 +32,12 @@ To be released.
     a feasible user interface so that they can decide whom to trust
     for themselves.
     [[#272], [#343]]
- -  Added `StoreExtension.ListAllStateReferences(this IStore, string)` extension
-    method.  [[#363]]
+ -  Added `StoreExtension.ListAllStateReferences(this IStore, string,
+    HashDigest<SHA256>?, HashDigest<SHA256>?)` extension method.
+    [[#363], [#384], [#385]]
  -  `Address` class became to implement `IComparable<Address>` and
     `IComparable` interfaces.  [[#363]]
+ -  Added `BlockChain<T>.BlockHashes` property.  [[#389]]
 
 ### Behavioral changes
 
@@ -42,6 +50,13 @@ To be released.
     sequentially and treat them as pendings.  [[#365]]
  - `BlockChain<T>` became to evaluate `IBlockPolicy<T>.BlockAction` and set the
    state when a block is appended to the chain.  [[#319], [#367]]
+ -  `BlockSet<T>.ContainsKey()` and `TransactionSet<T>.ContainsKey()` methods
+    became O(1) time complexity through omitting iteration and relying
+    own retrieve implementations.  [[#390]]
+ -  The way `LiteDBStore` stores state references became efficient,
+    but the file-level backward compatibility was also broken.  [[#395], [#398]]
+ -  `PreloadAsync` became to report total block download status instead of
+    chunked download status.  [[#396], [#399]]
 
 ### Bug fixes
 
@@ -53,6 +68,11 @@ To be released.
     registration in some situations.  [[#375]]
  -  Fixed a bug that `TurnClient` had thrown `KeyNotFoundException` and
     `IOException` on startup.  [[#377], [#378]]
+ -  Fixed a `LiteDBStore` bug that blocks or transactions had got corrupted
+    sometimes.  Instead, `LiteDBStore.GetTransaction()` became possible to
+    return `null` even for already stored transactions, and for that case,
+    a warning will be logged through Serilog.
+    [[#386], [#387], [LiteDB #1268]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -65,6 +85,17 @@ To be released.
 [#375]: https://github.com/planetarium/libplanet/pull/375
 [#377]: https://github.com/planetarium/libplanet/issues/377
 [#378]: https://github.com/planetarium/libplanet/pull/378
+[#384]: https://github.com/planetarium/libplanet/issues/384
+[#385]: https://github.com/planetarium/libplanet/pull/385
+[#386]: https://github.com/planetarium/libplanet/pull/386
+[#387]: https://github.com/planetarium/libplanet/pull/387
+[#389]: https://github.com/planetarium/libplanet/pull/389
+[#390]: https://github.com/planetarium/libplanet/pull/390
+[#395]: https://github.com/planetarium/libplanet/issues/395
+[#396]: https://github.com/planetarium/libplanet/issues/396
+[#398]: https://github.com/planetarium/libplanet/pull/398
+[#399]: https://github.com/planetarium/libplanet/pull/399
+[LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
 Version 0.4.1

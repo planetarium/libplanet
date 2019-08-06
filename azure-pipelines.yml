@@ -69,6 +69,12 @@ jobs:
   pool:
     vmImage: ubuntu-16.04
   steps:
+  - task: UseDotNet@2
+    displayName: Stick with .NET Core SDK version compatible to Mono toolchain
+    inputs:
+      packageType: sdk
+      version: 2.2.301  # See also: https://github.com/mono/mono/issues/13537
+      installationPath: $(Agent.ToolsDirectory)/dotnet
   - template: .azure-pipelines/mono.yml
     parameters:
       configuration: $(configuration)

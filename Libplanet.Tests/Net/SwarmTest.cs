@@ -91,10 +91,7 @@ namespace Libplanet.Tests.Net
                 s.StopAsync().Wait(DisposeTimeout);
             }
 
-            if (!(Type.GetType("Mono.Runtime") is null))
-            {
-                NetMQConfig.Cleanup(false);
-            }
+            NetMQConfig.Cleanup(false);
         }
 
         [Fact]
@@ -957,6 +954,47 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task InitialBlockDownloadStates()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            var key = new PrivateKey();
+            var address = key.PublicKey.ToAddress();
+
+            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "foo") });
+            minerChain.MineBlock(_fx1.Address1);
+
+            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "bar") });
+            minerChain.MineBlock(_fx1.Address1);
+
+            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "baz") });
+            minerChain.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await StartAsync(minerSwarm);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
+
+                var trustedStateValidators = new[] { minerSwarm.Address }.ToImmutableHashSet();
+
+                await receiverSwarm.PreloadAsync(trustedStateValidators: trustedStateValidators);
+                await receiverSwarm.PreloadAsync(true);
+                var states = receiverChain.GetStates(new[] { address });
+
+                Assert.Equal("foo,bar,baz", states[address]);
+                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+            }
+            finally
+            {
+                await minerSwarm.StopAsync();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task Preload()
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
@@ -984,6 +1022,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
+                minerChain.FindNextHashesChunkSize = 2;
                 await receiverSwarm.PreloadAsync(progress);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());

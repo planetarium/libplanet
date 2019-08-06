@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using System.Text;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -111,8 +112,42 @@ namespace Libplanet.Blocks
                 timestamp,
                 orderedTxs
             );
+
+            // Poor man' way to optimize stamp...
+            // FIXME: We need to rather reorganize the serialization layout.
+            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).ToBencodex(false, false);
+            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).ToBencodex(false, false);
+            int offset = 0;
+            while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
+            {
+                offset++;
+            }
+
+            const int nonceLength = 2;  // In Bencodex, empty bytes are represented as "0:".
+            byte[] stampPrefix = new byte[offset];
+            Array.Copy(emptyNonce, stampPrefix, stampPrefix.Length);
+            byte[] stampSuffix = new byte[emptyNonce.Length - offset - nonceLength];
+            Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
+
             Nonce nonce = Hashcash.Answer(
-                n => MakeBlock(n).ToBencodex(false, false),
+                n =>
+                {
+                    int nLen = n.ByteArray.Length;
+                    byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
+                    int totalLen =
+                        stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
+                    byte[] stamp = new byte[totalLen];
+                    Array.Copy(stampPrefix, stamp, stampPrefix.Length);
+                    int pos = stampPrefix.Length;
+                    Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
+                    pos += nLenStr.Length;
+                    stamp[pos] = 0x3a;  // ':'
+                    pos++;
+                    n.ByteArray.CopyTo(stamp, pos);
+                    pos += nLen;
+                    Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
+                    return stamp;
+                },
                 difficulty
             );
             return MakeBlock(nonce);

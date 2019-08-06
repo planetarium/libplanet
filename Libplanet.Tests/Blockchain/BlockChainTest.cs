@@ -115,12 +115,28 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanIterate()
+        public void Enumerate()
         {
             Assert.Empty(_blockChain);
-            _blockChain.MineBlock(_fx.Address1);
+            Assert.Empty(_blockChain.BlockHashes);
 
-            Assert.NotEmpty(_blockChain);
+            Block<DumbAction> genesis = _blockChain.MineBlock(_fx.Address1);
+            Assert.Equal(new Block<DumbAction>[] { genesis }, _blockChain);
+            Assert.Equal(new HashDigest<SHA256>[] { genesis.Hash }, _blockChain.BlockHashes);
+
+            Block<DumbAction> b1 = _blockChain.MineBlock(_fx.Address1);
+            Assert.Equal(new Block<DumbAction>[] { genesis, b1 }, _blockChain);
+            Assert.Equal(
+                new HashDigest<SHA256>[] { genesis.Hash, b1.Hash },
+                _blockChain.BlockHashes
+            );
+
+            Block<DumbAction> b2 = _blockChain.MineBlock(_fx.Address1);
+            Assert.Equal(new Block<DumbAction>[] { genesis, b1, b2 }, _blockChain);
+            Assert.Equal(
+                new HashDigest<SHA256>[] { genesis.Hash, b1.Hash, b2.Hash },
+                _blockChain.BlockHashes
+            );
         }
 
         [Fact]
@@ -449,11 +465,12 @@ namespace Libplanet.Tests.Blockchain
                 _blockChain.FindNextHashes(
                     new BlockLocator(new[] { block0.Hash }),
                     stop: block2.Hash));
+
+            _blockChain.FindNextHashesChunkSize = 2;
             Assert.Equal(
                 new[] { block0.Hash, block1.Hash },
                 _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash }),
-                    count: 2));
+                    new BlockLocator(new[] { block0.Hash })));
         }
 
         [Fact]
