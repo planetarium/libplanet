@@ -19,7 +19,7 @@ To be released.
     [[#387], [LiteDB #1268]]
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
  -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
-    became to long type.  [[#396], [#399]]
+    became to `Int64` type.  [[#396], [#399]]
 
 ### Added interfaces
 
