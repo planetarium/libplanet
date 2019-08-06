@@ -93,7 +93,7 @@ namespace Libplanet.Store
 
                 if (baseBlock is ValueTuple<HashDigest<SHA256>, long> baseIndex)
                 {
-                    refIndices = refIndices.TakeWhile(p => p.Item2 >= baseIndex.Item2);
+                    refIndices = refIndices.TakeWhile(p => p.Item2 > baseIndex.Item2);
                 }
 
                 ImmutableList<HashDigest<SHA256>> refs = refIndices
