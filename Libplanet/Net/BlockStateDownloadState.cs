@@ -9,11 +9,6 @@ namespace Libplanet.Net
     [Equals]
     public class BlockStateDownloadState : PreloadState
     {
-        public BlockStateDownloadState()
-            : base(PreloadPhase.BlockStatesDownload, 3)
-        {
-        }
-
         /// <summary>
         /// Total number of block states to receive in the current batch.
         /// </summary>
@@ -28,5 +23,8 @@ namespace Libplanet.Net
         /// The blcok hash of the states just received.
         /// </summary>
         public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
+
+        /// <inheritdoc />
+        public override int CurrentPhase => 3;
     }
 }

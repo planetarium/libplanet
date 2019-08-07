@@ -7,11 +7,6 @@ namespace Libplanet.Net
     /// </summary>
     public class StateReferenceDownloadState : PreloadState
     {
-        public StateReferenceDownloadState()
-            : base(PreloadPhase.StateReferenceDownload, 3)
-        {
-        }
-
         /// <summary>
         /// Total number of state references to receive in the current batch.
         /// </summary>
@@ -26,5 +21,8 @@ namespace Libplanet.Net
         /// The address of the state references just received.
         /// </summary>
         public Address ReceivedAddress { get; internal set; }
+
+        /// <inheritdoc />
+        public override int CurrentPhase => 2;
     }
 }

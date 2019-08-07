@@ -9,11 +9,6 @@ namespace Libplanet.Net
     [Equals]
     public class ActionExecutionState : PreloadState
     {
-        public ActionExecutionState()
-            : base(PreloadPhase.BlockEvaluate, 4)
-        {
-        }
-
         /// <summary>
         /// Total number of blocks to execute in the current batch.
         /// </summary>
@@ -28,5 +23,8 @@ namespace Libplanet.Net
         /// The hash digest of the block just executed.
         /// </summary>
         public HashDigest<SHA256> ExecutedBlockHash { get; internal set; }
+
+        /// <inheritdoc />
+        public override int CurrentPhase => 4;
     }
 }
