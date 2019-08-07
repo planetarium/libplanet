@@ -943,7 +943,7 @@ namespace Libplanet.Net
                     Message parsedMessage = Message.Parse(reply, reply: true);
                     if (parsedMessage is RecentStates recentStates && !recentStates.Missing)
                     {
-                        ReaderWriterLockSlim rwlock = BlockChain._rwlock;
+                        ReaderWriterLockSlim rwlock = BlockChain._indexLock;
                         rwlock.EnterWriteLock();
                         try
                         {
@@ -1500,7 +1500,7 @@ namespace Libplanet.Net
 
             if (_blockChain.Blocks.ContainsKey(target))
             {
-                ReaderWriterLockSlim rwlock = _blockChain._rwlock;
+                ReaderWriterLockSlim rwlock = _blockChain._indexLock;
                 rwlock.EnterReadLock();
                 try
                 {

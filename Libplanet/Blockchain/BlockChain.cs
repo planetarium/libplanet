@@ -20,13 +20,14 @@ namespace Libplanet.Blockchain
     public class BlockChain<T> : IReadOnlyList<Block<T>>
         where T : IAction, new()
     {
-        // FIXME: The _rwlock field should be private.
+        // FIXME: The _indexLock field should be private.
         [SuppressMessage(
             "StyleCop.CSharp.OrderingRules",
             "SA1401:FieldsMustBePrivate",
             Justification = "Temporary visibility.")]
-        internal readonly ReaderWriterLockSlim _rwlock;
-        private readonly object _txLock;
+        internal readonly ReaderWriterLockSlim _indexLock;
+
+        private readonly object _txNonceLock;
 
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(policy, store, GetCanonicalChain(store) ?? Guid.NewGuid())
@@ -41,13 +42,13 @@ namespace Libplanet.Blockchain
             Blocks = new BlockSet<T>(store);
             Transactions = new TransactionSet<T>(store);
 
-            _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-            _txLock = new object();
+            _indexLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            _txNonceLock = new object();
         }
 
         ~BlockChain()
         {
-            _rwlock?.Dispose();
+            _indexLock?.Dispose();
         }
 
         public IBlockPolicy<T> Policy { get; }
@@ -101,7 +102,7 @@ namespace Libplanet.Blockchain
             {
                 try
                 {
-                    _rwlock.EnterUpgradeableReadLock();
+                    _indexLock.EnterUpgradeableReadLock();
 
                     IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndex(
                         Id.ToString()
@@ -117,7 +118,7 @@ namespace Libplanet.Blockchain
                 }
                 finally
                 {
-                    _rwlock.ExitUpgradeableReadLock();
+                    _indexLock.ExitUpgradeableReadLock();
                 }
             }
         }
@@ -140,7 +141,7 @@ namespace Libplanet.Blockchain
             {
                 try
                 {
-                    _rwlock.EnterReadLock();
+                    _indexLock.EnterReadLock();
 
                     HashDigest<SHA256>? blockHash = Store.IndexBlockHash(
                         Id.ToString(), index
@@ -154,7 +155,7 @@ namespace Libplanet.Blockchain
                 }
                 finally
                 {
-                    _rwlock.ExitReadLock();
+                    _indexLock.ExitReadLock();
                 }
             }
         }
@@ -217,7 +218,7 @@ namespace Libplanet.Blockchain
             bool completeStates = false
         )
         {
-            _rwlock.EnterReadLock();
+            _indexLock.EnterReadLock();
             try
             {
                 if (offset == null)
@@ -227,7 +228,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
 
             var states = new AddressStateMap();
@@ -246,14 +247,14 @@ namespace Libplanet.Blockchain
             foreach (var address in requestedAddresses)
             {
                 Tuple<HashDigest<SHA256>, long> sr;
-                _rwlock.EnterReadLock();
+                _indexLock.EnterReadLock();
                 try
                 {
                     sr = Store.LookupStateReference(Id.ToString(), address, block);
                 }
                 finally
                 {
-                    _rwlock.ExitReadLock();
+                    _indexLock.ExitReadLock();
                 }
 
                 if (!(sr is null))
@@ -296,7 +297,7 @@ namespace Libplanet.Blockchain
                                 evaluations.Add(EvaluateBlockAction(b, evaluations));
                             }
 
-                            _rwlock.EnterWriteLock();
+                            _indexLock.EnterWriteLock();
 
                             try
                             {
@@ -304,7 +305,7 @@ namespace Libplanet.Blockchain
                             }
                             finally
                             {
-                                _rwlock.ExitWriteLock();
+                                _indexLock.ExitWriteLock();
                             }
                         }
 
@@ -381,7 +382,7 @@ namespace Libplanet.Blockchain
         /// Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
         public void StageTransactions(IDictionary<Transaction<T>, bool> transactions)
         {
-            _rwlock.EnterWriteLock();
+            _indexLock.EnterWriteLock();
 
             try
             {
@@ -396,7 +397,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitWriteLock();
+                _indexLock.ExitWriteLock();
             }
         }
 
@@ -408,7 +409,7 @@ namespace Libplanet.Blockchain
         /// <seealso cref="StageTransactions"/>
         public void UnstageTransactions(ISet<Transaction<T>> transactions)
         {
-            _rwlock.EnterWriteLock();
+            _indexLock.EnterWriteLock();
 
             try
             {
@@ -417,7 +418,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitWriteLock();
+                _indexLock.ExitWriteLock();
             }
         }
 
@@ -508,7 +509,7 @@ namespace Libplanet.Blockchain
             bool broadcast = true)
         {
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
-            lock (_txLock)
+            lock (_txNonceLock)
             {
                 Transaction<T> tx = Transaction<T>.Create(
                     GetNextTxNonce(privateKey.PublicKey.ToAddress()),
@@ -556,7 +557,7 @@ namespace Libplanet.Blockchain
                 );
             }
 
-            _rwlock.EnterUpgradeableReadLock();
+            _indexLock.EnterUpgradeableReadLock();
             try
             {
                 InvalidBlockException e =
@@ -591,7 +592,7 @@ namespace Libplanet.Blockchain
                     nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
-                _rwlock.EnterWriteLock();
+                _indexLock.EnterWriteLock();
                 try
                 {
                     Blocks[block.Hash] = block;
@@ -609,12 +610,12 @@ namespace Libplanet.Blockchain
                 }
                 finally
                 {
-                    _rwlock.ExitWriteLock();
+                    _indexLock.ExitWriteLock();
                 }
             }
             finally
             {
-                _rwlock.ExitUpgradeableReadLock();
+                _indexLock.ExitUpgradeableReadLock();
             }
 
             if (evaluateActions)
@@ -661,14 +662,14 @@ namespace Libplanet.Blockchain
             if (Store.GetBlockStates(block.Hash) is null)
             {
                 evaluations = EvaluateActions();
-                _rwlock.EnterWriteLock();
+                _indexLock.EnterWriteLock();
                 try
                 {
                     SetStates(block, evaluations, buildStateReferences: true);
                 }
                 finally
                 {
-                    _rwlock.ExitWriteLock();
+                    _indexLock.ExitWriteLock();
                 }
             }
 
@@ -734,7 +735,7 @@ namespace Libplanet.Blockchain
         {
             try
             {
-                _rwlock.EnterReadLock();
+                _indexLock.EnterReadLock();
 
                 IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
                     Id.ToString()
@@ -772,7 +773,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
         }
 
@@ -783,7 +784,7 @@ namespace Libplanet.Blockchain
             int count = FindNextHashesChunkSize;
             try
             {
-                _rwlock.EnterReadLock();
+                _indexLock.EnterReadLock();
 
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(
                     Id.ToString(), -1);
@@ -817,7 +818,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
         }
 
@@ -835,7 +836,7 @@ namespace Libplanet.Blockchain
             string forkedId = forked.Id.ToString();
             try
             {
-                _rwlock.EnterReadLock();
+                _indexLock.EnterReadLock();
                 foreach (var index in Store.IterateIndex(id))
                 {
                     Store.AppendIndex(forkedId, index);
@@ -909,7 +910,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
 
             return forked;
@@ -919,7 +920,7 @@ namespace Libplanet.Blockchain
         {
             try
             {
-                _rwlock.EnterReadLock();
+                _indexLock.EnterReadLock();
 
                 HashDigest<SHA256>? current = Store.IndexBlockHash(
                     Id.ToString(), -1);
@@ -949,7 +950,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
         }
 
@@ -1009,7 +1010,7 @@ namespace Libplanet.Blockchain
 
             try
             {
-                _rwlock.EnterWriteLock();
+                _indexLock.EnterWriteLock();
 
                 Store.DeleteNamespace(Id.ToString());
                 Id = other.Id;
@@ -1018,7 +1019,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitWriteLock();
+                _indexLock.ExitWriteLock();
             }
 
             if (render)
@@ -1052,7 +1053,7 @@ namespace Libplanet.Blockchain
 
         internal IEnumerable<TxId> GetStagedTransactionIds(bool toBroadcast)
         {
-            _rwlock.EnterReadLock();
+            _indexLock.EnterReadLock();
 
             try
             {
@@ -1060,7 +1061,7 @@ namespace Libplanet.Blockchain
             }
             finally
             {
-                _rwlock.ExitReadLock();
+                _indexLock.ExitReadLock();
             }
         }
 
