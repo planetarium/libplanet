@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
@@ -38,6 +39,8 @@ namespace Libplanet.Store
 
         private readonly string _path;
 
+        private readonly ReaderWriterLockSlim _txLock;
+
         public FileStore(string path)
         {
             if (File.Exists(path) && !Directory.Exists(path))
@@ -54,6 +57,8 @@ namespace Libplanet.Store
             {
                 Directory.CreateDirectory(Path.Combine(_path, dir));
             }
+
+            _txLock = new ReaderWriterLockSlim();
         }
 
         public string GetTransactionPath(TxId txid)
@@ -309,12 +314,29 @@ namespace Libplanet.Store
         public override bool DeleteTransaction(TxId txid)
         {
             var txFile = new FileInfo(GetTransactionPath(txid));
-            if (!txFile.Exists)
+            _txLock.EnterUpgradeableReadLock();
+            try
             {
-                return false;
+                if (!txFile.Exists)
+                {
+                    return false;
+                }
+
+                _txLock.EnterWriteLock();
+                try
+                {
+                    txFile.Delete();
+                }
+                finally
+                {
+                    _txLock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                _txLock.ExitUpgradeableReadLock();
             }
 
-            txFile.Delete();
             return true;
         }
 
@@ -484,24 +506,30 @@ namespace Libplanet.Store
                 RegexOptions.IgnoreCase
             );
             var rootDir = new DirectoryInfo(GetTransactionPath());
-            foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
+            _txLock.EnterReadLock();
+            try
             {
-                if (!prefixRegex.IsMatch(prefix.Name))
+                foreach (DirectoryInfo prefix in rootDir.EnumerateDirectories())
                 {
-                    continue;
-                }
-
-                foreach (FileInfo rest in prefix.EnumerateFiles())
-                {
-                    if (!restRegex.IsMatch(rest.Name))
+                    if (!prefixRegex.IsMatch(prefix.Name))
                     {
                         continue;
                     }
 
-                    yield return new TxId(
-                        ByteUtil.ParseHex(prefix.Name + rest.Name)
-                    );
+                    foreach (FileInfo rest in prefix.EnumerateFiles())
+                    {
+                        if (!restRegex.IsMatch(rest.Name))
+                        {
+                            continue;
+                        }
+
+                        yield return new TxId(ByteUtil.ParseHex(prefix.Name + rest.Name));
+                    }
                 }
+            }
+            finally
+            {
+                _txLock.ExitReadLock();
             }
         }
 
@@ -528,13 +556,28 @@ namespace Libplanet.Store
 
         public override void PutTransaction<T>(Transaction<T> tx)
         {
+            byte[] txBytes = tx.ToBencodex(true);
             var txFile = new FileInfo(GetTransactionPath(tx.Id));
-            txFile.Directory.Create();
-            using (Stream stream = txFile.Open(
-                FileMode.OpenOrCreate, FileAccess.Write))
+            _txLock.EnterUpgradeableReadLock();
+            try
             {
-                byte[] txBytes = tx.ToBencodex(true);
-                stream.Write(txBytes, 0, txBytes.Length);
+                txFile.Directory.Create();
+                _txLock.EnterWriteLock();
+                try
+                {
+                    using (Stream stream = txFile.Open(FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        stream.Write(txBytes, 0, txBytes.Length);
+                    }
+                }
+                finally
+                {
+                    _txLock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                _txLock.ExitUpgradeableReadLock();
             }
         }
 

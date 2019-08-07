@@ -67,6 +67,8 @@ To be released.
     which accepts `IProgress<PreloadState>`.  [[#397], [#400]]
  -  `Swarm<T>.PreloadAsync()` became safe from data corruption even
     if a preloading process suddenly gets shutdown.  [[#417]]
+ -  `FileStore` and `LiteDBStore` became to guarantee atomicity of storing
+    transactions. [[#413]]
 
 ### Bug fixes
 
@@ -111,6 +113,7 @@ To be released.
 [#398]: https://github.com/planetarium/libplanet/pull/398
 [#399]: https://github.com/planetarium/libplanet/pull/399
 [#400]: https://github.com/planetarium/libplanet/pull/400
+[#413]: https://github.com/planetarium/libplanet/pull/413
 [#414]: https://github.com/planetarium/libplanet/pull/414
 [#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
