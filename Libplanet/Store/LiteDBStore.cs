@@ -213,7 +213,7 @@ namespace Libplanet.Store
                 DownloadFile(file, stream);
 
                 var bytes = stream.ToArray();
-                if (bytes.Length != file.Length)
+                if (bytes.Length != file.Length || bytes.Length < 1)
                 {
                     _logger.Warning(
                         "The data file for the transaction {TxId} seems corrupted; " +
