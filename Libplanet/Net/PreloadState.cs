@@ -1,5 +1,8 @@
 namespace Libplanet.Net
 {
+    // <summary>
+    // Indicates a progress of preloading things from the network.
+    // </summary>
     [Equals]
     public class PreloadState
     {
@@ -10,7 +13,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Enum to describe phases of progress in preload.
+        /// Each phase in the whole preloading process.
         /// </summary>
         protected enum PreloadPhase
         {
@@ -20,19 +23,19 @@ namespace Libplanet.Net
             BlockDownload = 1,
 
             /// <summary>
-            /// The phase to downloading state references.
+            /// The phase to download state references.
             /// </summary>
             StateReferenceDownload = 2,
 
             /// <summary>
-            /// The phase to download blocks.
+            /// The phase to download block states.
             /// </summary>
             BlockStatesDownload = 3,
 
             /// <summary>
-            /// The phase to execute actions.
-            /// This phase will be came when <see cref="Swarm{T}"/> failed to receive
-            /// state-references or block-states.
+            /// The phase to execute block actions.
+            /// This phase is entered only when <see cref="Swarm{T}"/> fails to receive
+            /// precalculated states from trusted peers or has no trusted peers at all.
             /// </summary>
             BlockEvaluate = 4,
         }

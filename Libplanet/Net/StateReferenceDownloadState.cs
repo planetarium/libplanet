@@ -3,7 +3,7 @@ using System.Numerics;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A container that indicates the progress of downloading state references..
+    /// Indicates a progress of downloading state references.
     /// </summary>
     public class StateReferenceDownloadState : PreloadState
     {

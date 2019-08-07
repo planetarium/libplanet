@@ -4,7 +4,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A container that indicates the progress of a block execution.
+    /// Indicates a progress of executing block actions.
     /// </summary>
     [Equals]
     public class ActionExecutionState : PreloadState

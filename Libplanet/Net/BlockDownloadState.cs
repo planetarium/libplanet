@@ -4,7 +4,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A container that indicates the progress of a block download.
+    /// Indicates a progress of downloading blocks.
     /// </summary>
     [Equals]
     public class BlockDownloadState : PreloadState

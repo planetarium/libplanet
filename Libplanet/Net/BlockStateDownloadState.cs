@@ -4,7 +4,7 @@ using Libplanet.Blocks;
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A container that indicates the progress of a block-state download.
+    /// Indicates a progress of downloading block states.
     /// </summary>
     [Equals]
     public class BlockStateDownloadState : PreloadState
@@ -15,17 +15,17 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// Total number of block-states to receive in the current batch.
+        /// Total number of block states to receive in the current batch.
         /// </summary>
         public int TotalBlockStateCount { get; internal set; }
 
         /// <summary>
-        /// The number of currently received block-states.
+        /// The number of received block states until now.
         /// </summary>
         public int ReceivedBlockStateCount { get; internal set; }
 
         /// <summary>
-        /// The hash digest of the block of the block-states just received.
+        /// The blcok hash of the states just received.
         /// </summary>
         public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
     }
