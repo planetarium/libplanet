@@ -1364,6 +1364,8 @@ namespace Libplanet.Net
                     $"(tip: {blockChain.Tip?.Hash})"
                 );
 
+                totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
+
                 await GetBlocksAsync(peer, hashesAsArray)
                     .ForEachAsync(
                     block =>

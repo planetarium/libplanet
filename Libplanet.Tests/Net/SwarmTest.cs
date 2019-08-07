@@ -1014,6 +1014,11 @@ namespace Libplanet.Tests.Net
                 lock (actualStates)
                 {
                     actualStates.Add(state);
+
+                    if (actualStates.Count == 8)
+                    {
+                        minerChain.MineBlock(_fx1.Address1);
+                    }
                 }
             });
 
@@ -1027,15 +1032,16 @@ namespace Libplanet.Tests.Net
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
 
-                IEnumerable<BlockDownloadState> expectedStates = minerChain.Select((b, i) =>
+                BlockDownloadState[] expectedStates = minerChain.Select((b, i) =>
                 {
-                    return new BlockDownloadState()
+                    return new BlockDownloadState
                     {
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
                     };
-                });
+                }).ToArray();
+                expectedStates[10].TotalBlockCount = 11;
 
                 Assert.Equal(expectedStates, actualStates);
             }
