@@ -595,6 +595,14 @@ namespace Libplanet.Blockchain
                 _indexLock.EnterWriteLock();
                 try
                 {
+                    // This could seem redundant, because the below Blocks[block.Hash] = block
+                    // would do the same thing under the hood, but this purposes to ensure
+                    // each transaction in the block is atomically stored.
+                    foreach (Transaction<T> tx in block.Transactions)
+                    {
+                        Transactions[tx.Id] = tx;
+                    }
+
                     Blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
