@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.Linq;
 using Libplanet.Action;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
@@ -30,11 +29,6 @@ namespace Libplanet.Explorer.Executable
                 v => storeTypeName = v
             },
             {
-                "c|chain-id=",
-                "The chain ID to view.  Omittable if there is only one ID.",
-                v => chainId = v
-            },
-            {
                 "H|host=",
                 $"The host address to listen. [{DefaultHost}]",
                 v => host = v
@@ -54,8 +48,6 @@ namespace Libplanet.Explorer.Executable
         private static bool showHelp;
 
         private static string storeTypeName;
-
-        private static string chainId;
 
         private static string host = DefaultHost;
 
@@ -150,41 +142,6 @@ namespace Libplanet.Explorer.Executable
                 return 1;
             }
 
-            if (chainId is null)
-            {
-                string[] nsList = store.ListNamespaces().Take(2).ToArray();
-                if (nsList.Length > 1)
-                {
-                    stderr.WriteLine("error: There are multiple chain IDs.");
-                    stderr.WriteLine("Explicitly choose a -c/--chain-id.");
-                    return 1;
-                }
-                else if (nsList.Length < 1)
-                {
-                    stderr.WriteLine("error: There are no chain IDs.");
-                    stderr.WriteLine("Explicitly choose a -c/--chain-id.");
-                    return 1;
-                }
-
-                chainId = nsList[0];
-            }
-
-            try
-            {
-                Startup.ChainIdState = Guid.Parse(chainId);
-            }
-            catch (FormatException)
-            {
-                stderr.WriteLine("error: {0} is not a valid UUID.", chainId);
-                return 1;
-            }
-
-            if (!store.ListNamespaces().Contains(chainId))
-            {
-                stderr.WriteLine("error: {0} was not found.", chainId);
-                return 1;
-            }
-
             Startup.StoreState = store;
 
             if (portString is null)
@@ -236,11 +193,7 @@ namespace Libplanet.Explorer.Executable
         {
             public IStore Store => StoreState;
 
-            public Guid ChainId => ChainIdState;
-
             internal static IStore StoreState { get; set; }
-
-            internal static Guid ChainIdState { get; set; }
         }
     }
 }
