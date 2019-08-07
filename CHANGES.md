@@ -41,7 +41,8 @@ To be released.
  -  `Swarm<T>.PreloadAsync(IProgress<PreloadState>, IImmutableSet<Address>,
     CancellationToken)` became to report progress for all phases.  [[#397], [#400]]
  -  Added `PreloadState`, `ActionExecutionState`, `StateReferenceDownloadState`,
-    and `BlockStateDownloadState` to provide progress about more phases.  [[#397], [#400]]
+    and `BlockStateDownloadState` classes to cover all phases in the entire
+    preloading process.  [[#397], [#400]]
 
 ### Behavioral changes
 
@@ -61,8 +62,8 @@ To be released.
     but the file-level backward compatibility was also broken.  [[#395], [#398]]
  -  `PreloadAsync` became to report total block download status instead of
     chunked download status.  [[#396], [#399]]
- -  `PreloadAsync` became to get first parameter, `progress`
-    as `PreloadState` type.  [[#397], [#400]]
+ -  `Swarm<T>.PreloadAsync()` became to get the first parameter, `progress`,
+    which accepts `IProgress<PreloadState>`.  [[#397], [#400]]
 
 ### Bug fixes
 
