@@ -614,6 +614,7 @@ namespace Libplanet.Net
                     ? 0
                     : initialTip.Index + 1;
                 int count = 0, totalCount = _blockChain.BlockHashes.Count() - (int)initHeight;
+                _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
                 foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
                     Block<T> block = _blockChain.Blocks[hash];
@@ -623,6 +624,7 @@ namespace Libplanet.Net
                     }
 
                     _blockChain.ExecuteActions(block, render: false);
+                    _logger.Debug("Executed actions in the block {0}.", block.Hash);
                     progress?.Report(new ActionExecutionState()
                     {
                         TotalBlockCount = totalCount,
@@ -630,6 +632,8 @@ namespace Libplanet.Net
                         ExecutedBlockHash = block.Hash,
                     });
                 }
+
+                _logger.Debug("Finished to execute actions.");
             }
         }
 
