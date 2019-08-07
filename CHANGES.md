@@ -80,6 +80,8 @@ To be released.
     return `null` even for already stored transactions, and for that case,
     a warning will be logged through Serilog.
     [[#386], [#387], [LiteDB #1268]]
+ -  Fixed a bug that `NetworkStreamProxy.StartAsync()` hadn't stopped properly
+    when the connection had reset by a remote peer.  [[#414]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -104,6 +106,7 @@ To be released.
 [#398]: https://github.com/planetarium/libplanet/pull/398
 [#399]: https://github.com/planetarium/libplanet/pull/399
 [#400]: https://github.com/planetarium/libplanet/pull/400
+[#414]: https://github.com/planetarium/libplanet/pull/414
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
