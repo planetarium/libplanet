@@ -645,6 +645,11 @@ namespace Libplanet.Net
                 _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
                 foreach (HashDigest<SHA256> hash in workspace.BlockHashes.Skip((int)initHeight))
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
                     Block<T> block = workspace.Blocks[hash];
                     if (block.Index < initHeight)
                     {
@@ -664,7 +669,7 @@ namespace Libplanet.Net
                 _logger.Debug("Finished to execute actions.");
             }
 
-            if (workspace.Tip != _blockChain.Tip)
+            if (workspace.Tip != _blockChain.Tip && !cancellationToken.IsCancellationRequested)
             {
                 _blockChain.Swap(workspace, render: false);
             }

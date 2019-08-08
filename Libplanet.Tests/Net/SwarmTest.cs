@@ -1178,6 +1178,52 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task PreloadAsyncCancellation()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            var signer = new PrivateKey();
+            Address address = signer.PublicKey.ToAddress();
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    minerChain.MakeTransaction(
+                        signer,
+                        new[] { new DumbAction(address, $"Item{i}.{j}") }
+                    );
+                }
+
+                minerChain.MineBlock(minerSwarm.Address);
+            }
+
+            await StartAsync(minerSwarm);
+            await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
+
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(1000);
+            try
+            {
+                await receiverSwarm.PreloadAsync(
+                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet(),
+                    cancellationToken: cts.Token
+                );
+            }
+            catch (TaskCanceledException)
+            {
+            }
+
+            cts.Dispose();
+
+            Assert.Null(receiverChain.Tip);
+            Assert.Null(receiverChain.GetStates(new[] { address }).GetValueOrDefault(address));
+        }
+
         private async Task<Task> StartAsync(
             Swarm<DumbAction> swarm,
             CancellationToken cancellationToken = default
