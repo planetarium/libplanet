@@ -1,12 +1,13 @@
 using System.Security.Cryptography;
+using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
     /// <summary>
-    /// A container that indicates the progress of a block download.
+    /// Indicates a progress of downloading blocks.
     /// </summary>
     [Equals]
-    public class BlockDownloadState
+    public class BlockDownloadState : PreloadState
     {
         /// <summary>
         /// Total number of blocks to receive in the current batch.
@@ -22,5 +23,8 @@ namespace Libplanet.Net
         /// The hash digest of the block just received.
         /// </summary>
         public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
+
+        /// <inheritdoc />
+        public override int CurrentPhase => 1;
     }
 }

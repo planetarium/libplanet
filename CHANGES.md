@@ -38,6 +38,11 @@ To be released.
  -  `Address` class became to implement `IComparable<Address>` and
     `IComparable` interfaces.  [[#363]]
  -  Added `BlockChain<T>.BlockHashes` property.  [[#389]]
+ -  `Swarm<T>.PreloadAsync(IProgress<PreloadState>, IImmutableSet<Address>,
+    CancellationToken)` became to report progress for all phases.  [[#397], [#400]]
+ -  Added `PreloadState`, `ActionExecutionState`, `StateReferenceDownloadState`,
+    and `BlockStateDownloadState` classes to cover all phases in the entire
+    preloading process.  [[#397], [#400]]
 
 ### Behavioral changes
 
@@ -57,6 +62,8 @@ To be released.
     but the file-level backward compatibility was also broken.  [[#395], [#398]]
  -  `PreloadAsync` became to report total block download status instead of
     chunked download status.  [[#396], [#399]]
+ -  `Swarm<T>.PreloadAsync()` became to get the first parameter, `progress`,
+    which accepts `IProgress<PreloadState>`.  [[#397], [#400]]
 
 ### Bug fixes
 
@@ -93,8 +100,10 @@ To be released.
 [#390]: https://github.com/planetarium/libplanet/pull/390
 [#395]: https://github.com/planetarium/libplanet/issues/395
 [#396]: https://github.com/planetarium/libplanet/issues/396
+[#397]: https://github.com/planetarium/libplanet/issues/397
 [#398]: https://github.com/planetarium/libplanet/pull/398
 [#399]: https://github.com/planetarium/libplanet/pull/399
+[#400]: https://github.com/planetarium/libplanet/pull/400
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
