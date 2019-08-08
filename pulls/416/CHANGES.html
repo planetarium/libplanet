@@ -134,6 +134,8 @@ but the file-level backward compatibility was also broken.  [<a href="https://gi
 chunked download status.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
 which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
+if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
