@@ -576,6 +576,17 @@ namespace Libplanet.Net
                 trustedStateValidators = ImmutableHashSet<Address>.Empty;
             }
 
+            IList<(Peer, long? TipIndex)> peersWithHeight =
+                await DialToExistingPeers(cancellationToken).Select(pp =>
+                    (pp.Item1, pp.Item2.TipIndex)
+                ).ToListAsync(cancellationToken);
+
+            if (!peersWithHeight.Any())
+            {
+                _logger.Information("There is no appropriate peer for preloading.");
+                return;
+            }
+
             Block<T> initialTip = _blockChain.Tip;
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
@@ -587,10 +598,6 @@ namespace Libplanet.Net
                 ? _blockChain.Fork(tip.Hash)
                 : new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
 
-            IList<(Peer, long? TipIndex)> peersWithHeight =
-                await DialToExistingPeers(cancellationToken).Select(pp =>
-                    (pp.Item1, pp.Item2.TipIndex)
-                ).ToListAsync(cancellationToken);
             await SyncBehindsBlocksFromPeersAsync(
                 workspace,
                 peersWithHeight,
