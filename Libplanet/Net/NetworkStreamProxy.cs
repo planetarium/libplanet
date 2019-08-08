@@ -35,9 +35,7 @@ namespace Libplanet.Net
             _targetClient.Connect(endPoint);
 #pragma warning restore PC001
             NetworkStream target = _targetClient.GetStream();
-            await Task.WhenAll(
-                Proxy(_source, target),
-                Proxy(target, _source));
+            await await Task.WhenAny(Proxy(_source, target), Proxy(target, _source));
         }
 
         public void Dispose()

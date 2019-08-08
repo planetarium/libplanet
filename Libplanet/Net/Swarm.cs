@@ -350,6 +350,11 @@ namespace Libplanet.Net
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
 
+                    if (_poller.IsRunning)
+                    {
+                        _poller.Dispose();
+                    }
+
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
                     _router.Dispose();
@@ -1938,7 +1943,10 @@ namespace Libplanet.Net
             {
                 NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
 
-                _logger.Verbose($"The raw message[{raw}] has received.");
+                _logger.Verbose(
+                    "The raw message[frame count: {0}] has received.",
+                    raw.FrameCount
+                );
                 Message message = Message.Parse(raw, reply: false);
                 _logger.Debug($"The message[{message}] has parsed.");
 
