@@ -109,6 +109,10 @@ for themselves.
 <li><code>Address</code> class became to implement <code>IComparable&lt;Address&gt;</code> and
 <code>IComparable</code> interfaces.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.BlockHashes</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/389">#389</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, IImmutableSet&lt;Address&gt;, CancellationToken)</code> became to report progress for all phases.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
+<li>Added <code>PreloadState</code>, <code>ActionExecutionState</code>, <code>StateReferenceDownloadState</code>,
+and <code>BlockStateDownloadState</code> classes to cover all phases in the entire
+preloading process.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -128,6 +132,8 @@ own retrieve implementations.  [<a href="https://github.com/planetarium/libplane
 but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</li>
 <li><code>PreloadAsync</code> became to report total block download status instead of
 chunked download status.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
+which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
