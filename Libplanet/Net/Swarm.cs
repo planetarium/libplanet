@@ -350,6 +350,11 @@ namespace Libplanet.Net
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
 
+                    if (_poller.IsRunning)
+                    {
+                        _poller.Dispose();
+                    }
+
                     _broadcastQueue.Dispose();
                     _replyQueue.Dispose();
                     _router.Dispose();
