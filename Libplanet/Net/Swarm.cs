@@ -613,7 +613,7 @@ namespace Libplanet.Net
                     initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index + 1;
-                int count = 0, totalCount = _blockChain.BlockHashes.Count() - (int)initHeight;
+                int count = 0, totalCount = _blockChain.Count() - (int)initHeight;
                 _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
                 foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
                 {
