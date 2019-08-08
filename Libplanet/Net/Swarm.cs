@@ -1938,7 +1938,10 @@ namespace Libplanet.Net
             {
                 NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
 
-                _logger.Verbose($"The raw message[{raw}] has received.");
+                _logger.Verbose(
+                    "The raw message[frame count: {0}] has received.",
+                    raw.FrameCount
+                );
                 Message message = Message.Parse(raw, reply: false);
                 _logger.Debug($"The message[{message}] has parsed.");
 
