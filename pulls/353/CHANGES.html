@@ -129,6 +129,12 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]<
 </li>
 <li><p>Added <code>BlockChain&lt;T&gt;.BlockHashes</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/389">#389</a>]</p>
 </li>
+<li><p><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, IImmutableSet&lt;Address&gt;, CancellationToken)</code> became to report progress for all phases.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
+</li>
+<li><p>Added <code>PreloadState</code>, <code>ActionExecutionState</code>, <code>StateReferenceDownloadState</code>,
+and <code>BlockStateDownloadState</code> classes to cover all phases in the entire
+preloading process.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
+</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -163,6 +169,9 @@ but the file-level backward compatibility was also broken.  [<a href="https://gi
 <li><p><code>PreloadAsync</code> became to report total block download status instead of
 chunked download status.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</p>
 </li>
+<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
+which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
+</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -179,6 +188,8 @@ sometimes.  Instead, <code>LiteDBStore.GetTransaction()</code> became possible t
 return <code>null</code> even for already stored transactions, and for that case,
 a warning will be logged through Serilog.
 [<a href="https://github.com/planetarium/libplanet/pull/386">#386</a>, <a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
+<li>Fixed a bug that <code>NetworkStreamProxy.StartAsync()</code> hadn't stopped properly
+when the connection had reset by a remote peer.  [<a href="https://github.com/planetarium/libplanet/pull/414">#414</a>]</li>
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
