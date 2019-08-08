@@ -39,6 +39,10 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnPermissionLifetime =
             TimeSpan.FromMinutes(5);
 
+        private static readonly TimeSpan BlockHashRecvTimeout = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
+        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
+
         private readonly IDictionary<Peer, DateTimeOffset> _peers;
         private readonly IDictionary<Peer, DateTimeOffset> _removedPeers;
 
@@ -697,9 +701,10 @@ namespace Libplanet.Net
                     request.ToNetMQMessage(_privateKey),
                     cancellationToken: token);
 
-                NetMQMessage response =
-                    await socket.ReceiveMultipartMessageAsync(
-                        cancellationToken: token);
+                NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
+                    timeout: BlockHashRecvTimeout,
+                    cancellationToken: token
+                );
                 Message parsedMessage = Message.Parse(response, reply: true);
                 if (parsedMessage is BlockHashes blockHashes)
                 {
@@ -741,14 +746,15 @@ namespace Libplanet.Net
                     while (hashCount > 0 && !yieldToken.IsCancellationRequested)
                     {
                         _logger.Debug("Starts to receive blocks from {0}.", peer);
-                        NetMQMessage response =
-                        await socket.ReceiveMultipartMessageAsync(
-                            cancellationToken: yieldToken);
+                        NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
+                            timeout: BlockRecvTimeout,
+                            cancellationToken: yieldToken
+                        );
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Blocks blockMessage)
                         {
                             IList<byte[]> payloads = blockMessage.Payloads;
-                            _logger.Debug("Received {0} blocks from {0}.", payloads.Count, peer);
+                            _logger.Debug("Received {0} blocks from {1}.", payloads.Count, peer);
                             foreach (byte[] payload in payloads)
                             {
                                 Block<T> block = Block<T>.FromBencodex(payload);
@@ -793,9 +799,10 @@ namespace Libplanet.Net
                     while (hashCount > 0)
                     {
                         _logger.Debug("Receiving tx...");
-                        NetMQMessage response =
-                        await socket.ReceiveMultipartMessageAsync(
-                            cancellationToken: cancellationToken);
+                        NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
+                            timeout: TxRecvTimeout,
+                            cancellationToken: cancellationToken
+                        );
                         Message parsedMessage = Message.Parse(response, true);
                         if (parsedMessage is Messages.Tx parsed)
                         {

@@ -84,6 +84,8 @@ To be released.
     [[#386], [#387], [LiteDB #1268]]
  -  Fixed a bug that `NetworkStreamProxy.StartAsync()` hadn't stopped properly
     when the connection had reset by a remote peer.  [[#414]]
+ -  Fixed a bug that `Swarm<T>` had hanged forever after a remote peer had
+    disconnected while receiving.  [[#416]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -109,6 +111,7 @@ To be released.
 [#399]: https://github.com/planetarium/libplanet/pull/399
 [#400]: https://github.com/planetarium/libplanet/pull/400
 [#414]: https://github.com/planetarium/libplanet/pull/414
+[#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
