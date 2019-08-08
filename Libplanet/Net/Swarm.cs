@@ -574,25 +574,47 @@ namespace Libplanet.Net
 
             Block<T> initialTip = _blockChain.Tip;
 
+            // As preloading takes long, the blockchain data can corrupt if a program suddenly
+            // terminates during preloading is going on.  In order to make preloading done
+            // all or nothing (i.e., atomic), we first fork the chain and stack up preloaded data
+            // upon that forked workspace, and then if preloading ends replace the existing
+            // blockchain with it.
+            BlockChain<T> workspace = initialTip is Block<T> tip
+                ? _blockChain.Fork(tip.Hash)
+                : new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
+
             IList<(Peer, long? TipIndex)> peersWithHeight =
                 await DialToExistingPeers(cancellationToken).Select(pp =>
                     (pp.Item1, pp.Item2.TipIndex)
                 ).ToListAsync(cancellationToken);
             await SyncBehindsBlocksFromPeersAsync(
+                workspace,
                 peersWithHeight,
                 progress,
                 cancellationToken,
                 render
             );
 
-            if (_blockChain.Tip is null || render)
+            if (workspace.Tip is null)
             {
                 // If there is no blocks in the network (or no consensus at least)
                 // it doesn't need to receive states from other peers at all.
                 return;
             }
+            else if (render)
+            {
+                // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
+                // it means states are already calculated so that it does not need to received
+                // calculated states from trusted peers.
+                if (workspace.Tip is Block<T> && workspace.Tip != _blockChain.Tip)
+                {
+                    _blockChain.Swap(workspace, render: false);
+                }
 
-            var height = _blockChain.Tip.Index;
+                return;
+            }
+
+            var height = workspace.Tip.Index;
 
             IEnumerable<(Peer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
                 peersWithHeight.Where(pair =>
@@ -602,10 +624,11 @@ namespace Libplanet.Net
                 ).OrderByDescending(pair =>
                     pair.Item2
                 ).Select(pair =>
-                    (pair.Item1, _blockChain[pair.Item2.Value].Hash)
+                    (pair.Item1, workspace[pair.Item2.Value].Hash)
                 );
 
             bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                workspace,
                 progress,
                 trustedPeersWithTip.ToImmutableList(),
                 initialTip?.Hash,
@@ -615,20 +638,20 @@ namespace Libplanet.Net
             if (!received)
             {
                 long initHeight =
-                    initialTip is null || !_blockChain[initialTip.Index].Equals(initialTip)
+                    initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
                     ? 0
                     : initialTip.Index + 1;
-                int count = 0, totalCount = _blockChain.Count() - (int)initHeight;
+                int count = 0, totalCount = workspace.Count() - (int)initHeight;
                 _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
-                foreach (HashDigest<SHA256> hash in _blockChain.BlockHashes.Skip((int)initHeight))
+                foreach (HashDigest<SHA256> hash in workspace.BlockHashes.Skip((int)initHeight))
                 {
-                    Block<T> block = _blockChain.Blocks[hash];
+                    Block<T> block = workspace.Blocks[hash];
                     if (block.Index < initHeight)
                     {
                         continue;
                     }
 
-                    _blockChain.ExecuteActions(block, render: false);
+                    workspace.ExecuteActions(block, render: false);
                     _logger.Debug("Executed actions in the block {0}.", block.Hash);
                     progress?.Report(new ActionExecutionState()
                     {
@@ -639,6 +662,11 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug("Finished to execute actions.");
+            }
+
+            if (workspace.Tip != _blockChain.Tip)
+            {
+                _blockChain.Swap(workspace, render: false);
             }
         }
 
@@ -881,6 +909,7 @@ namespace Libplanet.Net
         }
 
         private async Task SyncBehindsBlocksFromPeersAsync(
+            BlockChain<T> blockChain,
             IEnumerable<(Peer, long?)> peersWithHeight,
             IProgress<BlockDownloadState> progress,
             CancellationToken cancellationToken,
@@ -895,13 +924,14 @@ namespace Libplanet.Net
             );
 
             if (longestPeerWithLength != null &&
-                !(_blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
+                !(blockChain.Tip?.Index >= longestPeerWithLength?.Item2))
             {
-                long currentTipIndex = _blockChain.Tip?.Index ?? -1;
+                long currentTipIndex = blockChain.Tip?.Index ?? -1;
                 long peerIndex = longestPeerWithLength?.Item2 ?? -1;
                 long totalBlockCount = peerIndex - currentTipIndex;
 
                 BlockChain<T> synced = await SyncPreviousBlocksAsync(
+                    blockChain,
                     longestPeerWithLength?.Item1,
                     null,
                     progress,
@@ -909,14 +939,15 @@ namespace Libplanet.Net
                     evaluateActions: render,
                     cancellationToken: cancellationToken
                 );
-                if (!synced.Id.Equals(_blockChain.Id))
+                if (!synced.Id.Equals(blockChain.Id))
                 {
-                    _blockChain.Swap(synced, render);
+                    blockChain.Swap(synced, render);
                 }
             }
         }
 
         private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
+            BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
             IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
             HashDigest<SHA256>? baseBlockHash,
@@ -960,15 +991,15 @@ namespace Libplanet.Net
                     Message parsedMessage = Message.Parse(reply, reply: true);
                     if (parsedMessage is RecentStates recentStates && !recentStates.Missing)
                     {
-                        ReaderWriterLockSlim rwlock = BlockChain._rwlock;
+                        ReaderWriterLockSlim rwlock = blockChain._rwlock;
                         rwlock.EnterWriteLock();
                         try
                         {
                             // FIXME: Swarm should not directly access to the IStore instance,
                             // but BlockChain<T> should have an indirect interface to its underlying
                             // store.
-                            IStore store = BlockChain.Store;
-                            string ns = BlockChain.Id.ToString();
+                            IStore store = blockChain.Store;
+                            string ns = blockChain.Id.ToString();
 
                             int count = 0, totalCount = recentStates.StateReferences.Count;
                             _logger.Debug("Starts to store state refs received from {0}.", peer);
@@ -1207,6 +1238,7 @@ namespace Libplanet.Net
         }
 
         private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
+            BlockChain<T> blockChain,
             Peer peer,
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
@@ -1217,10 +1249,10 @@ namespace Libplanet.Net
         {
             // Fix the tip here because it may change while receiving the block
             // hashes.
-            Block<T> tip = _blockChain.Tip;
+            Block<T> tip = blockChain.Tip;
 
             _logger.Debug("Trying to find branchpoint...");
-            BlockLocator locator = _blockChain.GetBlockLocator();
+            BlockLocator locator = blockChain.GetBlockLocator();
             _logger.Debug($"Locator's count: {locator.Count()}");
             IEnumerable<HashDigest<SHA256>> hashes = (
                 await GetBlockHashesAsync(
@@ -1229,41 +1261,36 @@ namespace Libplanet.Net
 
             if (!hashes.Any())
             {
-                _logger.Debug(
-                    $"Peer[{peer}] didn't return any hashes. " +
-                    $"ignored.");
-                return _blockChain;
+                _logger.Debug("Peer[{0}] didn't return any hashes; ignored.", peer);
+                return blockChain;
             }
 
             HashDigest<SHA256> branchPoint = hashes.First();
 
-            _logger.Debug(
-                $"Branchpoint is " +
-                $"{ByteUtil.Hex(branchPoint.ToByteArray())}"
-            );
+            _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
 
             BlockChain<T> synced;
             if (tip is null || branchPoint.Equals(tip.Hash))
             {
-                _logger.Debug("it doesn't need fork.");
-                synced = _blockChain;
+                _logger.Debug("It doesn't need to fork.");
+                synced = blockChain;
             }
 
             // FIXME BlockChain.Blocks.ContainsKey() can be very
             // expensive.
             // we can omit this clause if assume every chain shares
             // same genesis block...
-            else if (!_blockChain.Blocks.ContainsKey(branchPoint))
+            else if (!blockChain.Blocks.ContainsKey(branchPoint))
             {
                 // Create a whole new chain because the branch point doesn't exist on
                 // the current chain.
-                synced = new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
+                synced = new BlockChain<T>(blockChain.Policy, blockChain.Store, Guid.NewGuid());
             }
             else
             {
-                _logger.Debug("Forking needed. trying to fork...");
-                synced = _blockChain.Fork(branchPoint);
-                _logger.Debug("Forking complete. ");
+                _logger.Debug("Forking needed. Trying to fork...");
+                synced = blockChain.Fork(branchPoint);
+                _logger.Debug("Forking complete.");
             }
 
             _logger.Debug("Trying to fill up previous blocks...");
@@ -1330,6 +1357,7 @@ namespace Libplanet.Net
             {
                 _logger.Debug("Trying to fill up previous blocks...");
                 BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
+                    _blockChain,
                     peer,
                     oldest.PreviousHash,
                     null,

@@ -103,7 +103,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanNotStartTwice()
+        public async Task CannotStartTwice()
         {
             Swarm<DumbAction> swarm = _swarms[0];
 
@@ -113,7 +113,10 @@ namespace Libplanet.Tests.Net
 
             Assert.True(swarm.Running);
             Assert.True(t.IsFaulted);
-            Assert.IsType<SwarmException>(t.Exception.InnerException);
+            Assert.True(
+                t.Exception.InnerException is SwarmException,
+                $"Expected SwarmException, but actual exception was: {t.Exception.InnerException}"
+            );
 
             await swarm.StopAsync();
         }

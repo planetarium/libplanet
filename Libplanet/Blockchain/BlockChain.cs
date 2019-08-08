@@ -823,13 +823,6 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
-            return Fork(point, DateTimeOffset.UtcNow);
-        }
-
-        internal BlockChain<T> Fork(
-            HashDigest<SHA256> point,
-            DateTimeOffset currentTime)
-        {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             string id = Id.ToString();
             string forkedId = forked.Id.ToString();
@@ -960,19 +953,22 @@ namespace Libplanet.Blockchain
         {
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            long shorterHeight =
-                Math.Min(this.LongCount(), other.LongCount()) - 1;
-            for (
-                Block<T> t = this[shorterHeight], o = other[shorterHeight];
-                t.PreviousHash is HashDigest<SHA256> tp &&
-                    o.PreviousHash is HashDigest<SHA256> op;
-                t = Blocks[tp], o = other.Blocks[op]
-            )
+            if (!(Tip is null || other.Tip is null))
             {
-                if (t.Equals(o))
+                long shorterHeight =
+                    Math.Min(this.LongCount(), other.LongCount()) - 1;
+                for (
+                    Block<T> t = this[shorterHeight], o = other[shorterHeight];
+                    t.PreviousHash is HashDigest<SHA256> tp &&
+                        o.PreviousHash is HashDigest<SHA256> op;
+                    t = Blocks[tp], o = other.Blocks[op]
+                )
                 {
-                    topmostCommon = t;
-                    break;
+                    if (t.Equals(o))
+                    {
+                        topmostCommon = t;
+                        break;
+                    }
                 }
             }
 
@@ -1011,10 +1007,11 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
-                Store.DeleteNamespace(Id.ToString());
+                Guid obsoleteId = Id;
                 Id = other.Id;
                 Blocks = new BlockSet<T>(Store);
                 Transactions = new TransactionSet<T>(Store);
+                Store.DeleteNamespace(obsoleteId.ToString());
             }
             finally
             {
