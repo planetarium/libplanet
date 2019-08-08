@@ -69,6 +69,8 @@ To be released.
     if a preloading process suddenly gets shutdown.  [[#417]]
  -  `FileStore` and `LiteDBStore` became to guarantee atomicity of storing
     transactions. [[#413]]
+ -  `IStore.PutTransaction<T>()` became to do nothing when it takes
+    the `Transaction<T>` more than once.  [[#413]]
 
 ### Bug fixes
 

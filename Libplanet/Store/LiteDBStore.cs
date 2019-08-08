@@ -271,14 +271,29 @@ namespace Libplanet.Store
             string fileId = TxFileId(tx.Id);
             string filename = tx.Id.ToHex();
             byte[] txBytes = tx.ToBencodex(true);
-            _txLock.EnterWriteLock();
+            _txLock.EnterUpgradeableReadLock();
             try
             {
-                UploadFile(fileId, filename, txBytes);
+                LiteFileInfo file = _db.FileStorage.FindById(fileId);
+                if (file is LiteFileInfo)
+                {
+                    // No-op if already exists.
+                    return;
+                }
+
+                _txLock.EnterWriteLock();
+                try
+                {
+                    UploadFile(fileId, filename, txBytes);
+                }
+                finally
+                {
+                    _txLock.ExitWriteLock();
+                }
             }
             finally
             {
-                _txLock.ExitWriteLock();
+                _txLock.ExitUpgradeableReadLock();
             }
         }
 
