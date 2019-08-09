@@ -136,8 +136,6 @@ chunked download status.  [<a href="https://github.com/planetarium/libplanet/iss
 which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
 if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</li>
-<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to be skipped when there is no appropriate
-peer. [[TBD]]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -156,6 +154,8 @@ a warning will be logged through Serilog.
 [<a href="https://github.com/planetarium/libplanet/pull/386">#386</a>, <a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 <li>Fixed a bug that <code>NetworkStreamProxy.StartAsync()</code> hadn't stopped properly
 when the connection had reset by a remote peer.  [<a href="https://github.com/planetarium/libplanet/pull/414">#414</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
+is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
