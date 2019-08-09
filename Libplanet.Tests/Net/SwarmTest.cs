@@ -236,22 +236,20 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanExchangePeer()
+        public async Task ExchangePeer()
         {
-            BlockChain<DumbAction> chain = _blockchains[0];
-
             var a = new Swarm<DumbAction>(
-                chain,
+                _blockchains[0],
                 new PrivateKey(),
                 1,
                 host: IPAddress.Loopback.ToString());
             var b = new Swarm<DumbAction>(
-                chain,
+                _blockchains[1],
                 new PrivateKey(),
                 1,
                 host: IPAddress.Loopback.ToString());
             var c = new Swarm<DumbAction>(
-                chain,
+                _blockchains[2],
                 new PrivateKey(),
                 1,
                 host: IPAddress.Loopback.ToString());
@@ -320,26 +318,24 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
-            BlockChain<DumbAction> chain = _blockchains[0];
-
             var a = new Swarm<DumbAction>(
-                chain,
+                _blockchains[0],
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var b = new Swarm<DumbAction>(
-                chain,
+                _blockchains[1],
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
 
             var c = new Swarm<DumbAction>(
-                chain,
+                _blockchains[2],
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var d = new Swarm<DumbAction>(
-                chain,
+                new BlockChain<DumbAction>(_blockchains[0].Policy, new FileStoreFixture().Store),
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
@@ -381,16 +377,14 @@ namespace Libplanet.Tests.Net
                 isCalled = true;
             }
 
-            BlockChain<DumbAction> chain = _blockchains[0];
-
             var a = new Swarm<DumbAction>(
-                chain,
+                _blockchains[0],
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2,
                 differentVersionPeerEncountered: GameHandler);
             var b = new Swarm<DumbAction>(
-                chain,
+                _blockchains[1],
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
@@ -558,7 +552,6 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarmA = _swarms[0];
             Swarm<DumbAction> swarmB = _swarms[1];
 
-            BlockChain<DumbAction> chainA = _blockchains[0];
             BlockChain<DumbAction> chainB = _blockchains[1];
 
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(

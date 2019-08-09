@@ -1984,11 +1984,11 @@ namespace Libplanet.Net
                 NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
 
                 _logger.Verbose(
-                    "The raw message[frame count: {0}] has received.",
+                    "A raw message [frame count: {0}] has received.",
                     raw.FrameCount
                 );
                 Message message = Message.Parse(raw, reply: false);
-                _logger.Debug($"The message[{message}] has parsed.");
+                _logger.Debug("A message has parsed: {0}", message);
 
                 // it's still async because some method it relies are async yet.
                 Task.Run(
@@ -2000,7 +2000,11 @@ namespace Libplanet.Net
                         }
                         catch (Exception exc)
                         {
-                            _logger.Error("Something went wrong during message parsing: {0}", exc);
+                            _logger.Error(
+                                exc,
+                                "Something went wrong during message parsing: {0}",
+                                exc
+                            );
                             throw;
                         }
                     },
@@ -2008,11 +2012,15 @@ namespace Libplanet.Net
             }
             catch (InvalidMessageException ex)
             {
-                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore.");
+                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore: {0}", ex);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "An unexpected exception occured during ReceiveMessage().");
+                _logger.Error(
+                    ex,
+                    "An unexpected exception occured during ReceiveMessage(): {0}",
+                    ex
+                );
             }
         }
 

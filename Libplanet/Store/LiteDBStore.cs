@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
@@ -36,6 +37,8 @@ namespace Libplanet.Store
         private readonly ILogger _logger;
 
         private readonly LiteDatabase _db;
+
+        private readonly ReaderWriterLockSlim _txLock;
 
         /// <summary>
         /// Creates a new <seealso cref="LiteDBStore"/>.
@@ -86,6 +89,8 @@ namespace Libplanet.Store
             _db.Mapper.RegisterType(
                 address => address.ToByteArray(),
                 b => new Address(b.AsBinary));
+
+            _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -194,50 +199,116 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            return _db.FileStorage
-                .Find(TxIdPrefix)
-                .Select(file => new TxId(ByteUtil.ParseHex(file.Filename)));
+            IEnumerable<string> filenames;
+            _txLock.EnterReadLock();
+            try
+            {
+                filenames = _db.FileStorage
+                    .Find(TxIdPrefix)
+                    .Select(file => file.Filename)
+                    .ToList();
+            }
+            finally
+            {
+                _txLock.ExitReadLock();
+            }
+
+            return filenames.Select(filename => new TxId(ByteUtil.ParseHex(filename)));
         }
 
         /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
-            LiteFileInfo file = _db.FileStorage.FindById(TxFileId(txid));
-            if (file is null)
-            {
-                return null;
-            }
+            string fileId = TxFileId(txid);
+            byte[] bytes;
 
-            using (var stream = new MemoryStream())
+            _txLock.EnterUpgradeableReadLock();
+            try
             {
-                DownloadFile(file, stream);
-
-                var bytes = stream.ToArray();
-                if (bytes.Length != file.Length || bytes.Length < 1)
+                LiteFileInfo file = _db.FileStorage.FindById(fileId);
+                if (file is null)
                 {
-                    _logger.Warning(
-                        "The data file for the transaction {TxId} seems corrupted; " +
-                        "it will be treated nonexistent and removed at all.",
-                        txid
-                    );
-                    DeleteTransaction(txid);
                     return null;
                 }
 
-                return Transaction<T>.FromBencodex(bytes);
+                using (var stream = new MemoryStream())
+                {
+                    DownloadFile(file, stream);
+
+                    bytes = stream.ToArray();
+                    if (bytes.Length != file.Length || bytes.Length < 1)
+                    {
+                        _logger.Warning(
+                            "The data file for the transaction {TxId} seems corrupted; " +
+                            "it will be treated nonexistent and removed at all.",
+                            txid
+                        );
+                        _txLock.EnterWriteLock();
+                        try
+                        {
+                            _db.FileStorage.Delete(fileId);
+                        }
+                        finally
+                        {
+                            _txLock.ExitWriteLock();
+                        }
+
+                        return null;
+                    }
+                }
             }
+            finally
+            {
+                _txLock.ExitUpgradeableReadLock();
+            }
+
+            return Transaction<T>.FromBencodex(bytes);
         }
 
         /// <inheritdoc/>
         public override void PutTransaction<T>(Transaction<T> tx)
         {
-            UploadFile(TxFileId(tx.Id), tx.Id.ToHex(), tx.ToBencodex(true));
+            string fileId = TxFileId(tx.Id);
+            string filename = tx.Id.ToHex();
+            byte[] txBytes = tx.ToBencodex(true);
+            _txLock.EnterUpgradeableReadLock();
+            try
+            {
+                LiteFileInfo file = _db.FileStorage.FindById(fileId);
+                if (file is LiteFileInfo)
+                {
+                    // No-op if already exists.
+                    return;
+                }
+
+                _txLock.EnterWriteLock();
+                try
+                {
+                    UploadFile(fileId, filename, txBytes);
+                }
+                finally
+                {
+                    _txLock.ExitWriteLock();
+                }
+            }
+            finally
+            {
+                _txLock.ExitUpgradeableReadLock();
+            }
         }
 
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            return _db.FileStorage.Delete(TxFileId(txid));
+            _txLock.EnterWriteLock();
+            try
+            {
+                return _db.FileStorage.Delete(TxFileId(txid));
+            }
+            finally
+            {
+                _txLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -448,7 +519,7 @@ namespace Libplanet.Store
 
         private string TxFileId(TxId txid)
         {
-            return $"tx/{txid.ToHex()}";
+            return $"{TxIdPrefix}{txid.ToHex()}";
         }
 
         private string BlockFileId(HashDigest<SHA256> blockHash)

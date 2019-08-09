@@ -77,6 +77,13 @@ namespace Libplanet.Store
         Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new();
 
+        /// <summary>
+        /// Puts a given <see cref="Transaction{T}"/> to the store.  If the same transaction
+        /// already exists in the store it does nothing.
+        /// </summary>
+        /// <param name="tx">A transaction to put into the store.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+        /// to <see cref="Transaction{T}"/>'s type parameter.</typeparam>
         void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new();
 

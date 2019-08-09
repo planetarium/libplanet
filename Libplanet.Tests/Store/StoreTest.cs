@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -541,6 +542,115 @@ namespace Libplanet.Tests.Store
             Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Block1.Hash);
             Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreNamespace));
             Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, 2));
+        }
+
+        [Fact]
+        public void TxAtomicity()
+        {
+            Transaction<AtomicityTestAction> MakeTx(
+                System.Random random,
+                MD5 md5,
+                PrivateKey key,
+                int txNonce
+            )
+            {
+                byte[] arbitraryBytes = new byte[20];
+                random.NextBytes(arbitraryBytes);
+                byte[] digest = md5.ComputeHash(arbitraryBytes);
+                var action = new AtomicityTestAction
+                {
+                    ArbitraryBytes = arbitraryBytes.ToImmutableArray(),
+                    Md5Digest = digest.ToImmutableArray(),
+                };
+                return Transaction<AtomicityTestAction>.Create(
+                    txNonce,
+                    key,
+                    new[] { action },
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow
+                );
+            }
+
+            const int taskCount = 5;
+            const int txCount = 30;
+            var md5Hasher = MD5.Create();
+            Transaction<AtomicityTestAction> commonTx = MakeTx(
+                new System.Random(),
+                md5Hasher,
+                new PrivateKey(),
+                0
+            );
+            Task[] tasks = new Task[taskCount];
+            for (int i = 0; i < taskCount; i++)
+            {
+                var task = new Task(() =>
+                {
+                    PrivateKey key = new PrivateKey();
+                    var random = new System.Random();
+                    var md5 = MD5.Create();
+                    Transaction<AtomicityTestAction> tx;
+                    for (int j = 0; j < 50; j++)
+                    {
+                        Fx.Store.PutTransaction(commonTx);
+                    }
+
+                    for (int j = 0; j < txCount; j++)
+                    {
+                        tx = MakeTx(random, md5, key, j + 1);
+                        Fx.Store.PutTransaction(tx);
+                    }
+                });
+                task.Start();
+                tasks[i] = task;
+            }
+
+            Task.WaitAll(tasks);
+
+            Assert.Equal(1 + (taskCount * txCount), Fx.Store.CountTransactions());
+            foreach (TxId txid in Fx.Store.IterateTransactionIds())
+            {
+                var tx = Fx.Store.GetTransaction<AtomicityTestAction>(txid);
+                tx.Validate();
+                Assert.Single(tx.Actions);
+                AtomicityTestAction action = tx.Actions[0];
+                Assert.Equal(
+                    md5Hasher.ComputeHash(action.ArbitraryBytes.ToBuilder().ToArray()),
+                    action.Md5Digest.ToBuilder().ToArray()
+                );
+            }
+        }
+
+        private class AtomicityTestAction : IAction
+        {
+            public ImmutableArray<byte> ArbitraryBytes { get; set; }
+
+            public ImmutableArray<byte> Md5Digest { get; set; }
+
+            public IImmutableDictionary<string, object> PlainValue =>
+                new Dictionary<string, object>
+                {
+                    { "bytes", ArbitraryBytes.ToBuilder().ToArray() },
+                    { "md5", Md5Digest.ToBuilder().ToArray() },
+                }.ToImmutableDictionary();
+
+            public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+            {
+                ArbitraryBytes = (plainValue["bytes"] as byte[]).ToImmutableArray();
+                Md5Digest = (plainValue["md5"] as byte[]).ToImmutableArray();
+            }
+
+            public IAccountStateDelta Execute(IActionContext context)
+            {
+                return context.PreviousStates;
+            }
+
+            public void Render(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
+
+            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
         }
     }
 }
