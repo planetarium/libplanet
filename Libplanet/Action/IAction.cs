@@ -277,6 +277,13 @@ namespace Libplanet.Action
         /// or networking.  These bring an action indeterministic.  You maybe
         /// fine to log messages for debugging purpose, but equivalent messages
         /// could be logged multiple times.</para>
+        /// <para>Lastly, although it might be surprising, <a
+        /// href="https://wp.me/p1fTCO-kT">floating-point arithmetics are
+        /// underspecified so that it can make different results on different
+        /// machines, platforms, runtimes, compilers, and builds</a>.</para>
+        /// <para>For more on determinism in general, please read also <a
+        /// href="https://tendermint.com/docs/spec/abci/abci.html#determinism"
+        /// >Tendermint ABCI's docs on determinism</a>.</para>
         /// </remarks>
         /// <seealso cref="IActionContext"/>
         IAccountStateDelta Execute(IActionContext context);
