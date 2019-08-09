@@ -154,6 +154,8 @@ a warning will be logged through Serilog.
 [<a href="https://github.com/planetarium/libplanet/pull/386">#386</a>, <a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 <li>Fixed a bug that <code>NetworkStreamProxy.StartAsync()</code> hadn't stopped properly
 when the connection had reset by a remote peer.  [<a href="https://github.com/planetarium/libplanet/pull/414">#414</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had hung forever after a remote peer had
+disconnected while receiving.  [<a href="https://github.com/planetarium/libplanet/pull/416">#416</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
 is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
 </ul>
