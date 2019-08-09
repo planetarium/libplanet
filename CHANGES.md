@@ -91,6 +91,8 @@ To be released.
     when the connection had reset by a remote peer.  [[#414]]
  -  Fixed a bug that `Swarm<T>` had hung forever after a remote peer had
     disconnected while receiving.  [[#416]]
+ -  Fixed a bug that `Swarm<T>.PreloadAsync()` had been processed even if there
+    is no appropriate peer. [[#418]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -119,6 +121,7 @@ To be released.
 [#414]: https://github.com/planetarium/libplanet/pull/414
 [#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
+[#418]: https://github.com/planetarium/libplanet/pull/418
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
