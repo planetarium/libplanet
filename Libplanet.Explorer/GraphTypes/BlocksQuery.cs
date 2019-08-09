@@ -12,7 +12,16 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Field<ListGraphType<BlockType<T>>>(
                 "blocks",
-                resolve: context => chain
+                arguments: new QueryArguments(
+                    new QueryArgument<IntGraphType> { Name = "offset", DefaultValue = 0 },
+                    new QueryArgument<IntGraphType> { Name = "limit", DefaultValue = chain.Count() }
+                ),
+                resolve: context =>
+                {
+                    int offset = context.GetArgument<int>("offset");
+                    int limit = context.GetArgument<int>("limit");
+                    return chain.Skip(offset).Take(limit);
+                }
             );
 
             Field<BlockType<T>>(
