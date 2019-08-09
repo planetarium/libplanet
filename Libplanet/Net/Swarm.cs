@@ -484,13 +484,18 @@ namespace Libplanet.Net
 
                 await await Task.WhenAny(tasks);
             }
-            catch (TaskCanceledException e)
+            catch (OperationCanceledException e)
             {
-                _logger.Information(e, "Task was canceled.");
+                _logger.Warning(e, $"{nameof(StartAsync)}() is canceled.");
+                throw;
             }
             catch (Exception e)
             {
-                _logger.Error(e, "An unexpected exception occured during StartAsync()");
+                _logger.Error(
+                    e,
+                    $"An unexpected exception occurred during {nameof(StartAsync)}(): {0}",
+                    e
+                );
                 throw;
             }
         }
@@ -588,91 +593,115 @@ namespace Libplanet.Net
                 ? _blockChain.Fork(tip.Hash)
                 : new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
 
-            await SyncBehindsBlocksFromPeersAsync(
-                workspace,
-                peersWithHeight,
-                progress,
-                cancellationToken,
-                render
-            );
+            try
+            {
+                await SyncBehindsBlocksFromPeersAsync(
+                    workspace,
+                    peersWithHeight,
+                    progress,
+                    cancellationToken,
+                    render
+                );
 
-            if (workspace.Tip is null)
-            {
-                // If there is no blocks in the network (or no consensus at least)
-                // it doesn't need to receive states from other peers at all.
-                return;
-            }
-            else if (render)
-            {
-                // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
-                // it means states are already calculated so that it does not need to received
-                // calculated states from trusted peers.
-                if (workspace.Tip is Block<T> && workspace.Tip != _blockChain.Tip)
+                if (workspace.Tip is null)
                 {
+                    // If there is no blocks in the network (or no consensus at least)
+                    // it doesn't need to receive states from other peers at all.
+                    return;
+                }
+                else if (render)
+                {
+                    // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
+                    // it means states are already calculated so that it does not need to receive
+                    // calculated states from trusted peers.
+                    return;
+                }
+
+                long height = workspace.Tip.Index;
+
+                IEnumerable<(Peer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
+                    peersWithHeight.Where(pair =>
+                        trustedStateValidators.Contains(pair.Item1.Address) &&
+                        !(pair.Item2 is null) &&
+                        pair.Item2 <= height
+                    ).OrderByDescending(pair =>
+                        pair.Item2
+                    ).Select(pair =>
+                        (pair.Item1, workspace[pair.Item2.Value].Hash)
+                    );
+
+                bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                    workspace,
+                    progress,
+                    trustedPeersWithTip.ToImmutableList(),
+                    initialTip?.Hash,
+                    cancellationToken
+                );
+
+                if (!received)
+                {
+                    long initHeight =
+                        initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
+                        ? 0
+                        : initialTip.Index + 1;
+                    int count = 0, totalCount = workspace.Count() - (int)initHeight;
+                    _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
+                    foreach (HashDigest<SHA256> hash in workspace.BlockHashes.Skip((int)initHeight))
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        Block<T> block = workspace.Blocks[hash];
+                        if (block.Index < initHeight)
+                        {
+                            continue;
+                        }
+
+                        workspace.ExecuteActions(block, render: false);
+                        _logger.Debug("Executed actions in the block {0}.", block.Hash);
+                        progress?.Report(new ActionExecutionState()
+                        {
+                            TotalBlockCount = totalCount,
+                            ExecutedBlockCount = ++count,
+                            ExecutedBlockHash = block.Hash,
+                        });
+                    }
+
+                    _logger.Debug("Finished to execute actions.");
+                }
+            }
+            finally
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    _logger.Information($"{nameof(PreloadAsync)}() is canceled.");
+                }
+
+                if (workspace.Tip == _blockChain.Tip || cancellationToken.IsCancellationRequested)
+                {
+                    _logger.Debug(
+                        "Preloading is aborted; delete the temporary working chain ({0}: {1}), " +
+                        "and make the existing chain ({2}: {3}) remains.",
+                        workspace.Id,
+                        workspace.Tip,
+                        _blockChain.Id,
+                        _blockChain.Tip
+                    );
+                    workspace.Store.DeleteNamespace(workspace.Id.ToString());
+                }
+                else
+                {
+                    _logger.Debug(
+                        "Preloading finished; replace the existing chain ({0}: {1}) with " +
+                        "the working chain ({2}: {3}).",
+                        workspace.Id,
+                        workspace.Tip,
+                        _blockChain.Id,
+                        _blockChain.Tip
+                    );
                     _blockChain.Swap(workspace, render: false);
                 }
 
-                return;
-            }
-
-            var height = workspace.Tip.Index;
-
-            IEnumerable<(Peer, HashDigest<SHA256> Hash)> trustedPeersWithTip =
-                peersWithHeight.Where(pair =>
-                    trustedStateValidators.Contains(pair.Item1.Address) &&
-                    !(pair.Item2 is null) &&
-                    pair.Item2 <= height
-                ).OrderByDescending(pair =>
-                    pair.Item2
-                ).Select(pair =>
-                    (pair.Item1, workspace[pair.Item2.Value].Hash)
-                );
-
-            bool received = await SyncRecentStatesFromTrustedPeersAsync(
-                workspace,
-                progress,
-                trustedPeersWithTip.ToImmutableList(),
-                initialTip?.Hash,
-                cancellationToken
-            );
-
-            if (!received)
-            {
-                long initHeight =
-                    initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
-                    ? 0
-                    : initialTip.Index + 1;
-                int count = 0, totalCount = workspace.Count() - (int)initHeight;
-                _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
-                foreach (HashDigest<SHA256> hash in workspace.BlockHashes.Skip((int)initHeight))
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                    {
-                        return;
-                    }
-
-                    Block<T> block = workspace.Blocks[hash];
-                    if (block.Index < initHeight)
-                    {
-                        continue;
-                    }
-
-                    workspace.ExecuteActions(block, render: false);
-                    _logger.Debug("Executed actions in the block {0}.", block.Hash);
-                    progress?.Report(new ActionExecutionState()
-                    {
-                        TotalBlockCount = totalCount,
-                        ExecutedBlockCount = ++count,
-                        ExecutedBlockHash = block.Hash,
-                    });
-                }
-
-                _logger.Debug("Finished to execute actions.");
-            }
-
-            if (workspace.Tip != _blockChain.Tip && !cancellationToken.IsCancellationRequested)
-            {
-                _blockChain.Swap(workspace, render: false);
+                cancellationToken.ThrowIfCancellationRequested();
             }
         }
 
@@ -968,6 +997,7 @@ namespace Libplanet.Net
             );
             foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var request = new GetRecentStates(baseBlockHash, blockHash);
                 _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
@@ -1014,6 +1044,7 @@ namespace Libplanet.Net
                             _logger.Debug("Starts to store state refs received from {0}.", peer);
                             foreach (var pair in recentStates.StateReferences)
                             {
+                                cancellationToken.ThrowIfCancellationRequested();
                                 IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
                                 foreach (HashDigest<SHA256> bHash in pair.Value)
                                 {
@@ -1034,6 +1065,7 @@ namespace Libplanet.Net
                             _logger.Debug("Starts to store block states received from {0}.", peer);
                             foreach (var pair in recentStates.BlockStates)
                             {
+                                cancellationToken.ThrowIfCancellationRequested();
                                 store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
                                 progress?.Report(new BlockStateDownloadState()
                                 {
@@ -1110,9 +1142,18 @@ namespace Libplanet.Net
                             }
                         }, cancellationToken);
                 }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(BroadcastTxAsync)}() is canceled.");
+                    throw;
+                }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "An unexpected exception occured during BroadcastTxAsync()");
+                    _logger.Error(
+                        e,
+                        $"An unexpected exception occured during {nameof(BroadcastTxAsync)}(): {0}",
+                        e
+                    );
                 }
             }
         }
@@ -1302,49 +1343,61 @@ namespace Libplanet.Net
                 _logger.Debug("Forking complete.");
             }
 
-            _logger.Debug("Trying to fill up previous blocks...");
-
-            int retry = 3;
-            while (true)
+            try
             {
-                try
-                {
-                    await FillBlocksAsync(
-                        peer,
-                        synced,
-                        stop,
-                        progress,
-                        totalBlockCount,
-                        evaluateActions,
-                        cancellationToken
-                    );
-                    break;
-                }
+                _logger.Debug("Trying to fill up previous blocks...");
 
-                // We can't recover with TaskCanceledException and
-                // ObjectDisposedException. so just re-throw them.
-                catch (ObjectDisposedException)
+                int retry = 3;
+                while (true)
                 {
-                    throw;
-                }
-                catch (TaskCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    if (retry > 0)
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    try
                     {
-                        _logger.Error(
-                            e,
-                            "FillBlockAsync() failed. retrying..."
+                        await FillBlocksAsync(
+                            peer,
+                            synced,
+                            stop,
+                            progress,
+                            totalBlockCount,
+                            evaluateActions,
+                            cancellationToken
                         );
-                        retry--;
+                        break;
                     }
-                    else
+
+                    // We can't recover with OperationCanceledException and
+                    // ObjectDisposedException. so just re-throw them.
+                    catch (ObjectDisposedException)
                     {
                         throw;
                     }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception e)
+                    {
+                        if (retry > 0)
+                        {
+                            _logger.Error(
+                                e,
+                                "FillBlockAsync() failed. retrying..."
+                            );
+                            retry--;
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    synced.Store.DeleteNamespace(synced.Id.ToString());
                 }
             }
 
@@ -1442,6 +1495,8 @@ namespace Libplanet.Net
                     {
                         _logger.Debug(
                             $"Trying to append block[{block.Hash}]...");
+
+                        cancellationToken.ThrowIfCancellationRequested();
 
                         // As actions in this block should be rendered
                         // after actions in stale blocks are unrendered,

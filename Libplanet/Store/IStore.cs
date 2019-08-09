@@ -51,7 +51,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Deletes an index, tx nonces, and state references in the given
         /// <paramref name="namespace"/>.
-        /// It also deletes namespace itself.
+        /// It also deletes namespace itself.  If there is no such <paramref name="namespace"/> it
+        /// does nothing.
         /// </summary>
         /// <param name="namespace">The namespace to delete.</param>
         /// <remarks>This does not delete blocks or transactions that belong to
