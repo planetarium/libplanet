@@ -22,6 +22,9 @@ To be released.
     became to `Int64` type.  [[#396], [#399]]
  -  Added `IStore.GetCanonicalNamespace()` method.  [[#426]]
  -  Added `IStore.SetCanonicalNamespace()` method.  [[#426]]
+ -  Removed `IRandom.NextDouble()` method, because [floating-point arithmetics,
+    which is underspecified, likely introduce
+    indeterminism][floating-point determinism].  [[#410], [#419]]
 
 ### Added interfaces
 
@@ -123,15 +126,18 @@ To be released.
 [#398]: https://github.com/planetarium/libplanet/pull/398
 [#399]: https://github.com/planetarium/libplanet/pull/399
 [#400]: https://github.com/planetarium/libplanet/pull/400
+[#410]: https://github.com/planetarium/libplanet/issues/410
 [#413]: https://github.com/planetarium/libplanet/pull/413
 [#414]: https://github.com/planetarium/libplanet/pull/414
 [#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
 [#418]: https://github.com/planetarium/libplanet/pull/418
+[#419]: https://github.com/planetarium/libplanet/pull/419
 [#423]: https://github.com/planetarium/libplanet/pull/423
 [#424]: https://github.com/planetarium/libplanet/pull/424
 [#426]: https://github.com/planetarium/libplanet/pull/426
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
+[floating-point determinism]: https://wp.me/p1fTCO-kT
 
 
 Version 0.4.1
