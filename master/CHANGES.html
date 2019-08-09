@@ -87,8 +87,8 @@ and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium
 <li>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
 <li>Removed the type parameter of <code>ActionEvaluation</code>.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
 <li><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
-<li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and turned on by default.
-[<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
+<li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and
+turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
 <li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 <li><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
 became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
@@ -130,12 +130,17 @@ became O(1) time complexity through omitting iteration and relying
 own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 <li>The way <code>LiteDBStore</code> stores state references became efficient,
 but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</li>
-<li><code>PreloadAsync</code> became to report total block download status instead of
-chunked download status.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to report a block downloading
+progress with the total number of blocks to download in the entire batch,
+instead of the window size of a chunk (i.e., 500).  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
 which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
 if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</li>
+<li><code>FileStore</code> and <code>LiteDBStore</code> became to guarantee atomicity of storing
+transactions. [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
+<li><code>IStore.PutTransaction&lt;T&gt;()</code> became to do nothing when it takes
+the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
