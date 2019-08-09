@@ -1080,7 +1080,12 @@ namespace Libplanet.Blockchain
 
             if (buildStateReferences)
             {
-                Store.StoreStateReference(Id.ToString(), updatedAddresses, block);
+                Store.StoreStateReference(
+                    Id.ToString(),
+                    updatedAddresses,
+                    block.Hash,
+                    block.Index
+                );
             }
         }
     }

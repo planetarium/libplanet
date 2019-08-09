@@ -119,12 +119,11 @@ namespace Libplanet.Store
         public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace, Address address);
 
-        /// <inheritdoc />
-        public abstract void StoreStateReference<T>(
+        public abstract void StoreStateReference(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new();
+            HashDigest<SHA256> hashDigest,
+            long index);
 
         /// <inheritdoc />
         public abstract void ForkStateReferences<T>(

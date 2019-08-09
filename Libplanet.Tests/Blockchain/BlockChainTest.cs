@@ -1392,7 +1392,8 @@ namespace Libplanet.Tests.Blockchain
                     store.StoreStateReference(
                         chainId.ToString(),
                         dirty.Keys.ToImmutableHashSet(),
-                        b
+                        b.Hash,
+                        b.Index
                     );
                     BuildIndex(chainId, b);
                 }

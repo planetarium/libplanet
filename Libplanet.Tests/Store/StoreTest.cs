@@ -51,7 +51,8 @@ namespace Libplanet.Tests.Store
             Fx.Store.StoreStateReference(
                 Fx.StoreNamespace,
                 addresses.Take(3).ToImmutableHashSet(),
-                block1
+                block1.Hash,
+                block1.Index
             );
             Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
 
@@ -87,7 +88,8 @@ namespace Libplanet.Tests.Store
             Fx.Store.StoreStateReference(
                 Fx.StoreNamespace,
                 addresses.Take(3).ToImmutableHashSet(),
-                Fx.Block1
+                Fx.Block1.Hash,
+                Fx.Block1.Index
             );
             Assert.Equal(
                 addresses.Take(3).ToImmutableHashSet(),
@@ -96,7 +98,8 @@ namespace Libplanet.Tests.Store
             Fx.Store.StoreStateReference(
                 Fx.StoreNamespace,
                 addresses.Skip(2).Take(3).ToImmutableHashSet(),
-                Fx.Block2
+                Fx.Block2.Hash,
+                Fx.Block2.Index
             );
             Assert.Equal(
                 addresses.Take(5).ToImmutableHashSet(),
@@ -105,7 +108,8 @@ namespace Libplanet.Tests.Store
             Fx.Store.StoreStateReference(
                 Fx.StoreNamespace,
                 addresses.Skip(5).Take(3).ToImmutableHashSet(),
-                Fx.Block3
+                Fx.Block3.Hash,
+                Fx.Block3.Index
             );
             Assert.Equal(
                 addresses.ToImmutableHashSet(),
@@ -343,13 +347,23 @@ namespace Libplanet.Tests.Store
 
             Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address));
 
-            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx4.UpdatedAddresses, block4);
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                tx4.UpdatedAddresses,
+                block4.Hash,
+                block4.Index
+            );
             Assert.Equal(
                 new[] { Tuple.Create(block4.Hash, block4.Index) },
                 this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
             );
 
-            Fx.Store.StoreStateReference(Fx.StoreNamespace, tx5.UpdatedAddresses, block5);
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                tx5.UpdatedAddresses,
+                block5.Hash,
+                block5.Index
+            );
             Assert.Equal(
                 new[]
                 {
@@ -392,7 +406,11 @@ namespace Libplanet.Tests.Store
             {
                 updatedAddresses = new HashSet<Address> { address1 };
                 Fx.Store.StoreStateReference(
-                    Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), block);
+                    Fx.StoreNamespace,
+                    updatedAddresses.ToImmutableHashSet(),
+                    block.Hash,
+                    block.Index
+                );
             }
 
             var txs2 = new[] { tx2 };
@@ -400,7 +418,11 @@ namespace Libplanet.Tests.Store
 
             updatedAddresses = new HashSet<Address> { address2 };
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace, updatedAddresses.ToImmutableHashSet(), blocks[3]);
+                Fx.StoreNamespace,
+                updatedAddresses.ToImmutableHashSet(),
+                blocks[3].Hash,
+                blocks[3].Index
+            );
 
             var branchPoint = blocks[branchPointIndex];
             var addressesToStrip = new[] { address1, address2 }.ToImmutableHashSet();
