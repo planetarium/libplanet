@@ -8,6 +8,7 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BlockType()
         {
+            Field(x => x.Hash, nullable: false, typeof(IdGraphType));
             Field(x => x.Index);
             Field(x => x.Difficulty);
             Field<StringGraphType>(
