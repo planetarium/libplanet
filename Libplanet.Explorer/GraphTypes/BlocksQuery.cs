@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -27,12 +28,12 @@ namespace Libplanet.Explorer.GraphTypes
             Field<BlockType<T>>(
                 "block",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "index" }
+                    new QueryArgument<IdGraphType> { Name = "hash" }
                 ),
                 resolve: context =>
                 {
-                    ulong index = context.GetArgument<ulong>("index");
-                    return _chain.FirstOrDefault(x => (ulong)x.Index == index);
+                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(context.GetArgument<string>("hash"));
+                    return _chain.FirstOrDefault(x => x.Hash.Equals(hash));
                 }
             );
 
