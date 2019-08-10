@@ -21,7 +21,15 @@ namespace Libplanet.Explorer
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+                options.AddPolicy(
+                    "AllowAllOrigins",
+                    builder => 
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                )
+            );
             services.AddMvc()
                 .ConfigureApplicationPartManager(p =>
                     p.FeatureProviders.Add(
@@ -36,6 +44,7 @@ namespace Libplanet.Explorer
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
+            app.UseCors("AllowAllOrigins");
             app.UseMvc();
         }
     }
