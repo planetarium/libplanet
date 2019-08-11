@@ -73,6 +73,8 @@ To be released.
     transactions. [[#413]]
  -  `IStore.PutTransaction<T>()` became to do nothing when it takes
     the `Transaction<T>` more than once.  [[#413]]
+ -  `BlockChain<T>.Swap()` became to omit common block finding when `render` is
+    `false`.  [[#423]]
 
 ### Bug fixes
 
@@ -126,6 +128,7 @@ To be released.
 [#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
 [#418]: https://github.com/planetarium/libplanet/pull/418
+[#423]: https://github.com/planetarium/libplanet/pull/423
 [#424]: https://github.com/planetarium/libplanet/pull/424
 [#426]: https://github.com/planetarium/libplanet/pull/426
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268

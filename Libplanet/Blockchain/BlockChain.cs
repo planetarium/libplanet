@@ -953,7 +953,7 @@ namespace Libplanet.Blockchain
         {
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            if (!(Tip is null || other.Tip is null))
+            if (render && !(Tip is null || other.Tip is null))
             {
                 long shorterHeight =
                     Math.Min(this.LongCount(), other.LongCount()) - 1;
