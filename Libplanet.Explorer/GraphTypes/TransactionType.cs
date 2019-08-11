@@ -22,10 +22,7 @@ namespace Libplanet.Explorer.GraphTypes
                 "UpdatedAddress",
                 resolve: ctx => from address in ctx.Source.UpdatedAddresses select address.ToString()
             );
-            Field<StringGraphType>(
-                "Signature",
-                resolve: ctx => ByteUtil.Hex(ctx.Source.Signature)
-            );
+            Field(x => x.Signature, nullable: false, typeof(IdGraphType));
             Field(x => x.Timestamp);
             Field<ListGraphType<ActionType<T>>>("Actions");
 

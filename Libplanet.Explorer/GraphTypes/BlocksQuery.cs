@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
@@ -13,26 +14,29 @@ namespace Libplanet.Explorer.GraphTypes
             Field<ListGraphType<BlockType<T>>>(
                 "blocks",
                 arguments: new QueryArguments(
+                    new QueryArgument<BooleanGraphType> { Name = "desc", DefaultValue = false },
                     new QueryArgument<IntGraphType> { Name = "offset", DefaultValue = 0 },
                     new QueryArgument<IntGraphType> { Name = "limit", DefaultValue = chain.Count() }
                 ),
                 resolve: context =>
                 {
+                    bool desc = context.GetArgument<bool>("desc");
                     int offset = context.GetArgument<int>("offset");
                     int limit = context.GetArgument<int>("limit");
-                    return chain.Skip(offset).Take(limit);
+                    var blocks = desc ? chain.Reverse() : chain;
+                    return blocks.Skip(offset).Take(limit);
                 }
             );
 
             Field<BlockType<T>>(
                 "block",
                 arguments: new QueryArguments(
-                    new QueryArgument<IdGraphType> { Name = "index" }
+                    new QueryArgument<IdGraphType> { Name = "hash" }
                 ),
                 resolve: context =>
                 {
-                    ulong index = context.GetArgument<ulong>("index");
-                    return _chain.FirstOrDefault(x => (ulong)x.Index == index);
+                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(context.GetArgument<string>("hash"));
+                    return _chain.FirstOrDefault(x => x.Hash.Equals(hash));
                 }
             );
 
