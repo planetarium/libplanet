@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Contributor guide | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Contributor guide | Libplanet ">
+    <meta name="generator" content="docfx 2.42.1.0">
+    
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="api/Libplanet.yml" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="contributor-guide">Contributor guide</h1>
+
+<p>Note: This document at present is for only code contributors.
+We should expand it so that it covers reporting bugs, filing issues,
+and writing docs.</p>
+<h2 id="questions--online-chat--discord">Questions &amp; online chat  <a href="https://discord.gg/ue9fgc3"><img src="https://img.shields.io/discord/539405872346955788.svg?color=7289da&amp;logo=discord&amp;logoColor=white" alt="Discord"></a></h2>
+<p>We have a <a href="https://discord.gg/ue9fgc3">Discord server</a> to discuss Libplanet.  There are some channels
+for purposes:</p>
+<ul>
+<li><em>#libplanet-users</em>: Chat with game programmers who use Libplanet.
+Ask questions to <em>use</em> Libplanet for your games.</li>
+<li><em>#libplanet-dev</em>: Chat with maintainers and contributors of Libplanet.
+Ask questions to <em>hack</em> Libplanet and to make a patch for it.</li>
+<li><em>#libplanet-users-kr</em>: The same purpose to <em>#libplanet-users</em>,
+except you can speak Korean instead English here.</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>You need <a href="https://dot.net/">.NET Core</a> SDK 2.2+ which provides the latest C# compiler and .NET VM.
+Read and follow the instruction to install .NET Core SDK on
+the <a href="https://dotnet.microsoft.com/download">.NET Core downloads page</a>.
+FYI if you use macOS and <a href="https://brew.sh/">Homebrew</a> you can install it by
+<code>brew cask install dotnet-sdk</code> command.</p>
+<p>Make sure that your .NET Core SDK is 2.2 or higher.  You could show
+the version you are using by <code>dotnet --info</code> command.</p>
+<p>If it's Windows please check if the environment variable named
+<code>MSBuildSDKsPath</code> refers to the proper version of .NET Core SDK.
+If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
+at the highest.  .NET Core SDK higher than the version 2.2.105 is not
+recognized Visual Studio 2017.</p>
+<p>Although it is not necessary, you should install a proper IDE for .NET
+(or an <a href="http://www.omnisharp.net/">OmniSharp</a> extension for your favorite editor — except it takes
+hours to properly configure and integrate with your editor).
+C# is not like JavaScript or Python; it is painful to code in C# without IDE.</p>
+<p>Unless you already have your favorite setup, we recommend you to use
+<a href="https://code.visualstudio.com/">Visual Studio Code</a>.  It is free, open source, and made by Microsoft, which
+made .NET as well.  So Visual Studio Code has a <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp">first-party C# extension</a>
+which works well together.</p>
+<h2 id="build">Build</h2>
+<p>The following command installs dependencies (required library packages) and
+builds the entire <em>Libplanet</em> solution:</p>
+<pre><code>dotnet build
+</code></pre>
+<h2 id="tests-build-status-codecov">Tests <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master"><img src="https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
+<p>We write as complete tests as possible to the corresponding implementation code.
+Going near to the <a href="https://codecov.io/gh/planetarium/libplanet">code coverage</a> 100% is one of our goals.</p>
+<p>The <em>Libplanet</em> solution consists of 4 projects.  <em>Libplanet</em> and
+<em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
+and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
+<p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly, and
+<em>Libplanet.Stun.Tests</em> is a test suite for the <em>Libplanet.Stun.dll</em> assembly.
+Both depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in these corresponds to
+one in <em>Libplanet</em> or <em>Libplanet.Stun</em> projects.
+If there's <em>Libplanet.Foo.Bar</em> class there also should be
+<em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
+<p>To build and run unit tests at a time execute the below command:</p>
+<pre><code>dotnet test
+</code></pre>
+<h3 id="turn_server_url"><code>TURN_SERVER_URL</code></h3>
+<p>Some tests depend on a TURN server.  If <code>TURN_SERVER_URL</code> environment variable
+is set (the value looks like <code>turn://user:password@host:3478/</code>)
+these tests also run.  Otherwise, these tests are skipped.</p>
+<p>FYI there are several TURN implementations like <a href="https://github.com/coturn/coturn">Coturn</a> and <a href="https://github.com/gortc/turn">gortc/turn</a>,
+or cloud offers like <a href="https://xirsys.com/">Xirsys</a>.</p>
+<h3 id="xunit-unity-runner"><a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a></h3>
+<p>Unity is one of our platforms we primarily target to support, so we've been
+testing Libplanet on the actual Unity runtime, and you could see whether it's
+passed on <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master">Azure Pipelines</a>.</p>
+<p>However, if it fails and it does not fail on other platforms but only Unity,
+you need to run Unity tests on your own machine so that you rapidily and
+repeatedly tinker things, make a try, and immediately get feedback from them.</p>
+<p>Here's how to run Unity tests on your machine.  We've made and used
+<a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a> to run <a href="https://xunit.github.io/">Xunit</a> tests on the actual Unity runtime,
+and our build jobs on Azure Pipelines also use this.  This test runner
+is actually a Unity app, though it's not a game app.  As of June 2019,
+there are <a href="https://github.com/planetarium/xunit-unity-runner/releases/latest">executable binaries</a> for Linux, macOS, and Windows.
+Its usage is simple.  It's a CLI app that takes <em>absolute</em> paths to
+.NET assemblies (<em>.dll</em>) that consist of test classes (based on Xunit).</p>
+<p>You can build these assemblies using <code>msbuild -r</code> Mono or .NET Framework
+provide.
+<em>You can't build them using <code>dotnet build</code> command or <code>dotnet msbuild</code>,</em>
+because the Unity runtime is not based on .NET Core but Mono,
+which is compatible with .NET Framework 4.6.
+Please be sure that Mono's <em>bin</em> directory is prior to .NET Core's one
+(or it's okay too if .NET Core is not installed at all).  Mono or .NET
+Framework's <code>msbuild</code> could try to use .NET Core's version of several
+utilities during build, and this could cause some errors.</p>
+<p>The way to execute the runner binary depend on the platform.  For details,
+please read <a href="https://github.com/planetarium/xunit-unity-runner">xunit-unity-runner</a>'s README.  FYI you can use <code>-h</code>/<code>--help</code>
+option as well.</p>
+<p>To sum up, the instruction is like below (the example is assuming Linux):</p>
+<pre><code>msbuild -r
+xunit-unity-runner/StandaloneLinux64 \
+  &quot;`pwd`&quot;/*.Tests/bin/Debug/net461/*.Tests.dll
+</code></pre>
+<h2 id="style-convention">Style convention</h2>
+<p>Please follow the existing coding convention.  We are already using several
+static analyzers.  They are automatically executed together with <code>msbuild</code>,
+and will warn you if there are any style errors.</p>
+<p>You should also register Git hooks we commonly use:</p>
+<pre><code>git config core.hooksPath hooks
+</code></pre>
+<p>We highly recommend you to install an extension for <a href="https://editorconfig.org/">EditorConfig</a> in your
+favorite editor.  Some recent editors have built-in support for EditorConfig,
+e.g., Rider (IntelliJ IDEA), Visual Studio.  Many editors have an extension to
+support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom</a>, <a href="https://github.com/editorconfig/editorconfig-emacs">Emacs</a>, <a href="https://github.com/editorconfig/editorconfig-vim">Vim</a>, <a href="https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig">VS Code</a>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="i-got-the-error-like-fody-is-only-supported-on-msbuild-16-and-above-current-version-15">I got the error like <code>Fody is only supported on MSBuild 16 and above. Current version: 15.</code></h3>
+<p>Your .NET Core SDK version probably is outdated.  Our recommended version is: <em>2.2.300</em>.</p>
+<ol>
+<li><p>Download the lastest (as of June 2019) .NET Core SDK binary from the official website:</p>
+<p><a href="https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300">https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300</a></p>
+</li>
+<li><p>Extract <em>.tar.gz</em> in proper directory.</p>
+</li>
+<li><p>You could permanently add the following commands into your shell profile.</p>
+<pre><code>export DOTNET_ROOT=&quot;$YOUR_DOTNET_INSTALLATION_PATH/dotnet&quot;
+export PATH=&quot;$PATH:$DOTNET_ROOT&quot;
+</code></pre>
+</li>
+</ol>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/bugfix/exc-in-turn/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019 <a href="https://planetariumhq.com/">Planetarium</a><br>Generated by DocFX
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
