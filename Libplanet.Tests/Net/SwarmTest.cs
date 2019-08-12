@@ -30,6 +30,8 @@ namespace Libplanet.Tests.Net
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
 
+        private readonly ITestOutputHelper _output;
+
         private readonly FileStoreFixture _fx1;
         private readonly FileStoreFixture _fx2;
         private readonly FileStoreFixture _fx3;
@@ -47,6 +49,8 @@ namespace Libplanet.Tests.Net
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<SwarmTest>();
+
+            _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
             _fx1 = new FileStoreFixture();
@@ -82,6 +86,8 @@ namespace Libplanet.Tests.Net
 
         public void Dispose()
         {
+            _output.WriteLine($"Call {nameof(SwarmTest.Dispose)}()...");
+
             _fx1.Dispose();
             _fx2.Dispose();
             _fx3.Dispose();
@@ -417,7 +423,17 @@ namespace Libplanet.Tests.Net
             );
 
             cts.Cancel();
-            await task;
+            bool canceled = false;
+            try
+            {
+                await task;
+            }
+            catch (OperationCanceledException)
+            {
+                canceled = true;
+            }
+
+            Assert.True(canceled);
         }
 
         [Fact(Timeout = Timeout)]
@@ -838,7 +854,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanStopGracefullyWhileStarting()
+        public async Task StopGracefullyWhileStarting()
         {
             Swarm<DumbAction> a = _swarms[0];
             Swarm<DumbAction> b = _swarms[1];
@@ -847,7 +863,17 @@ namespace Libplanet.Tests.Net
             await a.AddPeersAsync(new[] { b.AsPeer });
 
             Task t = await StartAsync(a);
-            await Task.WhenAll(a.StopAsync(), t);
+            bool canceled = false;
+            try
+            {
+                await Task.WhenAll(a.StopAsync(), t);
+            }
+            catch (OperationCanceledException)
+            {
+                canceled = true;
+            }
+
+            Assert.True(canceled);
         }
 
         [Fact(Timeout = Timeout)]
@@ -1171,20 +1197,31 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
-        public async Task PreloadAsyncCancellation()
+        [Theory]
+        [InlineData(0)]
+        [InlineData(50)]
+        [InlineData(100)]
+        [InlineData(500)]
+        [InlineData(1000)]
+        [InlineData(2500)]
+        [InlineData(5000)]
+        public async Task PreloadAsyncCancellation(int cancelAfter)
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
+            _output.WriteLine("Miner:    {0}", minerSwarm.Address);
+            _output.WriteLine("Receiver: {0}", receiverSwarm.Address);
 
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
+            Guid receiverChainId = _blockchains[1].Id;
 
             var signer = new PrivateKey();
             Address address = signer.PublicKey.ToAddress();
-            for (int i = 0; i < 10; i++)
+            _output.WriteLine("Fixture blocks:");
+            for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < 5; j++)
                 {
                     minerChain.MakeTransaction(
                         signer,
@@ -1192,29 +1229,56 @@ namespace Libplanet.Tests.Net
                     );
                 }
 
-                minerChain.MineBlock(minerSwarm.Address);
+                Block<DumbAction> block = minerChain.MineBlock(minerSwarm.Address);
+                _output.WriteLine("  #{0,2} {1}", block.Index, block.Hash);
             }
 
+            Assert.NotNull(minerChain.Tip);
+            minerChain.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
             await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
             CancellationTokenSource cts = new CancellationTokenSource();
-            cts.CancelAfter(1000);
+            cts.CancelAfter(cancelAfter);
+            bool canceled = true;
             try
             {
                 await receiverSwarm.PreloadAsync(
                     trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet(),
                     cancellationToken: cts.Token
                 );
+                canceled = false;
+                _output.WriteLine($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
             }
-            catch (TaskCanceledException)
+            catch (OperationCanceledException)
             {
+                _output.WriteLine($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
             }
 
             cts.Dispose();
 
-            Assert.Null(receiverChain.Tip);
-            Assert.Null(receiverChain.GetStates(new[] { address }).GetValueOrDefault(address));
+            Assert.InRange(receiverChain.Store.ListNamespaces().Count(), 0, 1);
+
+            if (canceled)
+            {
+                Assert.Equal(receiverChainId, receiverChain.Id);
+                Assert.Null(receiverChain.Tip);
+                Assert.Null(receiverChain.GetStates(new[] { address }).GetValueOrDefault(address));
+            }
+            else
+            {
+                Assert.NotEqual(receiverChainId, receiverChain.Id);
+                Assert.Equal(minerChain.Tip, receiverChain.Tip);
+                Assert.Equal(
+                    string.Join(
+                        ",",
+                        Enumerable.Range(0, 20).Select(i =>
+                            string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
+                        )
+                    ),
+                    receiverChain.GetStates(new[] { address })[address]
+                );
+            }
         }
 
         private async Task<Task> StartAsync(
