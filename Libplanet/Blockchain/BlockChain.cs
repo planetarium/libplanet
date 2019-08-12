@@ -771,8 +771,7 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
                 var branchPointIndex = (int)Blocks[branchPoint].Index;
                 IEnumerable<HashDigest<SHA256>> hashes = Store
-                    .IterateIndex(Id.ToString())
-                    .Skip(branchPointIndex);
+                    .IterateIndex(Id.ToString(), branchPointIndex);
 
                 foreach (HashDigest<SHA256> hash in hashes)
                 {
