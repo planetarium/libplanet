@@ -17,6 +17,20 @@ namespace Libplanet.Store
         /// <returns>Existing namespaces.</returns>
         IEnumerable<string> ListNamespaces();
 
+        /// <summary>
+        /// Gets the current canonical namespace.
+        /// </summary>
+        /// <returns>The current canonical namespace.  Maybe <c>null</c>.</returns>
+        string GetCanonicalNamespace();
+
+        /// <summary>
+        /// Set canonical namespace.
+        /// </summary>
+        /// <param name="namespace">A new canonical namespace.  Cannot be <c>null</c>.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="namespace"/> is
+        /// <c>null</c>.</exception>
+        void SetCanonicalNamespace(string @namespace);
+
         long CountIndex(string @namespace);
 
         /// <summary>

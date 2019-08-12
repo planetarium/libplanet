@@ -227,5 +227,17 @@ namespace Libplanet.Tests.Store
             _logs.Add((nameof(UnstageTransactionIds), txids, null));
             _store.UnstageTransactionIds(txids);
         }
+
+        public string GetCanonicalNamespace()
+        {
+            _logs.Add((nameof(GetCanonicalNamespace), null, null));
+            return _store.GetCanonicalNamespace();
+        }
+
+        public void SetCanonicalNamespace(string @namespace)
+        {
+            _logs.Add((nameof(SetCanonicalNamespace), @namespace, null));
+            _store.SetCanonicalNamespace(@namespace);
+        }
     }
 }

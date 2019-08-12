@@ -29,7 +29,20 @@ namespace Libplanet.Blockchain
         private readonly object _txLock;
 
         public BlockChain(IBlockPolicy<T> policy, IStore store)
-            : this(policy, store, GetCanonicalChain(store) ?? Guid.NewGuid())
+            : this(
+                policy,
+                store,
+                store.GetCanonicalNamespace()
+            )
+        {
+        }
+
+        internal BlockChain(IBlockPolicy<T> policy, IStore store, string @namespace)
+            : this(
+                policy,
+                store,
+                @namespace is null ? Guid.NewGuid() : Guid.Parse(@namespace)
+            )
         {
         }
 
@@ -43,6 +56,11 @@ namespace Libplanet.Blockchain
 
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
+
+            if (Store.GetCanonicalNamespace() is null)
+            {
+                Store.SetCanonicalNamespace(Id.ToString());
+            }
         }
 
         ~BlockChain()
@@ -522,24 +540,6 @@ namespace Libplanet.Blockchain
             }
         }
 
-        // FIXME it should be separated into separate class (like IConsensus).
-        internal static Guid? GetCanonicalChain(IStore store)
-        {
-            string @namespace = store
-                .ListNamespaces()
-                .OrderByDescending(store.CountIndex)
-                .FirstOrDefault();
-
-            if (@namespace is null)
-            {
-                return null;
-            }
-            else
-            {
-                return new Guid(@namespace);
-            }
-        }
-
         internal void Append(
             Block<T> block,
             DateTimeOffset currentTime,
@@ -1009,6 +1009,7 @@ namespace Libplanet.Blockchain
 
                 Guid obsoleteId = Id;
                 Id = other.Id;
+                Store.SetCanonicalNamespace(Id.ToString());
                 Blocks = new BlockSet<T>(Store);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteNamespace(obsoleteId.ToString());

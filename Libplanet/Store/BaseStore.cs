@@ -15,6 +15,12 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract IEnumerable<string> ListNamespaces();
 
+        /// <inheritdoc />
+        public abstract string GetCanonicalNamespace();
+
+        /// <inheritdoc />
+        public abstract void SetCanonicalNamespace(string @namespace);
+
         public abstract long CountIndex(string @namespace);
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex(

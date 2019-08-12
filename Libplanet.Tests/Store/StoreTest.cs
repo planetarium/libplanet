@@ -66,6 +66,17 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void CanonicalNamespace()
+        {
+            Assert.Null(Fx.Store.GetCanonicalNamespace());
+            Assert.Throws<ArgumentNullException>(() => Fx.Store.SetCanonicalNamespace(null));
+            Fx.Store.SetCanonicalNamespace("foo");
+            Assert.Equal("foo", Fx.Store.GetCanonicalNamespace());
+            Fx.Store.SetCanonicalNamespace("bar");
+            Assert.Equal("bar", Fx.Store.GetCanonicalNamespace());
+        }
+
+        [Fact]
         public void ListAddresses()
         {
             Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());
