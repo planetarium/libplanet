@@ -493,8 +493,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    $"An unexpected exception occurred during {nameof(StartAsync)}(): {0}",
-                    e
+                    $"An unexpected exception occurred during {nameof(StartAsync)}(): {e}"
                 );
                 throw;
             }
@@ -1020,9 +1019,8 @@ namespace Libplanet.Net
                     catch (TimeoutException e)
                     {
                         _logger.Error(
-                            "Failed to receive recent states from a peer ({0}): {1}",
-                            peer,
-                            e
+                            "Failed to receive recent states from a peer ({0}): " + e,
+                            peer
                         );
                         continue;
                     }
@@ -1151,8 +1149,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occured during {nameof(BroadcastTxAsync)}(): {0}",
-                        e
+                        $"An unexpected exception occured during {nameof(BroadcastTxAsync)}(): {e}"
                     );
                 }
             }
@@ -2054,8 +2051,7 @@ namespace Libplanet.Net
                         {
                             _logger.Error(
                                 exc,
-                                "Something went wrong during message parsing: {0}",
-                                exc
+                                $"Something went wrong during message parsing: {exc}"
                             );
                             throw;
                         }
@@ -2064,14 +2060,13 @@ namespace Libplanet.Net
             }
             catch (InvalidMessageException ex)
             {
-                _logger.Error(ex, "Could not parse NetMQMessage properly; ignore: {0}", ex);
+                _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {ex}");
             }
             catch (Exception ex)
             {
                 _logger.Error(
                     ex,
-                    "An unexpected exception occured during ReceiveMessage(): {0}",
-                    ex
+                    $"An unexpected exception occured during ReceiveMessage(): {ex}"
                 );
             }
         }
