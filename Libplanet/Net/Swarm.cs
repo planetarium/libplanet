@@ -435,12 +435,18 @@ namespace Libplanet.Net
 
             _logger.Information($"Listen on {_listenPort}");
 
+            _workerCancellationTokenSource = new CancellationTokenSource();
+            CancellationToken workerCancellationToken =
+                CancellationTokenSource.CreateLinkedTokenSource(
+                    _workerCancellationTokenSource.Token, cancellationToken
+                ).Token;
+            _cancellationToken = workerCancellationToken;
+            var tasks = new List<Task>();
             var behindNAT = false;
 
             if (!(_turnClient is null))
             {
-                _publicIPAddress = (await _turnClient.GetMappedAddressAsync())
-                    .Address;
+                _publicIPAddress = (await _turnClient.GetMappedAddressAsync()).Address;
 
                 if (await _turnClient.IsBehindNAT())
                 {
@@ -453,42 +459,28 @@ namespace Libplanet.Net
                 IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
                     TurnAllocationLifetime
                 );
-                EndPoint = new DnsEndPoint(
-                    turnEp.Address.ToString(), turnEp.Port);
+                EndPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
+
+                tasks.Add(BindingProxies(_cancellationToken));
+                tasks.Add(RefreshAllocate(_cancellationToken));
+                tasks.Add(RefreshPermissions(_cancellationToken));
             }
             else
             {
                 EndPoint = new DnsEndPoint(_host, _listenPort.Value);
             }
 
+            using (await _runningMutex.LockAsync())
+            {
+                await PreloadAsync(render: true, cancellationToken: _cancellationToken);
+                Running = true;
+            }
+
             try
             {
-                _workerCancellationTokenSource = new CancellationTokenSource();
-                CancellationToken workerCancellationToken =
-                    CancellationTokenSource.CreateLinkedTokenSource(
-                        _workerCancellationTokenSource.Token, cancellationToken
-                    ).Token;
-                _cancellationToken = workerCancellationToken;
-
-                using (await _runningMutex.LockAsync())
-                {
-                    Running = true;
-                    await PreloadAsync(render: true, cancellationToken: _cancellationToken);
-                }
-
-                var tasks = new List<Task>
-                {
-                    RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken),
-                    BroadcastTxAsync(broadcastTxInterval, _cancellationToken),
-                    Task.Run(() => _poller.Run(), _cancellationToken),
-                };
-
-                if (behindNAT)
-                {
-                    tasks.Add(BindingProxies(_cancellationToken));
-                    tasks.Add(RefreshAllocate(_cancellationToken));
-                    tasks.Add(RefreshPermissions(_cancellationToken));
-                }
+                tasks.Add(RepeatDeltaDistributionAsync(distributeInterval, _cancellationToken));
+                tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
+                tasks.Add(Task.Run(() => _poller.Run(), _cancellationToken));
 
                 await await Task.WhenAny(tasks);
             }
@@ -498,9 +490,7 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-                _logger.Error(
-                    e,
-                    "An unexpected exception occured during StartAsync()");
+                _logger.Error(e, "An unexpected exception occured during StartAsync()");
                 throw;
             }
         }

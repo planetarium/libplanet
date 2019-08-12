@@ -93,6 +93,8 @@ To be released.
     disconnected while receiving.  [[#416]]
  -  Fixed a bug that `Swarm<T>.PreloadAsync()` had been processed even if there
     is no appropriate peer. [[#418]]
+ -  Fixed a bug that TURN relay connection had disconnected when preloading
+    took a long time.  [[#424]]
 
 [#319]: https://github.com/planetarium/libplanet/issues/319
 [#343]: https://github.com/planetarium/libplanet/pull/343
@@ -122,6 +124,7 @@ To be released.
 [#416]: https://github.com/planetarium/libplanet/pull/416
 [#417]: https://github.com/planetarium/libplanet/pull/417
 [#418]: https://github.com/planetarium/libplanet/pull/418
+[#424]: https://github.com/planetarium/libplanet/pull/424
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 
