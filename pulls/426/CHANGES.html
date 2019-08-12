@@ -92,6 +92,8 @@ turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/3
 <li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 <li><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
 became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+<li>Added <code>IStore.GetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
+<li>Added <code>IStore.SetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -113,8 +115,6 @@ for themselves.
 <li>Added <code>PreloadState</code>, <code>ActionExecutionState</code>, <code>StateReferenceDownloadState</code>,
 and <code>BlockStateDownloadState</code> classes to cover all phases in the entire
 preloading process.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
-<li>Added <code>IStore.GetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
-<li>Added <code>IStore.SetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
