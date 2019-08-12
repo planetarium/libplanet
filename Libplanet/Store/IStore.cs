@@ -38,9 +38,14 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="namespace">The namespace of the index that contains block hashes to
         /// iterate.</param>
+        /// <param name="offset">The starting point to return block hashes.</param>
+        /// <param name="limit">The maximum number of block hashes to get.</param>
         /// <returns>Block hashes in the index of the <paramref name="namespace"/>, in ascending
         /// order; the genesis block goes first, and the tip block goes last.</returns>
-        IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace);
+        IEnumerable<HashDigest<SHA256>> IterateIndex(
+            string @namespace,
+            int offset = 0,
+            int? limit = null);
 
         HashDigest<SHA256>? IndexBlockHash(string @namespace, long index);
 

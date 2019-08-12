@@ -143,10 +143,13 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateIndex(string @namespace)
+        public override IEnumerable<HashDigest<SHA256>> IterateIndex(
+            string @namespace,
+            int offset,
+            int? limit)
         {
             return IndexCollection(@namespace)
-                .FindAll()
+                .Find(Query.All(), offset, limit ?? int.MaxValue)
                 .Select(i => i.Hash);
         }
 

@@ -266,7 +266,7 @@ namespace Libplanet.Store
             bool found = false;
             using (var writer = new MemoryStream())
             {
-                foreach (var idx in IterateIndex(@namespace))
+                foreach (var idx in IterateIndex(@namespace, 0, int.MaxValue))
                 {
                     if (!found && idx.Equals(hash))
                     {
@@ -468,8 +468,9 @@ namespace Libplanet.Store
         }
 
         public override IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace
-        )
+            string @namespace,
+            int offset,
+            int? limit)
         {
             if (!File.Exists(GetIndexPath(@namespace)))
             {
@@ -478,8 +479,22 @@ namespace Libplanet.Store
 
             using (Stream stream = IndexFileStream(@namespace))
             {
+                int skipSize = HashDigest<SHA256>.Size * offset;
+
+                if (skipSize > stream.Length)
+                {
+                    yield break;
+                }
+
+                stream.Seek(skipSize, SeekOrigin.Begin);
+
                 while (true)
                 {
+                    if (limit < 1)
+                    {
+                        yield break;
+                    }
+
                     var blockHash = new byte[HashDigest<SHA256>.Size];
                     var bytesRead = stream.Read(
                         blockHash,
@@ -493,6 +508,11 @@ namespace Libplanet.Store
                     }
 
                     yield return new HashDigest<SHA256>(blockHash);
+
+                    if (!(limit is null))
+                    {
+                        limit -= 1;
+                    }
                 }
             }
         }

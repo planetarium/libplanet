@@ -283,6 +283,50 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void IterateIndex()
+        {
+            var ns = Fx.StoreNamespace;
+            var store = Fx.Store;
+
+            store.AppendIndex(ns, Fx.Hash1);
+            store.AppendIndex(ns, Fx.Hash2);
+            store.AppendIndex(ns, Fx.Hash3);
+
+            var indexes = store.IterateIndex(ns).ToArray();
+            Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
+
+            indexes = store.IterateIndex(ns, 1).ToArray();
+            Assert.Equal(new[] { Fx.Hash2, Fx.Hash3 }, indexes);
+
+            indexes = store.IterateIndex(ns, 2).ToArray();
+            Assert.Equal(new[] { Fx.Hash3 }, indexes);
+
+            indexes = store.IterateIndex(ns, 3).ToArray();
+            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+
+            indexes = store.IterateIndex(ns, 4).ToArray();
+            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+
+            indexes = store.IterateIndex(ns, limit: 0).ToArray();
+            Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
+
+            indexes = store.IterateIndex(ns, limit: 1).ToArray();
+            Assert.Equal(new[] { Fx.Hash1 }, indexes);
+
+            indexes = store.IterateIndex(ns, limit: 2).ToArray();
+            Assert.Equal(new[] { Fx.Hash1, Fx.Hash2 }, indexes);
+
+            indexes = store.IterateIndex(ns, limit: 3).ToArray();
+            Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
+
+            indexes = store.IterateIndex(ns, limit: 4).ToArray();
+            Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
+
+            indexes = store.IterateIndex(ns, 1, 1).ToArray();
+            Assert.Equal(new[] { Fx.Hash2 }, indexes);
+        }
+
+        [Fact]
         public void IterateStateReferences()
         {
             Address address = this.Fx.Address1;

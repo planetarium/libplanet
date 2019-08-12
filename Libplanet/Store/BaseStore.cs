@@ -24,8 +24,9 @@ namespace Libplanet.Store
         public abstract long CountIndex(string @namespace);
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace
-        );
+            string @namespace,
+            int offset,
+            int? limit);
 
         public abstract HashDigest<SHA256>? IndexBlockHash(
             string @namespace,
