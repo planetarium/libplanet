@@ -115,6 +115,25 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void CanonicalId()
+        {
+            var x = _blockChain;
+            x.MineBlock(_fx.Address1);
+            x.MineBlock(_fx.Address1);
+            Assert.Equal(x.Id.ToString(), _fx.Store.GetCanonicalNamespace());
+            var y = x.Fork(x.Tip.Hash);
+            y.MineBlock(_fx.Address1);
+            Assert.Equal(x.Id.ToString(), _fx.Store.GetCanonicalNamespace());
+
+            var z = new BlockChain<DumbAction>(
+                new BlockPolicy<DumbAction>(new MinerReward(1)),
+                _fx.Store
+            );
+
+            Assert.Equal(x.Id, z.Id);
+        }
+
+        [Fact]
         public void Enumerate()
         {
             Assert.Empty(_blockChain);
@@ -1210,34 +1229,6 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
             Assert.Equal(actions, transaction.Actions);
-        }
-
-        [Fact]
-        public void GetCanonicalChain()
-        {
-            Assert.Null(BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
-
-            Block<DumbAction> block1 = TestUtils.MineGenesis<DumbAction>();
-            Block<DumbAction> block2 = TestUtils.MineNext(block1);
-            Block<DumbAction> block3 = TestUtils.MineNext(block2);
-            Guid id1 = Guid.NewGuid();
-            Guid id2 = Guid.NewGuid();
-
-            foreach (Block<DumbAction> b in new[] { block1 })
-            {
-                _fx.Store.AppendIndex(id1.ToString(), b.Hash);
-                _fx.Store.PutBlock(b);
-            }
-
-            Assert.Equal(id1, BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
-
-            foreach (Block<DumbAction> b in new[] { block2, block3 })
-            {
-                _fx.Store.AppendIndex(id2.ToString(), b.Hash);
-                _fx.Store.PutBlock(b);
-            }
-
-            Assert.Equal(id2, BlockChain<DumbAction>.GetCanonicalChain(_fx.Store));
         }
 
         [Fact]
