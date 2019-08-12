@@ -133,6 +133,11 @@ namespace Libplanet.Store
             );
         }
 
+        public string GetCanonicalNamespacePath()
+        {
+            return Path.Combine(_path, "canon.txt");
+        }
+
         public string GetStateReferencePath(string @namespace)
         {
             return Path.Combine(
@@ -179,6 +184,38 @@ namespace Libplanet.Store
             foreach (FileInfo p in indicesPath.EnumerateFiles())
             {
                 yield return p.Name;
+            }
+        }
+
+        /// <inheritdoc />
+        public override string GetCanonicalNamespace()
+        {
+            var file = new FileInfo(GetCanonicalNamespacePath());
+            try
+            {
+                using (StreamReader reader = file.OpenText())
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc />
+        public override void SetCanonicalNamespace(string @namespace)
+        {
+            if (@namespace is null)
+            {
+                throw new ArgumentNullException(nameof(@namespace));
+            }
+
+            var file = new FileInfo(GetCanonicalNamespacePath());
+            using (StreamWriter writer = file.CreateText())
+            {
+                writer.Write(@namespace);
             }
         }
 

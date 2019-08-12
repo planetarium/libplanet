@@ -20,6 +20,8 @@ To be released.
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
  -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
     became to `Int64` type.  [[#396], [#399]]
+ -  Added `IStore.GetCanonicalNamespace()` method.  [[#426]]
+ -  Added `IStore.SetCanonicalNamespace()` method.  [[#426]]
 
 ### Added interfaces
 
@@ -125,6 +127,7 @@ To be released.
 [#417]: https://github.com/planetarium/libplanet/pull/417
 [#418]: https://github.com/planetarium/libplanet/pull/418
 [#424]: https://github.com/planetarium/libplanet/pull/424
+[#426]: https://github.com/planetarium/libplanet/pull/426
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 
 

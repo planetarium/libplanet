@@ -112,6 +112,30 @@ namespace Libplanet.Store
             _db.DropCollection(StateRefId(@namespace));
         }
 
+        /// <inheritdoc />
+        public override string GetCanonicalNamespace()
+        {
+            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            var docId = new BsonValue("canon");
+            BsonDocument doc = collection.FindById(docId);
+            return doc is null
+                ? null
+                : (doc.TryGetValue("ns", out BsonValue ns) ? ns.AsString : null);
+        }
+
+        /// <inheritdoc />
+        public override void SetCanonicalNamespace(string @namespace)
+        {
+            if (@namespace is null)
+            {
+                throw new ArgumentNullException(nameof(@namespace));
+            }
+
+            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            var docId = new BsonValue("canon");
+            collection.Upsert(docId, new BsonDocument() { ["ns"] = new BsonValue(@namespace) });
+        }
+
         /// <inheritdoc/>
         public override long CountIndex(string @namespace)
         {
