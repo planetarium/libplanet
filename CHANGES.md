@@ -17,6 +17,8 @@ To be released.
  -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
  -  `LiteDBStore()` constructor became to have a new option named `flush` and
     turned on by default.  [[#387], [LiteDB #1268]]
+ -  `LiteDBStore()` constructor became to have a new option named `readOnly` and
+    turned off by default.  [[#434]]
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
  -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
     became to `Int64` type.  [[#396], [#399]]
@@ -141,6 +143,7 @@ To be released.
 [#423]: https://github.com/planetarium/libplanet/pull/423
 [#424]: https://github.com/planetarium/libplanet/pull/424
 [#426]: https://github.com/planetarium/libplanet/pull/426
+[#434]: https://github.com/planetarium/libplanet/pull/434
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 

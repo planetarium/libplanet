@@ -50,11 +50,14 @@ namespace Libplanet.Store
         /// <param name="cacheSize">Max number of pages in the cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
+        /// <param name="readOnly">Opens database readonly mode. Turned off by default.
+        /// </param>
         public LiteDBStore(
             string path,
             bool journal = true,
             int cacheSize = 50000,
-            bool flush = true
+            bool flush = true,
+            bool readOnly = false
         )
         {
             if (path is null)
@@ -72,7 +75,11 @@ namespace Libplanet.Store
                 Flush = flush,
             };
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+            if (readOnly)
+            {
+                connectionString.Mode = LiteDB.FileMode.ReadOnly;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
                 Type.GetType("Mono.Runtime") is null)
             {
                 // macOS + .NETCore doesn't support shared lock.
