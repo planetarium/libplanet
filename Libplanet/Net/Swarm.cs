@@ -692,10 +692,10 @@ namespace Libplanet.Net
                     _logger.Debug(
                         "Preloading finished; replace the existing chain ({0}: {1}) with " +
                         "the working chain ({2}: {3}).",
-                        workspace.Id,
-                        workspace.Tip,
                         _blockChain.Id,
-                        _blockChain.Tip
+                        _blockChain.Tip,
+                        workspace.Id,
+                        workspace.Tip
                     );
                     _blockChain.Swap(workspace, render: false);
                 }
