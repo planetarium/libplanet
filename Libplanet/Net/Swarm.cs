@@ -1340,61 +1340,51 @@ namespace Libplanet.Net
                 _logger.Debug("Forking complete.");
             }
 
-            try
+            _logger.Debug("Trying to fill up previous blocks...");
+
+            int retry = 3;
+            while (true)
             {
-                _logger.Debug("Trying to fill up previous blocks...");
+                cancellationToken.ThrowIfCancellationRequested();
 
-                int retry = 3;
-                while (true)
+                try
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    try
-                    {
-                        await FillBlocksAsync(
-                            peer,
-                            synced,
-                            stop,
-                            progress,
-                            totalBlockCount,
-                            evaluateActions,
-                            cancellationToken
-                        );
-                        break;
-                    }
-
-                    // We can't recover with OperationCanceledException and
-                    // ObjectDisposedException. so just re-throw them.
-                    catch (ObjectDisposedException)
-                    {
-                        throw;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
-                    {
-                        if (retry > 0)
-                        {
-                            _logger.Error(
-                                e,
-                                "FillBlockAsync() failed. retrying..."
-                            );
-                            retry--;
-                        }
-                        else
-                        {
-                            throw;
-                        }
-                    }
+                    await FillBlocksAsync(
+                        peer,
+                        synced,
+                        stop,
+                        progress,
+                        totalBlockCount,
+                        evaluateActions,
+                        cancellationToken
+                    );
+                    break;
                 }
-            }
-            finally
-            {
-                if (cancellationToken.IsCancellationRequested)
+
+                // We can't recover with OperationCanceledException and
+                // ObjectDisposedException. so just re-throw them.
+                catch (ObjectDisposedException)
                 {
-                    synced.Store.DeleteNamespace(synced.Id.ToString());
+                    throw;
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    if (retry > 0)
+                    {
+                        _logger.Error(
+                            e,
+                            "FillBlockAsync() failed. retrying..."
+                        );
+                        retry--;
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
 
