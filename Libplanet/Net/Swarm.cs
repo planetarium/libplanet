@@ -1100,8 +1100,25 @@ namespace Libplanet.Net
             TimeSpan lifetime = TurnAllocationLifetime;
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
-                lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
+                try
+                {
+                    await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
+                    lifetime = await _turnClient.RefreshAllocationAsync(lifetime);
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RefreshAllocate)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
+                    );
+                    continue;
+                }
             }
         }
 
@@ -1111,9 +1128,27 @@ namespace Libplanet.Net
             TimeSpan lifetime = TurnPermissionLifetime;
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(lifetime - TimeSpan.FromMinutes(1));
-                await Task.WhenAll(
-                    _peers.Keys.Select(CreatePermission));
+                try
+                {
+                    await Task.Delay(lifetime - TimeSpan.FromMinutes(1), cancellationToken);
+                    await Task.WhenAll(_peers.Keys.Select(CreatePermission));
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RefreshPermissions)}() is cancelled.");
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+#pragma warning disable MEN002 // Line is too long
+                        $"An unexpected exception occurred during {nameof(RefreshPermissions)}(): {e}"
+#pragma warning restore MEN002 // Line is too long
+                    );
+                    continue;
+                }
             }
         }
 
