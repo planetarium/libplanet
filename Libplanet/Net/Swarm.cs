@@ -1378,18 +1378,24 @@ namespace Libplanet.Net
             _logger.Debug("Trying to fill up previous blocks...");
 
             int retry = 3;
+            long previousTipIndex = blockChain.Tip?.Index ?? -1;
+
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 try
                 {
+                    long currentTipIndex = blockChain.Tip?.Index ?? -1;
+                    long receivedBlockCount = currentTipIndex - previousTipIndex;
+
                     await FillBlocksAsync(
                         peer,
                         synced,
                         stop,
                         progress,
                         totalBlockCount,
+                        receivedBlockCount,
                         evaluateActions,
                         cancellationToken
                     );
@@ -1412,7 +1418,7 @@ namespace Libplanet.Net
                     {
                         _logger.Error(
                             e,
-                            "FillBlockAsync() failed. retrying..."
+                            $"{nameof(FillBlocksAsync)}() failed; retrying...: {e}"
                         );
                         retry--;
                     }
@@ -1480,11 +1486,11 @@ namespace Libplanet.Net
             HashDigest<SHA256>? stop,
             IProgress<BlockDownloadState> progress,
             long totalBlockCount,
+            long receivedBlockCount,
             bool evaluateActions,
             CancellationToken cancellationToken
         )
         {
-            long receivedBlockCount = 0;
             while (!cancellationToken.IsCancellationRequested)
             {
                 BlockLocator locator = blockChain.GetBlockLocator();
