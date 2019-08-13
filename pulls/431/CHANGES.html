@@ -96,6 +96,9 @@ became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/lib
 parameters.  [[#425]]</li>
 <li>Added <code>IStore.GetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
 <li>Added <code>IStore.SetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
+<li>Removed <code>IRandom.NextDouble()</code> method, because <a href="https://wp.me/p1fTCO-kT">floating-point arithmetics,
+which is underspecified, likely introduce
+indeterminism</a>.  [<a href="https://github.com/planetarium/libplanet/issues/410">#410</a>, <a href="https://github.com/planetarium/libplanet/pull/419">#419</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -145,6 +148,8 @@ if a preloading process suddenly gets shutdown.  [<a href="https://github.com/pl
 transactions. [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
 <li><code>IStore.PutTransaction&lt;T&gt;()</code> became to do nothing when it takes
 the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Swap()</code> became to omit common block finding when <code>render</code> is
+<code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -167,6 +172,8 @@ when the connection had reset by a remote peer.  [<a href="https://github.com/pl
 disconnected while receiving.  [<a href="https://github.com/planetarium/libplanet/pull/416">#416</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
 is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
+<li>Fixed a bug that TURN-related tasks hadn't restarted automatically when an
+exception occurred.  [<a href="https://github.com/planetarium/libplanet/pull/422">#422</a>]</li>
 <li>Fixed a bug that TURN relay connection had disconnected when preloading
 took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">#424</a>]</li>
 </ul>
