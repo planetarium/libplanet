@@ -102,7 +102,7 @@ To be released.
     disconnected while receiving.  [[#416]]
  -  Fixed a bug that `Swarm<T>.PreloadAsync()` had been processed even if there
     is no appropriate peer. [[#418]]
- -  Fixed a bug that TURN related tasks hadn't restart automatically when an
+ -  Fixed a bug that TURN-related tasks hadn't restarted automatically when an
     exception occurred.  [[#422]]
  -  Fixed a bug that TURN relay connection had disconnected when preloading
     took a long time.  [[#424]]
