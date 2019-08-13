@@ -172,6 +172,8 @@ when the connection had reset by a remote peer.  [<a href="https://github.com/pl
 disconnected while receiving.  [<a href="https://github.com/planetarium/libplanet/pull/416">#416</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
 is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
+<li>Fixed a bug that TURN-related tasks hadn't restarted automatically when an
+exception occurred.  [<a href="https://github.com/planetarium/libplanet/pull/422">#422</a>]</li>
 <li>Fixed a bug that TURN relay connection had disconnected when preloading
 took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">#424</a>]</li>
 </ul>
