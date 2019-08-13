@@ -11,7 +11,7 @@ namespace Libplanet.Explorer.Executable
         private static (string, Parser)[] stores = new (string, Parser)[]
         {
             ("file", s => new FileStore(s)),
-            ("litedb", s => new LiteDBStore(s)),
+            ("litedb", s => new LiteDBStore(s, readOnly: true)),
         };
 
         private delegate IStore Parser(string connectionString);
