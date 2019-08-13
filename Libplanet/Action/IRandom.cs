@@ -67,14 +67,5 @@ namespace Libplanet.Action
         /// name="buffer"/> is <c>null</c>.</exception>
         /// <seealso cref="System.Random.NextBytes(byte[])"/>
         void NextBytes(byte[] buffer);
-
-        /// <summary>
-        /// Gets a random floating-point number that is greater than or
-        /// equal to 0.0, and less than 1.0.
-        /// </summary>
-        /// <returns>A double-precision floating point number that is greater
-        /// than or equal to 0.0, and less than 1.0.</returns>
-        /// <seealso cref="System.Random.NextDouble()"/>
-        double NextDouble();
     }
 }
