@@ -736,7 +736,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                foreach (var hash in locator)
+                foreach (HashDigest<SHA256> hash in locator)
                 {
                     if (Blocks.ContainsKey(hash))
                     {
