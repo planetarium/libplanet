@@ -123,8 +123,8 @@ namespace Libplanet.Tests.Store
             int offset,
             int? limit)
         {
-            _logs.Add((nameof(IterateIndex), @namespace, null));
-            return _store.IterateIndex(@namespace, offset, limit);
+             _logs.Add((nameof(IterateIndex), @namespace, (offset, limit)));
+             return _store.IterateIndex(@namespace, offset, limit);
         }
 
         public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
