@@ -736,39 +736,15 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                IEnumerable<HashDigest<SHA256>> indexes = Store.IterateIndex(
-                    Id.ToString()
-                );
-
-                ImmutableArray<HashDigest<SHA256>> hashes = locator.ToImmutableArray();
-                var hashesIndex = hashes.Length - 1;
-
-                // Supposes the indexes are sorted in the order of the chain.
-                foreach (HashDigest<SHA256> index in indexes)
+                foreach (HashDigest<SHA256> hash in locator)
                 {
-                    for (int i = hashesIndex; i >= 0; --i)
+                    if (Blocks.ContainsKey(hash))
                     {
-                        if (index.Equals(hashes[i]))
-                        {
-                            hashesIndex = i;
-                            break;
-                        }
-                    }
-
-                    if (hashesIndex == 0)
-                    {
-                        break;
+                        return hash;
                     }
                 }
 
-                if (hashesIndex + 1 == hashes.Length)
-                {
-                    return this[0].Hash;
-                }
-                else
-                {
-                    return hashes[hashesIndex];
-                }
+                return this[0].Hash;
             }
             finally
             {
@@ -795,8 +771,7 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
                 var branchPointIndex = (int)Blocks[branchPoint].Index;
                 IEnumerable<HashDigest<SHA256>> hashes = Store
-                    .IterateIndex(Id.ToString())
-                    .Skip(branchPointIndex);
+                    .IterateIndex(Id.ToString(), branchPointIndex);
 
                 foreach (HashDigest<SHA256> hash in hashes)
                 {

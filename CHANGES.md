@@ -20,6 +20,8 @@ To be released.
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
  -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
     became to `Int64` type.  [[#396], [#399]]
+ -  `IStore.IterateIndex()` method became to receive `offset` and `limit`
+    parameters.  [[#425]]
  -  Added `IStore.GetCanonicalNamespace()` method.  [[#426]]
  -  Added `IStore.SetCanonicalNamespace()` method.  [[#426]]
  -  Removed `IRandom.NextDouble()` method, because [floating-point arithmetics,
