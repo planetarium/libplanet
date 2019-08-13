@@ -143,6 +143,8 @@ if a preloading process suddenly gets shutdown.  [<a href="https://github.com/pl
 transactions. [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
 <li><code>IStore.PutTransaction&lt;T&gt;()</code> became to do nothing when it takes
 the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Swap()</code> became to omit common block finding when <code>render</code> is
+<code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -164,31 +166,12 @@ when the connection had reset by a remote peer.  [<a href="https://github.com/pl
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had hung forever after a remote peer had
 disconnected while receiving.  [<a href="https://github.com/planetarium/libplanet/pull/416">#416</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
-is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</li>
-<li></li>
-</ul>
-<h1 id="fixed-a-bug-that-turn-relay-connection-had-disconnected-when-preloadingtook-a-long-time--424">Fixed a bug that TURN relay connection had disconnected when preloading
-took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">#424</a>]</h1>
-<ul>
+is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
 <li>Fixed a bug that TURN related tasks hadn't restart automatically when an
 exception occurred.  [<a href="https://github.com/planetarium/libplanet/pull/422">#422</a>]</li>
+<li>Fixed a bug that TURN relay connection had disconnected when preloading
+took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">#424</a>]</li>
 </ul>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>Continue RefreshAllocate and RefreshPermission even if exc occurred.</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
 <h3 id="bug-fixes-1">Bug fixes</h3>
