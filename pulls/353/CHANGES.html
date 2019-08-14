@@ -80,44 +80,31 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li><p>Added <code>IStore.GetBlockIndex()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</p>
-</li>
-<li><p><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
+<li>Added <code>IStore.GetBlockIndex()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</li>
+<li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method became to return
 <code>Tuple&lt;HashDigest&lt;SHA256&gt;, long&gt;</code> which is a nullable tuple of <code>Block&lt;T&gt;.Hash</code>
-and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;.AddPeersAsync()</code> method became internal method. To connect with
-seed peers, use <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
-</li>
-<li><p>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</p>
-</li>
-<li><p>Removed the type parameter of <code>ActionEvaluation</code>.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</p>
-</li>
-<li><p><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</p>
-</li>
-<li><p><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and
-turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</p>
-</li>
-<li><p><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</p>
-</li>
-<li><p><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
-became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</p>
-</li>
-<li><p><code>IStore.IterateIndex()</code> method became to receive <code>offset</code> and <code>limit</code>
-parameters.  [[#425]]</p>
-</li>
-<li><p>Added <code>IStore.GetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</p>
-</li>
-<li><p>Added <code>IStore.SetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</p>
-</li>
-<li><p>Removed <code>IRandom.NextDouble()</code> method, because <a href="https://wp.me/p1fTCO-kT">floating-point arithmetics,
+and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium/libplanet/pull/350">#350</a>]</li>
+<li>Added <code>IBlockPolicy&lt;T&gt;.BlockAction</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li>Removed the type parameter of <code>ActionEvaluation</code>.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and
+turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
+<li><code>LiteDBStore()</code> constructor became to have a new option named <code>readOnly</code> and
+turned off by default.  [<a href="https://github.com/planetarium/libplanet/pull/434">#434</a>]</li>
+<li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
+<li><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
+became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+<li><code>IStore.IterateIndex()</code> method became to receive <code>offset</code> and <code>limit</code>
+parameters.  [[#425]]</li>
+<li>Added <code>IStore.GetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
+<li>Added <code>IStore.SetCanonicalNamespace()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/426">#426</a>]</li>
+<li>Removed <code>IRandom.NextDouble()</code> method, because <a href="https://wp.me/p1fTCO-kT">floating-point arithmetics,
 which is underspecified, likely introduce
-indeterminism</a>.  [<a href="https://github.com/planetarium/libplanet/issues/410">#410</a>, <a href="https://github.com/planetarium/libplanet/pull/419">#419</a>]</p>
-</li>
+indeterminism</a>.  [<a href="https://github.com/planetarium/libplanet/issues/410">#410</a>, <a href="https://github.com/planetarium/libplanet/pull/419">#419</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
-<li><p>Added <code>trustedStateValidators</code> option to <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.
+<li>Added <code>trustedStateValidators</code> option to <code>Swarm&lt;T&gt;.PreloadAsync()</code> method.
 If any peer in this set is reachable and there is no built up blockchain
 in a current node, <code>Swarm&lt;T&gt;</code> receives the latest states of the major
 blockchain from that trusted peer, which is also calculated by that peer,
@@ -125,77 +112,46 @@ instead of autonomously calculating the states from scratch.
 Note that this option is intended to be exposed to end users through
 a feasible user interface so that they can decide whom to trust
 for themselves.
-[<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</p>
-</li>
-<li><p>Added <code>StoreExtension.ListAllStateReferences(this IStore, string, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> extension method.
-[<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>, <a href="https://github.com/planetarium/libplanet/issues/384">#384</a>, <a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</p>
-</li>
-<li><p>Added <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method to connect with seed peers.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
-</li>
-<li><p>Added <code>StoreExtension.ListAllStateReferences(this IStore, string)</code> extension
-method.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</p>
-</li>
-<li><p><code>Address</code> class became to implement <code>IComparable&lt;Address&gt;</code> and
-<code>IComparable</code> interfaces.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</p>
-</li>
-<li><p>Added <code>BlockChain&lt;T&gt;.BlockHashes</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/389">#389</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, IImmutableSet&lt;Address&gt;, CancellationToken)</code> became to report progress for all phases.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
-</li>
-<li><p>Added <code>PreloadState</code>, <code>ActionExecutionState</code>, <code>StateReferenceDownloadState</code>,
+[<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+<li>Added <code>StoreExtension.ListAllStateReferences(this IStore, string, HashDigest&lt;SHA256&gt;?, HashDigest&lt;SHA256&gt;?)</code> extension method.
+[<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>, <a href="https://github.com/planetarium/libplanet/issues/384">#384</a>, <a href="https://github.com/planetarium/libplanet/pull/385">#385</a>]</li>
+<li><code>Address</code> class became to implement <code>IComparable&lt;Address&gt;</code> and
+<code>IComparable</code> interfaces.  [<a href="https://github.com/planetarium/libplanet/pull/363">#363</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.BlockHashes</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/389">#389</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync(IProgress&lt;PreloadState&gt;, IImmutableSet&lt;Address&gt;, CancellationToken)</code> became to report progress for all phases.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
+<li>Added <code>PreloadState</code>, <code>ActionExecutionState</code>, <code>StateReferenceDownloadState</code>,
 and <code>BlockStateDownloadState</code> classes to cover all phases in the entire
-preloading process.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
-</li>
+preloading process.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li><p><code>BlockChain&lt;T&gt;.PreloadAsync()</code> method became to omit rendering of
-<code>IAction</code>s in the preloaded behind blocks.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;</code> became to have two more message types: <code>GetRecentStates</code> (<code>0x0b</code>)
-and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</p>
-</li>
-<li><p>Peers now connected via Kademlia protocol. Peers are now selectively connected to
-each peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
-</li>
-<li><p>TxIds and Blocks are now broadcasted to selected peers from routing table of the host
-peer. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
-</li>
-<li><p><code>NetMQPoller</code> is not used anymore. [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</p>
-</li>
-<li><p><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> methods
+<li><code>BlockChain&lt;T&gt;.PreloadAsync()</code> method became to omit rendering of
+<code>IAction</code>s in the preloaded behind blocks.  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to have two more message types: <code>GetRecentStates</code> (<code>0x0b</code>)
+and <code>RecentStates</code> (<code>0x0c</code>).  [<a href="https://github.com/planetarium/libplanet/issues/272">#272</a>, <a href="https://github.com/planetarium/libplanet/pull/343">#343</a>]</li>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> and <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> methods
 became to ignore transactions that didn't follow <code>Transaction&lt;T&gt;.Nonce</code>
-sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</p>
-</li>
-<li><p><code>BlockChain&lt;T&gt;</code> became to evaluate <code>IBlockPolicy&lt;T&gt;.BlockAction</code> and set the
-state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</p>
-</li>
-<li><p><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code> methods
+sequentially and treat them as pendings.  [<a href="https://github.com/planetarium/libplanet/pull/365">#365</a>]</li>
+<li><code>BlockChain&lt;T&gt;</code> became to evaluate <code>IBlockPolicy&lt;T&gt;.BlockAction</code> and set the
+state when a block is appended to the chain.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
+<li><code>BlockSet&lt;T&gt;.ContainsKey()</code> and <code>TransactionSet&lt;T&gt;.ContainsKey()</code> methods
 became O(1) time complexity through omitting iteration and relying
-own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</p>
-</li>
-<li><p>The way <code>LiteDBStore</code> stores state references became efficient,
-but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to report a block downloading
+own retrieve implementations.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
+<li>The way <code>LiteDBStore</code> stores state references became efficient,
+but the file-level backward compatibility was also broken.  [<a href="https://github.com/planetarium/libplanet/issues/395">#395</a>, <a href="https://github.com/planetarium/libplanet/pull/398">#398</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to report a block downloading
 progress with the total number of blocks to download in the entire batch,
-instead of the window size of a chunk (i.e., 500).  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
-which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</p>
-</li>
-<li><p><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
-if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</p>
-</li>
-<li><p><code>FileStore</code> and <code>LiteDBStore</code> became to guarantee atomicity of storing
-transactions. [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</p>
-</li>
-<li><p><code>IStore.PutTransaction&lt;T&gt;()</code> became to do nothing when it takes
-the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</p>
-</li>
-<li><p><code>BlockChain&lt;T&gt;.Swap()</code> became to omit common block finding when <code>render</code> is
-<code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</p>
-</li>
+instead of the window size of a chunk (i.e., 500).  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
+which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
+if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</li>
+<li><code>FileStore</code> and <code>LiteDBStore</code> became to guarantee atomicity of storing
+transactions. [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
+<li><code>IStore.PutTransaction&lt;T&gt;()</code> became to do nothing when it takes
+the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.com/planetarium/libplanet/pull/413">#413</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Swap()</code> became to omit common block finding when <code>render</code> is
+<code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -218,6 +174,8 @@ when the connection had reset by a remote peer.  [<a href="https://github.com/pl
 disconnected while receiving.  [<a href="https://github.com/planetarium/libplanet/pull/416">#416</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;.PreloadAsync()</code> had been processed even if there
 is no appropriate peer. [<a href="https://github.com/planetarium/libplanet/pull/418">#418</a>]</li>
+<li>Fixed a bug that TURN-related tasks hadn't restarted automatically when an
+exception occurred.  [<a href="https://github.com/planetarium/libplanet/pull/422">#422</a>]</li>
 <li>Fixed a bug that TURN relay connection had disconnected when preloading
 took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">#424</a>]</li>
 </ul>
