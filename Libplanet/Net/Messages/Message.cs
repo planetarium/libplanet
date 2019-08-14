@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Crypto;
 using NetMQ;
 
@@ -19,11 +21,6 @@ namespace Libplanet.Net.Messages
             /// A reply to <see cref="Ping"/>.
             /// </summary>
             Pong = 0x02,
-
-            /// <summary>
-            /// Peer's delta set to sync peer list.
-            /// </summary>
-            PeerSetDelta = 0x03,
 
             /// <summary>
             /// Request to query block hashes.
@@ -61,6 +58,16 @@ namespace Libplanet.Net.Messages
             Tx = 0x10,
 
             /// <summary>
+            /// Message containing request for nearby peers.
+            /// </summary>
+            FindNeighbors = 0x11,
+
+            /// <summary>
+            /// Message containing nearby peers.
+            /// </summary>
+            Neighbors = 0x12,
+
+            /// <summary>
             /// Request to query calculated states.
             /// </summary>
             GetRecentStates = 0x0b,
@@ -74,6 +81,8 @@ namespace Libplanet.Net.Messages
 
         public byte[] Identity { get; set; }
 
+        public Peer Remote { get; private set; }
+
         protected abstract MessageType Type { get; }
 
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
@@ -85,27 +94,19 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [type, sign, pubkey, frames...]
-            // (reply == false) [identity, type, sign, pubkey, frames...]
+            // (reply == true)  [type, sign, peer, frames...]
+            // (reply == false) [identity, type, sign, peer, frames...]
             int headerCount = reply ? 3 : 4;
             var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
-            var publicKey = new PublicKey(raw[headerCount - 2].ToByteArray());
+            var peer = raw[headerCount - 2].ToByteArray();
             byte[] signature = raw[headerCount - 1].ToByteArray();
 
             NetMQFrame[] body = raw.Skip(headerCount).ToArray();
-
-            if (!publicKey.Verify(body.ToByteArray(), signature))
-            {
-                throw new InvalidMessageException(
-                    "the message signature is invalid"
-                );
-            }
 
             var types = new Dictionary<MessageType, Type>
             {
                 { MessageType.Ping, typeof(Ping) },
                 { MessageType.Pong, typeof(Pong) },
-                { MessageType.PeerSetDelta, typeof(PeerSetDelta) },
                 { MessageType.GetBlockHashes, typeof(GetBlockHashes) },
                 { MessageType.BlockHashes, typeof(BlockHashes) },
                 { MessageType.TxIds, typeof(TxIds) },
@@ -113,6 +114,8 @@ namespace Libplanet.Net.Messages
                 { MessageType.GetTxs, typeof(GetTxs) },
                 { MessageType.Blocks, typeof(Blocks) },
                 { MessageType.Tx, typeof(Tx) },
+                { MessageType.FindNeighbors, typeof(FindNeighbors) },
+                { MessageType.Neighbors, typeof(Neighbors) },
                 { MessageType.GetRecentStates, typeof(GetRecentStates) },
                 { MessageType.RecentStates, typeof(RecentStates) },
             };
@@ -125,6 +128,14 @@ namespace Libplanet.Net.Messages
 
             var message = (Message)Activator.CreateInstance(
                 type, new[] { body });
+            message.Remote = DeserializePeer(peer);
+
+            if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
+            {
+                throw new InvalidMessageException(
+                    "The message signature is invalid"
+                );
+            }
 
             if (!reply)
             {
@@ -134,8 +145,13 @@ namespace Libplanet.Net.Messages
             return message;
         }
 
-        public NetMQMessage ToNetMQMessage(PrivateKey key)
+        public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer)
         {
+            if (peer is null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
             var message = new NetMQMessage();
 
             // Write body (by concrete class)
@@ -146,7 +162,7 @@ namespace Libplanet.Net.Messages
 
             // Write headers. (inverse order)
             message.Push(key.Sign(message.ToByteArray()));
-            message.Push(key.PublicKey.Format(true));
+            message.Push(SerializePeer(peer));
             message.Push((byte)Type);
 
             if (Identity is byte[] to)
@@ -155,6 +171,25 @@ namespace Libplanet.Net.Messages
             }
 
             return message;
+        }
+
+        protected static Peer DeserializePeer(byte[] bytes)
+        {
+            var formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
+                return (Peer)formatter.Deserialize(stream);
+            }
+        }
+
+        protected byte[] SerializePeer(Peer peer)
+        {
+            var formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, peer);
+                return stream.ToArray();
+            }
         }
     }
 }
