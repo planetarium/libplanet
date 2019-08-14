@@ -89,6 +89,8 @@ and <code>Block&lt;T&gt;.Index</code>.  [<a href="https://github.com/planetarium
 <li><code>ActionEvaluation.Action</code> became to <code>IAction</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/367">#367</a>]</li>
 <li><code>LiteDBStore()</code> constructor became to have a new option named <code>flush</code> and
 turned on by default.  [<a href="https://github.com/planetarium/libplanet/pull/387">#387</a>, <a href="https://github.com/mbdavid/LiteDB/issues/1268">LiteDB #1268</a>]</li>
+<li><code>LiteDBStore()</code> constructor became to have a new option named <code>readOnly</code> and
+turned off by default.  [<a href="https://github.com/planetarium/libplanet/pull/434">#434</a>]</li>
 <li><code>BaseIndex.ContainsKey()</code> method became <code>abstract</code>.  [<a href="https://github.com/planetarium/libplanet/pull/390">#390</a>]</li>
 <li><code>BlockDownloadState.TotalBlockCount</code> and <code>BlockDownloadState.ReceivedBlockCount</code>
 became to <code>Int64</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
@@ -668,9 +670,6 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/fix-swarm-test-preload-fails/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
