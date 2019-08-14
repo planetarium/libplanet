@@ -15,10 +15,11 @@
 **/.idea/**/dynamic.xml
 
 # Rider
-# Rider auto-generates .iml files, and contentModel.xml
+# Rider auto-generates .iml files, contentModel.xml, and projectSettingsUpdater.xml
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+**/.idea/**/projectSettingsUpdater.xml
 
 *.suo
 *.user
