@@ -1073,7 +1073,8 @@ namespace Libplanet.Tests.Net
                         ExecutedBlockCount = i + 1,
                     })).ToArray();
 
-                Assert.Equal(expectedStates, actualStates);
+                Assert.True(expectedStates.ToImmutableHashSet()
+                        .SetEquals(actualStates.ToImmutableHashSet()));
             }
             finally
             {

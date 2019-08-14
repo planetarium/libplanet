@@ -558,6 +558,7 @@ namespace Libplanet.Net
             );
         }
 
+        // FIXME: It is not guaranteed that states will be reported in order. see issue #436, #430
         internal async Task PreloadAsync(
             bool render,
             IProgress<PreloadState> progress = null,
