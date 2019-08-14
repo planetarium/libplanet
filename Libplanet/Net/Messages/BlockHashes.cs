@@ -11,7 +11,7 @@ namespace Libplanet.Net.Messages
             Address sender, IEnumerable<HashDigest<SHA256>> hashes)
         {
             Sender = sender;
-            Hashes = hashes;
+            Hashes = hashes.ToList();
         }
 
         public BlockHashes(NetMQFrame[] frames)
