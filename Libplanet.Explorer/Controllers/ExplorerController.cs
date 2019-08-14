@@ -29,10 +29,14 @@ namespace Libplanet.Explorer.Controllers
         private readonly IBlockchainStore Store;
 
         public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+        private BlockChain<T> _blockChain;
+        private static Schema _schema;
 
         public ExplorerController(IBlockchainStore store)
         {
             Store = store;
+            _blockChain = _blockChain ?? GetBlockChain();
+            _schema = _schema ?? new Schema { Query = new BlocksQuery<T>(_blockChain) };
         }
 
         public BlockChain<T> GetBlockChain()
@@ -54,11 +58,9 @@ namespace Libplanet.Explorer.Controllers
             [FromBody] GraphQLBody body
         )
         {
-            BlockChain<T> blockChain = GetBlockChain();
-            var schema = new Schema { Query = new BlocksQuery<T>(blockChain) };
-            var json = schema.Execute(_ =>
+            var json = _schema.Execute(_ =>
             {
-                _.UserContext = blockChain;
+                _.UserContext = _blockChain;
                 _.Query = body.Query;
                 if (body.Variables != null)
                 {
