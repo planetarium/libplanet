@@ -1,5 +1,7 @@
+using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -8,23 +10,24 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public BlockType()
         {
-            Field(x => x.Hash, nullable: false, typeof(IdGraphType));
+            Field(x => x.Hash, type: typeof(NonNullGraphType<IdGraphType>));
             Field(x => x.Index);
             Field(x => x.Difficulty);
-            Field<StringGraphType>(
+            Field<NonNullGraphType<ByteStringType>>(
                 "Nonce",
-                resolve: ctx => ctx.Source.Nonce.ToString()
+                resolve: ctx => ctx.Source.Nonce.ToByteArray()
             );
-            Field<StringGraphType>(
-                "Miner",
-                resolve: ctx => ctx.Source.Miner.ToString()
-            );
-            Field<StringGraphType>(
-                "PreviousHash",
-                resolve: ctx => ctx.Source.PreviousHash.ToString()
+            Field(x => x.Miner, type: typeof(NonNullGraphType<AddressType>));
+            Field<BlockType<T>>(
+                "PreviousBlock",
+                resolve: ctx => ctx.Source.PreviousHash is HashDigest<SHA256> h
+                    ? ((BlockChain<T>)ctx.UserContext).Blocks[h]
+                    : null
             );
             Field(x => x.Timestamp);
-            Field<ListGraphType<TransactionType<T>>>("transactions");
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+                "transactions"
+            );
 
             Name = "Block";
         }

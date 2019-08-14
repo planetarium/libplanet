@@ -54,12 +54,16 @@ namespace Libplanet.Explorer.Controllers
             [FromBody] GraphQLBody body
         )
         {
-            var schema = new Schema { Query = new BlocksQuery<T>(GetBlockChain()) };
+            BlockChain<T> blockChain = GetBlockChain();
+            var schema = new Schema { Query = new BlocksQuery<T>(blockChain) };
             var json = schema.Execute(_ =>
             {
+                _.UserContext = blockChain;
                 _.Query = body.Query;
                 if (body.Variables != null)
+                {
                     _.Inputs = body.Variables.ToString(Newtonsoft.Json.Formatting.None).ToInputs();
+                }
             });
             return Ok(JObject.Parse(json));
         }

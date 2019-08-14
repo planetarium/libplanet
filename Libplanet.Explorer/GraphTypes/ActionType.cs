@@ -8,8 +8,8 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public ActionType()
         {
-            Field<ListGraphType<PlainValueKeyValuePairType>>(
-                "PlainValue",
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionArgumentType>>>>(
+                "Arguments",
                 resolve: ctx =>
                 {
                     List<PlainValueKeyValuePair> result = new List<PlainValueKeyValuePair>();

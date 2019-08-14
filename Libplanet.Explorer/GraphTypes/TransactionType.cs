@@ -9,22 +9,20 @@ namespace Libplanet.Explorer.GraphTypes
     {
         public TransactionType()
         {
+            Field(x => x.Id, type: typeof(NonNullGraphType<IdGraphType>));
             Field(x => x.Nonce);
-            Field<StringGraphType>(
-                "Signer",
-                resolve: ctx => ctx.Source.Signer.ToString()
-            );
-            Field<StringGraphType>(
+            Field(x => x.Signer, type: typeof(NonNullGraphType<AddressType>));
+            Field<NonNullGraphType<ByteStringType>>(
                 "PublicKey",
-                resolve: ctx => ByteUtil.Hex(ctx.Source.PublicKey.Format(true))
+                resolve: ctx => ctx.Source.PublicKey.Format(true)
             );
-            Field<ListGraphType<StringGraphType>>(
-                "UpdatedAddress",
-                resolve: ctx => from address in ctx.Source.UpdatedAddresses select address.ToString()
+            Field(
+                x => x.UpdatedAddresses,
+                type: typeof(NonNullGraphType<ListGraphType<NonNullGraphType<AddressType>>>)
             );
-            Field(x => x.Signature, nullable: false, typeof(IdGraphType));
+            Field(x => x.Signature, type: typeof(NonNullGraphType<ByteStringType>));
             Field(x => x.Timestamp);
-            Field<ListGraphType<ActionType<T>>>("Actions");
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<ActionType<T>>>>>("Actions");
 
             Name = "Transaction";
         }
