@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Threading;
 using Libplanet.Store;
+using Serilog;
 
 namespace Libplanet.Tests.Store
 {
@@ -18,9 +20,18 @@ namespace Libplanet.Tests.Store
 
         public void Dispose()
         {
-            if (Directory.Exists(Path))
+            while (Directory.Exists(Path))
             {
-                Directory.Delete(Path, true);
+                try
+                {
+                    Directory.Delete(Path, true);
+                }
+                catch (IOException)
+                {
+                    Log.Debug("IOException occurred during dispose()");
+                }
+
+                Thread.Sleep(0);
             }
         }
     }
