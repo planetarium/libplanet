@@ -6,6 +6,7 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -56,6 +57,20 @@ namespace Libplanet.Explorer.GraphTypes
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
                     return _chain.Blocks[hash];
+                }
+            );
+
+            Field<TransactionType<T>>(
+                "transaction",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "id" }
+                ),
+                resolve: context =>
+                {
+                    TxId id = new TxId(
+                        ByteUtil.ParseHex(context.GetArgument<string>("id"))
+                    );
+                    return _chain.Transactions[id];
                 }
             );
 
