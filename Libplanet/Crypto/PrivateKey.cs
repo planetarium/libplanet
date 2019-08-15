@@ -274,17 +274,7 @@ namespace Libplanet.Crypto
             );
 
             var key = new PrivateKey(param);
-            try
-            {
-                var publicKey = key.PublicKey;
-            }
-            catch (ArgumentException)
-            {
-                throw new InvalidOperationException(
-                    "Infinity is not a valid public key for ECDH"
-                );
-            }
-
+            var publicKey = key.PublicKey;
             return param;
         }
 
