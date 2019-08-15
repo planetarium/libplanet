@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -28,14 +29,20 @@ namespace Libplanet.Explorer.GraphTypes
                         Name = "offset",
                         DefaultValue = 0,
                     },
-                    new QueryArgument<IntGraphType> { Name = "limit" }
+                    new QueryArgument<IntGraphType> { Name = "limit" },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "empty",
+                        DefaultValue = true,
+                    }
                 ),
                 resolve: context =>
                 {
                     bool desc = context.GetArgument<bool>("desc");
                     int offset = context.GetArgument<int>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    return ListBlocks(desc, offset, limit);
+                    bool empty = context.GetArgument<bool>("empty");
+                    return ListBlocks(desc, offset, limit, empty);
                 }
             );
 
@@ -56,10 +63,11 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "BlockQuery";
         }
 
-        private IEnumerable<Block<T>> ListBlocks(bool desc, int offset, int? limit)
+        private IEnumerable<Block<T>> ListBlocks(bool desc, int offset, int? limit, bool empty)
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
+            
             if (desc)
             {
                 if (tipIndex - offset < 0)
@@ -89,14 +97,22 @@ namespace Libplanet.Explorer.GraphTypes
             else
             {
                 IEnumerable<Block<T>> blocks = _chain.Skip(offset);
-                if (limit is int l)
-                {
-                    blocks = blocks.Take(l);
-                }
 
                 foreach (Block<T> block in blocks)
                 {
+                    if (!empty && !block.Transactions.Any())
+                    {
+                        continue;
+                    }
+                
                     yield return block;
+
+                    if (!(limit is null))
+                    {
+                        limit--;
+                    }
+
+                    if (limit == 0) break;                
                 }
             }
         }
