@@ -82,6 +82,7 @@ To be released.
     the `Transaction<T>` more than once.  [[#413]]
  -  `BlockChain<T>.Swap()` became to omit common block finding when `render` is
     `false`.  [[#423]]
+ -  `PrivateKey(byte[])` constructor became to check validity.  [[#438]]
 
 ### Bug fixes
 
@@ -144,6 +145,7 @@ To be released.
 [#424]: https://github.com/planetarium/libplanet/pull/424
 [#426]: https://github.com/planetarium/libplanet/pull/426
 [#434]: https://github.com/planetarium/libplanet/pull/434
+[#438]: https://github.com/planetarium/libplanet/pull/438
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 

@@ -69,11 +69,7 @@ namespace Libplanet.Crypto
         /// <seealso cref="ByteArray"/>
         public PrivateKey(byte[] privateKey)
             : this(
-                new ECPrivateKeyParameters(
-                    "ECDSA",
-                    new BigInteger(1, privateKey),
-                    GetECParameters()
-                )
+                GenerateKeyFromBytes(privateKey)
             )
         {
         }
@@ -267,6 +263,21 @@ namespace Libplanet.Crypto
             gen.Init(keyGenParam);
 
             return gen.GenerateKeyPair().Private as ECPrivateKeyParameters;
+        }
+
+        private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)
+        {
+            var param = new ECPrivateKeyParameters(
+                "ECDSA",
+                new BigInteger(1, privateKey),
+                GetECParameters()
+            );
+
+            // For sanity check.
+#pragma warning disable SA1312
+            var _ = new PrivateKey(param).PublicKey;
+#pragma warning restore SA1312
+            return param;
         }
 
         private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
