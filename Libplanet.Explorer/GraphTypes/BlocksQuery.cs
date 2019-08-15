@@ -48,7 +48,7 @@ namespace Libplanet.Explorer.GraphTypes
                 {
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
-                    return _chain.FirstOrDefault(x => x.Hash.Equals(hash));
+                    return _chain.Blocks[hash];
                 }
             );
 
