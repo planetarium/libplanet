@@ -67,7 +67,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
-            
+
             if (desc)
             {
                 if (tipIndex - offset < 0)
@@ -104,7 +104,7 @@ namespace Libplanet.Explorer.GraphTypes
                     {
                         continue;
                     }
-                
+
                     yield return block;
 
                     if (!(limit is null))
@@ -112,7 +112,10 @@ namespace Libplanet.Explorer.GraphTypes
                         limit--;
                     }
 
-                    if (limit == 0) break;                
+                    if (limit == 0)
+                    {
+                        break;
+                    }
                 }
             }
         }
