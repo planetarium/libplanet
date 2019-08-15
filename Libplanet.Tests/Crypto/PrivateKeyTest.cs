@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;
@@ -18,6 +19,17 @@ namespace Libplanet.Tests.Crypto
             };
             var key = new PrivateKey(bs);
             Assert.Equal(bs, key.ByteArray);
+        }
+
+        [Fact]
+        public void BytesSanityCheckTest()
+        {
+            var bs = new byte[]
+            {
+                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+            };
+            Assert.Throws<InvalidOperationException>(() => new PrivateKey(bs));
         }
 
         [Fact]
