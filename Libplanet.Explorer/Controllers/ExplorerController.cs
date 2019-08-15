@@ -1,40 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Security.Cryptography;
+using GraphQL;
+using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
-using Libplanet.Blocks;
-using Libplanet.Explorer.Interfaces;
-using Libplanet.Tx;
-using Microsoft.AspNetCore.Mvc;
-using GraphQL;
-using GraphQL.Types;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 namespace Libplanet.Explorer.Controllers
 {
-    public class GraphQLBody
-    {
-        public string Query { get; set; }
-        public JObject Variables { get; set; }
-    }
-
     [GenericControllerNameConvention]
-    public class ExplorerController<T> : Controller where T : IAction, new()
+    public class ExplorerController<T> : Controller
+        where T : IAction, new()
     {
-        private readonly IBlockchainStore Store;
-
-        public string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-        private BlockChain<T> _blockChain;
         private static Schema _schema;
+
+        private readonly IBlockchainStore _store;
+
+        private BlockChain<T> _blockChain;
 
         public ExplorerController(IBlockchainStore store)
         {
-            Store = store;
+            _store = store;
             _blockChain = _blockChain ?? GetBlockChain();
             _schema = _schema ?? new Schema { Query = new BlocksQuery<T>(_blockChain) };
         }
@@ -42,7 +30,7 @@ namespace Libplanet.Explorer.Controllers
         public BlockChain<T> GetBlockChain()
         {
             // FIXME: policy should be configurable
-            var chain = new BlockChain<T>(new BlockPolicy<T>(), Store.Store);
+            var chain = new BlockChain<T>(new BlockPolicy<T>(), _store.Store);
 
             return chain;
         }

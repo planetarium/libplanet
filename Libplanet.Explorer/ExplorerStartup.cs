@@ -24,7 +24,7 @@ namespace Libplanet.Explorer
             services.AddCors(options =>
                 options.AddPolicy(
                     "AllowAllOrigins",
-                    builder => 
+                    builder =>
                         builder.AllowAnyOrigin()
                             .AllowAnyMethod()
                             .AllowAnyHeader()
@@ -43,6 +43,7 @@ namespace Libplanet.Explorer
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseStaticFiles();
             app.UseCors("AllowAllOrigins");
             app.UseMvc();

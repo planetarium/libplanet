@@ -8,9 +8,11 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class BlocksQuery<T> : ObjectGraphType where T : IAction, new()
+    public class BlocksQuery<T> : ObjectGraphType
+        where T : IAction, new()
     {
         private BlockChain<T> _chain;
+
         public BlocksQuery(BlockChain<T> chain)
         {
             Field<ListGraphType<BlockType<T>>>(
@@ -44,7 +46,8 @@ namespace Libplanet.Explorer.GraphTypes
                 ),
                 resolve: context =>
                 {
-                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(context.GetArgument<string>("hash"));
+                    HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
+                        context.GetArgument<string>("hash"));
                     return _chain.FirstOrDefault(x => x.Hash.Equals(hash));
                 }
             );
