@@ -82,7 +82,7 @@ To be released.
     the `Transaction<T>` more than once.  [[#413]]
  -  `BlockChain<T>.Swap()` became to omit common block finding when `render` is
     `false`.  [[#423]]
- - `PrivateKey(bytes)` became to valid check. [[#438]]
+ -  `PrivateKey(bytes)` became to valid check.  [[#438]]
 
 ### Bug fixes
 
