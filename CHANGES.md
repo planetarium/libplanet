@@ -29,7 +29,7 @@ To be released.
  -  Removed `IRandom.NextDouble()` method, because [floating-point arithmetics,
     which is underspecified, likely introduce
     indeterminism][floating-point determinism].  [[#410], [#419]]
- -  Added `IActionContext.Guid` property.  [[#371], [#439]]
+ -  Added `IActionContext.NewGuId()` method.  [[#371], [#439]]
 
 ### Added interfaces
 
