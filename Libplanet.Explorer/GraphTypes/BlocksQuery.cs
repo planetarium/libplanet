@@ -67,7 +67,7 @@ namespace Libplanet.Explorer.GraphTypes
                 ),
                 resolve: context =>
                 {
-                    TxId id = new TxId(
+                    var id = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("id"))
                     );
                     return _chain.Transactions[id];
