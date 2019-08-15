@@ -69,11 +69,7 @@ namespace Libplanet.Crypto
         /// <seealso cref="ByteArray"/>
         public PrivateKey(byte[] privateKey)
             : this(
-                new ECPrivateKeyParameters(
-                    "ECDSA",
-                    new BigInteger(1, privateKey),
-                    GetECParameters()
-                )
+                GenerateKeyFromBytes(privateKey)
             )
         {
         }
@@ -267,6 +263,29 @@ namespace Libplanet.Crypto
             gen.Init(keyGenParam);
 
             return gen.GenerateKeyPair().Private as ECPrivateKeyParameters;
+        }
+
+        private static ECPrivateKeyParameters GenerateKeyFromBytes(byte[] privateKey)
+        {
+            var param = new ECPrivateKeyParameters(
+                "ECDSA",
+                new BigInteger(1, privateKey),
+                GetECParameters()
+            );
+
+            var key = new PrivateKey(param);
+            try
+            {
+                var publicKey = key.PublicKey;
+            }
+            catch (ArgumentException)
+            {
+                throw new InvalidOperationException(
+                    "Infinity is not a valid public key for ECDH"
+                );
+            }
+
+            return param;
         }
 
         private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
