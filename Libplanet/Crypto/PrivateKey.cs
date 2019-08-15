@@ -273,8 +273,10 @@ namespace Libplanet.Crypto
                 GetECParameters()
             );
 
-            var key = new PrivateKey(param);
-            var publicKey = key.PublicKey;
+            // For sanity check.
+#pragma warning disable SA1312
+            var _ = new PrivateKey(param).PublicKey;
+#pragma warning restore SA1312
             return param;
         }
 
