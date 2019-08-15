@@ -6,7 +6,8 @@ using Libplanet.Blocks;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class BlockType<T> : ObjectGraphType<Block<T>> where T : IAction, new()
+    public class BlockType<T> : ObjectGraphType<Block<T>>
+        where T : IAction, new()
     {
         public BlockType()
         {

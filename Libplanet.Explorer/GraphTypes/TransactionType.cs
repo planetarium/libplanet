@@ -5,7 +5,8 @@ using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
-    public class TransactionType<T> : ObjectGraphType<Transaction<T>> where T : IAction, new()
+    public class TransactionType<T> : ObjectGraphType<Transaction<T>>
+        where T : IAction, new()
     {
         public TransactionType()
         {

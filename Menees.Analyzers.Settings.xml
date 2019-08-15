@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Menees.Analyzers.Settings>
-  <MaxLineColumns>80</MaxLineColumns>
+  <MaxLineColumns>100</MaxLineColumns>
 </Menees.Analyzers.Settings>

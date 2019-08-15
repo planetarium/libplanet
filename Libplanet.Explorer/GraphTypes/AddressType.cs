@@ -12,7 +12,7 @@ namespace Libplanet.Explorer.GraphTypes
 
         public override object Serialize(object value)
         {
-            return ((Address?) value)?.ToString();
+            return ((Address?)value)?.ToString();
         }
 
         public override object ParseValue(object value)
@@ -26,9 +26,11 @@ namespace Libplanet.Explorer.GraphTypes
                     {
                         hex = hex.Substring(2);
                     }
+
                     return new Address(hex);
                 default:
-                    throw new ArgumentException("Expected a hexadecimal string.", nameof(value));
+                    throw new ArgumentException(
+                        "Expected a hexadecimal string.", nameof(value));
             }
         }
     }
