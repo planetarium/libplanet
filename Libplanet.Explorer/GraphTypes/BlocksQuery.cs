@@ -17,7 +17,7 @@ namespace Libplanet.Explorer.GraphTypes
 
         public BlocksQuery(BlockChain<T> chain)
         {
-            Field<ListGraphType<BlockType<T>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType<T>>>>>(
                 "blocks",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
@@ -57,6 +57,29 @@ namespace Libplanet.Explorer.GraphTypes
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
                     return _chain.Blocks[hash];
+                }
+            );
+
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+                "transactions",
+                arguments: new QueryArguments(
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    }
+                ),
+                resolve: context =>
+                {
+                    var signer = context.GetArgument<Address>("signer");
+                    var involved = context.GetArgument<Address>("involvedAddress");
+
+                    return ListTransactions(signer, involved);
                 }
             );
 
@@ -128,6 +151,24 @@ namespace Libplanet.Explorer.GraphTypes
             }
 
             return null;
+        }
+
+        private IEnumerable<Transaction<T>> ListTransactions(Address? signer, Address? involved)
+        {
+            foreach (Transaction<T> transaction in _chain.Transactions.Values)
+            {
+                if (involved is null && !(signer is null) &&
+                    transaction.Signer.Equals(signer.Value))
+                {
+                    yield return transaction;
+                }
+                else if (!(involved is null) &&
+                    (transaction.Signer.Equals(involved.Value) ||
+                    transaction.UpdatedAddresses.Contains(involved.Value)))
+                {
+                    yield return transaction;
+                }
+            }
         }
     }
 }
