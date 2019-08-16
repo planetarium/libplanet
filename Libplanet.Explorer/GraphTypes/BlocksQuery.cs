@@ -33,8 +33,8 @@ namespace Libplanet.Explorer.GraphTypes
                     new QueryArgument<IntGraphType> { Name = "limit" },
                     new QueryArgument<BooleanGraphType>
                     {
-                        Name = "empty",
-                        DefaultValue = true,
+                        Name = "excludeEmptyTxs",
+                        DefaultValue = false,
                     }
                 ),
                 resolve: context =>
@@ -42,8 +42,8 @@ namespace Libplanet.Explorer.GraphTypes
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    bool empty = context.GetArgument<bool>("empty");
-                    return ListBlocks(desc, offset, limit, empty);
+                    bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
+                    return ListBlocks(desc, offset, limit, excludeEmptyTxs);
                 }
             );
 
@@ -78,7 +78,11 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "BlockQuery";
         }
 
-        private IEnumerable<Block<T>> ListBlocks(bool desc, long offset, long? limit, bool empty)
+        private IEnumerable<Block<T>> ListBlocks(
+            bool desc,
+            long offset,
+            long? limit,
+            bool excludeEmptyTxs)
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
@@ -97,7 +101,7 @@ namespace Libplanet.Explorer.GraphTypes
 
             while (limit is null || limit > 0)
             {
-                if (empty || block.Transactions.Any())
+                if (!excludeEmptyTxs || block.Transactions.Any())
                 {
                     yield return block;
                 }
