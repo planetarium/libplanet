@@ -104,6 +104,13 @@ indeterminism</a>.  [<a href="https://github.com/planetarium/libplanet/issues/41
 <li>Added <code>IActionContext.NewGuId()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/371">#371</a>, <a href="https://github.com/planetarium/libplanet/pull/439">#439</a>]</li>
 <li><code>Address(byte[])</code> became to throw <code>ArgumentNullException</code>
 instead of <code>NullReferenceException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/443">#443</a>]</li>
+<li><code>RawTransaction.Signer</code> became to <code>ImmutableArray&lt;byte&gt;</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/172">#172</a>, <a href="https://github.com/planetarium/libplanet/pull/441">#441</a>]</li>
+<li><code>RawTransaction.PublicKey</code> became to <code>ImmutableArray&lt;byte&gt;</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/172">#172</a>, <a href="https://github.com/planetarium/libplanet/pull/441">#441</a>]</li>
+<li><code>RawTransaction.Signature</code> became to <code>ImmutableArray&lt;byte&gt;</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/172">#172</a>, <a href="https://github.com/planetarium/libplanet/pull/441">#441</a>]</li>
+<li><code>RawTransaction.UpdatedAddresses</code> became to
+<code>ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt;</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/172">#172</a>, <a href="https://github.com/planetarium/libplanet/pull/441">#441</a>]</li>
+<li><code>RawTransaction.Actions</code> became to
+<code>IEnumerable&lt;IImmutableDictionary&lt;string, object&gt;&gt;</code> type.  [<a href="https://github.com/planetarium/libplanet/issues/172">#172</a>, <a href="https://github.com/planetarium/libplanet/pull/441">#441</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
