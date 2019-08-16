@@ -103,6 +103,7 @@ namespace Libplanet.Explorer.GraphTypes
             {
                 if (!excludeEmptyTxs || block.Transactions.Any())
                 {
+                    limit--;
                     yield return block;
                 }
 
@@ -111,11 +112,6 @@ namespace Libplanet.Explorer.GraphTypes
                 if (block is null)
                 {
                     break;
-                }
-
-                if (!(limit is null))
-                {
-                    limit--;
                 }
             }
         }
