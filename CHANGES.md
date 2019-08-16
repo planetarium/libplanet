@@ -29,6 +29,7 @@ To be released.
  -  Removed `IRandom.NextDouble()` method, because [floating-point arithmetics,
     which is underspecified, likely introduce
     indeterminism][floating-point determinism].  [[#410], [#419]]
+ -  Added `IActionContext.NewGuId()` method.  [[#371], [#439]]
 
 ### Added interfaces
 
@@ -118,6 +119,7 @@ To be released.
 [#366]: https://github.com/planetarium/libplanet/pull/366
 [#367]: https://github.com/planetarium/libplanet/pull/367
 [#369]: https://github.com/planetarium/libplanet/pull/369
+[#371]: https://github.com/planetarium/libplanet/issues/371
 [#375]: https://github.com/planetarium/libplanet/pull/375
 [#377]: https://github.com/planetarium/libplanet/issues/377
 [#378]: https://github.com/planetarium/libplanet/pull/378
@@ -146,6 +148,7 @@ To be released.
 [#426]: https://github.com/planetarium/libplanet/pull/426
 [#434]: https://github.com/planetarium/libplanet/pull/434
 [#438]: https://github.com/planetarium/libplanet/pull/438
+[#439]: https://github.com/planetarium/libplanet/pull/439
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 
