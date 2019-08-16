@@ -254,6 +254,8 @@ namespace Libplanet.Net
 
         internal ICollection<Peer> Peers => _peers.Keys;
 
+        internal int FindNextHashesChunkSize { get; set; }
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
@@ -1246,7 +1248,8 @@ namespace Libplanet.Net
                         IEnumerable<HashDigest<SHA256>> hashes =
                             _blockChain.FindNextHashes(
                                 getBlockHashes.Locator,
-                                getBlockHashes.Stop);
+                                getBlockHashes.Stop,
+                                FindNextHashesChunkSize);
                         var reply = new BlockHashes(Address, hashes)
                         {
                             Identity = getBlockHashes.Identity,
