@@ -78,6 +78,7 @@ To be released.
     instead of the window size of a chunk (i.e., 500).  [[#396], [#399]]
  -  `Swarm<T>.PreloadAsync()` became to get the first parameter, `progress`,
     which accepts `IProgress<PreloadState>`.  [[#397], [#400]]
+ -  `BlockHashes` messages became to contain one more higher hash. [[#408], [#445]]
  -  `Swarm<T>.PreloadAsync()` became safe from data corruption even
     if a preloading process suddenly gets shutdown.  [[#417]]
  -  `FileStore` and `LiteDBStore` became to guarantee atomicity of storing
@@ -138,6 +139,7 @@ To be released.
 [#398]: https://github.com/planetarium/libplanet/pull/398
 [#399]: https://github.com/planetarium/libplanet/pull/399
 [#400]: https://github.com/planetarium/libplanet/pull/400
+[#408]: https://github.com/planetarium/libplanet/issues/408
 [#410]: https://github.com/planetarium/libplanet/issues/410
 [#413]: https://github.com/planetarium/libplanet/pull/413
 [#414]: https://github.com/planetarium/libplanet/pull/414
@@ -154,6 +156,7 @@ To be released.
 [#439]: https://github.com/planetarium/libplanet/pull/439
 [#442]: https://github.com/planetarium/libplanet/issues/442
 [#443]: https://github.com/planetarium/libplanet/pull/443
+[#445]: https://github.com/planetarium/libplanet/pull/445
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 
