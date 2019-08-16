@@ -148,7 +148,7 @@ progress with the total number of blocks to download in the entire batch,
 instead of the window size of a chunk (i.e., 500).  [<a href="https://github.com/planetarium/libplanet/issues/396">#396</a>, <a href="https://github.com/planetarium/libplanet/pull/399">#399</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to get the first parameter, <code>progress</code>,
 which accepts <code>IProgress&lt;PreloadState&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/397">#397</a>, <a href="https://github.com/planetarium/libplanet/pull/400">#400</a>]</li>
-<li>Response of <code>getBlockHashes()</code> now contains one more higher hash. [<a href="https://github.com/planetarium/libplanet/issues/408">#408</a>]</li>
+<li><code>BlockHashes</code> messages became to contain one more higher hash. [<a href="https://github.com/planetarium/libplanet/issues/408">#408</a>, <a href="https://github.com/planetarium/libplanet/pull/445">#445</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became safe from data corruption even
 if a preloading process suddenly gets shutdown.  [<a href="https://github.com/planetarium/libplanet/pull/417">#417</a>]</li>
 <li><code>FileStore</code> and <code>LiteDBStore</code> became to guarantee atomicity of storing
