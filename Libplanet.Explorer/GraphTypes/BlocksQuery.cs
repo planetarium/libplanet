@@ -33,17 +33,17 @@ namespace Libplanet.Explorer.GraphTypes
                     new QueryArgument<IntGraphType> { Name = "limit" },
                     new QueryArgument<BooleanGraphType>
                     {
-                        Name = "empty",
-                        DefaultValue = true,
+                        Name = "excludeEmptyTxs",
+                        DefaultValue = false,
                     }
                 ),
                 resolve: context =>
                 {
                     bool desc = context.GetArgument<bool>("desc");
-                    int offset = context.GetArgument<int>("offset");
+                    long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
-                    bool empty = context.GetArgument<bool>("empty");
-                    return ListBlocks(desc, offset, limit, empty);
+                    bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
+                    return ListBlocks(desc, offset, limit, excludeEmptyTxs);
                 }
             );
 
@@ -78,61 +78,56 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "BlockQuery";
         }
 
-        private IEnumerable<Block<T>> ListBlocks(bool desc, int offset, int? limit, bool empty)
+        private IEnumerable<Block<T>> ListBlocks(
+            bool desc,
+            long offset,
+            long? limit,
+            bool excludeEmptyTxs)
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
 
-            if (desc)
+            if (offset < 0)
             {
-                if (tipIndex - offset < 0)
+                offset = tipIndex + offset + 1;
+            }
+
+            if (tipIndex < offset || offset < 0)
+            {
+                yield break;
+            }
+
+            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
+
+            while (limit is null || limit > 0)
+            {
+                if (!excludeEmptyTxs || block.Transactions.Any())
                 {
-                    yield break;
+                    limit--;
+                    yield return block;
                 }
 
-                Block<T> block = _chain[tipIndex - offset];
-                while (limit is null || limit > 0)
+                block = GetNextBlock(block, desc);
+
+                if (block is null)
                 {
-                    yield return block;
-
-                    if (!(limit is null))
-                    {
-                        limit--;
-                    }
-
-                    if (block.PreviousHash is HashDigest<SHA256> prev)
-                    {
-                        block = _chain.Blocks[prev];
-                        continue;
-                    }
-
                     break;
                 }
             }
-            else
+        }
+
+        private Block<T> GetNextBlock(Block<T> block, bool desc)
+        {
+            if (desc && block.PreviousHash is HashDigest<SHA256> prev)
             {
-                IEnumerable<Block<T>> blocks = _chain.Skip(offset);
-
-                foreach (Block<T> block in blocks)
-                {
-                    if (!empty && !block.Transactions.Any())
-                    {
-                        continue;
-                    }
-
-                    yield return block;
-
-                    if (!(limit is null))
-                    {
-                        limit--;
-                    }
-
-                    if (limit == 0)
-                    {
-                        break;
-                    }
-                }
+                return _chain.Blocks[prev];
             }
+            else if (!desc && block != _chain.Tip)
+            {
+                return _chain[block.Index + 1];
+            }
+
+            return null;
         }
     }
 }
