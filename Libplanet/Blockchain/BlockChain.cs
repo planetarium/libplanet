@@ -146,9 +146,6 @@ namespace Libplanet.Blockchain
 
         internal IStore Store { get; }
 
-        // It's virtually a constant in production, but used for unit tests.
-        internal int FindNextHashesChunkSize { get; set; } = 500;
-
         /// <inheritdoc/>
         public Block<T> this[int index] => this[(long)index];
 
@@ -754,9 +751,9 @@ namespace Libplanet.Blockchain
 
         internal IEnumerable<HashDigest<SHA256>> FindNextHashes(
             BlockLocator locator,
-            HashDigest<SHA256>? stop = null)
+            HashDigest<SHA256>? stop = null,
+            int count = 500)
         {
-            int count = FindNextHashesChunkSize;
             try
             {
                 _rwlock.EnterReadLock();
