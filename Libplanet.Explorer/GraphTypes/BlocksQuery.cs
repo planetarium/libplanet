@@ -118,14 +118,16 @@ namespace Libplanet.Explorer.GraphTypes
 
         private Block<T> GetNextBlock(Block<T> block, bool desc)
         {
-            var nextIndex = desc ? block.Index - 1 : block.Index + 1;
-
-            if ((desc && nextIndex < 0) || (!desc && block == _chain.Tip))
+            if (desc && block.PreviousHash is HashDigest<SHA256> prev)
             {
-                return null;
+                return _chain.Blocks[prev];
+            }
+            else if (!desc && block != _chain.Tip)
+            {
+                return _chain[block.Index + 1];
             }
 
-            return _chain[nextIndex];
+            return null;
         }
     }
 }
