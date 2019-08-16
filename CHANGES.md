@@ -30,6 +30,8 @@ To be released.
     which is underspecified, likely introduce
     indeterminism][floating-point determinism].  [[#410], [#419]]
  -  Added `IActionContext.NewGuId()` method.  [[#371], [#439]]
+ -  `Address(byte[])` became to throw `ArgumentNullException`
+    instead of `NullReferenceException`.  [[#443]]
 
 ### Added interfaces
 
@@ -53,6 +55,7 @@ To be released.
  -  Added `PreloadState`, `ActionExecutionState`, `StateReferenceDownloadState`,
     and `BlockStateDownloadState` classes to cover all phases in the entire
     preloading process.  [[#397], [#400]]
+ -  Added `Address(ImmutableArray<byte>)` constructor.  [[#442], [#443]]
 
 ### Behavioral changes
 
@@ -149,6 +152,8 @@ To be released.
 [#434]: https://github.com/planetarium/libplanet/pull/434
 [#438]: https://github.com/planetarium/libplanet/pull/438
 [#439]: https://github.com/planetarium/libplanet/pull/439
+[#442]: https://github.com/planetarium/libplanet/issues/442
+[#443]: https://github.com/planetarium/libplanet/pull/443
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -12,8 +13,24 @@ namespace Libplanet.Tests
         [Fact]
         public void ConstructorDoesNotTakeNullValue()
         {
-            Assert.Throws<NullReferenceException>(
+            Assert.Throws<ArgumentNullException>(
                 () => new Address((byte[])null)
+            );
+        }
+
+        [Fact]
+        public void ConstructWithImmutableArray()
+        {
+            byte[] addr = new byte[20]
+            {
+                0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0xab,
+                0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab, 0xcd, 0xef, 0xab,
+                0xcd, 0xef,
+            };
+
+            Assert.Equal(
+                new Address("0123456789ABcdefABcdEfABcdEFabcDEFabCDEF"),
+                new Address(addr.ToImmutableArray())
             );
         }
 
