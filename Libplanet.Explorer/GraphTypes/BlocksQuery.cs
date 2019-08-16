@@ -90,7 +90,7 @@ namespace Libplanet.Explorer.GraphTypes
                     var signer = context.GetArgument<Address>("signer");
                     var involved = context.GetArgument<Address>("involvedAddress");
                     bool desc = context.GetArgument<bool>("desc");
-                    int offset = context.GetArgument<int>("offset");
+                    long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
                     return ListTransactions(signer, involved, desc, offset, limit);
@@ -153,6 +153,56 @@ namespace Libplanet.Explorer.GraphTypes
             }
         }
 
+        private IEnumerable<Transaction<T>> ListTransactions(
+            Address? signer, Address? involved, bool desc, long offset, int? limit)
+        {
+            Block<T> tip = _chain.Tip;
+            long tipIndex = tip.Index;
+
+            if (offset < 0)
+            {
+                offset = tipIndex + offset + 1;
+            }
+
+            if (tipIndex < offset || offset < 0)
+            {
+                yield break;
+            }
+
+            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
+
+            while (limit is null || limit > 0)
+            {
+                int index = desc ? block.Transactions.Count() - 1 : 0;
+                while (index >= 0 && index < block.Transactions.Count())
+                {
+                    Transaction<T> tx = block.Transactions.ElementAt(index);
+                    if (IsValidTransacion(tx, signer, involved))
+                    {
+                        yield return tx;
+                        if (!(limit is null))
+                        {
+                            limit--;
+                        }
+
+                        if (!(limit is null) && limit <= 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    index = desc ? index - 1 : index + 1;
+                }
+
+                block = GetNextBlock(block, desc);
+
+                if (block is null)
+                {
+                    break;
+                }
+            }
+        }
+
         private Block<T> GetNextBlock(Block<T> block, bool desc)
         {
             if (desc && block.PreviousHash is HashDigest<SHA256> prev)
@@ -165,101 +215,6 @@ namespace Libplanet.Explorer.GraphTypes
             }
 
             return null;
-        }
-
-        private IEnumerable<Transaction<T>> ListTransactions(
-            Address? signer, Address? involved, bool desc, int offset, int? limit)
-        {
-            Block<T> tip = _chain.Tip;
-            long tipIndex = tip.Index;
-
-            if (desc)
-            {
-                if (tipIndex - offset < 0)
-                {
-                    yield break;
-                }
-
-                Block<T> block = _chain[tipIndex];
-                bool done = false;
-                while (!done)
-                {
-                    var txs = block.Transactions.ToList();
-                    for (var i = txs.Count - 1; i >= 0; i--)
-                    {
-                        if (IsValidTransacion(txs[i], signer, involved))
-                        {
-                            if (offset > 0)
-                            {
-                                offset--;
-                            }
-                            else
-                            {
-                                yield return txs[i];
-
-                                if (!(limit is null))
-                                {
-                                    limit--;
-                                }
-                            }
-                        }
-
-                        if (!(limit is null) && limit < 0)
-                        {
-                            done = true;
-                            break;
-                        }
-                    }
-
-                    if (!(limit is null) && limit <= 0)
-                    {
-                        done = true;
-                    }
-                    else if (block.PreviousHash is HashDigest<SHA256> prev)
-                    {
-                        block = _chain.Blocks[prev];
-                    }
-                    else
-                    {
-                        done = true;
-                    }
-                }
-            }
-            else
-            {
-                foreach (Block<T> block in _chain)
-                {
-                    foreach (Transaction<T> tx in block.Transactions)
-                    {
-                        if (IsValidTransacion(tx, signer, involved))
-                        {
-                            if (offset > 0)
-                            {
-                                offset--;
-                            }
-                            else
-                            {
-                                yield return tx;
-
-                                if (!(limit is null))
-                                {
-                                    limit--;
-                                }
-                            }
-                        }
-
-                        if (!(limit is null) && limit <= 0)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (!(limit is null) && limit <= 0)
-                    {
-                        break;
-                    }
-                }
-            }
         }
 
         private bool IsValidTransacion(Transaction<T> tx, Address? signer, Address? involved)
