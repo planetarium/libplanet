@@ -40,7 +40,7 @@ namespace Libplanet.Explorer.GraphTypes
                 resolve: context =>
                 {
                     bool desc = context.GetArgument<bool>("desc");
-                    int offset = context.GetArgument<int>("offset");
+                    long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
                     bool empty = context.GetArgument<bool>("empty");
                     return ListBlocks(desc, offset, limit, empty);
@@ -78,61 +78,54 @@ namespace Libplanet.Explorer.GraphTypes
             Name = "BlockQuery";
         }
 
-        private IEnumerable<Block<T>> ListBlocks(bool desc, int offset, int? limit, bool empty)
+        private IEnumerable<Block<T>> ListBlocks(bool desc, long offset, long? limit, bool empty)
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
 
-            if (desc)
+            if (offset < 0)
             {
-                if (tipIndex - offset < 0)
-                {
-                    yield break;
-                }
+                offset = tipIndex + offset + 1;
+            }
 
-                Block<T> block = _chain[tipIndex - offset];
-                while (limit is null || limit > 0)
+            if (tipIndex < offset || offset < 0)
+            {
+                yield break;
+            }
+
+            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
+
+            while (limit is null || limit > 0)
+            {
+                if (empty || block.Transactions.Any())
                 {
                     yield return block;
+                }
 
-                    if (!(limit is null))
-                    {
-                        limit--;
-                    }
+                block = GetNextBlock(block, desc);
 
-                    if (block.PreviousHash is HashDigest<SHA256> prev)
-                    {
-                        block = _chain.Blocks[prev];
-                        continue;
-                    }
-
+                if (block is null)
+                {
                     break;
                 }
-            }
-            else
-            {
-                IEnumerable<Block<T>> blocks = _chain.Skip(offset);
 
-                foreach (Block<T> block in blocks)
+                if (!(limit is null))
                 {
-                    if (!empty && !block.Transactions.Any())
-                    {
-                        continue;
-                    }
-
-                    yield return block;
-
-                    if (!(limit is null))
-                    {
-                        limit--;
-                    }
-
-                    if (limit == 0)
-                    {
-                        break;
-                    }
+                    limit--;
                 }
             }
+        }
+
+        private Block<T> GetNextBlock(Block<T> block, bool desc)
+        {
+            var nextIndex = desc ? block.Index - 1 : block.Index + 1;
+
+            if ((desc && nextIndex < 0) || (!desc && block == _chain.Tip))
+            {
+                return null;
+            }
+
+            return _chain[nextIndex];
         }
     }
 }
