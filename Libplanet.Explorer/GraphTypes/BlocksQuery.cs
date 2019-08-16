@@ -72,14 +72,28 @@ namespace Libplanet.Explorer.GraphTypes
                     {
                         Name = "involvedAddress",
                         DefaultValue = null,
-                    }
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "desc",
+                        DefaultValue = false,
+                    },
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "offset",
+                        DefaultValue = 0,
+                    },
+                    new QueryArgument<IntGraphType> { Name = "limit" }
                 ),
                 resolve: context =>
                 {
                     var signer = context.GetArgument<Address>("signer");
                     var involved = context.GetArgument<Address>("involvedAddress");
+                    bool desc = context.GetArgument<bool>("desc");
+                    int offset = context.GetArgument<int>("offset");
+                    int? limit = context.GetArgument<int?>("limit", null);
 
-                    return ListTransactions(signer, involved);
+                    return ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
 
@@ -153,22 +167,116 @@ namespace Libplanet.Explorer.GraphTypes
             return null;
         }
 
-        private IEnumerable<Transaction<T>> ListTransactions(Address? signer, Address? involved)
+        private IEnumerable<Transaction<T>> ListTransactions(
+            Address? signer, Address? involved, bool desc, int offset, int? limit)
         {
-            foreach (Transaction<T> transaction in _chain.Transactions.Values)
+            Block<T> tip = _chain.Tip;
+            long tipIndex = tip.Index;
+
+            if (desc)
             {
-                if (involved is null && !(signer is null) &&
-                    transaction.Signer.Equals(signer.Value))
+                if (tipIndex - offset < 0)
                 {
-                    yield return transaction;
+                    yield break;
                 }
-                else if (!(involved is null) &&
-                    (transaction.Signer.Equals(involved.Value) ||
-                    transaction.UpdatedAddresses.Contains(involved.Value)))
+
+                Block<T> block = _chain[tipIndex];
+                bool done = false;
+                while (!done)
                 {
-                    yield return transaction;
+                    var txs = block.Transactions.ToList();
+                    for (var i = txs.Count - 1; i >= 0; i--)
+                    {
+                        if (IsValidTransacion(txs[i], signer, involved))
+                        {
+                            if (offset > 0)
+                            {
+                                offset--;
+                            }
+                            else
+                            {
+                                yield return txs[i];
+
+                                if (!(limit is null))
+                                {
+                                    limit--;
+                                }
+                            }
+                        }
+
+                        if (!(limit is null) && limit < 0)
+                        {
+                            done = true;
+                            break;
+                        }
+                    }
+
+                    if (!(limit is null) && limit <= 0)
+                    {
+                        done = true;
+                    }
+                    else if (block.PreviousHash is HashDigest<SHA256> prev)
+                    {
+                        block = _chain.Blocks[prev];
+                    }
+                    else
+                    {
+                        done = true;
+                    }
                 }
             }
+            else
+            {
+                foreach (Block<T> block in _chain)
+                {
+                    foreach (Transaction<T> tx in block.Transactions)
+                    {
+                        if (IsValidTransacion(tx, signer, involved))
+                        {
+                            if (offset > 0)
+                            {
+                                offset--;
+                            }
+                            else
+                            {
+                                yield return tx;
+
+                                if (!(limit is null))
+                                {
+                                    limit--;
+                                }
+                            }
+                        }
+
+                        if (!(limit is null) && limit <= 0)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (!(limit is null) && limit <= 0)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private bool IsValidTransacion(Transaction<T> tx, Address? signer, Address? involved)
+        {
+            if (involved is null && !(signer is null) &&
+                tx.Signer.Equals(signer.Value))
+            {
+                return true;
+            }
+            else if (!(involved is null) &&
+                (tx.Signer.Equals(involved.Value) ||
+                tx.UpdatedAddresses.Contains(involved.Value)))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
