@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
 using System.Text;
 using Libplanet.Crypto;
@@ -51,13 +49,35 @@ namespace Libplanet
         private ImmutableArray<byte> _byteArray;
 
         /// <summary>
+        /// Creates an <see cref="Address"/> instance from the given immutable <see
+        /// cref="byte"/> array (i.e., <paramref name="address"/>).
+        /// </summary>
+        /// <param name="address">An immutable array of 20 <see cref="byte"/>s which
+        /// represents an <see cref="Address"/>.</param>
+        /// <exception cref="ArgumentException">Thrown when the given <paramref
+        /// name="address"/> array did not lengthen 20 bytes.</exception>
+        /// <remarks>A valid <see cref="byte"/> array which represents an
+        /// <see cref="Address"/> can be gotten using <see cref="ToByteArray()"
+        /// /> method.</remarks>
+        /// <seealso cref="ByteArray"/>
+        public Address(ImmutableArray<byte> address)
+        {
+            if (address.Length != Size)
+            {
+                throw new ArgumentException("address must be 20 bytes", nameof(address));
+            }
+
+            _byteArray = address;
+        }
+
+        /// <summary>
         /// Creates an <see cref="Address"/> instance from the given <see
         /// cref="byte"/> array (i.e., <paramref name="address"/>).
         /// </summary>
         /// <param name="address">An array of 20 <see cref="byte"/>s which
         /// represents an <see cref="Address"/>.  This must not be <c>null</c>.
         /// </param>
-        /// <exception cref="NullReferenceException">Thrown when <c>null</c> was
+        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> was
         /// passed to <paramref name="address"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when the given <paramref
         /// name="address"/> array did not lengthen 20 bytes.</exception>
@@ -66,18 +86,8 @@ namespace Libplanet
         /// /> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
         public Address(byte[] address)
+            : this(address?.ToImmutableArray() ?? throw new ArgumentNullException(nameof(address)))
         {
-            if (address == null)
-            {
-                throw new NullReferenceException("address must not be null");
-            }
-
-            if (address.Length != Size)
-            {
-                throw new ArgumentException("address must be 20 bytes");
-            }
-
-            _byteArray = address.ToImmutableArray();
         }
 
         public Address(
