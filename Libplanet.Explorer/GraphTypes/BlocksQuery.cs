@@ -6,6 +6,7 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
 {
@@ -59,6 +60,20 @@ namespace Libplanet.Explorer.GraphTypes
                 }
             );
 
+            Field<TransactionType<T>>(
+                "transaction",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType> { Name = "id" }
+                ),
+                resolve: context =>
+                {
+                    var id = new TxId(
+                        ByteUtil.ParseHex(context.GetArgument<string>("id"))
+                    );
+                    return _chain.Transactions[id];
+                }
+            );
+
             _chain = chain;
             Name = "BlockQuery";
         }
@@ -67,7 +82,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             Block<T> tip = _chain.Tip;
             long tipIndex = tip.Index;
-            
+
             if (desc)
             {
                 if (tipIndex - offset < 0)
@@ -104,7 +119,7 @@ namespace Libplanet.Explorer.GraphTypes
                     {
                         continue;
                     }
-                
+
                     yield return block;
 
                     if (!(limit is null))
@@ -112,7 +127,10 @@ namespace Libplanet.Explorer.GraphTypes
                         limit--;
                     }
 
-                    if (limit == 0) break;                
+                    if (limit == 0)
+                    {
+                        break;
+                    }
                 }
             }
         }
