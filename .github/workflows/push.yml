@@ -1,0 +1,41 @@
+on: push
+name: on push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: build
+      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
+      with:
+        args: dotnet build
+    - name: gcloud-auth
+      uses: actions/gcloud/auth@master
+      env:
+        GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+    - name: pack
+      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
+      env:
+        PWSH_URL: https://github.com/PowerShell/PowerShell/releases/download/v6.2.0/powershell-6.2.0-linux-alpine-x64.tar.gz
+      with:
+        args: /bin/ash -c "apk add openssl && wget -P /tmp/ $PWSH_URL && tar xvfz
+          /tmp/powershell-*.tar.gz -C /usr/local/bin && ./build.ps1"
+    - name: upload
+      uses: actions/gcloud/cli@master
+      env:
+        BUCKET: libplanet-explorer
+      with:
+        entrypoint: /bin/sh
+        args: -c "gsutil cp -a public-read Libplanet.Explorer.Executable/bin/Release/libplanet-explorer.*.zip
+          gs://$BUCKET/${{ github.sha }}/"
+    - name: share
+      uses: shawnbot/action-status@master
+      env:
+        BUCKET: libplanet-explorer
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        entrypoint: /bin/sh
+        args: -c "for f in Libplanet.Explorer.Executable/bin/Release/libplanet-explorer.*.zip;
+          do b=`basename $f`; /action-status/cli.js --context=bin/`echo $b | cut -d.
+          -f2` --description=$b --url=https://storage.googleapis.com/$BUCKET/${{ github.sha
+          }}/$b --state=success; done"
