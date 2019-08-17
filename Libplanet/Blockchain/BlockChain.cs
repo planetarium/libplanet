@@ -770,6 +770,17 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
                 var branchPointIndex = (int)Blocks[branchPoint].Index;
+
+                // FIXME: Currently, increasing count by one to satisfy
+                // the number defined by FindNextHashesChunkSize variable
+                // when branchPointIndex didn't indicate genesis block.
+                // Since branchPointIndex is same as the latest block of
+                // requesting peer.
+                if (branchPointIndex > 0)
+                {
+                    count++;
+                }
+
                 IEnumerable<HashDigest<SHA256>> hashes = Store
                     .IterateIndex(Id.ToString(), branchPointIndex, count);
 
