@@ -750,7 +750,7 @@ namespace Libplanet.Tests.Tx
                     rawTx.PublicKey,
                     rawTx.Timestamp,
                     rawTx.Actions,
-                    new byte[rawTx.Signature.Length]
+                    new byte[rawTx.Signature.Length].ToImmutableArray()
                 )
             );
 
@@ -778,12 +778,12 @@ namespace Libplanet.Tests.Tx
             };
             var rawTxWithMismatchedAddress = new RawTransaction(
                 nonce: 0,
-                signer: mismatchedAddress,
+                signer: mismatchedAddress.ToImmutableArray(),
                 updatedAddresses: rawTx.UpdatedAddresses,
                 publicKey: rawTx.PublicKey,
                 timestamp: rawTx.Timestamp,
                 actions: rawTx.Actions,
-                signature: signature
+                signature: signature.ToImmutableArray()
             );
             var tx = new Transaction<DumbAction>(rawTxWithMismatchedAddress);
 
@@ -895,8 +895,8 @@ namespace Libplanet.Tests.Tx
                 {
                     0xc2, 0xa8, 0x60, 0x14, 0x07, 0x3d, 0x66, 0x2a, 0x4a, 0x9b,
                     0xfc, 0xf9, 0xcb, 0x54, 0x26, 0x3d, 0xfa, 0x4f, 0x5c, 0xbc,
-                },
-                updatedAddresses: new byte[][] { },
+                }.ToImmutableArray(),
+                updatedAddresses: ImmutableArray<ImmutableArray<byte>>.Empty,
                 publicKey: new byte[]
                 {
                     0x04, 0x46, 0x11, 0x5b, 0x01, 0x31, 0xba, 0xcc, 0xf9, 0x4a,
@@ -906,9 +906,9 @@ namespace Libplanet.Tests.Tx
                     0x1f, 0x11, 0x0a, 0x32, 0x6d, 0xa1, 0xbd, 0xb8, 0x1f, 0x5a,
                     0xe3, 0xba, 0xdf, 0x76, 0xa9, 0x0b, 0x22, 0xc8, 0xc4, 0x91,
                     0xae, 0xd3, 0xaa, 0xa2, 0x96,
-                },
+                }.ToImmutableArray(),
                 timestamp: "2018-11-21T00:00:00.000000Z",
-                actions: new List<IDictionary<string, object>>()
+                actions: new List<IImmutableDictionary<string, object>>()
             );
             if (!includeSingature)
             {
