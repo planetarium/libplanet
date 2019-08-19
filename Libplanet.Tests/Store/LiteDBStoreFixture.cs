@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Store
 
         public string Path { get; }
 
-        public void Dispose()
+        public override void Dispose()
         {
             (Store as LiteDBStore)?.Dispose();
             File.Delete(Path);

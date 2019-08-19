@@ -32,6 +32,7 @@ To be released.
  -  Added `IActionContext.NewGuId()` method.  [[#371], [#439]]
  -  `Address(byte[])` became to throw `ArgumentNullException`
     instead of `NullReferenceException`.  [[#443]]
+ -  Removed `FileStore` class.  [[#446]]
 
 ### Added interfaces
 
@@ -157,6 +158,7 @@ To be released.
 [#442]: https://github.com/planetarium/libplanet/issues/442
 [#443]: https://github.com/planetarium/libplanet/pull/443
 [#445]: https://github.com/planetarium/libplanet/pull/445
+[#446]: https://github.com/planetarium/libplanet/pull/446
 [LiteDB #1268]: https://github.com/mbdavid/LiteDB/issues/1268
 [floating-point determinism]: https://wp.me/p1fTCO-kT
 
