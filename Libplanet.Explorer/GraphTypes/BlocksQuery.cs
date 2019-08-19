@@ -157,7 +157,7 @@ namespace Libplanet.Explorer.GraphTypes
             Address? signer, Address? involved, bool desc, long offset, int? limit)
         {
             Block<T> tip = _chain.Tip;
-            long tipIndex = tip.Index;
+            long tipIndex = tip?.Index ?? -1;
 
             if (offset < 0)
             {
@@ -169,37 +169,24 @@ namespace Libplanet.Explorer.GraphTypes
                 yield break;
             }
 
-            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
+            Block<T> block = _chain[desc ? tipIndex - offset : offset];
 
-            while (limit is null || limit > 0)
+            while (!(block is null) && (limit is null || limit > 0))
             {
-                int index = desc ? block.Transactions.Count() - 1 : 0;
-                while (index >= 0 && index < block.Transactions.Count())
+                foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
                 {
-                    Transaction<T> tx = block.Transactions.ElementAt(index);
                     if (IsValidTransacion(tx, signer, involved))
                     {
                         yield return tx;
-                        if (!(limit is null))
-                        {
-                            limit--;
-                        }
-
-                        if (!(limit is null) && limit <= 0)
+                        limit--;
+                        if (limit <= 0)
                         {
                             break;
                         }
                     }
-
-                    index = desc ? index - 1 : index + 1;
                 }
 
                 block = GetNextBlock(block, desc);
-
-                if (block is null)
-                {
-                    break;
-                }
             }
         }
 
