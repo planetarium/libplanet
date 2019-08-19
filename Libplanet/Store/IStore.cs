@@ -54,6 +54,26 @@ namespace Libplanet.Store
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
         /// <summary>
+        /// Forks block indexes from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destinationNamespace"/>.
+        /// </summary>
+        /// <param name="sourceNamespace">The namespace of block indexes to
+        /// fork.</param>
+        /// <param name="destinationNamespace">The namespace of destination
+        /// block indexes.</param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
+        /// <exception cref="NamespaceNotFoundException">Thrown when the given
+        /// <paramref name="sourceNamespace"/> does not exist.</exception>
+        /// <seealso cref="IterateIndex(string, int, int?)"/>
+        /// <seealso cref="AppendIndex(string, HashDigest{SHA256})"/>
+        void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint);
+
+        /// <summary>
         /// Deletes an index, tx nonces, and state references in the given
         /// <paramref name="namespace"/>.
         /// It also deletes namespace itself.  If there is no such <paramref name="namespace"/> it

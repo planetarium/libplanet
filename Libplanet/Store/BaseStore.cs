@@ -39,6 +39,12 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
+        public abstract void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint);
+
+        /// <inheritdoc />
         public abstract IEnumerable<Address> ListAddresses(string @namespace);
 
         /// <inheritdoc />

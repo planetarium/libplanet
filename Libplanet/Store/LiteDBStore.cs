@@ -192,6 +192,19 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint)
+        {
+            LiteCollection<HashDoc> srcColl = IndexCollection(sourceNamespace);
+            LiteCollection<HashDoc> destColl = IndexCollection(destinationNamespace);
+
+            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchPoint)));
+            AppendIndex(destinationNamespace, branchPoint);
+        }
+
+        /// <inheritdoc/>
         public override IEnumerable<Address> ListAddresses(string @namespace)
         {
             string collId = StateRefId(@namespace);

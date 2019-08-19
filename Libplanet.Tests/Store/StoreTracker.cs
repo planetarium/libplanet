@@ -200,6 +200,15 @@ namespace Libplanet.Tests.Store
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
         }
 
+        public void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint)
+        {
+            _logs.Add((nameof(ForkBlockIndexes), null, null));
+            _store.ForkBlockIndexes(sourceNamespace, destinationNamespace, branchPoint);
+        }
+
         public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
         {
             _logs.Add((nameof(ListTxNonces), @namespace, null));

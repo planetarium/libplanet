@@ -12,7 +12,8 @@ To be released.
     method became replaced by
     `StoreStateReference(string, IImmutableSet<Address>, HashDigest<SHA256>, long)`
     method so that it takes hash and index of a block instead of an entire
-    block.
+    block.  [[#420]]
+ -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
 
 ### Added interfaces
 
