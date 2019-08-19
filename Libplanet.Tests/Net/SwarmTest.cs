@@ -1767,7 +1767,7 @@ namespace Libplanet.Tests.Net
                         {
                             chain.MakeTransaction(
                                 signer,
-                                new[] { new DumbAction(address, $"Item{i}.{j}") }
+                                new[] { new DumbAction(address, $"Item{i}.{j}", idempotent: true) }
                             );
                         }
 
