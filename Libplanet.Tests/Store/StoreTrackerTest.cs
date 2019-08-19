@@ -5,12 +5,12 @@ namespace Libplanet.Tests.Store
 {
     public sealed class StoreTrackerTest
     {
-        private readonly FileStoreFixture _fx;
+        private readonly StoreFixture _fx;
         private readonly StoreTracker _tracker;
 
         public StoreTrackerTest()
         {
-            _fx = new FileStoreFixture();
+            _fx = new LiteDBStoreFixture();
             _tracker = new StoreTracker(_fx.Store);
         }
 

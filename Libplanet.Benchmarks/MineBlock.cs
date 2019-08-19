@@ -10,12 +10,12 @@ namespace Libplanet.Benchmarks
 {
     public class MineBlock
     {
-        private FileStoreFixture _fx;
+        private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
 
         public MineBlock()
         {
-            _fx = new FileStoreFixture();
+            _fx = new LiteDBStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 _fx.Store

@@ -9,12 +9,12 @@ namespace Libplanet.Tests.Store
 {
     public class TransactionSetTest : IDisposable
     {
-        private readonly FileStoreFixture _fx;
+        private readonly StoreFixture _fx;
         private readonly TransactionSet<DumbAction> _set;
 
         public TransactionSetTest()
         {
-            _fx = new FileStoreFixture();
+            _fx = new LiteDBStoreFixture();
             _set = new TransactionSet<DumbAction>(_fx.Store);
         }
 

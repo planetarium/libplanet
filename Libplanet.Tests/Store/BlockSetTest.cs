@@ -10,12 +10,12 @@ namespace Libplanet.Tests.Store
 {
     public class BlockSetTest : IDisposable
     {
-        private readonly FileStoreFixture _fx;
+        private readonly StoreFixture _fx;
         private readonly BlockSet<DumbAction> _set;
 
         public BlockSetTest()
         {
-            _fx = new FileStoreFixture();
+            _fx = new LiteDBStoreFixture();
             _set = new BlockSet<DumbAction>(_fx.Store);
         }
 

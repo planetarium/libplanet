@@ -31,10 +31,9 @@ namespace Libplanet.Tests.Net
         private const int DisposeTimeout = 5 * 1000;
 
         private readonly ITestOutputHelper _output;
-
-        private readonly FileStoreFixture _fx1;
-        private readonly FileStoreFixture _fx2;
-        private readonly FileStoreFixture _fx3;
+        private readonly StoreFixture _fx1;
+        private readonly StoreFixture _fx2;
+        private readonly StoreFixture _fx3;
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
         private readonly List<Swarm<DumbAction>> _swarms;
@@ -53,9 +52,9 @@ namespace Libplanet.Tests.Net
             _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            _fx1 = new FileStoreFixture();
-            _fx2 = new FileStoreFixture();
-            _fx3 = new FileStoreFixture();
+            _fx1 = new LiteDBStoreFixture();
+            _fx2 = new LiteDBStoreFixture();
+            _fx3 = new LiteDBStoreFixture();
 
             _blockchains = new List<BlockChain<DumbAction>>
             {
@@ -341,7 +340,7 @@ namespace Libplanet.Tests.Net
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var d = new Swarm<DumbAction>(
-                new BlockChain<DumbAction>(_blockchains[0].Policy, new FileStoreFixture().Store),
+                new BlockChain<DumbAction>(_blockchains[0].Policy, new LiteDBStoreFixture().Store),
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);

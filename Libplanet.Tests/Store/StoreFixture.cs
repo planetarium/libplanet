@@ -10,7 +10,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Tests.Store
 {
-    public abstract class StoreFixture
+    public abstract class StoreFixture : IDisposable
     {
         public StoreFixture()
         {
@@ -106,6 +106,8 @@ namespace Libplanet.Tests.Store
         public Transaction<DumbAction> Transaction2 { get; }
 
         public IStore Store { get; set; }
+
+        public abstract void Dispose();
 
         public Transaction<DumbAction> MakeTransaction(
             IEnumerable<DumbAction> actions = null,

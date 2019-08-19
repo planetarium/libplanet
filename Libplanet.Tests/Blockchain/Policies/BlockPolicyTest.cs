@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Tests.Common.Action;
@@ -13,7 +12,7 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Blockchain.Policies
 {
-    public class BlockPolicyTest : IClassFixture<FileStoreFixture>
+    public class BlockPolicyTest : IClassFixture<LiteDBStoreFixture>
     {
         private static readonly DateTimeOffset FixtureEpoch =
             new DateTimeOffset(2018, 1, 1, 0, 0, 0, TimeSpan.Zero);

@@ -18,12 +18,12 @@ namespace Libplanet.Tests.Blockchain
 {
     public class BlockChainTest : IDisposable
     {
-        private FileStoreFixture _fx;
+        private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
 
         public BlockChainTest()
         {
-            _fx = new FileStoreFixture();
+            _fx = new LiteDBStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
                 _fx.Store
