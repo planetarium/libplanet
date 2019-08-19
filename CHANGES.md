@@ -82,10 +82,15 @@ To be released.
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
  -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
     `Swarm<T>()`.  [[#353]]
- -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now
-    selectively connected to each peer.  [[#353]]
- -  `TxId`s and `Block`s are now broadcasted to selected peers from routing
-    table of the host peer.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
+    connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
+    the host peer.  [[#353]]
+ -  `Block<T>.Mine(long, long, Address, HashDigest<SHA256>?, DateTimeOffset,
+    IEnumerable<Transaction<T>>)` became to order `Block<T>.Transactions` by
+    their `Id`.  [[#244], [#355]]
+ -  `Block<T>.Validate(DateTimeOffset)` became to validate
+    if its `Transactions` are ordered by their `Id`.  [[#244], [#355]]
 
 ### Bug fixes
 
@@ -143,6 +148,10 @@ Released on August 28, 2019.
  -  Fixed a bug that unnecessarily received all blocks in multiple miner
     situations.  [[#457], [#468]]
 
+[#244]: https://github.com/planetarium/libplanet/issues/244
+[#355]: https://github.com/planetarium/libplanet/pull/355
+[#420]: https://github.com/planetarium/libplanet/pull/420
+[#450]: https://github.com/planetarium/libplanet/pull/450
 [#454]: https://github.com/planetarium/libplanet/issues/454
 [#457]: https://github.com/planetarium/libplanet/issues/457
 [#466]: https://github.com/planetarium/libplanet/pull/466
