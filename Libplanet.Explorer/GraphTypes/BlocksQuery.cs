@@ -17,7 +17,7 @@ namespace Libplanet.Explorer.GraphTypes
 
         public BlocksQuery(BlockChain<T> chain)
         {
-            Field<ListGraphType<BlockType<T>>>(
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType<T>>>>>(
                 "blocks",
                 arguments: new QueryArguments(
                     new QueryArgument<BooleanGraphType>
@@ -57,6 +57,43 @@ namespace Libplanet.Explorer.GraphTypes
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
                     return _chain.Blocks[hash];
+                }
+            );
+
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+                "transactions",
+                arguments: new QueryArguments(
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "desc",
+                        DefaultValue = false,
+                    },
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "offset",
+                        DefaultValue = 0,
+                    },
+                    new QueryArgument<IntGraphType> { Name = "limit" }
+                ),
+                resolve: context =>
+                {
+                    var signer = context.GetArgument<Address>("signer");
+                    var involved = context.GetArgument<Address>("involvedAddress");
+                    bool desc = context.GetArgument<bool>("desc");
+                    long offset = context.GetArgument<long>("offset");
+                    int? limit = context.GetArgument<int?>("limit", null);
+
+                    return ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
 
@@ -116,6 +153,43 @@ namespace Libplanet.Explorer.GraphTypes
             }
         }
 
+        private IEnumerable<Transaction<T>> ListTransactions(
+            Address? signer, Address? involved, bool desc, long offset, int? limit)
+        {
+            Block<T> tip = _chain.Tip;
+            long tipIndex = tip?.Index ?? -1;
+
+            if (offset < 0)
+            {
+                offset = tipIndex + offset + 1;
+            }
+
+            if (tipIndex < offset || offset < 0)
+            {
+                yield break;
+            }
+
+            Block<T> block = _chain[desc ? tipIndex - offset : offset];
+
+            while (!(block is null) && (limit is null || limit > 0))
+            {
+                foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
+                {
+                    if (IsValidTransacion(tx, signer, involved))
+                    {
+                        yield return tx;
+                        limit--;
+                        if (limit <= 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                block = GetNextBlock(block, desc);
+            }
+        }
+
         private Block<T> GetNextBlock(Block<T> block, bool desc)
         {
             if (desc && block.PreviousHash is HashDigest<SHA256> prev)
@@ -128,6 +202,23 @@ namespace Libplanet.Explorer.GraphTypes
             }
 
             return null;
+        }
+
+        private bool IsValidTransacion(Transaction<T> tx, Address? signer, Address? involved)
+        {
+            if (involved is null && !(signer is null) &&
+                tx.Signer.Equals(signer.Value))
+            {
+                return true;
+            }
+            else if (!(involved is null) &&
+                (tx.Signer.Equals(involved.Value) ||
+                tx.UpdatedAddresses.Contains(involved.Value)))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
