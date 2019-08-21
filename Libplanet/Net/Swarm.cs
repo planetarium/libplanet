@@ -369,6 +369,7 @@ namespace Libplanet.Net
                     }
 
                     _dealers.Clear();
+                    _turnClient?.Dispose();
 
                     Running = false;
                 }
@@ -885,8 +886,7 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    NetworkStream stream =
-                        await _turnClient.AcceptRelayedStreamAsync();
+                    NetworkStream stream = await _turnClient.AcceptRelayedStreamAsync();
 
                     // TODO We should expose the interface so that library users
                     // can limit / manage the task.
