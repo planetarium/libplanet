@@ -12,6 +12,27 @@ namespace Libplanet.Explorer.Executable
         [Option('p', "port", Default = 5000, HelpText = "The port number to listen.")]
         public int Port { get; set; }
 
+        [Option(
+            'i',
+            "block-interval",
+            Default = 5000,
+            HelpText = "An appropriate interval in milliseconds between consecutive blocks.")]
+        public int BlockIntervalMilliseconds { get; set; }
+
+        [Option(
+            'm',
+            "minimum-difficulty",
+            Default = 1024L,
+            HelpText = "Allowed minimum difficulty for mining blocks.")]
+        public long MinimumDifficulty { get; set; }
+
+        [Option(
+            'd',
+            "difficulty-bound-divisor",
+            Default = 128,
+            HelpText = "A bound divisor to determine precision of block difficulties.")]
+        public int DifficultyBoundDivisor { get; set; }
+
         [Value(
             0,
             MetaName = "PATH",

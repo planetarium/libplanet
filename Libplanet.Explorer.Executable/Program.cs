@@ -22,9 +22,9 @@ namespace Libplanet.Explorer.Executable
             IStore store = new LiteDBStore(options.StorePath, readOnly: true);
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
-                blockIntervalMilliseconds: 5000,
-                minimumDifficulty: 1024L,
-                difficultyBoundDivisor: 128);
+                blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
+                minimumDifficulty: options.MinimumDifficulty,
+                difficultyBoundDivisor: options.DifficultyBoundDivisor);
             var blockChain = new BlockChain<AppAgnosticAction>(policy, store);
             Startup.BlockChainSingleton = blockChain;
 
