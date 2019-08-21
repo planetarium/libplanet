@@ -1996,18 +1996,13 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+                dealer = null;
 
                 return pong;
             }
-            catch (IOException)
+            finally
             {
-                dealer.Dispose();
-                throw;
-            }
-            catch (TimeoutException)
-            {
-                dealer.Dispose();
-                throw;
+                dealer?.Dispose();
             }
         }
 
