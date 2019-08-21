@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Immutable;
-using CommandLine;
 using Libplanet.Action;
+using Libplanet.Blockchain;
+using Libplanet.Blockchain.Policies;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
 using Microsoft.AspNetCore;
@@ -18,7 +19,15 @@ namespace Libplanet.Explorer.Executable
         {
             Options options = Options.Parse(args, Console.Error);
 
-            Startup.StoreState = new LiteDBStore(options.StorePath, readOnly: true);
+            IStore store = new LiteDBStore(options.StorePath, readOnly: true);
+            IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
+                null,
+                blockIntervalMilliseconds: 5000,
+                minimumDifficulty: 1024L,
+                difficultyBoundDivisor: 128);
+            var blockChain = new BlockChain<AppAgnosticAction>(policy, store);
+            Startup.BlockChainSingleton = blockChain;
+
             WebHost.CreateDefaultBuilder()
                 .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
                 .UseUrls($"http://{options.Host}:{options.Port}/")
@@ -58,11 +67,11 @@ namespace Libplanet.Explorer.Executable
             }
         }
 
-        internal class Startup : IBlockchainStore
+        internal class Startup : IBlockChainContext<AppAgnosticAction>
         {
-            public IStore Store => StoreState;
+            public BlockChain<AppAgnosticAction> BlockChain => BlockChainSingleton;
 
-            internal static IStore StoreState { get; set; }
+            internal static BlockChain<AppAgnosticAction> BlockChainSingleton { get; set; }
         }
     }
 }
