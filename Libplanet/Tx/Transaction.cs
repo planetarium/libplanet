@@ -107,7 +107,7 @@ namespace Libplanet.Tx
             : this(
                 rawTx.Nonce,
                 new Address(rawTx.Signer),
-                new PublicKey(rawTx.PublicKey),
+                new PublicKey(rawTx.PublicKey.ToArray()),
                 rawTx.UpdatedAddresses.Select(
                     a => new Address(a)
                 ).ToImmutableHashSet(),
@@ -116,7 +116,7 @@ namespace Libplanet.Tx
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rawTx.Actions.Select(ToAction).ToImmutableList(),
-                rawTx.Signature,
+                rawTx.Signature.ToArray(),
                 false)
         {
         }
@@ -663,13 +663,13 @@ namespace Libplanet.Tx
         {
             var rawTx = new RawTransaction(
                 nonce: Nonce,
-                signer: Signer.ToByteArray(),
+                signer: Signer.ByteArray,
                 updatedAddresses: UpdatedAddresses.Select(a =>
-                    a.ToByteArray()).ToArray(),
-                publicKey: PublicKey.Format(false),
+                    a.ByteArray).ToImmutableArray(),
+                publicKey: PublicKey.Format(false).ToImmutableArray(),
                 timestamp: Timestamp.ToString(TimestampFormat),
                 actions: Actions.Select(a =>
-                    a.PlainValue.ToDictionary(
+                    a.PlainValue.ToImmutableDictionary(
                         kv => kv.Key,
                         kv => kv.Value
                     )
@@ -684,7 +684,7 @@ namespace Libplanet.Tx
             return rawTx;
         }
 
-        private static T ToAction(IDictionary<string, object> arg)
+        private static T ToAction(IImmutableDictionary<string, object> arg)
         {
             var action = new T();
             action.LoadPlainValue(arg.ToImmutableDictionary());

@@ -338,12 +338,12 @@ namespace Libplanet.Tests.Blocks
         {
             RawTransaction rawTx = new RawTransaction(
                 0,
-                _fx.TxFixture.Address1.ToByteArray(),
-                new byte[][] { },
-                _fx.TxFixture.PublicKey1.Format(false),
+                _fx.TxFixture.Address1.ByteArray,
+                ImmutableArray<ImmutableArray<byte>>.Empty,
+                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
-                new IDictionary<string, object>[0],
-                new byte[10]
+                new IImmutableDictionary<string, object>[0],
+                new byte[10].ToImmutableArray()
             );
             var invalidTx = new Transaction<DumbAction>(rawTx);
             Block<DumbAction> invalidBlock = MineNext(
@@ -360,12 +360,12 @@ namespace Libplanet.Tests.Blocks
         {
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 0,
-                new PrivateKey().PublicKey.ToAddress().ToByteArray(),
-                new byte[][] { },
-                _fx.TxFixture.PublicKey1.Format(false),
+                new PrivateKey().PublicKey.ToAddress().ByteArray,
+                ImmutableArray<ImmutableArray<byte>>.Empty,
+                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
-                new IDictionary<string, object>[0],
-                new byte[0]
+                new IImmutableDictionary<string, object>[0],
+                ImmutableArray<byte>.Empty
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<DumbAction>(rawTxWithoutSig).ToBencodex(false)
@@ -378,7 +378,7 @@ namespace Libplanet.Tests.Blocks
                     rawTxWithoutSig.PublicKey,
                     rawTxWithoutSig.Timestamp,
                     rawTxWithoutSig.Actions,
-                    sig
+                    sig.ToImmutableArray()
                 )
             );
             Block<DumbAction> invalidBlock = MineNext(
@@ -393,17 +393,17 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void EvaluateInvalidTxUpdatedAddresses()
         {
-            ImmutableArray<IDictionary<string, object>> rawActions =
+            ImmutableArray<IImmutableDictionary<string, object>> rawActions =
                 _fx.TxFixture.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 0,
-                _fx.TxFixture.Address1.ToByteArray(),
-                new byte[][] { },
-                _fx.TxFixture.PublicKey1.Format(false),
+                _fx.TxFixture.Address1.ByteArray,
+                ImmutableArray<ImmutableArray<byte>>.Empty,
+                _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
                 rawActions,
-                new byte[0]
+                ImmutableArray<byte>.Empty
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
@@ -418,7 +418,7 @@ namespace Libplanet.Tests.Blocks
                     rawTxWithoutSig.PublicKey,
                     rawTxWithoutSig.Timestamp,
                     rawTxWithoutSig.Actions,
-                    sig
+                    sig.ToImmutableArray()
                 )
             );
             Block<PolymorphicAction<BaseAction>> invalidBlock = MineNext(
