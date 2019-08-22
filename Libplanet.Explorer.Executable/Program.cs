@@ -7,6 +7,8 @@ using Libplanet.Explorer.Interfaces;
 using Libplanet.Store;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Serilog;
+using Serilog.Events;
 
 namespace Libplanet.Explorer.Executable
 {
@@ -19,6 +21,16 @@ namespace Libplanet.Explorer.Executable
         {
             Options options = Options.Parse(args, Console.Error);
 
+            var loggerConfig = new LoggerConfiguration();
+            loggerConfig = options.Debug
+                ? loggerConfig.MinimumLevel.Debug()
+                : loggerConfig.MinimumLevel.Information();
+            loggerConfig = loggerConfig
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console();
+            Log.Logger = loggerConfig.CreateLogger();
+
             IStore store = new LiteDBStore(options.StorePath, readOnly: true);
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
@@ -30,6 +42,7 @@ namespace Libplanet.Explorer.Executable
 
             WebHost.CreateDefaultBuilder()
                 .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
+                .UseSerilog()
                 .UseUrls($"http://{options.Host}:{options.Port}/")
                 .Build()
                 .Run();

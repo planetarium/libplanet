@@ -6,6 +6,9 @@ namespace Libplanet.Explorer.Executable
 {
     public class Options
     {
+        [Option('d', "debug", HelpText = "Print logs for debugging as well.")]
+        public bool Debug { get; set; }
+
         [Option('H', "host", Default = "0.0.0.0", HelpText = "The host address to listen.")]
         public string Host { get; set; }
 
@@ -27,7 +30,7 @@ namespace Libplanet.Explorer.Executable
         public long MinimumDifficulty { get; set; }
 
         [Option(
-            'd',
+            'D',
             "difficulty-bound-divisor",
             Default = 128,
             HelpText = "A bound divisor to determine precision of block difficulties.")]
