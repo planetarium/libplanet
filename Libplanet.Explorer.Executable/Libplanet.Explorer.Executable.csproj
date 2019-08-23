@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <LangVersion>7.2</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>NU1701</NoWarn>
+    <NoWarn>NU1701,SA1118</NoWarn>
     <CodeAnalysisRuleSet>..\Libplanet.Explorer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
