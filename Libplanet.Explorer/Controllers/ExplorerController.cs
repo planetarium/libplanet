@@ -2,7 +2,6 @@ using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
-using Libplanet.Blockchain.Policies;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -14,26 +13,16 @@ namespace Libplanet.Explorer.Controllers
     public class ExplorerController<T> : Controller
         where T : IAction, new()
     {
-        private static Schema _schema;
+        private readonly IBlockChainContext<T> _context;
+        private readonly Schema _schema;
 
-        private readonly IBlockchainStore _store;
-
-        private BlockChain<T> _blockChain;
-
-        public ExplorerController(IBlockchainStore store)
+        public ExplorerController(IBlockChainContext<T> context)
         {
-            _store = store;
-            _blockChain = _blockChain ?? GetBlockChain();
-            _schema = _schema ?? new Schema { Query = new BlocksQuery<T>(_blockChain) };
+            _context = context;
+            _schema = context.GetSchema();
         }
 
-        public BlockChain<T> GetBlockChain()
-        {
-            // FIXME: policy should be configurable
-            var chain = new BlockChain<T>(new BlockPolicy<T>(), _store.Store);
-
-            return chain;
-        }
+        public BlockChain<T> BlockChain => _context.BlockChain;
 
         [HttpGet("/")]
         public IActionResult GetRoot()
@@ -48,7 +37,7 @@ namespace Libplanet.Explorer.Controllers
         {
             var json = _schema.Execute(_ =>
             {
-                _.UserContext = _blockChain;
+                _.UserContext = BlockChain;
                 _.Query = body.Query;
                 if (body.Variables != null)
                 {

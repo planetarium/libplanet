@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Libplanet.Explorer
 {
     public class ExplorerStartup<T, TU>
-        where T : IAction
-        where TU : class, IBlockchainStore
+        where T : IAction, new()
+        where TU : class, IBlockChainContext<T>
     {
         public ExplorerStartup(IConfiguration configuration)
         {
@@ -34,7 +34,7 @@ namespace Libplanet.Explorer
                 .ConfigureApplicationPartManager(p =>
                     p.FeatureProviders.Add(
                         new GenericControllerFeatureProvider<T>()));
-            services.AddSingleton<IBlockchainStore, TU>();
+            services.AddSingleton<IBlockChainContext<T>, TU>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
