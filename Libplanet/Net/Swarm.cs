@@ -369,6 +369,7 @@ namespace Libplanet.Net
                     }
 
                     _dealers.Clear();
+                    _turnClient?.Dispose();
 
                     Running = false;
                 }
@@ -885,8 +886,9 @@ namespace Libplanet.Net
             {
                 try
                 {
-                    NetworkStream stream =
-                        await _turnClient.AcceptRelayedStreamAsync();
+#pragma warning disable IDE0067  // We'll dispose of `stream` in proxy task.
+                    NetworkStream stream = await _turnClient.AcceptRelayedStreamAsync();
+#pragma warning restore IDE0067
 
                     // TODO We should expose the interface so that library users
                     // can limit / manage the task.
@@ -895,22 +897,15 @@ namespace Libplanet.Net
                     {
                         using (var proxy = new NetworkStreamProxy(stream))
                         {
-                            Debug.Assert(
-                                _listenPort != null,
-                                nameof(_listenPort) + " != null");
-                            await proxy.StartAsync(
-                                IPAddress.Loopback,
-                                _listenPort.Value);
+                            Debug.Assert(_listenPort != null, nameof(_listenPort) + " != null");
+                            await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
                         }
-                    });
+                    }).ContinueWith(_ => stream.Dispose());
 #pragma warning restore CS4014
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(
-                        e,
-                        "An unexpected exception occured. try again..."
-                    );
+                    _logger.Error(e, "An unexpected exception occured. try again...");
                 }
             }
         }
@@ -1996,18 +1991,13 @@ namespace Libplanet.Net
                 }
 
                 _dealers[peer.Address] = dealer;
+                dealer = null;
 
                 return pong;
             }
-            catch (IOException)
+            finally
             {
-                dealer.Dispose();
-                throw;
-            }
-            catch (TimeoutException)
-            {
-                dealer.Dispose();
-                throw;
+                dealer?.Dispose();
             }
         }
 

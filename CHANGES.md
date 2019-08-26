@@ -14,6 +14,11 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug that `Swarm<T>` hadn't released its TURN releated resources on
+    `Swarm<T>.StopAsync()`.  [[#450]]
+
+[#450]: https://github.com/planetarium/libplanet/pull/450
+
 
 Version 0.5.0
 -------------
