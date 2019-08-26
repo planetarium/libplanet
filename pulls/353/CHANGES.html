@@ -80,24 +80,24 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li><code>Swarm&lt;T&gt;.AddPeersAsync()</code> method removed. To connect with seed peers, use
+<li>Removed <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method. To connect with seed peers, use
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
-<li>Added <code>Swarm&lt;T&gt;.PrepareAsync()</code> method is added. The method should be called before
+<li>Added <code>Swarm&lt;T&gt;.PrepareAsync()</code> method. The method should be called before
 calling <code>Swarm&lt;T&gt;.BootstrapAsync()</code>, <code>Swarm&lt;T&gt;.PreloadAsync()</code> and
 <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method to connect with seed peers.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of <code>Swarm&lt;T&gt;</code>'s
-constructor.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively connected to
-each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>TxIds and Blocks are now broadcasted to selected peers from routing table of the host
-peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of
+<code>Swarm&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively
+connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>TxIds and Blocks are now broadcasted to selected peers from routing table of
+the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h2 id="version-050">Version 0.5.0</h2>
