@@ -254,7 +254,7 @@ namespace Libplanet.Net
 
         internal ICollection<Peer> Peers => _peers.Keys;
 
-        internal int FindNextHashesChunkSize { get; set; }
+        internal int FindNextHashesChunkSize { get; set; } = 500;
 
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
