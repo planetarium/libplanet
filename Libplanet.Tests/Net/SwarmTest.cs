@@ -1048,7 +1048,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(minerSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
-                minerChain.FindNextHashesChunkSize = 2;
+                minerSwarm.FindNextHashesChunkSize = 2;
                 await receiverSwarm.PreloadAsync(progress);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
@@ -1234,7 +1234,7 @@ namespace Libplanet.Tests.Net
             }
 
             Assert.NotNull(minerChain.Tip);
-            minerChain.FindNextHashesChunkSize = 2;
+            minerSwarm.FindNextHashesChunkSize = 2;
             await StartAsync(minerSwarm);
             await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer });
 
