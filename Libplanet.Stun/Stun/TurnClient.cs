@@ -124,26 +124,28 @@ namespace Libplanet.Stun
                     await _connectionAttempts.DequeueAsync(cancellationToken);
 
                 byte[] id = attempt.ConnectionId;
+                var bindRequest = new ConnectionBindRequest(id);
                 var relayedClient = new TcpClient(_host, _port);
                 NetworkStream relayedStream = relayedClient.GetStream();
 
-                var bindRequest = new ConnectionBindRequest(id);
-                await SendMessageAsync(
-                    relayedStream,
-                    bindRequest,
-                    cancellationToken);
-                StunMessage bindResponse =
-                    await StunMessage.Parse(relayedStream);
-
-                if (bindResponse is ConnectionBindSuccessResponse)
+                try
                 {
-                    _relayedClients.Add(relayedClient);
-                    return relayedStream;
-                }
+                    await SendMessageAsync(relayedStream, bindRequest, cancellationToken);
+                    StunMessage bindResponse = await StunMessage.Parse(relayedStream);
 
-                throw new TurnClientException(
-                        "ConnectionBind failed.",
-                        bindResponse);
+                    if (bindResponse is ConnectionBindSuccessResponse)
+                    {
+                        _relayedClients.Add(relayedClient);
+                        return relayedStream;
+                    }
+
+                    throw new TurnClientException("ConnectionBind failed.", bindResponse);
+                }
+                catch (IOException e)
+                {
+                    Log.Warning(e, "The connection seems to disconnect before parsing. ignored.");
+                    continue;
+                }
             }
         }
 
