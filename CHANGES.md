@@ -35,7 +35,7 @@ To be released.
 
 ### Bug fixes
 
- -  Fixed a bug that `Swarm<T>` hadn't released its TURN releated resources on
+ -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
  -  Fixed a bug that `ArgumentNullException` had been thrown when a blockchain,
     which consists of incomplete states (i.e., precalculated states downloaded
