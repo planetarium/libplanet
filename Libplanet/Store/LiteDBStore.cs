@@ -469,8 +469,7 @@ namespace Libplanet.Store
         public override void ForkStateReferences<T>(
             string srcNamespace,
             string destNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
+            Block<T> branchPoint)
         {
             string srcCollId = StateRefId(srcNamespace);
             string dstCollId = StateRefId(destNamespace);
@@ -479,7 +478,7 @@ namespace Libplanet.Store
 
             dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
 
-            if (dstColl.Count() < 1 && addressesToStrip.Any())
+            if (dstColl.Count() < 1)
             {
                 throw new NamespaceNotFoundException(
                     srcNamespace,

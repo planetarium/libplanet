@@ -816,7 +816,6 @@ namespace Libplanet.Blockchain
                 Store.ForkBlockIndexes(id, forkedId, point);
                 Block<T> pointBlock = Blocks[point];
 
-                var addressesToStrip = new HashSet<Address>();
                 var signersToStrip = new Dictionary<Address, int>();
 
                 for (
@@ -825,13 +824,6 @@ namespace Libplanet.Blockchain
                     && !block.Hash.Equals(point);
                     block = Blocks[hash])
                 {
-                    ImmutableHashSet<Address> addresses =
-                        Store.GetBlockStates(block.Hash)
-                        .Select(kv => kv.Key)
-                        .ToImmutableHashSet();
-
-                    addressesToStrip.UnionWith(addresses);
-
                     IEnumerable<(Address, int)> signers = block
                         .Transactions
                         .GroupBy(tx => tx.Signer)
@@ -845,11 +837,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Store.ForkStateReferences(
-                    id,
-                    forked.Id.ToString(),
-                    pointBlock,
-                    addressesToStrip.ToImmutableHashSet());
+                Store.ForkStateReferences(id, forked.Id.ToString(), pointBlock);
 
                 foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(id))
                 {

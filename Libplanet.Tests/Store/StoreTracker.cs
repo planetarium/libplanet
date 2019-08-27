@@ -190,14 +190,12 @@ namespace Libplanet.Tests.Store
         public void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
+            Block<T> branchPoint)
             where T : IAction, new()
         {
             // FIXME: Log arguments properly.
             _logs.Add((nameof(ForkStateReferences), null, null));
-            _store.ForkStateReferences(
-                sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
+            _store.ForkStateReferences(sourceNamespace, destinationNamespace, branchPoint);
         }
 
         public void ForkBlockIndexes(

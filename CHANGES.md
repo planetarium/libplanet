@@ -14,6 +14,8 @@ To be released.
     method so that it takes hash and index of a block instead of an entire
     block.  [[#420]]
  -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
+ -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences()`
+    method.  [[#454], [#467]]
 
 ### Added interfaces
 
@@ -23,9 +25,15 @@ To be released.
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN releated resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
+ -  Fixed a bug that `ArgumentNullException` had been thrown when a blockchain,
+    which consists of incomplete states (i.e., precalculated states downloaded
+    from trusted peers), encounters a new branch so that reorg is made.
+    [[#454], [#467]]
 
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
+[#454]: https://github.com/planetarium/libplanet/issues/454
+[#467]: https://github.com/planetarium/libplanet/pull/467
 
 
 Version 0.5.0
