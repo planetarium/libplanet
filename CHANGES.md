@@ -18,9 +18,13 @@ To be released.
     which consists of incomplete states (i.e., precalculated states downloaded
     from trusted peers), encounters a new branch so that reorg is made.
     [[#454], [#466]]
+ -  Fixed a bug that unnecessarily received all blocks in multiple miner
+    situations.  [[#457], [#468]]
 
 [#454]: https://github.com/planetarium/libplanet/issues/454
+[#457]: https://github.com/planetarium/libplanet/issues/457
 [#466]: https://github.com/planetarium/libplanet/pull/466
+[#468]: https://github.com/planetarium/libplanet/pull/468
 
 
 Version 0.5.0
