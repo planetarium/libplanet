@@ -430,8 +430,7 @@ namespace Libplanet.Tests.Store
             Fx.Store.ForkStateReferences(
                 Fx.StoreNamespace,
                 targetNamespace,
-                branchPoint,
-                addressesToStrip);
+                branchPoint);
 
             var actual = Fx.Store.LookupStateReference(
                 Fx.StoreNamespace,
@@ -461,8 +460,7 @@ namespace Libplanet.Tests.Store
                 Fx.Store.ForkStateReferences(
                     Fx.StoreNamespace,
                     targetNamespace,
-                    Fx.Block1,
-                    new HashSet<Address> { address }.ToImmutableHashSet()));
+                    Fx.Block1));
         }
 
         [Fact]

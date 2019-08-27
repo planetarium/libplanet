@@ -135,8 +135,7 @@ namespace Libplanet.Store
         public abstract void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
+            Block<T> branchPoint)
             where T : IAction, new();
 
         /// <inheritdoc/>

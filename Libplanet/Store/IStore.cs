@@ -241,8 +241,7 @@ namespace Libplanet.Store
         /// <para>This method copies state references from
         /// <paramref name="sourceNamespace"/> to
         /// <paramref name="destinationNamespace"/> and strips
-        /// <paramref name="addressesToStrip"/> of state references after
-        /// <paramref name="branchPoint"/>.</para>
+        /// state references after <paramref name="branchPoint"/>.</para>
         /// </summary>
         /// <param name="sourceNamespace">The namespace of state references to
         /// fork.</param>
@@ -250,20 +249,17 @@ namespace Libplanet.Store
         /// state references.</param>
         /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
         /// to fork.</param>
-        /// <param name="addressesToStrip">The set of <see cref="Address"/>es
-        /// to strip <see cref="Block{T}.Hash"/> after forking.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
         /// <paramref name="sourceNamespace"/> does not exist.</exception>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
         /// <seealso cref="StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-        #pragma warning restore MEN002
+#pragma warning restore MEN002
         void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,
-            Block<T> branchPoint,
-            IImmutableSet<Address> addressesToStrip)
+            Block<T> branchPoint)
             where T : IAction, new();
 
         /// <summary>
