@@ -79,6 +79,14 @@
 <h2 id="version-060">Version 0.6.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
+<ul>
+<li><code>IStore.StoreStateReference&lt;T&gt;(string, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</code>
+method became replaced by
+<code>StoreStateReference(string, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code>
+method so that it takes hash and index of a block instead of an entire
+block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
+<li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
+</ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
