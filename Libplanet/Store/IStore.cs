@@ -54,6 +54,26 @@ namespace Libplanet.Store
         bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
 
         /// <summary>
+        /// Forks block indexes from
+        /// <paramref name="sourceNamespace"/> to
+        /// <paramref name="destinationNamespace"/>.
+        /// </summary>
+        /// <param name="sourceNamespace">The namespace of block indexes to
+        /// fork.</param>
+        /// <param name="destinationNamespace">The namespace of destination
+        /// block indexes.</param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
+        /// <exception cref="NamespaceNotFoundException">Thrown when the given
+        /// <paramref name="sourceNamespace"/> does not exist.</exception>
+        /// <seealso cref="IterateIndex(string, int, int?)"/>
+        /// <seealso cref="AppendIndex(string, HashDigest{SHA256})"/>
+        void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint);
+
+        /// <summary>
         /// Deletes an index, tx nonces, and state references in the given
         /// <paramref name="namespace"/>.
         /// It also deletes namespace itself.  If there is no such <paramref name="namespace"/> it
@@ -175,6 +195,7 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
+        #pragma warning disable MEN002
         /// <summary>
         /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
         /// the requested <paramref name="address"/> in the specified <paramref name="namespace"/>.
@@ -184,7 +205,8 @@ namespace Libplanet.Store
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
         /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) goes
         /// first and the lowest index (i.e., the closest to the genesis) goes last.</returns>
-        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        /// <seealso cref="StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
+        #pragma warning restore MEN002 // Line is too long
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             string @namespace,
             Address address);
@@ -193,25 +215,24 @@ namespace Libplanet.Store
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
         /// that has the state of the <see cref="Address"/> for each updated
         /// <see cref="Address"/>es by the <see cref="Transaction{T}"/>s in the
-        /// <paramref name="block"/>.</summary>
+        /// <see cref="Block{T}" />.</summary>
         /// <param name="namespace">The namespace to store a state reference.
         /// </param>
         /// <param name="addresses">The <see cref="Address"/>es to store state
         /// reference.</param>
-        /// <param name="block">The <see cref="Block{T}"/> which has the state
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which has the state
         /// of the <see cref="Address"/>.</param>
-        /// <typeparam name="T">An <see cref="IAction"/> class used with
-        /// <paramref name="block"/>.</typeparam>
-        /// <remarks>State reference must be stored in the same order as the blocks. For now,
-        /// it is assumed that this is only called by
-        /// <see cref="BlockChain{T}.Append(Block{T})"/> method.</remarks>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> which has the state
+        /// of the <see cref="Address"/>. This must refer to the same block
+        /// that <paramref name="blockHash"/> refers to.</param>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
-        void StoreStateReference<T>(
+        void StoreStateReference(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new();
+            HashDigest<SHA256> blockHash,
+            long blockIndex);
 
+        #pragma warning disable MEN002
         /// <summary>
         /// Forks state references, which are <see cref="Block{T}.Hash"/>es that
         /// have the state of the <see cref="Address"/>es, from
@@ -236,7 +257,8 @@ namespace Libplanet.Store
         /// <exception cref="NamespaceNotFoundException">Thrown when the given
         /// <paramref name="sourceNamespace"/> does not exist.</exception>
         /// <seealso cref="IterateStateReferences(string, Address)"/>
-        /// <seealso cref="StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        /// <seealso cref="StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
+        #pragma warning restore MEN002
         void ForkStateReferences<T>(
             string sourceNamespace,
             string destinationNamespace,

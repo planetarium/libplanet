@@ -17,11 +17,6 @@ namespace Libplanet.Net
         /// </summary>
         public int ReceivedStateReferenceCount { get; internal set; }
 
-        /// <summary>
-        /// The address of the state references just received.
-        /// </summary>
-        public Address ReceivedAddress { get; internal set; }
-
         /// <inheritdoc />
         public override int CurrentPhase => 2;
     }

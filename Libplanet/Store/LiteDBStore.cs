@@ -192,6 +192,19 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint)
+        {
+            LiteCollection<HashDoc> srcColl = IndexCollection(sourceNamespace);
+            LiteCollection<HashDoc> destColl = IndexCollection(destinationNamespace);
+
+            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchPoint)));
+            AppendIndex(destinationNamespace, branchPoint);
+        }
+
+        /// <inheritdoc/>
         public override IEnumerable<Address> ListAddresses(string @namespace)
         {
             string collId = StateRefId(@namespace);
@@ -432,10 +445,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void StoreStateReference<T>(
+        public override void StoreStateReference(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
+            HashDigest<SHA256> hash,
+            long index)
         {
             string collId = StateRefId(@namespace);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
@@ -443,8 +457,8 @@ namespace Libplanet.Store
                 addresses.Select(addr => new StateRefDoc
                 {
                     Address = addr,
-                    BlockIndex = block.Index,
-                    BlockHash = block.Hash,
+                    BlockIndex = index,
+                    BlockHash = hash,
                 })
             );
             coll.EnsureIndex("AddressString");

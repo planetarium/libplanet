@@ -8,6 +8,13 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `IStore.StoreStateReference<T>(string, IImmutableSet<Address>, Block<T>)`
+    method became replaced by
+    `StoreStateReference(string, IImmutableSet<Address>, HashDigest<SHA256>, long)`
+    method so that it takes hash and index of a block instead of an entire
+    block.  [[#420]]
+ -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
+
 ### Added interfaces
 
 ### Behavioral changes
@@ -17,6 +24,7 @@ To be released.
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN releated resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
 
+[#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 
 

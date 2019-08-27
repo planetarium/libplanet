@@ -47,7 +47,12 @@ namespace Libplanet.Tests.Store
             Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, block5));
             Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, block6));
 
-            fx.Store.StoreStateReference(fx.StoreNamespace, tx4.UpdatedAddresses, block4);
+            fx.Store.StoreStateReference(
+                fx.StoreNamespace,
+                tx4.UpdatedAddresses,
+                block4.Hash,
+                block4.Index
+            );
             Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
@@ -62,7 +67,12 @@ namespace Libplanet.Tests.Store
                 fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
             );
 
-            fx.Store.StoreStateReference(fx.StoreNamespace, tx5.UpdatedAddresses, block5);
+            fx.Store.StoreStateReference(
+                fx.StoreNamespace,
+                tx5.UpdatedAddresses,
+                block5.Hash,
+                block5.Index
+            );
             Assert.Null(fx.Store.LookupStateReference(
                 fx.StoreNamespace, address, fx.Block3));
             Assert.Equal(

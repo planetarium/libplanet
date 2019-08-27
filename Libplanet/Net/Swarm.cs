@@ -1042,21 +1042,37 @@ namespace Libplanet.Net
 
                             int count = 0, totalCount = recentStates.StateReferences.Count;
                             _logger.Debug("Starts to store state refs received from {0}.", peer);
+
+                            var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
                             foreach (var pair in recentStates.StateReferences)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
                                 IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
                                 foreach (HashDigest<SHA256> bHash in pair.Value)
                                 {
-                                    Block<T> block = store.GetBlock<T>(bHash);
-                                    store.StoreStateReference(ns, address, block);
+                                    if (!d.ContainsKey(bHash))
+                                    {
+                                        d[bHash] = new HashSet<Address>();
+                                    }
+
+                                    d[bHash].UnionWith(address);
+                                }
+                            }
+
+                            totalCount = d.Count;
+                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
+                            {
+                                HashDigest<SHA256> hash = pair.Key;
+                                IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
+                                if (store.GetBlockIndex(hash) is long index)
+                                {
+                                    store.StoreStateReference(ns, addresses, hash, index);
                                 }
 
                                 progress?.Report(new StateReferenceDownloadState()
                                 {
                                     TotalStateReferenceCount = totalCount,
                                     ReceivedStateReferenceCount = ++count,
-                                    ReceivedAddress = pair.Key,
                                 });
                             }
 

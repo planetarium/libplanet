@@ -10,6 +10,7 @@ namespace Libplanet.Store
 {
     public static class StoreExtension
     {
+        #pragma warning disable MEN002
         /// <summary>
         /// Looks up a state reference, which is a block's <see cref="Block{T}.Hash"/> that contains
         /// an action mutating the <paramref name="address"/>' state.
@@ -24,9 +25,9 @@ namespace Libplanet.Store
         /// address.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="lookupUntil"/>.</typeparam>
-        /// <seealso
-        /// cref="IStore.StoreStateReference{T}(string, IImmutableSet{Address}, Block{T})"/>
+        /// <seealso cref="IStore.StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
         /// <seealso cref="IStore.IterateStateReferences(string, Address)"/>
+        #pragma warning restore MEN002
         public static Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             this IStore store,
             string @namespace,

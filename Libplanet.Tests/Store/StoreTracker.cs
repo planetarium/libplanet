@@ -176,15 +176,15 @@ namespace Libplanet.Tests.Store
             return _store.IterateStateReferences(@namespace, address);
         }
 
-        public void StoreStateReference<T>(
+        public void StoreStateReference(
             string @namespace,
             IImmutableSet<Address> addresses,
-            Block<T> block)
-            where T : IAction, new()
+            HashDigest<SHA256> blockHash,
+            long blockIndex)
         {
             // FIXME: Log arguments properly (including @namespace).
-            _logs.Add((nameof(StoreStateReference), block.Hash, null));
-            _store.StoreStateReference(@namespace, addresses, block);
+            _logs.Add((nameof(StoreStateReference), blockHash, null));
+            _store.StoreStateReference(@namespace, addresses, blockHash, blockIndex);
         }
 
         public void ForkStateReferences<T>(
@@ -198,6 +198,15 @@ namespace Libplanet.Tests.Store
             _logs.Add((nameof(ForkStateReferences), null, null));
             _store.ForkStateReferences(
                 sourceNamespace, destinationNamespace, branchPoint, addressesToStrip);
+        }
+
+        public void ForkBlockIndexes(
+            string sourceNamespace,
+            string destinationNamespace,
+            HashDigest<SHA256> branchPoint)
+        {
+            _logs.Add((nameof(ForkBlockIndexes), null, null));
+            _store.ForkBlockIndexes(sourceNamespace, destinationNamespace, branchPoint);
         }
 
         public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)

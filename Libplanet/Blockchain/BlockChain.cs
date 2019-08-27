@@ -815,15 +815,8 @@ namespace Libplanet.Blockchain
             try
             {
                 _rwlock.EnterReadLock();
-                foreach (var index in Store.IterateIndex(id))
-                {
-                    Store.AppendIndex(forkedId, index);
-                    if (index.Equals(point))
-                    {
-                        break;
-                    }
-                }
 
+                Store.ForkBlockIndexes(id, forkedId, point);
                 Block<T> pointBlock = Blocks[point];
 
                 var addressesToStrip = new HashSet<Address>();
@@ -1080,7 +1073,12 @@ namespace Libplanet.Blockchain
 
             if (buildStateReferences)
             {
-                Store.StoreStateReference(Id.ToString(), updatedAddresses, block);
+                Store.StoreStateReference(
+                    Id.ToString(),
+                    updatedAddresses,
+                    block.Hash,
+                    block.Index
+                );
             }
         }
     }
