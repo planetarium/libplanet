@@ -493,7 +493,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void CanFork()
+        public void Fork()
         {
             var block1 = _blockChain.MineBlock(_fx.Address1);
             var block2 = _blockChain.MineBlock(_fx.Address1);
@@ -503,6 +503,14 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(new[] { block1, block2, block3 }, _blockChain);
             Assert.Equal(new[] { block1, block2 }, forked);
+        }
+
+        [Fact]
+        public void ForkChainWithIncompleteBlockStates()
+        {
+            (_, _, BlockChain<DumbAction> chain) = MakeIncompleteBlockStates();
+            BlockChain<DumbAction> forked = chain.Fork(chain[5].Hash);
+            Assert.Equal(chain.Take(6), forked);
         }
 
         [Fact]

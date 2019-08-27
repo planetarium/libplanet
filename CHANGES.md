@@ -14,6 +14,14 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug that `ArgumentNullException` had been thrown when a blockchain,
+    which consists of incomplete states (i.e., precalculated states downloaded
+    from trusted peers), encounters a new branch so that reorg is made.
+    [[#454], [#466]]
+
+[#454]: https://github.com/planetarium/libplanet/issues/454
+[#466]: https://github.com/planetarium/libplanet/pull/466
+
 
 Version 0.5.0
 -------------
