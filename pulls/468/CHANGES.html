@@ -76,29 +76,19 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="libplanet-changelog">Libplanet changelog</h1>
 
-<h2 id="version-060">Version 0.6.0</h2>
+<h2 id="version-051">Version 0.5.1</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
-<ul>
-<li><code>IStore.StoreStateReference&lt;T&gt;(string, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</code>
-method became replaced by
-<code>StoreStateReference(string, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code>
-method so that it takes hash and index of a block instead of an entire
-block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
-<li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
-<li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences()</code>
-method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/467">#467</a>]</li>
-</ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
-<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN releated resources on
-<code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
 <li>Fixed a bug that <code>ArgumentNullException</code> had been thrown when a blockchain,
 which consists of incomplete states (i.e., precalculated states downloaded
 from trusted peers), encounters a new branch so that reorg is made.
-[<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/467">#467</a>]</li>
+[<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/466">#466</a>]</li>
+<li>Fixed a bug that unnecessarily received all blocks in multiple miner
+situations.  [<a href="https://github.com/planetarium/libplanet/issues/457">#457</a>, <a href="https://github.com/planetarium/libplanet/pull/468">#468</a>]</li>
 </ul>
 <h2 id="version-050">Version 0.5.0</h2>
 <p>Released on August 22, 2019.</p>
