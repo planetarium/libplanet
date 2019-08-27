@@ -826,7 +826,6 @@ namespace Libplanet.Blockchain
 
                 Block<T> pointBlock = Blocks[point];
 
-                var addressesToStrip = new HashSet<Address>();
                 var signersToStrip = new Dictionary<Address, int>();
 
                 for (
@@ -835,13 +834,6 @@ namespace Libplanet.Blockchain
                     && !block.Hash.Equals(point);
                     block = Blocks[hash])
                 {
-                    ImmutableHashSet<Address> addresses =
-                        Store.GetBlockStates(block.Hash)
-                        .Select(kv => kv.Key)
-                        .ToImmutableHashSet();
-
-                    addressesToStrip.UnionWith(addresses);
-
                     IEnumerable<(Address, int)> signers = block
                         .Transactions
                         .GroupBy(tx => tx.Signer)
@@ -855,11 +847,14 @@ namespace Libplanet.Blockchain
                     }
                 }
 
+                // FIXME: ForkStateReferences<T>() method's addressesToStrip parameter is no more
+                // used, because it was made for FileStore which was gone since 0.5.0.
                 Store.ForkStateReferences(
                     id,
                     forked.Id.ToString(),
                     pointBlock,
-                    addressesToStrip.ToImmutableHashSet());
+                    addressesToStrip: null
+                );
 
                 foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(id))
                 {
