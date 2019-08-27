@@ -470,15 +470,13 @@ namespace Libplanet.Tests.Store
             Fx.Store.PutTransaction(Fx.Transaction2);
             Assert.Empty(Fx.Store.IterateStagedTransactionIds());
 
-            var txIds = new HashSet<TxId>()
+            var txIds = new HashSet<TxId>
             {
                 Fx.Transaction1.Id,
                 Fx.Transaction2.Id,
-            };
+            }.ToImmutableHashSet();
 
-            Dictionary<TxId, bool> toStage = txIds.ToDictionary(txId => txId, _ => true);
-
-            Fx.Store.StageTransactionIds(toStage);
+            Fx.Store.StageTransactionIds(txIds);
             Assert.Equal(
                 new HashSet<TxId>()
                 {
@@ -506,42 +504,18 @@ namespace Libplanet.Tests.Store
             Fx.Store.PutTransaction(Fx.Transaction1);
             Fx.Store.PutTransaction(Fx.Transaction2);
 
-            var txIds = new HashSet<TxId>()
+            var txIds = new HashSet<TxId>
             {
                 Fx.Transaction1.Id,
                 Fx.Transaction2.Id,
-            };
+            }.ToImmutableHashSet();
 
-            Dictionary<TxId, bool> toStage = txIds.ToDictionary(txId => txId, _ => true);
-
-            Fx.Store.StageTransactionIds(toStage);
-            Fx.Store.StageTransactionIds(
-                new Dictionary<TxId, bool> { { Fx.Transaction1.Id, true } });
+            Fx.Store.StageTransactionIds(txIds);
+            Fx.Store.StageTransactionIds(ImmutableHashSet<TxId>.Empty.Add(Fx.Transaction1.Id));
 
             Assert.Equal(
                 new[] { Fx.Transaction1.Id, Fx.Transaction2.Id }.OrderBy(txId => txId.ToHex()),
-                Fx.Store.IterateStagedTransactionIds(false).OrderBy(txId => txId.ToHex()));
-        }
-
-        [Fact]
-        public void IterateStagedTransactionIdsToBroadcast()
-        {
-            var toStage = new Dictionary<TxId, bool>
-            {
-                { Fx.Transaction1.Id, false },
-                { Fx.Transaction2.Id, true },
-            };
-            Fx.Store.StageTransactionIds(toStage);
-
-            Assert.Equal(
-                new HashSet<TxId> { Fx.Transaction2.Id, },
-                Fx.Store.IterateStagedTransactionIds(true).ToHashSet());
-
-            Fx.Store.UnstageTransactionIds(new HashSet<TxId> { Fx.Transaction2.Id });
-
-            Assert.Equal(
-                new HashSet<TxId>(),
-                Fx.Store.IterateStagedTransactionIds(true).ToHashSet());
+                Fx.Store.IterateStagedTransactionIds().OrderBy(txId => txId.ToHex()));
         }
 
         [Fact]

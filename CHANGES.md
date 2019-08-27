@@ -16,6 +16,18 @@ To be released.
  -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
  -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences()`
     method.  [[#454], [#467]]
+ -  Removed the concept of "staged transactions that should not be broadcasted,"
+    because its primary usage had been to make a transaction of a reward action
+    for a candidate for block miner, and the case became achieved through
+    `IBlockPolicy<T>.BlockAction` property which was introduced at 0.5.0.
+    All staged transactions became broadcasted.  [[#319], [#470]]
+     -  `BlockChain<T>.StageTransactions(IDictionary<Transaction<T>, bool>)`
+        method became replaced by
+        `StageTransactions(IImmutableSet<Transaction<T>>)`.
+     -  Removed `toBroadcast` parameter from
+        `IStore.IterateStagedTransactionIds(bool)` method.
+     -  `IStore.StageTransactionIds(IDictionary<TxId, bool>)` method became
+        replaced by `StageTransactionIds(IImmutableSet<TxId>()`.
 
 ### Added interfaces
 
@@ -34,6 +46,7 @@ To be released.
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#454]: https://github.com/planetarium/libplanet/issues/454
 [#467]: https://github.com/planetarium/libplanet/pull/467
+[#470]: https://github.com/planetarium/libplanet/pull/470
 
 
 Version 0.5.0
