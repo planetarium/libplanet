@@ -80,12 +80,11 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li><code>IStore.StoreStateReference&lt;T&gt;()</code> became to take the hash and index of the
-block instead of the block itself.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]
-<ul>
-<li>Therefore, it also became to lose type parameter <code>T</code>.</li>
-</ul>
-</li>
+<li><code>IStore.StoreStateReference&lt;T&gt;(string, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</code>
+method became replaced by
+<code>StoreStateReference(string, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code>
+method so that it takes hash and index of a block instead of an entire
+block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 <li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
