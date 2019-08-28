@@ -98,19 +98,16 @@ namespace Libplanet.Store
         /// a next <see cref="Block{T}"/> to be mined contains the corresponding
         /// <see cref="Transaction{T}"/>s.
         /// </summary>
-        /// <param name="txids"><see cref="TxId"/>s to add to pending list. Keys are
-        /// <see cref="TxId"/>s and values are whether to broadcast.</param>
-        void StageTransactionIds(IDictionary<TxId, bool> txids);
+        /// <param name="txids"><see cref="TxId"/>s to add to pending list.</param>
+        void StageTransactionIds(IImmutableSet<TxId> txids);
 
         void UnstageTransactionIds(ISet<TxId> txids);
 
         /// <summary>
         /// Iterates staged <see cref="TxId"/>s.
         /// </summary>
-        /// <param name="toBroadcast">Whether to iterate only the <see cref="TxId "/>s set to
-        /// broadcast.</param>
         /// <returns>Staged <see cref="TxId"/>s.</returns>
-        IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast = false);
+        IEnumerable<TxId> IterateStagedTransactionIds();
 
         IEnumerable<TxId> IterateTransactionIds();
 

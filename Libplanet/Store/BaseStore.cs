@@ -48,16 +48,14 @@ namespace Libplanet.Store
         public abstract IEnumerable<Address> ListAddresses(string @namespace);
 
         /// <inheritdoc />
-        public abstract void StageTransactionIds(
-            IDictionary<TxId, bool> txids
-        );
+        public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
 
         public abstract void UnstageTransactionIds(
             ISet<TxId> txids
         );
 
         /// <inheritdoc />
-        public abstract IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast);
+        public abstract IEnumerable<TxId> IterateStagedTransactionIds();
 
         public abstract IEnumerable<TxId> IterateTransactionIds();
 

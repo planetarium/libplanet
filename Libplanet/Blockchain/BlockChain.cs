@@ -392,22 +392,20 @@ namespace Libplanet.Blockchain
         /// a next <see cref="Block{T}"/> to be mined contains these
         /// <paramref name="transactions"/>.
         /// </summary>
-        /// <param name="transactions"> <see cref="Transaction{T}"/>s to add to the pending list.
-        /// Keys are <see cref="Transactions"/>s and values are whether to broadcast.</param>
-        public void StageTransactions(IDictionary<Transaction<T>, bool> transactions)
+        /// <param name="transactions"><see cref="Transaction{T}"/>s to add to the pending list.
+        /// </param>
+        public void StageTransactions(IImmutableSet<Transaction<T>> transactions)
         {
             _rwlock.EnterWriteLock();
 
             try
             {
-                foreach (KeyValuePair<Transaction<T>, bool> kv in transactions)
+                foreach (Transaction<T> tx in transactions)
                 {
-                    var tx = kv.Key;
                     Transactions[tx.Id] = tx;
                 }
 
-                Store.StageTransactionIds(
-                    transactions.ToDictionary(kv => kv.Key.Id, kv => kv.Value));
+                Store.StageTransactionIds(transactions.Select(tx => tx.Id).ToImmutableHashSet());
             }
             finally
             {
@@ -531,7 +529,7 @@ namespace Libplanet.Blockchain
                     actions,
                     updatedAddresses,
                     timestamp);
-                StageTransactions(new Dictionary<Transaction<T>, bool> { { tx, broadcast } });
+                StageTransactions(ImmutableHashSet<Transaction<T>>.Empty.Add(tx));
 
                 return tx;
             }
@@ -1012,13 +1010,13 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<TxId> GetStagedTransactionIds(bool toBroadcast)
+        internal IImmutableSet<TxId> GetStagedTransactionIds()
         {
             _rwlock.EnterReadLock();
 
             try
             {
-                return Store.IterateStagedTransactionIds(toBroadcast);
+                return Store.IterateStagedTransactionIds().ToImmutableHashSet();
             }
             finally
             {

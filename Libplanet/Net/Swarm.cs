@@ -1186,7 +1186,7 @@ namespace Libplanet.Net
                         () =>
                         {
                             List<TxId> txIds = _blockChain
-                                .GetStagedTransactionIds(true)
+                                .GetStagedTransactionIds()
                                 .ToList();
 
                             if (txIds.Any())
@@ -1618,9 +1618,8 @@ namespace Libplanet.Net
             IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync(
                 peer, newTxIds, cancellationToken);
             List<Transaction<T>> txs = await fetched.ToListAsync(cancellationToken);
-            var toStage = txs.ToDictionary(tx => tx, _ => true);
 
-            _blockChain.StageTransactions(toStage);
+            _blockChain.StageTransactions(txs.ToImmutableHashSet());
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
         }

@@ -574,8 +574,7 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new DumbAction[0]
             );
-            chainB.StageTransactions(
-                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
+            chainB.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
             chainB.MineBlock(_fx1.Address1);
 
             try
@@ -621,8 +620,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            chainA.StageTransactions(
-                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
+            chainA.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
             chainA.MineBlock(_fx1.Address1);
 
             try
@@ -656,42 +654,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task TxStagedNotToBroadcast()
-        {
-            Swarm<DumbAction> swarmA = _swarms[0];
-            Swarm<DumbAction> swarmB = _swarms[1];
-
-            BlockChain<DumbAction> chainA = _blockchains[0];
-            BlockChain<DumbAction> chainB = _blockchains[1];
-
-            Transaction<DumbAction> txA = chainA.MakeTransaction(
-                new PrivateKey(),
-                new DumbAction[] { },
-                broadcast: true);
-            Transaction<DumbAction> txB = chainA.MakeTransaction(
-                new PrivateKey(),
-                new DumbAction[] { },
-                broadcast: false);
-
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer });
-                await swarmB.TxReceived.WaitAsync();
-                Assert.Equal(txA, chainB.Transactions[txA.Id]);
-                Assert.False(chainB.Transactions.ContainsKey(txB.Id));
-            }
-            finally
-            {
-                await Task.WhenAll(
-                    swarmA.StopAsync(),
-                    swarmB.StopAsync());
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task BroadcastTxAsync()
         {
             Swarm<DumbAction> swarmA = _swarms[0];
@@ -708,8 +670,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            chainA.StageTransactions(
-                new Dictionary<Transaction<DumbAction>, bool> { { tx, true } });
+            chainA.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
 
             try
             {

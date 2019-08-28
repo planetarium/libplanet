@@ -215,14 +215,11 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void StageTransactionIds(IDictionary<TxId, bool> txids)
+        public override void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             StagedTxIds.InsertBulk(
-                txids.Select(kv => new StagedTxIdDoc
-                {
-                    TxId = kv.Key,
-                    Broadcast = kv.Value,
-                }));
+                txids.Select(txid => new StagedTxIdDoc { TxId = txid, })
+            );
         }
 
         /// <inheritdoc/>
@@ -232,14 +229,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
+        public override IEnumerable<TxId> IterateStagedTransactionIds()
         {
             IEnumerable<StagedTxIdDoc> docs = StagedTxIds.FindAll();
-            if (toBroadcast)
-            {
-                docs = docs.Where(d => d.Broadcast);
-            }
-
             return docs.Select(d => d.TxId).Distinct();
         }
 
@@ -673,8 +665,6 @@ namespace Libplanet.Store
             public long Id { get; set; }
 
             public TxId TxId { get; set; }
-
-            public bool Broadcast { get; set; }
         }
     }
 }

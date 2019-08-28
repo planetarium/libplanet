@@ -127,9 +127,9 @@ namespace Libplanet.Tests.Store
              return _store.IterateIndex(@namespace, offset, limit);
         }
 
-        public IEnumerable<TxId> IterateStagedTransactionIds(bool toBroadcast)
+        public IEnumerable<TxId> IterateStagedTransactionIds()
         {
-            _logs.Add((nameof(IterateStagedTransactionIds), toBroadcast, null));
+            _logs.Add((nameof(IterateStagedTransactionIds), null, null));
             return _store.IterateStagedTransactionIds();
         }
 
@@ -226,7 +226,7 @@ namespace Libplanet.Tests.Store
             _store.IncreaseTxNonce(@namespace, address, delta);
         }
 
-        public void StageTransactionIds(IDictionary<TxId, bool> txids)
+        public void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             _logs.Add((nameof(StageTransactionIds), txids, null));
             _store.StageTransactionIds(txids);
