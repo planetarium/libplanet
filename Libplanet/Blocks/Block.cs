@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -42,6 +43,10 @@ namespace Libplanet.Blocks
             Timestamp = timestamp;
             Transactions = transactions.ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
+            OrderedTransactions =
+                Transactions
+                    .OrderBy(tx =>
+                        new BigInteger(tx.Id.ToByteArray()) ^ new BigInteger(Hash.ToByteArray()));
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -93,6 +98,9 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        [IgnoreDuringEquals]
+        public IEnumerable<Transaction<T>> OrderedTransactions { get; }
+
         public static Block<T> Mine(
             long index,
             long difficulty,
@@ -101,8 +109,6 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
-            // FIXME: We need to fix this to solve
-            // https://github.com/planetarium/libplanet/issues/244.
             ImmutableArray<Transaction<T>> orderedTxs =
                 transactions.OrderBy(tx => tx.Id).ToImmutableArray();
 
@@ -210,7 +216,7 @@ namespace Libplanet.Blocks
                 new AccountStateDeltaImpl(
                     accountStateGetter ?? (a => null)
                 );
-            foreach (Transaction<T> tx in Transactions)
+            foreach (Transaction<T> tx in OrderedTransactions)
             {
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
@@ -394,22 +400,6 @@ namespace Libplanet.Blocks
                 );
             }
 
-            if (Transactions.Any())
-            {
-                TxId beforeTxId = Transactions.First().Id;
-                foreach (Transaction<T> tx in Transactions.Skip(1))
-                {
-                    if (beforeTxId.CompareTo(tx.Id) > 0)
-                    {
-                        throw new InvalidBlockTransactionsException(
-                            $"transactions of {Hash} aren't sorted by Transaction<T>.Id"
-                        );
-                    }
-
-                    beforeTxId = tx.Id;
-                }
-            }
-
             foreach (Transaction<T> tx in Transactions)
             {
                 tx.Validate();
@@ -422,7 +412,7 @@ namespace Libplanet.Blocks
         )
         {
             IEnumerable transactions =
-                Transactions.Select(
+                Transactions.OrderBy(tx => tx.Id).Select(
                     tx => includeTransactionData ?
                     tx.ToRawTransaction(true) as object :
                     tx.Id.ToByteArray() as object
