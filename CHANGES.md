@@ -37,16 +37,30 @@ To be released.
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
- -  Fixed a bug that `ArgumentNullException` had been thrown when a blockchain,
-    which consists of incomplete states (i.e., precalculated states downloaded
-    from trusted peers), encounters a new branch so that reorg is made.
-    [[#454], [#467]]
 
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
-[#454]: https://github.com/planetarium/libplanet/issues/454
-[#467]: https://github.com/planetarium/libplanet/pull/467
 [#470]: https://github.com/planetarium/libplanet/pull/470
+
+
+Version 0.5.1
+-------------
+
+Released on August 28, 2019.
+
+### Bug fixes
+
+ -  Fixed a bug that `ArgumentNullException` had been thrown when a blockchain,
+    which consists of incomplete states (i.e., precalculated states downloaded
+    from trusted peers), encounters a new branch so that reorg is made.
+    [[#454], [#466]]
+ -  Fixed a bug that unnecessarily received all blocks in multiple miner
+    situations.  [[#457], [#468]]
+
+[#454]: https://github.com/planetarium/libplanet/issues/454
+[#457]: https://github.com/planetarium/libplanet/issues/457
+[#466]: https://github.com/planetarium/libplanet/pull/466
+[#468]: https://github.com/planetarium/libplanet/pull/468
 
 
 Version 0.5.0

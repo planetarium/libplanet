@@ -733,7 +733,9 @@ namespace Libplanet.Blockchain
 
                 foreach (HashDigest<SHA256> hash in locator)
                 {
-                    if (Blocks.ContainsKey(hash))
+                    if (Blocks.ContainsKey(hash)
+                        && Blocks[hash] is Block<T> block
+                        && hash.Equals(Store.IndexBlockHash(Id.ToString(), block.Index)))
                     {
                         return hash;
                     }

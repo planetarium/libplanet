@@ -488,6 +488,22 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void FindNextHashesAfterFork()
+        {
+            _blockChain.MineBlock(_fx.Address1);
+            _blockChain.MineBlock(_fx.Address1);
+            _blockChain.MineBlock(_fx.Address1);
+
+            BlockChain<DumbAction> forked = _blockChain.Fork(_blockChain[0].Hash);
+            forked.MineBlock(_fx.Address1);
+
+            BlockLocator locator = _blockChain.GetBlockLocator();
+            IEnumerable<HashDigest<SHA256>> hashes = forked.FindNextHashes(locator);
+
+            Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
+        }
+
+        [Fact]
         public void Fork()
         {
             var block1 = _blockChain.MineBlock(_fx.Address1);
