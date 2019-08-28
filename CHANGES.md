@@ -8,6 +8,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug that `Swarm<T>.PreloadAsync()` method had thrown `LiteException`
+    (or other exception depending on `IStore`), which indicates a state
+    reference is duplicate, where `trustedStateValidators` is present and
+    a miner tries to download precalculated states from a trusted peer.
+    [[#465], [#474]]
+
+[#465]: https://github.com/planetarium/libplanet/issues/465
+[#474]: https://github.com/planetarium/libplanet/pull/474
+
 
 Version 0.5.1
 -------------
