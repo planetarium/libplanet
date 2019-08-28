@@ -869,27 +869,23 @@ namespace Libplanet.Net
         {
             var request = new GetBlockHashes(locator, stop);
 
-            using (var socket = new DealerSocket(ToNetMQAddress(peer)))
+            Message parsedMessage = await SendMessageWithReplyAsync(
+                peer,
+                request,
+                timeout: BlockHashRecvTimeout,
+                cancellationToken: token
+            );
+
+            ValidateSender(parsedMessage.Remote);
+
+            if (parsedMessage is BlockHashes blockHashes)
             {
-                await socket.SendMultipartMessageAsync(
-                    request.ToNetMQMessage(_privateKey, AsPeer),
-                    cancellationToken: token);
-
-                NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
-                    timeout: BlockHashRecvTimeout,
-                    cancellationToken: token
-                );
-                Message parsedMessage = Message.Parse(response, reply: true);
-                ValidateSender(parsedMessage.Remote);
-                if (parsedMessage is BlockHashes blockHashes)
-                {
-                    return blockHashes.Hashes;
-                }
-
-                throw new InvalidMessageException(
-                    $"The response of GetBlockHashes isn't BlockHashes. " +
-                    $"but {parsedMessage}");
+                return blockHashes.Hashes;
             }
+
+            throw new InvalidMessageException(
+                $"The response of GetBlockHashes isn't BlockHashes. " +
+                $"but {parsedMessage}");
         }
 
         internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
@@ -1117,74 +1113,68 @@ namespace Libplanet.Net
                 cancellationToken.ThrowIfCancellationRequested();
                 var request = new GetRecentStates(baseLocator, blockHash);
                 _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
-                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
+
+                _logger.Debug("Requests recent states to a peer ({0}).", peer);
+
+                Message reply;
+                _logger.Debug("Requested recent states to a peer ({0}).", peer);
+                try
                 {
-                    _logger.Debug("Requests recent states to a peer ({0}).", peer);
-                    await socket.SendMultipartMessageAsync(
-                        request.ToNetMQMessage(_privateKey, AsPeer),
+                    reply = await SendMessageWithReplyAsync(
+                        peer,
+                        request,
+                        timeout: TimeSpan.FromSeconds(30),
                         cancellationToken: cancellationToken
                     );
-                    _logger.Debug("Requested recent states to a peer ({0}).", peer);
-                    NetMQMessage reply;
+                    _logger.Debug("Received recent states from a peer ({0}).", peer);
+                }
+                catch (TimeoutException e)
+                {
+                    _logger.Error(
+                        "Failed to receive recent states from a peer ({0}): " + e,
+                        peer
+                    );
+                    continue;
+                }
+
+                ValidateSender(reply.Remote);
+
+                if (reply is RecentStates recentStates && !recentStates.Missing)
+                {
+                    ReaderWriterLockSlim rwlock = blockChain._rwlock;
+                    rwlock.EnterWriteLock();
                     try
                     {
-                        reply = await socket.ReceiveMultipartMessageAsync(
-                            timeout: TimeSpan.FromSeconds(30),
-                            cancellationToken: cancellationToken
-                        );
-                        _logger.Debug("Received recent states from a peer ({0}).", peer);
-                    }
-                    catch (TimeoutException e)
-                    {
-                        _logger.Error(
-                            "Failed to receive recent states from a peer ({0}): " + e,
-                            peer
-                        );
-                        continue;
-                    }
+                        IStore store = blockChain.Store;
+                        Guid chainId = blockChain.Id;
 
-                    Message parsedMessage = Message.Parse(reply, reply: true);
-                    ValidateSender(parsedMessage.Remote);
-                    if (parsedMessage is RecentStates recentStates && !recentStates.Missing)
-                    {
-                        ReaderWriterLockSlim rwlock = blockChain._rwlock;
-                        rwlock.EnterWriteLock();
-                        try
+                        int count = 0, totalCount = recentStates.StateReferences.Count;
+                        _logger.Debug("Starts to store state refs received from {0}.", peer);
+
+                        var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
+                        foreach (var pair in recentStates.StateReferences)
                         {
-                            // FIXME: Swarm should not directly access to the IStore instance,
-                            // but BlockChain<T> should have an indirect interface to its underlying
-                            // store.
-                            IStore store = blockChain.Store;
-                            Guid chainId = blockChain.Id;
-
-                            int count = 0, totalCount = recentStates.StateReferences.Count;
-                            _logger.Debug("Starts to store state refs received from {0}.", peer);
-
-                            var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
-                            foreach (var pair in recentStates.StateReferences)
+                            cancellationToken.ThrowIfCancellationRequested();
+                            IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
+                            foreach (HashDigest<SHA256> bHash in pair.Value)
                             {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
-                                foreach (HashDigest<SHA256> bHash in pair.Value)
+                                if (!d.ContainsKey(bHash))
                                 {
-                                    if (!d.ContainsKey(bHash))
-                                    {
-                                        d[bHash] = new HashSet<Address>();
-                                    }
-
-                                    d[bHash].UnionWith(address);
+                                    d[bHash] = new HashSet<Address>();
                                 }
+
+                                d[bHash].UnionWith(address);
                             }
+                        }
 
-                            totalCount = d.Count;
-                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
+                        totalCount = d.Count;
+                        foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
+                        {
+                            HashDigest<SHA256> hash = pair.Key;
+                            IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
+                            if (store.GetBlockIndex(hash) is long index)
                             {
-                                HashDigest<SHA256> hash = pair.Key;
-                                IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
-                                if (store.GetBlockIndex(hash) is long index)
-                                {
-                                    store.StoreStateReference(chainId, addresses, hash, index);
-                                }
+                                store.StoreStateReference(chainId, addresses, hash, index);
 
                                 progress?.Report(new StateReferenceDownloadState()
                                 {
@@ -1192,38 +1182,38 @@ namespace Libplanet.Net
                                     ReceivedStateReferenceCount = ++count,
                                 });
                             }
-
-                            count = 0;
-                            totalCount = recentStates.BlockStates.Count;
-                            _logger.Debug("Starts to store block states received from {0}.", peer);
-                            foreach (var pair in recentStates.BlockStates)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
-                                progress?.Report(new BlockStateDownloadState()
-                                {
-                                    TotalBlockStateCount = totalCount,
-                                    ReceivedBlockStateCount = ++count,
-                                    ReceivedBlockHash = pair.Key,
-                                });
-                            }
                         }
-                        finally
+
+                        count = 0;
+                        totalCount = recentStates.BlockStates.Count;
+                        _logger.Debug("Starts to store block states received from {0}.", peer);
+                        foreach (var pair in recentStates.BlockStates)
                         {
-                            rwlock.ExitWriteLock();
+                            cancellationToken.ThrowIfCancellationRequested();
+                            store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                            progress?.Report(new BlockStateDownloadState()
+                            {
+                                TotalBlockStateCount = totalCount,
+                                ReceivedBlockStateCount = ++count,
+                                ReceivedBlockHash = pair.Key,
+                            });
                         }
-
-                        _logger.Debug(
-                            "Finished to store received state refs and block states.");
-                        return true;
+                    }
+                    finally
+                    {
+                        rwlock.ExitWriteLock();
                     }
 
                     _logger.Debug(
-                        "A message received from {0} is not a RecentStates but {1}.",
-                        peer,
-                        parsedMessage
-                    );
+                        "Finished to store received state refs and block states.");
+                    return true;
                 }
+
+                _logger.Debug(
+                    "A message received from {0} is not a RecentStates but {1}.",
+                    peer,
+                    reply
+                );
             }
 
             _logger.Warning("Failed to receive states from trusted peers.");
