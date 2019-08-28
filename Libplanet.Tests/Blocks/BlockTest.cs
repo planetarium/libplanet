@@ -207,7 +207,7 @@ namespace Libplanet.Tests.Blocks
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)
                 ),
             };
-            Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs);
+            Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
             var pairs = blockIdx1
                 .EvaluateActionsPerTx(address => null)
                 .ToImmutableArray();
@@ -269,7 +269,7 @@ namespace Libplanet.Tests.Blocks
                     0,
                     _fx.TxFixture.PrivateKey2,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)
                 ),
                 Transaction<DumbAction>.Create(
                     0,
@@ -283,11 +283,11 @@ namespace Libplanet.Tests.Blocks
                             recordRandom: true
                         ),
                     },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(7)
                 ),
             };
 
-            Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs);
+            Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
             pairs = blockIdx2
                 .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
                 .ToImmutableArray();

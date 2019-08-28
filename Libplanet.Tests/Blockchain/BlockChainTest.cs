@@ -766,7 +766,7 @@ namespace Libplanet.Tests.Blockchain
                         {
                             new DumbAction(addresses[1], "bar"),
                         },
-                        timestamp: DateTimeOffset.MinValue.AddSeconds(2),
+                        timestamp: DateTimeOffset.MinValue.AddSeconds(3),
                         nonce: 3,
                         privateKey: privateKey),
                 },
@@ -1450,8 +1450,7 @@ namespace Libplanet.Tests.Blockchain
             return (signer, addresses, chain);
         }
 
-        private (Address[], Block<DumbAction>[])
-        MakeFixturesForAppendTests()
+        private (Address[], Block<DumbAction>[]) MakeFixturesForAppendTests()
         {
             Address[] addresses =
             {
@@ -1488,7 +1487,7 @@ namespace Libplanet.Tests.Blockchain
                         new DumbAction(addresses[2], "baz"),
                         new DumbAction(addresses[3], "qux"),
                     },
-                    timestamp: DateTimeOffset.MinValue,
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(5),
                     nonce: 1,
                     privateKey: privateKey),
             };
