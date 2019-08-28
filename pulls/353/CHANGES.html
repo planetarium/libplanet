@@ -80,6 +80,29 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
+<li><code>IStore.StoreStateReference&lt;T&gt;(string, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</code>
+method became replaced by
+<code>StoreStateReference(string, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code>
+method so that it takes hash and index of a block instead of an entire
+block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
+<li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
+<li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, [#467]]</li>
+<li>Removed the concept of &quot;staged transactions that should not be broadcasted,&quot;
+because its primary usage had been to make a transaction of a reward action
+for a candidate for block miner, and the case became achieved through
+<code>IBlockPolicy&lt;T&gt;.BlockAction</code> property which was introduced at 0.5.0.
+All staged transactions became broadcasted.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/470">#470</a>]
+<ul>
+<li><code>BlockChain&lt;T&gt;.StageTransactions(IDictionary&lt;Transaction&lt;T&gt;, bool&gt;)</code>
+method became replaced by
+<code>StageTransactions(IImmutableSet&lt;Transaction&lt;T&gt;&gt;)</code>.</li>
+<li>Removed <code>toBroadcast</code> parameter from
+<code>IStore.IterateStagedTransactionIds(bool)</code> method.</li>
+<li><code>IStore.StageTransactionIds(IDictionary&lt;TxId, bool&gt;)</code> method became
+replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
+</ul>
+</li>
 <li>Removed <code>Swarm&lt;T&gt;.AddPeersAsync()</code> method. To connect with seed peers, use
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 </ul>
@@ -101,8 +124,19 @@ the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#35
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
-<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN releated resources on
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
+</ul>
+<h2 id="version-051">Version 0.5.1</h2>
+<p>Released on August 28, 2019.</p>
+<h3 id="bug-fixes-1">Bug fixes</h3>
+<ul>
+<li>Fixed a bug that <code>ArgumentNullException</code> had been thrown when a blockchain,
+which consists of incomplete states (i.e., precalculated states downloaded
+from trusted peers), encounters a new branch so that reorg is made.
+[<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/466">#466</a>]</li>
+<li>Fixed a bug that unnecessarily received all blocks in multiple miner
+situations.  [<a href="https://github.com/planetarium/libplanet/issues/457">#457</a>, <a href="https://github.com/planetarium/libplanet/pull/468">#468</a>]</li>
 </ul>
 <h2 id="version-050">Version 0.5.0</h2>
 <p>Released on August 22, 2019.</p>
@@ -188,7 +222,7 @@ the <code>Transaction&lt;T&gt;</code> more than once.  [<a href="https://github.
 <code>false</code>.  [<a href="https://github.com/planetarium/libplanet/pull/423">#423</a>]</li>
 <li><code>PrivateKey(byte[])</code> constructor became to check validity.  [<a href="https://github.com/planetarium/libplanet/pull/438">#438</a>]</li>
 </ul>
-<h3 id="bug-fixes-1">Bug fixes</h3>
+<h3 id="bug-fixes-2">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the <code>LiteDBStore.IterateStagedTransactionIds()</code> returns
 duplicated transaction ids.  [<a href="https://github.com/planetarium/libplanet/pull/366">#366</a>]</li>
@@ -216,7 +250,7 @@ took a long time.  [<a href="https://github.com/planetarium/libplanet/pull/424">
 </ul>
 <h2 id="version-041">Version 0.4.1</h2>
 <p>Released on July 11, 2019.</p>
-<h3 id="bug-fixes-2">Bug fixes</h3>
+<h3 id="bug-fixes-3">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where the <code>BlockChain&lt;T&gt;.GetStates()</code> method had not returned
 the latest state when there are multiple addresses.  [<a href="https://github.com/planetarium/libplanet/pull/346">#346</a>]</li>
@@ -314,7 +348,7 @@ references in the replaced chain. [<a href="https://github.com/planetarium/libpl
 under the circumstances that the height of
 the <code>BlockChain&lt;T&gt;</code> object is high.  [<a href="https://github.com/planetarium/libplanet/issues/282">#282</a>, <a href="https://github.com/planetarium/libplanet/pull/299">#299</a>]</li>
 </ul>
-<h3 id="bug-fixes-3">Bug fixes</h3>
+<h3 id="bug-fixes-4">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> reported <code>TaskCanceledException</code> as an unknown
 exception while stopping. [<a href="https://github.com/planetarium/libplanet/pull/275">#275</a>]</li>
@@ -448,7 +482,7 @@ current nonce.  [<a href="https://github.com/planetarium/libplanet/pull/246">#24
 <li><code>Swarm</code> became to enforce <code>ForceDotNet.Force()</code> in <a href="https://github.com/somdoron/AsyncIO">AsyncIO</a> while it's running on
 Mono runtime.  [<a href="https://github.com/planetarium/libplanet/pull/247">#247</a>]</li>
 </ul>
-<h3 id="bug-fixes-4">Bug fixes</h3>
+<h3 id="bug-fixes-5">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that TURN relay had been disconnected when being connected for
 longer than 5 minutes.  [<a href="https://github.com/planetarium/libplanet/pull/198">#198</a>]</li>
