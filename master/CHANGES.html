@@ -88,12 +88,27 @@ block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</
 <li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 <li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences()</code>
 method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/467">#467</a>]</li>
+<li>Removed the concept of &quot;staged transactions that should not be broadcasted,&quot;
+because its primary usage had been to make a transaction of a reward action
+for a candidate for block miner, and the case became achieved through
+<code>IBlockPolicy&lt;T&gt;.BlockAction</code> property which was introduced at 0.5.0.
+All staged transactions became broadcasted.  [<a href="https://github.com/planetarium/libplanet/issues/319">#319</a>, <a href="https://github.com/planetarium/libplanet/pull/470">#470</a>]
+<ul>
+<li><code>BlockChain&lt;T&gt;.StageTransactions(IDictionary&lt;Transaction&lt;T&gt;, bool&gt;)</code>
+method became replaced by
+<code>StageTransactions(IImmutableSet&lt;Transaction&lt;T&gt;&gt;)</code>.</li>
+<li>Removed <code>toBroadcast</code> parameter from
+<code>IStore.IterateStagedTransactionIds(bool)</code> method.</li>
+<li><code>IStore.StageTransactionIds(IDictionary&lt;TxId, bool&gt;)</code> method became
+replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
-<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN releated resources on
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
 <li>Fixed a bug that <code>ArgumentNullException</code> had been thrown when a blockchain,
 which consists of incomplete states (i.e., precalculated states downloaded
