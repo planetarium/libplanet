@@ -586,6 +586,7 @@ namespace Libplanet.Net
             }
 
             Block<T> initialTip = _blockChain.Tip;
+            BlockLocator initialLocator = _blockChain.GetBlockLocator();
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -639,7 +640,7 @@ namespace Libplanet.Net
                     workspace,
                     progress,
                     trustedPeersWithTip.ToImmutableList(),
-                    initialTip?.Hash,
+                    initialLocator,
                     cancellationToken
                 );
 
@@ -991,7 +992,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
             IReadOnlyList<(Peer, HashDigest<SHA256>)> trustedPeersWithTip,
-            HashDigest<SHA256>? baseBlockHash,
+            BlockLocator baseLocator,
             CancellationToken cancellationToken)
         {
             _logger.Debug(
@@ -1001,7 +1002,7 @@ namespace Libplanet.Net
             foreach ((Peer peer, var blockHash) in trustedPeersWithTip)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var request = new GetRecentStates(baseBlockHash, blockHash);
+                var request = new GetRecentStates(baseLocator, blockHash);
                 _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
                 using (var socket = new DealerSocket(ToNetMQAddress(peer)))
                 {
@@ -1663,7 +1664,8 @@ namespace Libplanet.Net
 
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
-            HashDigest<SHA256>? @base = getRecentStates.BaseBlockHash;
+            BlockLocator baseLocator = getRecentStates.BaseLocator;
+            HashDigest<SHA256> @base = _blockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>

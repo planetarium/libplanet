@@ -1092,7 +1092,7 @@ namespace Libplanet.Tests.Net
 
             HashDigest<SHA256>? deepBlockHash = null;
 
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 int j = 0;
                 Block<DumbAction> block = null;
@@ -1106,7 +1106,7 @@ namespace Libplanet.Tests.Net
                     j++;
                 }
 
-                if (i < 1)
+                if (i < 2)
                 {
                     deepBlockHash = block?.Hash;
                 }
@@ -1142,7 +1142,7 @@ namespace Libplanet.Tests.Net
                         );
                         Assert.Single(states);
                         Assert.Equal(
-                            $"({chainType}) Item0.{i},Item1.{i}",
+                            $"({chainType}) Item0.{i},Item1.{i},Item2.{i}",
                             $"({chainType}) {states[target]}"
                         );
                     }
@@ -1163,7 +1163,7 @@ namespace Libplanet.Tests.Net
                     {
                         var deepStates = TryToGetDeepStates();
                         Assert.Single(deepStates);
-                        Assert.Equal($"Item0.{i}", deepStates[target]);
+                        Assert.Equal($"Item0.{i},Item1.{i}", deepStates[target]);
                     }
 
                     i++;
@@ -1175,7 +1175,7 @@ namespace Libplanet.Tests.Net
                         new[] { minerSwarm.Address },
                         completeStates: false);
                     Assert.Single(minerState);
-                    Assert.Equal(20, minerState[minerSwarm.Address]);
+                    Assert.Equal(30, minerState[minerSwarm.Address]);
                 }
             }
             finally
@@ -1184,6 +1184,60 @@ namespace Libplanet.Tests.Net
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
                 MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             }
+        }
+
+        [Fact]
+        public async Task PreloadWithBranchesAndTrustedPeers()
+        {
+            // Two miners; one trusts other one.  Test if it downloads the minimum range of blocks
+            // (instead of the entire chain from the genesis to the tip) when there are branches.
+            // See also: https://github.com/planetarium/libplanet/issues/465#issuecomment-525682219
+            Swarm<DumbAction> senderSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> senderChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            Block<DumbAction> g = TestUtils.MineGenesis<DumbAction>(senderSwarm.Address),
+                bp = TestUtils.MineNext(g, difficulty: 1024),
+                b2send = TestUtils.MineNext(bp, difficulty: 1024),
+                b2recv = TestUtils.MineNext(bp, difficulty: 1024),
+                b3 = TestUtils.MineNext(b2send, difficulty: 1024);
+
+            senderChain.Append(g);
+            senderChain.Append(bp);
+            senderChain.Append(b2send);
+            senderChain.Append(b3);
+
+            receiverChain.Append(g);
+            receiverChain.Append(bp);
+            receiverChain.Append(b2recv);
+
+            var receivedBlockStates = new HashSet<HashDigest<SHA256>>();
+
+            try
+            {
+                await StartAsync(senderSwarm);
+                await receiverSwarm.AddPeersAsync(new[] { senderSwarm.AsPeer });
+                await receiverSwarm.PreloadAsync(
+                    progress: new Progress<PreloadState>(state =>
+                    {
+                        if (state is BlockStateDownloadState s)
+                        {
+                            receivedBlockStates.Add(s.ReceivedBlockHash);
+                        }
+                    }),
+                    trustedStateValidators: ImmutableHashSet<Address>.Empty.Add(senderSwarm.Address)
+                );
+            }
+            finally
+            {
+                await senderSwarm.StopAsync();
+            }
+
+            Assert.Equal(senderChain, receiverChain);
+            Assert.DoesNotContain(g.Hash, receivedBlockStates);
+            Assert.DoesNotContain(bp.Hash, receivedBlockStates);
         }
 
         [Theory]
