@@ -87,16 +87,21 @@ namespace Libplanet.Tests.Net
         {
             _output.WriteLine($"Call {nameof(SwarmTest.Dispose)}()...");
 
-            _fx1.Dispose();
-            _fx2.Dispose();
-            _fx3.Dispose();
-
-            foreach (Swarm<DumbAction> s in _swarms)
+            try
             {
-                s.StopAsync().Wait(DisposeTimeout);
-            }
+                foreach (Swarm<DumbAction> s in _swarms)
+                {
+                    s.StopAsync().Wait(DisposeTimeout);
+                }
 
-            NetMQConfig.Cleanup(false);
+                NetMQConfig.Cleanup(false);
+            }
+            finally
+            {
+                _fx1.Dispose();
+                _fx2.Dispose();
+                _fx3.Dispose();
+            }
         }
 
         [Fact]
