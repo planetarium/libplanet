@@ -127,6 +127,7 @@ jobs:
       testDisplayName: StandaloneOSX *.Tests.dll
       testCommand: |-
         /tmp/StandaloneOSX.app/Contents/MacOS/StandaloneOSX
+      testArguments: ""
   timeoutInMinutes: 30
 
 - job: Linux_NETCore
