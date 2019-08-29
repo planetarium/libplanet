@@ -29,7 +29,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T>
+    public class Swarm<T> : IDisposable
         where T : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
@@ -63,6 +63,8 @@ namespace Libplanet.Net
         private RouterSocket _router;
         private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<Message> _broadcastQueue;
+        private NetMQQueue<MessageRequest> _requestQueue;
+        private ConcurrentDictionary<Guid, TaskCompletionSource<IEnumerable<Message>>> _responses;
         private NetMQPoller _poller;
 
         private TaskCompletionSource<object> _runningEvent;
@@ -72,6 +74,8 @@ namespace Libplanet.Net
         private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
         private IProtocol _protocol;
+
+        private Task _runtimeProcessor;
 
         static Swarm()
         {
@@ -168,6 +172,13 @@ namespace Libplanet.Net
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
                 _logger);
+
+            _requestQueue = new NetMQQueue<MessageRequest>();
+            _requestQueue.ReceiveReady += DoRequest;
+            _responses =
+                new ConcurrentDictionary<Guid, TaskCompletionSource<IEnumerable<Message>>>();
+            _poller = new NetMQPoller { _requestQueue };
+            _runtimeProcessor = Task.Run(() => _poller.Run());
         }
 
         ~Swarm()
@@ -253,6 +264,14 @@ namespace Libplanet.Net
         /// property becomes <c>true</c>.</returns>
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
+        public void Dispose()
+        {
+            if (_poller.IsRunning)
+            {
+                _poller.Dispose();
+            }
+        }
+
         public async Task StopAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -268,14 +287,9 @@ namespace Libplanet.Net
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
 
-                    if (_poller.IsRunning)
-                    {
-                        _poller.Dispose();
-                    }
-
-                    _broadcastQueue.Dispose();
-                    _replyQueue.Dispose();
-                    _router.Dispose();
+                    _poller.RemoveAndDispose(_broadcastQueue);
+                    _poller.RemoveAndDispose(_replyQueue);
+                    _poller.RemoveAndDispose(_router);
 
                     foreach ((DateTimeOffset, DealerSocket) pair in _dealers.Values)
                     {
@@ -387,7 +401,10 @@ namespace Libplanet.Net
 
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
-            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
+
+            _poller.Add(_router);
+            _poller.Add(_replyQueue);
+            _poller.Add(_broadcastQueue);
 
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
@@ -404,7 +421,6 @@ namespace Libplanet.Net
             try
             {
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
-                tasks.Add(Task.Run(() => _poller.Run(), _cancellationToken));
                 tasks.Add(
                     _protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
                 tasks.Add(
@@ -809,27 +825,16 @@ namespace Libplanet.Net
 
             try
             {
-                using (var dealer = new DealerSocket(ToNetMQAddress(peer)))
-                {
-                    _logger.Debug($"Trying to send [{message}] to [{peer.Address.ToHex()}]...");
+                Guid reqId = Guid.NewGuid();
+                _responses[reqId] = new TaskCompletionSource<Message>();
+                _requestQueue.Enqueue((reqId, message, peer, timeout));
+                Message reply = await _responses[reqId].Task;
 
-                    await dealer.SendMultipartMessageAsync(
-                        message.ToNetMQMessage(_privateKey, AsPeer),
-                        timeout: timeout,
-                        cancellationToken: cancellationToken);
+                ValidateSender(reply.Remote);
 
-                    _logger.Debug($"Message sent, waiting for reply...");
+                _logger.Debug($"Received [{reply}] from [{peer.Address.ToHex()}]...");
 
-                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                        timeout: timeout,
-                        cancellationToken: cancellationToken);
-
-                    Message reply = Message.Parse(raw, true);
-                    ValidateSender(reply.Remote);
-                    _logger.Debug($"Received [{reply}] from [{peer.Address.ToHex()}]...");
-
-                    return reply;
-                }
+                return reply;
             }
             catch (DifferentAppProtocolVersionException e)
             {
@@ -2097,6 +2102,49 @@ namespace Libplanet.Net
             }
         }
 
+        private async void DoRequest(object sender, NetMQQueueEventArgs<MessageRequest> e)
+        {
+            try
+            {
+                MessageRequest req = e.Queue.Dequeue();
+                using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
+                {
+                    _logger.Debug(
+                        $"Trying to send [{req.Message}] to [{req.Peer.Address.ToHex()}]..."
+                    );
+
+                    dealer.SendMultipartMessage(req.Message.ToNetMQMessage(_privateKey, AsPeer));
+                    var result = new List<Message>();
+                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                    {
+                        try
+                        {
+                            NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
+                                timeout: req.Timeout,
+                                cancellationToken: _cancellationToken
+                            );
+                            Message parsed = Message.Parse(raw, true);
+                            result.Add(parsed);
+                        }
+                        catch (TimeoutException te)
+                        {
+                            _responses[req.Id].SetException(te);
+                            break;
+                        }
+                    }
+
+                    if (!_responses[req.Id].Task.IsCompleted || req.ExpectedResponses == 0)
+                    {
+                        _responses[req.Id].SetResult(result);
+                    }
+                }
+            }
+            catch (TerminatingException)
+            {
+                // no-op after terminated.
+            }
+        }
+
         private void CheckStarted()
         {
             if (!Running)
@@ -2163,6 +2211,19 @@ namespace Libplanet.Net
                     _appProtocolVersion,
                     peer.AppProtocolVersion);
             }
+        }
+
+        private struct MessageRequest
+        {
+            public Guid Id { get; set; }
+
+            public Message Message { get; set; }
+
+            public BoundPeer Peer { get; set; }
+
+            public TimeSpan? Timeout { get; set; }
+
+            public int ExpectedResponses { get; set; }
         }
     }
 }
