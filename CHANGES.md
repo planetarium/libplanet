@@ -13,9 +13,14 @@ To be released.
     reference is duplicate, where `trustedStateValidators` is present and
     a miner tries to download precalculated states from a trusted peer.
     [[#465], [#474]]
+ -  Fixed a bug tag `Swarm<T>.StartAsync()` sometimes had thrown an exception
+    from `IStore` (e.g., `NullReferenceException`) during broadcasting
+    transactions.  [[#352], [#476]]
 
+[#352]: https://github.com/planetarium/libplanet/issues/352
 [#465]: https://github.com/planetarium/libplanet/issues/465
 [#474]: https://github.com/planetarium/libplanet/pull/474
+[#476]: https://github.com/planetarium/libplanet/pull/476
 
 
 Version 0.5.1

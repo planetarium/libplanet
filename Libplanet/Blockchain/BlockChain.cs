@@ -1037,7 +1037,7 @@ namespace Libplanet.Blockchain
 
             try
             {
-                return Store.IterateStagedTransactionIds(toBroadcast);
+                return Store.IterateStagedTransactionIds(toBroadcast).ToArray();
             }
             finally
             {
