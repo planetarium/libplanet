@@ -805,14 +805,14 @@ namespace Libplanet.Tests.Net
                     await socket.SendMultipartMessageAsync(
                         request.ToNetMQMessage(privateKey, swarmB.AsPeer));
 
-                    NetMQMessage response = await socket.ReceiveMultipartMessageAsync();
+                    NetMQMessage response = socket.ReceiveMultipartMessage();
                     Message parsedMessage = Message.Parse(response, true);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Equal(2, blockMessage.Payloads.Count);
 
-                    response = await socket.ReceiveMultipartMessageAsync();
+                    response = socket.ReceiveMultipartMessage();
                     parsedMessage = Message.Parse(response, true);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
