@@ -49,6 +49,8 @@ namespace Libplanet.Tests.Net
                 .CreateLogger()
                 .ForContext<SwarmTest>();
 
+            Log.Logger.Debug($"Started to initialize a {nameof(SwarmTest)} instance.");
+
             _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -81,20 +83,37 @@ namespace Libplanet.Tests.Net
                     appProtocolVersion: 1,
                     host: IPAddress.Loopback.ToString()),
             };
+
+            Log.Logger.Debug($"Finished to initialize a {nameof(SwarmTest)} instance.");
         }
 
         public void Dispose()
         {
-            _output.WriteLine($"Call {nameof(SwarmTest.Dispose)}()...");
+            Log.Logger.Debug($"Started to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
 
             try
             {
+                Log.Logger.Debug(
+                    $"Started to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
+                );
+                int i = 1;
                 foreach (Swarm<DumbAction> s in _swarms)
                 {
                     s.StopAsync().Wait(DisposeTimeout);
+                    Log.Logger.Debug(
+                        $"Finished to {nameof(Dispose)}() a {nameof(Swarm<DumbAction>)} " +
+                        "instance #{{0}}.",
+                        i
+                    );
+                    i++;
                 }
 
+                Log.Logger.Debug(
+                    $"Finished to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
+                );
+
                 NetMQConfig.Cleanup(false);
+                Log.Logger.Debug($"Finished to clean up the {nameof(NetMQConfig)} singleton.");
             }
             finally
             {
@@ -102,6 +121,8 @@ namespace Libplanet.Tests.Net
                 _fx2.Dispose();
                 _fx3.Dispose();
             }
+
+            Log.Logger.Debug($"Finished to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
         }
 
         [Fact]
