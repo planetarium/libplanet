@@ -30,6 +30,8 @@ namespace Libplanet.Tests.Net
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
 
+        private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
+
         private readonly ITestOutputHelper _output;
         private readonly StoreFixture _fx1;
         private readonly StoreFixture _fx2;
@@ -48,6 +50,8 @@ namespace Libplanet.Tests.Net
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
                 .ForContext<SwarmTest>();
+
+            Log.Logger.Debug($"Started to initialize a {nameof(SwarmTest)} instance.");
 
             _output = output;
 
@@ -81,22 +85,46 @@ namespace Libplanet.Tests.Net
                     appProtocolVersion: 1,
                     host: IPAddress.Loopback.ToString()),
             };
+
+            Log.Logger.Debug($"Finished to initialize a {nameof(SwarmTest)} instance.");
         }
 
         public void Dispose()
         {
-            _output.WriteLine($"Call {nameof(SwarmTest.Dispose)}()...");
+            Log.Logger.Debug($"Started to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
 
-            _fx1.Dispose();
-            _fx2.Dispose();
-            _fx3.Dispose();
-
-            foreach (Swarm<DumbAction> s in _swarms)
+            try
             {
-                s.StopAsync().Wait(DisposeTimeout);
+                Log.Logger.Debug(
+                    $"Started to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
+                );
+                int i = 1;
+                foreach (Swarm<DumbAction> s in _swarms)
+                {
+                    s.StopAsync().Wait(DisposeTimeout);
+                    Log.Logger.Debug(
+                        $"Finished to {nameof(Dispose)}() a {nameof(Swarm<DumbAction>)} " +
+                        "instance #{{0}}.",
+                        i
+                    );
+                    i++;
+                }
+
+                Log.Logger.Debug(
+                    $"Finished to {nameof(Dispose)}() {nameof(Swarm<DumbAction>)} instances."
+                );
+
+                NetMQConfig.Cleanup(false);
+                Log.Logger.Debug($"Finished to clean up the {nameof(NetMQConfig)} singleton.");
+            }
+            finally
+            {
+                _fx1.Dispose();
+                _fx2.Dispose();
+                _fx3.Dispose();
             }
 
-            NetMQConfig.Cleanup(false);
+            Log.Logger.Debug($"Finished to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
         }
 
         [Fact]
@@ -1209,28 +1237,19 @@ namespace Libplanet.Tests.Net
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
-            _output.WriteLine("Miner:    {0}", minerSwarm.Address);
-            _output.WriteLine("Receiver: {0}", receiverSwarm.Address);
+            Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
+            Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
 
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
             Guid receiverChainId = _blockchains[1].Id;
 
-            var signer = new PrivateKey();
-            Address address = signer.PublicKey.ToAddress();
-            _output.WriteLine("Fixture blocks:");
-            for (int i = 0; i < 20; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    minerChain.MakeTransaction(
-                        signer,
-                        new[] { new DumbAction(address, $"Item{i}.{j}") }
-                    );
-                }
+            (Address address, IEnumerable<Block<DumbAction>> blocks) =
+                MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
-                Block<DumbAction> block = minerChain.MineBlock(minerSwarm.Address);
-                _output.WriteLine("  #{0,2} {1}", block.Index, block.Hash);
+            foreach (Block<DumbAction> block in blocks)
+            {
+                minerChain.Append(block);
             }
 
             Assert.NotNull(minerChain.Tip);
@@ -1248,11 +1267,11 @@ namespace Libplanet.Tests.Net
                     cancellationToken: cts.Token
                 );
                 canceled = false;
-                _output.WriteLine($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() normally finished.");
             }
             catch (OperationCanceledException)
             {
-                _output.WriteLine($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
+                Log.Logger.Debug($"{nameof(receiverSwarm.PreloadAsync)}() aborted.");
             }
 
             cts.Dispose();
@@ -1279,6 +1298,43 @@ namespace Libplanet.Tests.Net
                     receiverChain.GetStates(new[] { address })[address]
                 );
             }
+        }
+
+        private static (Address, Block<DumbAction>[])
+            MakeFixtureBlocksForPreloadAsyncCancellationTest()
+        {
+            Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
+
+            if (blocks is null)
+            {
+                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+                using (var storeFx = new LiteDBStoreFixture())
+                {
+                    var chain = new BlockChain<DumbAction>(policy, storeFx.Store);
+                    Address miner = new PrivateKey().PublicKey.ToAddress();
+                    var signer = new PrivateKey();
+                    Address address = signer.PublicKey.ToAddress();
+                    Log.Logger.Information("Fixture blocks:");
+                    for (int i = 0; i < 20; i++)
+                    {
+                        for (int j = 0; j < 5; j++)
+                        {
+                            chain.MakeTransaction(
+                                signer,
+                                new[] { new DumbAction(address, $"Item{i}.{j}") }
+                            );
+                        }
+
+                        Block<DumbAction> block = chain.MineBlock(miner);
+                        Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
+                    }
+
+                    blocks = chain.ToArray();
+                    _fixtureBlocksForPreloadAsyncCancellationTest = blocks;
+                }
+            }
+
+            return (blocks[0].Transactions.First().Actions.First().TargetAddress, blocks);
         }
 
         private async Task<Task> StartAsync(
