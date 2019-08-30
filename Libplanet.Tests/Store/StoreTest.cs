@@ -374,6 +374,40 @@ namespace Libplanet.Tests.Store
             );
         }
 
+        [Fact]
+        public void StoreStateReferenceAllowsDuplication()
+        {
+            Address address3 = new PrivateKey().PublicKey.ToAddress();
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                new[] { Fx.Address1, Fx.Address2 }.ToImmutableHashSet(),
+                Fx.Block1.Hash,
+                Fx.Block1.Index
+            );
+            Fx.Store.StoreStateReference(
+                Fx.StoreNamespace,
+                new[] { Fx.Address2, address3 }.ToImmutableHashSet(),
+                Fx.Block1.Hash,
+                Fx.Block1.Index
+            );
+            var expectedStateRefs = new[]
+            {
+                new Tuple<HashDigest<SHA256>, long>(Fx.Block1.Hash, Fx.Block1.Index),
+            };
+            Assert.Equal(
+                expectedStateRefs,
+                Fx.Store.IterateStateReferences(Fx.StoreNamespace, Fx.Address1)
+            );
+            Assert.Equal(
+                expectedStateRefs,
+                Fx.Store.IterateStateReferences(Fx.StoreNamespace, Fx.Address2)
+            );
+            Assert.Equal(
+                expectedStateRefs,
+                Fx.Store.IterateStateReferences(Fx.StoreNamespace, address3)
+            );
+        }
+
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]

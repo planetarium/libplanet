@@ -43,6 +43,28 @@ To be released.
 [#470]: https://github.com/planetarium/libplanet/pull/470
 
 
+Version 0.5.2
+-------------
+
+Released on August 29, 2019.
+
+### Bug fixes
+
+ -  Fixed a bug that `Swarm<T>.PreloadAsync()` method had thrown `LiteException`
+    (or other exception depending on `IStore`), which indicates a state
+    reference is duplicate, where `trustedStateValidators` is present and
+    a miner tries to download precalculated states from a trusted peer.
+    [[#465], [#474]]
+ -  Fixed a bug tag `Swarm<T>.StartAsync()` sometimes had thrown an exception
+    from `IStore` (e.g., `NullReferenceException`) during broadcasting
+    transactions.  [[#352], [#476]]
+
+[#352]: https://github.com/planetarium/libplanet/issues/352
+[#465]: https://github.com/planetarium/libplanet/issues/465
+[#474]: https://github.com/planetarium/libplanet/pull/474
+[#476]: https://github.com/planetarium/libplanet/pull/476
+
+
 Version 0.5.1
 -------------
 

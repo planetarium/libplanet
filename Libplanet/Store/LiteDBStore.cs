@@ -445,14 +445,15 @@ namespace Libplanet.Store
         {
             string collId = StateRefId(@namespace);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
-            coll.InsertBulk(
-                addresses.Select(addr => new StateRefDoc
+            IEnumerable<StateRefDoc> stateRefDocs = addresses
+                .Select(addr => new StateRefDoc
                 {
                     Address = addr,
                     BlockIndex = index,
                     BlockHash = hash,
                 })
-            );
+                .Where(doc => !coll.Exists(d => d.Id == doc.Id));
+            coll.InsertBulk(stateRefDocs);
             coll.EnsureIndex("AddressString");
             coll.EnsureIndex("BlockIndex");
         }

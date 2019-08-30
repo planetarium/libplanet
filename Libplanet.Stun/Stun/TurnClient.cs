@@ -257,7 +257,7 @@ namespace Libplanet.Stun
                 {
                     Log.Error(
                         e,
-                        $"An unexpected exception occured during parsing."
+                        $"An unexpected exception occurred during {nameof(ProcessMessage)}(): {e}"
                     );
                 }
             }
