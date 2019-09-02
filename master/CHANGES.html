@@ -106,6 +106,16 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to download precalculated states
+of blocks from a likely branchpoint instead of a genesis block from
+a trusted peer (i.e., <code>trustedStateValidators</code>) where there are branches
+between peers.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
+<li><code>Swarm&lt;T&gt;</code>'s internal <code>GetRecentStates</code> message became to take
+<code>BlockLocator</code>, an internal data type to approximates a path of
+a chain of blocks for heuristics to search a likely branchpoint,
+instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
