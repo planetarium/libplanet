@@ -8,11 +8,26 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  The concept of "namespaces" in `IStore` was replaced by "chain IDs"
+    to be consistent with `BlockChain<T>`.  [[#483], [#486]]
+     -  Renamed `IStore.ListNamespaces()` method to `ListChainIds()`.
+     -  Renamed `IStore.DeleteNamespace()` method to `DeleteChainId()`.
+     -  Renamed `IStore.GetCanonicalNamespace()` method to
+        `GetCanonicalChainId()`.
+     -  Renamed `IStore.SetCanonicalNamespace(string)` method to
+        `SetCanonicalChainId(Guid)`.
+     -  Replaced `namespace`/`sourceNamespace`/`destinationNamespace` parameters
+        taking `string` of methods in `IStore` and `StoreExtension` with
+        `chainId`/`sourceChainId`/`destinationChainId` taking `Guid`.
+     -  Renamed `NamespaceNotFoundException` to `ChainIdNotFoundException`.
+     -  Replaced `NamespaceNotFoundException(string, string)` constructor with
+        `ChainIdNotFoundException(Guid, string)` constructor.
+     -  Replaced `NamespaceNotFoundException.Namespace` property with
+        `ChainIdNotFoundException.ChainId` property.
  -  `IStore.StoreStateReference<T>(string, IImmutableSet<Address>, Block<T>)`
-    method became replaced by
-    `StoreStateReference(string, IImmutableSet<Address>, HashDigest<SHA256>, long)`
-    method so that it takes hash and index of a block instead of an entire
-    block.  [[#420]]
+    method became replaced by `StoreStateReference(Guid, IImmutableSet<Address>,
+    HashDigest<SHA256>, long)` method so that it takes hash and index of
+    a block instead of an entire block.  [[#420]]
  -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
  -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences()`
     method.  [[#454], [#467]]
@@ -67,6 +82,8 @@ To be released.
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
+[#483]: https://github.com/planetarium/libplanet/issues/483
+[#486]: https://github.com/planetarium/libplanet/pull/486
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 
 

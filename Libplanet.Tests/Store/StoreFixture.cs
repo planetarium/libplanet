@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Store
     {
         public StoreFixture()
         {
-            StoreNamespace = Guid.NewGuid().ToString();
+            StoreChainId = Guid.NewGuid();
 
             Address1 = new Address(new byte[]
             {
@@ -77,7 +77,7 @@ namespace Libplanet.Tests.Store
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
         }
 
-        public string StoreNamespace { get; }
+        public Guid StoreChainId { get; }
 
         public Address Address1 { get; }
 

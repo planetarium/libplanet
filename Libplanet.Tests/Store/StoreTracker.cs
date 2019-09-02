@@ -26,10 +26,10 @@ namespace Libplanet.Tests.Store
 
         public void ClearLogs() => _logs.Clear();
 
-        public long AppendIndex(string @namespace, HashDigest<SHA256> hash)
+        public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            _logs.Add((nameof(AppendIndex), @namespace, hash));
-            return _store.AppendIndex(@namespace, hash);
+            _logs.Add((nameof(AppendIndex), chainId, hash));
+            return _store.AppendIndex(chainId, hash);
         }
 
         public long CountBlocks()
@@ -38,10 +38,10 @@ namespace Libplanet.Tests.Store
             return _store.CountBlocks();
         }
 
-        public long CountIndex(string @namespace)
+        public long CountIndex(Guid chainId)
         {
-            _logs.Add((nameof(CountIndex), @namespace, null));
-            return _store.CountIndex(@namespace);
+            _logs.Add((nameof(CountIndex), chainId, null));
+            return _store.CountIndex(chainId);
         }
 
         public long CountTransactions()
@@ -56,22 +56,22 @@ namespace Libplanet.Tests.Store
             return _store.DeleteBlock(blockHash);
         }
 
-        public bool DeleteIndex(string @namespace, HashDigest<SHA256> hash)
+        public bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            _logs.Add((nameof(DeleteIndex), @namespace, hash));
-            return _store.DeleteIndex(@namespace, hash);
+            _logs.Add((nameof(DeleteIndex), chainId, hash));
+            return _store.DeleteIndex(chainId, hash);
         }
 
-        public IEnumerable<Address> ListAddresses(string @namespace)
+        public IEnumerable<Address> ListAddresses(Guid chainId)
         {
-            _logs.Add((nameof(ListAddresses), @namespace, null));
-            return _store.ListAddresses(@namespace);
+            _logs.Add((nameof(ListAddresses), chainId, null));
+            return _store.ListAddresses(chainId);
         }
 
-        public void DeleteNamespace(string @namespace)
+        public void DeleteChainId(Guid chainId)
         {
-            _logs.Add((nameof(DeleteNamespace), @namespace, null));
-            _store.DeleteNamespace(@namespace);
+            _logs.Add((nameof(DeleteChainId), chainId, null));
+            _store.DeleteChainId(chainId);
         }
 
         public bool DeleteTransaction(TxId txid)
@@ -106,10 +106,10 @@ namespace Libplanet.Tests.Store
             return _store.GetTransaction<T>(txid);
         }
 
-        public HashDigest<SHA256>? IndexBlockHash(string @namespace, long index)
+        public HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
         {
-            _logs.Add((nameof(IndexBlockHash), @namespace, index));
-            return _store.IndexBlockHash(@namespace, index);
+            _logs.Add((nameof(IndexBlockHash), chainId, index));
+            return _store.IndexBlockHash(chainId, index);
         }
 
         public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
@@ -118,13 +118,10 @@ namespace Libplanet.Tests.Store
             return _store.IterateBlockHashes();
         }
 
-        public IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace,
-            int offset,
-            int? limit)
+        public IEnumerable<HashDigest<SHA256>> IterateIndex(Guid chainId, int offset, int? limit)
         {
-             _logs.Add((nameof(IterateIndex), @namespace, (offset, limit)));
-             return _store.IterateIndex(@namespace, offset, limit);
+             _logs.Add((nameof(IterateIndex), chainId, (offset, limit)));
+             return _store.IterateIndex(chainId, offset, limit);
         }
 
         public IEnumerable<TxId> IterateStagedTransactionIds()
@@ -139,10 +136,10 @@ namespace Libplanet.Tests.Store
             return _store.IterateTransactionIds();
         }
 
-        public IEnumerable<string> ListNamespaces()
+        public IEnumerable<Guid> ListChainIds()
         {
-            _logs.Add((nameof(ListNamespaces), null, null));
-            return _store.ListNamespaces();
+            _logs.Add((nameof(ListChainIds), null, null));
+            return _store.ListChainIds();
         }
 
         public void PutBlock<T>(Block<T> block)
@@ -169,61 +166,61 @@ namespace Libplanet.Tests.Store
         }
 
         public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            string @namespace,
+            Guid chainId,
             Address address)
         {
-            _logs.Add((nameof(IterateStateReferences), @namespace, address));
-            return _store.IterateStateReferences(@namespace, address);
+            _logs.Add((nameof(IterateStateReferences), chainId, address));
+            return _store.IterateStateReferences(chainId, address);
         }
 
         public void StoreStateReference(
-            string @namespace,
+            Guid chainId,
             IImmutableSet<Address> addresses,
             HashDigest<SHA256> blockHash,
             long blockIndex)
         {
-            // FIXME: Log arguments properly (including @namespace).
+            // FIXME: Log arguments properly (including chainId).
             _logs.Add((nameof(StoreStateReference), blockHash, null));
-            _store.StoreStateReference(@namespace, addresses, blockHash, blockIndex);
+            _store.StoreStateReference(chainId, addresses, blockHash, blockIndex);
         }
 
         public void ForkStateReferences<T>(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             Block<T> branchPoint)
             where T : IAction, new()
         {
             // FIXME: Log arguments properly.
             _logs.Add((nameof(ForkStateReferences), null, null));
-            _store.ForkStateReferences(sourceNamespace, destinationNamespace, branchPoint);
+            _store.ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
         public void ForkBlockIndexes(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             HashDigest<SHA256> branchPoint)
         {
             _logs.Add((nameof(ForkBlockIndexes), null, null));
-            _store.ForkBlockIndexes(sourceNamespace, destinationNamespace, branchPoint);
+            _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
         }
 
-        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            _logs.Add((nameof(ListTxNonces), @namespace, null));
-            return _store.ListTxNonces(@namespace);
+            _logs.Add((nameof(ListTxNonces), chainId, null));
+            return _store.ListTxNonces(chainId);
         }
 
-        public long GetTxNonce(string @namespace, Address address)
+        public long GetTxNonce(Guid chainId, Address address)
         {
-            _logs.Add((nameof(GetTxNonce), @namespace, address));
-            return _store.GetTxNonce(@namespace, address);
+            _logs.Add((nameof(GetTxNonce), chainId, address));
+            return _store.GetTxNonce(chainId, address);
         }
 
-        public void IncreaseTxNonce(string @namespace, Address address, long delta = 1)
+        public void IncreaseTxNonce(Guid chainId, Address address, long delta = 1)
         {
-            // FIXME: Log arguments properly (including @namespace).
+            // FIXME: Log arguments properly (including chainId).
             _logs.Add((nameof(IncreaseTxNonce), address, delta));
-            _store.IncreaseTxNonce(@namespace, address, delta);
+            _store.IncreaseTxNonce(chainId, address, delta);
         }
 
         public void StageTransactionIds(IImmutableSet<TxId> txids)
@@ -238,16 +235,16 @@ namespace Libplanet.Tests.Store
             _store.UnstageTransactionIds(txids);
         }
 
-        public string GetCanonicalNamespace()
+        public Guid? GetCanonicalChainId()
         {
-            _logs.Add((nameof(GetCanonicalNamespace), null, null));
-            return _store.GetCanonicalNamespace();
+            _logs.Add((nameof(GetCanonicalChainId), null, null));
+            return _store.GetCanonicalChainId();
         }
 
-        public void SetCanonicalNamespace(string @namespace)
+        public void SetCanonicalChainId(Guid chainId)
         {
-            _logs.Add((nameof(SetCanonicalNamespace), @namespace, null));
-            _store.SetCanonicalNamespace(@namespace);
+            _logs.Add((nameof(SetCanonicalChainId), chainId, null));
+            _store.SetCanonicalChainId(chainId);
         }
     }
 }

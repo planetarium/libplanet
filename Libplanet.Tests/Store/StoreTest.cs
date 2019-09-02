@@ -19,101 +19,104 @@ namespace Libplanet.Tests.Store
         protected StoreFixture Fx { get; set; }
 
         [Fact]
-        public void ListNamespaces()
+        public void ListChainId()
         {
-            Assert.Empty(Fx.Store.ListNamespaces());
+            Assert.Empty(Fx.Store.ListChainIds());
 
             Fx.Store.PutBlock(Fx.Block1);
-            Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Block1.Hash);
+            Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Block1.Hash);
             Assert.Equal(
-                new[] { Fx.StoreNamespace }.ToImmutableHashSet(),
-                Fx.Store.ListNamespaces().ToImmutableHashSet()
+                new[] { Fx.StoreChainId }.ToImmutableHashSet(),
+                Fx.Store.ListChainIds().ToImmutableHashSet()
             );
 
-            Fx.Store.AppendIndex("asdf", Fx.Block1.Hash);
+            Guid arbitraryGuid = Guid.NewGuid();
+            Fx.Store.AppendIndex(arbitraryGuid, Fx.Block1.Hash);
             Assert.Equal(
-                new[] { Fx.StoreNamespace, "asdf" }.ToImmutableHashSet(),
-                Fx.Store.ListNamespaces().ToImmutableHashSet()
+                new[] { Fx.StoreChainId, arbitraryGuid }.ToImmutableHashSet(),
+                Fx.Store.ListChainIds().ToImmutableHashSet()
             );
         }
 
         [Fact]
-        public void DeleteNamespace()
+        public void DeleteChainId()
         {
             Block<DumbAction> block1 = TestUtils.MineNext(
                 TestUtils.MineGenesis<DumbAction>(),
                 new[] { Fx.Transaction1 });
-            Fx.Store.AppendIndex(Fx.StoreNamespace, block1.Hash);
-            Fx.Store.AppendIndex("asdf", block1.Hash);
+            Fx.Store.AppendIndex(Fx.StoreChainId, block1.Hash);
+            Guid arbitraryChainId = Guid.NewGuid();
+            Fx.Store.AppendIndex(arbitraryChainId, block1.Hash);
             Address[] addresses = Enumerable.Repeat<object>(null, 8)
                 .Select(_ => new PrivateKey().PublicKey.ToAddress())
                 .ToArray();
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 addresses.Take(3).ToImmutableHashSet(),
                 block1.Hash,
                 block1.Index
             );
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
+            Fx.Store.IncreaseTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer);
 
-            Fx.Store.DeleteNamespace(Fx.StoreNamespace);
+            Fx.Store.DeleteChainId(Fx.StoreChainId);
 
             Assert.Equal(
-                new[] { "asdf" }.ToImmutableHashSet(),
-                Fx.Store.ListNamespaces().ToImmutableHashSet()
+                new[] { arbitraryChainId }.ToImmutableHashSet(),
+                Fx.Store.ListChainIds().ToImmutableHashSet()
             );
-            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());
-            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
+            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreChainId).ToArray());
+            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
         }
 
         [Fact]
-        public void CanonicalNamespace()
+        public void CanonicalChainId()
         {
-            Assert.Null(Fx.Store.GetCanonicalNamespace());
-            Assert.Throws<ArgumentNullException>(() => Fx.Store.SetCanonicalNamespace(null));
-            Fx.Store.SetCanonicalNamespace("foo");
-            Assert.Equal("foo", Fx.Store.GetCanonicalNamespace());
-            Fx.Store.SetCanonicalNamespace("bar");
-            Assert.Equal("bar", Fx.Store.GetCanonicalNamespace());
+            Assert.Null(Fx.Store.GetCanonicalChainId());
+            Guid a = Guid.NewGuid();
+            Fx.Store.SetCanonicalChainId(a);
+            Assert.Equal(a, Fx.Store.GetCanonicalChainId());
+            Guid b = Guid.NewGuid();
+            Fx.Store.SetCanonicalChainId(b);
+            Assert.Equal(b, Fx.Store.GetCanonicalChainId());
         }
 
         [Fact]
         public void ListAddresses()
         {
-            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreNamespace).ToArray());
+            Assert.Empty(Fx.Store.ListAddresses(Fx.StoreChainId).ToArray());
 
             Address[] addresses = Enumerable.Repeat<object>(null, 8)
                 .Select(_ => new PrivateKey().PublicKey.ToAddress())
                 .ToArray();
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 addresses.Take(3).ToImmutableHashSet(),
                 Fx.Block1.Hash,
                 Fx.Block1.Index
             );
             Assert.Equal(
                 addresses.Take(3).ToImmutableHashSet(),
-                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
+                Fx.Store.ListAddresses(Fx.StoreChainId).ToImmutableHashSet()
             );
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 addresses.Skip(2).Take(3).ToImmutableHashSet(),
                 Fx.Block2.Hash,
                 Fx.Block2.Index
             );
             Assert.Equal(
                 addresses.Take(5).ToImmutableHashSet(),
-                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
+                Fx.Store.ListAddresses(Fx.StoreChainId).ToImmutableHashSet()
             );
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 addresses.Skip(5).Take(3).ToImmutableHashSet(),
                 Fx.Block3.Hash,
                 Fx.Block3.Index
             );
             Assert.Equal(
                 addresses.ToImmutableHashSet(),
-                Fx.Store.ListAddresses(Fx.StoreNamespace).ToImmutableHashSet()
+                Fx.Store.ListAddresses(Fx.StoreChainId).ToImmutableHashSet()
             );
         }
 
@@ -245,51 +248,51 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void StoreIndex()
         {
-            Assert.Equal(0, Fx.Store.CountIndex(Fx.StoreNamespace));
-            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreNamespace));
-            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, 0));
-            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, -1));
+            Assert.Equal(0, Fx.Store.CountIndex(Fx.StoreChainId));
+            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
+            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
 
-            Assert.Equal(0, Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Hash1));
-            Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreNamespace));
+            Assert.Equal(0, Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash1));
+            Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreChainId));
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {
                     Fx.Hash1,
                 },
-                Fx.Store.IterateIndex(Fx.StoreNamespace));
-            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreNamespace, 0));
-            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreNamespace, -1));
+                Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
+            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
 
-            Assert.Equal(1, Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Hash2));
-            Assert.Equal(2, Fx.Store.CountIndex(Fx.StoreNamespace));
+            Assert.Equal(1, Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash2));
+            Assert.Equal(2, Fx.Store.CountIndex(Fx.StoreChainId));
             Assert.Equal(
                 new List<HashDigest<SHA256>>()
                 {
                     Fx.Hash1,
                     Fx.Hash2,
                 },
-                Fx.Store.IterateIndex(Fx.StoreNamespace));
-            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreNamespace, 0));
-            Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreNamespace, 1));
-            Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreNamespace, -1));
-            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreNamespace, -2));
+                Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
+            Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreChainId, 1));
+            Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
+            Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, -2));
         }
 
         [Fact]
         public void DeleteIndex()
         {
-            Assert.False(Fx.Store.DeleteIndex(Fx.StoreNamespace, Fx.Hash1));
-            Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Hash1);
-            Assert.NotEmpty(Fx.Store.IterateIndex(Fx.StoreNamespace));
-            Assert.True(Fx.Store.DeleteIndex(Fx.StoreNamespace, Fx.Hash1));
-            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreNamespace));
+            Assert.False(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
+            Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash1);
+            Assert.NotEmpty(Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.True(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
+            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreChainId));
         }
 
         [Fact]
         public void IterateIndex()
         {
-            var ns = Fx.StoreNamespace;
+            var ns = Fx.StoreChainId;
             var store = Fx.Store;
 
             store.AppendIndex(ns, Fx.Hash1);
@@ -345,21 +348,21 @@ namespace Libplanet.Tests.Store
             );
             Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
 
-            Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address));
+            Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address));
 
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 tx4.UpdatedAddresses,
                 block4.Hash,
                 block4.Index
             );
             Assert.Equal(
                 new[] { Tuple.Create(block4.Hash, block4.Index) },
-                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address)
             );
 
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 tx5.UpdatedAddresses,
                 block5.Hash,
                 block5.Index
@@ -370,7 +373,7 @@ namespace Libplanet.Tests.Store
                     Tuple.Create(block5.Hash, block5.Index),
                     Tuple.Create(block4.Hash, block4.Index),
                 },
-                this.Fx.Store.IterateStateReferences(this.Fx.StoreNamespace, address)
+                this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address)
             );
         }
 
@@ -379,13 +382,13 @@ namespace Libplanet.Tests.Store
         {
             Address address3 = new PrivateKey().PublicKey.ToAddress();
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 new[] { Fx.Address1, Fx.Address2 }.ToImmutableHashSet(),
                 Fx.Block1.Hash,
                 Fx.Block1.Index
             );
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 new[] { Fx.Address2, address3 }.ToImmutableHashSet(),
                 Fx.Block1.Hash,
                 Fx.Block1.Index
@@ -396,15 +399,15 @@ namespace Libplanet.Tests.Store
             };
             Assert.Equal(
                 expectedStateRefs,
-                Fx.Store.IterateStateReferences(Fx.StoreNamespace, Fx.Address1)
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, Fx.Address1)
             );
             Assert.Equal(
                 expectedStateRefs,
-                Fx.Store.IterateStateReferences(Fx.StoreNamespace, Fx.Address2)
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, Fx.Address2)
             );
             Assert.Equal(
                 expectedStateRefs,
-                Fx.Store.IterateStateReferences(Fx.StoreNamespace, address3)
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, address3)
             );
         }
 
@@ -417,7 +420,7 @@ namespace Libplanet.Tests.Store
             Address address1 = Fx.Address1;
             Address address2 = Fx.Address2;
             Block<DumbAction> prevBlock = Fx.Block3;
-            const string targetNamespace = "dummy";
+            Guid targetChainId = Guid.NewGuid();
 
             Transaction<DumbAction> tx1 = Fx.MakeTransaction(
                 new List<DumbAction>(),
@@ -440,7 +443,7 @@ namespace Libplanet.Tests.Store
             {
                 updatedAddresses = new HashSet<Address> { address1 };
                 Fx.Store.StoreStateReference(
-                    Fx.StoreNamespace,
+                    Fx.StoreChainId,
                     updatedAddresses.ToImmutableHashSet(),
                     block.Hash,
                     block.Index
@@ -452,7 +455,7 @@ namespace Libplanet.Tests.Store
 
             updatedAddresses = new HashSet<Address> { address2 };
             Fx.Store.StoreStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 updatedAddresses.ToImmutableHashSet(),
                 blocks[3].Hash,
                 blocks[3].Index
@@ -462,39 +465,37 @@ namespace Libplanet.Tests.Store
             var addressesToStrip = new[] { address1, address2 }.ToImmutableHashSet();
 
             Fx.Store.ForkStateReferences(
-                Fx.StoreNamespace,
-                targetNamespace,
+                Fx.StoreChainId,
+                targetChainId,
                 branchPoint);
 
             var actual = Fx.Store.LookupStateReference(
-                Fx.StoreNamespace,
+                Fx.StoreChainId,
                 address1,
                 blocks[3]);
 
             Assert.Equal(
                 Tuple.Create(blocks[2].Hash, blocks[2].Index),
-                Fx.Store.LookupStateReference(Fx.StoreNamespace, address1, blocks[3]));
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address1, blocks[3]));
             Assert.Equal(
                 Tuple.Create(blocks[3].Hash, blocks[3].Index),
-                Fx.Store.LookupStateReference(Fx.StoreNamespace, address2, blocks[3]));
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address2, blocks[3]));
             Assert.Equal(
                     Tuple.Create(blocks[branchPointIndex].Hash, blocks[branchPointIndex].Index),
-                    Fx.Store.LookupStateReference(targetNamespace, address1, blocks[3]));
+                    Fx.Store.LookupStateReference(targetChainId, address1, blocks[3]));
             Assert.Null(
-                    Fx.Store.LookupStateReference(targetNamespace, address2, blocks[3]));
+                    Fx.Store.LookupStateReference(targetChainId, address2, blocks[3]));
         }
 
         [Fact]
-        public void ForkStateReferencesNamespaceNotFound()
+        public void ForkStateReferencesChainIdNotFound()
         {
-            var targetNamespace = "dummy";
+            var targetChainId = Guid.NewGuid();
             Address address = Fx.Address1;
 
-            Assert.Throws<NamespaceNotFoundException>(() =>
-                Fx.Store.ForkStateReferences(
-                    Fx.StoreNamespace,
-                    targetNamespace,
-                    Fx.Block1));
+            Assert.Throws<ChainIdNotFoundException>(() =>
+                Fx.Store.ForkStateReferences(Fx.StoreChainId, targetChainId, Fx.Block1)
+            );
         }
 
         [Fact]
@@ -579,42 +580,42 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void TxNonce()
         {
-            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
+            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction2.Signer));
 
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer);
-            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Fx.Store.IncreaseTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer);
+            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
+            Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction2.Signer));
             Assert.Equal(
                 new Dictionary<Address, long>
                 {
                     [Fx.Transaction1.Signer] = 1,
                 },
-                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+                Fx.Store.ListTxNonces(Fx.StoreChainId).ToDictionary(p => p.Key, p => p.Value)
             );
 
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer, 5);
-            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Fx.Store.IncreaseTxNonce(Fx.StoreChainId, Fx.Transaction2.Signer, 5);
+            Assert.Equal(1, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction2.Signer));
             Assert.Equal(
                 new Dictionary<Address, long>
                 {
                     [Fx.Transaction1.Signer] = 1,
                     [Fx.Transaction2.Signer] = 5,
                 },
-                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+                Fx.Store.ListTxNonces(Fx.StoreChainId).ToDictionary(p => p.Key, p => p.Value)
             );
 
-            Fx.Store.IncreaseTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer, 2);
-            Assert.Equal(3, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction1.Signer));
-            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreNamespace, Fx.Transaction2.Signer));
+            Fx.Store.IncreaseTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer, 2);
+            Assert.Equal(3, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
+            Assert.Equal(5, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction2.Signer));
             Assert.Equal(
                 new Dictionary<Address, long>
                 {
                     [Fx.Transaction1.Signer] = 3,
                     [Fx.Transaction2.Signer] = 5,
                 },
-                Fx.Store.ListTxNonces(Fx.StoreNamespace).ToDictionary(p => p.Key, p => p.Value)
+                Fx.Store.ListTxNonces(Fx.StoreChainId).ToDictionary(p => p.Key, p => p.Value)
             );
         }
 
@@ -622,9 +623,9 @@ namespace Libplanet.Tests.Store
         public void IndexBlockHashReturnNull()
         {
             Fx.Store.PutBlock(Fx.Block1);
-            Fx.Store.AppendIndex(Fx.StoreNamespace, Fx.Block1.Hash);
-            Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreNamespace));
-            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreNamespace, 2));
+            Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Block1.Hash);
+            Assert.Equal(1, Fx.Store.CountIndex(Fx.StoreChainId));
+            Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, 2));
         }
 
         [Fact]

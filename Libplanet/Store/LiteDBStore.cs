@@ -30,9 +30,7 @@ namespace Libplanet.Store
 
         private const string StateRefIdPrefix = "stateref_";
 
-        private const string NonceIdPrefix = "nonce_";
-
-        private static HashAlgorithm namespaceHasher = MD5.Create();
+        private const string TxNonceIdPrefix = "nonce_";
 
         private readonly ILogger _logger;
 
@@ -104,68 +102,69 @@ namespace Libplanet.Store
             _db.GetCollection<StagedTxIdDoc>("staged_txids");
 
         /// <inheritdoc/>
-        public override IEnumerable<string> ListNamespaces()
+        public override IEnumerable<Guid> ListChainIds()
         {
             return _db.GetCollectionNames()
                 .Where(name => name.StartsWith(IndexColPrefix))
-                .Select(name => name.Substring(IndexColPrefix.Length));
+                .Select(name => ParseChainId(name.Substring(IndexColPrefix.Length)));
         }
 
         /// <inheritdoc/>
-        public override void DeleteNamespace(string @namespace)
+        public override void DeleteChainId(Guid chainId)
         {
-            _db.DropCollection(IndexCollection(@namespace).Name);
-            _db.DropCollection($"{NonceIdPrefix}{@namespace}");
-            _db.DropCollection(StateRefId(@namespace));
+            _db.DropCollection(IndexCollection(chainId).Name);
+            _db.DropCollection(TxNonceId(chainId));
+            _db.DropCollection(StateRefId(chainId));
         }
 
         /// <inheritdoc />
-        public override string GetCanonicalNamespace()
+        public override Guid? GetCanonicalChainId()
         {
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
             BsonDocument doc = collection.FindById(docId);
-            return doc is null
-                ? null
-                : (doc.TryGetValue("ns", out BsonValue ns) ? ns.AsString : null);
+            if (doc is null)
+            {
+                return null;
+            }
+
+            return doc.TryGetValue("chainId", out BsonValue ns)
+                ? new Guid(ns.AsBinary)
+                : (Guid?)null;
         }
 
         /// <inheritdoc />
-        public override void SetCanonicalNamespace(string @namespace)
+        public override void SetCanonicalChainId(Guid chainId)
         {
-            if (@namespace is null)
-            {
-                throw new ArgumentNullException(nameof(@namespace));
-            }
-
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
-            collection.Upsert(docId, new BsonDocument() { ["ns"] = new BsonValue(@namespace) });
+            byte[] idBytes = chainId.ToByteArray();
+            collection.Upsert(docId, new BsonDocument() { ["chainId"] = new BsonValue(idBytes) });
         }
 
         /// <inheritdoc/>
-        public override long CountIndex(string @namespace)
+        public override long CountIndex(Guid chainId)
         {
-            return IndexCollection(@namespace).Count();
+            return IndexCollection(chainId).Count();
         }
 
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace,
+            Guid chainId,
             int offset,
             int? limit)
         {
-            return IndexCollection(@namespace)
+            return IndexCollection(chainId)
                 .Find(Query.All(), offset, limit ?? int.MaxValue)
                 .Select(i => i.Hash);
         }
 
         /// <inheritdoc/>
-        public override HashDigest<SHA256>? IndexBlockHash(string @namespace, long index)
+        public override HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
         {
             if (index < 0)
             {
-                index += CountIndex(@namespace);
+                index += CountIndex(chainId);
 
                 if (index < 0)
                 {
@@ -173,41 +172,39 @@ namespace Libplanet.Store
                 }
             }
 
-            return IndexCollection(@namespace).FindById(index + 1)?.Hash;
+            return IndexCollection(chainId).FindById(index + 1)?.Hash;
         }
 
         /// <inheritdoc/>
-        public override long AppendIndex(string @namespace, HashDigest<SHA256> hash)
+        public override long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            return IndexCollection(@namespace)
-                       .Insert(new HashDoc { Hash = hash }) - 1;
+            return IndexCollection(chainId).Insert(new HashDoc { Hash = hash }) - 1;
         }
 
         /// <inheritdoc/>
-        public override bool DeleteIndex(string @namespace, HashDigest<SHA256> hash)
+        public override bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            int deleted = IndexCollection(@namespace)
-                .Delete(i => i.Hash.Equals(hash));
+            int deleted = IndexCollection(chainId).Delete(i => i.Hash.Equals(hash));
             return deleted > 0;
         }
 
         /// <inheritdoc/>
         public override void ForkBlockIndexes(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             HashDigest<SHA256> branchPoint)
         {
-            LiteCollection<HashDoc> srcColl = IndexCollection(sourceNamespace);
-            LiteCollection<HashDoc> destColl = IndexCollection(destinationNamespace);
+            LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
+            LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
             destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchPoint)));
-            AppendIndex(destinationNamespace, branchPoint);
+            AppendIndex(destinationChainId, branchPoint);
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<Address> ListAddresses(string @namespace)
+        public override IEnumerable<Address> ListAddresses(Guid chainId)
         {
-            string collId = StateRefId(@namespace);
+            string collId = StateRefId(chainId);
             return _db.GetCollection<StateRefDoc>(collId)
                 .Find(Query.All("Address", Query.Ascending))
                 .Select(doc => doc.Address)
@@ -419,10 +416,10 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            string @namespace,
+            Guid chainId,
             Address address)
         {
-            string collId = StateRefId(@namespace);
+            string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
             string addressString = address.ToHex().ToLower();
             IEnumerable<StateRefDoc> stateRefs = coll.Find(
@@ -438,12 +435,12 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public override void StoreStateReference(
-            string @namespace,
+            Guid chainId,
             IImmutableSet<Address> addresses,
             HashDigest<SHA256> hash,
             long index)
         {
-            string collId = StateRefId(@namespace);
+            string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
             IEnumerable<StateRefDoc> stateRefDocs = addresses
                 .Select(addr => new StateRefDoc
@@ -460,12 +457,12 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public override void ForkStateReferences<T>(
-            string srcNamespace,
-            string destNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             Block<T> branchPoint)
         {
-            string srcCollId = StateRefId(srcNamespace);
-            string dstCollId = StateRefId(destNamespace);
+            string srcCollId = StateRefId(sourceChainId);
+            string dstCollId = StateRefId(destinationChainId);
             LiteCollection<StateRefDoc> srcColl = _db.GetCollection<StateRefDoc>(srcCollId),
                                         dstColl = _db.GetCollection<StateRefDoc>(dstCollId);
 
@@ -473,17 +470,17 @@ namespace Libplanet.Store
 
             if (dstColl.Count() < 1)
             {
-                throw new NamespaceNotFoundException(
-                    srcNamespace,
-                    "The source namespace to be forked does not exist."
+                throw new ChainIdNotFoundException(
+                    sourceChainId,
+                    "The source chain to be forked does not exist."
                 );
             }
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace)
+        public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            var collectionId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
             foreach (BsonDocument doc in collection.FindAll())
             {
@@ -502,9 +499,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override long GetTxNonce(string @namespace, Address address)
+        public override long GetTxNonce(Guid chainId, Address address)
         {
-            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            var collectionId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
@@ -512,10 +509,10 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void IncreaseTxNonce(string @namespace, Address signer, long delta = 1)
+        public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
-            long nextNonce = GetTxNonce(@namespace, signer) + delta;
-            var collectionId = $"{NonceIdPrefix}{@namespace}";
+            long nextNonce = GetTxNonce(chainId, signer) + delta;
+            var collectionId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
             var docId = new BsonValue(signer.ToByteArray());
             collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
@@ -537,6 +534,12 @@ namespace Libplanet.Store
         {
             _db?.Dispose();
         }
+
+        internal static Guid ParseChainId(string chainIdString) =>
+            new Guid(ByteUtil.ParseHex(chainIdString));
+
+        internal static string FormatChainId(Guid chainId) =>
+            ByteUtil.Hex(chainId.ToByteArray());
 
         internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
         {
@@ -572,11 +575,14 @@ namespace Libplanet.Store
             return $"state/{blockHash}";
         }
 
-        private string StateRefId(string @namespace)
+        private string StateRefId(Guid chainId)
         {
-            string ns =
-                ByteUtil.Hex(namespaceHasher.ComputeHash(Encoding.UTF8.GetBytes(@namespace)));
-            return $"{StateRefIdPrefix}{ns}";
+            return $"{StateRefIdPrefix}{FormatChainId(chainId)}";
+        }
+
+        private string TxNonceId(Guid chainId)
+        {
+            return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
         }
 
         private IEnumerable<Transaction<T>> GetTransactions<T>(
@@ -609,9 +615,9 @@ namespace Libplanet.Store
             }
         }
 
-        private LiteCollection<HashDoc> IndexCollection(string @namespace)
+        private LiteCollection<HashDoc> IndexCollection(Guid chainId)
         {
-            return _db.GetCollection<HashDoc>($"{IndexColPrefix}{@namespace}");
+            return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
         }
 
         internal class StateRefDoc

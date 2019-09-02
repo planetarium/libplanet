@@ -16,7 +16,7 @@ namespace Libplanet.Store
         /// an action mutating the <paramref name="address"/>' state.
         /// </summary>
         /// <param name="store">The store object expected to contain the state reference.</param>
-        /// <param name="namespace">The namespace to look up a state reference.</param>
+        /// <param name="chainId">The chain ID to look up a state reference.</param>
         /// <param name="address">The <see cref="Address"/> to look up.</param>
         /// <param name="lookupUntil">The upper bound (i.e., the latest block) of the search range.
         /// <see cref="Block{T}"/>s after <paramref name="lookupUntil"/> are ignored.</param>
@@ -25,12 +25,12 @@ namespace Libplanet.Store
         /// address.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="lookupUntil"/>.</typeparam>
-        /// <seealso cref="IStore.StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-        /// <seealso cref="IStore.IterateStateReferences(string, Address)"/>
+        /// <seealso cref="IStore.StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
+        /// <seealso cref="IStore.IterateStateReferences(Guid, Address)"/>
         #pragma warning restore MEN002
         public static Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             this IStore store,
-            string @namespace,
+            Guid chainId,
             Address address,
             Block<T> lookupUntil)
             where T : IAction, new()
@@ -41,7 +41,7 @@ namespace Libplanet.Store
             }
 
             IEnumerable<Tuple<HashDigest<SHA256>, long>> stateRefs =
-                store.IterateStateReferences(@namespace, address);
+                store.IterateStateReferences(chainId, address);
             foreach (Tuple<HashDigest<SHA256>, long> pair in stateRefs)
             {
                 if (pair.Item2 <= lookupUntil.Index)
@@ -54,11 +54,11 @@ namespace Libplanet.Store
         }
 
         /// <summary>
-        /// Lists all accounts, that have any states, in the given <paramref name="namespace"/> and
+        /// Lists all accounts, that have any states, in the given <paramref name="chainId"/> and
         /// their state references.
         /// </summary>
         /// <param name="store">A store object.</param>
-        /// <param name="namespace">The namespace to look up state references.</param>
+        /// <param name="chainId">The chain ID to look up state references.</param>
         /// <param name="onlyAfter">Includes state references only made after the block
         /// this argument refers to, if present.</param>
         /// <param name="ignoreAfter">Excludes state references made after the block
@@ -69,7 +69,7 @@ namespace Libplanet.Store
         public static IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
         ListAllStateReferences(
             this IStore store,
-            string @namespace,
+            Guid chainId,
             HashDigest<SHA256>? onlyAfter = null,
             HashDigest<SHA256>? ignoreAfter = null
         )
@@ -82,10 +82,10 @@ namespace Libplanet.Store
                 ignoreAfter is HashDigest<SHA256> tgt && store.GetBlockIndex(tgt) is long tgtIdx
                     ? (tgt, tgtIdx)
                     : null as (HashDigest<SHA256>, long)?;
-            return store.ListAddresses(@namespace).Select(address =>
+            return store.ListAddresses(chainId).Select(address =>
             {
                 IEnumerable<Tuple<HashDigest<SHA256>, long>> refIndices =
-                    store.IterateStateReferences(@namespace, address);
+                    store.IterateStateReferences(chainId, address);
 
                 if (targetBlock is ValueTuple<HashDigest<SHA256>, long> targetIndex)
                 {

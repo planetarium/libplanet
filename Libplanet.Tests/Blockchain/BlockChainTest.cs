@@ -121,10 +121,10 @@ namespace Libplanet.Tests.Blockchain
             var x = _blockChain;
             x.MineBlock(_fx.Address1);
             x.MineBlock(_fx.Address1);
-            Assert.Equal(x.Id.ToString(), _fx.Store.GetCanonicalNamespace());
+            Assert.Equal(x.Id, _fx.Store.GetCanonicalChainId());
             var y = x.Fork(x.Tip.Hash);
             y.MineBlock(_fx.Address1);
-            Assert.Equal(x.Id.ToString(), _fx.Store.GetCanonicalNamespace());
+            Assert.Equal(x.Id, _fx.Store.GetCanonicalChainId());
 
             var z = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
@@ -572,7 +572,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Fork from genesis and append two empty blocks.
             BlockChain<DumbAction> forked = _blockChain.Fork(genesis.Hash);
-            string fId = forked.Id.ToString();
+            Guid fId = forked.Id;
             Block<DumbAction> fb1 = TestUtils.MineNext(genesis, difficulty: b1.Difficulty);
             Block<DumbAction> fb2 = TestUtils.MineNext(fb1, difficulty: b2.Difficulty);
             forked.Append(fb1);
@@ -585,7 +585,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Fork from b1 and append a empty block.
             forked = _blockChain.Fork(b1.Hash);
-            fId = forked.Id.ToString();
+            fId = forked.Id;
             fb2 = TestUtils.MineNext(b1, difficulty: b2.Difficulty);
             forked.Append(fb2);
 
@@ -597,7 +597,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Fork from b2.
             forked = _blockChain.Fork(b2.Hash);
-            fId = forked.Id.ToString();
+            fId = forked.Id;
 
             Assert.Equal(
                 Tuple.Create(b1.Hash, b1.Index),
@@ -809,12 +809,12 @@ namespace Libplanet.Tests.Blockchain
                     renderActions: false
                 );
 
-                string previousNamespace = _blockChain.Id.ToString();
+                Guid previousChainId = _blockChain.Id;
                 _blockChain.Swap(fork, render);
 
-                Assert.Empty(_blockChain.Store.IterateIndex(previousNamespace));
-                Assert.Empty(_blockChain.Store.ListAddresses(previousNamespace));
-                Assert.Empty(_blockChain.Store.ListTxNonces(previousNamespace));
+                Assert.Empty(_blockChain.Store.IterateIndex(previousChainId));
+                Assert.Empty(_blockChain.Store.ListAddresses(previousChainId));
+                Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 
                 var renders = DumbAction.RenderRecords.Value;
                 var actions = renders.Select(r => (DumbAction)r.Action).ToArray();
@@ -976,7 +976,6 @@ namespace Libplanet.Tests.Blockchain
         {
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
-            string @namespace = chain.Id.ToString();
             Block<DumbAction>[] blocks = chain.ToArray();
             StoreTracker store = (StoreTracker)chain.Store;
 
@@ -988,7 +987,7 @@ namespace Libplanet.Tests.Blockchain
                 while (true)
                 {
                     Tuple<HashDigest<SHA256>, long> sr =
-                        store.LookupStateReference(@namespace, address, block);
+                        store.LookupStateReference(chain.Id, address, block);
                     if (sr?.Item1 is HashDigest<SHA256> reference)
                     {
                         refs.Add(reference);
@@ -1013,7 +1012,7 @@ namespace Libplanet.Tests.Blockchain
                         ListStateReferences(a)
                     )
                 ).ToImmutableDictionary();
-            long txNonce = store.GetTxNonce(@namespace, signer);
+            long txNonce = store.GetTxNonce(chain.Id, signer);
 
             store.ClearLogs();
             chain.GetStates(new[] { addresses.Last() }, completeStates: true);
@@ -1036,7 +1035,7 @@ namespace Libplanet.Tests.Blockchain
 
             // Calculating and filling states should not affect state references
             // or tx nonce.
-            Assert.Equal(txNonce, store.GetTxNonce(@namespace, signer));
+            Assert.Equal(txNonce, store.GetTxNonce(chain.Id, signer));
             foreach (Address address in addresses)
             {
                 Assert.Equal(stateRefs[address], ListStateReferences(address));
@@ -1367,13 +1366,12 @@ namespace Libplanet.Tests.Blockchain
 
             void BuildIndex(Guid id, Block<DumbAction> block)
             {
-                string idString = id.ToString();
                 foreach (Transaction<DumbAction> tx in block.Transactions)
                 {
-                    store.IncreaseTxNonce(idString, tx.Signer);
+                    store.IncreaseTxNonce(id, tx.Signer);
                 }
 
-                store.AppendIndex(idString, block.Hash);
+                store.AppendIndex(id, block.Hash);
             }
 
             // Build the store has incomplete states
@@ -1392,7 +1390,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     int index = i * accountsCount + j;
                     Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
-                        store.GetTxNonce(chainId.ToString(), signer),
+                        store.GetTxNonce(chainId, signer),
                         privateKey,
                         new[] { new DumbAction(addresses[j], index.ToString()) }
                     );
@@ -1406,7 +1404,7 @@ namespace Libplanet.Tests.Blockchain
                     Assert.NotEmpty(dirty);
                     chain.Blocks[b.Hash] = b;
                     store.StoreStateReference(
-                        chainId.ToString(),
+                        chainId,
                         dirty.Keys.ToImmutableHashSet(),
                         b.Hash,
                         b.Index

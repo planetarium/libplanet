@@ -13,39 +13,36 @@ namespace Libplanet.Store
     public abstract class BaseStore : IStore
     {
         /// <inheritdoc />
-        public abstract IEnumerable<string> ListNamespaces();
+        public abstract IEnumerable<Guid> ListChainIds();
 
         /// <inheritdoc />
-        public abstract string GetCanonicalNamespace();
+        public abstract Guid? GetCanonicalChainId();
 
         /// <inheritdoc />
-        public abstract void SetCanonicalNamespace(string @namespace);
+        public abstract void SetCanonicalChainId(Guid chainId);
 
-        public abstract long CountIndex(string @namespace);
+        public abstract long CountIndex(Guid chainId);
 
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace,
+            Guid chainId,
             int offset,
             int? limit);
 
-        public abstract HashDigest<SHA256>? IndexBlockHash(
-            string @namespace,
-            long index
-        );
+        public abstract HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index);
 
         public abstract long AppendIndex(
-            string @namespace,
+            Guid chainId,
             HashDigest<SHA256> hash
         );
 
         /// <inheritdoc />
         public abstract void ForkBlockIndexes(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             HashDigest<SHA256> branchPoint);
 
         /// <inheritdoc />
-        public abstract IEnumerable<Address> ListAddresses(string @namespace);
+        public abstract IEnumerable<Address> ListAddresses(Guid chainId);
 
         /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
@@ -121,29 +118,30 @@ namespace Libplanet.Store
 
         /// <inheritdoc />
         public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            string @namespace, Address address);
+            Guid chainId,
+            Address address);
 
         public abstract void StoreStateReference(
-            string @namespace,
+            Guid chainId,
             IImmutableSet<Address> addresses,
             HashDigest<SHA256> hashDigest,
             long index);
 
         /// <inheritdoc />
         public abstract void ForkStateReferences<T>(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             Block<T> branchPoint)
             where T : IAction, new();
 
         /// <inheritdoc/>
-        public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);
+        public abstract IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);
 
         /// <inheritdoc/>
-        public abstract long GetTxNonce(string @namespace, Address address);
+        public abstract long GetTxNonce(Guid chainId, Address address);
 
         /// <inheritdoc/>
-        public abstract void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
+        public abstract void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
 
         public virtual long CountTransactions()
         {
@@ -155,13 +153,10 @@ namespace Libplanet.Store
             return IterateBlockHashes().LongCount();
         }
 
-        public abstract bool DeleteIndex(
-            string @namespace,
-            HashDigest<SHA256> hash
-        );
+        public abstract bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash);
 
         /// <inheritdoc/>
-        public abstract void DeleteNamespace(string @namespace);
+        public abstract void DeleteChainId(Guid chainId);
 
         internal abstract RawBlock? GetRawBlock(HashDigest<SHA256> blockHash);
     }

@@ -23,21 +23,21 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void MethodCallsAreLogged()
         {
-            _tracker.ListNamespaces();
+            _tracker.ListChainIds();
             Assert.Equal(1, _tracker.Logs.Count);
-            Assert.Equal(("ListNamespaces", null, null), _tracker.Logs[0]);
+            Assert.Equal(("ListChainIds", null, null), _tracker.Logs[0]);
 
-            var ns = Guid.NewGuid();
-            _tracker.CountIndex(ns.ToString());
+            var chainId = Guid.NewGuid();
+            _tracker.CountIndex(chainId);
             Assert.Equal(2, _tracker.Logs.Count);
-            Assert.Equal(("CountIndex", ns.ToString(), null), _tracker.Logs[1]);
+            Assert.Equal(("CountIndex", chainId, null), _tracker.Logs[1]);
         }
 
         [Fact]
         public void ClearLogs()
         {
-            _tracker.ListNamespaces();
-            _tracker.CountIndex(Guid.NewGuid().ToString());
+            _tracker.ListChainIds();
+            _tracker.CountIndex(Guid.NewGuid());
             Assert.Equal(2, _tracker.Logs.Count);
 
             _tracker.ClearLogs();

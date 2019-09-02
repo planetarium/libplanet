@@ -12,86 +12,86 @@ namespace Libplanet.Store
     public interface IStore
     {
         /// <summary>
-        /// Lists existing namespaces.
+        /// Lists existing chain IDs.
         /// </summary>
-        /// <returns>Existing namespaces.</returns>
-        IEnumerable<string> ListNamespaces();
-
-        /// <summary>
-        /// Gets the current canonical namespace.
-        /// </summary>
-        /// <returns>The current canonical namespace.  Maybe <c>null</c>.</returns>
-        string GetCanonicalNamespace();
-
-        /// <summary>
-        /// Set canonical namespace.
-        /// </summary>
-        /// <param name="namespace">A new canonical namespace.  Cannot be <c>null</c>.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="namespace"/> is
-        /// <c>null</c>.</exception>
-        void SetCanonicalNamespace(string @namespace);
-
-        long CountIndex(string @namespace);
-
-        /// <summary>
-        /// Lists all block hashes in the <parmaref name="namespace"/>.
-        /// </summary>
-        /// <param name="namespace">The namespace of the index that contains block hashes to
-        /// iterate.</param>
-        /// <param name="offset">The starting point to return block hashes.</param>
-        /// <param name="limit">The maximum number of block hashes to get.</param>
-        /// <returns>Block hashes in the index of the <paramref name="namespace"/>, in ascending
-        /// order; the genesis block goes first, and the tip block goes last.</returns>
-        IEnumerable<HashDigest<SHA256>> IterateIndex(
-            string @namespace,
-            int offset = 0,
-            int? limit = null);
-
-        HashDigest<SHA256>? IndexBlockHash(string @namespace, long index);
-
-        long AppendIndex(string @namespace, HashDigest<SHA256> hash);
-
-        bool DeleteIndex(string @namespace, HashDigest<SHA256> hash);
-
-        /// <summary>
-        /// Forks block indexes from
-        /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destinationNamespace"/>.
-        /// </summary>
-        /// <param name="sourceNamespace">The namespace of block indexes to
-        /// fork.</param>
-        /// <param name="destinationNamespace">The namespace of destination
-        /// block indexes.</param>
-        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
-        /// to fork.</param>
-        /// <exception cref="NamespaceNotFoundException">Thrown when the given
-        /// <paramref name="sourceNamespace"/> does not exist.</exception>
-        /// <seealso cref="IterateIndex(string, int, int?)"/>
-        /// <seealso cref="AppendIndex(string, HashDigest{SHA256})"/>
-        void ForkBlockIndexes(
-            string sourceNamespace,
-            string destinationNamespace,
-            HashDigest<SHA256> branchPoint);
+        /// <returns>Existing chain IDs.</returns>
+        IEnumerable<Guid> ListChainIds();
 
         /// <summary>
         /// Deletes an index, tx nonces, and state references in the given
-        /// <paramref name="namespace"/>.
-        /// It also deletes namespace itself.  If there is no such <paramref name="namespace"/> it
+        /// <paramref name="chainId"/>.
+        /// It also deletes chain itself.  If there is no such <paramref name="chainId"/> it
         /// does nothing.
         /// </summary>
-        /// <param name="namespace">The namespace to delete.</param>
-        /// <remarks>This does not delete blocks or transactions that belong to
-        /// the index of the <paramref name="namespace"/>, but only the index,
-        /// tx nonces, and state references.</remarks>
-        void DeleteNamespace(string @namespace);
+        /// <param name="chainId">The ID of chain to delete.</param>
+        /// <remarks>This does not delete blocks or transactions that belong to the index of
+        /// the <paramref name="chainId"/>, but only the index, tx nonces, and state references.
+        /// </remarks>
+        void DeleteChainId(Guid chainId);
+
+        /// <summary>
+        /// Gets the ID of the current canonical chain.
+        /// </summary>
+        /// <returns>The ID of the current canonical chain.  Maybe <c>null</c>.</returns>
+        /// <seealso cref="SetCanonicalChainId(Guid)"/>
+        Guid? GetCanonicalChainId();
+
+        /// <summary>
+        /// Sets the canonical chain.
+        /// </summary>
+        /// <param name="chainId">The ID of a new canonical chain.</param>
+        /// <seealso cref="GetCanonicalChainId()"/>
+        void SetCanonicalChainId(Guid chainId);
+
+        long CountIndex(Guid chainId);
+
+        /// <summary>
+        /// Lists all block hashes in the <parmaref name="chainId"/>.
+        /// </summary>
+        /// <param name="chainId">The chain ID of the index that contains block hashes to
+        /// iterate.</param>
+        /// <param name="offset">The starting point to return block hashes.</param>
+        /// <param name="limit">The maximum number of block hashes to get.</param>
+        /// <returns>Block hashes in the index of the <paramref name="chainId"/>, in ascending
+        /// order; the genesis block goes first, and the tip block goes last.</returns>
+        IEnumerable<HashDigest<SHA256>> IterateIndex(
+            Guid chainId,
+            int offset = 0,
+            int? limit = null);
+
+        HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index);
+
+        long AppendIndex(Guid chainId, HashDigest<SHA256> hash);
+
+        bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash);
+
+        /// <summary>
+        /// Forks block indexes from
+        /// <paramref name="sourceChainId"/> to
+        /// <paramref name="destinationChainId"/>.
+        /// </summary>
+        /// <param name="sourceChainId">The chain ID of block indexes to
+        /// fork.</param>
+        /// <param name="destinationChainId">The chain ID of destination
+        /// block indexes.</param>
+        /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
+        /// to fork.</param>
+        /// <exception cref="ChainIdNotFoundException">Thrown when the given
+        /// <paramref name="sourceChainId"/> does not exist.</exception>
+        /// <seealso cref="IterateIndex(Guid, int, int?)"/>
+        /// <seealso cref="AppendIndex(Guid, HashDigest{SHA256})"/>
+        void ForkBlockIndexes(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            HashDigest<SHA256> branchPoint);
 
         /// <summary>
         /// Lists all addresses that have ever had states.
         /// </summary>
-        /// <param name="namespace">The namespace to list addresses.</param>
+        /// <param name="chainId">The ID of the chain to list addresses.</param>
         /// <returns>All addresses in an arbitrary order.  The order might
         /// be vary for each call.</returns>
-        IEnumerable<Address> ListAddresses(string @namespace);
+        IEnumerable<Address> ListAddresses(Guid chainId);
 
         /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
@@ -192,20 +192,19 @@ namespace Libplanet.Store
             AddressStateMap states
         );
 
-        #pragma warning disable MEN002
         /// <summary>
         /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
-        /// the requested <paramref name="address"/> in the specified <paramref name="namespace"/>.
+        /// the requested <paramref name="address"/> in the specified <paramref name="chainId"/>.
         /// </summary>
-        /// <param name="namespace">The chain namespace.</param>
+        /// <param name="chainId">The chain ID.</param>
         /// <param name="address">The <see cref="Address"/> to get state references.</param>
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
         /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) goes
         /// first and the lowest index (i.e., the closest to the genesis) goes last.</returns>
-        /// <seealso cref="StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-        #pragma warning restore MEN002 // Line is too long
+        /// <seealso
+        /// cref="StoreStateReference(Guid , IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
-            string @namespace,
+            Guid chainId,
             Address address);
 
         /// <summary>
@@ -213,8 +212,7 @@ namespace Libplanet.Store
         /// that has the state of the <see cref="Address"/> for each updated
         /// <see cref="Address"/>es by the <see cref="Transaction{T}"/>s in the
         /// <see cref="Block{T}" />.</summary>
-        /// <param name="namespace">The namespace to store a state reference.
-        /// </param>
+        /// <param name="chainId">The ID of the chain to store a state reference.</param>
         /// <param name="addresses">The <see cref="Address"/>es to store state
         /// reference.</param>
         /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which has the state
@@ -222,40 +220,35 @@ namespace Libplanet.Store
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> which has the state
         /// of the <see cref="Address"/>. This must refer to the same block
         /// that <paramref name="blockHash"/> refers to.</param>
-        /// <seealso cref="IterateStateReferences(string, Address)"/>
+        /// <seealso cref="IterateStateReferences(Guid, Address)"/>
         void StoreStateReference(
-            string @namespace,
+            Guid chainId,
             IImmutableSet<Address> addresses,
             HashDigest<SHA256> blockHash,
             long blockIndex);
 
-        #pragma warning disable MEN002
         /// <summary>
         /// Forks state references, which are <see cref="Block{T}.Hash"/>es that
         /// have the state of the <see cref="Address"/>es, from
-        /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destinationNamespace"/>.
+        /// <paramref name="sourceChainId"/> to <paramref name="destinationChainId"/>.
         /// <para>This method copies state references from
-        /// <paramref name="sourceNamespace"/> to
-        /// <paramref name="destinationNamespace"/> and strips
+        /// <paramref name="sourceChainId"/> to <paramref name="destinationChainId"/> and strips
         /// state references after <paramref name="branchPoint"/>.</para>
         /// </summary>
-        /// <param name="sourceNamespace">The namespace of state references to
-        /// fork.</param>
-        /// <param name="destinationNamespace">The namespace of destination
-        /// state references.</param>
+        /// <param name="sourceChainId">The chain ID of state references to fork.</param>
+        /// <param name="destinationChainId">The new chain ID to have state references.</param>
         /// <param name="branchPoint">The branch point <see cref="Block{T}"/>
         /// to fork.</param>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="branchPoint"/>.</typeparam>
-        /// <exception cref="NamespaceNotFoundException">Thrown when the given
-        /// <paramref name="sourceNamespace"/> does not exist.</exception>
-        /// <seealso cref="IterateStateReferences(string, Address)"/>
-        /// <seealso cref="StoreStateReference(string, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-#pragma warning restore MEN002
+        /// <exception cref="ChainIdNotFoundException">Thrown when the given
+        /// <paramref name="sourceChainId"/> does not exist.</exception>
+        /// <seealso cref="IterateStateReferences(Guid, Address)"/>
+        /// <seealso
+        /// cref="StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
         void ForkStateReferences<T>(
-            string sourceNamespace,
-            string destinationNamespace,
+            Guid sourceChainId,
+            Guid destinationChainId,
             Block<T> branchPoint)
             where T : IAction, new();
 
@@ -263,40 +256,39 @@ namespace Libplanet.Store
         /// Lists all <see cref="Address"/>es that have ever signed <see cref="Transaction{T}"/>,
         /// and their corresponding <see cref="Transaction{T}"/> nonces.
         /// </summary>
-        /// <param name="namespace">The namespace to list <see cref="Address"/>es and their
+        /// <param name="chainId">The ID of the chain to list <see cref="Address"/>es and their
         /// <see cref="Transaction{T}"/> nonces.</param>
         /// <returns>Pairs of an <see cref="Address"/> and its tx nonce.  All nonces are greater
         /// than 0.  (If there are underlying entries having zero nonces these must be hidden.)
         /// </returns>
-        /// <seealso cref="GetTxNonce(string, Address)"/>
-        IEnumerable<KeyValuePair<Address, long>> ListTxNonces(string @namespace);
+        /// <seealso cref="GetTxNonce(Guid, Address)"/>
+        IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId);
 
         /// <summary>
         /// Gets <see cref="Transaction{T}"/> nonce of the
         /// <paramref name="address"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to get
-        /// <see cref="Transaction{T}"/> nonce.
+        /// <param name="chainId">The ID of the chain to get <see cref="Transaction{T}"/> nonce.
         /// </param>
         /// <param name="address">The <see cref="Address"/> to get
         /// <see cref="Transaction{T}"/> nonce.
         /// </param>
         /// <returns>A <see cref="Transaction{T}"/> nonce. If there is no
         /// previous <see cref="Transaction{T}"/>, return 0.</returns>
-        /// <seealso cref="IncreaseTxNonce(string, Address, long)"/>
-        long GetTxNonce(string @namespace, Address address);
+        /// <seealso cref="IncreaseTxNonce(Guid, Address, long)"/>
+        long GetTxNonce(Guid chainId, Address address);
 
         /// <summary>
         /// Increases (or decreases if a negative <paramref name="delta"/> is given)
         /// the tx nonce counter for <paramref name="signer"/>.
         /// </summary>
-        /// <param name="namespace">The namespace to increase
+        /// <param name="chainId">The ID of the chain to increase
         /// <see cref="Transaction{T}"/> nonce.</param>
         /// <param name="signer">The address of the account to increase tx nonce.</param>
         /// <param name="delta">How many to increase the counter.  A negative number decreases
         /// the counter.  1 by default.</param>
-        /// <seealso cref="GetTxNonce(string, Address)"/>
-        void IncreaseTxNonce(string @namespace, Address signer, long delta = 1);
+        /// <seealso cref="GetTxNonce(Guid, Address)"/>
+        void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
 
         long CountTransactions();
 

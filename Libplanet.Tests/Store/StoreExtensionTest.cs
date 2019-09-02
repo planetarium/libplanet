@@ -42,50 +42,50 @@ namespace Libplanet.Tests.Store
 
             Block<DumbAction> block6 = TestUtils.MineNext(block5, new Transaction<DumbAction>[0]);
 
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, block4));
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, block5));
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, block6));
+            Assert.Null(fx.Store.LookupStateReference(fx.StoreChainId, address, fx.Block3));
+            Assert.Null(fx.Store.LookupStateReference(fx.StoreChainId, address, block4));
+            Assert.Null(fx.Store.LookupStateReference(fx.StoreChainId, address, block5));
+            Assert.Null(fx.Store.LookupStateReference(fx.StoreChainId, address, block6));
 
             fx.Store.StoreStateReference(
-                fx.StoreNamespace,
+                fx.StoreChainId,
                 tx4.UpdatedAddresses,
                 block4.Hash,
                 block4.Index
             );
-            Assert.Null(fx.Store.LookupStateReference(fx.StoreNamespace, address, fx.Block3));
+            Assert.Null(fx.Store.LookupStateReference(fx.StoreChainId, address, fx.Block3));
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block4)
             );
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block5)
             );
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block6)
             );
 
             fx.Store.StoreStateReference(
-                fx.StoreNamespace,
+                fx.StoreChainId,
                 tx5.UpdatedAddresses,
                 block5.Hash,
                 block5.Index
             );
             Assert.Null(fx.Store.LookupStateReference(
-                fx.StoreNamespace, address, fx.Block3));
+                fx.StoreChainId, address, fx.Block3));
             Assert.Equal(
                 Tuple.Create(block4.Hash, block4.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block4)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block4)
             );
             Assert.Equal(
                 Tuple.Create(block5.Hash, block5.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block5)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block5)
             );
             Assert.Equal(
                 Tuple.Create(block5.Hash, block5.Index),
-                fx.Store.LookupStateReference(fx.StoreNamespace, address, block6)
+                fx.Store.LookupStateReference(fx.StoreChainId, address, block6)
             );
         }
 
@@ -125,7 +125,7 @@ namespace Libplanet.Tests.Store
             chain.Append(block5);
             chain.Append(block6);
 
-            string chainId = chain.Id.ToString();
+            Guid chainId = chain.Id;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> refs;
 
             refs = fx.Store.ListAllStateReferences(chainId);
