@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -31,8 +30,6 @@ namespace Libplanet.Store
         private const string StateRefIdPrefix = "stateref_";
 
         private const string NonceIdPrefix = "nonce_";
-
-        private static HashAlgorithm namespaceHasher = MD5.Create();
 
         private readonly ILogger _logger;
 
@@ -574,9 +571,7 @@ namespace Libplanet.Store
 
         private string StateRefId(string @namespace)
         {
-            string ns =
-                ByteUtil.Hex(namespaceHasher.ComputeHash(Encoding.UTF8.GetBytes(@namespace)));
-            return $"{StateRefIdPrefix}{ns}";
+            return $"{StateRefIdPrefix}{@namespace}";
         }
 
         private IEnumerable<Transaction<T>> GetTransactions<T>(
