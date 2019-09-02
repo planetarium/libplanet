@@ -12,6 +12,8 @@ To be released.
     `IRandom.Next()` methods.  [[#555], [#558]]
  -  Renamed `IStore.IterateIndex()` method to `IterateIndexes()`.
     [[#462], [#560]]
+ -  `Swarm<T>` class became to implement `IDisposable` again and should be
+    disposed to clean up its internal resources. [[#485]]
 
 ### Added interfaces
 
@@ -21,8 +23,12 @@ To be released.
 
  -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` re-requests blocks that
     already received when blockchain is empty.  [[#550], [#562]]
+ -  Fixed a bug that `Swarm<T>` had thrown `SocketException` with a message
+    `Operation on non-blocking socket would block`.  [[#405], [#485]]
 
+[#405]: https://github.com/planetarium/libplanet/issues/405
 [#462]: https://github.com/planetarium/libplanet/issues/462
+[#485]: https://github.com/planetarium/libplanet/pull/485
 [#550]: https://github.com/planetarium/libplanet/issues/550
 [#555]: https://github.com/planetarium/libplanet/issues/555
 [#558]: https://github.com/planetarium/libplanet/pull/558
