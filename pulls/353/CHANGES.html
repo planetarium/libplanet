@@ -117,6 +117,14 @@ calling <code>Swarm&lt;T&gt;.BootstrapAsync()</code>, <code>Swarm&lt;T&gt;.Prelo
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to download precalculated states
+of blocks from a likely branchpoint instead of a genesis block from
+a trusted peer (i.e., <code>trustedStateValidators</code>) where there are branches
+between peers.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
+<li><code>Swarm&lt;T&gt;</code>'s internal <code>GetRecentStates</code> message became to take
+<code>BlockLocator</code>, an internal data type to approximates a path of
+a chain of blocks for heuristics to search a likely branchpoint,
+instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
 <li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of
 <code>Swarm&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively
