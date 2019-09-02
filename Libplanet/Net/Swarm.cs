@@ -1404,9 +1404,20 @@ namespace Libplanet.Net
             _logger.Debug(
                 $"Trying to GetBlocksAsync() " +
                 $"(using {message.Hashes.Count()} hashes)");
+
+            ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
+                .Where(hash => !_blockChain.Blocks.ContainsKey(hash))
+                .ToImmutableList();
+
+            if (!newHashes.Any())
+            {
+                _logger.Debug("No blocks to require.");
+                return;
+            }
+
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
-                message.Hashes
+                newHashes
             );
 
             List<Block<T>> blocks = await fetched.ToListAsync(
