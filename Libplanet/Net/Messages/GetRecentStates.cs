@@ -1,28 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Blockchain;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class GetRecentStates : Message
     {
-        public GetRecentStates(HashDigest<SHA256>? @base, HashDigest<SHA256> target)
+        public GetRecentStates(BlockLocator baseLocator, HashDigest<SHA256> target)
         {
-            BaseBlockHash = @base;
+            BaseLocator = baseLocator;
             TargetBlockHash = target;
         }
 
         public GetRecentStates(NetMQFrame[] frames)
             : this(
-                frames.Length > 1
-                    ? new HashDigest<SHA256>(frames[1].Buffer)
-                    : (HashDigest<SHA256>?)null,
+                new BlockLocator(frames.Skip(1).Select(f => new HashDigest<SHA256>(f.Buffer))),
                 new HashDigest<SHA256>(frames[0].Buffer)
             )
         {
         }
 
-        public HashDigest<SHA256>? BaseBlockHash { get; }
+        public BlockLocator BaseLocator { get; }
 
         public HashDigest<SHA256> TargetBlockHash { get; }
 
@@ -33,9 +33,9 @@ namespace Libplanet.Net.Messages
             get
             {
                 yield return new NetMQFrame(TargetBlockHash.ToByteArray());
-                if (BaseBlockHash is HashDigest<SHA256> @base)
+                foreach (HashDigest<SHA256> hash in BaseLocator)
                 {
-                    yield return new NetMQFrame(@base.ToByteArray());
+                    yield return new NetMQFrame(hash.ToByteArray());
                 }
             }
         }

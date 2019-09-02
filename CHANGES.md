@@ -33,6 +33,15 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>.PreloadAsync()` method became to download precalculated states
+    of blocks from a likely branchpoint instead of a genesis block from
+    a trusted peer (i.e., `trustedStateValidators`) where there are branches
+    between peers.  [[#465], [#481]]
+ -  `Swarm<T>`'s internal `GetRecentStates` message became to take
+    `BlockLocator`, an internal data type to approximates a path of
+    a chain of blocks for heuristics to search a likely branchpoint,
+    instead of `HashDigest<SHA256>`.  [[#465], [#481]]
+
 ### Bug fixes
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
@@ -41,6 +50,7 @@ To be released.
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#470]: https://github.com/planetarium/libplanet/pull/470
+[#481]: https://github.com/planetarium/libplanet/pull/481
 
 
 Version 0.5.2
