@@ -28,8 +28,17 @@ To be released.
         `IStore.IterateStagedTransactionIds(bool)` method.
      -  `IStore.StageTransactionIds(IDictionary<TxId, bool>)` method became
         replaced by `StageTransactionIds(IImmutableSet<TxId>()`.
+ -  Removed `Swarm<T>.AddPeersAsync()` method. To connect with seed peers, use
+    `Swarm<T>.BootstrapAsync()` method instead.  [[#353]]
+ -  `Peer` with endpoints should be typed as `BoundPeer` which is inherited from
+    `Peer`.  [[#353]]
 
 ### Added interfaces
+
+ -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
+    calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
+    `Swarm<T>.StartAsync()`.  [[#353]]
+ -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.  [[#353]]
 
 ### Behavioral changes
 
@@ -41,16 +50,24 @@ To be released.
     `BlockLocator`, an internal data type to approximates a path of
     a chain of blocks for heuristics to search a likely branchpoint,
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
+ -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
+    `Swarm<T>()`.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
+    connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
+    the host peer.  [[#353]]
 
 ### Bug fixes
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
 
+[#353]: https://github.com/planetarium/libplanet/pull/353
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
+[Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 
 
 Version 0.5.2
@@ -161,8 +178,8 @@ Released on August 22, 2019.
  -  `BlockChain<T>.MineBlock()` and `BlockChain<T>.GetNextTxNonce()` methods
     became to ignore transactions that didn't follow `Transaction<T>.Nonce`
     sequentially and treat them as pendings.  [[#365]]
- - `BlockChain<T>` became to evaluate `IBlockPolicy<T>.BlockAction` and set the
-   state when a block is appended to the chain.  [[#319], [#367]]
+ -  `BlockChain<T>` became to evaluate `IBlockPolicy<T>.BlockAction` and set the
+    state when a block is appended to the chain.  [[#319], [#367]]
  -  `BlockSet<T>.ContainsKey()` and `TransactionSet<T>.ContainsKey()` methods
     became O(1) time complexity through omitting iteration and relying
     own retrieve implementations.  [[#390]]

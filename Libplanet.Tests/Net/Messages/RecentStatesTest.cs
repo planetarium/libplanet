@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using Libplanet.Crypto;
+using Libplanet.Net;
 using Libplanet.Net.Messages;
 using NetMQ;
 using Xunit;
@@ -86,8 +88,11 @@ namespace Libplanet.Tests.Net.Messages
                 compressedBlockStates,
                 stateRefs
             );
-            NetMQMessage msg = reply.ToNetMQMessage(privKey);
-            const int headerSize = 3;  // type, pubkey, sig
+
+            Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), 0);
+
+            NetMQMessage msg = reply.ToNetMQMessage(privKey, peer);
+            const int headerSize = 3;  // type, peer, sig
             int stateRefsOffset = headerSize + 1;
             int blockStatesOffset = stateRefsOffset + 1 + (accountsCount * 4);
             Assert.Equal(
@@ -138,7 +143,7 @@ namespace Libplanet.Tests.Net.Messages
                 }
             }
 
-            msg = reply.ToNetMQMessage(privKey);
+            msg = reply.ToNetMQMessage(privKey, peer);
             var parsed = new RecentStates(msg.Skip(headerSize).ToArray());
             Assert.Equal(blockHash, parsed.BlockHash);
             Assert.False(parsed.Missing);
@@ -146,11 +151,12 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(stateRefs, parsed.StateReferences);
 
             RecentStates missing = new RecentStates(blockHash, null, null);
-            msg = missing.ToNetMQMessage(privKey);
+            msg = missing.ToNetMQMessage(privKey, peer);
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
             Assert.Equal(-1, msg[headerSize + 1].ConvertToInt32());
 
-            parsed = new RecentStates(missing.ToNetMQMessage(privKey).Skip(headerSize).ToArray());
+            parsed = new RecentStates(
+                missing.ToNetMQMessage(privKey, peer).Skip(headerSize).ToArray());
             Assert.Equal(blockHash, parsed.BlockHash);
             Assert.True(parsed.Missing);
         }
