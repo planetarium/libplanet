@@ -7,81 +7,79 @@ namespace Libplanet.Net
 {
     internal static class NetMQSocketExtension
     {
-        public static async Task SendFrameAsync(
-            this IOutgoingSocket socket,
-            byte[] data,
-            TimeSpan? timeout = null,
-            TimeSpan? delay = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
-            TimeSpan elapsed = TimeSpan.Zero;
-
-            while (!socket.TrySendFrame(data))
-            {
-                await Task.Delay(delayNotNull, cancellationToken);
-
-                elapsed += delayNotNull;
-                if (elapsed > timeout)
-                {
-                    throw new TimeoutException(
-                        "The operation exceeded the specified time: " +
-                        $"{timeout}."
-                    );
-                }
-            }
-        }
-
         public static async Task SendMultipartMessageAsync(
-            this IOutgoingSocket socket,
+            this NetMQSocket socket,
             NetMQMessage message,
             TimeSpan? timeout = null,
-            TimeSpan? delay = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
-            TimeSpan elapsed = TimeSpan.Zero;
-
-            while (!socket.TrySendMultipartMessage(message))
+            var cts = new CancellationTokenSource();
+            if (timeout is TimeSpan timeoutNotNull)
             {
-                await Task.Delay(delayNotNull, cancellationToken);
+                cts.CancelAfter(timeoutNotNull);
+            }
 
-                elapsed += delayNotNull;
-                if (elapsed > timeout)
+            var ct = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+            try
+            {
+                await socket.SendMultipartMessageAsync(message, false, cancellationToken: ct.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                if (cts.Token.IsCancellationRequested)
                 {
                     throw new TimeoutException(
-                        "The operation exceeded the specified time: " +
-                        $"{timeout}."
+                        $"The operation exceeded the specified time: {timeout}."
                     );
                 }
+                else
+                {
+                    throw;
+                }
+            }
+            finally
+            {
+                cts.Dispose();
+                ct.Dispose();
             }
         }
 
         public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
-            this IReceivingSocket socket,
+            this NetMQSocket socket,
             TimeSpan? timeout = null,
-            TimeSpan? delay = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            NetMQMessage message = new NetMQMessage();
-            TimeSpan delayNotNull = delay ?? TimeSpan.FromMilliseconds(100);
-            TimeSpan elapsed = TimeSpan.Zero;
-
-            while (!socket.TryReceiveMultipartMessage(ref message))
+            var cts = new CancellationTokenSource();
+            if (timeout is TimeSpan timeoutNotNull)
             {
-                await Task.Delay(delayNotNull, cancellationToken);
-
-                elapsed += delayNotNull;
-                if (elapsed > timeout)
-                {
-                    throw new TimeoutException(
-                        "The operation exceeded the specified time: " +
-                        $"{timeout}."
-                    );
-                }
+                cts.CancelAfter(timeoutNotNull);
             }
 
-            return message;
+            var ct = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+            try
+            {
+                return await socket.ReceiveMultipartMessageAsync(
+                    expectedFrameCount: 4,
+                    cancellationToken: ct.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                if (cts.Token.IsCancellationRequested)
+                {
+                    throw new TimeoutException(
+                        $"The operation exceeded the specified time: {timeout}."
+                    );
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            finally
+            {
+                cts.Dispose();
+                ct.Dispose();
+            }
         }
     }
 }

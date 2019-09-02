@@ -825,8 +825,9 @@ namespace Libplanet.Tests.Net
                 using (var socket = new DealerSocket(netMQAddress))
                 {
                     var request = new GetBlocks(hashes, 2);
-                    await socket.SendMultipartMessageAsync(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer));
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey, swarmB.AsPeer)
+                    );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
                     Message parsedMessage = Message.Parse(response, true);

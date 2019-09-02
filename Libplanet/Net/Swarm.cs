@@ -44,11 +44,8 @@ namespace Libplanet.Net
         private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
 
-        private static readonly int MaxDealerCount = 20;
-
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
-        private readonly IDictionary<BoundPeer, (DateTimeOffset, DealerSocket)> _dealers;
         private readonly int _appProtocolVersion;
 
         private readonly TimeSpan _dialTimeout;
@@ -63,14 +60,14 @@ namespace Libplanet.Net
         private RouterSocket _router;
         private NetMQQueue<Message> _replyQueue;
         private NetMQQueue<Message> _broadcastQueue;
-        private NetMQQueue<MessageRequest> _requestQueue;
-        private ConcurrentDictionary<Guid, TaskCompletionSource<IEnumerable<Message>>> _responses;
+        private AsyncCollection<MessageRequest> _requests;
         private NetMQPoller _poller;
 
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
         private TurnClient _turnClient;
         private CancellationTokenSource _workerCancellationTokenSource;
+        private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
         private IProtocol _protocol;
@@ -139,8 +136,6 @@ namespace Libplanet.Net
             BlockReceived = new AsyncAutoResetEvent();
             DifferentVersionPeerEncountered = differentVersionPeerEncountered;
 
-            _dealers = new ConcurrentDictionary<BoundPeer, (DateTimeOffset, DealerSocket)>();
-
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
 
@@ -173,12 +168,31 @@ namespace Libplanet.Net
                 _appProtocolVersion,
                 _logger);
 
-            _requestQueue = new NetMQQueue<MessageRequest>();
-            _requestQueue.ReceiveReady += DoRequest;
-            _responses =
-                new ConcurrentDictionary<Guid, TaskCompletionSource<IEnumerable<Message>>>();
-            _poller = new NetMQPoller { _requestQueue };
-            _runtimeProcessor = Task.Run(() => _poller.Run());
+            _requests = new AsyncCollection<MessageRequest>();
+            _runtimeCancellationTokenSource = new CancellationTokenSource();
+            _runtimeProcessor = Task.Run(() =>
+            {
+                // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize tests
+                try
+                {
+                    using (var runtime = new NetMQRuntime())
+                    {
+                        runtime.Run(
+                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
+                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
+                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
+                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
+                            ProcessRuntime(_runtimeCancellationTokenSource.Token)
+                        );
+                    }
+                }
+                catch (NetMQException)
+                {
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+            });
         }
 
         ~Swarm()
@@ -266,10 +280,9 @@ namespace Libplanet.Net
 
         public void Dispose()
         {
-            if (_poller.IsRunning)
-            {
-                _poller.Dispose();
-            }
+            _runtimeCancellationTokenSource.Cancel();
+
+            _runtimeProcessor.Wait();
         }
 
         public async Task StopAsync(
@@ -287,16 +300,14 @@ namespace Libplanet.Net
                     _replyQueue.ReceiveReady -= DoReply;
                     _router.ReceiveReady -= ReceiveMessage;
 
-                    _poller.RemoveAndDispose(_broadcastQueue);
-                    _poller.RemoveAndDispose(_replyQueue);
-                    _poller.RemoveAndDispose(_router);
-
-                    foreach ((DateTimeOffset, DealerSocket) pair in _dealers.Values)
+                    if (_poller.IsRunning)
                     {
-                        pair.Item2.Dispose();
+                        _poller.Dispose();
                     }
 
-                    _dealers.Clear();
+                    _broadcastQueue.Dispose();
+                    _replyQueue.Dispose();
+                    _router.Dispose();
                     _turnClient?.Dispose();
 
                     Running = false;
@@ -401,10 +412,7 @@ namespace Libplanet.Net
 
             _replyQueue = new NetMQQueue<Message>();
             _broadcastQueue = new NetMQQueue<Message>();
-
-            _poller.Add(_router);
-            _poller.Add(_replyQueue);
-            _poller.Add(_broadcastQueue);
+            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
@@ -425,6 +433,22 @@ namespace Libplanet.Net
                     _protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
                 tasks.Add(
                     _protocol.RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+                tasks.Add(
+                    Task.Run(() =>
+                    {
+                        // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
+                        // tests.
+                        try
+                        {
+                            _poller.Run();
+                        }
+                        catch (TerminatingException)
+                        {
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                        }
+                    }));
                 _logger.Debug("Swarm started.");
 
                 await await Task.WhenAny(tasks);
@@ -768,48 +792,7 @@ namespace Libplanet.Net
 
         internal async Task SendMessageAsync(BoundPeer peer, Message message)
         {
-            if (_cancellationToken.IsCancellationRequested)
-            {
-                return;
-            }
-
-            DealerSocket dealer = await GetDealerSocket(peer);
-
-            try
-            {
-                _logger.Debug($"Trying to send [{message}] to [{peer.ToString()}]...");
-
-                // FIXME: 3 second is arbitrary, we have to decide value for this.
-                if (!dealer.TrySendMultipartMessage(
-                       TimeSpan.FromSeconds(3),
-                       message.ToNetMQMessage(_privateKey, AsPeer)))
-                {
-                    throw new TimeoutException();
-                }
-            }
-            catch (TimeoutException e)
-            {
-                _logger.Error(e, "Timeout occurred during SendMessageAsync().");
-                throw;
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    $"An unexpected exception occurred during {nameof(SendMessageAsync)}(). {e}");
-                throw;
-            }
-            finally
-            {
-                if (_dealers.ContainsKey(peer))
-                {
-                    _dealers[peer] = (DateTimeOffset.UtcNow, _dealers[peer].Item2);
-                }
-                else
-                {
-                    throw new Exception("Dealer not exists.");
-                }
-            }
+            await SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
         }
 
         internal async Task<Message> SendMessageWithReplyAsync(
@@ -818,19 +801,43 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
+            IEnumerable<Message> replies =
+                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
+            Message reply = replies.First();
+            ValidateSender(reply.Remote);
+
+            return reply;
+        }
+
+        internal async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+            BoundPeer peer,
+            Message message,
+            TimeSpan? timeout,
+            int expectedResponses,
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
+        {
             if (!(_turnClient is null))
             {
                 await CreatePermission(peer);
             }
 
+            Guid reqId = Guid.NewGuid();
             try
             {
-                Guid reqId = Guid.NewGuid();
-                _responses[reqId] = new TaskCompletionSource<Message>();
-                _requestQueue.Enqueue((reqId, message, peer, timeout));
-                Message reply = await _responses[reqId].Task;
-
-                ValidateSender(reply.Remote);
+                var tcs = new TaskCompletionSource<IEnumerable<Message>>();
+                await _requests.AddAsync(
+                    new MessageRequest
+                    {
+                       Id = reqId,
+                       Message = message,
+                       Peer = peer,
+                       Timeout = timeout,
+                       ExpectedResponses = expectedResponses,
+                       TaskCompletionSource = tcs,
+                    }
+                );
+                IEnumerable<Message> reply = await tcs.Task;
 
                 _logger.Debug($"Received [{reply}] from [{peer.Address.ToHex()}]...");
 
@@ -900,50 +907,40 @@ namespace Libplanet.Net
             return new AsyncEnumerable<Block<T>>(async yield =>
             {
                 CancellationToken yieldToken = yield.CancellationToken;
-                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
-                {
-                    var blockHashesAsArray =
-                        blockHashes as HashDigest<SHA256>[] ??
-                        blockHashes.ToArray();
-                    var request = new GetBlocks(blockHashesAsArray);
-                    await socket.SendMultipartMessageAsync(
-                        request.ToNetMQMessage(_privateKey, AsPeer),
-                        cancellationToken: yieldToken);
+                var blockHashesAsArray =
+                    blockHashes as HashDigest<SHA256>[] ??
+                    blockHashes.ToArray();
+                var request = new GetBlocks(blockHashesAsArray);
+                int hashCount = blockHashesAsArray.Count();
+                IEnumerable<Message> replies = await SendMessageWithReplyAsync(
+                    peer,
+                    request,
+                    BlockRecvTimeout,
+                    (hashCount / request.ChunkSize) + 1,
+                    yieldToken
+                );
 
-                    int hashCount = blockHashesAsArray.Count();
-                    _logger.Debug(
-                        $"Required block count: {hashCount}. {yieldToken}");
-                    while (hashCount > 0 && !yieldToken.IsCancellationRequested)
+                foreach (Message message in replies)
+                {
+                    ValidateSender(message.Remote);
+                    if (message is Messages.Blocks blockMessage)
                     {
+                        IList<byte[]> payloads = blockMessage.Payloads;
                         _logger.Debug(
-                            "Starts to receive blocks from {0}.",
-                            peer.PublicKey.ToAddress().ToHex());
-                        NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
-                            timeout: BlockRecvTimeout,
-                            cancellationToken: yieldToken
-                        );
-                        Message parsedMessage = Message.Parse(response, true);
-                        ValidateSender(parsedMessage.Remote);
-                        if (parsedMessage is Messages.Blocks blockMessage)
+                            "Received {0} blocks from {1}.",
+                            payloads.Count,
+                            message.Remote.PublicKey.ToAddress().ToHex());
+                        foreach (byte[] payload in payloads)
                         {
-                            IList<byte[]> payloads = blockMessage.Payloads;
-                            _logger.Debug(
-                                "Received {0} blocks from {1}.",
-                                payloads.Count,
-                                parsedMessage.Remote.PublicKey.ToAddress().ToHex());
-                            foreach (byte[] payload in payloads)
-                            {
-                                Block<T> block = Block<T>.FromBencodex(payload);
-                                await yield.ReturnAsync(block);
-                                hashCount--;
-                            }
+                            Block<T> block = Block<T>.FromBencodex(payload);
+                            await yield.ReturnAsync(block);
                         }
-                        else
-                        {
-                            throw new InvalidMessageException(
-                                $"The response of GetData isn't a Block. " +
-                                $"but {parsedMessage}");
-                        }
+                    }
+                    else
+                    {
+                        throw new InvalidMessageException(
+                            $"The response of GetData isn't a Block. " +
+                            $"but {message}");
                     }
                 }
             });
@@ -956,37 +953,33 @@ namespace Libplanet.Net
         {
             return new AsyncEnumerable<Transaction<T>>(async yield =>
             {
-                using (var socket = new DealerSocket(ToNetMQAddress(peer)))
-                {
-                    var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
-                    var request = new GetTxs(txIdsAsArray);
-                    await socket.SendMultipartMessageAsync(
-                        request.ToNetMQMessage(_privateKey, AsPeer),
-                        cancellationToken: cancellationToken);
+                var txIdsAsArray = txIds as TxId[] ?? txIds.ToArray();
+                var request = new GetTxs(txIdsAsArray);
+                int txCount = txIdsAsArray.Count();
 
-                    int hashCount = txIdsAsArray.Count();
-                    _logger.Debug($"Required tx count: {hashCount}.");
-                    while (hashCount > 0)
+                _logger.Debug($"Required tx count: {txCount}.");
+
+                IEnumerable<Message> replies = await SendMessageWithReplyAsync(
+                    peer,
+                    request,
+                    TxRecvTimeout,
+                    txCount,
+                    cancellationToken
+                );
+
+                foreach (Message message in replies)
+                {
+                    ValidateSender(message.Remote);
+                    if (message is Messages.Tx parsed)
                     {
-                        _logger.Debug("Receiving tx...");
-                        NetMQMessage response = await socket.ReceiveMultipartMessageAsync(
-                            timeout: TxRecvTimeout,
-                            cancellationToken: cancellationToken
-                        );
-                        Message parsedMessage = Message.Parse(response, true);
-                        ValidateSender(parsedMessage.Remote);
-                        if (parsedMessage is Messages.Tx parsed)
-                        {
-                            Transaction<T> tx = Transaction<T>.FromBencodex(
-                                parsed.Payload);
-                            await yield.ReturnAsync(tx);
-                            hashCount--;
-                        }
-                        else
-                        {
-                            throw new InvalidMessageException(
-                                $"The response of GetTxs should be Tx, not {parsedMessage}.");
-                        }
+                        Transaction<T> tx = Transaction<T>.FromBencodex(
+                            parsed.Payload);
+                        await yield.ReturnAsync(tx);
+                    }
+                    else
+                    {
+                        throw new InvalidMessageException(
+                            $"The response of GetTxs should be Tx, not {message}.");
                     }
                 }
             });
@@ -1117,12 +1110,9 @@ namespace Libplanet.Net
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var request = new GetRecentStates(baseLocator, blockHash);
-                _logger.Debug("Makes a dealer socket to a trusted peer ({0}).", peer);
 
                 _logger.Debug("Requests recent states to a peer ({0}).", peer);
-
                 Message reply;
-                _logger.Debug("Requested recent states to a peer ({0}).", peer);
                 try
                 {
                     reply = await SendMessageWithReplyAsync(
@@ -1902,98 +1892,6 @@ namespace Libplanet.Net
             ReplyMessage(reply);
         }
 
-        private async Task<DealerSocket> GetDealerSocket(BoundPeer peer)
-        {
-            DealerSocket dealer;
-            if (await NeedsNewDealer(peer))
-            {
-                _logger.Debug($"Trying to create a dealer socket...");
-                dealer = await CreateDealerSocket(peer);
-                dealer.Options.Linger = _linger;
-                string address = ToNetMQAddress(peer);
-                dealer.Connect(address);
-                if (_dealers.Count >= MaxDealerCount)
-                {
-                    await RemoveOldestDealer();
-                }
-
-                _dealers[peer] = (DateTimeOffset.MaxValue, dealer);
-            }
-            else
-            {
-                // FIXME: Remove least recent used dealer? or oldest dealer?
-                _dealers[peer] = (DateTimeOffset.MaxValue, _dealers[peer].Item2);
-                dealer = _dealers[peer].Item2;
-            }
-
-            return dealer;
-        }
-
-        private async Task<bool> NeedsNewDealer(BoundPeer peer)
-        {
-            BoundPeer existing = _dealers.Keys
-                .FirstOrDefault(p => peer.PublicKey.Equals(p.PublicKey));
-
-            if (existing is null)
-            {
-                return true;
-            }
-
-            if (!existing.EndPoint.Equals(peer.EndPoint))
-            {
-                // Clear outdated existing peer.
-                await CloseDealer(existing);
-                return true;
-            }
-
-            return false;
-        }
-
-        private async Task<DealerSocket> CreateDealerSocket(BoundPeer peer)
-        {
-            if (!(_turnClient is null))
-            {
-                await CreatePermission(peer);
-            }
-
-            return new DealerSocket();
-        }
-
-        private async Task RemoveOldestDealer()
-        {
-            _logger.Debug("Too many dealers, removing...");
-            (DateTimeOffset, BoundPeer) oldest = (DateTimeOffset.UtcNow, null);
-            foreach (BoundPeer peer in _dealers.Keys)
-            {
-                if (_dealers[peer].Item1 < oldest.Item1)
-                {
-                    oldest = (_dealers[peer].Item1, peer);
-                }
-            }
-
-            if (oldest.Item2 is null)
-            {
-                throw new SwarmException("Creation time of used dealer must before now.");
-            }
-
-            await CloseDealer(oldest.Item2);
-        }
-
-        private async Task CloseDealer(BoundPeer peer)
-        {
-            CheckStarted();
-            if (_dealers.TryGetValue(peer, out (DateTimeOffset, DealerSocket) pair))
-            {
-                while (DateTimeOffset.UtcNow < pair.Item1 + _linger)
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(_linger.TotalSeconds / 2f));
-                }
-
-                pair.Item2.Dispose();
-                _dealers.Remove(peer);
-            }
-        }
-
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
             try
@@ -2102,46 +2000,63 @@ namespace Libplanet.Net
             }
         }
 
-        private async void DoRequest(object sender, NetMQQueueEventArgs<MessageRequest> e)
+        private async Task ProcessRuntime(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                MessageRequest req = e.Queue.Dequeue();
+                var req = await _requests.TakeAsync(cancellationToken);
+                _logger.Verbose("Request[{0}] taken.", req.Id);
+
                 using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
                 {
+                    dealer.Options.Linger = _linger;
                     _logger.Debug(
                         $"Trying to send [{req.Message}] to [{req.Peer.Address.ToHex()}]..."
                     );
-
-                    dealer.SendMultipartMessage(req.Message.ToNetMQMessage(_privateKey, AsPeer));
+                    var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
                     var result = new List<Message>();
-                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
+                    TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+                    try
                     {
-                        try
+                        await dealer.SendMultipartMessageAsync(
+                            message,
+                            timeout: req.Timeout,
+                            cancellationToken: cancellationToken
+                        );
+
+                        _logger.Debug($"Message[{req.Message}] sent.");
+
+                        foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                         {
                             NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
                                 timeout: req.Timeout,
-                                cancellationToken: _cancellationToken
+                                cancellationToken: cancellationToken
                             );
-                            Message parsed = Message.Parse(raw, true);
-                            result.Add(parsed);
+                            _logger.Verbose(
+                                "A raw message [frame count: {0}] has replied.",
+                                raw.FrameCount
+                            );
+                            Message reply = Message.Parse(raw, true);
+                            _logger.Debug(
+                                "A reply has parsed: {0}, from {1}",
+                                reply,
+                                reply.Remote
+                            );
+
+                            result.Add(reply);
                         }
-                        catch (TimeoutException te)
-                        {
-                            _responses[req.Id].SetException(te);
-                            break;
-                        }
+
+                        tcs.SetResult(result);
+                    }
+                    catch (TimeoutException te)
+                    {
+                        tcs.SetException(te);
                     }
 
-                    if (!_responses[req.Id].Task.IsCompleted || req.ExpectedResponses == 0)
-                    {
-                        _responses[req.Id].SetResult(result);
-                    }
+                    // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
+                    await Task.Delay(100);
                 }
-            }
-            catch (TerminatingException)
-            {
-                // no-op after terminated.
             }
         }
 
@@ -2224,6 +2139,8 @@ namespace Libplanet.Net
             public TimeSpan? Timeout { get; set; }
 
             public int ExpectedResponses { get; set; }
+
+            public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; set; }
         }
     }
 }
