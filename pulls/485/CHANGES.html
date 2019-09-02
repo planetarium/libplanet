@@ -108,7 +108,7 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 <li><code>Peer</code> with endpoints should be typed as <code>BoundPeer</code> which is inherited from
 <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> class became to implement <code>IDisposable</code> again and should be
-disposed to clean up its internal resources. [[TBD]]</li>
+disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -139,7 +139,7 @@ the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#35
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>SocketException</code> says that
-<code>Operation on non-blocking socket would block.</code>  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, TBD]</li>
+<code>Operation on non-blocking socket would block.</code>  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, <a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
 <h2 id="version-052">Version 0.5.2</h2>
 <p>Released on August 29, 2019.</p>
