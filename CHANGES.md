@@ -66,8 +66,11 @@ To be released.
     `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
- -  Added `Block<T>.OrderedTransactions` property to provide transactions ordered in
-    the xor computation of `Block<T>.Id` and `Transaction<T>.Id`.  [[#244], [#355]]
+ -  Added `Block<T>.OrderedTransactions` property to execute transactions in
+    a deterministic but unpredictable order.  The order is determined by
+    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
+    predict the order of transactions in a block before it's mined.
+    [[#244], [#355]]
  -  `TxId` class became to implement `IComparable<TxId>` and
      `IComparable` interfaces.  [[#244], [#355]]
  -  Added `InvalidBlockTransactionsException` class.  [[#244], [#355]]
@@ -94,8 +97,6 @@ To be released.
  -  `Block<T>.Mine(long, long, Address, HashDigest<SHA256>?, DateTimeOffset,
     IEnumerable<Transaction<T>>)` became to order `Block<T>.Transactions` by
     their `Id`.  [[#244], [#355]]
- -  `Block<T>.Validate(DateTimeOffset)` became to validate
-    if its `Transactions` are ordered by their `Id`.  [[#244], [#355]]
 
 ### Bug fixes
 
