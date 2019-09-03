@@ -1452,6 +1452,8 @@ namespace Libplanet.Net
                     $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {e}");
                 throw;
             }
+
+            BroadcastBlocks(blocks);
         }
 
         private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
@@ -1606,9 +1608,6 @@ namespace Libplanet.Net
                     _blockChain.Swap(previousBlocks, render: true);
                     _logger.Debug("Swapping complete");
                 }
-
-                var msg = new BlockHashes(peer.Address, blocks.Select(b => b.Hash));
-                BroadcastMessage(msg);
             }
             else
             {
@@ -1744,6 +1743,8 @@ namespace Libplanet.Net
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
+
+            BroadcastTxs(txs);
         }
 
         private void TransferBlocks(GetBlocks getData)
