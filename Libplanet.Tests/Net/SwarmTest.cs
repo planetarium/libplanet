@@ -1106,6 +1106,8 @@ namespace Libplanet.Tests.Net
                 swarmA.BroadcastBlocks(new[] { chainA.Last() });
                 Task t = swarmB.BlockReceived.WaitAsync(cts.Token);
 
+                // Actually, previous code may pass this test if message is
+                // delayed over 5 seconds.
                 await Task.Delay(5000);
                 Assert.False(t.IsCompleted);
 
