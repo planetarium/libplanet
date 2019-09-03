@@ -1154,7 +1154,6 @@ namespace Libplanet.Tests.Net
             await swarm.StopAsync();
         }
 
-        [Trait("RequireTurnServer", "true")]
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ExchangeWithIceServer()
         {

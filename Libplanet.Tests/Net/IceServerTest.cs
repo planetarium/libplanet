@@ -10,7 +10,6 @@ namespace Libplanet.Tests.Net
     {
         private const int Timeout = 60 * 1000;
 
-        [Trait("RequireTurnServer", "true")]
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task CreateTurnClient()
         {
