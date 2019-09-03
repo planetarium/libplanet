@@ -80,11 +80,28 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
+<li>The concept of &quot;namespaces&quot; in <code>IStore</code> was replaced by &quot;chain IDs&quot;
+to be consistent with <code>BlockChain&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/483">#483</a>, <a href="https://github.com/planetarium/libplanet/pull/486">#486</a>]
+<ul>
+<li>Renamed <code>IStore.ListNamespaces()</code> method to <code>ListChainIds()</code>.</li>
+<li>Renamed <code>IStore.DeleteNamespace()</code> method to <code>DeleteChainId()</code>.</li>
+<li>Renamed <code>IStore.GetCanonicalNamespace()</code> method to
+<code>GetCanonicalChainId()</code>.</li>
+<li>Renamed <code>IStore.SetCanonicalNamespace(string)</code> method to
+<code>SetCanonicalChainId(Guid)</code>.</li>
+<li>Replaced <code>namespace</code>/<code>sourceNamespace</code>/<code>destinationNamespace</code> parameters
+taking <code>string</code> of methods in <code>IStore</code> and <code>StoreExtension</code> with
+<code>chainId</code>/<code>sourceChainId</code>/<code>destinationChainId</code> taking <code>Guid</code>.</li>
+<li>Renamed <code>NamespaceNotFoundException</code> to <code>ChainIdNotFoundException</code>.</li>
+<li>Replaced <code>NamespaceNotFoundException(string, string)</code> constructor with
+<code>ChainIdNotFoundException(Guid, string)</code> constructor.</li>
+<li>Replaced <code>NamespaceNotFoundException.Namespace</code> property with
+<code>ChainIdNotFoundException.ChainId</code> property.</li>
+</ul>
+</li>
 <li><code>IStore.StoreStateReference&lt;T&gt;(string, IImmutableSet&lt;Address&gt;, Block&lt;T&gt;)</code>
-method became replaced by
-<code>StoreStateReference(string, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code>
-method so that it takes hash and index of a block instead of an entire
-block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
+method became replaced by <code>StoreStateReference(Guid, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code> method so that it takes hash and index of
+a block instead of an entire block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 <li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 <li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences()</code>
 method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, [#467]]</li>
