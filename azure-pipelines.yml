@@ -24,10 +24,6 @@ jobs:
       testArguments: >-
         --logger trx
         --collect "Code coverage"
-        --filter "RequireTurnServer!=true"
-      # FIXME: For unknown reason, on Windows tests depending on TURN_SERVER_URL
-      #        seems to never end or to take too long time.  We should diagnose
-      #        this and make Windows builds to run these tests too.
   - task: Bash@3
     displayName: codecov
     inputs:
@@ -158,10 +154,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
-      testArguments: '--filter "RequireTurnServer!=true"'
-      # FIXME: For unknown reason, on Windows tests depending on TURN_SERVER_URL
-      #        seems to never end or to take too long time.  We should diagnose
-      #        this and make Windows builds to run these tests too.
+      testArguments: '-v n'
   timeoutInMinutes: 30
 
 - job: Windows_NETFramework
@@ -171,6 +164,7 @@ jobs:
   - template: .azure-pipelines/windows-net461.yml
     parameters:
       configuration: $(configuration)
+      turnServerUrl: $(turnServerUrl)
 
 - job: Windows_NETCore_Benchmark
   pool:
