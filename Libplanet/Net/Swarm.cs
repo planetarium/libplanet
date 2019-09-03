@@ -44,7 +44,7 @@ namespace Libplanet.Net
         private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
 
-        private static readonly int MaxDealerCount = 10;
+        private static readonly int MaxDealerCount = 20;
 
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
@@ -780,6 +780,17 @@ namespace Libplanet.Net
                     "An unexpected exception occurred during SendMessageAsync(). {0}",
                     e);
                 throw;
+            }
+            finally
+            {
+                if (_dealers.ContainsKey(peer))
+                {
+                    _dealers[peer] = (DateTimeOffset.UtcNow, _dealers[peer].Item2);
+                }
+                else
+                {
+                    throw new Exception("Dealer not exists.");
+                }
             }
         }
 
@@ -1841,7 +1852,7 @@ namespace Libplanet.Net
         private async Task<DealerSocket> GetDealerSocket(BoundPeer peer)
         {
             DealerSocket dealer;
-            if (NeedsNewDealer(peer))
+            if (await NeedsNewDealer(peer))
             {
                 _logger.Debug($"Trying to create a dealer socket...");
                 dealer = await CreateDealerSocket(peer);
@@ -1850,20 +1861,22 @@ namespace Libplanet.Net
                 dealer.Connect(address);
                 if (_dealers.Count >= MaxDealerCount)
                 {
-                    RemoveOldestDealer();
+                    await RemoveOldestDealer();
                 }
 
-                _dealers[peer] = (DateTimeOffset.UtcNow, dealer);
+                _dealers[peer] = (DateTimeOffset.MaxValue, dealer);
             }
             else
             {
+                // FIXME: Remove least recent used dealer? or oldest dealer?
+                _dealers[peer] = (DateTimeOffset.MaxValue, _dealers[peer].Item2);
                 dealer = _dealers[peer].Item2;
             }
 
             return dealer;
         }
 
-        private bool NeedsNewDealer(BoundPeer peer)
+        private async Task<bool> NeedsNewDealer(BoundPeer peer)
         {
             BoundPeer existing = _dealers.Keys
                 .FirstOrDefault(p => peer.PublicKey.Equals(p.PublicKey));
@@ -1876,7 +1889,7 @@ namespace Libplanet.Net
             if (!existing.EndPoint.Equals(peer.EndPoint))
             {
                 // Clear outdated existing peer.
-                CloseDealer(existing);
+                await CloseDealer(existing);
                 return true;
             }
 
@@ -1893,7 +1906,7 @@ namespace Libplanet.Net
             return new DealerSocket();
         }
 
-        private void RemoveOldestDealer()
+        private async Task RemoveOldestDealer()
         {
             _logger.Debug("Too many dealers, removing...");
             (DateTimeOffset, BoundPeer) oldest = (DateTimeOffset.UtcNow, null);
@@ -1910,14 +1923,19 @@ namespace Libplanet.Net
                 throw new SwarmException("Creation time of used dealer must before now.");
             }
 
-            CloseDealer(oldest.Item2);
+            await CloseDealer(oldest.Item2);
         }
 
-        private void CloseDealer(BoundPeer peer)
+        private async Task CloseDealer(BoundPeer peer)
         {
             CheckStarted();
             if (_dealers.TryGetValue(peer, out (DateTimeOffset, DealerSocket) pair))
             {
+                while (DateTimeOffset.UtcNow < pair.Item1 + _linger)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(_linger.TotalSeconds / 2f));
+                }
+
                 pair.Item2.Dispose();
                 _dealers.Remove(peer);
             }
