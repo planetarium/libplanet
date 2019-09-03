@@ -1407,13 +1407,14 @@ namespace Libplanet.Net
 
             if (!newHashes.Any())
             {
-                _logger.Debug("No blocks to require. Ignore BlockHashes.");
+                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHashes)}.");
                 return;
             }
 
             _logger.Debug(
-                $"Trying to GetBlocksAsync() " +
-                $"(using {newHashes.Count()} hashes)");
+                $"Trying to {nameof(GetBlocksAsync)}() " +
+                "using {0} hashes.",
+                newHashes.Count());
 
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
@@ -1423,7 +1424,7 @@ namespace Libplanet.Net
             List<Block<T>> blocks = await fetched.ToListAsync(
                 cancellationToken
             );
-            _logger.Debug("GetBlocksAsync() complete.");
+            _logger.Debug($"{nameof(GetBlocksAsync)}() complete.");
 
             if (!blocks.Any())
             {
