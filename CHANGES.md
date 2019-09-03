@@ -66,6 +66,11 @@ To be released.
     `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
+ -  Added `Block<T>.OrderedTransactions` property to provide transactions ordered in
+    the xor computation of `Block<T>.Id` and `Transaction<T>.Id`.  [[#244], [#355]]
+ -  `TxId` class became to implement `IComparable<TxId>` and
+     `IComparable` interfaces.  [[#244], [#355]]
+ -  Added `InvalidBlockTransactionsException` class.  [[#244], [#355]]
 
 ### Behavioral changes
 
@@ -97,7 +102,9 @@ To be released.
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
 
+[#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
+[#355]: https://github.com/planetarium/libplanet/pull/355
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#461]: https://github.com/planetarium/libplanet/issues/461
@@ -148,8 +155,6 @@ Released on August 28, 2019.
  -  Fixed a bug that unnecessarily received all blocks in multiple miner
     situations.  [[#457], [#468]]
 
-[#244]: https://github.com/planetarium/libplanet/issues/244
-[#355]: https://github.com/planetarium/libplanet/pull/355
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#454]: https://github.com/planetarium/libplanet/issues/454
