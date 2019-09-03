@@ -1676,7 +1676,7 @@ namespace Libplanet.Tests.Net
 
             cts.Dispose();
 
-            Assert.InRange(receiverChain.Store.ListNamespaces().Count(), 0, 1);
+            Assert.InRange(receiverChain.Store.ListChainIds().Count(), 0, 1);
 
             if (canceled)
             {

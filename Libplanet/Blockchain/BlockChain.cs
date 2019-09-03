@@ -32,16 +32,7 @@ namespace Libplanet.Blockchain
             : this(
                 policy,
                 store,
-                store.GetCanonicalNamespace()
-            )
-        {
-        }
-
-        internal BlockChain(IBlockPolicy<T> policy, IStore store, string @namespace)
-            : this(
-                policy,
-                store,
-                @namespace is null ? Guid.NewGuid() : Guid.Parse(@namespace)
+                store.GetCanonicalChainId() ?? Guid.NewGuid()
             )
         {
         }
@@ -57,9 +48,9 @@ namespace Libplanet.Blockchain
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
-            if (Store.GetCanonicalNamespace() is null)
+            if (Store.GetCanonicalChainId() is null)
             {
-                Store.SetCanonicalNamespace(Id.ToString());
+                Store.SetCanonicalChainId(Id);
             }
         }
 
@@ -121,9 +112,7 @@ namespace Libplanet.Blockchain
                 {
                     _rwlock.EnterUpgradeableReadLock();
 
-                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndex(
-                        Id.ToString()
-                    );
+                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndex(Id);
 
                     // NOTE: The reason why this does not simply return indices, but iterates over
                     // indices and yields hashes step by step instead, is that we need to ensure
@@ -142,7 +131,7 @@ namespace Libplanet.Blockchain
 
         /// <inheritdoc/>
         int IReadOnlyCollection<Block<T>>.Count =>
-            checked((int)Store.CountIndex(Id.ToString()));
+            checked((int)Store.CountIndex(Id));
 
         internal IStore Store { get; }
 
@@ -157,9 +146,7 @@ namespace Libplanet.Blockchain
                 {
                     _rwlock.EnterReadLock();
 
-                    HashDigest<SHA256>? blockHash = Store.IndexBlockHash(
-                        Id.ToString(), index
-                    );
+                    HashDigest<SHA256>? blockHash = Store.IndexBlockHash(Id, index);
                     if (blockHash == null)
                     {
                         throw new ArgumentOutOfRangeException();
@@ -237,7 +224,7 @@ namespace Libplanet.Blockchain
             {
                 if (offset == null)
                 {
-                    offset = Store.IndexBlockHash(Id.ToString(), -1);
+                    offset = Store.IndexBlockHash(Id, -1);
                 }
             }
             finally
@@ -264,7 +251,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
                 try
                 {
-                    sr = Store.LookupStateReference(Id.ToString(), address, block);
+                    sr = Store.LookupStateReference(Id, address, block);
                 }
                 finally
                 {
@@ -443,7 +430,7 @@ namespace Libplanet.Blockchain
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
         {
-            long nonce = Store.GetTxNonce(Id.ToString(), address);
+            long nonce = Store.GetTxNonce(Id, address);
             IEnumerable<Transaction<T>> stagedTxs = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
@@ -470,13 +457,9 @@ namespace Libplanet.Blockchain
             DateTimeOffset currentTime
         )
         {
-            string @namespace = Id.ToString();
-            long index = Store.CountIndex(@namespace);
+            long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
-            HashDigest<SHA256>? prevHash = Store.IndexBlockHash(
-                @namespace,
-                index - 1
-            );
+            HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
             IEnumerable<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
@@ -562,8 +545,7 @@ namespace Libplanet.Blockchain
                     throw e;
                 }
 
-                string ns = Id.ToString();
-                HashDigest<SHA256>? tip = Store.IndexBlockHash(ns, -1);
+                HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
 
                 var nonceDeltas = new Dictionary<Address, long>();
                 foreach (Transaction<T> tx1 in block.Transactions)
@@ -571,7 +553,7 @@ namespace Libplanet.Blockchain
                     Address txSigner = tx1.Signer;
                     nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
 
-                    long expectedNonce = nonceDelta + Store.GetTxNonce(Id.ToString(), txSigner);
+                    long expectedNonce = nonceDelta + Store.GetTxNonce(Id, txSigner);
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
@@ -592,10 +574,10 @@ namespace Libplanet.Blockchain
                     Blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
-                        Store.IncreaseTxNonce(ns, pair.Key, pair.Value);
+                        Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
                     }
 
-                    Store.AppendIndex(ns, block.Hash);
+                    Store.AppendIndex(Id, block.Hash);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -735,7 +717,7 @@ namespace Libplanet.Blockchain
                 {
                     if (Blocks.ContainsKey(hash)
                         && Blocks[hash] is Block<T> block
-                        && hash.Equals(Store.IndexBlockHash(Id.ToString(), block.Index)))
+                        && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
                         return hash;
                     }
@@ -758,8 +740,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? tip = Store.IndexBlockHash(
-                    Id.ToString(), -1);
+                HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
                 if (tip is null)
                 {
                     yield break;
@@ -779,7 +760,7 @@ namespace Libplanet.Blockchain
                 }
 
                 IEnumerable<HashDigest<SHA256>> hashes = Store
-                    .IterateIndex(Id.ToString(), branchPointIndex, count);
+                    .IterateIndex(Id, branchPointIndex, count);
 
                 foreach (HashDigest<SHA256> hash in hashes)
                 {
@@ -807,13 +788,12 @@ namespace Libplanet.Blockchain
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
-            string id = Id.ToString();
-            string forkedId = forked.Id.ToString();
+            Guid forkedId = forked.Id;
             try
             {
                 _rwlock.EnterReadLock();
 
-                Store.ForkBlockIndexes(id, forkedId, point);
+                Store.ForkBlockIndexes(Id, forkedId, point);
                 Block<T> pointBlock = Blocks[point];
 
                 var signersToStrip = new Dictionary<Address, int>();
@@ -837,9 +817,9 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                Store.ForkStateReferences(id, forked.Id.ToString(), pointBlock);
+                Store.ForkStateReferences(Id, forked.Id, pointBlock);
 
-                foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(id))
+                foreach (KeyValuePair<Address, long> pair in Store.ListTxNonces(Id))
                 {
                     Address address = pair.Key;
                     long existingNonce = pair.Value;
@@ -878,8 +858,7 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? current = Store.IndexBlockHash(
-                    Id.ToString(), -1);
+                HashDigest<SHA256>? current = Store.IndexBlockHash(Id, -1);
                 long step = 1;
                 var hashes = new List<HashDigest<SHA256>>();
 
@@ -894,7 +873,7 @@ namespace Libplanet.Blockchain
                     }
 
                     long nextIndex = Math.Max(currentBlock.Index - step, 0);
-                    current = Store.IndexBlockHash(Id.ToString(), nextIndex);
+                    current = Store.IndexBlockHash(Id, nextIndex);
 
                     if (hashes.Count > threshold)
                     {
@@ -973,10 +952,10 @@ namespace Libplanet.Blockchain
 
                 Guid obsoleteId = Id;
                 Id = other.Id;
-                Store.SetCanonicalNamespace(Id.ToString());
+                Store.SetCanonicalChainId(Id);
                 Blocks = new BlockSet<T>(Store);
                 Transactions = new TransactionSet<T>(Store);
-                Store.DeleteNamespace(obsoleteId.ToString());
+                Store.DeleteChainId(obsoleteId);
             }
             finally
             {
@@ -1058,12 +1037,7 @@ namespace Libplanet.Blockchain
 
             if (buildStateReferences)
             {
-                Store.StoreStateReference(
-                    Id.ToString(),
-                    updatedAddresses,
-                    block.Hash,
-                    block.Index
-                );
+                Store.StoreStateReference(Id, updatedAddresses, block.Hash, block.Index);
             }
         }
     }

@@ -667,7 +667,7 @@ namespace Libplanet.Net
                         _blockChain.Id,
                         _blockChain.Tip
                     );
-                    workspace.Store.DeleteNamespace(workspace.Id.ToString());
+                    workspace.Store.DeleteChainId(workspace.Id);
                 }
                 else
                 {
@@ -1142,7 +1142,7 @@ namespace Libplanet.Net
                             // but BlockChain<T> should have an indirect interface to its underlying
                             // store.
                             IStore store = blockChain.Store;
-                            string ns = blockChain.Id.ToString();
+                            Guid chainId = blockChain.Id;
 
                             int count = 0, totalCount = recentStates.StateReferences.Count;
                             _logger.Debug("Starts to store state refs received from {0}.", peer);
@@ -1170,7 +1170,7 @@ namespace Libplanet.Net
                                 IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
                                 if (store.GetBlockIndex(hash) is long index)
                                 {
-                                    store.StoreStateReference(ns, addresses, hash, index);
+                                    store.StoreStateReference(chainId, addresses, hash, index);
                                 }
 
                                 progress?.Report(new StateReferenceDownloadState()
@@ -1786,10 +1786,10 @@ namespace Libplanet.Net
                     // but BlockChain<T> should have an indirect interface to its underlying
                     // store.
                     IStore store = _blockChain.Store;
-                    string ns = _blockChain.Id.ToString();
+                    Guid chainId = _blockChain.Id;
 
                     stateRefs = store.ListAllStateReferences(
-                        ns,
+                        chainId,
                         onlyAfter: @base,
                         ignoreAfter: target
                     );

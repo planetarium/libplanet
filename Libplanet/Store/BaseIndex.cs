@@ -22,8 +22,6 @@ namespace Libplanet.Store
 
         protected IStore Store { get; }
 
-        protected string StoreNamespace { get; }
-
         public abstract TVal this[TKey key] { get; set; }
 
         public void Add(TKey key, TVal value)
