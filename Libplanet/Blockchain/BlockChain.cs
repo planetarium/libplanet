@@ -700,6 +700,7 @@ namespace Libplanet.Blockchain
             return ActionEvaluation.EvaluateActionsGradually(
                 block.Hash,
                 block.Index,
+                null,
                 lastStates,
                 miner,
                 miner,

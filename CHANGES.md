@@ -8,6 +8,17 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  Replaced `UnexpectedlyTerminatedTxRehearsalException` with
+    `UnexpectedlyTerminatedActionException`.
+ -  The following methods became to throw
+    `UnexpectedlyTerminatedActionException` with having its `InnerException`
+    during actions being evaluated if any action of them throws an exception:
+    [[#498]]
+    -  `Transaction<T>.EvaluateActions()`
+    -  `Transaction<T>.EvaluateActionsGradually()`
+    -  `Block<T>.EvaluateActionsPerTx()`
+    -  `Block<T>.Evaluate()`
+    -  `BlockChain<T>.GetStates(completeStates: true)`
  -  The concept of "namespaces" in `IStore` was replaced by "chain IDs"
     to be consistent with `BlockChain<T>`.  [[#483], [#486]]
      -  Renamed `IStore.ListNamespaces()` method to `ListChainIds()`.
@@ -90,6 +101,7 @@ To be released.
 [#483]: https://github.com/planetarium/libplanet/issues/483
 [#484]: https://github.com/planetarium/libplanet/pull/484
 [#486]: https://github.com/planetarium/libplanet/pull/486
+[#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 
