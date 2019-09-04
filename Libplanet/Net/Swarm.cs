@@ -1452,8 +1452,6 @@ namespace Libplanet.Net
                     $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {e}");
                 throw;
             }
-
-            BroadcastBlocks(blocks);
         }
 
         private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
@@ -1608,6 +1606,9 @@ namespace Libplanet.Net
                     _blockChain.Swap(previousBlocks, render: true);
                     _logger.Debug("Swapping complete");
                 }
+
+                // FIXME: Moved to more appropriate place
+                BroadcastBlocks(blocks);
             }
             else
             {
