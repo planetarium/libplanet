@@ -57,6 +57,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` now broadcasts transactions as soon as new transactions are received.
+    [[#463], [#496]]
  -  `Swarm<T>` now ignores block hashes which already exists.  [[#461], [#484]]
  -  `Swarm<T>.PreloadAsync()` method became to download precalculated states
     of blocks from a likely branchpoint instead of a genesis block from
@@ -82,11 +84,13 @@ To be released.
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#461]: https://github.com/planetarium/libplanet/issues/461
+[#463]: https://github.com/planetarium/libplanet/issues/463
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
 [#483]: https://github.com/planetarium/libplanet/issues/483
 [#484]: https://github.com/planetarium/libplanet/pull/484
 [#486]: https://github.com/planetarium/libplanet/pull/486
+[#496]: https://github.com/planetarium/libplanet/pull/496
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 
 

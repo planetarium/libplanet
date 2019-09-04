@@ -1607,8 +1607,8 @@ namespace Libplanet.Net
                     _logger.Debug("Swapping complete");
                 }
 
-                var msg = new BlockHashes(peer.Address, blocks.Select(b => b.Hash));
-                BroadcastMessage(msg);
+                // FIXME: Moved to more appropriate place
+                BroadcastBlocks(blocks);
             }
             else
             {
@@ -1744,6 +1744,8 @@ namespace Libplanet.Net
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
+
+            BroadcastTxs(txs);
         }
 
         private void TransferBlocks(GetBlocks getData)
