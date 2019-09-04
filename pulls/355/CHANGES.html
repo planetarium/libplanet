@@ -136,9 +136,6 @@ a deterministic but unpredictable order.  The order is determined by
 both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
 predict the order of transactions in a block before it's mined.
 [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
-<li><code>TxId</code> class became to implement <code>IComparable&lt;TxId&gt;</code> and
-<code>IComparable</code> interfaces.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
-<li>Added <code>InvalidBlockTransactionsException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -156,8 +153,6 @@ instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/
 connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing table of
 the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li><code>Block&lt;T&gt;.Mine(long, long, Address, HashDigest&lt;SHA256&gt;?, DateTimeOffset, IEnumerable&lt;Transaction&lt;T&gt;&gt;)</code> became to order <code>Block&lt;T&gt;.Transactions</code> by
-their <code>Id</code>.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
