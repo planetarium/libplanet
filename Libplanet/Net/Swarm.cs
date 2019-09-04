@@ -1401,18 +1401,36 @@ namespace Libplanet.Net
                 return;
             }
 
+            ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
+                .Where(hash => !_blockChain.Blocks.ContainsKey(hash))
+                .ToImmutableList();
+
+            if (!newHashes.Any())
+            {
+                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHashes)}.");
+                return;
+            }
+
             _logger.Debug(
-                $"Trying to GetBlocksAsync() " +
-                $"(using {message.Hashes.Count()} hashes)");
+                $"Trying to {nameof(GetBlocksAsync)}() " +
+                "using {0} hashes.",
+                newHashes.Count());
+
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
-                message.Hashes
+                newHashes
             );
 
             List<Block<T>> blocks = await fetched.ToListAsync(
                 cancellationToken
             );
-            _logger.Debug("GetBlocksAsync() complete.");
+            _logger.Debug($"{nameof(GetBlocksAsync)}() complete.");
+
+            if (!blocks.Any())
+            {
+                _logger.Debug("No blocks fetched.");
+                return;
+            }
 
             try
             {

@@ -57,6 +57,7 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` now ignores block hashes which already exists.  [[#461], [#484]]
  -  `Swarm<T>.PreloadAsync()` method became to download precalculated states
     of blocks from a likely branchpoint instead of a genesis block from
     a trusted peer (i.e., `trustedStateValidators`) where there are branches
@@ -80,9 +81,11 @@ To be released.
 [#353]: https://github.com/planetarium/libplanet/pull/353
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
+[#461]: https://github.com/planetarium/libplanet/issues/461
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
 [#483]: https://github.com/planetarium/libplanet/issues/483
+[#484]: https://github.com/planetarium/libplanet/pull/484
 [#486]: https://github.com/planetarium/libplanet/pull/486
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 

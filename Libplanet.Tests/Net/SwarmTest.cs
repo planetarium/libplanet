@@ -1074,6 +1074,53 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task IgnoreExistingBlocks()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis);
+
+            foreach (int i in Enumerable.Range(0, 3))
+            {
+                chainA.MineBlock(_fx1.Address1);
+                await Task.Delay(100);
+            }
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                await swarmB.BlockReceived.WaitAsync();
+
+                Assert.Equal(chainA.AsEnumerable(), chainB);
+
+                CancellationTokenSource cts = new CancellationTokenSource();
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                Task t = swarmB.BlockReceived.WaitAsync(cts.Token);
+
+                // Actually, previous code may pass this test if message is
+                // delayed over 5 seconds.
+                await Task.Delay(5000);
+                Assert.False(t.IsCompleted);
+
+                cts.Cancel();
+            }
+            finally
+            {
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public void ThrowArgumentExceptionInConstructor()
         {
             Assert.Throws<ArgumentNullException>(() =>
