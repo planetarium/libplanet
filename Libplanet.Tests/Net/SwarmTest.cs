@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Net
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
@@ -1095,7 +1095,9 @@ namespace Libplanet.Tests.Net
 
                 await Task.Delay(10000);
 
+                Log.Debug("Compare chainA and chainB");
                 Assert.Equal(chainA.AsEnumerable(), chainB);
+                Log.Debug("Compare chainA and chainC");
                 Assert.Equal(chainA.AsEnumerable(), chainC);
             }
             finally

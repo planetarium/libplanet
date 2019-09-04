@@ -765,7 +765,9 @@ namespace Libplanet.Net
                     }
                 }
 
+                _logger.Verbose("Trying to ping all peers. (count: {0})", tasks.Count);
                 await Task.WhenAll(tasks);
+                _logger.Verbose("Update complete.");
             }
             catch (DifferentAppProtocolVersionException)
             {
@@ -825,6 +827,7 @@ namespace Libplanet.Net
             Guid reqId = Guid.NewGuid();
             try
             {
+                _logger.Verbose("Adding request[{0}] to queue...", reqId);
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 await _requests.AddAsync(
                     new MessageRequest
@@ -837,6 +840,7 @@ namespace Libplanet.Net
                        TaskCompletionSource = tcs,
                     }
                 );
+                _logger.Verbose("Request Added. waiting for reply...");
                 IEnumerable<Message> reply = await tcs.Task;
 
                 _logger.Debug($"Received [{reply}] from [{peer.Address.ToHex()}]...");
@@ -2005,6 +2009,7 @@ namespace Libplanet.Net
         {
             while (!cancellationToken.IsCancellationRequested)
             {
+                _logger.Verbose("Waiting for new request...");
                 var req = await _requests.TakeAsync(cancellationToken);
                 _logger.Verbose("Request[{0}] taken.", req.Id);
 
