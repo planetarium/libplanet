@@ -269,7 +269,7 @@ namespace Libplanet.Tests.Blocks
                     0,
                     _fx.TxFixture.PrivateKey2,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
                 ),
                 Transaction<DumbAction>.Create(
                     0,

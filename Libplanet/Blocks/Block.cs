@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
@@ -43,10 +42,12 @@ namespace Libplanet.Blocks
             Timestamp = timestamp;
             Transactions = transactions.ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
+
+            var hashInteger = new BigInteger(Hash.ToByteArray());
             OrderedTransactions =
                 Transactions
                     .OrderBy(tx =>
-                        new BigInteger(tx.Id.ToByteArray()) ^ new BigInteger(Hash.ToByteArray()));
+                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToArray();
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -109,9 +110,7 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
-            ImmutableArray<Transaction<T>> orderedTxs =
-                transactions.OrderBy(tx => tx.Id).ToImmutableArray();
-
+            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
@@ -400,22 +399,6 @@ namespace Libplanet.Blocks
                 );
             }
 
-            if (Transactions.Any())
-            {
-                TxId beforeTxId = Transactions.First().Id;
-                foreach (Transaction<T> tx in Transactions.Skip(1))
-                {
-                    if (beforeTxId.CompareTo(tx.Id) > 0)
-                    {
-                        throw new InvalidBlockTransactionsException(
-                            $"transactions of {Hash} aren't sorted by Transaction<T>.Id"
-                        );
-                    }
-
-                    beforeTxId = tx.Id;
-                }
-            }
-
             foreach (Transaction<T> tx in Transactions)
             {
                 tx.Validate();
@@ -428,7 +411,7 @@ namespace Libplanet.Blocks
         )
         {
             IEnumerable transactions =
-                Transactions.OrderBy(tx => tx.Id).Select(
+                Transactions.Select(
                     tx => includeTransactionData ?
                     tx.ToRawTransaction(true) as object :
                     tx.Id.ToByteArray() as object

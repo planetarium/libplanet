@@ -107,8 +107,6 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 txs = new List<Transaction<T>>();
             }
 
-            txs = txs.OrderBy(tx => tx.Id);
-
             long index = previousBlock.Index + 1;
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
