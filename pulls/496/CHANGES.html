@@ -135,7 +135,7 @@ calling <code>Swarm&lt;T&gt;.BootstrapAsync()</code>, <code>Swarm&lt;T&gt;.Prelo
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> now broadcast transaction as soon as new transactions are received.
-[[#463], <a href="https://github.com/planetarium/libplanet/pull/TBD">#TBD</a>]</li>
+[[#463], <a href="https://github.com/planetarium/libplanet/pull/496">#496</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> now ignores block hashes which already exists.  [<a href="https://github.com/planetarium/libplanet/issues/461">#461</a>, <a href="https://github.com/planetarium/libplanet/pull/484">#484</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method became to download precalculated states
 of blocks from a likely branchpoint instead of a genesis block from
@@ -782,6 +782,9 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/fix-463/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
