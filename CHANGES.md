@@ -64,12 +64,13 @@ To be released.
  -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
     calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
     `Swarm<T>.StartAsync()`.  [[#353]]
- -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.  [[#353]]
+ -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
+    [[#353]]
 
 ### Behavioral changes
 
- -  `Swarm<T>` now broadcasts transactions as soon as new transactions are received.
-    [[#463], [#496]]
+ -  `Swarm<T>` now broadcasts transactions as soon as new transactions are
+    received.  [[#463], [#496]]
  -  `Swarm<T>` now ignores block hashes which already exists.  [[#461], [#484]]
  -  `Swarm<T>.PreloadAsync()` method became to download precalculated states
     of blocks from a likely branchpoint instead of a genesis block from
@@ -81,10 +82,10 @@ To be released.
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
  -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
     `Swarm<T>()`.  [[#353]]
- -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
-    connected to each peer.  [[#353]]
- -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
-    the host peer.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now
+    selectively connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing
+    table of the host peer.  [[#353]]
 
 ### Bug fixes
 
@@ -157,8 +158,8 @@ Released on August 22, 2019.
 
  -  Added `IStore.GetBlockIndex()` method.  [[#385]]
  -  `StoreExtension.LookupStateReference<T>()` method became to return
-    `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of `Block<T>.Hash`
-    and `Block<T>.Index`.  [[#350]]
+    `Tuple<HashDigest<SHA256>, long>` which is a nullable tuple of
+    `Block<T>.Hash` and `Block<T>.Index`.  [[#350]]
  -  Added `IBlockPolicy<T>.BlockAction` property.  [[#319], [#367]]
  -  Removed the type parameter of `ActionEvaluation`.  [[#319], [#367]]
  -  `ActionEvaluation.Action` became to `IAction` type.  [[#319], [#367]]
@@ -167,8 +168,9 @@ Released on August 22, 2019.
  -  `LiteDBStore()` constructor became to have a new option named `readOnly` and
     turned off by default.  [[#434]]
  -  `BaseIndex.ContainsKey()` method became `abstract`.  [[#390]]
- -  `BlockDownloadState.TotalBlockCount` and `BlockDownloadState.ReceivedBlockCount`
-    became to `Int64` type.  [[#396], [#399]]
+ -  `BlockDownloadState.TotalBlockCount` and
+    `BlockDownloadState.ReceivedBlockCount` became to `Int64` type.
+    [[#396], [#399]]
  -  `IStore.IterateIndex()` method became to receive `offset` and `limit`
     parameters.  [[#425]]
  -  Added `IStore.GetCanonicalNamespace()` method.  [[#426]]
@@ -199,7 +201,8 @@ Released on August 22, 2019.
     `IComparable` interfaces.  [[#363]]
  -  Added `BlockChain<T>.BlockHashes` property.  [[#389]]
  -  `Swarm<T>.PreloadAsync(IProgress<PreloadState>, IImmutableSet<Address>,
-    CancellationToken)` became to report progress for all phases.  [[#397], [#400]]
+    CancellationToken)` became to report progress for all phases.
+    [[#397], [#400]]
  -  Added `PreloadState`, `ActionExecutionState`, `StateReferenceDownloadState`,
     and `BlockStateDownloadState` classes to cover all phases in the entire
     preloading process.  [[#397], [#400]]
@@ -226,7 +229,8 @@ Released on August 22, 2019.
     instead of the window size of a chunk (i.e., 500).  [[#396], [#399]]
  -  `Swarm<T>.PreloadAsync()` became to get the first parameter, `progress`,
     which accepts `IProgress<PreloadState>`.  [[#397], [#400]]
- -  `BlockHashes` messages became to contain one more higher hash. [[#408], [#445]]
+ -  `BlockHashes` messages became to contain one more higher hash.
+    [[#408], [#445]]
  -  `Swarm<T>.PreloadAsync()` became safe from data corruption even
     if a preloading process suddenly gets shutdown.  [[#417]]
  -  `FileStore` and `LiteDBStore` became to guarantee atomicity of storing
@@ -399,8 +403,8 @@ Released on July 8, 2019.
  -  Improved performance of `Swarm<T>`'s response time to `GetBlockHashes`
     request messages.  [[#277]]
  -  Added IPv6 support to `Libplanet.Stun.StunAddress`. [[#267], [#271]]
- -  `IStore.GetBlockStates()` became able to return `null` to represent an absence
-    of states (i.e., incomplete states).  [[#272], [#285]]
+ -  `IStore.GetBlockStates()` became able to return `null` to represent
+    an absence of states (i.e., incomplete states).  [[#272], [#285]]
  -  `Swarm<T>` became to broadcast staged `Transaction`s periodically
      so that game apps no more need to maintain their own thread to
      broadcast staged transactions.  [[#274], [#297]]
@@ -516,7 +520,8 @@ Released on May 31, 2019.
     [[#232]]
  -  Added `IStore.ForkStateReferences<T>(string, string, Block<T>,
     IImmutableSet<Address>` method.  [[#232]]
- -  Removed `Block<T>.Validate()` and `Block<T>.EvaluateActions()` method.  [[#243]]
+ -  Removed `Block<T>.Validate()` and `Block<T>.EvaluateActions()` method.
+    [[#243]]
  -  Added `Transaction<T>.Nonce` and `RawTransaction.Nonce` properties.
     [[#246]]
  -  Added `IStore.GetTxNonce(string, Address)` method.  [[#246]]
@@ -581,8 +586,8 @@ Released on May 31, 2019.
  -  `BlockChain<T>.Append()` method became to throw `InvalidTxNonceException`
     when the `Transaction<T>.Nonce` does not correspond to its `Signer`'s
     current nonce.  [[#246]]
- -  `Swarm` became to enforce `ForceDotNet.Force()` in [AsyncIO] while it's running on
-    Mono runtime.  [[#247]]
+ -  `Swarm` became to enforce `ForceDotNet.Force()` in [AsyncIO] while
+    it's running on Mono runtime.  [[#247]]
 
 ### Bug fixes
 
