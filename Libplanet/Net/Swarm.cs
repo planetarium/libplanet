@@ -733,16 +733,19 @@ namespace Libplanet.Net
             }
             catch (TimeoutException)
             {
-                _logger.Debug("Timeout occurred during AddPeersAsync().");
+                _logger.Debug(
+                    $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug("Task is cancelled during AddPeersAsync().");
+                _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected exception occurred during AddPeersAsync().");
+                _logger.Error(
+                    e,
+                    $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
                 throw;
             }
         }
@@ -777,8 +780,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    "An unexpected exception occurred during SendMessageAsync(). {0}",
-                    e);
+                    $"An unexpected exception occurred during {nameof(SendMessageAsync)}(). {e}");
                 throw;
             }
             finally
@@ -834,22 +836,26 @@ namespace Libplanet.Net
                 _logger.Error(e, "Different version received.");
                 throw;
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
-                _logger.Error(e, "Timeout occurred during SendMessageWithReplyAsync().");
+#pragma warning disable MEN002
+                _logger.Debug(
+                    $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}() after {timeout}.");
+#pragma warning restore MEN002
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug("Task canceled during SendMessageWithReplyAsync().");
+                _logger.Debug($"Task canceled during {nameof(SendMessageWithReplyAsync)}().");
                 throw;
             }
             catch (Exception e)
             {
+#pragma warning disable MEN002
                 _logger.Error(
                     e,
-                    "An unexpected exception occurred during SendMessageWithReplyAsync(). {0}",
-                    e);
+                    $"An unexpected exception occurred during {nameof(SendMessageWithReplyAsync)}(). {e}");
+#pragma warning restore MEN002
                 throw;
             }
         }
@@ -1042,18 +1048,15 @@ namespace Libplanet.Net
                             await yield.ReturnAsync((peer, pong));
                         }
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
-                        _logger.Error(
-                            e,
-                            $"TimeoutException occured ({peer})."
-                        );
+                        _logger.Debug($"TimeoutException occurred during dial to ({peer}).");
                     }
                     catch (IOException e)
                     {
                         _logger.Error(
                             e,
-                            $"IOException occured ({peer})."
+                            $"IOException occurred ({peer})."
                         );
                     }
                     catch (DifferentAppProtocolVersionException e)
@@ -1451,10 +1454,10 @@ namespace Libplanet.Net
                     _logger.Debug("Append complete.");
                 }
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
                 // As we have more chances, ignore this.
-                _logger.Debug(e, $"Timeout occurred during {nameof(ProcessBlockHashes)}(): {e}");
+                _logger.Debug($"Timeout occurred during {nameof(ProcessBlockHashes)}()");
             }
             catch (Exception e)
             {
@@ -1752,9 +1755,9 @@ namespace Libplanet.Net
                     peer, newTxIds, cancellationToken);
                 txs = await fetched.ToListAsync(cancellationToken);
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
-                _logger.Debug(e, $"Timeout occurred during {nameof(ProcessTxIds)}(): {e}");
+                _logger.Debug($"Timeout occurred during {nameof(ProcessTxIds)}().");
                 return;
             }
 
@@ -2018,13 +2021,13 @@ namespace Libplanet.Net
             }
             catch (TimeoutException ex)
             {
-                _logger.Error(ex, "TimeoutException occured.");
+                _logger.Error(ex, $"TimeoutException occurred during {nameof(DoBroadcast)}().");
             }
             catch (Exception ex)
             {
                 _logger.Error(
                     ex,
-                    "An unexpected exception occured during DoBroadcast()"
+                    $"An unexpected exception occurred during {nameof(DoBroadcast)}()."
                 );
             }
         }
