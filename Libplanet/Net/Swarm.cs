@@ -1618,6 +1618,12 @@ namespace Libplanet.Net
                     _logger.Debug("Swapping complete");
                 }
 
+                var blockHashes =
+                    blocks.Aggregate(string.Empty, (current, block) =>
+                        current + $"[{block.Hash.ToString()}]");
+                _logger.Debug($"Re-broadcast {nameof(BlockHashes)} with {blocks.Count} blocks " +
+                              $"which are {blockHashes}.");
+
                 // FIXME: Moved to more appropriate place
                 BroadcastBlocks(blocks);
             }
