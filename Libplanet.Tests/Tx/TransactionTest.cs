@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -171,16 +172,22 @@ namespace Libplanet.Tests.Tx
         [Fact]
         public void CreateWithActionsThrowingException()
         {
-            var action = new ThrowException { Throw = true };
-            Assert.Throws<UnexpectedlyTerminatedTxRehearsalException>(() =>
-                Transaction<ThrowException>.Create(
-                    0,
-                    _fx.PrivateKey1,
-                    new[] { action },
-                    ImmutableHashSet<Address>.Empty,
-                    DateTimeOffset.UtcNow
-                )
-            );
+            var action = new ThrowException { ThrowOnRehearsal = true };
+            UnexpectedlyTerminatedActionException e =
+                Assert.Throws<UnexpectedlyTerminatedActionException>(() =>
+                    Transaction<ThrowException>.Create(
+                        0,
+                        _fx.PrivateKey1,
+                        new[] { action },
+                        ImmutableHashSet<Address>.Empty,
+                        DateTimeOffset.UtcNow
+                    )
+                );
+            Assert.Null(e.BlockHash);
+            Assert.Null(e.BlockIndex);
+            Assert.Null(e.TxId);
+            Assert.Same(action, e.Action);
+            Assert.IsType<ThrowException.SomeException>(e.InnerException);
         }
 
         [Fact]
@@ -713,6 +720,35 @@ namespace Libplanet.Tests.Tx
                     );
                 }
             }
+        }
+
+        [Fact]
+        public void EvaluateActionsThrowingException()
+        {
+            var action = new ThrowException { ThrowOnRehearsal = false, ThrowOnExecution = true };
+            Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
+                0,
+                _fx.PrivateKey1,
+                new[] { action },
+                ImmutableHashSet<Address>.Empty,
+                DateTimeOffset.UtcNow
+            );
+            var hash = new HashDigest<SHA256>(GetRandomBytes(HashDigest<SHA256>.Size));
+            UnexpectedlyTerminatedActionException e =
+                Assert.Throws<UnexpectedlyTerminatedActionException>(() =>
+                    tx.EvaluateActions(
+                        blockHash: hash,
+                        blockIndex: 123,
+                        previousStates: new AccountStateDeltaImpl(_ => null),
+                        minerAddress: GenesisMinerAddress,
+                        rehearsal: false
+                    )
+                );
+            Assert.Equal(hash, e.BlockHash);
+            Assert.Equal(123, e.BlockIndex);
+            Assert.Equal(tx.Id, e.TxId);
+            Assert.IsType<ThrowException>(e.Action);
+            Assert.IsType<ThrowException.SomeException>(e.InnerException);
         }
 
         [Fact]

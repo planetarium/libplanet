@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
+using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
 using Libplanet.Tx;
 
 namespace Libplanet.Action
@@ -55,12 +57,13 @@ namespace Libplanet.Action
         /// Executes the <paramref name="actions"/> step by step, and emits
         /// <see cref="ActionEvaluation"/> for each step.
         /// </summary>
-        /// <param name="blockHash">The <see cref="Libplanet.Blocks.Block{T}.Hash"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this <see cref="Transaction{T}"/> will
-        /// belong to.</param>
-        /// <param name="blockIndex">The <see cref="Libplanet.Blocks.Block{T}.Index"/> of
-        /// <see cref="Libplanet.Blocks.Block{T}"/> that this <see cref="Transaction{T}"/> will
-        /// belong to.</param>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of <see cref="Block{T}"/> that
+        /// <paramref name="actions"/> belongs to.</param>
+        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> of <see cref="Block{T}"/> that
+        /// <paramref name="actions"/> belongs to.</param>
+        /// <param name="txid">The <see cref="Transaction{T}.Id"/> of <see cref="Transaction{T}"/>
+        /// that <paramref name="actions"/> belongs to.  This can be <c>null</c> on rehearsal mode
+        /// or if an action is a <see cref="IBlockPolicy{T}.BlockAction"/>.</param>
         /// <param name="previousStates">The states immediately before <paramref name="actions"/>
         /// being executed.  Note that its <see cref="IAccountStateDelta.UpdatedAddresses"/> are
         /// remained to the returned next states.</param>
@@ -77,17 +80,15 @@ namespace Libplanet.Action
         /// Note that each <see cref="IActionContext.Random"/> object
         /// has a unconsumed state.
         /// </returns>
-        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
-        /// Thrown when one of <paramref name="actions"/> throws some
-        /// exception during <paramref name="rehearsal"/> mode.
+        /// <exception cref="UnexpectedlyTerminatedActionException">
+        /// Thrown when one of <paramref name="actions"/> throws some exception.
         /// The actual exception that an <see cref="IAction"/> threw
         /// is stored in its <see cref="Exception.InnerException"/> property.
-        /// It is never thrown if the <paramref name="rehearsal"/> option is
-        /// <c>false</c>.
         /// </exception>
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
+            TxId? txid,
             IAccountStateDelta previousStates,
             Address minerAddress,
             Address signer,
@@ -123,12 +124,18 @@ namespace Libplanet.Action
                 }
                 catch (Exception e)
                 {
+                    string msg;
                     if (!rehearsal)
                     {
-                        throw;
+                        msg = $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}) " +
+                              "threw an exception during execution.  See also this exception's " +
+                              "InnerException property.";
+                        throw new UnexpectedlyTerminatedActionException(
+                            blockHash, blockIndex, txid, action, msg, e
+                        );
                     }
 
-                    var msg =
+                    msg =
                         $"The action {action} threw an exception during its " +
                         "rehearsal.  It is probably because the logic of the " +
                         $"action {action} is not enough generic so that it " +
@@ -137,8 +144,8 @@ namespace Libplanet.Action
                         "useful to make the action can deal with the case of " +
                         "rehearsal mode.\n" +
                         "See also this exception's InnerException property.";
-                    throw new UnexpectedlyTerminatedTxRehearsalException(
-                        action, msg, e
+                    throw new UnexpectedlyTerminatedActionException(
+                        null, null, null, action, msg, e
                     );
                 }
 

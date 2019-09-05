@@ -353,7 +353,7 @@ namespace Libplanet.Tx
         /// is passed to <paramref name="privateKey"/> or
         /// or <paramref name="actions"/>.
         /// </exception>
-        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// <exception cref="UnexpectedlyTerminatedActionException">
         /// Thrown when one of <paramref name="actions"/> throws some
         /// exception during their rehearsal.
         /// <para>This exception is thrown probably because the logic of some of
@@ -503,7 +503,7 @@ namespace Libplanet.Tx
         /// Note that each <see cref="IActionContext.Random"/> object has
         /// a unconsumed state.
         /// </returns>
-        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// <exception cref="UnexpectedlyTerminatedActionException">
         /// Thrown when one of <see cref="Actions"/> throws some
         /// exception during <paramref name="rehearsal"/> mode.
         /// The actual exception that an <see cref="IAction"/> threw
@@ -524,6 +524,7 @@ namespace Libplanet.Tx
             return ActionEvaluation.EvaluateActionsGradually(
                 blockHash,
                 blockIndex,
+                Id,
                 previousStates,
                 minerAddress,
                 Signer,
@@ -555,7 +556,7 @@ namespace Libplanet.Tx
         /// being executed.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
         /// <paramref name="previousStates"/> as well.</returns>
-        /// <exception cref="UnexpectedlyTerminatedTxRehearsalException">
+        /// <exception cref="UnexpectedlyTerminatedActionException">
         /// Thrown when one of <see cref="Actions"/> throws some
         /// exception during <paramref name="rehearsal"/> mode.
         /// The actual exception that an <see cref="IAction"/> threw

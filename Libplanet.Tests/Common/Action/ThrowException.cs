@@ -11,22 +11,24 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
-        public bool Throw { get; set; } = false;
+        public bool ThrowOnRehearsal { get; set; } = false;
+
+        public bool ThrowOnExecution { get; set; } = false;
 
         public IImmutableDictionary<string, object> PlainValue =>
             new Dictionary<string, object>()
             {
-                { "throw", Throw },
+                { "throw", ThrowOnRehearsal },
             }.ToImmutableDictionary();
 
         public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
         {
-            Throw = (bool)plainValue["throw"];
+            ThrowOnRehearsal = (bool)plainValue["throw"];
         }
 
         public IAccountStateDelta Execute(IActionContext context)
         {
-            if (Throw)
+            if (context.Rehearsal ? ThrowOnRehearsal : ThrowOnExecution)
             {
                 throw new SomeException("An expected exception.");
             }
