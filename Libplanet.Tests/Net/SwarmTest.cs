@@ -104,7 +104,7 @@ namespace Libplanet.Tests.Net
                     s.StopAsync().Wait(DisposeTimeout);
                     Log.Logger.Debug(
                         $"Finished to {nameof(Dispose)}() a {nameof(Swarm<DumbAction>)} " +
-                        "instance #{{0}}.",
+                        "instance #{0}.",
                         i
                     );
                     i++;

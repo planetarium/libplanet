@@ -838,10 +838,10 @@ namespace Libplanet.Net
             }
             catch (TimeoutException)
             {
-#pragma warning disable MEN002
                 _logger.Debug(
-                    $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}() after {timeout}.");
-#pragma warning restore MEN002
+                    $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}() " +
+                    "after {0}.",
+                    timeout);
                 throw;
             }
             catch (TaskCanceledException)
@@ -851,11 +851,10 @@ namespace Libplanet.Net
             }
             catch (Exception e)
             {
-#pragma warning disable MEN002
+                var msg = "An unexpected exception occurred during " +
+                        $"{nameof(SendMessageWithReplyAsync)}(). {{0}}";
                 _logger.Error(
-                    e,
-                    $"An unexpected exception occurred during {nameof(SendMessageWithReplyAsync)}(). {e}");
-#pragma warning restore MEN002
+                    e, msg, e);
                 throw;
             }
         }
@@ -1277,12 +1276,9 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(
-                        e,
-#pragma warning disable MEN002 // Line is too long
-                        $"An unexpected exception occurred during {nameof(RefreshPermissions)}(): {e}"
-#pragma warning restore MEN002 // Line is too long
-                    );
+                    var msg = "An unexpected exception occurred during " +
+                              $"{nameof(RefreshPermissions)}(): {{0}}";
+                    _logger.Error(e, msg, e);
                     continue;
                 }
             }
@@ -1426,8 +1422,7 @@ namespace Libplanet.Net
             }
 
             _logger.Debug(
-                $"Trying to {nameof(GetBlocksAsync)}() " +
-                "using {0} hashes.",
+                $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
                 newHashes.Count());
 
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
@@ -1457,13 +1452,14 @@ namespace Libplanet.Net
             catch (TimeoutException)
             {
                 // As we have more chances, ignore this.
-                _logger.Debug($"Timeout occurred during {nameof(ProcessBlockHashes)}()");
+                _logger.Debug($"Timeout occurred during {nameof(ProcessBlockHashes)}().");
             }
             catch (Exception e)
             {
                 _logger.Error(
                     e,
-                    $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {e}");
+                    $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {{0}}",
+                    e);
                 throw;
             }
         }
@@ -1624,8 +1620,10 @@ namespace Libplanet.Net
                 var blockHashes =
                     blocks.Aggregate(string.Empty, (current, block) =>
                         current + $"[{block.Hash.ToString()}]");
-                _logger.Debug($"Re-broadcast {nameof(BlockHashes)} with {blocks.Count} blocks " +
-                              $"which are {blockHashes}.");
+                _logger.Debug(
+                    $"Re-broadcast {nameof(BlockHashes)} with {{0}} blocks, which are {{1}}.",
+                    blocks.Count,
+                    blockHashes);
 
                 // FIXME: Moved to more appropriate place
                 BroadcastBlocks(blocks);
