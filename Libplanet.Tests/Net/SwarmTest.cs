@@ -208,17 +208,16 @@ namespace Libplanet.Tests.Net
                 appProtocolVersion: 1,
                 host: IPAddress.Loopback.ToString());
 
-            BlockChain<DumbAction> chainWithoutBlocks = _blockchains[1];
             PrivateKey privateKey = new PrivateKey();
             string host = IPAddress.Loopback.ToString();
 
             Swarm<DumbAction> swarmA = new Swarm<DumbAction>(
-                blockChain: chainWithoutBlocks,
+                blockChain: _blockchains[1],
                 privateKey: privateKey,
                 appProtocolVersion: 1,
                 host: host);
             Swarm<DumbAction> swarmB = new Swarm<DumbAction>(
-                blockChain: chainWithoutBlocks,
+                blockChain: _blockchains[2],
                 privateKey: privateKey,
                 appProtocolVersion: 1,
                 host: host);
@@ -234,6 +233,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(seed);
                 await StartAsync(swarmA);
                 await StartAsync(swarmB);
+
+                Assert.Equal(swarmA.AsPeer, swarmB.AsPeer);
+
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await swarmA.StopAsync();
                 await swarmB.AddPeersAsync(new[] { seed.AsPeer }, null);
@@ -245,7 +247,8 @@ namespace Libplanet.Tests.Net
 
                 await swarmB.BlockReceived.WaitAsync();
 
-                Assert.Equal(chainWithBlocks.AsEnumerable(), chainWithoutBlocks);
+                Assert.NotEqual(chainWithBlocks.AsEnumerable(), _blockchains[1]);
+                Assert.Equal(chainWithBlocks.AsEnumerable(), _blockchains[2]);
             }
             finally
             {
