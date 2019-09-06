@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using Libplanet.Action;
 
@@ -18,9 +19,11 @@ namespace Libplanet.Tests.Common.Action
             Address targetAddress,
             string item,
             bool recordRehearsal = false,
-            bool recordRandom = false
+            bool recordRandom = false,
+            bool idempotent = false
         )
         {
+            Idempotent = idempotent;
             TargetAddress = targetAddress;
             Item = item;
             RecordRehearsal = recordRehearsal;
@@ -43,6 +46,8 @@ namespace Libplanet.Tests.Common.Action
 
         public bool RecordRandom { get; private set; }
 
+        public bool Idempotent { get; private set; }
+
         public IImmutableDictionary<string, object> PlainValue
         {
             get
@@ -56,6 +61,11 @@ namespace Libplanet.Tests.Common.Action
                     // In order to avoid changing tx signatures in many test
                     // fixtures, adds field only if RecordRandom = true.
                     plainValue = plainValue.Add("record_random", true);
+                }
+
+                if (Idempotent)
+                {
+                    plainValue = plainValue.Add("idempotent", Idempotent);
                 }
 
                 return plainValue;
@@ -85,7 +95,16 @@ namespace Libplanet.Tests.Common.Action
             string item = RecordRehearsal
                 ? $"{Item}:{context.Rehearsal}"
                 : Item;
-            items = items is null ? item : $"{items},{item}";
+
+            if (Idempotent)
+            {
+                var splitedItems = items is null ? new[] { item } : (items + "," + item).Split(',');
+                items = string.Join(",", splitedItems.OrderBy(x => float.Parse(x.Substring(4))));
+            }
+            else
+            {
+                items = items is null ? item : $"{items},{item}";
+            }
 
             if (RecordRandom)
             {
@@ -145,6 +164,11 @@ namespace Libplanet.Tests.Common.Action
                 plainValue.ContainsKey("record_random") &&
                 plainValue["record_random"] is bool r &&
                 r;
+
+            if (plainValue.ContainsKey("idempotent"))
+            {
+                Idempotent = (bool)plainValue["idempotent"];
+            }
         }
 
         public bool Equals(DumbAction other)

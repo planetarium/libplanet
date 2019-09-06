@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
@@ -41,6 +42,12 @@ namespace Libplanet.Blocks
             Timestamp = timestamp;
             Transactions = transactions.ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
+
+            var hashInteger = new BigInteger(Hash.ToByteArray());
+            OrderedTransactions =
+                Transactions
+                    .OrderBy(tx =>
+                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToArray();
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -92,6 +99,9 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        [IgnoreDuringEquals]
+        public IEnumerable<Transaction<T>> OrderedTransactions { get; }
+
         public static Block<T> Mine(
             long index,
             long difficulty,
@@ -100,8 +110,6 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
-            // FIXME: We need to fix this to solve
-            // https://github.com/planetarium/libplanet/issues/244.
             Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
@@ -207,7 +215,7 @@ namespace Libplanet.Blocks
                 new AccountStateDeltaImpl(
                     accountStateGetter ?? (a => null)
                 );
-            foreach (Transaction<T> tx in Transactions)
+            foreach (Transaction<T> tx in OrderedTransactions)
             {
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(

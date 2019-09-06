@@ -66,6 +66,11 @@ To be released.
     `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
+ -  Added `Block<T>.OrderedTransactions` property to execute transactions in
+    a deterministic but unpredictable order.  The order is determined by
+    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
+    predict the order of transactions in a block before it's mined.
+    [[#244], [#355]]
 
 ### Behavioral changes
 
@@ -82,17 +87,19 @@ To be released.
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
  -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
     `Swarm<T>()`.  [[#353]]
- -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now
-    selectively connected to each peer.  [[#353]]
- -  `TxId`s and `Block`s are now broadcasted to selected peers from routing
-    table of the host peer.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
+    connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
+    the host peer.  [[#353]]
 
 ### Bug fixes
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
 
+[#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
+[#355]: https://github.com/planetarium/libplanet/pull/355
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#461]: https://github.com/planetarium/libplanet/issues/461
