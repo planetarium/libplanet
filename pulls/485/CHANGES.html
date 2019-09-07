@@ -148,6 +148,11 @@ calling <code>Swarm&lt;T&gt;.BootstrapAsync()</code>, <code>Swarm&lt;T&gt;.Prelo
 <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method to connect with seed peers.
 [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Added <code>Block&lt;T&gt;.OrderedTransactions</code> property to execute transactions in
+a deterministic but unpredictable order.  The order is determined by
+both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
+predict the order of transactions in a block before it's mined.
+[<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -164,10 +169,10 @@ a chain of blocks for heuristics to search a likely branchpoint,
 instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
 <li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of
 <code>Swarm&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now
-selectively connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing
-table of the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively
+connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing table of
+the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
