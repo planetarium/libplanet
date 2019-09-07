@@ -1093,7 +1093,7 @@ namespace Libplanet.Tests.Net
 
                 swarmA.BroadcastBlocks(new[] { chainA.Last() });
 
-                await Task.Delay(10000);
+                await Task.Delay(20000);
 
                 Log.Debug("Compare chainA and chainB");
                 Assert.Equal(chainA.AsEnumerable(), chainB);
