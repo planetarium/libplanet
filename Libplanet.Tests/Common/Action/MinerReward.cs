@@ -16,6 +16,9 @@ namespace Libplanet.Tests.Common.Action
             Reward = reward;
         }
 
+        public static Address RewardRecordAddress =>
+            new Address("0000000000000000000000000000000000000000");
+
         public static AsyncLocal<ImmutableList<RenderRecord>>
             RenderRecords { get; } = new AsyncLocal<ImmutableList<RenderRecord>>();
 
@@ -35,6 +38,14 @@ namespace Libplanet.Tests.Common.Action
         public IAccountStateDelta Execute(IActionContext ctx)
         {
             IAccountStateDelta states = ctx.PreviousStates;
+
+            string rewardRecord = (string)states.GetState(RewardRecordAddress);
+
+            rewardRecord = rewardRecord is null
+                ? ctx.Miner.ToString()
+                : $"{rewardRecord},{ctx.Miner}";
+
+            states = states.SetState(RewardRecordAddress, rewardRecord);
 
             int previousReward = (int?)states?.GetState(ctx.Miner) ?? 0;
             int reward = previousReward + Reward;

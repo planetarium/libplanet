@@ -8,6 +8,11 @@ To be released.
 
 ### Bug fixes
 
+ -  Fix bug where `IAccountStateDelta.GetState()` hadn't returned proper state
+    when the block action is evaluated.  [[#500]]
+
+[#500]: https://github.com/planetarium/libplanet/pull/500
+
 
 Version 0.5.2
 -------------
