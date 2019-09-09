@@ -235,7 +235,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            IEnumerable<string> filenames;
+            List<string> filenames;
             _txLock.EnterReadLock();
             try
             {

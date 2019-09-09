@@ -71,7 +71,6 @@ namespace Libplanet.Blocks
                 rb.Transactions
                     .Cast<Dictionary<string, object>>()
                     .Select(d => new Transaction<T>(new RawTransaction(d)))
-                    .ToList()
                 )
         {
         }
@@ -97,10 +96,10 @@ namespace Libplanet.Blocks
         public DateTimeOffset Timestamp { get; }
 
         [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> Transactions { get; }
+        public Transaction<T>[] Transactions { get; }
 
         [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> OrderedTransactions { get; }
+        public Transaction<T>[] OrderedTransactions { get; }
 
         public static Block<T> Mine(
             long index,
