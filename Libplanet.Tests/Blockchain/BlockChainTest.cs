@@ -363,7 +363,6 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(0, blockRenders[0].Context.BlockIndex);
                 Assert.Equal(1, blockRenders[1].Context.BlockIndex);
 
-                Assert.Null(blockRenders[0].Context.PreviousStates.GetState(minerAddress));
                 Assert.Equal(1, blockRenders[0].NextStates.GetState(minerAddress));
                 Assert.Equal(
                     1,
@@ -445,6 +444,7 @@ namespace Libplanet.Tests.Blockchain
                 { addresses[2], "baz" },
                 { addresses[3], "qux" },
                 { addresses[4], 2 },
+                { MinerReward.RewardRecordAddress, $"{addresses[4]},{addresses[4]}" },
             };
 
             _blockChain.ExecuteActions(blocks[1], true);
@@ -1340,6 +1340,30 @@ namespace Libplanet.Tests.Blockchain
             blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[1], txEvaluations);
 
             Assert.Equal(2, blockActionEvaluation.OutputStates.GetState(miner));
+        }
+
+        [Fact]
+        public void BlockActionWithMultipleAddress()
+        {
+            var miner1 = _fx.Address1;
+            var miner2 = _fx.Address2;
+            var rewardRecordAddress = MinerReward.RewardRecordAddress;
+
+            _blockChain.MineBlock(miner1);
+            _blockChain.MineBlock(miner1);
+            _blockChain.MineBlock(miner2);
+
+            AddressStateMap states = _blockChain.GetStates(
+                new[] { miner1, miner2, MinerReward.RewardRecordAddress });
+
+            int reward1 = (int)states[miner1];
+            int reward2 = (int)states[miner2];
+            string rewardRecord = (string)states[rewardRecordAddress];
+
+            Assert.Equal(2, reward1);
+            Assert.Equal(1, reward2);
+
+            Assert.Equal($"{miner1},{miner1},{miner2}", rewardRecord);
         }
 
         /// <summary>
