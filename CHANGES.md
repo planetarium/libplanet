@@ -90,10 +90,12 @@ To be released.
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
  -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
     `Swarm<T>()`.  [[#353]]
- -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
-    connected to each peer.  [[#353]]
- -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
-    the host peer.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia].
+    Peers are now selectively connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing
+    table of the host peer.  [[#353]]
+ -  `PolymorphicAction<T>.ToString()` method became to show the runtime type of
+    its `InnerAction` for the sake of easier debugging.  [[#512]]
 
 ### Bug fixes
 
@@ -115,6 +117,7 @@ To be released.
 [#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
 [#508]: https://github.com/planetarium/libplanet/pull/508
+[#512]: https://github.com/planetarium/libplanet/pull/512
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 
