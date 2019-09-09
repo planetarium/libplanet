@@ -685,16 +685,10 @@ namespace Libplanet.Blockchain
 
             Address miner = block.Miner.GetValueOrDefault();
 
-            var minerState = GetStates(new[] { miner }, block.PreviousHash)
-                .GetValueOrDefault(miner);
-
             if (lastStates is null)
             {
-                lastStates = new AccountStateDeltaImpl(a => minerState);
-            }
-            else if (lastStates.GetState(miner) is null)
-            {
-                lastStates = lastStates.SetState(miner, minerState);
+                lastStates = new AccountStateDeltaImpl(
+                    a => GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a));
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
