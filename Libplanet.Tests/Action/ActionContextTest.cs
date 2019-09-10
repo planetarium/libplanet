@@ -72,9 +72,9 @@ namespace Libplanet.Tests.Action
 
             foreach (var (expected, diff) in testCases)
             {
-                Assert.Equal(expected, context1.NewGuid());
-                Assert.Equal(expected, context2.NewGuid());
-                Assert.Equal(diff, context3.NewGuid());
+                Assert.Equal(expected, context1.Random.GenerateRandomGuid());
+                Assert.Equal(expected, context2.Random.GenerateRandomGuid());
+                Assert.Equal(diff, context3.Random.GenerateRandomGuid());
             }
         }
 

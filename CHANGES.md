@@ -58,6 +58,8 @@ To be released.
     `Swarm<T>.BootstrapAsync()` method instead.  [[#353]]
  -  `Peer` with endpoints should be typed as `BoundPeer` which is inherited from
     `Peer`.  [[#353]]
+ -  Removed `IActionContext.NewGuid()` method. To get a randomly generated [Guid][Guid],
+    use `RandomExtension.GenerateRandomGuid()` instead. [[#508]]
 
 ### Added interfaces
 
@@ -71,6 +73,7 @@ To be released.
     both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
     predict the order of transactions in a block before it's mined.
     [[#244], [#355]]
+ -  Added `RandomExtension` static class. [[#508]]
 
 ### Behavioral changes
 
@@ -111,7 +114,9 @@ To be released.
 [#486]: https://github.com/planetarium/libplanet/pull/486
 [#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
+[#508]: https://github.com/planetarium/libplanet/pull/508
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
+[Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 
 
 Version 0.5.3
