@@ -138,6 +138,8 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>Peer</code> with endpoints should be typed as <code>BoundPeer</code> which is inherited from
 <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated <a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>,
+use <code>RandomExtension.GenerateRandomGuid()</code> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -151,6 +153,8 @@ a deterministic but unpredictable order.  The order is determined by
 both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
 predict the order of transactions in a block before it's mined.
 [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
+<li>Added <code>RandomExtension.GenerateRandomGuid()</code> method that generates a random
+<a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
