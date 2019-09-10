@@ -18,6 +18,7 @@ namespace Libplanet.Action
         /// <seealso cref="IRandom"/>
         public static Guid GenerateRandomGuid(this IRandom random)
         {
+            // FIXME implement rfc4122 https://www.ietf.org/rfc/rfc4122.txt
             var bytes = new byte[16];
             random.NextBytes(bytes);
             return new Guid(bytes);

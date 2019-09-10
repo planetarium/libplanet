@@ -32,13 +32,5 @@ namespace Libplanet.Action
         public IAccountStateDelta PreviousStates { get; }
 
         public IRandom Random { get; }
-
-        public Guid NewGuid()
-        {
-            // FIXME implement rfc4122 https://www.ietf.org/rfc/rfc4122.txt
-            var b = new byte[16];
-            Random.NextBytes(b);
-            return new Guid(b);
-        }
     }
 }
