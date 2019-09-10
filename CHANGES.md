@@ -73,8 +73,7 @@ To be released.
     both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
     predict the order of transactions in a block before it's mined.
     [[#244], [#355]]
- -  Added `RandomExtension.GenerateRandomGuid()` method that generates a random
-    [Guid][Guid]. [[#508]]
+ -  Added `RandomExtension` static class. [[#508]]
 
 ### Behavioral changes
 
