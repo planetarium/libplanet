@@ -77,11 +77,11 @@ If omitted (default) explorer only the local blockchain store.")]
                 byte[] pubkeyBytes = ByteUtil.ParseHex(parts[0]);
                 var pubkey = new PublicKey(pubkeyBytes);
                 var endpoint = new DnsEndPoint(parts[1], int.Parse(parts[2]));
-                Seed = new Peer(pubkey, endpoint);
+                Seed = new BoundPeer(pubkey, endpoint, 0);
             }
         }
 
-        public Peer Seed { get; set; }
+        public BoundPeer Seed { get; set; }
 
         [Option(
             'I',
