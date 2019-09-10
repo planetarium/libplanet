@@ -96,7 +96,7 @@ namespace Libplanet.Blocks
         public DateTimeOffset Timestamp { get; }
 
         [IgnoreDuringEquals]
-        public Transaction<T>[] Transactions { get; }
+        public ImmutableArray<Transaction<T>> Transactions { get; }
 
         [IgnoreDuringEquals]
         public Transaction<T>[] OrderedTransactions { get; }
