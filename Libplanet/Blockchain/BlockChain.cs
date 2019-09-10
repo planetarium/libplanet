@@ -548,7 +548,8 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
 
                 var nonceDeltas = new Dictionary<Address, long>();
-                foreach (Transaction<T> tx1 in block.Transactions)
+                var orderedTransactions = block.Transactions.OrderBy(tx => tx.Nonce);
+                foreach (Transaction<T> tx1 in orderedTransactions)
                 {
                     Address txSigner = tx1.Signer;
                     nonceDeltas.TryGetValue(txSigner, out var nonceDelta);

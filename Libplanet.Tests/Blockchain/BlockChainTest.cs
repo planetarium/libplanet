@@ -681,6 +681,7 @@ namespace Libplanet.Tests.Blockchain
                 txsA,
                 null,
                 _blockChain.Policy.GetNextBlockDifficulty(_blockChain));
+
             _blockChain.Append(b1);
 
             Assert.Equal(1, _blockChain.GetNextTxNonce(address));

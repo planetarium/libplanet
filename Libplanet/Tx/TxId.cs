@@ -18,7 +18,7 @@ namespace Libplanet.Tx
     /// <seealso cref="Transaction{T}.Id"/>
     [Serializable]
     [Equals]
-    public struct TxId : ISerializable
+    public struct TxId : ISerializable, IComparable<TxId>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="TxId"/> takes.
@@ -114,6 +114,35 @@ namespace Libplanet.Tx
         /// </returns>
         [Pure]
         public override string ToString() => ToHex();
+
+        public int CompareTo(TxId other)
+        {
+            for (int i = 0; i < Size; ++i)
+            {
+                int cmp = ByteArray[i].CompareTo(other.ByteArray[i]);
+                if (cmp != 0)
+                {
+                    return cmp;
+                }
+            }
+
+            return 0;
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is TxId other)
+            {
+                return ((IComparable<TxId>)this).CompareTo(other);
+            }
+
+            if (obj is null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            throw new ArgumentException(nameof(obj));
+        }
 
         /// <inheritdoc />
         public void GetObjectData(
