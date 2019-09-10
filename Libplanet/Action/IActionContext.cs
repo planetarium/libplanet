@@ -55,12 +55,5 @@ namespace Libplanet.Action
         /// <returns>A random object that shares interface mostly equivalent
         /// to <see cref="System.Random"/>.</returns>
         IRandom Random { get; }
-
-        /// <summary>
-        /// Creates new <see cref="Guid"/>.  Its seed (state) is determined by a block and
-        /// a transaction, which is deterministic as like <see cref="Random"/>.
-        /// </summary>
-        /// <returns>A deterministic guid.</returns>
-        Guid NewGuid();
     }
 }
