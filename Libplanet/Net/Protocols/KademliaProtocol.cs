@@ -113,6 +113,12 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
+            if (Peers.Count == 0)
+            {
+                // FIXME: Need more precise exception
+                throw new SwarmException("No seed available.");
+            }
+
             if (findPeerTasks.Count == 0)
             {
                 throw new SwarmException("Bootstrap failed.");
