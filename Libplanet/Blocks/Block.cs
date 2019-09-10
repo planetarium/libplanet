@@ -99,7 +99,7 @@ namespace Libplanet.Blocks
         public ImmutableArray<Transaction<T>> Transactions { get; }
 
         [IgnoreDuringEquals]
-        public Transaction<T>[] OrderedTransactions { get; }
+        public ImmutableArray<Transaction<T>> OrderedTransactions { get; }
 
         public static Block<T> Mine(
             long index,
