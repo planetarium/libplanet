@@ -68,12 +68,9 @@ To be released.
     `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
- -  Added `Block<T>.OrderedTransactions` property to execute transactions in
-    a deterministic but unpredictable order.  The order is determined by
-    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
-    predict the order of transactions in a block before it's mined.
-    [[#244], [#355]]
  -  Added `RandomExtension` static class. [[#508]]
+ -  `TxId` class became to implement `IComparable<TxId>` and
+    `IComparable` interfaces.  [[#244], [#511]]
 
 ### Behavioral changes
 
@@ -96,6 +93,10 @@ To be released.
     table of the host peer.  [[#353]]
  -  `PolymorphicAction<T>.ToString()` method became to show the runtime type of
     its `InnerAction` for the sake of easier debugging.  [[#512]]
+ -  The order of `Block<T>.Transactions` became to be determined by
+    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
+    predict the order of transactions in a block before it's mined.
+    [[#244], [#355], [#511]]
 
 ### Bug fixes
 
@@ -117,6 +118,7 @@ To be released.
 [#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
 [#508]: https://github.com/planetarium/libplanet/pull/508
+[#511]: https://github.com/planetarium/libplanet/pull/511
 [#512]: https://github.com/planetarium/libplanet/pull/512
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
