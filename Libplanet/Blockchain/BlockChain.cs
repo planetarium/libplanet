@@ -702,7 +702,14 @@ namespace Libplanet.Blockchain
                 new[] { Policy.BlockAction }.ToImmutableList()).First();
         }
 
-        internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
+        /// <summary>
+        /// Find an approximate to the topmost common ancestor between this
+        /// <see cref="BlockChain{T}"/> and a given <see cref="BlockLocator"/>.
+        /// </summary>
+        /// <param name="locator">A block locator that contains candidate common ancestors.</param>
+        /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything
+        /// returns <c>null</c>.</returns>
+        internal HashDigest<SHA256>? FindBranchPoint(BlockLocator locator)
         {
             try
             {
@@ -718,7 +725,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                return this[0].Hash;
+                return null;
             }
             finally
             {
@@ -741,8 +748,10 @@ namespace Libplanet.Blockchain
                     yield break;
                 }
 
-                HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
-                var branchPointIndex = (int)Blocks[branchPoint].Index;
+                HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
+                var branchPointIndex = branchPoint is HashDigest<SHA256> h
+                    ? (int)Blocks[h].Index
+                    : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable

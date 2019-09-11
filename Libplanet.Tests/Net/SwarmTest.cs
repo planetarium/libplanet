@@ -1502,9 +1502,11 @@ namespace Libplanet.Tests.Net
         }
 
         [Theory(Timeout = Timeout)]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task PreloadWithTrustedPeers(bool trust)
+        [InlineData(true, false)]
+        [InlineData(false, false)]
+        [InlineData(true, true)]
+        [InlineData(false, true)]
+        public async Task PreloadWithTrustedPeers(bool trust, bool genesisWithAction)
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
@@ -1521,7 +1523,18 @@ namespace Libplanet.Tests.Net
 
             HashDigest<SHA256>? deepBlockHash = null;
 
-            for (int i = 0; i < 3; i++)
+            Address genesisTarget = new PrivateKey().PublicKey.ToAddress();
+            if (genesisWithAction)
+            {
+                minerChain.MakeTransaction(
+                    signers[0],
+                    new[] { new DumbAction(genesisTarget, "Genesis") }
+                );
+                minerChain.MineBlock(minerSwarm.Address);
+            }
+
+            const int repeat = 3;
+            for (int i = 0; i < repeat; i++)
             {
                 int j = 0;
                 Block<DumbAction> block = null;
@@ -1600,13 +1613,29 @@ namespace Libplanet.Tests.Net
                     i++;
                 }
 
+                if (genesisWithAction)
+                {
+                    foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
+                    {
+                        var states = chain.GetStates(
+                            new[] { genesisTarget },
+                            completeStates: false
+                        );
+                        Assert.Single(states);
+                        Assert.Equal("Genesis", states[genesisTarget]);
+                    }
+                }
+
                 foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                 {
                     var minerState = chain.GetStates(
                         new[] { minerSwarm.Address },
                         completeStates: false);
                     Assert.Single(minerState);
-                    Assert.Equal(30, minerState[minerSwarm.Address]);
+                    Assert.Equal(
+                        (genesisWithAction ? 1 : 0) + repeat * fixturePairs.Length,
+                        minerState[minerSwarm.Address]
+                    );
                 }
             }
             finally

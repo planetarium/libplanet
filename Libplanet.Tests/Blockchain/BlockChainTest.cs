@@ -1104,6 +1104,39 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void FindBranchPoint()
+        {
+            Block<DumbAction> b0 = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> b1 = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> b2 = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> b3 = _blockChain.MineBlock(_fx.Address1);
+            Block<DumbAction> b4 = _blockChain.MineBlock(_fx.Address1);
+
+            var emptyLocator = new BlockLocator(new HashDigest<SHA256>[0]);
+            var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
+
+            using (var emptyFx = new LiteDBStoreFixture())
+            using (var forkFx = new LiteDBStoreFixture())
+            {
+                var emptyChain = new BlockChain<DumbAction>(_blockChain.Policy, emptyFx.Store);
+                var fork = new BlockChain<DumbAction>(_blockChain.Policy, forkFx.Store);
+                fork.Append(b0);
+                fork.Append(b1);
+                fork.Append(b2);
+                fork.MineBlock(_fx.Address1);
+
+                Assert.Null(emptyChain.FindBranchPoint(emptyLocator));
+                Assert.Null(emptyChain.FindBranchPoint(locator));
+
+                Assert.Null(_blockChain.FindBranchPoint(emptyLocator));
+                Assert.Equal(b4.Hash, _blockChain.FindBranchPoint(locator));
+
+                Assert.Null(fork.FindBranchPoint(emptyLocator));
+                Assert.Equal(b1.Hash, fork.FindBranchPoint(locator));
+            }
+        }
+
+        [Fact]
         public void EvaluateActions()
         {
             PrivateKey fromPrivateKey = new PrivateKey();
