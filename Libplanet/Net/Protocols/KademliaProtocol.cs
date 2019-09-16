@@ -16,6 +16,7 @@ namespace Libplanet.Net.Protocols
         private const int BucketSize = 16;
         private const int TableSize = Address.Size * sizeof(byte) * 8;
         private const int FindConcurrency = 3;
+        private const int MaxDepth = 3;
 
         // FIXME: This should be configurable?
         private static readonly TimeSpan RequestTimeout = TimeSpan.FromSeconds(5);
@@ -94,7 +95,7 @@ namespace Libplanet.Net.Protocols
                 {
                     await PingAsync(peer, pingSeedTimeout, cancellationToken);
                     findPeerTasks.Add(
-                        FindPeerAsync(_address, peer, findPeerTimeout, cancellationToken));
+                        FindPeerAsync(_address, peer, 0, findPeerTimeout, cancellationToken));
                 }
                 catch (DifferentAppProtocolVersionException)
                 {
@@ -195,11 +196,12 @@ namespace Libplanet.Net.Protocols
                     tasks.Add(FindPeerAsync(
                         new Address(buffer),
                         null,
+                        0,
                         RequestTimeout,
                         cancellationToken));
                 }
 
-                tasks.Add(FindPeerAsync(_address, null, RequestTimeout, cancellationToken));
+                tasks.Add(FindPeerAsync(_address, null, 0, RequestTimeout, cancellationToken));
                 try
                 {
                     await Task.WhenAll(tasks);
@@ -368,9 +370,15 @@ namespace Libplanet.Net.Protocols
         private async Task FindPeerAsync(
             Address target,
             BoundPeer viaPeer,
+            int depth,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
+            if (depth >= MaxDepth)
+            {
+                return;
+            }
+
             ImmutableList<BoundPeer> found;
             if (viaPeer is null)
             {
@@ -381,7 +389,7 @@ namespace Libplanet.Net.Protocols
                 found = await GetNeighbors(viaPeer, target, timeout, cancellationToken);
             }
 
-            await ProcessFoundAsync(found, target, timeout, cancellationToken);
+            await ProcessFoundAsync(found, target, depth, timeout, cancellationToken);
         }
 
         private async Task<ImmutableList<BoundPeer>> QueryNeighborsAsync(
@@ -466,6 +474,7 @@ namespace Libplanet.Net.Protocols
         private async Task ProcessFoundAsync(
             ImmutableList<BoundPeer> found,
             Address target,
+            int depth,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
@@ -514,7 +523,7 @@ namespace Libplanet.Net.Protocols
                     ) < 1)
                 {
                     findNeighboursTasks.Add(
-                        FindPeerAsync(target, peers[i], timeout, cancellationToken));
+                        FindPeerAsync(target, peers[i], depth + 1, timeout, cancellationToken));
                 }
             }
 
