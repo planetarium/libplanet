@@ -170,10 +170,12 @@ a chain of blocks for heuristics to search a likely branchpoint,
 instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
 <li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of
 <code>Swarm&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively
-connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing table of
-the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>.
+Peers are now selectively connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing
+table of the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li><code>PolymorphicAction&lt;T&gt;.ToString()</code> method became to show the runtime type of
+its <code>InnerAction</code> for the sake of easier debugging.  [<a href="https://github.com/planetarium/libplanet/pull/512">#512</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
