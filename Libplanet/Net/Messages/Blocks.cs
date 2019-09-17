@@ -19,6 +19,11 @@ namespace Libplanet.Net.Messages
             Payloads = payloads.ToList();
         }
 
+        public Blocks(List<byte[]> payloads)
+        {
+            Payloads = payloads;
+        }
+
         public Blocks(NetMQFrame[] body)
         {
             int payloadCount = body[0].ConvertToInt32();

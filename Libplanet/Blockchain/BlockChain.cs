@@ -623,7 +623,7 @@ namespace Libplanet.Blockchain
                 else
                 {
                     stateGetter = a =>
-                        GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a);
+                        GetStates(a.ToEnumerable(), block.PreviousHash).GetValueOrDefault(a);
                 }
 
                 ImmutableList<ActionEvaluation> txEvaluations = block
@@ -688,7 +688,7 @@ namespace Libplanet.Blockchain
             if (lastStates is null)
             {
                 lastStates = new AccountStateDeltaImpl(
-                    a => GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a));
+                    a => GetStates(a.ToEnumerable(), block.PreviousHash).GetValueOrDefault(a));
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
@@ -699,7 +699,7 @@ namespace Libplanet.Blockchain
                 miner,
                 miner,
                 Array.Empty<byte>(),
-                new[] { Policy.BlockAction }.ToImmutableList()).First();
+                ImmutableList.Create(Policy.BlockAction)).First();
         }
 
         internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
@@ -921,7 +921,7 @@ namespace Libplanet.Blockchain
                 )
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                            GetStates(a.ToEnumerable(), b.PreviousHash).GetValueOrDefault(a))
                         .Select(te => te.Item2).ToList();
 
                     if (Policy.BlockAction is IAction)
@@ -967,7 +967,7 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> b in blocksToRender)
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                            GetStates(a.ToEnumerable(), b.PreviousHash).GetValueOrDefault(a))
                         .Select(te => te.Item2).ToList();
 
                     if (Policy.BlockAction is IAction)
