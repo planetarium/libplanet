@@ -1806,7 +1806,7 @@ namespace Libplanet.Net
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
             BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256> @base = _blockChain.FindBranchPoint(baseLocator);
+            HashDigest<SHA256>? @base = _blockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>
@@ -1847,6 +1847,28 @@ namespace Libplanet.Net
                 {
                     rwlock.ExitReadLock();
                 }
+            }
+
+            if (_logger.IsEnabled(LogEventLevel.Debug))
+            {
+                var baseString = @base is HashDigest<SHA256> h
+                    ? $"{BlockChain.Blocks[h].Index}:{h}"
+                    : null;
+                var targetString = $"{BlockChain.Blocks[target].Index}:{target}";
+                _logger.Debug(
+                    "State references to send (preload): {@StateReferences} ({Base}-{Target})",
+                    stateRefs.Select(kv =>
+                        (kv.Key.ToString(), string.Join(", ", kv.Value.Select(v => v.ToString())))
+                    ).ToArray(),
+                    baseString,
+                    targetString
+                );
+                _logger.Debug(
+                    "Block states to send (preload): {@BlockStates} ({Base}-{Target})",
+                    blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
+                    baseString,
+                    targetString
+                );
             }
 
             var reply = new RecentStates(target, blockStates, stateRefs)
