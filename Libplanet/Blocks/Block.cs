@@ -40,14 +40,14 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions.ToArray();
+            Transactions = transactions.ToImmutableArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
 
             var hashInteger = new BigInteger(Hash.ToByteArray());
             OrderedTransactions =
                 Transactions
                     .OrderBy(tx =>
-                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToArray();
+                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToImmutableArray();
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
