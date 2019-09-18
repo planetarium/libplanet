@@ -40,11 +40,11 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions.ToArray();
+            Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
 
             var hashInteger = new BigInteger(Hash.ToByteArray());
-            OrderedTransactions =
+            Transactions =
                 Transactions
                     .OrderBy(tx =>
                         new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToArray();
@@ -99,9 +99,6 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
-        [IgnoreDuringEquals]
-        public IEnumerable<Transaction<T>> OrderedTransactions { get; }
-
         public static Block<T> Mine(
             long index,
             long difficulty,
@@ -110,7 +107,7 @@ namespace Libplanet.Blocks
             DateTimeOffset timestamp,
             IEnumerable<Transaction<T>> transactions)
         {
-            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
+            var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
@@ -118,8 +115,7 @@ namespace Libplanet.Blocks
                 miner,
                 previousHash,
                 timestamp,
-                orderedTxs
-            );
+                txs);
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
@@ -215,7 +211,7 @@ namespace Libplanet.Blocks
                 new AccountStateDeltaImpl(
                     accountStateGetter ?? (a => null)
                 );
-            foreach (Transaction<T> tx in OrderedTransactions)
+            foreach (Transaction<T> tx in Transactions)
             {
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
@@ -411,10 +407,10 @@ namespace Libplanet.Blocks
         )
         {
             IEnumerable transactions =
-                Transactions.Select(
-                    tx => includeTransactionData ?
-                    tx.ToRawTransaction(true) as object :
-                    tx.Id.ToByteArray() as object
+                Transactions.OrderBy(tx => tx.Id).Select(
+                    tx => includeTransactionData
+                        ? tx.ToRawTransaction(true) as object
+                        : tx.Id.ToByteArray() as object
                 );
             var rawBlock = new RawBlock(
                 index: Index,

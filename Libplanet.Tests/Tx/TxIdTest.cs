@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Libplanet.Tx;
 using Xunit;
@@ -138,6 +139,39 @@ namespace Libplanet.Tests.Tx
             }
 
             Assert.Equal(deserializedTxId, expectedTxId);
+        }
+
+        [Fact]
+        public void Compare()
+        {
+            var random = new Random();
+            var buffer = new byte[32];
+            TxId[] txIds = Enumerable.Repeat(0, 50).Select(_ =>
+            {
+                random.NextBytes(buffer);
+                return new TxId(buffer);
+            }).ToArray();
+            for (int i = 1; i < txIds.Length; i++)
+            {
+                TxId left = txIds[i - 1], right = txIds[i];
+                string leftString = left.ToHex().ToLower(),
+                    rightString = right.ToHex().ToLower();
+                Assert.Equal(
+                    Math.Min(Math.Max(left.CompareTo(right), 1), -1),
+                    Math.Min(Math.Max(leftString.CompareTo(rightString), 1), -1)
+                );
+                Assert.Equal(
+                    left.CompareTo(right),
+                    (left as IComparable).CompareTo(right)
+                );
+            }
+
+            Assert.Throws<ArgumentNullException>(() =>
+                txIds[0].CompareTo(null)
+            );
+            Assert.Throws<ArgumentException>(() =>
+                txIds[0].CompareTo("invalid")
+            );
         }
     }
 }
