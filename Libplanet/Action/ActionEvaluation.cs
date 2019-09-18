@@ -109,9 +109,16 @@ namespace Libplanet.Action
                     rehearsal: rehearsal
                 );
 
+            byte[] hashedSignature;
+            using (var hasher = SHA1.Create())
+            {
+                hashedSignature = hasher.ComputeHash(signature);
+            }
+
             int seed =
                 BitConverter.ToInt32(blockHash.ToByteArray(), 0) ^
-                (signature.Any() ? BitConverter.ToInt32(signature, 0) : 0);
+                (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
+
             IAccountStateDelta states = previousStates;
             foreach (IAction action in actions)
             {
