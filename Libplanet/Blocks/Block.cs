@@ -25,6 +25,28 @@ namespace Libplanet.Blocks
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(900);
 
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
+        /// For a more automated way, see also <see cref="Mine"/> method.
+        /// </summary>
+        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// </param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
+        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
+        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="miner">An optional address refers to who mines this block.
+        /// Goes to the <see cref="Miner"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// <param name="timestamp">The time this block is created.  Goes to
+        /// the <see cref="Timestamp"/>.</param>
+        /// <param name="transactions">The transactions to be mined together with this block.
+        /// Transactions become sorted in an unpredicted-before-mined order and then go to
+        /// the <see cref="Transactions"/> property.
+        /// </param>
+        /// <seealso cref="Mine"/>
         public Block(
             long index,
             long difficulty,
@@ -43,11 +65,39 @@ namespace Libplanet.Blocks
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
 
+            // As the order of transactions should be unpredictable until a block is mined,
+            // the sorter key should be derived from both a block hash and a txid.
             var hashInteger = new BigInteger(Hash.ToByteArray());
-            Transactions =
-                Transactions
-                    .OrderBy(tx =>
-                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToArray();
+
+            // If there are multiple transactions for the same signer these should be ordered by
+            // their tx nonces.  So transactions of the same signer should have the same sort key.
+            // The following logic "flattens" multiple tx ids having the same signer into a single
+            // txid by applying XOR between them.
+            IImmutableDictionary<Address, IImmutableSet<Transaction<T>>> signerTxs = Transactions
+                .GroupBy(tx => tx.Signer)
+                .ToImmutableDictionary(
+                    g => g.Key,
+                    g => (IImmutableSet<Transaction<T>>)g.ToImmutableHashSet()
+                );
+            IImmutableDictionary<Address, BigInteger> signerTxIds = signerTxs
+                .ToImmutableDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value
+                        .Select(tx => new BigInteger(tx.Id.ToByteArray()))
+                        .OrderBy(txid => txid)
+                        .Aggregate((a, b) => a ^ b)
+                );
+
+            // Order signers by values derivied from both block hash and their "flatten" txid:
+            IImmutableList<Address> signers = signerTxIds
+                .OrderBy(pair => pair.Value ^ hashInteger)
+                .Select(pair => pair.Key)
+                .ToImmutableArray();
+
+            // Order transactions for each signer by their tx nonces:
+            Transactions = signers
+                .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
+                .ToImmutableArray();
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
