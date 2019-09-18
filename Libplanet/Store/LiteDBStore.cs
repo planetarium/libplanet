@@ -85,15 +85,18 @@ namespace Libplanet.Store
             }
 
             _db = new LiteDatabase(connectionString);
-            _db.Mapper.RegisterType(
-                hash => hash.ToByteArray(),
-                b => new HashDigest<SHA256>(b));
-            _db.Mapper.RegisterType(
-                txid => txid.ToByteArray(),
-                b => new TxId(b));
-            _db.Mapper.RegisterType(
-                address => address.ToByteArray(),
-                b => new Address(b.AsBinary));
+            lock (_db.Mapper)
+            {
+                _db.Mapper.RegisterType(
+                    hash => hash.ToByteArray(),
+                    b => new HashDigest<SHA256>(b));
+                _db.Mapper.RegisterType(
+                    txid => txid.ToByteArray(),
+                    b => new TxId(b));
+                _db.Mapper.RegisterType(
+                    address => address.ToByteArray(),
+                    b => new Address(b.AsBinary));
+            }
 
             _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
