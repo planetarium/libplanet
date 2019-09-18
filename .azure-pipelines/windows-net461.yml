@@ -44,4 +44,4 @@ steps:
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
     MONO_THREADS_SUSPEND: preemptive
-  timeoutInMinutes: 10
+  timeoutInMinutes: 11

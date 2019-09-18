@@ -43,7 +43,7 @@ steps:
       ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
-  timeoutInMinutes: 10
+  timeoutInMinutes: 11
 
 - task: PublishTestResults@2
   inputs:
