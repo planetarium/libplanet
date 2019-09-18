@@ -138,6 +138,8 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>Peer</code> with endpoints should be typed as <code>BoundPeer</code> which is inherited from
 <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated <a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>,
+use <code>RandomExtension.GenerateRandomGuid()</code> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> class became to implement <code>IDisposable</code> again and should be
 disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
@@ -153,6 +155,7 @@ a deterministic but unpredictable order.  The order is determined by
 both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
 predict the order of transactions in a block before it's mined.
 [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>]</li>
+<li>Added <code>RandomExtension</code> static class. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -169,16 +172,18 @@ a chain of blocks for heuristics to search a likely branchpoint,
 instead of <code>HashDigest&lt;SHA256&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/465">#465</a>, <a href="https://github.com/planetarium/libplanet/pull/481">#481</a>]</li>
 <li>NetMQ instances are now initialized at <code>Swarm&lt;T&gt;.StartAsync()</code> instead of
 <code>Swarm&lt;T&gt;()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>. Peers are now selectively
-connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing table of
-the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li>Peers now connected via <a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia protocol</a>.
+Peers are now selectively connected to each peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li><code>TxId</code>s and <code>Block</code>s are now broadcasted to selected peers from routing
+table of the host peer.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
+<li><code>PolymorphicAction&lt;T&gt;.ToString()</code> method became to show the runtime type of
+its <code>InnerAction</code> for the sake of easier debugging.  [<a href="https://github.com/planetarium/libplanet/pull/512">#512</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
-<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>SocketException</code> says that
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>SocketException</code> with a message
 <code>Operation on non-blocking socket would block.</code>  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, <a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
 <h2 id="version-053">Version 0.5.3</h2>
