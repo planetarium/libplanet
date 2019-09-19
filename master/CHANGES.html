@@ -138,8 +138,9 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>Peer</code> with endpoints should be typed as <code>BoundPeer</code> which is inherited from
 <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated <a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>,
-use <code>RandomExtension.GenerateRandomGuid()</code> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
+<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated
+<a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>, use <code>RandomExtension.GenerateRandomGuid()</code> which implements
+<a href="https://tools.ietf.org/html/rfc4122">RFC 4122</a> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
