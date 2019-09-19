@@ -187,6 +187,9 @@ and transactions in each group (per signer) are ordered by
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
+<li>Fixed a bug that <code>IActionContext.Random</code> had been possible to generated
+equivalent results between actions of different transactions in
+a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/519">#519</a>]</li>
 </ul>
 <h2 id="version-053">Version 0.5.3</h2>
 <p>Released on September 9, 2019.</p>
