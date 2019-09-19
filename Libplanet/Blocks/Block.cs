@@ -10,6 +10,8 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -155,7 +157,8 @@ namespace Libplanet.Blocks
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<T>> transactions,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
@@ -184,26 +187,28 @@ namespace Libplanet.Blocks
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
             Nonce nonce = Hashcash.Answer(
-                n =>
-                {
-                    int nLen = n.ByteArray.Length;
-                    byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
-                    int totalLen =
-                        stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
-                    byte[] stamp = new byte[totalLen];
-                    Array.Copy(stampPrefix, stamp, stampPrefix.Length);
-                    int pos = stampPrefix.Length;
-                    Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
-                    pos += nLenStr.Length;
-                    stamp[pos] = 0x3a;  // ':'
-                    pos++;
-                    n.ByteArray.CopyTo(stamp, pos);
-                    pos += nLen;
-                    Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
-                    return stamp;
-                },
-                difficulty
-            );
+                 n =>
+                 {
+                     int nLen = n.ByteArray.Length;
+                     byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
+                     int totalLen =
+                         stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
+                     byte[] stamp = new byte[totalLen];
+                     Array.Copy(stampPrefix, stamp, stampPrefix.Length);
+                     int pos = stampPrefix.Length;
+                     Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
+                     pos += nLenStr.Length;
+                     stamp[pos] = 0x3a;  // ':'
+                     pos++;
+                     n.ByteArray.CopyTo(stamp, pos);
+                     pos += nLen;
+                     Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
+                     return stamp;
+                 },
+                 difficulty,
+                 cancellationToken
+             );
+
             return MakeBlock(nonce);
         }
 
