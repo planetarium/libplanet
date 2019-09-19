@@ -471,7 +471,7 @@ namespace Libplanet.Store
 
             dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
 
-            if (dstColl.Count() < 1)
+            if (!dstColl.Exists(_ => true) && CountIndex(sourceChainId) < 1)
             {
                 throw new ChainIdNotFoundException(
                     sourceChainId,

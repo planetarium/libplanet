@@ -40,8 +40,8 @@ To be released.
     HashDigest<SHA256>, long)` method so that it takes hash and index of
     a block instead of an entire block.  [[#420]]
  -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
- -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences()`
-    method.  [[#454], [#467]]
+ -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences<T>()`
+    method.  [[#454], [#467], [#509], [#522]]
  -  Removed the concept of "staged transactions that should not be broadcasted,"
     because its primary usage had been to make a transaction of a reward action
     for a candidate for block miner, and the case became achieved through
@@ -118,6 +118,7 @@ To be released.
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#461]: https://github.com/planetarium/libplanet/issues/461
 [#463]: https://github.com/planetarium/libplanet/issues/463
+[#467]: https://github.com/planetarium/libplanet/pull/467
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
 [#483]: https://github.com/planetarium/libplanet/issues/483
@@ -126,10 +127,12 @@ To be released.
 [#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
 [#508]: https://github.com/planetarium/libplanet/pull/508
+[#509]: https://github.com/planetarium/libplanet/issues/509
 [#511]: https://github.com/planetarium/libplanet/pull/511
 [#512]: https://github.com/planetarium/libplanet/pull/512
 [#519]: https://github.com/planetarium/libplanet/pull/519
 [#520]: https://github.com/planetarium/libplanet/pull/520
+[#522]: https://github.com/planetarium/libplanet/pull/522
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
