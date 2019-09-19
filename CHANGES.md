@@ -58,8 +58,9 @@ To be released.
     `Swarm<T>.BootstrapAsync()` method instead.  [[#353]]
  -  `Peer` with endpoints should be typed as `BoundPeer` which is inherited from
     `Peer`.  [[#353]]
- -  Removed `IActionContext.NewGuid()` method. To get a randomly generated [Guid][Guid],
-    use `RandomExtension.GenerateRandomGuid()` instead. [[#508]]
+ -  Removed `IActionContext.NewGuid()` method. To get a randomly generated
+    [Guid][Guid], use `RandomExtension.GenerateRandomGuid()` which implements
+    [RFC 4122] instead. [[#508]]
 
 ### Added interfaces
 
@@ -127,6 +128,7 @@ To be released.
 [#520]: https://github.com/planetarium/libplanet/pull/520
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
+[RFC 4122]: https://tools.ietf.org/html/rfc4122
 
 
 Version 0.5.3
