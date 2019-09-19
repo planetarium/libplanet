@@ -5,9 +5,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -462,8 +464,6 @@ namespace Libplanet.Tests.Store
             );
 
             var branchPoint = blocks[branchPointIndex];
-            var addressesToStrip = new[] { address1, address2 }.ToImmutableHashSet();
-
             Fx.Store.ForkStateReferences(
                 Fx.StoreChainId,
                 targetChainId,
@@ -496,6 +496,13 @@ namespace Libplanet.Tests.Store
             Assert.Throws<ChainIdNotFoundException>(() =>
                 Fx.Store.ForkStateReferences(Fx.StoreChainId, targetChainId, Fx.Block1)
             );
+
+            var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), Fx.Store);
+            chain.Append(Fx.Block1);
+
+            // Even if state references in a chain are empty it should not throw
+            // ChainIdNotFoundException unless the chain in itself does not exist.
+            Fx.Store.ForkStateReferences(chain.Id, targetChainId, Fx.Block1);
         }
 
         [Fact]

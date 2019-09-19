@@ -84,6 +84,7 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
+            // FIXME: Following names are misleading, because we index the genesis block 0, not 1.
             Block1 = TestUtils.MineGenesis<DumbAction>();
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
