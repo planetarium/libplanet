@@ -8,8 +8,13 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `BlockChain<T>.MineBlock()` is now `async` and became to throw
+    `OperationCanceledException` if `BlockChain<T>`'s tip index is changed while
+    mining.  [[#460], [#517]]
+ -  Users became able to give a cancellation token to `Block<T>.Mine()` and
+    `Hashcash.Answer()` to cancel the operation.  [[#460], [#517]]
  -  Replaced `UnexpectedlyTerminatedTxRehearsalException` with
-    `UnexpectedlyTerminatedActionException`.
+    `UnexpectedlyTerminatedActionException`.  [[#498]]
  -  The following methods became to throw
     `UnexpectedlyTerminatedActionException` with having its `InnerException`
     during actions being evaluated if any action of them throws an exception:
@@ -64,6 +69,8 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `BlockChain<T>.TipChanged` event handler which invoked with argument
+    of `long` typed tip index when `BlockChain<T>.Tip` is changed.  [[#517]]
  -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
     calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
     `Swarm<T>.StartAsync()`.  [[#353]]
@@ -118,6 +125,7 @@ To be released.
 [#355]: https://github.com/planetarium/libplanet/pull/355
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
+[#460]: https://github.com/planetarium/libplanet/issues/460
 [#461]: https://github.com/planetarium/libplanet/issues/461
 [#463]: https://github.com/planetarium/libplanet/issues/463
 [#467]: https://github.com/planetarium/libplanet/pull/467
@@ -132,6 +140,7 @@ To be released.
 [#509]: https://github.com/planetarium/libplanet/issues/509
 [#511]: https://github.com/planetarium/libplanet/pull/511
 [#512]: https://github.com/planetarium/libplanet/pull/512
+[#517]: https://github.com/planetarium/libplanet/pull/517
 [#519]: https://github.com/planetarium/libplanet/pull/519
 [#520]: https://github.com/planetarium/libplanet/pull/520
 [#521]: https://github.com/planetarium/libplanet/pull/521
