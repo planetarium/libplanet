@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Blockchain
 
         public BlockChainTest()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new LiteDBStoreFixture(memory: true);
             _blockChain = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
                 _fx.Store
@@ -1116,8 +1116,8 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new HashDigest<SHA256>[0]);
             var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
 
-            using (var emptyFx = new LiteDBStoreFixture())
-            using (var forkFx = new LiteDBStoreFixture())
+            using (var emptyFx = new LiteDBStoreFixture(memory: true))
+            using (var forkFx = new LiteDBStoreFixture(memory: true))
             {
                 var emptyChain = new BlockChain<DumbAction>(_blockChain.Policy, emptyFx.Store);
                 var fork = new BlockChain<DumbAction>(_blockChain.Policy, forkFx.Store);
