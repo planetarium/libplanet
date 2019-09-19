@@ -176,7 +176,11 @@ its <code>InnerAction</code> for the sake of easier debugging.  [<a href="https:
 <li>The order of <code>Block&lt;T&gt;.Transactions</code> became to be determined by
 both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
 predict the order of transactions in a block before it's mined.
-[<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>]</li>
+If there are multiple transactions signed by the same signer in a block
+these transactions become grouped together and the order is determined by
+a <code>Block&lt;T&gt;.Hash</code> and a fingerprint derived from all these transactions,
+and transactions in each group (per signer) are ordered by
+<code>Transaction&lt;T&gt;.Nonce</code>.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>, <a href="https://github.com/planetarium/libplanet/pull/520">#520</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
