@@ -80,11 +80,9 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li><code>Block&lt;T&gt;.Mine()</code> is now async. Users can give a cancellation token to
-cancel the task.  [<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
 <li><code>BlockChain&lt;T&gt;.MineBlock()</code> is now async and became to throw
-<code>OperationCanceledException</code> if <code>BlockChain&lt;T&gt;</code>'s tip index is changed while mining.
-[<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
+<code>OperationCanceledException</code> if <code>BlockChain&lt;T&gt;</code>'s tip index is changed while
+mining.  [<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
 <li>Replaced <code>UnexpectedlyTerminatedTxRehearsalException</code> with
 <code>UnexpectedlyTerminatedActionException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/498">#498</a>]</li>
 <li>The following methods became to throw
@@ -148,6 +146,8 @@ use <code>RandomExtension.GenerateRandomGuid()</code> instead. [<a href="https:/
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
+<li>Users can give a cancellation token to <code>Block&lt;T&gt;.Mine()</code> and <code>Hashcash.Answer()</code>
+to cancel the operation.  [<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.AddTipHandler()</code> and <code>BlockChain&lt;T&gt;.RemoveTipHandler()</code>
 which take <code>EventHandler</code> with <code>long</code> typed tip index argument that invoked when
 <code>BlockChain&lt;T&gt;</code>'s tip is changed.  [<a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
