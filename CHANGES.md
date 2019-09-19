@@ -96,7 +96,11 @@ To be released.
  -  The order of `Block<T>.Transactions` became to be determined by
     both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
     predict the order of transactions in a block before it's mined.
-    [[#244], [#355], [#511]]
+    If there are multiple transactions signed by the same signer in a block
+    these transactions become grouped together and the order is determined by
+    a `Block<T>.Hash` and a fingerprint derived from all these transactions,
+    and transactions in each group (per signer) are ordered by
+    `Transaction<T>.Nonce`.  [[#244], [#355], [#511], [#520]]
 
 ### Bug fixes
 
@@ -120,6 +124,7 @@ To be released.
 [#508]: https://github.com/planetarium/libplanet/pull/508
 [#511]: https://github.com/planetarium/libplanet/pull/511
 [#512]: https://github.com/planetarium/libplanet/pull/512
+[#520]: https://github.com/planetarium/libplanet/pull/520
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 
