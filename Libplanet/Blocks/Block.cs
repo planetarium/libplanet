@@ -151,6 +151,23 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        /// <summary>
+        /// Generate a block with given <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="index">Index of the block.</param>
+        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
+        /// <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="previousHash">
+        /// The <see cref="HashDigest{SHA256}"/> of previous block.
+        /// </param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="transactions"><see cref="Transaction{T}"/>s that are going to be included
+        /// in the block.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>A <see cref="Block{T}"/> that mined.</returns>
         public static Block<T> Mine(
             long index,
             long difficulty,
