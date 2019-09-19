@@ -141,8 +141,9 @@ replaced by <code>StageTransactionIds(IImmutableSet&lt;TxId&gt;()</code>.</li>
 <code>Swarm&lt;T&gt;.BootstrapAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
 <li><code>Peer</code> with endpoints should be typed as <code>BoundPeer</code> which is inherited from
 <code>Peer</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
-<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated <a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>,
-use <code>RandomExtension.GenerateRandomGuid()</code> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
+<li>Removed <code>IActionContext.NewGuid()</code> method. To get a randomly generated
+<a href="https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8">Guid</a>, use <code>RandomExtension.GenerateRandomGuid()</code> which implements
+<a href="https://tools.ietf.org/html/rfc4122">RFC 4122</a> instead. [<a href="https://github.com/planetarium/libplanet/pull/508">#508</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -184,12 +185,19 @@ its <code>InnerAction</code> for the sake of easier debugging.  [<a href="https:
 <li>The order of <code>Block&lt;T&gt;.Transactions</code> became to be determined by
 both a <code>Block&lt;T&gt;.Hash</code> and a <code>Transaction&lt;T&gt;.Id</code>, so that signers cannot
 predict the order of transactions in a block before it's mined.
-[<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>]</li>
+If there are multiple transactions signed by the same signer in a block
+these transactions become grouped together and the order is determined by
+a <code>Block&lt;T&gt;.Hash</code> and a fingerprint derived from all these transactions,
+and transactions in each group (per signer) are ordered by
+<code>Transaction&lt;T&gt;.Nonce</code>.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>, <a href="https://github.com/planetarium/libplanet/pull/520">#520</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> hadn't released its TURN related resources on
 <code>Swarm&lt;T&gt;.StopAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/450">#450</a>]</li>
+<li>Fixed a bug that <code>IActionContext.Random</code> had been possible to generated
+equivalent results between actions of different transactions in
+a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/519">#519</a>]</li>
 </ul>
 <h2 id="version-053">Version 0.5.3</h2>
 <p>Released on September 9, 2019.</p>
