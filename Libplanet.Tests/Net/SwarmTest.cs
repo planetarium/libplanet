@@ -224,8 +224,7 @@ namespace Libplanet.Tests.Net
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                chainWithBlocks.MineBlock(_fx1.Address1);
-                await Task.Delay(100);
+                await chainWithBlocks.MineBlock(_fx1.Address1);
             }
 
             try
@@ -542,12 +541,23 @@ namespace Libplanet.Tests.Net
                 {
                     while (!cancellationToken.IsCancellationRequested)
                     {
-                        var block = chain.MineBlock(_fx1.Address1);
-                        Log.Debug(
-                            $"Block mined. " +
-                            $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
-                        swarm.BroadcastBlocks(new[] { block });
-                        await Task.Delay(delay);
+                        try
+                        {
+                            var block = await chain.MineBlock(_fx1.Address1);
+
+                            Log.Debug(
+                                $"Block mined. " +
+                                $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
+                            swarm.BroadcastBlocks(new[] { block });
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            continue;
+                        }
+                        finally
+                        {
+                            await Task.Delay(delay);
+                        }
                     }
 
                     swarm.BroadcastBlocks(new[] { chain.Last() });
@@ -707,10 +717,10 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainA = _blockchains[0];
             BlockChain<DumbAction> chainB = _blockchains[1];
 
-            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
-            Block<DumbAction> block1 = chainA.MineBlock(_fx1.Address1);
-            Block<DumbAction> block2 = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> block1 = await chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> block2 = await chainA.MineBlock(_fx1.Address1);
 
             try
             {
@@ -768,10 +778,10 @@ namespace Libplanet.Tests.Net
                 1,
                 host: IPAddress.Loopback.ToString());
 
-            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
-            chainA.MineBlock(_fx1.Address1);
-            chainA.MineBlock(_fx1.Address1);
+            await chainA.MineBlock(_fx1.Address1);
+            await chainA.MineBlock(_fx1.Address1);
 
             try
             {
@@ -830,7 +840,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[0]
             );
             chainB.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
-            chainB.MineBlock(_fx1.Address1);
+            await chainB.MineBlock(_fx1.Address1);
 
             try
             {
@@ -871,7 +881,7 @@ namespace Libplanet.Tests.Net
             );
 
             chainA.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
-            chainA.MineBlock(_fx1.Address1);
+            await chainA.MineBlock(_fx1.Address1);
 
             try
             {
@@ -1025,20 +1035,18 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainC = _blockchains[2];
 
             // chainA, chainB and chainC shares genesis block.
-            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
             chainC.Append(genesis);
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                chainA.MineBlock(_fx1.Address1);
-                await Task.Delay(100);
+                await chainA.MineBlock(_fx1.Address1);
             }
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                chainB.MineBlock(_fx2.Address1);
-                await Task.Delay(100);
+                await chainB.MineBlock(_fx2.Address1);
             }
 
             try
@@ -1086,13 +1094,12 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainA = _blockchains[0];
             BlockChain<DumbAction> chainB = _blockchains[1];
 
-            Block<DumbAction> genesis = chainA.MineBlock(_fx1.Address1);
+            Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
 
             foreach (int i in Enumerable.Range(0, 3))
             {
-                chainA.MineBlock(_fx1.Address1);
-                await Task.Delay(100);
+                await chainA.MineBlock(_fx1.Address1);
             }
 
             try
@@ -1279,7 +1286,7 @@ namespace Libplanet.Tests.Net
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                minerChain.MineBlock(_fx1.Address1);
+                await minerChain.MineBlock(_fx1.Address1);
             }
 
             try
@@ -1311,13 +1318,13 @@ namespace Libplanet.Tests.Net
             var address = key.PublicKey.ToAddress();
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address, "foo") });
-            minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(_fx1.Address1);
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address, "bar") });
-            minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(_fx1.Address1);
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address, "baz") });
-            minerChain.MineBlock(_fx1.Address1);
+            await minerChain.MineBlock(_fx1.Address1);
 
             try
             {
@@ -1350,8 +1357,7 @@ namespace Libplanet.Tests.Net
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                minerChain.MineBlock(_fx1.Address1);
-                await Task.Delay(100);
+                await minerChain.MineBlock(_fx1.Address1);
             }
 
             var actualStates = new List<PreloadState>();
@@ -1436,8 +1442,7 @@ namespace Libplanet.Tests.Net
 
             foreach (int i in Enumerable.Range(0, 10))
             {
-                minerChain.MineBlock(_fx1.Address1);
-                await Task.Delay(100);
+                await minerChain.MineBlock(_fx1.Address1);
             }
 
             var actualStates = new List<PreloadState>();
@@ -1531,7 +1536,7 @@ namespace Libplanet.Tests.Net
                     signers[0],
                     new[] { new DumbAction(genesisTarget, "Genesis") }
                 );
-                minerChain.MineBlock(minerSwarm.Address);
+                await minerChain.MineBlock(minerSwarm.Address);
             }
 
             const int repeat = 3;
@@ -1545,7 +1550,7 @@ namespace Libplanet.Tests.Net
                         signer,
                         new[] { new DumbAction(target, $"Item{i}.{j}") }
                     );
-                    block = minerChain.MineBlock(minerSwarm.Address);
+                    block = await minerChain.MineBlock(minerSwarm.Address);
                     j++;
                 }
 
@@ -1723,7 +1728,7 @@ namespace Libplanet.Tests.Net
             Guid receiverChainId = _blockchains[1].Id;
 
             (Address address, IEnumerable<Block<DumbAction>> blocks) =
-                MakeFixtureBlocksForPreloadAsyncCancellationTest();
+                await MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -1779,7 +1784,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        private static (Address, Block<DumbAction>[])
+        private static async Task<(Address, Block<DumbAction>[])>
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
             Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
@@ -1804,7 +1809,7 @@ namespace Libplanet.Tests.Net
                             );
                         }
 
-                        Block<DumbAction> block = chain.MineBlock(miner);
+                        Block<DumbAction> block = await chain.MineBlock(miner);
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                     }
 
