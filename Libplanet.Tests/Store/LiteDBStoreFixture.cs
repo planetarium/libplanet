@@ -6,11 +6,12 @@ namespace Libplanet.Tests.Store
 {
     public class LiteDBStoreFixture : StoreFixture, IDisposable
     {
-        public LiteDBStoreFixture()
+        public LiteDBStoreFixture(bool memory = false)
         {
             string postfix = Guid.NewGuid().ToString();
-            Path = System.IO.Path.Combine(
-                System.IO.Path.GetTempPath(), $"litedb_{postfix}.db");
+            Path = memory
+                ? null
+                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}.db");
             Store = new LiteDBStore(Path);
         }
 
@@ -19,7 +20,11 @@ namespace Libplanet.Tests.Store
         public override void Dispose()
         {
             (Store as LiteDBStore)?.Dispose();
-            File.Delete(Path);
+
+            if (!(Path is null))
+            {
+                File.Delete(Path);
+            }
         }
     }
 }

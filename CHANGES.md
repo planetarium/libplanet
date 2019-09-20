@@ -102,6 +102,8 @@ To be released.
     a `Block<T>.Hash` and a fingerprint derived from all these transactions,
     and transactions in each group (per signer) are ordered by
     `Transaction<T>.Nonce`.  [[#244], [#355], [#511], [#520]]
+ -  `LiteDBStore()` became to create the database in memory if the `path`
+    parameter is `null`.  [[#521]]
 
 ### Bug fixes
 
@@ -132,6 +134,7 @@ To be released.
 [#512]: https://github.com/planetarium/libplanet/pull/512
 [#519]: https://github.com/planetarium/libplanet/pull/519
 [#520]: https://github.com/planetarium/libplanet/pull/520
+[#521]: https://github.com/planetarium/libplanet/pull/521
 [#522]: https://github.com/planetarium/libplanet/pull/522
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8

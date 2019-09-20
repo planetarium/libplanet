@@ -56,9 +56,9 @@ namespace Libplanet.Tests.Net
             _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            _fx1 = new LiteDBStoreFixture();
-            _fx2 = new LiteDBStoreFixture();
-            _fx3 = new LiteDBStoreFixture();
+            _fx1 = new LiteDBStoreFixture(memory: true);
+            _fx2 = new LiteDBStoreFixture(memory: true);
+            _fx3 = new LiteDBStoreFixture(memory: true);
 
             _blockchains = new List<BlockChain<DumbAction>>
             {
@@ -484,7 +484,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < size; i++)
             {
-                fxs[i] = new LiteDBStoreFixture();
+                fxs[i] = new LiteDBStoreFixture(memory: true);
                 blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
                 swarms[i] = new Swarm<DumbAction>(
                     blockchains[i],
@@ -607,7 +607,8 @@ namespace Libplanet.Tests.Net
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2);
             var d = new Swarm<DumbAction>(
-                new BlockChain<DumbAction>(_blockchains[0].Policy, new LiteDBStoreFixture().Store),
+                new BlockChain<DumbAction>(
+                    _blockchains[0].Policy, new LiteDBStoreFixture(memory: true).Store),
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
@@ -957,7 +958,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < size; i++)
             {
-                fxs[i] = new LiteDBStoreFixture();
+                fxs[i] = new LiteDBStoreFixture(memory: true);
                 blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
                 swarms[i] = new Swarm<DumbAction>(
                     blockchains[i],
@@ -1413,8 +1414,8 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
             var fxForNominers = new StoreFixture[2];
-            fxForNominers[0] = new LiteDBStoreFixture();
-            fxForNominers[1] = new LiteDBStoreFixture();
+            fxForNominers[0] = new LiteDBStoreFixture(memory: true);
+            fxForNominers[1] = new LiteDBStoreFixture(memory: true);
             var policy = new BlockPolicy<DumbAction>();
             var blockChainsForNominers = new BlockChain<DumbAction>[2];
             blockChainsForNominers[0] = new BlockChain<DumbAction>(policy, fxForNominers[0].Store);
@@ -1786,7 +1787,7 @@ namespace Libplanet.Tests.Net
             if (blocks is null)
             {
                 var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-                using (var storeFx = new LiteDBStoreFixture())
+                using (var storeFx = new LiteDBStoreFixture(memory: true))
                 {
                     var chain = new BlockChain<DumbAction>(policy, storeFx.Store);
                     Address miner = new PrivateKey().PublicKey.ToAddress();
