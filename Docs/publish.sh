@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 # Publish docs to GitHub Pages.
 # Note that this script is intended to be run by GitHub Actions.
 if ! (env | grep '^GITHUB_'); then
