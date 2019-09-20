@@ -182,6 +182,8 @@ these transactions become grouped together and the order is determined by
 a <code>Block&lt;T&gt;.Hash</code> and a fingerprint derived from all these transactions,
 and transactions in each group (per signer) are ordered by
 <code>Transaction&lt;T&gt;.Nonce</code>.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>, <a href="https://github.com/planetarium/libplanet/pull/520">#520</a>]</li>
+<li><code>LiteDBStore()</code> became to create the database in memory if the <code>path</code>
+parameter is <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/521">#521</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
