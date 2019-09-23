@@ -44,7 +44,10 @@ namespace Libplanet
         /// <see cref="Nonce"/> value.</param>
         /// <param name="difficulty">A number to calculate the target number
         /// for which the returned answer should be less than.</param>
-        /// <param name="cancellationToken">A cts.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
         /// <returns>A <see cref="Nonce"/> value which satisfies the given
         /// <paramref name="difficulty"/>.</returns>
         /// <seealso cref="Stamp"/>
@@ -71,7 +74,7 @@ namespace Libplanet
                 }
             }
 
-            throw new OperationCanceledException();
+            throw new OperationCanceledException(cancellationToken);
         }
 
         /// <summary>

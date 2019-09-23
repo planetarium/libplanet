@@ -1578,7 +1578,7 @@ namespace Libplanet.Tests.Blockchain
                 tip = tipIndex;
             }
 
-            _blockChain.AddTipHandler(TipChangedHandler);
+            _blockChain.TipChanged += TipChangedHandler;
             // Mine block
             called = false;
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
@@ -1618,7 +1618,7 @@ namespace Libplanet.Tests.Blockchain
             try
             {
                 Block<DumbAction> block = await chain1.MineBlock(fx1.Address1);
-                chain2.AddTipHandler(TipChangedHandler);
+                chain2.TipChanged += TipChangedHandler;
 
                 Task miningTask = chain2.MineBlock(fx2.Address1);
 

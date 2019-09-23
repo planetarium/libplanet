@@ -204,27 +204,27 @@ namespace Libplanet.Blocks
             Array.Copy(emptyNonce, offset + nonceLength, stampSuffix, 0, stampSuffix.Length);
 
             Nonce nonce = Hashcash.Answer(
-                 n =>
-                 {
-                     int nLen = n.ByteArray.Length;
-                     byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
-                     int totalLen =
-                         stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
-                     byte[] stamp = new byte[totalLen];
-                     Array.Copy(stampPrefix, stamp, stampPrefix.Length);
-                     int pos = stampPrefix.Length;
-                     Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
-                     pos += nLenStr.Length;
-                     stamp[pos] = 0x3a;  // ':'
-                     pos++;
-                     n.ByteArray.CopyTo(stamp, pos);
-                     pos += nLen;
-                     Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
-                     return stamp;
-                 },
-                 difficulty,
-                 cancellationToken
-             );
+                n =>
+                {
+                    int nLen = n.ByteArray.Length;
+                    byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
+                    int totalLen =
+                        stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
+                    byte[] stamp = new byte[totalLen];
+                    Array.Copy(stampPrefix, stamp, stampPrefix.Length);
+                    int pos = stampPrefix.Length;
+                    Array.Copy(nLenStr, 0, stamp, pos, nLenStr.Length);
+                    pos += nLenStr.Length;
+                    stamp[pos] = 0x3a;  // ':'
+                    pos++;
+                    n.ByteArray.CopyTo(stamp, pos);
+                    pos += nLen;
+                    Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
+                    return stamp;
+                },
+                difficulty,
+                cancellationToken
+            );
 
             return MakeBlock(nonce);
         }

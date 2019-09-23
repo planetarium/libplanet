@@ -29,8 +29,6 @@ namespace Libplanet.Blockchain
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
 
-        private EventHandler<long> _tipChanged;
-
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(
                 policy,
@@ -61,6 +59,8 @@ namespace Libplanet.Blockchain
         {
             _rwlock?.Dispose();
         }
+
+        public event EventHandler<long> TipChanged;
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -465,8 +465,8 @@ namespace Libplanet.Blockchain
         /// operation should be canceled.
         /// </param>
         /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
-        /// <exception cref="OperationCanceledException">Thrown when <see cref="BlockChain{T}"/>'s
-        /// tip is changed while mining.</exception>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
         public async Task<Block<T>> MineBlock(
             Address miner,
             DateTimeOffset currentTime,
@@ -490,12 +490,12 @@ namespace Libplanet.Blockchain
                 cts.Cancel();
             }
 
-            _tipChanged += WatchTip;
+            TipChanged += WatchTip;
 
             Block<T> block;
             try
             {
-                Task<Block<T>> t = Task.Run(
+                block = await Task.Run(
                     () => Block<T>.Mine(
                         index: index,
                         difficulty: difficulty,
@@ -506,7 +506,6 @@ namespace Libplanet.Blockchain
                         cancellationToken: cancellationTokenSource.Token),
                     cancellationTokenSource.Token
                 );
-                block = await t;
             }
             catch (OperationCanceledException)
             {
@@ -515,13 +514,11 @@ namespace Libplanet.Blockchain
                     throw new OperationCanceledException(
                         "Mining canceled due to change of tip index");
                 }
-                else
-                {
-                    throw new TaskCanceledException();
-                }
+
+                throw new OperationCanceledException(cancellationToken);
             }
 
-            _tipChanged -= WatchTip;
+            TipChanged -= WatchTip;
             cancellationTokenSource.Dispose();
             cts.Dispose();
 
@@ -568,16 +565,6 @@ namespace Libplanet.Blockchain
 
                 return tx;
             }
-        }
-
-        public void AddTipHandler(EventHandler<long> handler)
-        {
-            _tipChanged += handler;
-        }
-
-        public void RemoveTipHandler(EventHandler<long> handler)
-        {
-            _tipChanged -= handler;
         }
 
         internal void Append(
@@ -641,7 +628,7 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
-                    _tipChanged?.Invoke(this, block.Index);
+                    TipChanged?.Invoke(this, block.Index);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -1022,7 +1009,7 @@ namespace Libplanet.Blockchain
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 Blocks = new BlockSet<T>(Store);
-                _tipChanged?.Invoke(this, Blocks.Count);
+                TipChanged?.Invoke(this, Blocks.Count);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }

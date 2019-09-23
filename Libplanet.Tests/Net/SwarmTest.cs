@@ -546,8 +546,9 @@ namespace Libplanet.Tests.Net
                             var block = await chain.MineBlock(_fx1.Address1);
 
                             Log.Debug(
-                                $"Block mined. " +
-                                $"[Swarm: {swarm.Address}, Block: {block.Hash}]");
+                                "Block mined. [Node: {0}, Block: {1}]",
+                                swarm.Address,
+                                block.Hash);
                             swarm.BroadcastBlocks(new[] { block });
                         }
                         catch (OperationCanceledException)
