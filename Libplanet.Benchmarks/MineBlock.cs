@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -23,9 +24,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> MineBlockEmpty()
+        public async Task<Block<DumbAction>> MineBlockEmpty()
         {
-            return _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_fx.Address1);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionNoAction")]
@@ -35,9 +36,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> MineBlockOneTransactionNoAction()
+        public async Task<Block<DumbAction>> MineBlockOneTransactionNoAction()
         {
-            return _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_fx.Address1);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsNoAction")]
@@ -50,9 +51,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> MineBlockTenTransactionsNoAction()
+        public async Task<Block<DumbAction>> MineBlockTenTransactionsNoAction()
         {
-            return _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_fx.Address1);
         }
 
         [IterationSetup(Target = "MineBlockOneTransactionWithActions")]
@@ -71,9 +72,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> MineBlockOneTransactionWithActions()
+        public async Task<Block<DumbAction>> MineBlockOneTransactionWithActions()
         {
-            return _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_fx.Address1);
         }
 
         [IterationSetup(Target = "MineBlockTenTransactionsWithActions")]
@@ -95,9 +96,9 @@ namespace Libplanet.Benchmarks
         }
 
         [Benchmark]
-        public Block<DumbAction> MineBlockTenTransactionsWithActions()
+        public async Task<Block<DumbAction>> MineBlockTenTransactionsWithActions()
         {
-            return _blockChain.MineBlock(_fx.Address1);
+            return await _blockChain.MineBlock(_fx.Address1);
         }
     }
 }

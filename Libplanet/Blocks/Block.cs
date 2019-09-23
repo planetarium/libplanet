@@ -10,6 +10,8 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -149,13 +151,31 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        /// <summary>
+        /// Generate a block with given <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="index">Index of the block.</param>
+        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
+        /// <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="previousHash">
+        /// The <see cref="HashDigest{SHA256}"/> of previous block.
+        /// </param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="transactions"><see cref="Transaction{T}"/>s that are going to be included
+        /// in the block.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>A <see cref="Block{T}"/> that mined.</returns>
         public static Block<T> Mine(
             long index,
             long difficulty,
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<T>> transactions,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
@@ -202,8 +222,10 @@ namespace Libplanet.Blocks
                     Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
                     return stamp;
                 },
-                difficulty
+                difficulty,
+                cancellationToken
             );
+
             return MakeBlock(nonce);
         }
 

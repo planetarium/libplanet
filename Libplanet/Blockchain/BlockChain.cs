@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -58,6 +59,8 @@ namespace Libplanet.Blockchain
         {
             _rwlock?.Dispose();
         }
+
+        public event EventHandler<long> TipChanged;
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -452,9 +455,22 @@ namespace Libplanet.Blockchain
             return nonce;
         }
 
-        public Block<T> MineBlock(
+        /// <summary>
+        /// Mine a <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        public async Task<Block<T>> MineBlock(
             Address miner,
-            DateTimeOffset currentTime
+            DateTimeOffset currentTime,
+            CancellationToken cancellationToken = default(CancellationToken)
         )
         {
             long index = Store.CountIndex(Id);
@@ -465,21 +481,54 @@ namespace Libplanet.Blockchain
                 .Select(Store.GetTransaction<T>)
                 .Where(tx => tx.Nonce < GetNextTxNonce(tx.Signer));
 
-            Block<T> block = Block<T>.Mine(
-                index: index,
-                difficulty: difficulty,
-                miner: miner,
-                previousHash: prevHash,
-                timestamp: currentTime,
-                transactions: transactions
-            );
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+
+            void WatchTip(object target, long tipIndex)
+            {
+                cts.Cancel();
+            }
+
+            TipChanged += WatchTip;
+
+            Block<T> block;
+            try
+            {
+                block = await Task.Run(
+                    () => Block<T>.Mine(
+                        index: index,
+                        difficulty: difficulty,
+                        miner: miner,
+                        previousHash: prevHash,
+                        timestamp: currentTime,
+                        transactions: transactions,
+                        cancellationToken: cancellationTokenSource.Token),
+                    cancellationTokenSource.Token
+                );
+            }
+            catch (OperationCanceledException)
+            {
+                if (cts.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(
+                        "Mining canceled due to change of tip index");
+                }
+
+                throw new OperationCanceledException(cancellationToken);
+            }
+
+            TipChanged -= WatchTip;
+            cancellationTokenSource.Dispose();
+            cts.Dispose();
+
             Append(block, currentTime);
 
             return block;
         }
 
-        public Block<T> MineBlock(Address miner) =>
-            MineBlock(miner, DateTimeOffset.UtcNow);
+        public async Task<Block<T>> MineBlock(Address miner) =>
+            await MineBlock(miner, DateTimeOffset.UtcNow);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
@@ -579,6 +628,7 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
+                    TipChanged?.Invoke(this, block.Index);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -959,6 +1009,7 @@ namespace Libplanet.Blockchain
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 Blocks = new BlockSet<T>(Store);
+                TipChanged?.Invoke(this, Blocks.Count);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }

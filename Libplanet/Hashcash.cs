@@ -1,5 +1,7 @@
 using System;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Libplanet
 {
@@ -21,12 +23,12 @@ namespace Libplanet
         /// should not vary for different <paramref name="nonce"/>s.</para>
         /// </summary>
         /// <param name="nonce">An arbitrary nonce for an attempt, provided
-        /// by <see cref="Hashcash.Answer(Stamp, long)"/> method.</param>
+        /// by <see cref="Hashcash.Answer(Stamp, long, CancellationToken)"/> method.</param>
         /// <returns>A <see cref="byte"/> array determined from the given
         /// <paramref name="nonce"/>.  It should return consistently
         /// an equivalent array for equivalent <paramref name="nonce"/>
         /// values.</returns>
-        /// <seealso cref="Hashcash.Answer(Stamp, long)"/>
+        /// <seealso cref="Hashcash.Answer(Stamp, long, CancellationToken)"/>
         /// <seealso cref="Nonce"/>
         public delegate byte[] Stamp(Nonce nonce);
 
@@ -42,14 +44,21 @@ namespace Libplanet
         /// <see cref="Nonce"/> value.</param>
         /// <param name="difficulty">A number to calculate the target number
         /// for which the returned answer should be less than.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
         /// <returns>A <see cref="Nonce"/> value which satisfies the given
         /// <paramref name="difficulty"/>.</returns>
         /// <seealso cref="Stamp"/>
-        public static Nonce Answer(Stamp stamp, long difficulty)
+        public static Nonce Answer(
+            Stamp stamp,
+            long difficulty,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var nonceBytes = new byte[10];
             var random = new Random();
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 random.NextBytes(nonceBytes);
                 var nonce = new Nonce(nonceBytes);
@@ -64,6 +73,8 @@ namespace Libplanet
                     return nonce;
                 }
             }
+
+            throw new OperationCanceledException(cancellationToken);
         }
 
         /// <summary>
