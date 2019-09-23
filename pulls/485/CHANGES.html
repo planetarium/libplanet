@@ -117,8 +117,8 @@ taking <code>string</code> of methods in <code>IStore</code> and <code>StoreExte
 method became replaced by <code>StoreStateReference(Guid, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, long)</code> method so that it takes hash and index of
 a block instead of an entire block.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
 <li>Added <code>IStore.ForkBlockIndexes()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/420">#420</a>]</li>
-<li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences()</code>
-method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, [#467]]</li>
+<li>Removed <code>addressesToStrip</code> parameter from <code>IStore.ForkStateReferences&lt;T&gt;()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/454">#454</a>, <a href="https://github.com/planetarium/libplanet/pull/467">#467</a>, <a href="https://github.com/planetarium/libplanet/issues/509">#509</a>, <a href="https://github.com/planetarium/libplanet/pull/522">#522</a>]</li>
 <li>Removed the concept of &quot;staged transactions that should not be broadcasted,&quot;
 because its primary usage had been to make a transaction of a reward action
 for a candidate for block miner, and the case became achieved through
@@ -184,6 +184,8 @@ these transactions become grouped together and the order is determined by
 a <code>Block&lt;T&gt;.Hash</code> and a fingerprint derived from all these transactions,
 and transactions in each group (per signer) are ordered by
 <code>Transaction&lt;T&gt;.Nonce</code>.  [<a href="https://github.com/planetarium/libplanet/issues/244">#244</a>, <a href="https://github.com/planetarium/libplanet/pull/355">#355</a>, <a href="https://github.com/planetarium/libplanet/pull/511">#511</a>, <a href="https://github.com/planetarium/libplanet/pull/520">#520</a>]</li>
+<li><code>LiteDBStore()</code> became to create the database in memory if the <code>path</code>
+parameter is <code>null</code>.  [<a href="https://github.com/planetarium/libplanet/pull/521">#521</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
