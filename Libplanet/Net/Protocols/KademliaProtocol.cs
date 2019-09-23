@@ -196,12 +196,12 @@ namespace Libplanet.Net.Protocols
                     tasks.Add(FindPeerAsync(
                         new Address(buffer),
                         null,
-                        0,
+                        -1,
                         RequestTimeout,
                         cancellationToken));
                 }
 
-                tasks.Add(FindPeerAsync(_address, null, 0, RequestTimeout, cancellationToken));
+                tasks.Add(FindPeerAsync(_address, null, -1, RequestTimeout, cancellationToken));
                 try
                 {
                     await Task.WhenAll(tasks);
@@ -522,8 +522,12 @@ namespace Libplanet.Net.Protocols
                         Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
                     ) < 1)
                 {
-                    findNeighboursTasks.Add(
-                        FindPeerAsync(target, peers[i], depth + 1, timeout, cancellationToken));
+                    findNeighboursTasks.Add(FindPeerAsync(
+                        target,
+                        peers[i],
+                        (depth == -1) ? depth : depth + 1,
+                        timeout,
+                        cancellationToken));
                 }
             }
 
