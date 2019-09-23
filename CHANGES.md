@@ -69,8 +69,10 @@ To be released.
 
 ### Added interfaces
 
- -  Added `BlockChain<T>.TipChanged` event handler which invoked with argument
-    of `long` typed tip index when `BlockChain<T>.Tip` is changed.  [[#517]]
+ -  Added `BlockChain<T>.TipChanged` event which is invoked with an argument
+    of `BlockChain<T>.TipChangedEventArgs` when `BlockChain<T>.Tip` is changed.
+    [[#517], [#526]]
+ -  Added `BlockChain<T>.TipChangedEventArgs` class.  [[#526]]
  -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
     calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
     `Swarm<T>.StartAsync()`.  [[#353]]
@@ -145,6 +147,7 @@ To be released.
 [#520]: https://github.com/planetarium/libplanet/pull/520
 [#521]: https://github.com/planetarium/libplanet/pull/521
 [#522]: https://github.com/planetarium/libplanet/pull/522
+[#526]: https://github.com/planetarium/libplanet/pull/526
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
