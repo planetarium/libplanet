@@ -185,8 +185,6 @@ namespace Libplanet.Net.Protocols
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(period ?? IdleRebuildInterval, cancellationToken);
-
                 _logger.Debug("Rebuilding connection...");
                 var buffer = new byte[20];
                 var tasks = new List<Task>();
@@ -209,6 +207,8 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                 }
+
+                await Task.Delay(period ?? IdleRebuildInterval, cancellationToken);
             }
         }
 
