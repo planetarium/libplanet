@@ -151,6 +151,15 @@ namespace Libplanet.Net.Protocols
             }*/
         }
 
+        /// <summary>
+        /// Periodically checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is
+        /// online by sending <see cref="Ping"/>.
+        /// </summary>
+        /// <param name="period">The cycle in which the operation is executed. If null,
+        /// <see cref="IdleRefreshInterval"/> will be used.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
         public async Task RefreshTableAsync(
             TimeSpan? period,
             CancellationToken cancellationToken)
@@ -179,6 +188,15 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Reconstructs network connection between peers on network. It runs operation once
+        /// right after called, repeated every <see cref="TimeSpan"/> of <paramref name="period"/>.
+        /// </summary>
+        /// <param name="period">The cycle in which the operation is executed. If null,
+        /// <see cref="IdleRebuildInterval"/> will be used.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>>An awaitable task without value.</returns>
         public async Task RebuildConnectionAsync(
             TimeSpan? period,
             CancellationToken cancellationToken)
@@ -367,6 +385,20 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Send <see cref="FindNeighbors"/> messages to <paramref name="viaPeer"/>
+        /// to find <see cref="Peer"/>s near <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="Address"/> to find.</param>
+        /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
+        /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
+        /// self.</param>
+        /// <param name="depth">Target depth of recursive operation.</param>
+        /// <param name="timeout"><see cref="TimeSpan"/> for waiting reply of
+        /// <see cref="FindNeighbors"/>.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
         private async Task FindPeerAsync(
             Address target,
             BoundPeer viaPeer,
@@ -471,6 +503,21 @@ namespace Libplanet.Net.Protocols
             _swarm.ReplyMessage(pong);
         }
 
+        /// <summary>
+        /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighbors"/>
+        /// request.
+        /// </summary>
+        /// <param name="found"><see cref="Peer"/>s that found.</param>
+        /// <param name="target">The target <see cref="Address"/> to search.</param>
+        /// <param name="depth">Target depth of recursive operation. If -1 is given,
+        /// it runs until the closest peer is found.</param>
+        /// <param name="timeout"><see cref="TimeSpan"/> for next depth's
+        /// <see cref="FindPeerAsync"/> operation.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        /// <exception cref="TimeoutException">Thrown when all peers that found are
+        /// not online.</exception>
         private async Task ProcessFoundAsync(
             ImmutableList<BoundPeer> found,
             Address target,
