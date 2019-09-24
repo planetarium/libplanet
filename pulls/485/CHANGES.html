@@ -80,8 +80,13 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
+<li><code>BlockChain&lt;T&gt;.MineBlock()</code> is now <code>async</code> and became to throw
+<code>OperationCanceledException</code> if <code>BlockChain&lt;T&gt;</code>'s tip index is changed while
+mining.  [<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
+<li>Users became able to give a cancellation token to <code>Block&lt;T&gt;.Mine()</code> and
+<code>Hashcash.Answer()</code> to cancel the operation.  [<a href="https://github.com/planetarium/libplanet/issues/460">#460</a>, <a href="https://github.com/planetarium/libplanet/pull/517">#517</a>]</li>
 <li>Replaced <code>UnexpectedlyTerminatedTxRehearsalException</code> with
-<code>UnexpectedlyTerminatedActionException</code>.</li>
+<code>UnexpectedlyTerminatedActionException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/498">#498</a>]</li>
 <li>The following methods became to throw
 <code>UnexpectedlyTerminatedActionException</code> with having its <code>InnerException</code>
 during actions being evaluated if any action of them throws an exception:
@@ -146,6 +151,10 @@ disposed to clean up its internal resources. [<a href="https://github.com/planet
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
+<li>Added <code>BlockChain&lt;T&gt;.TipChanged</code> event which is invoked with an argument
+of <code>BlockChain&lt;T&gt;.TipChangedEventArgs</code> when <code>BlockChain&lt;T&gt;.Tip</code> is changed.
+[<a href="https://github.com/planetarium/libplanet/pull/517">#517</a>, <a href="https://github.com/planetarium/libplanet/pull/526">#526</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.TipChangedEventArgs</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/526">#526</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.PrepareAsync()</code> method. The method should be called before
 calling <code>Swarm&lt;T&gt;.BootstrapAsync()</code>, <code>Swarm&lt;T&gt;.PreloadAsync()</code> and
 <code>Swarm&lt;T&gt;.StartAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/353">#353</a>]</li>
