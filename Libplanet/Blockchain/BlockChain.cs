@@ -60,10 +60,17 @@ namespace Libplanet.Blockchain
             _rwlock?.Dispose();
         }
 
-        public event EventHandler<long> TipChanged;
+        /// <summary>
+        /// An event which is invoked when <see cref="Tip"/> is changed.
+        /// </summary>
+        public event EventHandler<TipChangedEventArgs> TipChanged;
 
         public IBlockPolicy<T> Policy { get; }
 
+        /// <summary>
+        /// The topmost <see cref="Block{T}"/> of the current blockchain.
+        /// Can be <c>null</c> if the blockchain is empty.
+        /// </summary>
         public Block<T> Tip
         {
             get
@@ -485,7 +492,7 @@ namespace Libplanet.Blockchain
             CancellationTokenSource cancellationTokenSource =
                 CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
 
-            void WatchTip(object target, long tipIndex)
+            void WatchTip(object target, TipChangedEventArgs args)
             {
                 cts.Cancel();
             }
@@ -621,6 +628,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
+                    Block<T> prevTip = Tip;
                     Blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -628,7 +636,14 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
-                    TipChanged?.Invoke(this, block.Index);
+                    var tipChangedEventArgs = new TipChangedEventArgs
+                    {
+                        PreviousIndex = prevTip?.Index,
+                        PreviousHash = prevTip?.Hash,
+                        Index = block.Index,
+                        Hash = block.Hash,
+                    };
+                    TipChanged?.Invoke(this, tipChangedEventArgs);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -1005,11 +1020,18 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
+                var tipChangedEventArgs = new TipChangedEventArgs
+                {
+                    PreviousHash = Tip?.Hash,
+                    PreviousIndex = Tip?.Index,
+                    Hash = other.Tip.Hash,
+                    Index = other.Tip.Index,
+                };
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 Blocks = new BlockSet<T>(Store);
-                TipChanged?.Invoke(this, Blocks.Count);
+                TipChanged?.Invoke(this, tipChangedEventArgs);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
@@ -1095,6 +1117,34 @@ namespace Libplanet.Blockchain
             {
                 Store.StoreStateReference(Id, updatedAddresses, block.Hash, block.Index);
             }
+        }
+
+        /// <summary>
+        /// Provides data for the <see cref="TipChanged"/> event.
+        /// </summary>
+        public class TipChangedEventArgs : EventArgs
+        {
+            /// <summary>
+            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>before</em> changed.
+            /// Can be <c>null</c> if the blockchain was empty before.
+            /// </summary>
+            public long? PreviousIndex { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>before</em> changed.
+            /// Can be <c>null</c> if the blockchain was empty before.
+            /// </summary>
+            public HashDigest<SHA256>? PreviousHash { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>after</em> changed.
+            /// </summary>
+            public long Index { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>after</em> changed.
+            /// </summary>
+            public HashDigest<SHA256> Hash { get; set; }
         }
     }
 }

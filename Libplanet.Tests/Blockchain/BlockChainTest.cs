@@ -1570,12 +1570,18 @@ namespace Libplanet.Tests.Blockchain
         private async void TipChanged()
         {
             bool called = false;
-            long tip = -1;
+            long? prevTipIndex = null;
+            HashDigest<SHA256>? prevTipHash = null;
+            long tipIndex = -1;
+            HashDigest<SHA256> tipHash;
 
-            void TipChangedHandler(object target, long tipIndex)
+            void TipChangedHandler(object target, BlockChain<DumbAction>.TipChangedEventArgs args)
             {
                 called = true;
-                tip = tipIndex;
+                prevTipIndex = args.PreviousIndex;
+                prevTipHash = args.PreviousHash;
+                tipIndex = args.Index;
+                tipHash = args.Hash;
             }
 
             _blockChain.TipChanged += TipChangedHandler;
@@ -1583,7 +1589,11 @@ namespace Libplanet.Tests.Blockchain
             called = false;
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             Assert.True(called);
-            Assert.Equal(0, tip);
+            Assert.Null(prevTipHash);
+            Assert.Null(prevTipIndex);
+            Assert.Equal(block.Hash, tipHash);
+            Assert.Equal(0, tipIndex);
+            Assert.Equal(block.Hash, tipHash);
             called = false;
             Assert.Throws<InvalidBlockIndexException>(() => _blockChain.Append(block));
             Assert.False(called);
@@ -1608,11 +1618,17 @@ namespace Libplanet.Tests.Blockchain
             chain2.Append(genesis);
 
             bool called = false;
-            long tip = -1;
-            void TipChangedHandler(object target, long tipIndex)
+            long? prevTipIndex = null;
+            HashDigest<SHA256>? prevTipHash = null;
+            long tipIndex = -1;
+            HashDigest<SHA256> tipHash;
+            void TipChangedHandler(object target, BlockChain<DumbAction>.TipChangedEventArgs args)
             {
                 called = true;
-                tip = tipIndex;
+                prevTipIndex = args.PreviousIndex;
+                prevTipHash = args.PreviousHash;
+                tipIndex = args.Index;
+                tipHash = args.Hash;
             }
 
             try
@@ -1624,7 +1640,10 @@ namespace Libplanet.Tests.Blockchain
 
                 chain2.Append(block);
                 Assert.True(called);
-                Assert.Equal(1, tip);
+                Assert.Equal(0, prevTipIndex);
+                Assert.Equal(genesis.Hash, prevTipHash);
+                Assert.Equal(1, tipIndex);
+                Assert.Equal(block.Hash, tipHash);
                 await Task.Delay(100);
                 Assert.True(miningTask.IsCanceled);
             }
