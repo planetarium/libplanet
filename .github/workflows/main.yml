@@ -2,6 +2,7 @@ on:
   push: []
   schedule:
   - cron: 59 14 * * *
+  pull_request: []
 name: main
 
 jobs:
@@ -14,7 +15,7 @@ jobs:
     - uses: actions/checkout@master
       if: github.event_name == 'pull_request'
       with:
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.pull_request.head.sha }}
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
@@ -49,7 +50,7 @@ jobs:
     - uses: actions/checkout@master
       if: github.event_name == 'pull_request'
       with:
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.pull_request.head.sha }}
     - run: mkdir -p Docs/obj/
     - run: Docs/build.ps1
       shell: pwsh
@@ -60,6 +61,7 @@ jobs:
     - run: Docs/publish.sh
       env:
         GHPAGES_SSH_KEY: ${{ secrets.GHPAGES_SSH_KEY }}
+      if: github.event_name != 'pull_request'
     - uses: shawnbot/action-status@master
       env:
         GH_CHECK_STATUS_TOKEN: ${{ secrets.GH_CHECK_STATUS_TOKEN }}
@@ -72,3 +74,4 @@ jobs:
           --state=success
           --url="$(cat Docs/obj/url.txt)"
           --token="$GH_CHECK_STATUS_TOKEN"
+      if: github.event_name != 'pull_request'
