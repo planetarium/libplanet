@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | Libplanet </title>
+    <title>Class ActionTypeAttribute
+   | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | Libplanet ">
+    <meta name="title" content="Class ActionTypeAttribute
+   | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -126,8 +128,8 @@
                           <li class="">
                             <a href="Libplanet.Action.ActionEvaluation.html" title="ActionEvaluation" class="">ActionEvaluation</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
+                          <li class="active">
+                            <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="active">ActionTypeAttribute</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Action.AddressStateMap.html" title="AddressStateMap" class="">AddressStateMap</a>
@@ -371,10 +373,156 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-
-<meta http-equiv="refresh" content="0; url=Libplanet.html">
-Move to [Libplanet](Libplanet.yml)&hellip;
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.ActionTypeAttribute">
+  
+  
+  <h1 id="Libplanet_Action_ActionTypeAttribute" data-uid="Libplanet.Action.ActionTypeAttribute" class="text-break">Class ActionTypeAttribute
+  </h1>
+  <div class="markdown level0 summary"><p>Indicates that an action class (i.e., a class implementing
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>) can be held by transactions and blocks.
+It also gives an action class a <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for
+serialization and deserialization.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">ActionTypeAttribute</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Action_ActionTypeAttribute_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ActionTypeAttribute : Attribute</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Action_ActionTypeAttribute__ctor_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionTypeAttribute.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Action/ActionTypeAttribute.cs/#L22">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionTypeAttribute__ctor_" data-uid="Libplanet.Action.ActionTypeAttribute.#ctor*"></a>
+  <h4 id="Libplanet_Action_ActionTypeAttribute__ctor_System_String_" data-uid="Libplanet.Action.ActionTypeAttribute.#ctor(System.String)">ActionTypeAttribute(String)</h4>
+  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> with a given
+<code data-dev-comment-type="paramref" class="paramref">typeIdentifier</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ActionTypeAttribute(string typeIdentifier)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">typeIdentifier</span></td>
+        <td><p>An action class's unique
+identifier for serialization and deserialization.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Action_ActionTypeAttribute_TypeIdentifier.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionTypeAttribute.TypeIdentifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Action/ActionTypeAttribute.cs/#L31">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionTypeAttribute_TypeIdentifier_" data-uid="Libplanet.Action.ActionTypeAttribute.TypeIdentifier*"></a>
+  <h4 id="Libplanet_Action_ActionTypeAttribute_TypeIdentifier" data-uid="Libplanet.Action.ActionTypeAttribute.TypeIdentifier">TypeIdentifier</h4>
+  <div class="markdown level1 summary"><p>An action class's unique identifier for serialization and
+deserialization.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TypeIdentifier { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Action_ActionTypeAttribute_ValueOf_Type_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionTypeAttribute.ValueOf(Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Action/ActionTypeAttribute.cs/#L42">View Source</a>
+  </span>
+  <a id="Libplanet_Action_ActionTypeAttribute_ValueOf_" data-uid="Libplanet.Action.ActionTypeAttribute.ValueOf*"></a>
+  <h4 id="Libplanet_Action_ActionTypeAttribute_ValueOf_Type_" data-uid="Libplanet.Action.ActionTypeAttribute.ValueOf(Type)">ValueOf(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for a given action class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ValueOf(Type actionType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Type</span></td>
+        <td><span class="parametername">actionType</span></td>
+        <td><p>A <see cref="!:Type"></see> object of an action
+class to know its annotated <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><p>The <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> of the given
+<code data-dev-comment-type="paramref" class="paramref">actionType</code> if it's annotated with
+<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a>.  If it's not annotated returns
+<code>null</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -383,7 +531,10 @@ Move to [Libplanet](Libplanet.yml)&hellip;
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Docs/api/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Action_ActionTypeAttribute.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionTypeAttribute%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Action/ActionTypeAttribute.cs/#L14" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

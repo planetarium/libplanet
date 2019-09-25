@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | Libplanet </title>
+    <title>Class BlockPolicyExtension
+   | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | Libplanet ">
+    <meta name="title" content="Class BlockPolicyExtension
+   | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -183,8 +185,8 @@
                           <li class="">
                             <a href="Libplanet.Blockchain.Policies.BlockPolicy-1.html" title="BlockPolicy&lt;T&gt;" class="">BlockPolicy&lt;T&gt;</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Blockchain.Policies.BlockPolicyExtension.html" title="BlockPolicyExtension" class="">BlockPolicyExtension</a>
+                          <li class="active">
+                            <a href="Libplanet.Blockchain.Policies.BlockPolicyExtension.html" title="BlockPolicyExtension" class="active">BlockPolicyExtension</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html" title="IBlockPolicy&lt;T&gt;" class="">IBlockPolicy&lt;T&gt;</a>
@@ -371,10 +373,126 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-
-<meta http-equiv="refresh" content="0; url=Libplanet.html">
-Move to [Libplanet](Libplanet.yml)&hellip;
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension">
+  
+  
+  <h1 id="Libplanet_Blockchain_Policies_BlockPolicyExtension" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension" class="text-break">Class BlockPolicyExtension
+  </h1>
+  <div class="markdown level0 summary"><p>This extension class enables some convenient methods (sugar for
+the most part) to deal with <a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">BlockPolicyExtension</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blockchain.Policies.html">Libplanet.Blockchain.Policies</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class BlockPolicyExtension : object</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks%60%601(Libplanet.Blockchain.Policies.IBlockPolicy%7B%60%600%7D%2CIReadOnlyList%7BLibplanet.Blocks.Block%7B%60%600%7D%7D%2CDateTimeOffset)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Blockchain/Policies/BlockPolicyExtension.cs/#L35">View Source</a>
+  </span>
+  <a id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks_" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks*"></a>
+  <h4 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_" data-uid="Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)">ValidateBlocks&lt;T&gt;(IBlockPolicy&lt;T&gt;, IReadOnlyList&lt;Block&lt;T&gt;&gt;, DateTimeOffset)</h4>
+  <div class="markdown level1 summary"><p>Checks if <code data-dev-comment-type="paramref" class="paramref">blocks</code> are invalid, and if that
+returns the reason.</p>
+<p>Note that it returns <code>null</code> when blocks are
+<em>valid</em>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static InvalidBlockException ValidateBlocks&lt;T&gt;(this IBlockPolicy&lt;T&gt; policy, IReadOnlyList&lt;Block&lt;T&gt;&gt; blocks, DateTimeOffset currentTime)
+    where T : IAction, new()</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</td>
+        <td><span class="parametername">policy</span></td>
+        <td><p><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy&lt;T&gt;</a> to used for
+validation <code data-dev-comment-type="paramref" class="paramref">blocks</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;</td>
+        <td><span class="parametername">blocks</span></td>
+        <td><p>Consecutive <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>s to
+validate.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DateTimeOffset</span></td>
+        <td><span class="parametername">currentTime</span></td>
+        <td><p>The current time to be used to validate
+of <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp">Timestamp</a>s.
+Usually <see cref="!:DateTimeOffset.UtcNow"></see> is used.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.InvalidBlockException.html">InvalidBlockException</a></td>
+        <td><p>The reason why the given <code data-dev-comment-type="paramref" class="paramref">blocks</code> are
+<em>invalid</em>, or <code>null</code> if <code data-dev-comment-type="paramref" class="paramref">blocks</code> are
+<em>valid</em>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> type.  It should match
+to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s type parameter.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset__seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__">ValidateNextBlock</a>(<span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;&gt;, <a class="xref" href="Libplanet.Blocks.Block-1.html">Block</a>&lt;T&gt;)</div>
+  </div>
+  <h3 id="seealso">See Also</h3>
+  <div class="seealso">
+      <div><a class="xref" href="Libplanet.Blockchain.Policies.IBlockPolicy-1.html">IBlockPolicy</a>&lt;T&gt;</div>
+  </div>
 </article>
           </div>
           
@@ -383,7 +501,10 @@ Move to [Libplanet](Libplanet.yml)&hellip;
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Docs/api/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/228a0b8d2851402e9ed0f91f603f96999b258eb0/apiSpec/new?filename=Libplanet_Blockchain_Policies_BlockPolicyExtension.md&amp;value=---%0Auid%3A%20Libplanet.Blockchain.Policies.BlockPolicyExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/228a0b8d2851402e9ed0f91f603f96999b258eb0/Libplanet/Blockchain/Policies/BlockPolicyExtension.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
