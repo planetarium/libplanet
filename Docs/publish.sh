@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 # Publish docs to GitHub Pages.
 # Note that this script is intended to be run by GitHub Actions.
 if ! (env | grep '^GITHUB_'); then
@@ -6,7 +6,7 @@ if ! (env | grep '^GITHUB_'); then
     echo "This script is intended to be run by GitHub Actions."
     echo "You can run GitHub Actions locally using \`act':"
     echo "  https://github.com/nektos/act"
-  } > /dev/stderr
+  } >&2
   exit 1
 fi
 
@@ -28,7 +28,7 @@ if [ "$GHPAGES_SSH_KEY" = "" ]; then
          ", and be allowed write access."
     echo "GHPAGES_SSH_KEY has to contain a base64-encoded private key without" \
          "new lines."
-  } > /dev/stderr
+  } >&2
   exit 0
 fi
 
@@ -45,15 +45,14 @@ else
      [ "$GITHUB_REF" = "${GITHUB_REF#refs/tags/}" ] &&
      [ "$GITHUB_REF" != refs/heads/master ] && \
      [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ]; then
-    echo "This branch is not for releases, so docs won't be published." \
-      > /dev/stderr
+    echo "This branch is not for releases, so docs won't be published." >&2
     exit 0
   fi
   slug="$(echo -n "$GITHUB_REF" | sed -e 's/^refs\/\(heads\|tags\)\///g')"
 fi
 [ "$slug" != "" ]
 
-echo "Slug: $slug" > /dev/stderr
+echo "Slug: $slug" >&2
 
 echo "$GHPAGES_SSH_KEY" | b64d > /tmp/github_id
 chmod 600 /tmp/github_id

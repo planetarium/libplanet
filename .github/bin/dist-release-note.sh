@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/bash
 # Extract a release note from the given changelog file.
 # Note that this script is intended to be run by GitHub Actions.
 set -e
