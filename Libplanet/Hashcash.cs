@@ -63,10 +63,6 @@ namespace Libplanet
                 random.NextBytes(nonceBytes);
                 var nonce = new Nonce(nonceBytes);
                 var digest = Hash(stamp(nonce));
-                if (difficulty == 0)
-                {
-                    return nonce;
-                }
 
                 if (digest.Satisfies(difficulty))
                 {
