@@ -10,7 +10,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
-    - uses: dahlia/actions/checkout-pull-request@master
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@master
+      if: github.event_name == 'pull_request'
+      with:
+        ref: ${{ github.head_ref }}
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
@@ -41,13 +45,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
-    - uses: dahlia/actions/checkout-pull-request@master
-    - run: mkdir -p Docs/obj/
-    - uses: dahlia/actions/docfx@master
-      env:
-        MSBUILD_PROJECT: Libplanet
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@master
+      if: github.event_name == 'pull_request'
       with:
-        args: Docs/docfx.json
+        ref: ${{ github.head_ref }}
+    - run: mkdir -p Docs/obj/
+    - run: Docs/build.ps1
+      shell: pwsh
     - uses: actions/upload-artifact@master
       with:
         name: docs
