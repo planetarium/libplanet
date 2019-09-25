@@ -121,6 +121,8 @@ To be released.
  -  Fixed a bug that `IActionContext.Random` had been possible to generated
     equivalent results between actions of different transactions in
     a `Block<T>`.  [[#519]]
+ -  Fixed a bug where forked chain would not be deleted when an exception
+    occurred during `FillBlocksAsync`.  [[#527], [#535]]
 
 [#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
@@ -148,6 +150,8 @@ To be released.
 [#521]: https://github.com/planetarium/libplanet/pull/521
 [#522]: https://github.com/planetarium/libplanet/pull/522
 [#526]: https://github.com/planetarium/libplanet/pull/526
+[#527]: https://github.com/planetarium/libplanet/issues/527
+[#535]: https://github.com/planetarium/libplanet/issues/535
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
