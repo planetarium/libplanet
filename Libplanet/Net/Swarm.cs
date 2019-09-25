@@ -1856,24 +1856,34 @@ namespace Libplanet.Net
 
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
-                var baseString = @base is HashDigest<SHA256> h
-                    ? $"{BlockChain.Blocks[h].Index}:{h}"
-                    : null;
-                var targetString = $"{BlockChain.Blocks[target].Index}:{target}";
-                _logger.Debug(
-                    "State references to send (preload): {@StateReferences} ({Base}-{Target})",
-                    stateRefs.Select(kv =>
-                        (kv.Key.ToString(), string.Join(", ", kv.Value.Select(v => v.ToString())))
-                    ).ToArray(),
-                    baseString,
-                    targetString
-                );
-                _logger.Debug(
-                    "Block states to send (preload): {@BlockStates} ({Base}-{Target})",
-                    blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
-                    baseString,
-                    targetString
-                );
+                if (BlockChain.Blocks.ContainsKey(target))
+                {
+                    var baseString = @base is HashDigest<SHA256> h
+                        ? $"{BlockChain.Blocks[h].Index}:{h}"
+                        : null;
+                    var targetString = $"{BlockChain.Blocks[target].Index}:{target}";
+                    _logger.Debug(
+                        "State references to send (preload): {@StateReferences} ({Base}-{Target})",
+                        stateRefs.Select(kv =>
+                            (
+                                kv.Key.ToString(),
+                                string.Join(", ", kv.Value.Select(v => v.ToString()))
+                            )
+                        ).ToArray(),
+                        baseString,
+                        targetString
+                    );
+                    _logger.Debug(
+                        "Block states to send (preload): {@BlockStates} ({Base}-{Target})",
+                        blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
+                        baseString,
+                        targetString
+                    );
+                }
+                else
+                {
+                    _logger.Debug("Nothing to reply because {TargetHash} doesn't exist.", target);
+                }
             }
 
             var reply = new RecentStates(target, blockStates, stateRefs)
