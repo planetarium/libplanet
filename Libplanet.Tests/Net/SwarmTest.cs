@@ -14,6 +14,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
+using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -1782,6 +1783,57 @@ namespace Libplanet.Tests.Net
                     ),
                     receiverChain.GetStates(new[] { address })[address]
                 );
+            }
+        }
+
+        [Fact]
+        public async Task RemoveForkedChainWhenFillBlocksAsyncFail()
+        {
+            // This test makes 2 different policies to reproduce an exception
+            // while FillBlocksAsync.
+            var policy1 = new BlockPolicy<DumbAction>();
+            var policy2 = new NullPolicy<DumbAction>();
+            var fx1 = new LiteDBStoreFixture();
+            var fx2 = new LiteDBStoreFixture();
+
+            var chain1 = new BlockChain<DumbAction>(policy1, fx1.Store);
+            var chain2 = new BlockChain<DumbAction>(policy2, fx2.Store);
+
+            var block1 = await chain2.MineBlock(_fx1.Address1);
+            chain1.Append(block1);
+
+            await chain1.MineBlock(_fx1.Address1);
+            await chain2.MineBlock(_fx1.Address1);
+
+            var block3 = await chain2.MineBlock(_fx1.Address1);
+
+            var swarm1 = new Swarm<DumbAction>(
+                chain1,
+                new PrivateKey(),
+                1,
+                host: IPAddress.Loopback.ToString());
+            var swarm2 = new Swarm<DumbAction>(
+                chain2,
+                new PrivateKey(),
+                1,
+                host: IPAddress.Loopback.ToString());
+
+            try
+            {
+                await StartAsync(swarm1);
+                await StartAsync(swarm2);
+                await swarm1.AddPeersAsync(new[] { swarm2.AsPeer }, null);
+
+                swarm2.BroadcastBlocks(new[] { block3 });
+                await Task.Delay(2000);
+
+                List<Guid> chainIds = fx1.Store.ListChainIds().ToList();
+                Assert.Single(chainIds);
+            }
+            finally
+            {
+                await swarm1.StopAsync();
+                await swarm2.StopAsync();
             }
         }
 

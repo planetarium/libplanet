@@ -1571,6 +1571,11 @@ namespace Libplanet.Net
                     }
                     else
                     {
+                        if (blockChain.Id != synced.Id)
+                        {
+                            blockChain.Store.DeleteChainId(synced.Id);
+                        }
+
                         throw;
                     }
                 }
