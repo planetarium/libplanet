@@ -34,6 +34,8 @@ namespace Libplanet.Store
 
         private readonly ILogger _logger;
 
+        private readonly MemoryStream _memoryStream;
+
         private readonly LiteDatabase _db;
 
         private readonly ReaderWriterLockSlim _txLock;
@@ -41,15 +43,15 @@ namespace Libplanet.Store
         /// <summary>
         /// Creates a new <seealso cref="LiteDBStore"/>.
         /// </summary>
-        /// <param name="path">The path where the storage file will be saved.</param>
+        /// <param name="path">The path where the storage file will be saved.  If the path is
+        /// <c>null</c>, The database is created in memory with <see cref="MemoryStream"/>.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
         /// <param name="cacheSize">Max number of pages in the cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
-        /// <param name="readOnly">Opens database readonly mode. Turned off by default.
-        /// </param>
+        /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public LiteDBStore(
             string path,
             bool journal = true,
@@ -58,11 +60,6 @@ namespace Libplanet.Store
             bool readOnly = false
         )
         {
-            if (path is null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
             _logger = Log.ForContext<LiteDBStore>();
 
             var connectionString = new ConnectionString
@@ -84,16 +81,28 @@ namespace Libplanet.Store
                 connectionString.Mode = LiteDB.FileMode.Exclusive;
             }
 
-            _db = new LiteDatabase(connectionString);
-            _db.Mapper.RegisterType(
-                hash => hash.ToByteArray(),
-                b => new HashDigest<SHA256>(b));
-            _db.Mapper.RegisterType(
-                txid => txid.ToByteArray(),
-                b => new TxId(b));
-            _db.Mapper.RegisterType(
-                address => address.ToByteArray(),
-                b => new Address(b.AsBinary));
+            if (path is null)
+            {
+                _memoryStream = new MemoryStream();
+                _db = new LiteDatabase(_memoryStream);
+            }
+            else
+            {
+                _db = new LiteDatabase(connectionString);
+            }
+
+            lock (_db.Mapper)
+            {
+                _db.Mapper.RegisterType(
+                    hash => hash.ToByteArray(),
+                    b => new HashDigest<SHA256>(b));
+                _db.Mapper.RegisterType(
+                    txid => txid.ToByteArray(),
+                    b => new TxId(b));
+                _db.Mapper.RegisterType(
+                    address => address.ToByteArray(),
+                    b => new Address(b.AsBinary));
+            }
 
             _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
@@ -468,7 +477,7 @@ namespace Libplanet.Store
 
             dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
 
-            if (dstColl.Count() < 1)
+            if (!dstColl.Exists(_ => true) && CountIndex(sourceChainId) < 1)
             {
                 throw new ChainIdNotFoundException(
                     sourceChainId,
@@ -533,6 +542,7 @@ namespace Libplanet.Store
         public void Dispose()
         {
             _db?.Dispose();
+            _memoryStream?.Dispose();
         }
 
         internal static Guid ParseChainId(string chainIdString) =>

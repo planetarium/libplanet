@@ -10,16 +10,18 @@ namespace Libplanet.Tests.Blockchain
         where T : IAction, new()
     {
         private readonly InvalidBlockException _exceptionToThrow;
+        private readonly long _difficulty;
 
-        public NullPolicy(InvalidBlockException exceptionToThrow = null)
+        public NullPolicy(InvalidBlockException exceptionToThrow = null, long difficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
+            _difficulty = difficulty;
         }
 
         public IAction BlockAction => null;
 
         public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
-            blocks.Any() ? 1 : 0;
+            blocks.Any() ? _difficulty : 0;
 
         public InvalidBlockException ValidateNextBlock(
             IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) =>

@@ -10,6 +10,8 @@ using System.Numerics;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -25,6 +27,28 @@ namespace Libplanet.Blocks
         private static readonly TimeSpan TimestampThreshold =
             TimeSpan.FromSeconds(900);
 
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
+        /// For a more automated way, see also <see cref="Mine"/> method.
+        /// </summary>
+        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// </param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
+        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
+        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="miner">An optional address refers to who mines this block.
+        /// Goes to the <see cref="Miner"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// <param name="timestamp">The time this block is created.  Goes to
+        /// the <see cref="Timestamp"/>.</param>
+        /// <param name="transactions">The transactions to be mined together with this block.
+        /// Transactions become sorted in an unpredicted-before-mined order and then go to
+        /// the <see cref="Transactions"/> property.
+        /// </param>
+        /// <seealso cref="Mine"/>
         public Block(
             long index,
             long difficulty,
@@ -40,14 +64,42 @@ namespace Libplanet.Blocks
             Miner = miner;
             PreviousHash = previousHash;
             Timestamp = timestamp;
-            Transactions = transactions.ToImmutableArray();
+            Transactions = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             Hash = Hashcash.Hash(ToBencodex(false, false));
 
+            // As the order of transactions should be unpredictable until a block is mined,
+            // the sorter key should be derived from both a block hash and a txid.
             var hashInteger = new BigInteger(Hash.ToByteArray());
-            OrderedTransactions =
-                Transactions
-                    .OrderBy(tx =>
-                        new BigInteger(tx.Id.ToByteArray()) ^ hashInteger).ToImmutableArray();
+
+            // If there are multiple transactions for the same signer these should be ordered by
+            // their tx nonces.  So transactions of the same signer should have the same sort key.
+            // The following logic "flattens" multiple tx ids having the same signer into a single
+            // txid by applying XOR between them.
+            ImmutableDictionary<Address, IImmutableSet<Transaction<T>>> signerTxs = Transactions
+                .GroupBy(tx => tx.Signer)
+                .ToImmutableDictionary(
+                    g => g.Key,
+                    g => (IImmutableSet<Transaction<T>>)g.ToImmutableHashSet()
+                );
+            ImmutableDictionary<Address, BigInteger> signerTxIds = signerTxs
+                .ToImmutableDictionary(
+                    pair => pair.Key,
+                    pair => pair.Value
+                        .Select(tx => new BigInteger(tx.Id.ToByteArray()))
+                        .OrderBy(txid => txid)
+                        .Aggregate((a, b) => a ^ b)
+                );
+
+            // Order signers by values derivied from both block hash and their "flatten" txid:
+            ImmutableArray<Address> signers = signerTxIds
+                .OrderBy(pair => pair.Value ^ hashInteger)
+                .Select(pair => pair.Key)
+                .ToImmutableArray();
+
+            // Order transactions for each signer by their tx nonces:
+            Transactions = signers
+                .SelectMany(signer => signerTxs[signer].OrderBy(tx => tx.Nonce))
+                .ToImmutableArray();
         }
 
         protected Block(SerializationInfo info, StreamingContext context)
@@ -98,8 +150,23 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public ImmutableArray<Transaction<T>> Transactions { get; }
 
-        [IgnoreDuringEquals]
-        public ImmutableArray<Transaction<T>> OrderedTransactions { get; }
+        /// <summary>
+        /// Generate a block with given <paramref name="transactions"/>.
+        /// </summary>
+        /// <param name="index">Index of the block.</param>
+        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
+        /// <see cref="Nonce"/>.</param>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="previousHash">
+        /// The <see cref="HashDigest{SHA256}"/> of previous block.
+        /// </param>
+        /// <param name="timestamp">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="transactions"><see cref="Transaction{T}"/>s that are going to be included
+        /// in the block.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.</param>
+        /// <returns>A <see cref="Block{T}"/> that mined.</returns>
 
         public static Block<T> Mine(
             long index,
@@ -107,9 +174,10 @@ namespace Libplanet.Blocks
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
-            IEnumerable<Transaction<T>> transactions)
+            IEnumerable<Transaction<T>> transactions,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            Transaction<T>[] orderedTxs = transactions.OrderBy(tx => tx.Nonce).ToArray();
+            var txs = transactions.OrderBy(tx => tx.Id).ToImmutableArray();
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
@@ -117,8 +185,7 @@ namespace Libplanet.Blocks
                 miner,
                 previousHash,
                 timestamp,
-                orderedTxs
-            );
+                txs);
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
@@ -155,8 +222,10 @@ namespace Libplanet.Blocks
                     Array.Copy(stampSuffix, 0, stamp, pos, stampSuffix.Length);
                     return stamp;
                 },
-                difficulty
+                difficulty,
+                cancellationToken
             );
+
             return MakeBlock(nonce);
         }
 
@@ -214,7 +283,7 @@ namespace Libplanet.Blocks
                 new AccountStateDeltaImpl(
                     accountStateGetter ?? (a => null)
                 );
-            foreach (Transaction<T> tx in OrderedTransactions)
+            foreach (Transaction<T> tx in Transactions)
             {
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
@@ -410,10 +479,10 @@ namespace Libplanet.Blocks
         )
         {
             IEnumerable transactions =
-                Transactions.Select(
-                    tx => includeTransactionData ?
-                    tx.ToRawTransaction(true) as object :
-                    tx.Id.ToByteArray() as object
+                Transactions.OrderBy(tx => tx.Id).Select(
+                    tx => includeTransactionData
+                        ? tx.ToRawTransaction(true) as object
+                        : tx.Id.ToByteArray() as object
                 );
             var rawBlock = new RawBlock(
                 index: Index,

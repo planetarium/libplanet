@@ -72,15 +72,12 @@ namespace Libplanet.Store
         {
             if (GetRawBlock(blockHash) is RawBlock rawBlock)
             {
-                HashDigest<SHA256>? prevHash = rawBlock.PreviousHash is byte[] h
-                    ? new HashDigest<SHA256>(h)
-                    : (HashDigest<SHA256>?)null;
                 return new Block<T>(
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
                     nonce: new Nonce(rawBlock.Nonce),
                     miner: new Address(rawBlock.Miner),
-                    previousHash: prevHash,
+                    previousHash: new HashDigest<SHA256>(rawBlock.PreviousHash),
                     timestamp: DateTimeOffset.ParseExact(
                         rawBlock.Timestamp,
                         Block<T>.TimestampFormat,

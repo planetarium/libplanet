@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -59,8 +60,17 @@ namespace Libplanet.Blockchain
             _rwlock?.Dispose();
         }
 
+        /// <summary>
+        /// An event which is invoked when <see cref="Tip"/> is changed.
+        /// </summary>
+        public event EventHandler<TipChangedEventArgs> TipChanged;
+
         public IBlockPolicy<T> Policy { get; }
 
+        /// <summary>
+        /// The topmost <see cref="Block{T}"/> of the current blockchain.
+        /// Can be <c>null</c> if the blockchain is empty.
+        /// </summary>
         public Block<T> Tip
         {
             get
@@ -452,9 +462,22 @@ namespace Libplanet.Blockchain
             return nonce;
         }
 
-        public Block<T> MineBlock(
+        /// <summary>
+        /// Mine a <see cref="Block{T}"/> using staged <see cref="Transaction{T}"/>s.
+        /// </summary>
+        /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
+        /// <param name="currentTime">The <see cref="DateTimeOffset"/> when mining started.</param>
+        /// <param name="cancellationToken">
+        /// A cancellation token used to propagate notification that this
+        /// operation should be canceled.
+        /// </param>
+        /// <returns>An awaitable task with a <see cref="Block{T}"/> that is mined.</returns>
+        /// <exception cref="OperationCanceledException">Thrown when
+        /// <see cref="BlockChain{T}.Tip"/> is changed while mining.</exception>
+        public async Task<Block<T>> MineBlock(
             Address miner,
-            DateTimeOffset currentTime
+            DateTimeOffset currentTime,
+            CancellationToken cancellationToken = default(CancellationToken)
         )
         {
             long index = Store.CountIndex(Id);
@@ -465,21 +488,54 @@ namespace Libplanet.Blockchain
                 .Select(Store.GetTransaction<T>)
                 .Where(tx => tx.Nonce < GetNextTxNonce(tx.Signer));
 
-            Block<T> block = Block<T>.Mine(
-                index: index,
-                difficulty: difficulty,
-                miner: miner,
-                previousHash: prevHash,
-                timestamp: currentTime,
-                transactions: transactions
-            );
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationTokenSource cancellationTokenSource =
+                CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
+
+            void WatchTip(object target, TipChangedEventArgs args)
+            {
+                cts.Cancel();
+            }
+
+            TipChanged += WatchTip;
+
+            Block<T> block;
+            try
+            {
+                block = await Task.Run(
+                    () => Block<T>.Mine(
+                        index: index,
+                        difficulty: difficulty,
+                        miner: miner,
+                        previousHash: prevHash,
+                        timestamp: currentTime,
+                        transactions: transactions,
+                        cancellationToken: cancellationTokenSource.Token),
+                    cancellationTokenSource.Token
+                );
+            }
+            catch (OperationCanceledException)
+            {
+                if (cts.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException(
+                        "Mining canceled due to change of tip index");
+                }
+
+                throw new OperationCanceledException(cancellationToken);
+            }
+
+            TipChanged -= WatchTip;
+            cancellationTokenSource.Dispose();
+            cts.Dispose();
+
             Append(block, currentTime);
 
             return block;
         }
 
-        public Block<T> MineBlock(Address miner) =>
-            MineBlock(miner, DateTimeOffset.UtcNow);
+        public async Task<Block<T>> MineBlock(Address miner) =>
+            await MineBlock(miner, DateTimeOffset.UtcNow);
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
@@ -548,7 +604,8 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
 
                 var nonceDeltas = new Dictionary<Address, long>();
-                foreach (Transaction<T> tx1 in block.Transactions)
+                var orderedTransactions = block.Transactions.OrderBy(tx => tx.Nonce);
+                foreach (Transaction<T> tx1 in orderedTransactions)
                 {
                     Address txSigner = tx1.Signer;
                     nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
@@ -571,6 +628,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterWriteLock();
                 try
                 {
+                    Block<T> prevTip = Tip;
                     Blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
@@ -578,6 +636,14 @@ namespace Libplanet.Blockchain
                     }
 
                     Store.AppendIndex(Id, block.Hash);
+                    var tipChangedEventArgs = new TipChangedEventArgs
+                    {
+                        PreviousIndex = prevTip?.Index,
+                        PreviousHash = prevTip?.Hash,
+                        Index = block.Index,
+                        Hash = block.Hash,
+                    };
+                    TipChanged?.Invoke(this, tipChangedEventArgs);
                     ISet<TxId> txIds = block.Transactions
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
@@ -702,7 +768,14 @@ namespace Libplanet.Blockchain
                 ImmutableList.Create(Policy.BlockAction)).First();
         }
 
-        internal HashDigest<SHA256> FindBranchPoint(BlockLocator locator)
+        /// <summary>
+        /// Find an approximate to the topmost common ancestor between this
+        /// <see cref="BlockChain{T}"/> and a given <see cref="BlockLocator"/>.
+        /// </summary>
+        /// <param name="locator">A block locator that contains candidate common ancestors.</param>
+        /// <returns>An approximate to the topmost common ancestor.  If it failed to find anything
+        /// returns <c>null</c>.</returns>
+        internal HashDigest<SHA256>? FindBranchPoint(BlockLocator locator)
         {
             try
             {
@@ -718,7 +791,7 @@ namespace Libplanet.Blockchain
                     }
                 }
 
-                return this[0].Hash;
+                return null;
             }
             finally
             {
@@ -741,8 +814,10 @@ namespace Libplanet.Blockchain
                     yield break;
                 }
 
-                HashDigest<SHA256> branchPoint = FindBranchPoint(locator);
-                var branchPointIndex = (int)Blocks[branchPoint].Index;
+                HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
+                var branchPointIndex = branchPoint is HashDigest<SHA256> h
+                    ? (int)Blocks[h].Index
+                    : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
                 // the number defined by FindNextHashesChunkSize variable
@@ -945,10 +1020,18 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterWriteLock();
 
+                var tipChangedEventArgs = new TipChangedEventArgs
+                {
+                    PreviousHash = Tip?.Hash,
+                    PreviousIndex = Tip?.Index,
+                    Hash = other.Tip.Hash,
+                    Index = other.Tip.Index,
+                };
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
                 Blocks = new BlockSet<T>(Store);
+                TipChanged?.Invoke(this, tipChangedEventArgs);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
@@ -1034,6 +1117,34 @@ namespace Libplanet.Blockchain
             {
                 Store.StoreStateReference(Id, updatedAddresses, block.Hash, block.Index);
             }
+        }
+
+        /// <summary>
+        /// Provides data for the <see cref="TipChanged"/> event.
+        /// </summary>
+        public class TipChangedEventArgs : EventArgs
+        {
+            /// <summary>
+            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>before</em> changed.
+            /// Can be <c>null</c> if the blockchain was empty before.
+            /// </summary>
+            public long? PreviousIndex { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>before</em> changed.
+            /// Can be <c>null</c> if the blockchain was empty before.
+            /// </summary>
+            public HashDigest<SHA256>? PreviousHash { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Index"/> of <see cref="Tip"/> <em>after</em> changed.
+            /// </summary>
+            public long Index { get; set; }
+
+            /// <summary>
+            /// The <see cref="Block{T}.Hash"/> of <see cref="Tip"/> <em>after</em> changed.
+            /// </summary>
+            public HashDigest<SHA256> Hash { get; set; }
         }
     }
 }

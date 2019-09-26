@@ -21,6 +21,44 @@ namespace Libplanet.Tests.Blocks
         public BlockTest(BlockFixture fixture) => _fx = fixture;
 
         [Fact]
+        public void Transactions()
+        {
+            // Creates fixtures.
+            PrivateKey[] privKeys =
+                Enumerable.Repeat((object)null, 5).Select(_ => new PrivateKey()).ToArray();
+            var random = new System.Random();
+            Transaction<DumbAction>[] txs = Enumerable.Range(0, 50)
+                .Select(i => (privKeys[i % privKeys.Length], i / privKeys.Length))
+                .Select(pair =>
+                    Transaction<DumbAction>.Create(
+                        nonce: pair.Item2,
+                        privateKey: pair.Item1,
+                        actions: new DumbAction[0]
+                    )
+                )
+                .OrderBy(_ => random.Next())
+                .ToArray();
+            var block = new Block<DumbAction>(
+                index: 0,
+                difficulty: 0,
+                nonce: new Nonce(new byte[0]),
+                miner: null,
+                previousHash: null,
+                timestamp: DateTimeOffset.UtcNow,
+                transactions: txs
+            );
+
+            // For transactions signed by the same signer, these should be ordered by its tx nonce.
+            Address[] signers = privKeys.Select(pk => pk.PublicKey.ToAddress()).ToArray();
+            foreach (Address signer in signers)
+            {
+                IEnumerable<Transaction<DumbAction>> signersTxs =
+                    block.Transactions.Where(tx => tx.Signer == signer);
+                Assert.Equal(signersTxs.OrderBy(tx => tx.Nonce).ToArray(), signersTxs.ToArray());
+            }
+        }
+
+        [Fact]
         public void CanMine()
         {
             Assert.Equal(0, _fx.Genesis.Index);
@@ -269,7 +307,7 @@ namespace Libplanet.Tests.Blocks
                     0,
                     _fx.TxFixture.PrivateKey2,
                     new[] { MakeAction(addresses[3], 'E') },
-                    timestamp: DateTimeOffset.MinValue.AddSeconds(1)
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(2)
                 ),
                 Transaction<DumbAction>.Create(
                     0,

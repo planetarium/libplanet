@@ -33,9 +33,11 @@ namespace Libplanet.Store
             get
             {
                 Block<T> block = Store.GetBlock<T>(key);
-                if (block == null)
+                if (block is null)
                 {
-                    throw new KeyNotFoundException();
+                    throw new KeyNotFoundException(
+                        $"The given hash[{key}] was not found in this set."
+                    );
                 }
 
                 Trace.Assert(block.Hash.Equals(key));

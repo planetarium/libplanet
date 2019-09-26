@@ -44,7 +44,7 @@ namespace Libplanet.Net
         private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
 
-        private static readonly int MaxDealerCount = 10;
+        private static readonly int MaxDealerCount = 20;
 
         private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
@@ -733,16 +733,19 @@ namespace Libplanet.Net
             }
             catch (TimeoutException)
             {
-                _logger.Debug("Timeout occurred during AddPeersAsync().");
+                _logger.Debug(
+                    $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug("Task is cancelled during AddPeersAsync().");
+                _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Unexpected exception occurred during AddPeersAsync().");
+                _logger.Error(
+                    e,
+                    $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
                 throw;
             }
         }
@@ -777,9 +780,19 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     e,
-                    "An unexpected exception occurred during SendMessageAsync(). {0}",
-                    e);
+                    $"An unexpected exception occurred during {nameof(SendMessageAsync)}(). {e}");
                 throw;
+            }
+            finally
+            {
+                if (_dealers.ContainsKey(peer))
+                {
+                    _dealers[peer] = (DateTimeOffset.UtcNow, _dealers[peer].Item2);
+                }
+                else
+                {
+                    throw new Exception("Dealer not exists.");
+                }
             }
         }
 
@@ -823,22 +836,25 @@ namespace Libplanet.Net
                 _logger.Error(e, "Different version received.");
                 throw;
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
-                _logger.Error(e, "Timeout occurred during SendMessageWithReplyAsync().");
+                _logger.Debug(
+                    $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}() " +
+                    "after {0}.",
+                    timeout);
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug("Task canceled during SendMessageWithReplyAsync().");
+                _logger.Debug($"Task canceled during {nameof(SendMessageWithReplyAsync)}().");
                 throw;
             }
             catch (Exception e)
             {
+                var msg = "An unexpected exception occurred during " +
+                        $"{nameof(SendMessageWithReplyAsync)}(). {{0}}";
                 _logger.Error(
-                    e,
-                    "An unexpected exception occurred during SendMessageWithReplyAsync(). {0}",
-                    e);
+                    e, msg, e);
                 throw;
             }
         }
@@ -1031,18 +1047,15 @@ namespace Libplanet.Net
                             await yield.ReturnAsync((peer, pong));
                         }
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
-                        _logger.Error(
-                            e,
-                            $"TimeoutException occured ({peer})."
-                        );
+                        _logger.Debug($"TimeoutException occurred during dial to ({peer}).");
                     }
                     catch (IOException e)
                     {
                         _logger.Error(
                             e,
-                            $"IOException occured ({peer})."
+                            $"IOException occurred ({peer})."
                         );
                     }
                     catch (DifferentAppProtocolVersionException e)
@@ -1263,12 +1276,9 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(
-                        e,
-#pragma warning disable MEN002 // Line is too long
-                        $"An unexpected exception occurred during {nameof(RefreshPermissions)}(): {e}"
-#pragma warning restore MEN002 // Line is too long
-                    );
+                    var msg = "An unexpected exception occurred during " +
+                              $"{nameof(RefreshPermissions)}(): {{0}}";
+                    _logger.Error(e, msg, e);
                     continue;
                 }
             }
@@ -1412,8 +1422,7 @@ namespace Libplanet.Net
             }
 
             _logger.Debug(
-                $"Trying to {nameof(GetBlocksAsync)}() " +
-                "using {0} hashes.",
+                $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
                 newHashes.Count());
 
             IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
@@ -1440,16 +1449,17 @@ namespace Libplanet.Net
                     _logger.Debug("Append complete.");
                 }
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
                 // As we have more chances, ignore this.
-                _logger.Debug(e, $"Timeout occurred during {nameof(ProcessBlockHashes)}(): {e}");
+                _logger.Debug($"Timeout occurred during {nameof(ProcessBlockHashes)}().");
             }
             catch (Exception e)
             {
                 _logger.Error(
                     e,
-                    $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {e}");
+                    $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {{0}}",
+                    e);
                 throw;
             }
         }
@@ -1561,6 +1571,11 @@ namespace Libplanet.Net
                     }
                     else
                     {
+                        if (blockChain.Id != synced.Id)
+                        {
+                            blockChain.Store.DeleteChainId(synced.Id);
+                        }
+
                         throw;
                     }
                 }
@@ -1582,30 +1597,50 @@ namespace Libplanet.Net
 
             if (tip is null || latest.Index > tip.Index)
             {
-                _logger.Debug("Trying to fill up previous blocks...");
-                BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
-                    _blockChain,
-                    peer,
-                    oldest.PreviousHash,
-                    null,
+                BlockChain<T> previousBlocks = null;
+                try
+                {
+                    _logger.Debug("Trying to fill up previous blocks...");
+                    previousBlocks = await SyncPreviousBlocksAsync(
+                        _blockChain,
+                        peer,
+                        oldest.PreviousHash,
+                        null,
+                        blocks.Count,
+                        evaluateActions: true,
+                        cancellationToken: cancellationToken
+                    );
+                    _logger.Debug("Filled up. trying to concatenation...");
+
+                    foreach (Block<T> block in blocks)
+                    {
+                        previousBlocks.Append(block);
+                    }
+
+                    _logger.Debug("Sync is done.");
+                    if (!previousBlocks.Id.Equals(_blockChain.Id))
+                    {
+                        _logger.Debug("trying to swapping chain...");
+                        _blockChain.Swap(previousBlocks, render: true);
+                        _logger.Debug("Swapping complete");
+                    }
+                }
+                finally
+                {
+                    Guid? canonicalChainId = _blockChain.Store.GetCanonicalChainId();
+                    if (canonicalChainId != previousBlocks?.Id)
+                    {
+                        _blockChain.Store.DeleteChainId(previousBlocks.Id);
+                    }
+                }
+
+                var blockHashes =
+                    blocks.Aggregate(string.Empty, (current, block) =>
+                        current + $"[{block.Hash.ToString()}]");
+                _logger.Debug(
+                    $"Re-broadcast {nameof(BlockHashes)} with {{0}} blocks, which are {{1}}.",
                     blocks.Count,
-                    evaluateActions: true,
-                    cancellationToken: cancellationToken
-                );
-                _logger.Debug("Filled up. trying to concatenation...");
-
-                foreach (Block<T> block in blocks)
-                {
-                    previousBlocks.Append(block);
-                }
-
-                _logger.Debug("Sync is done.");
-                if (!previousBlocks.Id.Equals(_blockChain.Id))
-                {
-                    _logger.Debug("trying to swapping chain...");
-                    _blockChain.Swap(previousBlocks, render: true);
-                    _logger.Debug("Swapping complete");
-                }
+                    blockHashes);
 
                 // FIXME: Moved to more appropriate place
                 BroadcastBlocks(blocks);
@@ -1735,9 +1770,9 @@ namespace Libplanet.Net
                     peer, newTxIds, cancellationToken);
                 txs = await fetched.ToListAsync(cancellationToken);
             }
-            catch (TimeoutException e)
+            catch (TimeoutException)
             {
-                _logger.Debug(e, $"Timeout occurred during {nameof(ProcessTxIds)}(): {e}");
+                _logger.Debug($"Timeout occurred during {nameof(ProcessTxIds)}().");
                 return;
             }
 
@@ -1788,7 +1823,7 @@ namespace Libplanet.Net
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
             BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256> @base = _blockChain.FindBranchPoint(baseLocator);
+            HashDigest<SHA256>? @base = _blockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, object>
@@ -1831,6 +1866,38 @@ namespace Libplanet.Net
                 }
             }
 
+            if (_logger.IsEnabled(LogEventLevel.Debug))
+            {
+                if (BlockChain.Blocks.ContainsKey(target))
+                {
+                    var baseString = @base is HashDigest<SHA256> h
+                        ? $"{BlockChain.Blocks[h].Index}:{h}"
+                        : null;
+                    var targetString = $"{BlockChain.Blocks[target].Index}:{target}";
+                    _logger.Debug(
+                        "State references to send (preload): {@StateReferences} ({Base}-{Target})",
+                        stateRefs.Select(kv =>
+                            (
+                                kv.Key.ToString(),
+                                string.Join(", ", kv.Value.Select(v => v.ToString()))
+                            )
+                        ).ToArray(),
+                        baseString,
+                        targetString
+                    );
+                    _logger.Debug(
+                        "Block states to send (preload): {@BlockStates} ({Base}-{Target})",
+                        blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
+                        baseString,
+                        targetString
+                    );
+                }
+                else
+                {
+                    _logger.Debug("Nothing to reply because {TargetHash} doesn't exist.", target);
+                }
+            }
+
             var reply = new RecentStates(target, blockStates, stateRefs)
             {
                 Identity = getRecentStates.Identity,
@@ -1841,7 +1908,7 @@ namespace Libplanet.Net
         private async Task<DealerSocket> GetDealerSocket(BoundPeer peer)
         {
             DealerSocket dealer;
-            if (NeedsNewDealer(peer))
+            if (await NeedsNewDealer(peer))
             {
                 _logger.Debug($"Trying to create a dealer socket...");
                 dealer = await CreateDealerSocket(peer);
@@ -1850,20 +1917,22 @@ namespace Libplanet.Net
                 dealer.Connect(address);
                 if (_dealers.Count >= MaxDealerCount)
                 {
-                    RemoveOldestDealer();
+                    await RemoveOldestDealer();
                 }
 
-                _dealers[peer] = (DateTimeOffset.UtcNow, dealer);
+                _dealers[peer] = (DateTimeOffset.MaxValue, dealer);
             }
             else
             {
+                // FIXME: Remove least recent used dealer? or oldest dealer?
+                _dealers[peer] = (DateTimeOffset.MaxValue, _dealers[peer].Item2);
                 dealer = _dealers[peer].Item2;
             }
 
             return dealer;
         }
 
-        private bool NeedsNewDealer(BoundPeer peer)
+        private async Task<bool> NeedsNewDealer(BoundPeer peer)
         {
             BoundPeer existing = _dealers.Keys
                 .FirstOrDefault(p => peer.PublicKey.Equals(p.PublicKey));
@@ -1876,7 +1945,7 @@ namespace Libplanet.Net
             if (!existing.EndPoint.Equals(peer.EndPoint))
             {
                 // Clear outdated existing peer.
-                CloseDealer(existing);
+                await CloseDealer(existing);
                 return true;
             }
 
@@ -1893,7 +1962,7 @@ namespace Libplanet.Net
             return new DealerSocket();
         }
 
-        private void RemoveOldestDealer()
+        private async Task RemoveOldestDealer()
         {
             _logger.Debug("Too many dealers, removing...");
             (DateTimeOffset, BoundPeer) oldest = (DateTimeOffset.UtcNow, null);
@@ -1910,14 +1979,19 @@ namespace Libplanet.Net
                 throw new SwarmException("Creation time of used dealer must before now.");
             }
 
-            CloseDealer(oldest.Item2);
+            await CloseDealer(oldest.Item2);
         }
 
-        private void CloseDealer(BoundPeer peer)
+        private async Task CloseDealer(BoundPeer peer)
         {
             CheckStarted();
             if (_dealers.TryGetValue(peer, out (DateTimeOffset, DealerSocket) pair))
             {
+                while (DateTimeOffset.UtcNow < pair.Item1 + _linger)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(_linger.TotalSeconds / 2f));
+                }
+
                 pair.Item2.Dispose();
                 _dealers.Remove(peer);
             }
@@ -1994,13 +2068,13 @@ namespace Libplanet.Net
             }
             catch (TimeoutException ex)
             {
-                _logger.Error(ex, "TimeoutException occured.");
+                _logger.Error(ex, $"TimeoutException occurred during {nameof(DoBroadcast)}().");
             }
             catch (Exception ex)
             {
                 _logger.Error(
                     ex,
-                    "An unexpected exception occured during DoBroadcast()"
+                    $"An unexpected exception occurred during {nameof(DoBroadcast)}()."
                 );
             }
         }

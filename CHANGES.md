@@ -8,8 +8,13 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  `BlockChain<T>.MineBlock()` is now `async` and became to throw
+    `OperationCanceledException` if `BlockChain<T>`'s tip index is changed while
+    mining.  [[#460], [#517]]
+ -  Users became able to give a cancellation token to `Block<T>.Mine()` and
+    `Hashcash.Answer()` to cancel the operation.  [[#460], [#517]]
  -  Replaced `UnexpectedlyTerminatedTxRehearsalException` with
-    `UnexpectedlyTerminatedActionException`.
+    `UnexpectedlyTerminatedActionException`.  [[#498]]
  -  The following methods became to throw
     `UnexpectedlyTerminatedActionException` with having its `InnerException`
     during actions being evaluated if any action of them throws an exception:
@@ -40,8 +45,8 @@ To be released.
     HashDigest<SHA256>, long)` method so that it takes hash and index of
     a block instead of an entire block.  [[#420]]
  -  Added `IStore.ForkBlockIndexes()` method.  [[#420]]
- -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences()`
-    method.  [[#454], [#467]]
+ -  Removed `addressesToStrip` parameter from `IStore.ForkStateReferences<T>()`
+    method.  [[#454], [#467], [#509], [#522]]
  -  Removed the concept of "staged transactions that should not be broadcasted,"
     because its primary usage had been to make a transaction of a reward action
     for a candidate for block miner, and the case became achieved through
@@ -58,19 +63,24 @@ To be released.
     `Swarm<T>.BootstrapAsync()` method instead.  [[#353]]
  -  `Peer` with endpoints should be typed as `BoundPeer` which is inherited from
     `Peer`.  [[#353]]
+ -  Removed `IActionContext.NewGuid()` method. To get a randomly generated
+    [Guid][Guid], use `RandomExtension.GenerateRandomGuid()` which implements
+    [RFC 4122] instead. [[#508]]
 
 ### Added interfaces
 
+ -  Added `BlockChain<T>.TipChanged` event which is invoked with an argument
+    of `BlockChain<T>.TipChangedEventArgs` when `BlockChain<T>.Tip` is changed.
+    [[#517], [#526]]
+ -  Added `BlockChain<T>.TipChangedEventArgs` class.  [[#526]]
  -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
     calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
     `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
- -  Added `Block<T>.OrderedTransactions` property to execute transactions in
-    a deterministic but unpredictable order.  The order is determined by
-    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
-    predict the order of transactions in a block before it's mined.
-    [[#244], [#355]]
+ -  Added `RandomExtension` static class. [[#508]]
+ -  `TxId` class became to implement `IComparable<TxId>` and
+    `IComparable` interfaces.  [[#244], [#511]]
 
 ### Behavioral changes
 
@@ -87,23 +97,42 @@ To be released.
     instead of `HashDigest<SHA256>`.  [[#465], [#481]]
  -  NetMQ instances are now initialized at `Swarm<T>.StartAsync()` instead of
     `Swarm<T>()`.  [[#353]]
- -  Peers now connected via [Kademlia protocol][Kademlia]. Peers are now selectively
-    connected to each peer.  [[#353]]
- -  `TxId`s and `Block`s are now broadcasted to selected peers from routing table of
-    the host peer.  [[#353]]
+ -  Peers now connected via [Kademlia protocol][Kademlia].
+    Peers are now selectively connected to each peer.  [[#353]]
+ -  `TxId`s and `Block`s are now broadcasted to selected peers from routing
+    table of the host peer.  [[#353]]
+ -  `PolymorphicAction<T>.ToString()` method became to show the runtime type of
+    its `InnerAction` for the sake of easier debugging.  [[#512]]
+ -  The order of `Block<T>.Transactions` became to be determined by
+    both a `Block<T>.Hash` and a `Transaction<T>.Id`, so that signers cannot
+    predict the order of transactions in a block before it's mined.
+    If there are multiple transactions signed by the same signer in a block
+    these transactions become grouped together and the order is determined by
+    a `Block<T>.Hash` and a fingerprint derived from all these transactions,
+    and transactions in each group (per signer) are ordered by
+    `Transaction<T>.Nonce`.  [[#244], [#355], [#511], [#520]]
+ -  `LiteDBStore()` became to create the database in memory if the `path`
+    parameter is `null`.  [[#521]]
 
 ### Bug fixes
 
  -  Fixed a bug that `Swarm<T>` hadn't released its TURN related resources on
     `Swarm<T>.StopAsync()`.  [[#450]]
+ -  Fixed a bug that `IActionContext.Random` had been possible to generated
+    equivalent results between actions of different transactions in
+    a `Block<T>`.  [[#519]]
+ -  Fixed a bug where a forked chain would not be deleted when an exception
+    occurred during fetching block from other peers.  [[#527], [#537], [#540]]
 
 [#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
 [#355]: https://github.com/planetarium/libplanet/pull/355
 [#420]: https://github.com/planetarium/libplanet/pull/420
 [#450]: https://github.com/planetarium/libplanet/pull/450
+[#460]: https://github.com/planetarium/libplanet/issues/460
 [#461]: https://github.com/planetarium/libplanet/issues/461
 [#463]: https://github.com/planetarium/libplanet/issues/463
+[#467]: https://github.com/planetarium/libplanet/pull/467
 [#470]: https://github.com/planetarium/libplanet/pull/470
 [#481]: https://github.com/planetarium/libplanet/pull/481
 [#483]: https://github.com/planetarium/libplanet/issues/483
@@ -111,7 +140,22 @@ To be released.
 [#486]: https://github.com/planetarium/libplanet/pull/486
 [#498]: https://github.com/planetarium/libplanet/pull/498
 [#496]: https://github.com/planetarium/libplanet/pull/496
+[#508]: https://github.com/planetarium/libplanet/pull/508
+[#509]: https://github.com/planetarium/libplanet/issues/509
+[#511]: https://github.com/planetarium/libplanet/pull/511
+[#512]: https://github.com/planetarium/libplanet/pull/512
+[#517]: https://github.com/planetarium/libplanet/pull/517
+[#519]: https://github.com/planetarium/libplanet/pull/519
+[#520]: https://github.com/planetarium/libplanet/pull/520
+[#521]: https://github.com/planetarium/libplanet/pull/521
+[#522]: https://github.com/planetarium/libplanet/pull/522
+[#526]: https://github.com/planetarium/libplanet/pull/526
+[#527]: https://github.com/planetarium/libplanet/issues/527
+[#537]: https://github.com/planetarium/libplanet/pull/537
+[#540]: https://github.com/planetarium/libplanet/pull/540
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
+[Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
+[RFC 4122]: https://tools.ietf.org/html/rfc4122
 
 
 Version 0.5.3

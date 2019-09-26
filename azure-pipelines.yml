@@ -87,6 +87,7 @@ jobs:
       turnServerUrl: $(turnServerUrl)
   timeoutInMinutes: 30
 
+# FIXME: Currently mono version fixed to 6.0.0.334 for testing, it needs to be reverted.
 - job: Windows_Mono
   pool:
     vmImage: windows-2019
@@ -94,7 +95,7 @@ jobs:
   - task: CmdLine@2
     displayName: choco install mono
     inputs:
-      script: choco install mono --yes
+      script: choco install mono --version 6.0.0.334 --yes
   - template: .azure-pipelines/windows-net461.yml
     parameters:
       configuration: $(configuration)

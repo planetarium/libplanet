@@ -1,8 +1,8 @@
 parameters:
   configuration: Debug
   testDisplayName: xunit.console.exe *.Tests.dll
-  testCommand: "mono xunit.runner.console.*/tools/net461/xunit.console.exe"
-  testArguments: -verbose
+  testCommand: "mono --server xunit.runner.console.*/tools/net461/xunit.console.exe"
+  testArguments: -verbose -parallel none
 
 steps:
 
@@ -35,4 +35,5 @@ steps:
         ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+    MONO_THREADS_SUSPEND: preemptive
   timeoutInMinutes: 10

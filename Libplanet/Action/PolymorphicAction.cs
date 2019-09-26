@@ -305,5 +305,9 @@ namespace Libplanet.Action
             IAccountStateDelta nextStates
         ) =>
             InnerAction.Unrender(context, nextStates);
+
+        /// <inheritdoc/>
+        public override string ToString() =>
+            $"{nameof(PolymorphicAction<T>)}<{InnerAction.GetType().FullName}>({InnerAction})";
     }
 }
