@@ -16,4 +16,4 @@ jobs:
     - name: Rebase PR
       uses: drdanz/rebase@pr_from_fork
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_OAUTH_TOKEN }}
