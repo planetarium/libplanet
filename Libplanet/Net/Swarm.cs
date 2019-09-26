@@ -1597,29 +1597,41 @@ namespace Libplanet.Net
 
             if (tip is null || latest.Index > tip.Index)
             {
-                _logger.Debug("Trying to fill up previous blocks...");
-                BlockChain<T> previousBlocks = await SyncPreviousBlocksAsync(
-                    _blockChain,
-                    peer,
-                    oldest.PreviousHash,
-                    null,
-                    blocks.Count,
-                    evaluateActions: true,
-                    cancellationToken: cancellationToken
-                );
-                _logger.Debug("Filled up. trying to concatenation...");
-
-                foreach (Block<T> block in blocks)
+                BlockChain<T> previousBlocks = null;
+                try
                 {
-                    previousBlocks.Append(block);
+                    _logger.Debug("Trying to fill up previous blocks...");
+                    previousBlocks = await SyncPreviousBlocksAsync(
+                        _blockChain,
+                        peer,
+                        oldest.PreviousHash,
+                        null,
+                        blocks.Count,
+                        evaluateActions: true,
+                        cancellationToken: cancellationToken
+                    );
+                    _logger.Debug("Filled up. trying to concatenation...");
+
+                    foreach (Block<T> block in blocks)
+                    {
+                        previousBlocks.Append(block);
+                    }
+
+                    _logger.Debug("Sync is done.");
+                    if (!previousBlocks.Id.Equals(_blockChain.Id))
+                    {
+                        _logger.Debug("trying to swapping chain...");
+                        _blockChain.Swap(previousBlocks, render: true);
+                        _logger.Debug("Swapping complete");
+                    }
                 }
-
-                _logger.Debug("Sync is done.");
-                if (!previousBlocks.Id.Equals(_blockChain.Id))
+                finally
                 {
-                    _logger.Debug("trying to swapping chain...");
-                    _blockChain.Swap(previousBlocks, render: true);
-                    _logger.Debug("Swapping complete");
+                    Guid? canonicalChainId = _blockChain.Store.GetCanonicalChainId();
+                    if (canonicalChainId != previousBlocks?.Id)
+                    {
+                        _blockChain.Store.DeleteChainId(previousBlocks.Id);
+                    }
                 }
 
                 var blockHashes =

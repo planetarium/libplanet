@@ -122,7 +122,7 @@ To be released.
     equivalent results between actions of different transactions in
     a `Block<T>`.  [[#519]]
  -  Fixed a bug where a forked chain would not be deleted when an exception
-    occurred during fetching block from other peers.  [[#527], [#535]]
+    occurred during fetching block from other peers.  [[#527], [#537], [#540]]
 
 [#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
@@ -151,7 +151,8 @@ To be released.
 [#522]: https://github.com/planetarium/libplanet/pull/522
 [#526]: https://github.com/planetarium/libplanet/pull/526
 [#527]: https://github.com/planetarium/libplanet/issues/527
-[#535]: https://github.com/planetarium/libplanet/issues/535
+[#537]: https://github.com/planetarium/libplanet/pull/537
+[#540]: https://github.com/planetarium/libplanet/pull/540
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
