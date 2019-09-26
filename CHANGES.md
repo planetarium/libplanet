@@ -151,8 +151,8 @@ To be released.
 [#522]: https://github.com/planetarium/libplanet/pull/522
 [#526]: https://github.com/planetarium/libplanet/pull/526
 [#527]: https://github.com/planetarium/libplanet/issues/527
-[#537]: https://github.com/planetarium/libplanet/issues/537
-[#540]: https://github.com/planetarium/libplanet/issues/540
+[#537]: https://github.com/planetarium/libplanet/pull/537
+[#540]: https://github.com/planetarium/libplanet/pull/540
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
