@@ -538,25 +538,28 @@ namespace Libplanet.Net.Protocols
 
             List<BoundPeer> closestCandidate = _routing.Neighbors(target, BucketSize).ToList();
 
-            bool foundPingTimeout = true;
-            foreach (BoundPeer peer in peers)
+            Task[] awaitables = peers.Select(peer =>
+                PingAsync(peer, RequestTimeout, cancellationToken)
+            ).ToArray();
+            try
             {
-                try
-                {
-                    // This timeout should be request timeout?
-                    await PingAsync(peer, RequestTimeout, cancellationToken);
-                    foundPingTimeout = false;
-                }
-                catch (TimeoutException)
-                {
-                    continue;
-                }
+                await Task.WhenAll(awaitables);
             }
-
-            if (foundPingTimeout)
+            catch (AggregateException e)
             {
-                _logger.Debug("All neighbors found are invalid.");
-                throw new TimeoutException();
+                if (e.InnerExceptions.All(ie => ie is TimeoutException) &&
+                    e.InnerExceptions.Count == awaitables.Length)
+                {
+                    throw new TimeoutException(
+                        $"All neighbors found do not respond in {RequestTimeout}."
+                    );
+                }
+
+                _logger.Error(
+                    e,
+                    "Some responses from neighbors found unexpectedly terminated: {Exception}",
+                    e
+                );
             }
 
             var findNeighboursTasks = new List<Task>();
