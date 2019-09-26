@@ -201,6 +201,8 @@ parameter is <code>null</code>.  [<a href="https://github.com/planetarium/libpla
 <li>Fixed a bug that <code>IActionContext.Random</code> had been possible to generated
 equivalent results between actions of different transactions in
 a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/519">#519</a>]</li>
+<li>Fixed a bug where a forked chain would not be deleted when an exception
+occurred during fetching block from other peers.  [<a href="https://github.com/planetarium/libplanet/issues/527">#527</a>, <a href="https://github.com/planetarium/libplanet/issues/535">#535</a>]</li>
 </ul>
 <h2 id="version-053">Version 0.5.3</h2>
 <p>Released on September 9, 2019.</p>
@@ -839,7 +841,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/45f962406ce84be1be60d00ad94af21c940e8656/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/89478a27a1b12afd554976a7c2a490686401a095/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
