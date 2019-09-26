@@ -1628,7 +1628,7 @@ namespace Libplanet.Net
                 finally
                 {
                     Guid? canonicalChainId = _blockChain.Store.GetCanonicalChainId();
-                    if (previousBlocks != null && canonicalChainId != previousBlocks.Id)
+                    if (canonicalChainId != previousBlocks?.Id)
                     {
                         _blockChain.Store.DeleteChainId(previousBlocks.Id);
                     }
