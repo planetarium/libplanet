@@ -121,8 +121,8 @@ To be released.
  -  Fixed a bug that `IActionContext.Random` had been possible to generated
     equivalent results between actions of different transactions in
     a `Block<T>`.  [[#519]]
- -  Fixed a bug where forked chain would not be deleted when an exception
-    occurred during `FillBlocksAsync`.  [[#527], [#535]]
+ -  Fixed a bug where a forked chain would not be deleted when an exception
+    occurred during fetching block from other peers.  [[#527], [#535]]
 
 [#244]: https://github.com/planetarium/libplanet/issues/244
 [#353]: https://github.com/planetarium/libplanet/pull/353
