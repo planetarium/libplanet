@@ -167,7 +167,6 @@ namespace Libplanet.Blocks
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.</param>
         /// <returns>A <see cref="Block{T}"/> that mined.</returns>
-
         public static Block<T> Mine(
             long index,
             long difficulty,
