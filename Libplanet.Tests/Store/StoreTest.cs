@@ -338,34 +338,39 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void IterateStateReferences()
         {
-            Address address = this.Fx.Address1;
+            Address address = Fx.Address1;
+            var addresses = new[] { address }.ToImmutableHashSet();
+
+            Block<DumbAction> block1 = Fx.Block1;
+            Block<DumbAction> block2 = Fx.Block2;
+            Block<DumbAction> block3 = Fx.Block3;
 
             Transaction<DumbAction> tx4 = Fx.MakeTransaction(
-                new DumbAction[] { new DumbAction(address, "foo") }
+                new[] { new DumbAction(address, "foo") }
             );
-            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
+            Block<DumbAction> block4 = TestUtils.MineNext(block3, new[] { tx4 });
 
             Transaction<DumbAction> tx5 = Fx.MakeTransaction(
-                new DumbAction[] { new DumbAction(address, "bar") }
+                new[] { new DumbAction(address, "bar") }
             );
             Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
 
-            Assert.Empty(this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address));
+            Assert.Empty(Fx.Store.IterateStateReferences(Fx.StoreChainId, address));
 
             Fx.Store.StoreStateReference(
                 Fx.StoreChainId,
-                tx4.UpdatedAddresses,
+                addresses,
                 block4.Hash,
                 block4.Index
             );
             Assert.Equal(
                 new[] { Tuple.Create(block4.Hash, block4.Index) },
-                this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address)
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, address)
             );
 
             Fx.Store.StoreStateReference(
                 Fx.StoreChainId,
-                tx5.UpdatedAddresses,
+                addresses,
                 block5.Hash,
                 block5.Index
             );
@@ -375,8 +380,62 @@ namespace Libplanet.Tests.Store
                     Tuple.Create(block5.Hash, block5.Index),
                     Tuple.Create(block4.Hash, block4.Index),
                 },
-                this.Fx.Store.IterateStateReferences(this.Fx.StoreChainId, address)
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, address)
             );
+
+            Fx.Store.StoreStateReference(Fx.StoreChainId, addresses, block3.Hash, block3.Index);
+            Fx.Store.StoreStateReference(Fx.StoreChainId, addresses, block2.Hash, block2.Index);
+            Fx.Store.StoreStateReference(Fx.StoreChainId, addresses, block1.Hash, block1.Index);
+
+            Assert.Equal(
+                new[]
+                {
+                    Tuple.Create(block5.Hash, block5.Index),
+                    Tuple.Create(block4.Hash, block4.Index),
+                    Tuple.Create(block3.Hash, block3.Index),
+                    Tuple.Create(block2.Hash, block2.Index),
+                    Tuple.Create(block1.Hash, block1.Index),
+                },
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, address)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Tuple.Create(block5.Hash, block5.Index),
+                    Tuple.Create(block4.Hash, block4.Index),
+                },
+                Fx.Store.IterateStateReferences(Fx.StoreChainId, address, lowestIndex: block4.Index)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Tuple.Create(block2.Hash, block2.Index),
+                    Tuple.Create(block1.Hash, block1.Index),
+                },
+                Fx.Store.IterateStateReferences(
+                    Fx.StoreChainId, address, highestIndex: block2.Index)
+            );
+
+            Assert.Equal(
+                new[]
+                {
+                    Tuple.Create(block3.Hash, block3.Index),
+                    Tuple.Create(block2.Hash, block2.Index),
+                },
+                Fx.Store.IterateStateReferences(
+                    Fx.StoreChainId, address, highestIndex: block3.Index, limit: 2)
+            );
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                Fx.Store.IterateStateReferences(
+                    Fx.StoreChainId,
+                    address,
+                    highestIndex: block2.Index,
+                    lowestIndex: block3.Index);
+            });
         }
 
         [Fact]

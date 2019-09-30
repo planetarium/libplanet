@@ -426,16 +426,33 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address)
+            Address address,
+            long? highestIndex,
+            long? lowestIndex,
+            int? limit)
         {
+            highestIndex = highestIndex ?? long.MaxValue;
+            lowestIndex = lowestIndex ?? 0;
+
+            if (highestIndex < lowestIndex)
+            {
+                var message =
+                    $"highestIndex({highestIndex}) must be greater than or equal to " +
+                    $"lowestIndex({lowestIndex})";
+                throw new ArgumentException(
+                    message,
+                    nameof(highestIndex));
+            }
+
             string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
             string addressString = address.ToHex().ToLower();
             IEnumerable<StateRefDoc> stateRefs = coll.Find(
                 Query.And(
                     Query.All("BlockIndex", Query.Descending),
-                    Query.EQ("AddressString", addressString)
-                )
+                    Query.EQ("AddressString", addressString),
+                    Query.Between("BlockIndex", lowestIndex, highestIndex)
+                ), limit: limit ?? int.MaxValue
             );
             return stateRefs
                 .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex));

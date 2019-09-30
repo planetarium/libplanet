@@ -119,7 +119,10 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address);
+            Address address,
+            long? highestIndex,
+            long? lowestIndex,
+            int? limit);
 
         public abstract void StoreStateReference(
             Guid chainId,
