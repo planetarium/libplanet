@@ -433,13 +433,12 @@ namespace Libplanet.Store
             string addressString = address.ToHex().ToLower();
             IEnumerable<StateRefDoc> stateRefs = coll.Find(
                 Query.And(
-                    Query.EQ("AddressString", addressString),
-                    Query.All("BlockIndex", Query.Descending)
+                    Query.All("BlockIndex", Query.Descending),
+                    Query.EQ("AddressString", addressString)
                 )
             );
             return stateRefs
-                .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex))
-                .OrderByDescending(pair => pair.Item2);
+                .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex));
         }
 
         /// <inheritdoc/>
@@ -484,6 +483,9 @@ namespace Libplanet.Store
                     "The source chain to be forked does not exist."
                 );
             }
+
+            dstColl.EnsureIndex("AddressString");
+            dstColl.EnsureIndex("BlockIndex");
         }
 
         /// <inheritdoc/>
