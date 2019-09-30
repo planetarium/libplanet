@@ -15,7 +15,8 @@ steps:
   inputs:
     targetType: inline
     script: |
-      foreach ($path in (gci *.Tests/*.Tests.csproj) + (gci Libplanet.Benchmarks/*.csproj)) {
+      $projs = (gci *.Tests/*.Tests.csproj) + (gci Libplanet.Benchmarks/*.csproj)
+      foreach ($path in $projs) {
         [xml]$csproj = Get-Content $path
         foreach ($pg in $csproj.Project.PropertyGroup) {
           if ($pg.TargetFramework -ne $null) {

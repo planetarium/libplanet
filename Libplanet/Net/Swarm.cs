@@ -765,7 +765,7 @@ namespace Libplanet.Net
                     }
                 }
 
-                _logger.Verbose("Trying to ping all peers. (count: {0})", tasks.Count);
+                _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
                 await Task.WhenAll(tasks);
                 _logger.Verbose("Update complete.");
             }
@@ -827,7 +827,7 @@ namespace Libplanet.Net
             Guid reqId = Guid.NewGuid();
             try
             {
-                _logger.Verbose("Adding request[{0}] to queue...", reqId);
+                _logger.Verbose("Adding request ({RequestId}) to queue...", reqId);
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 await _requests.AddAsync(
                     new MessageRequest
@@ -843,7 +843,10 @@ namespace Libplanet.Net
                 _logger.Verbose("Request Added. waiting for reply...");
                 IEnumerable<Message> reply = await tcs.Task;
 
-                _logger.Debug($"Received [{reply}] from [{peer.Address.ToHex()}]...");
+                _logger.Debug(
+                    "Received {@Reply} from {PeerAddress}...",
+                    reply,
+                    peer.Address);
 
                 return reply;
             }
@@ -961,7 +964,7 @@ namespace Libplanet.Net
                 var request = new GetTxs(txIdsAsArray);
                 int txCount = txIdsAsArray.Count();
 
-                _logger.Debug($"Required tx count: {txCount}.");
+                _logger.Debug("Required tx count: {Count}.", txCount);
 
                 IEnumerable<Message> replies = await SendMessageWithReplyAsync(
                     peer,
@@ -1115,7 +1118,7 @@ namespace Libplanet.Net
                 cancellationToken.ThrowIfCancellationRequested();
                 var request = new GetRecentStates(baseLocator, blockHash);
 
-                _logger.Debug("Requests recent states to a peer ({0}).", peer);
+                _logger.Debug("Requests recent states to a peer ({@Peer}).", peer);
                 Message reply;
                 try
                 {
@@ -1125,12 +1128,12 @@ namespace Libplanet.Net
                         timeout: TimeSpan.FromSeconds(30),
                         cancellationToken: cancellationToken
                     );
-                    _logger.Debug("Received recent states from a peer ({0}).", peer);
+                    _logger.Debug("Received recent states from a peer ({@Peer}).", peer);
                 }
                 catch (TimeoutException e)
                 {
                     _logger.Error(
-                        "Failed to receive recent states from a peer ({0}): " + e,
+                        "Failed to receive recent states from a peer ({@Peer}): " + e,
                         peer
                     );
                     continue;
@@ -1148,7 +1151,7 @@ namespace Libplanet.Net
                         Guid chainId = blockChain.Id;
 
                         int count = 0, totalCount = recentStates.StateReferences.Count;
-                        _logger.Debug("Starts to store state refs received from {0}.", peer);
+                        _logger.Debug("Starts to store state refs received from {@Peer}.", peer);
 
                         var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
                         foreach (var pair in recentStates.StateReferences)
@@ -1185,7 +1188,7 @@ namespace Libplanet.Net
 
                         count = 0;
                         totalCount = recentStates.BlockStates.Count;
-                        _logger.Debug("Starts to store block states received from {0}.", peer);
+                        _logger.Debug("Starts to store block states received from {@Peer}.", peer);
                         foreach (var pair in recentStates.BlockStates)
                         {
                             cancellationToken.ThrowIfCancellationRequested();
@@ -1209,7 +1212,7 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug(
-                    "A message received from {0} is not a RecentStates but {1}.",
+                    "A message received from {Peer} is not a RecentStates but {@Reply}.",
                     peer,
                     reply
                 );
@@ -2011,13 +2014,15 @@ namespace Libplanet.Net
             {
                 _logger.Verbose("Waiting for new request...");
                 var req = await _requests.TakeAsync(cancellationToken);
-                _logger.Verbose("Request[{0}] taken.", req.Id);
+                _logger.Verbose("Request {RequestId} taken.", req.Id);
 
                 using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
                 {
                     dealer.Options.Linger = _linger;
                     _logger.Debug(
-                        $"Trying to send [{req.Message}] to [{req.Peer.Address.ToHex()}]..."
+                        "Trying to send {@Message} to {PeerAddress}...",
+                        req.Message,
+                        req.Peer.Address
                     );
                     var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
                     var result = new List<Message>();
@@ -2030,7 +2035,7 @@ namespace Libplanet.Net
                             cancellationToken: cancellationToken
                         );
 
-                        _logger.Debug($"Message[{req.Message}] sent.");
+                        _logger.Debug("A message {@Message} sent.", req.Message);
 
                         foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                         {
@@ -2039,12 +2044,12 @@ namespace Libplanet.Net
                                 cancellationToken: cancellationToken
                             );
                             _logger.Verbose(
-                                "A raw message [frame count: {0}] has replied.",
+                                "A raw message ({FrameCount} frames) has replied.",
                                 raw.FrameCount
                             );
                             Message reply = Message.Parse(raw, true);
                             _logger.Debug(
-                                "A reply has parsed: {0}, from {1}",
+                                "A reply has parsed: {@Reply} from {@ReplyRemote}",
                                 reply,
                                 reply.Remote
                             );
