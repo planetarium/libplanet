@@ -3354,6 +3354,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.PublicKey
   nameWithType: Peer.PublicKey
+- uid: Libplanet.Net.Peer.ToString
+  name: ToString()
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToString
+  commentId: M:Libplanet.Net.Peer.ToString
+  fullName: Libplanet.Net.Peer.ToString()
+  nameWithType: Peer.ToString()
+- uid: Libplanet.Net.Peer.ToString*
+  name: ToString
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_ToString_
+  commentId: Overload:Libplanet.Net.Peer.ToString
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.ToString
+  nameWithType: Peer.ToString
 - uid: Libplanet.Net.PeerNotFoundException
   name: PeerNotFoundException
   href: api/Libplanet.Net.PeerNotFoundException.html
