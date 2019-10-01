@@ -73,9 +73,6 @@ Released on October 1, 2019.
     of `BlockChain<T>.TipChangedEventArgs` when `BlockChain<T>.Tip` is changed.
     [[#517], [#526]]
  -  Added `BlockChain<T>.TipChangedEventArgs` class.  [[#526]]
- -  Added `Swarm<T>.PrepareAsync()` method. The method should be called before
-    calling `Swarm<T>.BootstrapAsync()`, `Swarm<T>.PreloadAsync()` and
-    `Swarm<T>.StartAsync()`.  [[#353]]
  -  Added `Swarm<T>.BootstrapAsync()` method to connect with seed peers.
     [[#353]]
  -  Added `RandomExtension` static class. [[#508]]
