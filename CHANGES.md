@@ -1,6 +1,21 @@
 Libplanet changelog
 ===================
 
+Version 0.7.0
+-------------
+
+To be released.
+
+### Backward-incompatible interface changes
+
+### Added interfaces
+
+### Behavioral changes
+
+### Bug fixes
+
+
+
 Version 0.6.0
 -------------
 
