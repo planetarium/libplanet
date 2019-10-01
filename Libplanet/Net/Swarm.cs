@@ -1026,7 +1026,7 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "An unexpected exception occured. try again...");
+                    _logger.Error(e, "An unexpected exception occurred. try again...");
                 }
             }
         }
@@ -1316,7 +1316,7 @@ namespace Libplanet.Net
                 {
                     _logger.Error(
                         e,
-                        $"An unexpected exception occured during {nameof(BroadcastTxAsync)}(): {e}"
+                        $"An unexpected exception occurred during {nameof(BroadcastTxAsync)}(): {e}"
                     );
                 }
             }
@@ -2045,7 +2045,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occured during ReceiveMessage(): {ex}"
+                    $"An unexpected exception occurred during ReceiveMessage(): {ex}"
                 );
             }
         }

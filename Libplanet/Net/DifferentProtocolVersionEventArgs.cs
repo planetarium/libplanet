@@ -2,7 +2,7 @@ namespace Libplanet.Net
 {
     /// <summary>
     /// The event data that provides a value when
-    /// <see cref="Swarm{T}.DifferentVersionPeerEncountered" /> is occured.
+    /// <see cref="Swarm{T}.DifferentVersionPeerEncountered" /> is occurred.
     /// </summary>
     public class DifferentProtocolVersionEventArgs
     {
