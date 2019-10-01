@@ -186,7 +186,7 @@ namespace Libplanet.Stun
                 response is RefreshErrorResponse error &&
                 error.ErrorCode == 438)
             {
-                // Retry refreshing when stale nonce error(438) occured.
+                // Retry refreshing when stale nonce error(438) occurred.
                 Nonce = error.Nonce;
                 return await RefreshAllocationAsync(lifetime);
             }

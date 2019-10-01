@@ -908,7 +908,7 @@ Released on April 5, 2019.
     [[#120], [#123] by Yang Chun Ung, [#126], [#127], [#165], [#166]]
  -  `Swarm` became to ignore tip blocks of the same height (`Index`) that it
     already has and deal with only longer (higher) blocks.
- -  Fixed a bug that occured when `Swarm` was handling multiple responses at the
+ -  Fixed a bug that occurred when `Swarm` was handling multiple responses at the
     same time.
  -  Fixed a bug that the `Swarm` constructor had hanged in certain runtimes
     like Unity engine.
