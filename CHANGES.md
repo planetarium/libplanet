@@ -1,7 +1,7 @@
 Libplanet changelog
 ===================
 
-version 0.7.0
+Version 0.7.0
 -------------
 
 To be released.
