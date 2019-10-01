@@ -4,9 +4,11 @@ Libplanet changelog
 Version 0.7.0
 -------------
 
-To be released.
+Released on October 1, 2019.
 
 ### Backward-incompatible interface changes
+
+ -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
 
 ### Added interfaces
 
@@ -81,7 +83,6 @@ Released on October 1, 2019.
  -  Removed `IActionContext.NewGuid()` method. To get a randomly generated
     [Guid][Guid], use `RandomExtension.GenerateRandomGuid()` which implements
     [RFC 4122] instead. [[#508]]
- -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
 
 ### Added interfaces
 
