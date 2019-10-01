@@ -9,6 +9,7 @@ To be released.
 ### Backward-incompatible interface changes
 
  -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
+ -  Renamed `IterateIndex()` method to `IterateIndexes` on `IStore` interface and usages. [[#462]]
 
 ### Added interfaces
 
@@ -145,6 +146,7 @@ Released on October 1, 2019.
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#460]: https://github.com/planetarium/libplanet/issues/460
 [#461]: https://github.com/planetarium/libplanet/issues/461
+[#462]: https://github.com/planetarium/libplanet/issues/462
 [#463]: https://github.com/planetarium/libplanet/issues/463
 [#467]: https://github.com/planetarium/libplanet/pull/467
 [#470]: https://github.com/planetarium/libplanet/pull/470
