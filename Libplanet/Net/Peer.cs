@@ -77,5 +77,11 @@ namespace Libplanet.Net
             info.AddValue("app_protocol_version", AppProtocolVersion);
             info.AddValue("public_ip_address", PublicIPAddress?.ToString());
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{nameof(Peer)} {{ {nameof(Address)} = {Address} }}";
+        }
     }
 }
