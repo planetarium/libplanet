@@ -8,6 +8,8 @@ To be released.
 
 ### Backward-incompatible interface changes
 
+ -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
+
 ### Added interfaces
 
 ### Behavioral changes
@@ -165,6 +167,8 @@ Released on October 1, 2019.
 [#527]: https://github.com/planetarium/libplanet/issues/527
 [#537]: https://github.com/planetarium/libplanet/pull/537
 [#540]: https://github.com/planetarium/libplanet/pull/540
+[#555]: https://github.com/planetarium/libplanet/issues/555
+[#558]: https://github.com/planetarium/libplanet/pull/558
 [Kademlia]: https://en.wikipedia.org/wiki/Kademlia
 [Guid]: https://docs.microsoft.com/ko-kr/dotnet/api/system.guid?view=netframework-4.8
 [RFC 4122]: https://tools.ietf.org/html/rfc4122
