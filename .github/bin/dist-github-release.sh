@@ -61,6 +61,7 @@ github_user="${GITHUB_REPOSITORY%/*}"
 github_repo="${GITHUB_REPOSITORY#*/}"
 
 if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ]; then
+  chmod +x /tmp/bin/linux/amd64/github-release
   alias github-release=/tmp/bin/linux/amd64/github-release
 else
   alias github-release="echo DRY-RUN: github-release"
