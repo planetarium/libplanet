@@ -54,7 +54,7 @@ namespace Libplanet.Store
         /// <param name="limit">The maximum number of block hashes to get.</param>
         /// <returns>Block hashes in the index of the <paramref name="chainId"/>, in ascending
         /// order; the genesis block goes first, and the tip block goes last.</returns>
-        IEnumerable<HashDigest<SHA256>> IterateIndex(
+        IEnumerable<HashDigest<SHA256>> IterateIndexes(
             Guid chainId,
             int offset = 0,
             int? limit = null);
@@ -78,7 +78,7 @@ namespace Libplanet.Store
         /// to fork.</param>
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
-        /// <seealso cref="IterateIndex(Guid, int, int?)"/>
+        /// <seealso cref="IterateIndexes(Guid, int, int?)"/>
         /// <seealso cref="AppendIndex(Guid, HashDigest{SHA256})"/>
         void ForkBlockIndexes(
             Guid sourceChainId,

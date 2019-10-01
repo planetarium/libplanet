@@ -158,7 +158,7 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override IEnumerable<HashDigest<SHA256>> IterateIndex(
+        public override IEnumerable<HashDigest<SHA256>> IterateIndexes(
             Guid chainId,
             int offset,
             int? limit)

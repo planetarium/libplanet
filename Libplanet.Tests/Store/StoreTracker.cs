@@ -118,10 +118,10 @@ namespace Libplanet.Tests.Store
             return _store.IterateBlockHashes();
         }
 
-        public IEnumerable<HashDigest<SHA256>> IterateIndex(Guid chainId, int offset, int? limit)
+        public IEnumerable<HashDigest<SHA256>> IterateIndexes(Guid chainId, int offset, int? limit)
         {
-             _logs.Add((nameof(IterateIndex), chainId, (offset, limit)));
-             return _store.IterateIndex(chainId, offset, limit);
+             _logs.Add((nameof(IterateIndexes), chainId, (offset, limit)));
+             return _store.IterateIndexes(chainId, offset, limit);
         }
 
         public IEnumerable<TxId> IterateStagedTransactionIds()

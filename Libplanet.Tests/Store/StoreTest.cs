@@ -251,7 +251,7 @@ namespace Libplanet.Tests.Store
         public void StoreIndex()
         {
             Assert.Equal(0, Fx.Store.CountIndex(Fx.StoreChainId));
-            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.Empty(Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
             Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
 
@@ -262,7 +262,7 @@ namespace Libplanet.Tests.Store
                 {
                     Fx.Hash1,
                 },
-                Fx.Store.IterateIndex(Fx.StoreChainId));
+                Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
 
@@ -274,7 +274,7 @@ namespace Libplanet.Tests.Store
                     Fx.Hash1,
                     Fx.Hash2,
                 },
-                Fx.Store.IterateIndex(Fx.StoreChainId));
+                Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, 0));
             Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreChainId, 1));
             Assert.Equal(Fx.Hash2, Fx.Store.IndexBlockHash(Fx.StoreChainId, -1));
@@ -286,13 +286,13 @@ namespace Libplanet.Tests.Store
         {
             Assert.False(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
             Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash1);
-            Assert.NotEmpty(Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.NotEmpty(Fx.Store.IterateIndexes(Fx.StoreChainId));
             Assert.True(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
-            Assert.Empty(Fx.Store.IterateIndex(Fx.StoreChainId));
+            Assert.Empty(Fx.Store.IterateIndexes(Fx.StoreChainId));
         }
 
         [Fact]
-        public void IterateIndex()
+        public void IterateIndexes()
         {
             var ns = Fx.StoreChainId;
             var store = Fx.Store;
@@ -301,37 +301,37 @@ namespace Libplanet.Tests.Store
             store.AppendIndex(ns, Fx.Hash2);
             store.AppendIndex(ns, Fx.Hash3);
 
-            var indexes = store.IterateIndex(ns).ToArray();
+            var indexes = store.IterateIndexes(ns).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndex(ns, 1).ToArray();
+            indexes = store.IterateIndexes(ns, 1).ToArray();
             Assert.Equal(new[] { Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndex(ns, 2).ToArray();
+            indexes = store.IterateIndexes(ns, 2).ToArray();
             Assert.Equal(new[] { Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndex(ns, 3).ToArray();
+            indexes = store.IterateIndexes(ns, 3).ToArray();
             Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
 
-            indexes = store.IterateIndex(ns, 4).ToArray();
+            indexes = store.IterateIndexes(ns, 4).ToArray();
             Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
 
-            indexes = store.IterateIndex(ns, limit: 0).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 0).ToArray();
             Assert.Equal(new HashDigest<SHA256>[] { }, indexes);
 
-            indexes = store.IterateIndex(ns, limit: 1).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 1).ToArray();
             Assert.Equal(new[] { Fx.Hash1 }, indexes);
 
-            indexes = store.IterateIndex(ns, limit: 2).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 2).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2 }, indexes);
 
-            indexes = store.IterateIndex(ns, limit: 3).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 3).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndex(ns, limit: 4).ToArray();
+            indexes = store.IterateIndexes(ns, limit: 4).ToArray();
             Assert.Equal(new[] { Fx.Hash1, Fx.Hash2, Fx.Hash3 }, indexes);
 
-            indexes = store.IterateIndex(ns, 1, 1).ToArray();
+            indexes = store.IterateIndexes(ns, 1, 1).ToArray();
             Assert.Equal(new[] { Fx.Hash2 }, indexes);
         }
 
