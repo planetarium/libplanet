@@ -6,6 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: build
-      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
-      with:
-        args: dotnet build
+      uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.2.103'
+    - run: dotnet build
