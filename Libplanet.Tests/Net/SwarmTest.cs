@@ -1088,6 +1088,43 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastBlockWithoutGenesis()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+
+                await chainA.MineBlock(_fx1.Address1);
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+
+                await swarmB.BlockReceived.WaitAsync();
+
+                Assert.Equal(chainB.AsEnumerable(), chainA);
+
+                await chainA.MineBlock(_fx1.Address1);
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+
+                await swarmB.BlockReceived.WaitAsync();
+
+                Assert.Equal(chainB.AsEnumerable(), chainA);
+            }
+            finally
+            {
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task IgnoreExistingBlocks()
         {
             Swarm<DumbAction> swarmA = _swarms[0];

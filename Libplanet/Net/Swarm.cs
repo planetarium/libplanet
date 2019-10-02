@@ -1601,15 +1601,17 @@ namespace Libplanet.Net
                 try
                 {
                     _logger.Debug("Trying to fill up previous blocks...");
-                    previousBlocks = await SyncPreviousBlocksAsync(
-                        _blockChain,
-                        peer,
-                        oldest.PreviousHash,
-                        null,
-                        blocks.Count,
-                        evaluateActions: true,
-                        cancellationToken: cancellationToken
-                    );
+                    previousBlocks = (oldest.PreviousHash is null)
+                        ? _blockChain
+                        : await SyncPreviousBlocksAsync(
+                            _blockChain,
+                            peer,
+                            oldest.PreviousHash,
+                            null,
+                            blocks.Count,
+                            evaluateActions: true,
+                            cancellationToken: cancellationToken
+                        );
                     _logger.Debug("Filled up. trying to concatenation...");
 
                     foreach (Block<T> block in blocks)
