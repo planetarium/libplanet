@@ -17,6 +17,8 @@ To be released.
 
 ### Bug fixes
 
+[#462]: https://github.com/planetarium/libplanet/issues/462
+[#560]: https://github.com/planetarium/libplanet/pull/560
 
 
 Version 0.6.0
@@ -146,7 +148,6 @@ Released on October 1, 2019.
 [#450]: https://github.com/planetarium/libplanet/pull/450
 [#460]: https://github.com/planetarium/libplanet/issues/460
 [#461]: https://github.com/planetarium/libplanet/issues/461
-[#462]: https://github.com/planetarium/libplanet/issues/462
 [#463]: https://github.com/planetarium/libplanet/issues/463
 [#467]: https://github.com/planetarium/libplanet/pull/467
 [#470]: https://github.com/planetarium/libplanet/pull/470
