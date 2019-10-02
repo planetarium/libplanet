@@ -4670,22 +4670,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateBlockHashes
   nameWithType: BaseStore.IterateBlockHashes
-- uid: Libplanet.Store.BaseStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name: IterateIndex(Guid, Int32, Nullable<Int32>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndex_Guid_System_Int32_System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.BaseStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name.vb: IterateIndex(Guid, Int32, Nullable(Of Int32))
-  fullName: Libplanet.Store.BaseStore.IterateIndex(Guid, System.Int32, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.BaseStore.IterateIndex(Guid, System.Int32, System.Nullable(Of System.Int32))
-  nameWithType: BaseStore.IterateIndex(Guid, Int32, Nullable<Int32>)
-  nameWithType.vb: BaseStore.IterateIndex(Guid, Int32, Nullable(Of Int32))
-- uid: Libplanet.Store.BaseStore.IterateIndex*
-  name: IterateIndex
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndex_
-  commentId: Overload:Libplanet.Store.BaseStore.IterateIndex
+- uid: Libplanet.Store.BaseStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name: IterateIndexes(Guid, Int32, Nullable<Int32>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.BaseStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
+  fullName: Libplanet.Store.BaseStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.BaseStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
+  nameWithType: BaseStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  nameWithType.vb: BaseStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+- uid: Libplanet.Store.BaseStore.IterateIndexes*
+  name: IterateIndexes
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateIndexes_
+  commentId: Overload:Libplanet.Store.BaseStore.IterateIndexes
   isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.IterateIndex
-  nameWithType: BaseStore.IterateIndex
+  fullName: Libplanet.Store.BaseStore.IterateIndexes
+  nameWithType: BaseStore.IterateIndexes
 - uid: Libplanet.Store.BaseStore.IterateStagedTransactionIds
   name: IterateStagedTransactionIds()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStagedTransactionIds
@@ -5351,22 +5351,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateBlockHashes
   nameWithType: IStore.IterateBlockHashes
-- uid: Libplanet.Store.IStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name: IterateIndex(Guid, Int32, Nullable<Int32>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndex_Guid_System_Int32_System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.IStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name.vb: IterateIndex(Guid, Int32, Nullable(Of Int32))
-  fullName: Libplanet.Store.IStore.IterateIndex(Guid, System.Int32, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.IStore.IterateIndex(Guid, System.Int32, System.Nullable(Of System.Int32))
-  nameWithType: IStore.IterateIndex(Guid, Int32, Nullable<Int32>)
-  nameWithType.vb: IStore.IterateIndex(Guid, Int32, Nullable(Of Int32))
-- uid: Libplanet.Store.IStore.IterateIndex*
-  name: IterateIndex
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndex_
-  commentId: Overload:Libplanet.Store.IStore.IterateIndex
+- uid: Libplanet.Store.IStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name: IterateIndexes(Guid, Int32, Nullable<Int32>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.IStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
+  fullName: Libplanet.Store.IStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.IStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
+  nameWithType: IStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  nameWithType.vb: IStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+- uid: Libplanet.Store.IStore.IterateIndexes*
+  name: IterateIndexes
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateIndexes_
+  commentId: Overload:Libplanet.Store.IStore.IterateIndexes
   isSpec: "True"
-  fullName: Libplanet.Store.IStore.IterateIndex
-  nameWithType: IStore.IterateIndex
+  fullName: Libplanet.Store.IStore.IterateIndexes
+  nameWithType: IStore.IterateIndexes
 - uid: Libplanet.Store.IStore.IterateStagedTransactionIds
   name: IterateStagedTransactionIds()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStagedTransactionIds
@@ -5828,22 +5828,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes
   nameWithType: LiteDBStore.IterateBlockHashes
-- uid: Libplanet.Store.LiteDBStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name: IterateIndex(Guid, Int32, Nullable<Int32>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndex_Guid_System_Int32_System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.LiteDBStore.IterateIndex(Guid,System.Int32,System.Nullable{System.Int32})
-  name.vb: IterateIndex(Guid, Int32, Nullable(Of Int32))
-  fullName: Libplanet.Store.LiteDBStore.IterateIndex(Guid, System.Int32, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.LiteDBStore.IterateIndex(Guid, System.Int32, System.Nullable(Of System.Int32))
-  nameWithType: LiteDBStore.IterateIndex(Guid, Int32, Nullable<Int32>)
-  nameWithType.vb: LiteDBStore.IterateIndex(Guid, Int32, Nullable(Of Int32))
-- uid: Libplanet.Store.LiteDBStore.IterateIndex*
-  name: IterateIndex
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndex_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateIndex
+- uid: Libplanet.Store.LiteDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name: IterateIndexes(Guid, Int32, Nullable<Int32>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.LiteDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
+  fullName: Libplanet.Store.LiteDBStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.LiteDBStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
+  nameWithType: LiteDBStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  nameWithType.vb: LiteDBStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+- uid: Libplanet.Store.LiteDBStore.IterateIndexes*
+  name: IterateIndexes
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndexes_
+  commentId: Overload:Libplanet.Store.LiteDBStore.IterateIndexes
   isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateIndex
-  nameWithType: LiteDBStore.IterateIndex
+  fullName: Libplanet.Store.LiteDBStore.IterateIndexes
+  nameWithType: LiteDBStore.IterateIndexes
 - uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
   name: IterateStagedTransactionIds()
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds
