@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: build
-      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
+    - uses: actions/setup-dotnet@v1
       with:
-        args: dotnet build
+        dotnet-version: '2.2.103'
+    - run: dotnet build
+    - run: dotnet test
