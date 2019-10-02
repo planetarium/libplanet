@@ -505,8 +505,6 @@ namespace Libplanet.Tests.Net
                     await BootstrapAsync(swarms[i], swarms[0].AsPeer);
                 }
 
-                Log.Debug(swarms[size - 1].TraceTable());
-
                 for (int i = 0; i < size - 1; i++)
                 {
                     Assert.Contains(swarms[i].AsPeer, swarms[size - 1].Peers);
@@ -1008,8 +1006,6 @@ namespace Libplanet.Tests.Net
 
                 await Task.WhenAll(tasks);
 
-                Log.Debug(swarms[size - 1].TraceTable());
-
                 for (int i = 0; i < size; i++)
                 {
                     Assert.Equal(tx, blockchains[i].Transactions[tx.Id]);
@@ -1059,10 +1055,6 @@ namespace Libplanet.Tests.Net
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
-
-                Log.Debug(swarmA.TraceTable());
-                Log.Debug(swarmB.TraceTable());
-                Log.Debug(swarmC.TraceTable());
 
                 swarmB.BroadcastBlocks(new[] { chainB.Last() });
 
