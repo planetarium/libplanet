@@ -16,6 +16,7 @@ To be released.
     disposed to clean up its internal resources. [[#485]]
  -  `IStore.IterateStateReferences()` method became to receive
     `highestIndex`, `lowestIndex`, and `limit` parameters.  [[#447], [#545]]
+ -  Reworked `BlockChain.GetStates()` into `GetState()` which takes only one Address instead of `IEnumerable<Address>` [[#510]]
 
 ### Added interfaces
 
@@ -35,6 +36,7 @@ To be released.
 [#447]: https://github.com/planetarium/libplanet/issues/447
 [#462]: https://github.com/planetarium/libplanet/issues/462
 [#485]: https://github.com/planetarium/libplanet/pull/485
+[#510]: https://github.com/planetarium/libplanet/issues/510
 [#545]: https://github.com/planetarium/libplanet/pull/545
 [#550]: https://github.com/planetarium/libplanet/issues/550
 [#555]: https://github.com/planetarium/libplanet/issues/555
