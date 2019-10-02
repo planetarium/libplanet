@@ -850,7 +850,7 @@ namespace Libplanet.Tests.Blockchain
                 Guid previousChainId = _blockChain.Id;
                 _blockChain.Swap(fork, render);
 
-                Assert.Empty(_blockChain.Store.IterateIndex(previousChainId));
+                Assert.Empty(_blockChain.Store.IterateIndexes(previousChainId));
                 Assert.Empty(_blockChain.Store.ListAddresses(previousChainId));
                 Assert.Empty(_blockChain.Store.ListTxNonces(previousChainId));
 

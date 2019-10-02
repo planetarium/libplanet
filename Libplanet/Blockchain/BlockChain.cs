@@ -122,7 +122,7 @@ namespace Libplanet.Blockchain
                 {
                     _rwlock.EnterUpgradeableReadLock();
 
-                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndex(Id);
+                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndexes(Id);
 
                     // NOTE: The reason why this does not simply return indices, but iterates over
                     // indices and yields hashes step by step instead, is that we need to ensure
@@ -832,7 +832,7 @@ namespace Libplanet.Blockchain
                 }
 
                 IEnumerable<HashDigest<SHA256>> hashes = Store
-                    .IterateIndex(Id, branchPointIndex, count);
+                    .IterateIndexes(Id, branchPointIndex, count);
 
                 foreach (HashDigest<SHA256> hash in hashes)
                 {
