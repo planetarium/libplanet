@@ -48,7 +48,7 @@ namespace Libplanet.Explorer.Executable
             Startup.BlockChainSingleton = blockChain;
 
             Swarm<AppAgnosticAction> swarm = null;
-            if (options.Seed is Peer)
+            if (options.Seed is BoundPeer)
             {
                 // TODO: Take privateKey as a CLI option
                 // TODO: Take appProtocolVersion as a CLI option
@@ -100,17 +100,23 @@ namespace Libplanet.Explorer.Executable
                         peers.Add(peer);
                     }
 
-                    await swarm.AddPeersAsync(
+                    await swarm.BootstrapAsync(
                         peers,
+                        5000,
+                        5000,
                         cancellationToken: cts.Token
                     );
 
-                    ImmutableHashSet<Address> trustedPeers =
-                        peers.Select(p => p.Address).ToImmutableHashSet();
+                    // Since explorer does not require states, turn off trustedPeer option.
+                    /*ImmutableHashSet<Address> trustedPeers =
+                        peers.Select(p => p.Address).ToImmutableHashSet();*/
+                    var trustedPeers = ImmutableHashSet<Address>.Empty;
+                    Console.Error.WriteLine("Starts preloading.");
                     await swarm.PreloadAsync(
                         trustedStateValidators: trustedPeers,
                         cancellationToken: cts.Token
                     );
+                    Console.WriteLine("Finished preloading.");
 
                     await swarm.StartAsync(cancellationToken: cts.Token);
                 },
