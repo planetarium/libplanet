@@ -9,7 +9,7 @@ To be released.
 ### Backward-incompatible interface changes
 
  -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
- -  Renamed `IterateIndex()` method to `IterateIndexes` on `IStore` interface and usages. [[#462]]
+ -  Renamed `IStore.IterateIndex()` method to `IterateIndexes()`.  [[#462], [#560]]
 
 ### Added interfaces
 
