@@ -16,7 +16,7 @@ To be released.
     disposed to clean up its internal resources. [[#485]]
  -  `IStore.IterateStateReferences()` method became to receive
     `highestIndex`, `lowestIndex`, and `limit` parameters.  [[#447], [#545]]
- -  Reworked `BlockChain.GetStates()` into `GetState()` which takes only one Address instead of `IEnumerable<Address>` [[#510]]
+ -  Reworked `BlockChain.GetStates()` into `GetState()` which takes only one `Address` instead of `IEnumerable<Address>` [[#510]]
 
 ### Added interfaces
 
