@@ -9,7 +9,8 @@ RUN dotnet restore Libplanet.Explorer.Executable
 
 # Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -r linux-x64 -o out --self-contained
+RUN dotnet publish Libplanet.Explorer -c Release -r linux-x64 -o out --self-contained
+RUN dotnet publish Libplanet.Explorer.Executable -c Release -r linux-x64 -o out --self-contained
 RUN cp -r ./Libplanet.Explorer.Executable/wwwroot ./
 
 # Build runtime image
