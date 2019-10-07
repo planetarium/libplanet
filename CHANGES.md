@@ -43,6 +43,7 @@ To be released.
 [#558]: https://github.com/planetarium/libplanet/pull/558
 [#560]: https://github.com/planetarium/libplanet/pull/560
 [#562]: https://github.com/planetarium/libplanet/pull/562
+[#563]: https://github.com/planetarium/libplanet/pull/563
 
 
 Version 0.6.0
