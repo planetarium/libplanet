@@ -262,7 +262,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            if (stateReference == null)
+            if (stateReference is null)
             {
                 return states;
             }
