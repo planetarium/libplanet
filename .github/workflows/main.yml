@@ -34,9 +34,7 @@ jobs:
       run: .github/bin/dist-github-release.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: >-
-        github.event_name != 'pull_request' &&
-        startsWith(github.ref, 'refs/tags/')
+    - if: github.event_name != 'pull_request'
       run: .github/bin/dist-nuget.sh
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
