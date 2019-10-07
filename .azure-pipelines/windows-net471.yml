@@ -11,15 +11,16 @@ steps:
     arguments: install xunit.runner.console
 
 - task: PowerShell@2
-  displayName: Set TargetFramework to net461 by force
+  displayName: Set TargetFramework to net471 by force
   inputs:
     targetType: inline
     script: |
-      foreach ($path in gci *.Tests/*.Tests.csproj) {
+      $projs = (gci *.Tests/*.Tests.csproj) + (gci Libplanet.Benchmarks/*.csproj)
+      foreach ($path in $projs) {
         [xml]$csproj = Get-Content $path
         foreach ($pg in $csproj.Project.PropertyGroup) {
           if ($pg.TargetFramework -ne $null) {
-            $pg.TargetFramework = "net461"
+            $pg.TargetFramework = "net471"
           }
         }
         $csproj.Save($path)
@@ -38,7 +39,7 @@ steps:
     targetType: inline
     script: |
       ${{ parameters.testPrefix }} \
-        xunit.runner.console.*/tools/net461/xunit.console.exe \
+        xunit.runner.console.*/tools/net471/xunit.console.exe \
           *.Tests/bin/$(configuration)/net*/*.Tests.dll \
           ${{ parameters.testArguments }}
   env:

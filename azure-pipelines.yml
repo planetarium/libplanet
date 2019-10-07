@@ -96,7 +96,7 @@ jobs:
     displayName: choco install mono
     inputs:
       script: choco install mono --version 6.0.0.334 --yes
-  - template: .azure-pipelines/windows-net461.yml
+  - template: .azure-pipelines/windows-net471.yml
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
@@ -162,7 +162,7 @@ jobs:
   pool:
     vmImage: windows-2019
   steps:
-  - template: .azure-pipelines/windows-net461.yml
+  - template: .azure-pipelines/windows-net471.yml
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)

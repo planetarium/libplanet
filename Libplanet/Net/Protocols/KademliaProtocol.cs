@@ -304,8 +304,15 @@ namespace Libplanet.Net.Protocols
                         "Cannot receive pong from self");
                 }
 
+                _logger.Verbose(
+                    $"Trying to {nameof(UpdateAsync)}() with pong: {{Message}}",
+                    pong);
+
                 // update process required
                 await UpdateAsync(pong.Remote, cancellationToken);
+                _logger.Verbose(
+                    $"{nameof(UpdateAsync)}() finished with pong: {{Pong}}",
+                    pong);
             }
             catch (TimeoutException)
             {
@@ -355,6 +362,9 @@ namespace Libplanet.Net.Protocols
             }
             else
             {
+                _logger.Verbose(
+                    "Need to evict {Candidate}; trying...",
+                    evictionCandidate);
                 try
                 {
                     _routing.BucketOf(peer).ReplacementCache.Add(peer);
@@ -366,6 +376,9 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                     await RemovePeerAsync(evictionCandidate);
+                    _logger.Verbose(
+                        "Peer ({Candidate}) has been evicted.",
+                        evictionCandidate);
                 }
             }
         }

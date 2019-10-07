@@ -46,7 +46,7 @@ namespace Libplanet.Tests.Net
             const string outputTemplate =
                 "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
                 .WriteTo.TestOutput(output, outputTemplate: outputTemplate)
                 .CreateLogger()
@@ -109,6 +109,8 @@ namespace Libplanet.Tests.Net
                         i
                     );
                     i++;
+
+                    s.Dispose();
                 }
 
                 Log.Logger.Debug(
@@ -196,6 +198,10 @@ namespace Libplanet.Tests.Net
                 await seed.StopAsync();
                 await swarmA.StopAsync();
                 await swarmB.StopAsync();
+
+                seed.Dispose();
+                swarmA.Dispose();
+                swarmB.Dispose();
             }
         }
 
@@ -255,6 +261,10 @@ namespace Libplanet.Tests.Net
                 await seed.StopAsync();
                 await swarmA.StopAsync();
                 await swarmB.StopAsync();
+
+                seed.Dispose();
+                swarmA.Dispose();
+                swarmB.Dispose();
             }
         }
 
@@ -398,6 +408,10 @@ namespace Libplanet.Tests.Net
                 {
                     await swarmC.StopAsync();
                 }
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+                swarmC.Dispose();
             }
         }
 
@@ -516,6 +530,7 @@ namespace Libplanet.Tests.Net
                 {
                     await swarms[i].StopAsync();
                     fxs[i].Dispose();
+                    swarms[i].Dispose();
                 }
             }
         }
@@ -643,6 +658,11 @@ namespace Libplanet.Tests.Net
             {
                 await c.StopAsync();
                 await d.StopAsync();
+
+                a.Dispose();
+                b.Dispose();
+                c.Dispose();
+                d.Dispose();
             }
         }
 
@@ -680,6 +700,9 @@ namespace Libplanet.Tests.Net
             {
                 await a.StopAsync();
                 await b.StopAsync();
+
+                a.Dispose();
+                b.Dispose();
             }
         }
 
@@ -802,17 +825,18 @@ namespace Libplanet.Tests.Net
                 using (var socket = new DealerSocket(netMQAddress))
                 {
                     var request = new GetBlocks(hashes, 2);
-                    await socket.SendMultipartMessageAsync(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer));
+                    socket.SendMultipartMessage(
+                        request.ToNetMQMessage(privateKey, swarmB.AsPeer)
+                    );
 
-                    NetMQMessage response = await socket.ReceiveMultipartMessageAsync();
+                    NetMQMessage response = socket.ReceiveMultipartMessage();
                     Message parsedMessage = Message.Parse(response, true);
                     Libplanet.Net.Messages.Blocks blockMessage =
                         (Libplanet.Net.Messages.Blocks)parsedMessage;
 
                     Assert.Equal(2, blockMessage.Payloads.Count);
 
-                    response = await socket.ReceiveMultipartMessageAsync();
+                    response = socket.ReceiveMultipartMessage();
                     parsedMessage = Message.Parse(response, true);
                     blockMessage = (Libplanet.Net.Messages.Blocks)parsedMessage;
 
@@ -823,6 +847,8 @@ namespace Libplanet.Tests.Net
             {
                 await swarmA.StopAsync();
                 await swarmB.StopAsync();
+
+                swarmB.Dispose();
             }
         }
 
@@ -1017,6 +1043,7 @@ namespace Libplanet.Tests.Net
                 {
                     await swarms[i].StopAsync();
                     fxs[i].Dispose();
+                    swarms[i].Dispose();
                 }
             }
         }
@@ -1066,9 +1093,11 @@ namespace Libplanet.Tests.Net
 
                 swarmA.BroadcastBlocks(new[] { chainA.Last() });
 
-                await Task.Delay(10000);
+                await Task.Delay(20000);
 
+                Log.Debug("Compare chainA and chainB");
                 Assert.Equal(chainA.AsEnumerable(), chainB);
+                Log.Debug("Compare chainA and chainC");
                 Assert.Equal(chainA.AsEnumerable(), chainC);
             }
             finally
@@ -1196,15 +1225,16 @@ namespace Libplanet.Tests.Net
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
-            Swarm<DumbAction> s = new Swarm<DumbAction>(
+            using (Swarm<DumbAction> s = new Swarm<DumbAction>(
                 _blockchains[0],
                 new PrivateKey(),
                 1,
                 host: "1.2.3.4",
-                listenPort: 5678);
-
-            Assert.Equal(expected, s.EndPoint);
-            Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
+                listenPort: 5678))
+            {
+                Assert.Equal(expected, s.EndPoint);
+                Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
+            }
         }
 
         [Fact(Timeout = Timeout)]
@@ -1229,18 +1259,19 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task AsPeer()
         {
-            Swarm<DumbAction> swarm = new Swarm<DumbAction>(
+            using (Swarm<DumbAction> swarm = new Swarm<DumbAction>(
                 _blockchains[0],
                 new PrivateKey(),
                 1,
                 host: IPAddress.Loopback.ToString()
-            );
+            ))
+            {
+                Assert.IsNotType<BoundPeer>(swarm.AsPeer);
 
-            Assert.IsNotType<BoundPeer>(swarm.AsPeer);
-
-            await StartAsync(swarm);
-            Assert.IsType<BoundPeer>(swarm.AsPeer);
-            await swarm.StopAsync();
+                await StartAsync(swarm);
+                Assert.IsType<BoundPeer>(swarm.AsPeer);
+                await swarm.StopAsync();
+            }
         }
 
         [FactOnlyTurnAvailable(Timeout = Timeout)]
@@ -1303,6 +1334,10 @@ namespace Libplanet.Tests.Net
                 await seed.StopAsync();
                 await swarmA.StopAsync();
                 await swarmB.StopAsync();
+
+                seed.Dispose();
+                swarmA.Dispose();
+                swarmB.Dispose();
             }
         }
 
@@ -1532,6 +1567,9 @@ namespace Libplanet.Tests.Net
                 await nominerSwarm0.StopAsync();
                 await nominerSwarm1.StopAsync();
                 await receiverSwarm.StopAsync();
+
+                nominerSwarm0.Dispose();
+                nominerSwarm1.Dispose();
 
                 fxForNominers[0].Dispose();
                 fxForNominers[1].Dispose();
@@ -1863,6 +1901,9 @@ namespace Libplanet.Tests.Net
             {
                 await swarm1.StopAsync();
                 await swarm2.StopAsync();
+
+                swarm1.Dispose();
+                swarm2.Dispose();
             }
         }
 
