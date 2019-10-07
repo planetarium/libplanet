@@ -8,8 +8,10 @@ To be released.
 
 ### Backward-incompatible interface changes
 
- -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of `IRandom.Next()` methods.   [[#555], [#558]]
- -  Renamed `IStore.IterateIndex()` method to `IterateIndexes()`.  [[#462], [#560]]
+ -  Renamed `minValue`/`maxValue` parameters to `lowerBound`/`upperBound` of
+    `IRandom.Next()` methods.  [[#555], [#558]]
+ -  Renamed `IStore.IterateIndex()` method to `IterateIndexes()`.
+    [[#462], [#560]]
 
 ### Added interfaces
 
@@ -17,10 +19,15 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` re-requests blocks that
+    already received when blockchain is empty.  [[#550], [#562]]
+
 [#462]: https://github.com/planetarium/libplanet/issues/462
+[#550]: https://github.com/planetarium/libplanet/issues/550
 [#555]: https://github.com/planetarium/libplanet/issues/555
 [#558]: https://github.com/planetarium/libplanet/pull/558
 [#560]: https://github.com/planetarium/libplanet/pull/560
+[#562]: https://github.com/planetarium/libplanet/pull/562
 
 
 Version 0.6.0

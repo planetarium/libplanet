@@ -505,8 +505,6 @@ namespace Libplanet.Tests.Net
                     await BootstrapAsync(swarms[i], swarms[0].AsPeer);
                 }
 
-                Log.Debug(swarms[size - 1].TraceTable());
-
                 for (int i = 0; i < size - 1; i++)
                 {
                     Assert.Contains(swarms[i].AsPeer, swarms[size - 1].Peers);
@@ -1008,8 +1006,6 @@ namespace Libplanet.Tests.Net
 
                 await Task.WhenAll(tasks);
 
-                Log.Debug(swarms[size - 1].TraceTable());
-
                 for (int i = 0; i < size; i++)
                 {
                     Assert.Equal(tx, blockchains[i].Transactions[tx.Id]);
@@ -1060,10 +1056,6 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                Log.Debug(swarmA.TraceTable());
-                Log.Debug(swarmB.TraceTable());
-                Log.Debug(swarmC.TraceTable());
-
                 swarmB.BroadcastBlocks(new[] { chainB.Last() });
 
                 await Task.Delay(5000);
@@ -1084,6 +1076,43 @@ namespace Libplanet.Tests.Net
                 await swarmA.StopAsync();
                 await swarmB.StopAsync();
                 await swarmC.StopAsync();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BroadcastBlockWithoutGenesis()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await BootstrapAsync(swarmB, swarmA.AsPeer);
+
+                await chainA.MineBlock(_fx1.Address1);
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+
+                await swarmB.BlockReceived.WaitAsync();
+
+                Assert.Equal(chainB.AsEnumerable(), chainA);
+
+                await chainA.MineBlock(_fx1.Address1);
+                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+
+                await swarmB.BlockReceived.WaitAsync();
+
+                Assert.Equal(chainB.AsEnumerable(), chainA);
+            }
+            finally
+            {
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
             }
         }
 
