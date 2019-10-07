@@ -6,20 +6,14 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: build
-      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
-      with:
-        args: dotnet build
+      run: dotnet build
     - name: gcloud-auth
       uses: actions/gcloud/auth@master
       env:
         GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
     - name: pack
-      uses: docker://mcr.microsoft.com/dotnet/core/sdk:2.2-alpine3.8
-      env:
-        PWSH_URL: https://github.com/PowerShell/PowerShell/releases/download/v6.2.0/powershell-6.2.0-linux-alpine-x64.tar.gz
-      with:
-        args: /bin/ash -c "apk add openssl && wget -P /tmp/ $PWSH_URL && tar xvfz
-          /tmp/powershell-*.tar.gz -C /usr/local/bin && ./build.ps1"
+      shell: pwsh
+      run: ./build.ps1
     - name: upload
       uses: actions/gcloud/cli@master
       env:
