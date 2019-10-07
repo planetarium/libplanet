@@ -14,10 +14,15 @@ To be released.
     [[#462], [#560]]
  -  `Swarm<T>` class became to implement `IDisposable` again and should be
     disposed to clean up its internal resources. [[#485]]
+ -  `IStore.IterateStateReferences()` method became to receive
+    `highestIndex`, `lowestIndex`, and `limit` parameters.  [[#447], [#545]]
 
 ### Added interfaces
 
 ### Behavioral changes
+
+ -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
+    [[#447], [#545]]
 
 ### Bug fixes
 
@@ -27,8 +32,10 @@ To be released.
     `Operation on non-blocking socket would block`.  [[#405], [#485]]
 
 [#405]: https://github.com/planetarium/libplanet/issues/405
+[#447]: https://github.com/planetarium/libplanet/issues/447
 [#462]: https://github.com/planetarium/libplanet/issues/462
 [#485]: https://github.com/planetarium/libplanet/pull/485
+[#545]: https://github.com/planetarium/libplanet/pull/545
 [#550]: https://github.com/planetarium/libplanet/issues/550
 [#555]: https://github.com/planetarium/libplanet/issues/555
 [#558]: https://github.com/planetarium/libplanet/pull/558

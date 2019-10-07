@@ -198,14 +198,25 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="chainId">The chain ID.</param>
         /// <param name="address">The <see cref="Address"/> to get state references.</param>
+        /// <param name="highestIndex">The highest index of state references to get. If it is
+        /// <c>null</c>, it will be the highest index possible.</param>
+        /// <param name="lowestIndex">The lowest index of state references to get.  If it is
+        /// <c>null</c>, it will be the lowest index possible.</param>
+        /// <param name="limit">The maximum number of state references to get.  If it is
+        /// <c>null</c>, it does not limit the number of state references.</param>
         /// <returns><em>Ordered</em> pairs of a state reference and a corresponding
         /// <see cref="Block{T}.Index"/>.  The highest index (i.e., the closest to the tip) goes
         /// first and the lowest index (i.e., the closest to the genesis) goes last.</returns>
+        /// <exception cref="ArgumentException">Thrown when the given
+        /// <paramref name="highestIndex"/> is less than <paramref name="lowestIndex"/>.</exception>
         /// <seealso
         /// cref="StoreStateReference(Guid , IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address);
+            Address address,
+            long? highestIndex = null,
+            long? lowestIndex = null,
+            int? limit = null);
 
         /// <summary>
         /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
@@ -220,7 +231,7 @@ namespace Libplanet.Store
         /// <param name="blockIndex">The <see cref="Block{T}.Index"/> which has the state
         /// of the <see cref="Address"/>. This must refer to the same block
         /// that <paramref name="blockHash"/> refers to.</param>
-        /// <seealso cref="IterateStateReferences(Guid, Address)"/>
+        /// <seealso cref="IterateStateReferences(Guid, Address, long?, long?, int?)"/>
         void StoreStateReference(
             Guid chainId,
             IImmutableSet<Address> addresses,
@@ -243,7 +254,7 @@ namespace Libplanet.Store
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
-        /// <seealso cref="IterateStateReferences(Guid, Address)"/>
+        /// <seealso cref="IterateStateReferences(Guid, Address, long?, long?, int?)"/>
         /// <seealso
         /// cref="StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
         void ForkStateReferences<T>(

@@ -167,10 +167,15 @@ namespace Libplanet.Tests.Store
 
         public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address)
+            Address address,
+            long? highestIndex,
+            long? lowestIndex,
+            int? limit)
         {
+            // FIXME: Log arguments properly
             _logs.Add((nameof(IterateStateReferences), chainId, address));
-            return _store.IterateStateReferences(chainId, address);
+            return _store.IterateStateReferences(
+                chainId, address, highestIndex, lowestIndex, limit);
         }
 
         public void StoreStateReference(

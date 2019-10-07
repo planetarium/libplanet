@@ -26,7 +26,7 @@ namespace Libplanet.Store
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="lookupUntil"/>.</typeparam>
         /// <seealso cref="IStore.StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-        /// <seealso cref="IStore.IterateStateReferences(Guid, Address)"/>
+        /// <seealso cref="IStore.IterateStateReferences(Guid, Address, long?, long?, int?)"/>
         #pragma warning restore MEN002
         public static Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             this IStore store,
@@ -40,17 +40,8 @@ namespace Libplanet.Store
                 throw new ArgumentNullException(nameof(lookupUntil));
             }
 
-            IEnumerable<Tuple<HashDigest<SHA256>, long>> stateRefs =
-                store.IterateStateReferences(chainId, address);
-            foreach (Tuple<HashDigest<SHA256>, long> pair in stateRefs)
-            {
-                if (pair.Item2 <= lookupUntil.Index)
-                {
-                    return Tuple.Create(pair.Item1, pair.Item2);
-                }
-            }
-
-            return null;
+            return store.IterateStateReferences(chainId, address, lookupUntil.Index, limit: 1)
+                    .FirstOrDefault();
         }
 
         /// <summary>
