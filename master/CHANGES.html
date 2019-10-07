@@ -80,12 +80,18 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-interface-changes">Backward-incompatible interface changes</h3>
 <ul>
-<li>Renamed <code>minValue</code>/<code>maxValue</code> parameters to <code>lowerBound</code>/<code>upperBound</code> of <code>IRandom.Next()</code> methods.   [<a href="https://github.com/planetarium/libplanet/issues/555">#555</a>, <a href="https://github.com/planetarium/libplanet/pull/558">#558</a>]</li>
-<li>Renamed <code>IStore.IterateIndex()</code> method to <code>IterateIndexes()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/462">#462</a>, <a href="https://github.com/planetarium/libplanet/pull/560">#560</a>]</li>
+<li>Renamed <code>minValue</code>/<code>maxValue</code> parameters to <code>lowerBound</code>/<code>upperBound</code> of
+<code>IRandom.Next()</code> methods.  [<a href="https://github.com/planetarium/libplanet/issues/555">#555</a>, <a href="https://github.com/planetarium/libplanet/pull/558">#558</a>]</li>
+<li>Renamed <code>IStore.IterateIndex()</code> method to <code>IterateIndexes()</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/462">#462</a>, <a href="https://github.com/planetarium/libplanet/pull/560">#560</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.AppendBlocksAsync()</code> re-requests blocks that
+already received when blockchain is empty.  [<a href="https://github.com/planetarium/libplanet/issues/550">#550</a>, <a href="https://github.com/planetarium/libplanet/pull/562">#562</a>]</li>
+</ul>
 <h2 id="version-060">Version 0.6.0</h2>
 <p>Released on October 1, 2019.</p>
 <h3 id="backward-incompatible-interface-changes-1">Backward-incompatible interface changes</h3>
@@ -848,7 +854,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/d88a9923cec1bc1de58ada35f8e8a7cae732988d/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/09a3706bd5a602edee13348f5e2c27ac236a65fc/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
