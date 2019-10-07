@@ -84,6 +84,8 @@
 <code>IRandom.Next()</code> methods.  [<a href="https://github.com/planetarium/libplanet/issues/555">#555</a>, <a href="https://github.com/planetarium/libplanet/pull/558">#558</a>]</li>
 <li>Renamed <code>IStore.IterateIndex()</code> method to <code>IterateIndexes()</code>.
 [<a href="https://github.com/planetarium/libplanet/issues/462">#462</a>, <a href="https://github.com/planetarium/libplanet/pull/560">#560</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> class became to implement <code>IDisposable</code> again and should be
+disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
@@ -91,6 +93,8 @@
 <ul>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;.AppendBlocksAsync()</code> re-requests blocks that
 already received when blockchain is empty.  [<a href="https://github.com/planetarium/libplanet/issues/550">#550</a>, <a href="https://github.com/planetarium/libplanet/pull/562">#562</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>SocketException</code> with a message
+<code>Operation on non-blocking socket would block</code>.  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, <a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 </ul>
 <h2 id="version-060">Version 0.6.0</h2>
 <p>Released on October 1, 2019.</p>
@@ -854,7 +858,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/09a3706bd5a602edee13348f5e2c27ac236a65fc/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/9f555300ccbd6691af858f710dba10f7a10ac1d0/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
