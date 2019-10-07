@@ -4716,12 +4716,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds
   nameWithType: BaseStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address)
-  name: IterateStateReferences(Guid, Address)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_
-  commentId: M:Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address)
-  fullName: Libplanet.Store.BaseStore.IterateStateReferences(Guid, Libplanet.Address)
-  nameWithType: BaseStore.IterateStateReferences(Guid, Address)
+- uid: Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.BaseStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.BaseStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: BaseStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: BaseStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.BaseStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_
@@ -5397,12 +5400,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateStagedTransactionIds
   nameWithType: IStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address)
-  name: IterateStateReferences(Guid, Address)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_Guid_Libplanet_Address_
-  commentId: M:Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address)
-  fullName: Libplanet.Store.IStore.IterateStateReferences(Guid, Libplanet.Address)
-  nameWithType: IStore.IterateStateReferences(Guid, Address)
+- uid: Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.IStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.IStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: IStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: IStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.IStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_
@@ -5874,12 +5880,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
   nameWithType: LiteDBStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address)
-  name: IterateStateReferences(Guid, Address)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStateReferences_Guid_Libplanet_Address_
-  commentId: M:Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address)
-  fullName: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid, Libplanet.Address)
-  nameWithType: LiteDBStore.IterateStateReferences(Guid, Address)
+- uid: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: LiteDBStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: LiteDBStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.LiteDBStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStateReferences_

@@ -86,9 +86,15 @@
 [<a href="https://github.com/planetarium/libplanet/issues/462">#462</a>, <a href="https://github.com/planetarium/libplanet/pull/560">#560</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> class became to implement <code>IDisposable</code> again and should be
 disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
+<li><code>IStore.IterateStateReferences()</code> method became to receive
+<code>highestIndex</code>, <code>lowestIndex</code>, and <code>limit</code> parameters.  [<a href="https://github.com/planetarium/libplanet/issues/447">#447</a>, <a href="https://github.com/planetarium/libplanet/pull/545">#545</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li>Improved performance of <code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method.
+[<a href="https://github.com/planetarium/libplanet/issues/447">#447</a>, <a href="https://github.com/planetarium/libplanet/pull/545">#545</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;.AppendBlocksAsync()</code> re-requests blocks that
@@ -858,7 +864,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/9f555300ccbd6691af858f710dba10f7a10ac1d0/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/2247b8821748c772d069c5d2e80b8bf170c06a05/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
