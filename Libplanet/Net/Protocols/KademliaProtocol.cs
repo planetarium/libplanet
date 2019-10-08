@@ -43,7 +43,9 @@ namespace Libplanet.Net.Protocols
             _tableSize = tableSize ?? Kademlia.TableSize;
             _bucketSize = bucketSize ?? Kademlia.BucketSize;
             _routing = new RoutingTable(_address, _tableSize, _bucketSize, _random);
-            _requestTimeout = requestTimeout ?? Kademlia.IdleRequestTimeout;
+            _requestTimeout =
+                requestTimeout ??
+                TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
         }
 
         public int Count => _routing.Count;

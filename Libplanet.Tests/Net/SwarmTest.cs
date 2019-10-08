@@ -498,7 +498,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.StopAsync();
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
-                await Task.Delay(Kademlia.IdleRequestTimeout + TimeSpan.FromSeconds(1));
+                await Task.Delay(Kademlia.IdleRequestTimeout + 1000);
 
                 Assert.Equal(1, swarm.Peers.Count);
                 Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
@@ -554,7 +554,7 @@ namespace Libplanet.Tests.Net
                 await swarmB.StopAsync();
 
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
-                await Task.Delay(Kademlia.IdleRequestTimeout * 2 + TimeSpan.FromSeconds(1));
+                await Task.Delay(Kademlia.IdleRequestTimeout * 2 + 1000);
 
                 Assert.Equal(1, swarmA.Peers.Count);
                 Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
