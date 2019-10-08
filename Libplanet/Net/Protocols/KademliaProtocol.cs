@@ -354,6 +354,7 @@ namespace Libplanet.Net.Protocols
                 // added successfully since there was empty space in the bucket
                 if (!contains)
                 {
+                    _routing.BucketOf(peer).ReplacementCache.Remove(peer);
                     _logger.Debug($"Added [{peer.Address.ToHex()}] to table");
                 }
             }
@@ -364,7 +365,11 @@ namespace Libplanet.Net.Protocols
                     evictionCandidate);
                 try
                 {
-                    _routing.BucketOf(peer).ReplacementCache.Add(peer);
+                    if (!_routing.BucketOf(peer).ReplacementCache.Contains(peer))
+                    {
+                        _routing.BucketOf(peer).ReplacementCache.Add(peer);
+                    }
+
                     await PingAsync(
                         evictionCandidate,
                         _requestTimeout,
@@ -380,17 +385,25 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        // FIXME: If this method is called almost same time, problem occurs.
         private async Task RemovePeerAsync(BoundPeer peer)
         {
             _logger.Debug($"Removing peer [{peer.Address.ToHex()}] from table.");
             await _routing.RemovePeerAsync(peer);
-
-            foreach (KBucket bucket in _routing.NonFullBuckets)
+            var bucket = _routing.BucketOf(peer);
+            var cachePeers = new BoundPeer[bucket.ReplacementCache.Count];
+            bucket.ReplacementCache.CopyTo(cachePeers);
+            foreach (BoundPeer replacement in cachePeers)
             {
-                foreach (BoundPeer replacement in bucket.ReplacementCache)
+                // FIXME: appropriate cancellation token required.
+                try
                 {
-                    // FIXME: appropriate cancellation token required.
                     await PingAsync(replacement, _requestTimeout, CancellationToken.None);
+                    break;
+                }
+                catch (TimeoutException)
+                {
+                    bucket.ReplacementCache.Remove(replacement);
                 }
             }
         }
