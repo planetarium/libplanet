@@ -92,8 +92,6 @@ namespace Libplanet.Tests.Net
 
         public void Dispose()
         {
-            Log.Logger.Debug($"Started to {nameof(Dispose)}() a {nameof(SwarmTest)} instance.");
-
             try
             {
                 Log.Logger.Debug(
@@ -1907,6 +1905,82 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task HandleReorgInSynchronizing()
+        {
+            var policy = new BlockPolicy<Sleep>(new MinerReward(1));
+            var miner1 = new Swarm<Sleep>(
+                new BlockChain<Sleep>(
+                    policy,
+                    _fx1.Store
+                ),
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                host: IPAddress.Loopback.ToString()
+            );
+            var miner2 = new Swarm<Sleep>(
+                new BlockChain<Sleep>(
+                    policy,
+                    _fx2.Store
+                ),
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                host: IPAddress.Loopback.ToString()
+            );
+            var receiver = new Swarm<Sleep>(
+                new BlockChain<Sleep>(
+                    policy,
+                    _fx3.Store
+                ),
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                host: IPAddress.Loopback.ToString()
+            );
+
+            foreach (var i in Enumerable.Range(0, 8))
+            {
+                miner1.BlockChain.StageTransactions(
+                    new[]
+                    {
+                        Transaction<Sleep>.Create(
+                            0,
+                            new PrivateKey(),
+                            actions: new[] { new Sleep() }
+                        ),
+                    }.ToImmutableHashSet()
+                );
+                var b = await miner1.BlockChain.MineBlock(miner1.Address);
+                miner2.BlockChain.Append(b);
+            }
+
+            try
+            {
+                await StartAsync(miner1);
+                await StartAsync(miner2);
+
+                await BootstrapAsync(miner2, miner1.AsPeer);
+                await BootstrapAsync(receiver, miner1.AsPeer);
+
+                var t = receiver.PreloadAsync(render: true);
+                await miner1.BlockChain.MineBlock(miner1.Address);
+                await miner2.BlockChain.MineBlock(miner2.Address);
+                Block<Sleep> latest = await miner2.BlockChain.MineBlock(miner2.Address);
+                miner2.BroadcastBlocks(new[] { latest });
+                await t;
+
+                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
+                Assert.Equal(miner1.BlockChain.Tip, receiver.BlockChain.Tip);
+            }
+            finally
+            {
+                await miner1.StopAsync();
+                await miner2.StopAsync();
+                miner1.Dispose();
+                miner2.Dispose();
+                receiver.Dispose();
+            }
+        }
+
         private static async Task<(Address, Block<DumbAction>[])>
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
@@ -1944,27 +2018,53 @@ namespace Libplanet.Tests.Net
             return (blocks[0].Transactions.First().Actions.First().TargetAddress, blocks);
         }
 
-        private async Task<Task> StartAsync(
-            Swarm<DumbAction> swarm,
+        private async Task<Task> StartAsync<T>(
+            Swarm<T> swarm,
             CancellationToken cancellationToken = default
         )
+            where T : IAction, new()
         {
             Task task = swarm.StartAsync(200, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }
 
-        private async Task BootstrapAsync(
-            Swarm<DumbAction> swarm,
+        private async Task BootstrapAsync<T>(
+            Swarm<T> swarm,
             Peer seed,
             CancellationToken cancellationToken = default
             )
+            where T : IAction, new()
         {
             await swarm.BootstrapAsync(
                 new[] { seed },
                 null,
                 TimeSpan.FromSeconds(3),
                 cancellationToken);
+        }
+
+        private class Sleep : IAction
+        {
+            public IImmutableDictionary<string, object> PlainValue =>
+                ImmutableDictionary<string, object>.Empty;
+
+            public IAccountStateDelta Execute(IActionContext context)
+            {
+                Thread.Sleep(10);
+                return context.PreviousStates;
+            }
+
+            public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+            {
+            }
+
+            public void Render(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
+
+            public void Unrender(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
         }
     }
 }
