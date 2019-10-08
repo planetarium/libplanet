@@ -104,6 +104,7 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
+                    await RemovePeerAsync(peer);
                     continue;
                 }
                 catch (Exception)
@@ -302,19 +303,18 @@ namespace Libplanet.Net.Protocols
                 }
 
                 _logger.Verbose(
-                    $"Trying to {nameof(UpdateAsync)}() with pong: {{Message}}",
+                    $"Trying to {nameof(UpdateAsync)}() with pong: {{@Pong}}",
                     pong);
 
                 // update process required
                 await UpdateAsync(pong.Remote, cancellationToken);
                 _logger.Verbose(
-                    $"{nameof(UpdateAsync)}() finished with pong: {{Pong}}",
+                    $"{nameof(UpdateAsync)}() finished with pong: {{@Pong}}",
                     pong);
             }
             catch (TimeoutException)
             {
-                await RemovePeerAsync(target);
-                throw;
+                throw new TimeoutException($"Timeout occurred during {nameof(PingAsync)}().");
             }
             catch (DifferentAppProtocolVersionException)
             {
