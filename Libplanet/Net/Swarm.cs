@@ -101,6 +101,8 @@ namespace Libplanet.Net
                   appProtocolVersion,
                   TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                   TimeSpan.FromMilliseconds(millisecondsLinger),
+                  null,
+                  null,
                   host,
                   listenPort,
                   createdAt,
@@ -115,6 +117,36 @@ namespace Libplanet.Net
             int appProtocolVersion,
             TimeSpan dialTimeout,
             TimeSpan linger,
+            string host = null,
+            int? listenPort = null,
+            DateTimeOffset? createdAt = null,
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs>
+                differentVersionPeerEncountered = null)
+            : this(
+                blockChain,
+                privateKey,
+                appProtocolVersion,
+                dialTimeout,
+                linger,
+                null,
+                null,
+                host,
+                listenPort,
+                createdAt,
+                iceServers,
+                differentVersionPeerEncountered)
+        {
+        }
+
+        internal Swarm(
+            BlockChain<T> blockChain,
+            PrivateKey privateKey,
+            int appProtocolVersion,
+            TimeSpan dialTimeout,
+            TimeSpan linger,
+            int? tableSize,
+            int? bucketSize,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -167,7 +199,9 @@ namespace Libplanet.Net
                 this,
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
-                _logger);
+                _logger,
+                tableSize,
+                bucketSize);
 
             _requests = new AsyncCollection<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();

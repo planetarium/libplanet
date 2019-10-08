@@ -6,6 +6,13 @@ namespace Libplanet.Net.Protocols
 {
     internal static class Kademlia
     {
+        public const int BucketSize = 16;
+        public const int TableSize = Address.Size * sizeof(byte) * 8;
+        public const int FindConcurrency = 3;
+        public const int MaxDepth = 3;
+
+        public static TimeSpan IdleRequestTimeout { get; } = TimeSpan.FromSeconds(5);
+
         public static Address CalculateDistance(Address a, Address b)
         {
             var dba = new byte[Address.Size];
