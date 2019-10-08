@@ -254,7 +254,7 @@ namespace Libplanet.Net.Protocols
         public string Trace()
         {
             var trace = $"Routing table of [{_address.ToHex()}]\n";
-            var count = 1;
+            var count = 0;
             for (var i = 0; i < TableSize; i++)
             {
                 if (_routing.BucketOf(i).IsEmpty())
@@ -264,12 +264,12 @@ namespace Libplanet.Net.Protocols
 
                 trace += $"**Bucket {i}**\n";
                 trace = _routing.BucketOf(i).Peers.Aggregate(trace, (current, peer) =>
-                    current + $"{count++} : [{peer.Address.ToHex()}]\n");
+                    current + $"{++count} : [{peer.Address.ToHex()}]\n");
 
                 trace = trace.TrimEnd(' ', ',');
             }
 
-            return trace.Trim('\n');
+            return "Total peer count : " + count + "\n" + trace.Trim('\n');
         }
 
         internal async Task PingAsync(
