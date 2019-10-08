@@ -234,7 +234,7 @@ namespace Libplanet.Tests.Blockchain
             );
             await chain.MineBlock(_fx.Address1);
 
-            AddressStateMap states = chain.GetStates(new[] { _fx.Address1 });
+            AddressStateMap states = chain.GetState(_fx.Address1);
             Assert.NotEmpty(states);
 
             var result = (BattleResult)states[_fx.Address1];
@@ -263,7 +263,7 @@ namespace Libplanet.Tests.Blockchain
             );
             await chain.MineBlock(_fx.Address1);
 
-            states = chain.GetStates(new List<Address> { _fx.Address1 });
+            states = chain.GetState(_fx.Address1);
             result = (BattleResult)states[_fx.Address1];
             Assert.Contains("bow", result.UsedWeapons);
 
@@ -284,7 +284,7 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableHashSet<Transaction<PolymorphicAction<BaseAction>>>.Empty.Add(tx3)
             );
             await chain.MineBlock(_fx.Address1);
-            states = chain.GetStates(new List<Address> { _fx.Address1 });
+            states = chain.GetState(_fx.Address1);
 
             Assert.NotEmpty(states);
         }
@@ -359,7 +359,7 @@ namespace Libplanet.Tests.Blockchain
                 var minerAddress = addresses[4];
                 var blockRenders = MinerReward.RenderRecords.Value;
 
-                Assert.Equal(2, _blockChain.GetStates(new[] { minerAddress })[minerAddress]);
+                Assert.Equal(2, _blockChain.GetState(minerAddress)[minerAddress]);
                 Assert.Equal(2, blockRenders.Count);
                 Assert.True(blockRenders.All(r => r.Render));
                 Assert.Equal(0, blockRenders[0].Context.BlockIndex);
@@ -884,7 +884,7 @@ namespace Libplanet.Tests.Blockchain
 
                     Assert.Equal(
                         totalBlockCount,
-                        _blockChain.GetStates(new[] { minerAddress })[minerAddress]);
+                        _blockChain.GetState(minerAddress)[minerAddress]);
                     Assert.Equal(totalBlockCount, blockRenders.Count);
                     Assert.True(blockRenders.Take(unRenderBlockCount).All(r => r.Unrender));
                     Assert.True(blockRenders.Skip(unRenderBlockCount).All(r => r.Render));
@@ -904,7 +904,7 @@ namespace Libplanet.Tests.Blockchain
         // This is a regression test for:
         // https://github.com/planetarium/libplanet/issues/189#issuecomment-482443607.
         [Fact]
-        public void GetStatesOnlyDrillsDownUntilRequestedAddressesAreFound()
+        public void GetStateOnlyDrillsDownUntilRequestedAddressesAreFound()
         {
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
@@ -939,14 +939,15 @@ namespace Libplanet.Tests.Blockchain
                 testingDepth,
                 Math.Min(10, addresses.Length - testingDepth - 1)
             ).Select(i => addresses[i]).ToArray();
-            AddressStateMap result = chain.GetStates(targetAddresses);
-            string resultString = string.Join(", ", result.Keys);
-            string targetString = string.Join(", ", targetAddresses);
-            string message =
-                $"The result dictionary ({resultString}) does not " +
-                $"cover all requested addresses ({targetString}).";
+
             foreach (Address targetAddress in targetAddresses)
             {
+                AddressStateMap result = chain.GetState(targetAddress);
+
+                string message =
+                $"The result dictionary ({result.Keys}) does not " +
+                $"cover the requested address ({targetAddress}).";
+
                 Assert.True(result.ContainsKey(targetAddress), message);
             }
 
@@ -957,7 +958,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void GetStatesReturnsEarlyForNonexistentAccount()
+        public void GetStateReturnsEarlyForNonexistentAccount()
         {
             var tracker = new StoreTracker(_fx.Store);
             var chain = new BlockChain<DumbAction>(
@@ -975,7 +976,7 @@ namespace Libplanet.Tests.Blockchain
 
             tracker.ClearLogs();
             Address nonexistent = new PrivateKey().PublicKey.ToAddress();
-            AddressStateMap result = chain.GetStates(new[] { nonexistent });
+            AddressStateMap result = chain.GetState(nonexistent);
             Assert.False(result.ContainsKey(nonexistent));
             var callCount = tracker.Logs.Where(
                 triple => triple.Item1.Equals("GetBlockStates")
@@ -987,7 +988,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void GetStatesThrowsIncompleteBlockStatesException()
+        public void GetStateThrowsIncompleteBlockStatesException()
         {
             (_, Address[] addresses, BlockChain<DumbAction> chain) =
                 MakeIncompleteBlockStates();
@@ -995,22 +996,22 @@ namespace Libplanet.Tests.Blockchain
             // As the store has the states for the tip (latest block),
             // it shouldn't throw an exception.
             Address lastAddress = addresses.Last();
-            AddressStateMap states = chain.GetStates(new[] { lastAddress });
+            AddressStateMap states = chain.GetState(lastAddress);
             Assert.NotEmpty(states);
             Assert.Equal("9", states[lastAddress]);
 
             // As the store lacks the states for blocks other than the tip,
-            // the following GetStates() calls should throw an exception.
+            // the following GetState() calls should throw an exception.
             foreach (Address addr in addresses.Take(addresses.Length - 1))
             {
                 Assert.Throws<IncompleteBlockStatesException>(() =>
-                    chain.GetStates(new[] { addr })
+                    chain.GetState(addr)
                 );
             }
         }
 
         [Fact]
-        public void GetStatesWithCompletingStates()
+        public void GetStateWithCompletingStates()
         {
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
@@ -1053,7 +1054,7 @@ namespace Libplanet.Tests.Blockchain
             long txNonce = store.GetTxNonce(chain.Id, signer);
 
             store.ClearLogs();
-            chain.GetStates(new[] { addresses.Last() }, completeStates: true);
+            chain.GetState(addresses.Last(), completeStates: true);
 
             Assert.Empty(
                 store.Logs.Where(l => l.Item1 == "StoreStateReference")
@@ -1064,7 +1065,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             store.ClearLogs();
-            chain.GetStates(new[] { addresses[0] }, completeStates: true);
+            chain.GetState(addresses[0], completeStates: true);
 
             foreach (Block<DumbAction> block in blocks)
             {
@@ -1081,13 +1082,17 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void GetStatesReturnsLatestStatesWhenMultipleAddresses()
+        public async void GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
             var addresses = privateKeys.Select(k => k.PublicKey.ToAddress()).ToList();
             var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), _fx.Store);
-            var states = chain.GetStates(addresses);
-            Assert.Equal(new AddressStateMap(), states);
+
+            foreach (var address in addresses)
+            {
+                var states = chain.GetState(address);
+                Assert.Equal(new AddressStateMap(), states);
+            }
 
             var privateKeysAndAddresses10 = privateKeys.Zip(addresses, (k, a) => (k, a));
             foreach (var (key, address) in privateKeysAndAddresses10)
@@ -1096,17 +1101,15 @@ namespace Libplanet.Tests.Blockchain
             }
 
             await chain.MineBlock(addresses[0]);
-            states = chain.GetStates(addresses);
 
             foreach (var address in addresses)
             {
-                Assert.Equal("1", states[address]);
+                Assert.Equal("1", chain.GetState(address)[address]);
             }
 
             chain.MakeTransaction(privateKeys[0], new[] { new DumbAction(addresses[0], "2") });
             await chain.MineBlock(addresses[0]);
-            states = chain.GetStates(addresses);
-            Assert.Equal("1,2", states[addresses[0]]);
+            Assert.Equal("1,2", chain.GetState(addresses[0])[addresses[0]]);
         }
 
         [Fact]
@@ -1164,21 +1167,17 @@ namespace Libplanet.Tests.Blockchain
                 ImmutableHashSet<Transaction<TestEvaluateAction>>.Empty.Add(tx1)
             );
             await chain.MineBlock(_fx.Address1);
-            var states = chain.GetStates(new[]
-            {
-                TestEvaluateAction.SignerKey,
-                TestEvaluateAction.MinerKey,
-                TestEvaluateAction.BlockIndexKey,
-            });
 
             Assert.Equal(
-                states[TestEvaluateAction.SignerKey],
+                chain.GetState(TestEvaluateAction.SignerKey)[TestEvaluateAction.SignerKey],
                 fromAddress.ToHex()
             );
             Assert.Equal(
-                states[TestEvaluateAction.MinerKey],
+                chain.GetState(TestEvaluateAction.MinerKey)[TestEvaluateAction.MinerKey],
                 _fx.Address1.ToHex());
-            Assert.Equal(states[TestEvaluateAction.BlockIndexKey], blockIndex);
+            Assert.Equal(
+                chain.GetState(TestEvaluateAction.BlockIndexKey)[TestEvaluateAction.BlockIndexKey],
+                blockIndex);
         }
 
         [Fact]
@@ -1334,21 +1333,24 @@ namespace Libplanet.Tests.Blockchain
             blockChain.MakeTransaction(privateKey2, new[] { new DumbAction(address2, "baz") });
             await blockChain.MineBlock(address1);
 
-            var states = blockChain.GetStates(new[] { address1, address2 });
+            var states1 = blockChain.GetState(address1)[address1];
+            var states2 = blockChain.GetState(address2)[address2];
 
             Assert.Equal(0, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal("foo", states[address1]);
-            Assert.Equal("baz", states[address2]);
+            Assert.Equal("foo", states1);
+            Assert.Equal("baz", states2);
 
             blockChain.MakeTransaction(privateKey1, new[] { new DumbAction(address1, "bar") });
             await blockChain.MineBlock(address1);
-            states = blockChain.GetStates(new[] { address1, address2 });
+
+            states1 = blockChain.GetState(address1)[address1];
+            states2 = blockChain.GetState(address2)[address2];
 
             Assert.Equal(1, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal("foo,bar,foo", states[address1]);
-            Assert.Equal("baz", states[address2]);
+            Assert.Equal("foo,bar,foo", states1);
+            Assert.Equal("baz", states2);
         }
 
         [Fact]
@@ -1374,7 +1376,7 @@ namespace Libplanet.Tests.Blockchain
                 renderActions: false);
 
             var txEvaluations = blocks[1].EvaluateActionsPerTx(a =>
-                    _blockChain.GetStates(new[] { a }, blocks[1].PreviousHash).GetValueOrDefault(a))
+                    _blockChain.GetState(a, blocks[1].PreviousHash).GetValueOrDefault(a))
                 .Select(te => te.Item2).ToList();
             blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[1], txEvaluations);
 
@@ -1392,12 +1394,13 @@ namespace Libplanet.Tests.Blockchain
             await _blockChain.MineBlock(miner1);
             await _blockChain.MineBlock(miner2);
 
-            AddressStateMap states = _blockChain.GetStates(
-                new[] { miner1, miner2, MinerReward.RewardRecordAddress });
+            AddressStateMap miner1states = _blockChain.GetState(miner1);
+            AddressStateMap miner2states = _blockChain.GetState(miner2);
+            AddressStateMap rewardStates = _blockChain.GetState(rewardRecordAddress);
 
-            int reward1 = (int)states[miner1];
-            int reward2 = (int)states[miner2];
-            string rewardRecord = (string)states[rewardRecordAddress];
+            int reward1 = (int)miner1states[miner1];
+            int reward2 = (int)miner2states[miner2];
+            string rewardRecord = (string)rewardStates[rewardRecordAddress];
 
             Assert.Equal(2, reward1);
             Assert.Equal(1, reward2);
@@ -1407,7 +1410,7 @@ namespace Libplanet.Tests.Blockchain
 
         /// <summary>
         /// Builds a fixture that has incomplete states for blocks other
-        /// than the tip, to test <c>GetStates()</c> method's
+        /// than the tip, to test <c>GetState()</c> method's
         /// <c>completeStates: true</c> option and
         /// <see cref="IncompleteBlockStatesException"/>.
         ///

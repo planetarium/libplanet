@@ -1401,7 +1401,7 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedStateValidators);
                 await receiverSwarm.PreloadAsync(true);
-                var states = receiverChain.GetStates(new[] { address });
+                var states = receiverChain.GetState(address);
 
                 Assert.Equal("foo,bar,baz", states[address]);
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
@@ -1655,8 +1655,8 @@ namespace Libplanet.Tests.Net
                     foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                     {
                         var chainType = ReferenceEquals(chain, minerChain) ? "M" : "R";
-                        var states = chain.GetStates(
-                            new[] { target },
+                        var states = chain.GetState(
+                            target,
                             completeStates: false
                         );
                         Assert.Single(states);
@@ -1666,8 +1666,8 @@ namespace Libplanet.Tests.Net
                         );
                     }
 
-                    AddressStateMap TryToGetDeepStates() => receiverChain.GetStates(
-                        new[] { target },
+                    AddressStateMap TryToGetDeepStates() => receiverChain.GetState(
+                        target,
                         deepBlockHash,
                         completeStates: false
                     );
@@ -1692,8 +1692,8 @@ namespace Libplanet.Tests.Net
                 {
                     foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                     {
-                        var states = chain.GetStates(
-                            new[] { genesisTarget },
+                        var states = chain.GetState(
+                            genesisTarget,
                             completeStates: false
                         );
                         Assert.Single(states);
@@ -1703,8 +1703,8 @@ namespace Libplanet.Tests.Net
 
                 foreach (BlockChain<DumbAction> chain in new[] { minerChain, receiverChain })
                 {
-                    var minerState = chain.GetStates(
-                        new[] { minerSwarm.Address },
+                    var minerState = chain.GetState(
+                        minerSwarm.Address,
                         completeStates: false);
                     Assert.Single(minerState);
                     Assert.Equal(
@@ -1835,7 +1835,7 @@ namespace Libplanet.Tests.Net
             {
                 Assert.Equal(receiverChainId, receiverChain.Id);
                 Assert.Null(receiverChain.Tip);
-                Assert.Null(receiverChain.GetStates(new[] { address }).GetValueOrDefault(address));
+                Assert.Null(receiverChain.GetState(address).GetValueOrDefault(address));
             }
             else
             {
@@ -1848,7 +1848,7 @@ namespace Libplanet.Tests.Net
                             string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
                         )
                     ),
-                    receiverChain.GetStates(new[] { address })[address]
+                    receiverChain.GetState(address)[address]
                 );
             }
         }

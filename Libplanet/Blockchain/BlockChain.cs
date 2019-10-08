@@ -196,11 +196,11 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets the state of the given <paramref name="addresses"/> in the
+        /// Gets the state of the given <paramref name="address"/> in the
         /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
         /// </summary>
-        /// <param name="addresses">The list of <see cref="Address"/>es to get
-        /// their states.</param>
+        /// <param name="address">An <see cref="Address"/> to get
+        /// the states of.</param>
         /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
         /// start finding the state. It will be The tip of the
         /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
@@ -214,7 +214,7 @@ namespace Libplanet.Blockchain
         /// Just-in-time calculation of states could take a long time so that
         /// the overall latency of an application may rise.</param>
         /// <returns>The <see cref="AddressStateMap"/> of given
-        /// <paramref name="addresses"/>.</returns>
+        /// <paramref name="address"/>.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
         /// the <see cref="BlockChain{T}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
@@ -223,8 +223,8 @@ namespace Libplanet.Blockchain
         /// this exception is not thrown and incomplete states are calculated
         /// and filled on the fly instead.
         /// </exception>
-        public AddressStateMap GetStates(
-            IEnumerable<Address> addresses,
+        public AddressStateMap GetState(
+            Address address,
             HashDigest<SHA256>? offset = null,
             bool completeStates = false
         )
@@ -250,95 +250,80 @@ namespace Libplanet.Blockchain
             }
 
             Block<T> block = Blocks[offset.Value];
+            Tuple<HashDigest<SHA256>, long> stateReference;
 
-            ImmutableHashSet<Address> requestedAddresses =
-                addresses.ToImmutableHashSet();
-            var stateReferences = new HashSet<Tuple<HashDigest<SHA256>, long>>();
-
-            foreach (var address in requestedAddresses)
+            _rwlock.EnterReadLock();
+            try
             {
-                Tuple<HashDigest<SHA256>, long> sr;
-                _rwlock.EnterReadLock();
-                try
-                {
-                    sr = Store.LookupStateReference(Id, address, block);
-                }
-                finally
-                {
-                    _rwlock.ExitReadLock();
-                }
+                stateReference = Store.LookupStateReference(Id, address, block);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
 
-                if (!(sr is null))
+            if (stateReference is null)
+            {
+                return states;
+            }
+
+            HashDigest<SHA256> hashValue = stateReference.Item1;
+
+            AddressStateMap blockStates = Store.GetBlockStates(hashValue);
+            if (blockStates is null)
+            {
+                if (completeStates)
                 {
-                    stateReferences.Add(sr);
+                    // Calculates and fills the incomplete states
+                    // on the fly.
+                    foreach (Block<T> b in this)
+                    {
+                        if (!(Store.GetBlockStates(b.Hash) is null))
+                        {
+                            continue;
+                        }
+
+                        List<ActionEvaluation> evaluations =
+                            b.Evaluate(
+                                DateTimeOffset.UtcNow,
+                                a => GetState(
+                                     a,
+                                     b.PreviousHash
+                                ).GetValueOrDefault(a)
+                            ).ToList();
+
+                        if (Policy.BlockAction is IAction)
+                        {
+                            evaluations.Add(EvaluateBlockAction(b, evaluations));
+                        }
+
+                        _rwlock.EnterWriteLock();
+
+                        try
+                        {
+                            SetStates(b, evaluations, buildStateReferences: false);
+                        }
+                        finally
+                        {
+                            _rwlock.ExitWriteLock();
+                        }
+                    }
+
+                    blockStates = Store.GetBlockStates(hashValue);
+                    if (blockStates is null)
+                    {
+                        throw new NullReferenceException();
+                    }
+                }
+                else
+                {
+                    throw new IncompleteBlockStatesException(hashValue);
                 }
             }
 
-            IEnumerable<HashDigest<SHA256>> hashValues = stateReferences
-                .OrderByDescending(sr => sr.Item2)
-                .Select(sr => sr.Item1);
-
-            foreach (var hashValue in hashValues)
-            {
-                AddressStateMap blockStates = Store.GetBlockStates(hashValue);
-                if (blockStates is null)
-                {
-                    if (completeStates)
-                    {
-                        // Calculates and fills the incomplete states
-                        // on the fly.
-                        foreach (Block<T> b in this)
-                        {
-                            if (!(Store.GetBlockStates(b.Hash) is null))
-                            {
-                                continue;
-                            }
-
-                            List<ActionEvaluation> evaluations =
-                                b.Evaluate(
-                                    DateTimeOffset.UtcNow,
-                                    a => GetStates(
-                                        new[] { a },
-                                        b.PreviousHash
-                                    ).GetValueOrDefault(a)
-                                ).ToList();
-
-                            if (Policy.BlockAction is IAction)
-                            {
-                                evaluations.Add(EvaluateBlockAction(b, evaluations));
-                            }
-
-                            _rwlock.EnterWriteLock();
-
-                            try
-                            {
-                                SetStates(b, evaluations, buildStateReferences: false);
-                            }
-                            finally
-                            {
-                                _rwlock.ExitWriteLock();
-                            }
-                        }
-
-                        blockStates = Store.GetBlockStates(hashValue);
-                        if (blockStates is null)
-                        {
-                            throw new NullReferenceException();
-                        }
-                    }
-                    else
-                    {
-                        throw new IncompleteBlockStatesException(hashValue);
-                    }
-                }
-
-                states = (AddressStateMap)states.SetItems(
-                    blockStates.Where(kv =>
-                        requestedAddresses.Contains(kv.Key) &&
-                        !states.ContainsKey(kv.Key)
-                    )
-                );
-            }
+            states = (AddressStateMap)states.SetItems(
+                blockStates.Where(kv => address.Equals(kv.Key))
+            );
 
             return states;
         }
@@ -691,7 +676,7 @@ namespace Libplanet.Blockchain
                 else
                 {
                     stateGetter = a =>
-                        GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a);
+                        GetState(a, block.PreviousHash).GetValueOrDefault(a);
                 }
 
                 ImmutableList<ActionEvaluation> txEvaluations = block
@@ -756,7 +741,7 @@ namespace Libplanet.Blockchain
             if (lastStates is null)
             {
                 lastStates = new AccountStateDeltaImpl(
-                    a => GetStates(new[] { a }, block.PreviousHash).GetValueOrDefault(a));
+                    a => GetState(a, block.PreviousHash).GetValueOrDefault(a));
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
@@ -998,7 +983,7 @@ namespace Libplanet.Blockchain
                 )
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                            GetState(a, b.PreviousHash).GetValueOrDefault(a))
                         .Select(te => te.Item2).ToList();
 
                     if (Policy.BlockAction is IAction)
@@ -1052,7 +1037,7 @@ namespace Libplanet.Blockchain
                 foreach (Block<T> b in blocksToRender)
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetStates(new[] { a }, b.PreviousHash).GetValueOrDefault(a))
+                            GetState(a, b.PreviousHash).GetValueOrDefault(a))
                         .Select(te => te.Item2).ToList();
 
                     if (Policy.BlockAction is IAction)
