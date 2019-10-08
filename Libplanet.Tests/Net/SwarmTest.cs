@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Protocols;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -385,19 +386,17 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
                 await StartAsync(swarmC);
 
-                Peer peer = swarmC.AsPeer;
-                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer, peer }, null);
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer, swarmC.AsPeer }, null);
 
                 Assert.Contains(swarmB.AsPeer, swarmA.Peers);
-                Assert.Contains(peer, swarmA.Peers);
+                Assert.Contains(swarmC.AsPeer, swarmA.Peers);
 
                 await swarmC.StopAsync();
                 await Assert.ThrowsAsync<TimeoutException>(
-                    () => swarmA.AddPeersAsync(new[] { peer }, TimeSpan.FromSeconds(3)));
+                    () => swarmA.AddPeersAsync(new[] { swarmC.AsPeer }, TimeSpan.FromSeconds(3)));
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
                 Assert.Contains(swarmB.AsPeer, swarmA.Peers);
-                Assert.DoesNotContain(peer, swarmA.Peers);
             }
             finally
             {
@@ -411,6 +410,163 @@ namespace Libplanet.Tests.Net
                 swarmA.Dispose();
                 swarmB.Dispose();
                 swarmC.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RoutingTableFull()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new LiteDBStoreFixture(memory: true);
+
+            var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
+
+            var swarm = new Swarm<DumbAction>(
+                blockchain,
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                dialTimeout: TimeSpan.FromMilliseconds(15000),
+                linger: TimeSpan.FromMilliseconds(1000),
+                tableSize: 1,
+                bucketSize: 1,
+                host: IPAddress.Loopback.ToString());
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+            var swarmC = _swarms[2];
+
+            try
+            {
+                await StartAsync(swarm);
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Contains(swarmA.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+            }
+            finally
+            {
+                await swarm.StopAsync();
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
+                await swarmC.StopAsync();
+                fx.Dispose();
+                swarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ReplacementCache()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new LiteDBStoreFixture(memory: true);
+
+            var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
+
+            var swarm = new Swarm<DumbAction>(
+                blockchain,
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                dialTimeout: TimeSpan.FromMilliseconds(15000),
+                linger: TimeSpan.FromMilliseconds(1000),
+                tableSize: 1,
+                bucketSize: 1,
+                host: IPAddress.Loopback.ToString());
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+            var swarmC = _swarms[2];
+
+            try
+            {
+                await StartAsync(swarm);
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Contains(swarmA.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+
+                await swarmA.StopAsync();
+                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await Task.Delay(Kademlia.IdleRequestTimeout + TimeSpan.FromSeconds(1));
+
+                Assert.Equal(1, swarm.Peers.Count);
+                Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+                Assert.Contains(swarmB.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+            }
+            finally
+            {
+                await swarm.StopAsync();
+                await swarmB.StopAsync();
+                await swarmC.StopAsync();
+                fx.Dispose();
+                swarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RemoveDeadReplacementCache()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new LiteDBStoreFixture(memory: true);
+
+            var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
+
+            var swarm = new Swarm<DumbAction>(
+                blockchain,
+                new PrivateKey(),
+                appProtocolVersion: 1,
+                dialTimeout: TimeSpan.FromMilliseconds(15000),
+                linger: TimeSpan.FromMilliseconds(1000),
+                tableSize: 1,
+                bucketSize: 1,
+                host: IPAddress.Loopback.ToString());
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+            var swarmC = _swarms[2];
+
+            try
+            {
+                await StartAsync(swarm);
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+
+                await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Contains(swarmA.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
+
+                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await Task.Delay(Kademlia.IdleRequestTimeout * 2 + TimeSpan.FromSeconds(1));
+
+                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+                Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+                Assert.Contains(swarmC.AsPeer, swarm.Peers);
+            }
+            finally
+            {
+                await swarm.StopAsync();
+                await swarmC.StopAsync();
+                fx.Dispose();
+                swarm.Dispose();
             }
         }
 
