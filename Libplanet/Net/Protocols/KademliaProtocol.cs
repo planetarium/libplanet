@@ -505,14 +505,14 @@ namespace Libplanet.Net.Protocols
                     "Cannot receive ping from self");
             }
 
-            await UpdateAsync(ping.Remote);
-
             Pong pong = new Pong((long?)null)
             {
                 Identity = ping.Identity,
             };
 
             _swarm.ReplyMessage(pong);
+
+            await UpdateAsync(ping.Remote);
         }
 
         /// <summary>
