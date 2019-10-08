@@ -88,6 +88,7 @@
 disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 <li><code>IStore.IterateStateReferences()</code> method became to receive
 <code>highestIndex</code>, <code>lowestIndex</code>, and <code>limit</code> parameters.  [<a href="https://github.com/planetarium/libplanet/issues/447">#447</a>, <a href="https://github.com/planetarium/libplanet/pull/545">#545</a>]</li>
+<li>Reworked <code>BlockChain&lt;T&gt;.GetStates()</code> into <code>GetState()</code> which takes only one <code>Address</code> instead of <code>IEnumerable&lt;Address&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/510">#510</a>, <a href="https://github.com/planetarium/libplanet/pull/563">#563</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <h3 id="behavioral-changes">Behavioral changes</h3>
@@ -864,7 +865,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/17e914aaa4d4e0f9ad84a87bffdb156ac3c62b8d/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/e7ccac6f49b1658f27410ee1b74908aacc99685d/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

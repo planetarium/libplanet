@@ -1230,24 +1230,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetNextTxNonce
   nameWithType: BlockChain<T>.GetNextTxNonce
   nameWithType.vb: BlockChain(Of T).GetNextTxNonce
-- uid: Libplanet.Blockchain.BlockChain`1.GetStates(IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{SHA256}},System.Boolean)
-  name: GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>, Boolean)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_IEnumerable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_SHA256___System_Boolean_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetStates(IEnumerable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{SHA256}},System.Boolean)
-  name.vb: GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)), Boolean)
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates(IEnumerable<Libplanet.Address>, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Boolean)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates(IEnumerable(Of Libplanet.Address), System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Boolean)
-  nameWithType: BlockChain<T>.GetStates(IEnumerable<Address>, Nullable<HashDigest<SHA256>>, Boolean)
-  nameWithType.vb: BlockChain(Of T).GetStates(IEnumerable(Of Address), Nullable(Of HashDigest(Of SHA256)), Boolean)
-- uid: Libplanet.Blockchain.BlockChain`1.GetStates*
-  name: GetStates
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetStates_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetStates
+- uid: Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{SHA256}},System.Boolean)
+  name: GetState(Address, Nullable<HashDigest<SHA256>>, Boolean)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_Libplanet_Address_System_Nullable_Libplanet_HashDigest_SHA256___System_Boolean_
+  commentId: M:Libplanet.Blockchain.BlockChain`1.GetState(Libplanet.Address,System.Nullable{Libplanet.HashDigest{SHA256}},System.Boolean)
+  name.vb: GetState(Address, Nullable(Of HashDigest(Of SHA256)), Boolean)
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetState(Libplanet.Address, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Boolean)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState(Libplanet.Address, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Boolean)
+  nameWithType: BlockChain<T>.GetState(Address, Nullable<HashDigest<SHA256>>, Boolean)
+  nameWithType.vb: BlockChain(Of T).GetState(Address, Nullable(Of HashDigest(Of SHA256)), Boolean)
+- uid: Libplanet.Blockchain.BlockChain`1.GetState*
+  name: GetState
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetState_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetState
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetStates
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetStates
-  nameWithType: BlockChain<T>.GetStates
-  nameWithType.vb: BlockChain(Of T).GetStates
+  fullName: Libplanet.Blockchain.BlockChain<T>.GetState
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetState
+  nameWithType: BlockChain<T>.GetState
+  nameWithType.vb: BlockChain(Of T).GetState
 - uid: Libplanet.Blockchain.BlockChain`1.Id
   name: Id
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Id
