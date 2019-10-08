@@ -919,11 +919,17 @@ namespace Libplanet.Net
                     blockHashes.ToArray();
                 var request = new GetBlocks(blockHashesAsArray);
                 int hashCount = blockHashesAsArray.Count();
+
+                if (hashCount < 1)
+                {
+                    yield.Break();
+                }
+
                 IEnumerable<Message> replies = await SendMessageWithReplyAsync(
                     peer,
                     request,
                     BlockRecvTimeout,
-                    (hashCount / request.ChunkSize) + 1,
+                    ((hashCount - 1) / request.ChunkSize) + 1,
                     yieldToken
                 );
 
