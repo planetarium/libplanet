@@ -24,6 +24,7 @@ To be released.
 
  -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
     [[#447], [#545]]
+ -  Added .Net Core 2.2 as a targeted framework. [[#561]]
 
 ### Bug fixes
 
@@ -44,6 +45,7 @@ To be released.
 [#560]: https://github.com/planetarium/libplanet/pull/560
 [#562]: https://github.com/planetarium/libplanet/pull/562
 [#563]: https://github.com/planetarium/libplanet/pull/563
+[#561]: https://github.com/planetarium/libplanet/pull/561
 
 
 Version 0.6.0
