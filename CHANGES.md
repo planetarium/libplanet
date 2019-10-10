@@ -24,7 +24,7 @@ To be released.
 
  -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
     [[#447], [#545]]
- -  Added .Net Core 2.2 as a targeted framework. [[#561]]
+ -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
 
 ### Bug fixes
 
