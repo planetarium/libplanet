@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
+using Serilog;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
@@ -38,6 +39,7 @@ namespace Libplanet.Blockchain
             Justification = "Temporary visibility.")]
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
@@ -86,6 +88,8 @@ namespace Libplanet.Blockchain
             {
                 Store.SetCanonicalChainId(Id);
             }
+
+            _logger = Log.ForContext<BlockChain<T>>();
         }
 
         ~BlockChain()
