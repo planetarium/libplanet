@@ -50,7 +50,7 @@
                           <a href="../articles/design.html" title="Design">Design</a>
                       </li>
                       <li>
-                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                          <a href="../api/Libplanet.yml" title="API Reference">API Reference</a>
                       </li>
                       <li>
                           <a href="../CHANGES.html" title="Changelog">Changelog</a>
@@ -135,8 +135,8 @@ reinforcements, breakages, trades, that are non-trivial and affect game states
 should be recorded to the append-only log.  Each log has its own digital
 signature to prove that the corresponding gamer is responsible.</p>
 <p>We call the unit of such pair of log and its signature a
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>, and it consists of multiple
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.  How transactions and actions grouped is
+@&quot;Libplanet.Tx.Transaction`1&quot;, and it consists of multiple
+@&quot;Libplanet.Tx.Transaction`1.Actions&quot;.  How transactions and actions grouped is
 left to a game engineer's discretion.  For example, if there are four actions
 like <em>A</em> to <em>D</em>, these can be grouped altogether (e.g., <em>{A, B, C, D}</em>),
 or be into two or three groups (e.g., <em>{A} &amp; {B, C, D}</em>), or rather have
@@ -169,24 +169,24 @@ throughput, it is nonsense to group two turns of actions into one transaction.
 A player's next turn can start only after the opponent's current turn is
 determined.  From this perspective, a transaction represents a unit of
 dependency, rather than a unit of throughput.</p>
-<p>At a code level, another difference between <a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> and
-<a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> is that <a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> is not
-extensible whereas <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> is.  By design, an extension
-point for game engineers is <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a>.  To sum up,
-<a class="xref" href="../api/Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> purposes to control synchronization on
-the network and <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a> purposes to implement the actual
+<p>At a code level, another difference between @&quot;Libplanet.Tx.Transaction`1&quot; and
+@&quot;Libplanet.Action.IAction&quot; is that @&quot;Libplanet.Tx.Transaction`1&quot; is not
+extensible whereas @&quot;Libplanet.Action.IAction&quot; is.  By design, an extension
+point for game engineers is @&quot;Libplanet.Action.IAction&quot;.  To sum up,
+@&quot;Libplanet.Tx.Transaction`1&quot; purposes to control synchronization on
+the network and @&quot;Libplanet.Action.IAction&quot; purposes to implement the actual
 game logic.</p>
 <h2 id="accounts-and-addresses">Accounts and addresses</h2>
 <p>Libplanet creates digital signatures to find which player node made each
 transaction, without relying on the authority of a centralized server.
 In the similar fashion to <a href="https://bitcoin.org/">Bitcoin</a> and <a href="https://www.ethereum.org/">Ethereum</a>, a transaction is signed
-with <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>, and a pair of each player's sole <a class="xref" href="../api/Libplanet.Crypto.PrivateKey.html">PrivateKey</a>
-and <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a> used to sign transactions construct
+with <a href="https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm">ECDSA</a>, and a pair of each player's sole @&quot;Libplanet.Crypto.PrivateKey&quot;
+and @&quot;Libplanet.Crypto.PublicKey&quot; used to sign transactions construct
 an <em>account</em>.  Since a pair of keys for an account is <em>chosen</em> at offline,
 the process of so-called &quot;account creation&quot; can be omitted.</p>
-<p>An account can also be identified through the <a class="xref" href="../api/Libplanet.Address.html">Address</a> which is
-derived from the corresponding <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a>.  It is shorter
-than <a class="xref" href="../api/Libplanet.Crypto.PublicKey.html">PublicKey</a> and follows the same form to Ethereum's.
+<p>An account can also be identified through the @&quot;Libplanet.Address&quot; which is
+derived from the corresponding @&quot;Libplanet.Crypto.PublicKey&quot;.  It is shorter
+than @&quot;Libplanet.Crypto.PublicKey&quot; and follows the same form to Ethereum's.
 This means key pairs that have used for Ethereum can be reused for
 Libplanet-backed games too.  For example, a game can raise funding or receive
 donations through Ethereum and then reward people when the game is released.</p>
@@ -216,7 +216,7 @@ must be marked with <a class="xref" href="https://docs.microsoft.com/dotnet/api/
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/9885d6f08ea6a249e5318f53a6a35792294d3ba4/Docs/articles/design.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/3172471fb4449c839559fb6b173ff3eb64a78a24/Docs/articles/design.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
