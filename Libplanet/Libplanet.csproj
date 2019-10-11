@@ -22,7 +22,7 @@ See also the docs for details:
 https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
-    <PackageIconUrl>https://avatars3.githubusercontent.com/u/47222188?s=64</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageDocumentationFile>README.md</PackageDocumentationFile>
     <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>
@@ -50,6 +50,7 @@ https://docs.libplanet.io/</Description>
     <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
     <None Include="..\README.md" Pack="true" PackagePath="README.md" />
+    <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
     </AdditionalFiles>
