@@ -268,7 +268,7 @@ namespace Libplanet.Net.Protocols
                 trace = trace.TrimEnd(' ', ',');
             }
 
-            return "Total peer count : " + count + "\n" + trace.Trim('\n');
+            return $"Total peer count: {count}\n{trace.Trim('\n')}";
         }
 
         internal async Task PingAsync(
