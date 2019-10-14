@@ -27,6 +27,8 @@ To be released.
  -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
     [[#447], [#545]]
  -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
+ -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
+    connections.  [[#469]]
 
 ### Bug fixes
 
@@ -40,6 +42,7 @@ To be released.
 [#405]: https://github.com/planetarium/libplanet/issues/405
 [#447]: https://github.com/planetarium/libplanet/issues/447
 [#462]: https://github.com/planetarium/libplanet/issues/462
+[#469]: https://github.com/planetarium/libplanet/pull/469
 [#485]: https://github.com/planetarium/libplanet/pull/485
 [#510]: https://github.com/planetarium/libplanet/issues/510
 [#545]: https://github.com/planetarium/libplanet/pull/545
