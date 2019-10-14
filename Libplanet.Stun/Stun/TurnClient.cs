@@ -143,7 +143,7 @@ namespace Libplanet.Stun
                 }
                 catch (IOException e)
                 {
-                    Log.Warning(e, "The connection seems to disconnect before parsing. ignored.");
+                    Log.Warning(e, "The connection seems to disconnect before parsing; ignored.");
                     continue;
                 }
             }
