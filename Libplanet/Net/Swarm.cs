@@ -703,7 +703,7 @@ namespace Libplanet.Net
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        Block<T> block = workspace.Blocks[hash];
+                        Block<T> block = workspace[hash];
                         if (block.Index < initHeight)
                         {
                             continue;
@@ -1442,7 +1442,7 @@ namespace Libplanet.Net
             }
 
             ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
-                .Where(hash => !_blockChain.Blocks.ContainsKey(hash))
+                .Where(hash => !_blockChain.Contains(hash))
                 .ToImmutableList();
 
             if (!newHashes.Any())
@@ -1673,11 +1673,11 @@ namespace Libplanet.Net
                     _logger.Debug("It doesn't need to fork.");
                 }
 
-                // FIXME BlockChain.Blocks.ContainsKey() can be very
+                // FIXME BlockChain<T>.Contains() can be very
                 // expensive.
                 // we can omit this clause if assume every chain shares
                 // same genesis block...
-                else if (!workspace.Blocks.ContainsKey(branchPoint))
+                else if (!workspace.Contains(branchPoint))
                 {
                     // Create a whole new chain because the branch point doesn't exist on
                     // the current chain.
@@ -1817,8 +1817,9 @@ namespace Libplanet.Net
 
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (_blockChain.Blocks.TryGetValue(hash, out Block<T> block))
+                if (_blockChain.Contains(hash))
                 {
+                    Block<T> block = _blockChain[hash];
                     byte[] payload = block.ToBencodex(true, true);
                     blocks.Add(payload);
                 }
@@ -1857,7 +1858,7 @@ namespace Libplanet.Net
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
 
-            if (_blockChain.Blocks.ContainsKey(target))
+            if (_blockChain.Contains(target))
             {
                 ReaderWriterLockSlim rwlock = _blockChain._rwlock;
                 rwlock.EnterReadLock();
@@ -1894,12 +1895,12 @@ namespace Libplanet.Net
 
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
-                if (BlockChain.Blocks.ContainsKey(target))
+                if (BlockChain.Contains(target))
                 {
                     var baseString = @base is HashDigest<SHA256> h
-                        ? $"{BlockChain.Blocks[h].Index}:{h}"
+                        ? $"{BlockChain[h].Index}:{h}"
                         : null;
-                    var targetString = $"{BlockChain.Blocks[target].Index}:{target}";
+                    var targetString = $"{BlockChain[target].Index}:{target}";
                     _logger.Debug(
                         "State references to send (preload): {@StateReferences} ({Base}-{Target})",
                         stateRefs.Select(kv =>

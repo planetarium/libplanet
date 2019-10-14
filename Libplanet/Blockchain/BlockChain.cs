@@ -30,6 +30,14 @@ namespace Libplanet.Blockchain
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
 
+        /// <summary>
+        /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Block{T}"/>s.
+        /// Keys are <see cref="Block{T}.Hash"/>es and values are
+        /// their corresponding <see cref="Block{T}"/>s.
+        /// </summary>
+        private IDictionary<HashDigest<SHA256>, Block<T>> _blocks;
+
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(
                 policy,
@@ -44,9 +52,9 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
-            Blocks = new BlockSet<T>(store);
             Transactions = new TransactionSet<T>(store);
 
+            _blocks = new BlockSet<T>(store);
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -90,17 +98,6 @@ namespace Libplanet.Blockchain
         public Guid Id { get; private set; }
 
         /// <summary>
-        /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
-        /// storage, including orphan <see cref="Block{T}"/>s.
-        /// Keys are <see cref="Block{T}.Hash"/>es and values are
-        /// their corresponding <see cref="Block{T}"/>s.
-        /// </summary>
-        public IDictionary<HashDigest<SHA256>, Block<T>> Blocks
-        {
-            get; private set;
-        }
-
-        /// <summary>
         /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
         /// storage, including orphan <see cref="Transaction{T}"/>s.
         /// Keys are <see cref="Transaction{T}.Id"/>s and values are
@@ -130,22 +127,67 @@ namespace Libplanet.Blockchain
         {
             get
             {
+                _rwlock.EnterReadLock();
                 try
                 {
-                    _rwlock.EnterReadLock();
-
                     HashDigest<SHA256>? blockHash = Store.IndexBlockHash(Id, index);
                     if (blockHash == null)
                     {
                         throw new ArgumentOutOfRangeException();
                     }
 
-                    return Blocks[blockHash.Value];
+                    return _blocks[blockHash.Value];
                 }
                 finally
                 {
                     _rwlock.ExitReadLock();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the block corresponding to the <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="hash">A <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to get.
+        /// </param>
+        /// <exception cref="KeyNotFoundException">Thrown when there is no <see cref="Block{T}"/>
+        /// with a given <paramref name="hash"/>.</exception>
+        public Block<T> this[HashDigest<SHA256> hash]
+        {
+            get
+            {
+                _rwlock.EnterReadLock();
+                try
+                {
+                    return _blocks[hash];
+                }
+                finally
+                {
+                    _rwlock.ExitReadLock();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>
+        /// the specified <paramref name="hash"/>.
+        /// </summary>
+        /// <param name="hash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
+        /// check if it is in the <see cref="BlockChain{T}"/>.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/> with
+        /// the specified <paramref name="hash"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(HashDigest<SHA256> hash)
+        {
+            _rwlock.EnterReadLock();
+            try
+            {
+                return _blocks.ContainsKey(hash);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
             }
         }
 
@@ -173,7 +215,7 @@ namespace Libplanet.Blockchain
 
         public IEnumerator<Block<T>> GetEnumerator()
         {
-            return BlockHashes.Select(hash => Blocks[hash]).GetEnumerator();
+            return BlockHashes.Select(hash => _blocks[hash]).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -235,7 +277,7 @@ namespace Libplanet.Blockchain
                 return states;
             }
 
-            Block<T> block = Blocks[offset.Value];
+            Block<T> block = this[offset.Value];
             Tuple<HashDigest<SHA256>, long> stateReference;
 
             _rwlock.EnterReadLock();
@@ -602,7 +644,7 @@ namespace Libplanet.Blockchain
                 try
                 {
                     Block<T> prevTip = Tip;
-                    Blocks[block.Hash] = block;
+                    _blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
                     {
                         Store.IncreaseTxNonce(Id, pair.Key, pair.Value);
@@ -756,8 +798,8 @@ namespace Libplanet.Blockchain
 
                 foreach (HashDigest<SHA256> hash in locator)
                 {
-                    if (Blocks.ContainsKey(hash)
-                        && Blocks[hash] is Block<T> block
+                    if (_blocks.ContainsKey(hash)
+                        && _blocks[hash] is Block<T> block
                         && hash.Equals(Store.IndexBlockHash(Id, block.Index)))
                     {
                         return hash;
@@ -789,7 +831,7 @@ namespace Libplanet.Blockchain
 
                 HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
                 var branchPointIndex = branchPoint is HashDigest<SHA256> h
-                    ? (int)Blocks[h].Index
+                    ? (int)_blocks[h].Index
                     : 0;
 
                 // FIXME: Currently, increasing count by one to satisfy
@@ -837,7 +879,7 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.ForkBlockIndexes(Id, forkedId, point);
-                Block<T> pointBlock = Blocks[point];
+                Block<T> pointBlock = _blocks[point];
 
                 var signersToStrip = new Dictionary<Address, int>();
 
@@ -845,7 +887,7 @@ namespace Libplanet.Blockchain
                     Block<T> block = Tip;
                     block.PreviousHash is HashDigest<SHA256> hash
                     && !block.Hash.Equals(point);
-                    block = Blocks[hash])
+                    block = _blocks[hash])
                 {
                     IEnumerable<(Address, int)> signers = block
                         .Transactions
@@ -908,7 +950,7 @@ namespace Libplanet.Blockchain
                 while (current is HashDigest<SHA256> hash)
                 {
                     hashes.Add(hash);
-                    Block<T> currentBlock = Blocks[hash];
+                    Block<T> currentBlock = _blocks[hash];
 
                     if (currentBlock.Index == 0)
                     {
@@ -947,7 +989,7 @@ namespace Libplanet.Blockchain
                     Block<T> t = this[shorterHeight], o = other[shorterHeight];
                     t.PreviousHash is HashDigest<SHA256> tp &&
                         o.PreviousHash is HashDigest<SHA256> op;
-                    t = Blocks[tp], o = other.Blocks[op]
+                    t = this[tp], o = other[op]
                 )
                 {
                     if (t.Equals(o))
@@ -965,7 +1007,7 @@ namespace Libplanet.Blockchain
                     Block<T> b = Tip;
                     !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
                         b.PreviousHash is HashDigest<SHA256> ph;
-                    b = Blocks[ph]
+                    b = this[ph]
                 )
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
@@ -1003,7 +1045,7 @@ namespace Libplanet.Blockchain
                 Guid obsoleteId = Id;
                 Id = other.Id;
                 Store.SetCanonicalChainId(Id);
-                Blocks = new BlockSet<T>(Store);
+                _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, tipChangedEventArgs);
                 Transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
@@ -1101,7 +1143,7 @@ namespace Libplanet.Blockchain
             {
                 foreach (HashDigest<SHA256> hash in IterateBlockHashes(offset, limit))
                 {
-                    yield return Blocks[hash];
+                    yield return _blocks[hash];
                 }
             }
             finally
