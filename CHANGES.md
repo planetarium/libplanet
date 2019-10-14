@@ -49,6 +49,8 @@ To be released.
  -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
+ -  `Swarm<T>.AppendBlocksAsync()` became to render blocks after all blocks
+    are appended.  [[#579]]
 
 ### Bug fixes
 
@@ -62,6 +64,10 @@ To be released.
     occurred.  [[#575]]
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidBlockIndexException` during
     synchronizing with other reorganized peer.  [[#528], [#576]]
+ -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` does not render blocks
+    that are filled from other peers.  [[#579]]
+ -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` renders actions multiple
+    times when reorg happens.  [[#579]]
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
@@ -86,6 +92,7 @@ To be released.
 [#566]: https://github.com/planetarium/libplanet/pull/566
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
+[#579]: https://github.com/planetarium/libplanet/pull/579
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
 [#584]: https://github.com/planetarium/libplanet/pull/584
