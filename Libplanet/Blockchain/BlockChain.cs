@@ -114,30 +114,7 @@ namespace Libplanet.Blockchain
         /// All <see cref="Block{T}.Hash"/>es in the current index.  The genesis block's hash goes
         /// first, and the tip goes last.
         /// </summary>
-        public IEnumerable<HashDigest<SHA256>> BlockHashes
-        {
-            get
-            {
-                try
-                {
-                    _rwlock.EnterUpgradeableReadLock();
-
-                    IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndexes(Id);
-
-                    // NOTE: The reason why this does not simply return indices, but iterates over
-                    // indices and yields hashes step by step instead, is that we need to ensure
-                    // the read lock held until the whole iteration completes.
-                    foreach (HashDigest<SHA256> hash in indices)
-                    {
-                        yield return hash;
-                    }
-                }
-                finally
-                {
-                    _rwlock.ExitUpgradeableReadLock();
-                }
-            }
-        }
+        public IEnumerable<HashDigest<SHA256>> BlockHashes => IterateBlockHashes();
 
         /// <inheritdoc/>
         int IReadOnlyCollection<Block<T>>.Count =>
@@ -170,6 +147,14 @@ namespace Libplanet.Blockchain
                 }
             }
         }
+
+        /// <summary>
+        /// Returns a <see cref="long"/> integer that represents the number of elements in the
+        /// <see cref="BlockChain{T}"/>.
+        /// </summary>
+        /// <returns>A number that represents how many elements in the <see cref="BlockChain{T}"/>.
+        /// </returns>
+        public long LongCount() => Store.CountIndex(Id);
 
         public void Validate(
             IReadOnlyList<Block<T>> blocks,
@@ -956,7 +941,7 @@ namespace Libplanet.Blockchain
             if (render && !(Tip is null || other.Tip is null))
             {
                 long shorterHeight =
-                    Math.Min(this.LongCount(), other.LongCount()) - 1;
+                    Math.Min(LongCount(), other.LongCount()) - 1;
                 for (
                     Block<T> t = this[shorterHeight], o = other[shorterHeight];
                     t.PreviousHash is HashDigest<SHA256> tp &&
@@ -1030,11 +1015,12 @@ namespace Libplanet.Blockchain
             if (render)
             {
                 // Render actions that had been behind.
-                IEnumerable<Block<T>> blocksToRender =
-                    topmostCommon is Block<T> branchPoint
-                        ? this.SkipWhile(b => b.Index <= branchPoint.Index)
-                        : this;
-                foreach (Block<T> b in blocksToRender)
+                long startToRenderIndex = topmostCommon is Block<T> branchPoint
+                    ? branchPoint.Index + 1
+                    : 0;
+
+                // FIXME: We should consider the case where block count is larger than int.MaxSize.
+                foreach (Block<T> b in IterateBlocks(offset: (int)startToRenderIndex))
                 {
                     List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
                             GetState(a, b.PreviousHash).GetValueOrDefault(a))
@@ -1103,6 +1089,46 @@ namespace Libplanet.Blockchain
             if (buildStateReferences)
             {
                 Store.StoreStateReference(Id, updatedAddresses, block.Hash, block.Index);
+            }
+        }
+
+        private IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
+        {
+            _rwlock.EnterUpgradeableReadLock();
+
+            try
+            {
+                foreach (HashDigest<SHA256> hash in IterateBlockHashes(offset, limit))
+                {
+                    yield return Blocks[hash];
+                }
+            }
+            finally
+            {
+                _rwlock.ExitUpgradeableReadLock();
+            }
+        }
+
+        private IEnumerable<HashDigest<SHA256>>
+            IterateBlockHashes(int offset = 0, int? limit = null)
+        {
+            _rwlock.EnterUpgradeableReadLock();
+
+            try
+            {
+                IEnumerable<HashDigest<SHA256>> indices = Store.IterateIndexes(Id, offset, limit);
+
+                // NOTE: The reason why this does not simply return indices, but iterates over
+                // indices and yields hashes step by step instead, is that we need to ensure
+                // the read lock held until the whole iteration completes.
+                foreach (HashDigest<SHA256> hash in indices)
+                {
+                    yield return hash;
+                }
+            }
+            finally
+            {
+                _rwlock.ExitUpgradeableReadLock();
             }
         }
 

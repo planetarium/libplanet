@@ -20,6 +20,8 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
+
 ### Behavioral changes
 
  -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
@@ -32,6 +34,8 @@ To be released.
     already received when blockchain is empty.  [[#550], [#562]]
  -  Fixed a bug that `Swarm<T>` had thrown `SocketException` with a message
     `Operation on non-blocking socket would block`.  [[#405], [#485]]
+ -  Fixed a bug that accessed all blocks from the genesis block when a swap
+    occurred.  [[#575]]
 
 [#405]: https://github.com/planetarium/libplanet/issues/405
 [#447]: https://github.com/planetarium/libplanet/issues/447
@@ -47,6 +51,7 @@ To be released.
 [#563]: https://github.com/planetarium/libplanet/pull/563
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#561]: https://github.com/planetarium/libplanet/pull/561
+[#575]: https://github.com/planetarium/libplanet/pull/575
 
 
 Version 0.6.0
