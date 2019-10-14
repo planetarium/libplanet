@@ -1554,10 +1554,19 @@ namespace Libplanet.Net
             }
             finally
             {
-                if (synced is BlockChain<T> syncedNotNull &&
-                    !syncedNotNull.Id.Equals(blockChain?.Id))
+                if (synced is BlockChain<T> syncedNotNull)
                 {
-                    blockChain.Swap(synced, evaluateActions);
+                    if (syncedNotNull.Id.Equals(blockChain?.Id))
+                    {
+                        if (evaluateActions)
+                        {
+                            blockChain.Render(previousTipIndex);
+                        }
+                    }
+                    else
+                    {
+                        blockChain.Swap(synced, evaluateActions);
+                    }
                 }
 
                 IStore store = BlockChain.Store;
