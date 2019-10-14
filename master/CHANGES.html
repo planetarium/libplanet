@@ -91,6 +91,9 @@ disposed to clean up its internal resources. [<a href="https://github.com/planet
 <li>Reworked <code>BlockChain&lt;T&gt;.GetStates()</code> into <code>GetState()</code> which takes only one <code>Address</code> instead of <code>IEnumerable&lt;Address&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/510">#510</a>, <a href="https://github.com/planetarium/libplanet/pull/563">#563</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
+<ul>
+<li>Added <code>BlockChain&lt;T&gt;.LongCount()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method.
@@ -103,6 +106,8 @@ disposed to clean up its internal resources. [<a href="https://github.com/planet
 already received when blockchain is empty.  [<a href="https://github.com/planetarium/libplanet/issues/550">#550</a>, <a href="https://github.com/planetarium/libplanet/pull/562">#562</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>SocketException</code> with a message
 <code>Operation on non-blocking socket would block</code>.  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, <a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
+<li>Fixed a bug that accessed all blocks from the genesis block when a swap
+occurred.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
 </ul>
 <h2 id="version-060">Version 0.6.0</h2>
 <p>Released on October 1, 2019.</p>
@@ -866,7 +871,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/f273b66f4a370872ef244213851e7212eab3bf0a/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/612e68fd1cd23c6edd0542101dddf074a774258b/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
