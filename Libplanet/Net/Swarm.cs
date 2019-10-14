@@ -631,6 +631,7 @@ namespace Libplanet.Net
                     // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
                     // it means states are already calculated so that it does not need to receive
                     // calculated states from trusted peers.
+                    complete = true;
                     return;
                 }
 
