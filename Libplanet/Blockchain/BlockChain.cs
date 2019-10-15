@@ -172,7 +172,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Gets the block corresponding to the <paramref name="hash"/>.
         /// </summary>
-        /// <param name="hash">A <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to get.
+        /// <param name="hash">A <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> to get.
         /// </param>
         /// <exception cref="KeyNotFoundException">Thrown when there is no <see cref="Block{T}"/>
         /// with a given <paramref name="hash"/>.</exception>
