@@ -110,6 +110,8 @@ already received when blockchain is empty.  [<a href="https://github.com/planeta
 <code>Operation on non-blocking socket would block</code>.  [<a href="https://github.com/planetarium/libplanet/issues/405">#405</a>, <a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 <li>Fixed a bug that accessed all blocks from the genesis block when a swap
 occurred.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>InvalidBlockIndexException</code> during
+synchronizing with other reorganized peer.  [<a href="https://github.com/planetarium/libplanet/issues/528">#528</a>, <a href="https://github.com/planetarium/libplanet/pull/576">#576</a>]</li>
 </ul>
 <h2 id="version-060">Version 0.6.0</h2>
 <p>Released on October 1, 2019.</p>
@@ -873,7 +875,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/ab926976d46006fca97321d58442f498ccca520a/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/d37c6c5eef5a7b4bb35e01df7af5c30b8a8eb92f/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
