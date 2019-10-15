@@ -425,7 +425,6 @@ namespace Libplanet.Tests.Net
                 blockchain,
                 new PrivateKey(),
                 appProtocolVersion: 1,
-                dialTimeout: TimeSpan.FromMilliseconds(15000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
@@ -472,7 +471,6 @@ namespace Libplanet.Tests.Net
                 blockchain,
                 new PrivateKey(),
                 appProtocolVersion: 1,
-                dialTimeout: TimeSpan.FromMilliseconds(15000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
@@ -525,7 +523,6 @@ namespace Libplanet.Tests.Net
                 blockchain,
                 new PrivateKey(),
                 appProtocolVersion: 1,
-                dialTimeout: TimeSpan.FromMilliseconds(15000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
@@ -1599,7 +1596,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
                 minerSwarm.FindNextHashesChunkSize = 2;
-                await receiverSwarm.PreloadAsync(progress);
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
 
@@ -1686,7 +1683,7 @@ namespace Libplanet.Tests.Net
                 await nominerSwarm1.AddPeersAsync(new[] { nominerSwarm0.AsPeer }, null);
                 await nominerSwarm1.PreloadAsync();
                 await receiverSwarm.AddPeersAsync(new[] { nominerSwarm1.AsPeer }, null);
-                await receiverSwarm.PreloadAsync(progress);
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
 
@@ -2178,7 +2175,7 @@ namespace Libplanet.Tests.Net
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }
