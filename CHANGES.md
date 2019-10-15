@@ -31,6 +31,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  Changed to send `Pong` before updating the message sender to the routing
+    table when `Ping` is received.  [[#566]]
  -  Improved performance of `StoreExtension.LookupStateReference<T>()` method.
     [[#447], [#545]]
  -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
@@ -39,6 +41,8 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `KademliaProtocol<T>.UpdateAsync()` runs infinitely when
+    a peer is evicted from `Bucket` and replacement cache is used.  [[#566]]
  -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` re-requests blocks that
     already received when blockchain is empty.  [[#550], [#562]]
  -  Fixed a bug that `Swarm<T>` had thrown `SocketException` with a message
@@ -48,6 +52,7 @@ To be released.
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidBlockIndexException` during
     synchronizing with other reorganized peer.  [[#528], [#576]]
 
+[#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
 [#447]: https://github.com/planetarium/libplanet/issues/447
 [#462]: https://github.com/planetarium/libplanet/issues/462
@@ -62,10 +67,10 @@ To be released.
 [#555]: https://github.com/planetarium/libplanet/issues/555
 [#558]: https://github.com/planetarium/libplanet/pull/558
 [#560]: https://github.com/planetarium/libplanet/pull/560
+[#561]: https://github.com/planetarium/libplanet/pull/561
 [#562]: https://github.com/planetarium/libplanet/pull/562
 [#563]: https://github.com/planetarium/libplanet/pull/563
-[#209]: https://github.com/planetarium/libplanet/issues/209
-[#561]: https://github.com/planetarium/libplanet/pull/561
+[#566]: https://github.com/planetarium/libplanet/pull/566
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
 
