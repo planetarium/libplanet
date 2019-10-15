@@ -88,7 +88,17 @@
 disposed to clean up its internal resources. [<a href="https://github.com/planetarium/libplanet/pull/485">#485</a>]</li>
 <li><code>IStore.IterateStateReferences()</code> method became to receive
 <code>highestIndex</code>, <code>lowestIndex</code>, and <code>limit</code> parameters.  [<a href="https://github.com/planetarium/libplanet/issues/447">#447</a>, <a href="https://github.com/planetarium/libplanet/pull/545">#545</a>]</li>
-<li>Reworked <code>BlockChain&lt;T&gt;.GetStates()</code> into <code>GetState()</code> which takes only one <code>Address</code> instead of <code>IEnumerable&lt;Address&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/510">#510</a>, <a href="https://github.com/planetarium/libplanet/pull/563">#563</a>]</li>
+<li>Reworked <code>BlockChain&lt;T&gt;.GetStates()</code> into <code>GetState()</code> which takes only
+one <code>Address</code> instead of <code>IEnumerable&lt;Address&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/510">#510</a>, <a href="https://github.com/planetarium/libplanet/pull/563">#563</a>]</li>
+<li>Types of <code>IAction.PlainValue</code> and states became restricted to
+<code>Bencodex.Types.IValue</code>.  [<a href="https://github.com/planetarium/libplanet/issues/541">#541</a>, <a href="https://github.com/planetarium/libplanet/pull/552">#552</a>]
+<ul>
+<li><code>IAction.LoadPlainValue(IImmutableDictionary&lt;string, object&gt;)</code> method
+became replaced by <code>LoadPlainValue(IValue)</code>.</li>
+<li><code>AccountStateGetter</code> became to return <code>IValue</code>, not <code>object</code>.</li>
+<li>Added <code>BencodexExtension</code> static class.</li>
+</ul>
+</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -875,7 +885,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/d37c6c5eef5a7b4bb35e01df7af5c30b8a8eb92f/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/79fcc1d7aac7479aa065975ac3e936fa5839d862/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
