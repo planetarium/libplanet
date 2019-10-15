@@ -1079,8 +1079,8 @@ namespace Libplanet.Tests.Net
                 await swarmC.TxReceived.WaitAsync();
                 await swarmB.TxReceived.WaitAsync();
 
-                Assert.Equal(tx, chainB.Transactions[tx.Id]);
-                Assert.Equal(tx, chainC.Transactions[tx.Id]);
+                Assert.Equal(tx, chainB.GetTransaction(tx.Id));
+                Assert.Equal(tx, chainC.GetTransaction(tx.Id));
             }
             finally
             {
@@ -1119,7 +1119,7 @@ namespace Libplanet.Tests.Net
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
                 await swarmB.TxReceived.WaitAsync();
-                Assert.Equal(tx, chainB.Transactions[tx.Id]);
+                Assert.Equal(tx, chainB.GetTransaction(tx.Id));
 
                 await swarmA.StopAsync();
 
@@ -1127,7 +1127,7 @@ namespace Libplanet.Tests.Net
                 await swarmB.AddPeersAsync(new[] { swarmC.AsPeer }, null);
 
                 await swarmC.TxReceived.WaitAsync();
-                Assert.Equal(tx, chainC.Transactions[tx.Id]);
+                Assert.Equal(tx, chainC.GetTransaction(tx.Id));
             }
             finally
             {
@@ -1189,7 +1189,7 @@ namespace Libplanet.Tests.Net
 
                 for (int i = 0; i < size; i++)
                 {
-                    Assert.Equal(tx, blockchains[i].Transactions[tx.Id]);
+                    Assert.Equal(tx, blockchains[i].GetTransaction(tx.Id));
                 }
             }
             finally

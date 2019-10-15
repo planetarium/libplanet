@@ -164,23 +164,23 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void StageTransactions()
         {
-            Assert.Empty(_blockChain.Transactions);
             var txs = new HashSet<Transaction<DumbAction>>()
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
+            Assert.Empty(txs.Where(tx => _blockChain.Contains(tx.Id)));
+
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             Assert.Equal(
                 txs,
-                _blockChain.Transactions.Values.ToHashSet()
-            );
+                txs.Where(tx => _blockChain.Contains(tx.Id)).ToHashSet());
         }
 
         [Fact]
         public void UnstageTransactions()
         {
-            Assert.Empty(_blockChain.Transactions);
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
             var txs = new HashSet<Transaction<DumbAction>>()
             {
                 _fx.Transaction1,
@@ -188,11 +188,10 @@ namespace Libplanet.Tests.Blockchain
             };
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             HashSet<TxId> txIds = txs.Select(tx => tx.Id).ToHashSet();
-            HashSet<TxId> stagedTxIds = _blockChain.Store
-                .IterateStagedTransactionIds().ToHashSet();
+            HashSet<TxId> stagedTxIds = _blockChain.GetStagedTransactionIds().ToHashSet();
             Assert.Equal(txIds, stagedTxIds);
             _blockChain.UnstageTransactions(txs);
-            Assert.Empty(_blockChain.Store.IterateStagedTransactionIds());
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
         }
 
         [Fact]

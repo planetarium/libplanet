@@ -38,6 +38,14 @@ namespace Libplanet.Blockchain
         /// </summary>
         private IDictionary<HashDigest<SHA256>, Block<T>> _blocks;
 
+        /// <summary>
+        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
+        /// storage, including orphan <see cref="Transaction{T}"/>s.
+        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
+        /// their corresponding <see cref="Transaction{T}"/>s.
+        /// </summary>
+        private IDictionary<TxId, Transaction<T>> _transactions;
+
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(
                 policy,
@@ -52,9 +60,9 @@ namespace Libplanet.Blockchain
             Id = id;
             Policy = policy;
             Store = store;
-            Transactions = new TransactionSet<T>(store);
 
             _blocks = new BlockSet<T>(store);
+            _transactions = new TransactionSet<T>(store);
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -96,17 +104,6 @@ namespace Libplanet.Blockchain
         }
 
         public Guid Id { get; private set; }
-
-        /// <summary>
-        /// All <see cref="Transaction{T}"/>s in the <see cref="BlockChain{T}"/>
-        /// storage, including orphan <see cref="Transaction{T}"/>s.
-        /// Keys are <see cref="Transaction{T}.Id"/>s and values are
-        /// their corresponding <see cref="Transaction{T}"/>s.
-        /// </summary>
-        public IDictionary<TxId, Transaction<T>> Transactions
-        {
-            get; private set;
-        }
 
         /// <summary>
         /// All <see cref="Block{T}.Hash"/>es in the current index.  The genesis block's hash goes
@@ -184,6 +181,50 @@ namespace Libplanet.Blockchain
             try
             {
                 return _blocks.ContainsKey(hash);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Transaction{T}"/>
+        /// the specified <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="HashDigest{T}"/> of the <see cref="Transaction{T}"/>
+        /// to check if it is in the <see cref="BlockChain{T}"/>.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Transaction{T}"/>
+        /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(TxId txId)
+        {
+            _rwlock.EnterReadLock();
+            try
+            {
+                return _transactions.ContainsKey(txId);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+        }
+
+        /// <summary>
+        /// Gets the transaction corresponding to the <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="txId">A <see cref="TxId"/> of the <see cref="Transaction{T}"/> to get.
+        /// </param>
+        /// <returns><see cref="Transaction{T}"/> with <paramref name="txId"/>.</returns>
+        /// <exception cref="KeyNotFoundException">Thrown when there is no
+        /// <see cref="Transaction{T}"/> with a given <paramref name="txId"/>.</exception>
+        public Transaction<T> GetTransaction(TxId txId)
+        {
+            _rwlock.EnterReadLock();
+            try
+            {
+                return _transactions[txId];
             }
             finally
             {
@@ -412,7 +453,7 @@ namespace Libplanet.Blockchain
             {
                 foreach (Transaction<T> tx in transactions)
                 {
-                    Transactions[tx.Id] = tx;
+                    _transactions[tx.Id] = tx;
                 }
 
                 Store.StageTransactionIds(transactions.Select(tx => tx.Id).ToImmutableHashSet());
@@ -1047,7 +1088,7 @@ namespace Libplanet.Blockchain
                 Store.SetCanonicalChainId(Id);
                 _blocks = new BlockSet<T>(Store);
                 TipChanged?.Invoke(this, tipChangedEventArgs);
-                Transactions = new TransactionSet<T>(Store);
+                _transactions = new TransactionSet<T>(Store);
                 Store.DeleteChainId(obsoleteId);
             }
             finally

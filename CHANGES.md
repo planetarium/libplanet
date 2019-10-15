@@ -25,12 +25,15 @@ To be released.
      -  `AccountStateGetter` became to return `IValue`, not `object`.
      -  Added `BencodexExtension` static class.
  -  Removed `BlockChain<T>.Blocks`.  [[#409], [#583]]
+ -  Removed `BlockChain<T>.Transactions`.  [[#409], [#583]]
 
 ### Added interfaces
 
  -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
  -  Added `BlockChain<T>[HashDigest<T>]` indexer.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(HashDigest<T>)` method.  [[#409], [#583]]
+ -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
+ -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
 
 ### Behavioral changes
 

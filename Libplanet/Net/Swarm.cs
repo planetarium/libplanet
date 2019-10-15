@@ -1751,17 +1751,17 @@ namespace Libplanet.Net
 
         private void TransferTxs(GetTxs getTxs)
         {
-            IDictionary<TxId, Transaction<T>> txs = _blockChain.Transactions;
-            foreach (var txid in getTxs.TxIds)
+            IEnumerable<Transaction<T>> txs = getTxs.TxIds
+                .Where(txId => _blockChain.Contains(txId))
+                .Select(_blockChain.GetTransaction);
+
+            foreach (Transaction<T> tx in txs)
             {
-                if (txs.TryGetValue(txid, out Transaction<T> tx))
+                Message response = new Messages.Tx(tx.ToBencodex(true))
                 {
-                    Message response = new Messages.Tx(tx.ToBencodex(true))
-                    {
-                        Identity = getTxs.Identity,
-                    };
-                    ReplyMessage(response);
-                }
+                    Identity = getTxs.Identity,
+                };
+                ReplyMessage(response);
             }
         }
 
@@ -1780,7 +1780,7 @@ namespace Libplanet.Net
             _logger.Debug("Trying to fetch txs...");
 
             ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_blockChain.Transactions.ContainsKey(id))
+                .Where(id => !_blockChain.Contains(id))
                 .ToImmutableHashSet();
 
             if (!newTxIds.Any())
