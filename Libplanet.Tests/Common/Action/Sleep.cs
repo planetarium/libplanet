@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Numerics;
+using Bencodex.Types;
 using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
@@ -11,11 +12,11 @@ namespace Libplanet.Tests.Common.Action
     {
         public int ZoneId { get; set; }
 
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
+        public override IValue PlainValue =>
+            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                { "zone_id", ZoneId },
-            }.ToImmutableDictionary();
+                { (Text)"zone_id", (Integer)ZoneId },
+            });
 
         public override IAccountStateDelta Execute(IActionContext context)
         {
@@ -23,14 +24,15 @@ namespace Libplanet.Tests.Common.Action
             return context.PreviousStates;
         }
 
-        public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
+        public override void LoadPlainValue(IValue plainValue)
         {
-            object serialized = plainValue["zone_id"];
+            LoadPlainValue((Dictionary)plainValue);
+        }
 
-            // FIXME: The reason why the type of the serialized value is not
-            // consistent should be analyzed.
-            ZoneId = serialized is BigInteger v ? (int)v : (int)serialized;
+        public void LoadPlainValue(
+            Dictionary plainValue)
+        {
+            ZoneId = (int)plainValue.GetValue<Integer>("zone_id").Value;
         }
     }
 }

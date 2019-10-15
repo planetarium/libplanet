@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -624,16 +625,16 @@ namespace Libplanet.Tests.Store
         {
             Assert.Null(Fx.Store.GetBlockStates(Fx.Hash1));
             AddressStateMap states = new AddressStateMap(
-                new Dictionary<Address, object>()
+                new Dictionary<Address, IValue>()
                 {
-                    [Fx.Address1] = new Dictionary<string, int>()
+                    [Fx.Address1] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                     {
-                        { "a", 1 },
-                    },
-                    [Fx.Address2] = new Dictionary<string, int>()
+                        { (Text)"a", (Integer)1 },
+                    }),
+                    [Fx.Address2] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                     {
-                        { "b", 2 },
-                    },
+                        { (Text)"b", (Integer)2 },
+                    }),
                 }.ToImmutableDictionary()
             );
             Fx.Store.SetBlockStates(Fx.Hash1, states);
@@ -776,17 +777,22 @@ namespace Libplanet.Tests.Store
 
             public ImmutableArray<byte> Md5Digest { get; set; }
 
-            public IImmutableDictionary<string, object> PlainValue =>
-                new Dictionary<string, object>
+            public IValue PlainValue =>
+                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { "bytes", ArbitraryBytes.ToBuilder().ToArray() },
-                    { "md5", Md5Digest.ToBuilder().ToArray() },
-                }.ToImmutableDictionary();
+                    { (Text)"bytes", new Binary(ArbitraryBytes.ToBuilder().ToArray()) },
+                    { (Text)"md5", new Binary(Md5Digest.ToBuilder().ToArray()) },
+                });
 
-            public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+            public void LoadPlainValue(IValue plainValue)
             {
-                ArbitraryBytes = (plainValue["bytes"] as byte[]).ToImmutableArray();
-                Md5Digest = (plainValue["md5"] as byte[]).ToImmutableArray();
+                LoadPlainValue((Dictionary)plainValue);
+            }
+
+            public void LoadPlainValue(Dictionary plainValue)
+            {
+                ArbitraryBytes = plainValue.GetValue<Binary>("bytes").ToImmutableArray();
+                Md5Digest = plainValue.GetValue<Binary>("md5").ToImmutableArray();
             }
 
             public IAccountStateDelta Execute(IActionContext context)

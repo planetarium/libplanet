@@ -5,9 +5,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -15,6 +13,7 @@ using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
 using Serilog;
+using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Store
 {
@@ -72,13 +71,13 @@ namespace Libplanet.Store
 
             if (readOnly)
             {
-                connectionString.Mode = LiteDB.FileMode.ReadOnly;
+                connectionString.Mode = FileMode.ReadOnly;
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
                 Type.GetType("Mono.Runtime") is null)
             {
                 // macOS + .NETCore doesn't support shared lock.
-                connectionString.Mode = LiteDB.FileMode.Exclusive;
+                connectionString.Mode = FileMode.Exclusive;
             }
 
             if (path is null)
@@ -400,7 +399,7 @@ namespace Libplanet.Store
             {
                 DownloadFile(file, stream);
                 stream.Seek(0, SeekOrigin.Begin);
-                var formatter = new BinaryFormatter();
+                var formatter = new BencodexFormatter<AddressStateMap>();
                 return (AddressStateMap)formatter.Deserialize(stream);
             }
         }
@@ -412,7 +411,7 @@ namespace Libplanet.Store
         {
             using (var stream = new MemoryStream())
             {
-                var formatter = new BinaryFormatter();
+                var formatter = new BencodexFormatter<AddressStateMap>();
                 formatter.Serialize(stream, states);
                 stream.Seek(0, SeekOrigin.Begin);
                 _db.FileStorage.Upload(

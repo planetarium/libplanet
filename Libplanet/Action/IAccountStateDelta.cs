@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -29,7 +30,7 @@ namespace Libplanet.Action
     /// </list>
     /// </summary>
     /// <remarks>
-    /// This interface is immutable.  <see cref="SetState(Address, object)"/>
+    /// This interface is immutable.  <see cref="SetState(Address, IValue)"/>
     /// method does not manipulate the instance, but returns a new
     /// <see cref="IAccountStateDelta"/> instance with updated states.
     /// </remarks>
@@ -51,7 +52,7 @@ namespace Libplanet.Action
         /// If it has never been set to any state it returns <c>null</c>
         /// instead.</returns>
         [Pure]
-        object GetState(Address address);
+        IValue GetState(Address address);
 
         /// <summary>
         /// Gets a new instance that the account state of the given
@@ -70,7 +71,7 @@ namespace Libplanet.Action
         /// with updated states instead.
         /// </remarks>
         [Pure]
-        IAccountStateDelta SetState(Address address, object state);
+        IAccountStateDelta SetState(Address address, IValue state);
     }
 
     internal static class AccountStateDeltaExtensions
@@ -82,12 +83,12 @@ namespace Libplanet.Action
         // the IAccountStateDelta interface exposes, it is quite inefficient
         // when an implementing class maintains their own dirty dictionary.
         // (See also AccountStateDeltaImpl.UpdatedStates field.)
-        public static IImmutableDictionary<Address, object> GetUpdatedStates(
+        public static IImmutableDictionary<Address, IValue> GetUpdatedStates(
             this IAccountStateDelta delta
         )
         {
             return delta.UpdatedAddresses.Select(address =>
-                new KeyValuePair<Address, object>(
+                new KeyValuePair<Address, IValue>(
                     address,
                     delta.GetState(address)
                 )

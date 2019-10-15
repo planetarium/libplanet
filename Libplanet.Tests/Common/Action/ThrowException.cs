@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
+using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
 {
@@ -15,15 +17,20 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnExecution { get; set; } = false;
 
-        public IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
+        public IValue PlainValue =>
+            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                { "throw", ThrowOnRehearsal },
-            }.ToImmutableDictionary();
+                [(Text)"throw"] = new Bencodex.Types.Boolean(ThrowOnRehearsal),
+            });
 
-        public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+        public void LoadPlainValue(IValue plainValue)
         {
-            ThrowOnRehearsal = (bool)plainValue["throw"];
+            LoadPlainValue((Dictionary)plainValue);
+        }
+
+        public void LoadPlainValue(Dictionary plainValue)
+        {
+            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw").Value;
         }
 
         public IAccountStateDelta Execute(IActionContext context)

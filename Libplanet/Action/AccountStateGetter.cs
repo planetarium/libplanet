@@ -1,3 +1,5 @@
+using Bencodex.Types;
+
 namespace Libplanet.Action
 {
     /// <summary>
@@ -12,5 +14,5 @@ namespace Libplanet.Action
     /// its state.</param>
     /// <returns>The account state if exists.  Otherwise <c>null</c>.
     /// </returns>
-    public delegate object AccountStateGetter(Address address);
+    public delegate IValue AccountStateGetter(Address address);
 }

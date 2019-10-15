@@ -5,6 +5,7 @@
   xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml"
   xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
+  <s:Boolean x:Key="/Default/UserDictionary/Words/=Bencodex/@EntryIndexedValue">True</s:Boolean>
   <s:Boolean x:Key="/Default/UserDictionary/Words/=Bitcoin/@EntryIndexedValue">True</s:Boolean>
   <s:Boolean x:Key="/Default/UserDictionary/Words/=Ethereum/@EntryIndexedValue">True</s:Boolean>
   <s:Boolean x:Key="/Default/UserDictionary/Words/=Kademlia/@EntryIndexedValue">True</s:Boolean>

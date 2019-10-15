@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Net.Messages;
 using Serilog;
+using Random = System.Random;
 
 namespace Libplanet.Net.Protocols
 {
@@ -26,7 +27,7 @@ namespace Libplanet.Net.Protocols
         private readonly Swarm<T> _swarm;
         private readonly Address _address;
         private readonly int _appProtocolVersion;
-        private readonly System.Random _random;
+        private readonly Random _random;
         private readonly RoutingTable _routing;
 
         private readonly ILogger _logger;
@@ -42,7 +43,7 @@ namespace Libplanet.Net.Protocols
             _logger = logger;
 
             _address = address;
-            _random = new System.Random();
+            _random = new Random();
             _routing = new RoutingTable(
                 _address, TableSize, BucketSize, _random);
         }

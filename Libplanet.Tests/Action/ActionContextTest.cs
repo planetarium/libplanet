@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 using Xunit;
 
@@ -104,12 +105,12 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
-            public object GetState(Address address)
+            public IValue GetState(Address address)
             {
                 return null;
             }
 
-            public IAccountStateDelta SetState(Address address, object state)
+            public IAccountStateDelta SetState(Address address, IValue state)
             {
                 return this;
             }

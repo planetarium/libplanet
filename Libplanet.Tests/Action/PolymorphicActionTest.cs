@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
-using Libplanet.Tx;
 using Xunit;
 
 namespace Libplanet.Tests.Action
@@ -23,19 +22,16 @@ namespace Libplanet.Tests.Action
                 }
             );
             Assert.Equal(
-                new Dictionary<string, object>
+                new Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { "type_id", "attack" },
+                    [(Text)"type_id"] = (Text)"attack",
+                    [(Text)"values"] = new Dictionary(new Dictionary<IKey, IValue>
                     {
-                        "values",
-                        new Dictionary<string, object>
-                        {
-                            { "weapon", "frying pan" },
-                            { "target", "mosquito" },
-                            { "target_address", addr.ToByteArray() },
-                        }.ToImmutableDictionary()
-                    },
-                }.ToImmutableDictionary(),
+                        [(Text)"weapon"] = (Text)"frying pan",
+                        [(Text)"target"] = (Text)"mosquito",
+                        [(Text)"target_address"] = new Binary(addr.ToByteArray()),
+                    }),
+                }),
                 pa.PlainValue
             );
         }
@@ -48,19 +44,16 @@ namespace Libplanet.Tests.Action
             var pa = new PolymorphicAction<BaseAction>();
 #pragma warning restore 612
             pa.LoadPlainValue(
-                new Dictionary<string, object>
+                new Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { "type_id", "attack" },
+                    [(Text)"type_id"] = (Text)"attack",
+                    [(Text)"values"] = new Dictionary(new Dictionary<IKey, IValue>
                     {
-                        "values",
-                        new Dictionary<string, object>
-                        {
-                            { "weapon", "frying pan" },
-                            { "target", "mosquito" },
-                            { "target_address", addr.ToByteArray() },
-                        }.ToImmutableDictionary()
-                    },
-                }.ToImmutableDictionary()
+                        [(Text)"weapon"] = (Text)"frying pan",
+                        [(Text)"target"] = (Text)"mosquito",
+                        [(Text)"target_address"] = new Binary(addr.ToByteArray()),
+                    }),
+                })
             );
 
             Assert.IsType<Attack>(pa.InnerAction);
@@ -100,12 +93,17 @@ namespace Libplanet.Tests.Action
             {
             }
 
-            public IImmutableDictionary<string, object> PlainValue =>
-                new Dictionary<string, object>().ToImmutableDictionary();
+            public IValue PlainValue =>
+                default(Dictionary);
 
             public void LoadPlainValue(
-                IImmutableDictionary<string, object> plainValue)
+                Dictionary plainValue)
             {
+            }
+
+            public void LoadPlainValue(IValue plainValue)
+            {
+                LoadPlainValue((Dictionary)plainValue);
             }
 
             public IAccountStateDelta Execute(IActionContext context)

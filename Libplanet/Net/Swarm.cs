@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncIO;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -1817,7 +1818,7 @@ namespace Libplanet.Net
             HashDigest<SHA256>? @base = _blockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
-                IImmutableDictionary<Address, object>
+                IImmutableDictionary<Address, IValue>
             > blockStates = null;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
@@ -1846,7 +1847,7 @@ namespace Libplanet.Net
                         .Select(bh =>
                             new KeyValuePair<
                                 HashDigest<SHA256>,
-                                IImmutableDictionary<Address, object>
+                                IImmutableDictionary<Address, IValue>
                             >(bh, store.GetBlockStates(bh))
                         )
                         .ToImmutableDictionary();

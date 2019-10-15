@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
@@ -270,27 +271,30 @@ namespace Libplanet.Tests.Blocks
                 Assert.False(eval.InputContext.Rehearsal);
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
-                    eval.OutputStates.GetState(
+                    (Integer)eval.OutputStates.GetState(
                         DumbAction.RandomRecordsAddress
                     ),
                     randomValue
                 );
-                Assert.Equal(expect.Item3, addresses.Select(eval.OutputStates.GetState));
+                Assert.Equal(
+                    expect.Item3,
+                    addresses.Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
             }
 
-            IImmutableDictionary<Address, object> dirty1 = blockIdx1
+            IImmutableDictionary<Address, IValue> dirty1 = blockIdx1
                 .Evaluate(DateTimeOffset.UtcNow, address => null)
                 .Aggregate(
-                    ImmutableDictionary<Address, object>.Empty,
+                    ImmutableDictionary<Address, IValue>.Empty,
                     (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
                 );
             Assert.Equal(
-                new Dictionary<Address, object>
+                new Dictionary<Address, IValue>
                 {
-                    [addresses[0]] = "A",
-                    [addresses[1]] = "B",
-                    [addresses[2]] = "C",
-                    [DumbAction.RandomRecordsAddress] = randomValue,
+                    [addresses[0]] = (Text)"A",
+                    [addresses[1]] = (Text)"B",
+                    [addresses[2]] = (Text)"C",
+                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty1
             );
@@ -358,24 +362,28 @@ namespace Libplanet.Tests.Blocks
                     eval.OutputStates.GetState(
                         DumbAction.RandomRecordsAddress
                     ),
-                    randomValue
+                    (Integer)randomValue
                 );
-                Assert.Equal(expect.Item3, addresses.Select(eval.OutputStates.GetState));
+                Assert.Equal(
+                    expect.Item3,
+                    addresses
+                        .Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
             }
 
-            IImmutableDictionary<Address, object> dirty2 = blockIdx2
+            IImmutableDictionary<Address, IValue> dirty2 = blockIdx2
                 .Evaluate(DateTimeOffset.UtcNow, dirty1.GetValueOrDefault)
                 .Aggregate(
-                    ImmutableDictionary<Address, object>.Empty,
+                    ImmutableDictionary<Address, IValue>.Empty,
                     (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
                 );
             Assert.Equal(
-                new Dictionary<Address, object>
+                new Dictionary<Address, IValue>
                 {
-                    [addresses[0]] = "A,D",
-                    [addresses[3]] = "E",
-                    [addresses[4]] = "RecordRehearsal:False",
-                    [DumbAction.RandomRecordsAddress] = randomValue,
+                    [addresses[0]] = (Text)"A,D",
+                    [addresses[3]] = (Text)"E",
+                    [addresses[4]] = (Text)"RecordRehearsal:False",
+                    [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty2
             );
@@ -390,7 +398,7 @@ namespace Libplanet.Tests.Blocks
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
-                new IImmutableDictionary<string, object>[0],
+                default(List),
                 new byte[10].ToImmutableArray()
             );
             var invalidTx = new Transaction<DumbAction>(rawTx);
@@ -412,7 +420,7 @@ namespace Libplanet.Tests.Blocks
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),
-                new IImmutableDictionary<string, object>[0],
+                default(List),
                 ImmutableArray<byte>.Empty
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
@@ -441,7 +449,7 @@ namespace Libplanet.Tests.Blocks
         [Fact]
         public void EvaluateInvalidTxUpdatedAddresses()
         {
-            ImmutableArray<IImmutableDictionary<string, object>> rawActions =
+            ImmutableArray<IValue> rawActions =
                 _fx.TxFixture.TxWithActions
                     .ToRawTransaction(false).Actions.ToImmutableArray();
             RawTransaction rawTxWithoutSig = new RawTransaction(

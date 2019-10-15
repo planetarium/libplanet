@@ -1,3 +1,4 @@
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -22,7 +23,7 @@ namespace Libplanet.Tests.Action
                     false
                 ),
                 new AccountStateDeltaImpl(
-                    a => a.Equals(address) ? "item" : null
+                    a => a.Equals(address) ? (Text)"item" : null
                 )
             );
             var action = (DumbAction)evaluation.Action;
@@ -36,7 +37,7 @@ namespace Libplanet.Tests.Action
                 evaluation.InputContext.PreviousStates.GetState(address)
             );
             Assert.Equal(
-                "item",
+                (Text)"item",
                 evaluation.OutputStates.GetState(address)
             );
         }

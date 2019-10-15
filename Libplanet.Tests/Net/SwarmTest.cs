@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -1401,7 +1402,7 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.PreloadAsync(true);
                 var states = receiverChain.GetState(address);
 
-                Assert.Equal("foo,bar,baz", states[address]);
+                Assert.Equal("foo,bar,baz", (Text)states[address]);
                 Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
             }
             finally
@@ -1680,7 +1681,7 @@ namespace Libplanet.Tests.Net
                     {
                         var deepStates = TryToGetDeepStates();
                         Assert.Single(deepStates);
-                        Assert.Equal($"Item0.{i},Item1.{i}", deepStates[target]);
+                        Assert.Equal($"Item0.{i},Item1.{i}", (Text)deepStates[target]);
                     }
 
                     i++;
@@ -1695,7 +1696,7 @@ namespace Libplanet.Tests.Net
                             completeStates: false
                         );
                         Assert.Single(states);
-                        Assert.Equal("Genesis", states[genesisTarget]);
+                        Assert.Equal("Genesis", (Text)states[genesisTarget]);
                     }
                 }
 
@@ -1707,7 +1708,7 @@ namespace Libplanet.Tests.Net
                     Assert.Single(minerState);
                     Assert.Equal(
                         (genesisWithAction ? 1 : 0) + repeat * fixturePairs.Length,
-                        minerState[minerSwarm.Address]
+                        (Integer)minerState[minerSwarm.Address]
                     );
                 }
             }
@@ -1846,7 +1847,7 @@ namespace Libplanet.Tests.Net
                             string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
                         )
                     ),
-                    receiverChain.GetState(address)[address]
+                    receiverChain.GetState(address)[address].ToString()
                 );
             }
         }
@@ -2045,8 +2046,7 @@ namespace Libplanet.Tests.Net
 
         private class Sleep : IAction
         {
-            public IImmutableDictionary<string, object> PlainValue =>
-                ImmutableDictionary<string, object>.Empty;
+            public IValue PlainValue => default(Null);
 
             public IAccountStateDelta Execute(IActionContext context)
             {
@@ -2054,7 +2054,7 @@ namespace Libplanet.Tests.Net
                 return context.PreviousStates;
             }
 
-            public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+            public void LoadPlainValue(IValue plainValue)
             {
             }
 

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Serialization;
@@ -669,12 +670,7 @@ namespace Libplanet.Tx
                     a.ByteArray).ToImmutableArray(),
                 publicKey: PublicKey.Format(false).ToImmutableArray(),
                 timestamp: Timestamp.ToString(TimestampFormat),
-                actions: Actions.Select(a =>
-                    a.PlainValue.ToImmutableDictionary(
-                        kv => kv.Key,
-                        kv => kv.Value
-                    )
-                )
+                actions: Actions.Select(a => a.PlainValue)
             );
 
             if (includeSign)
@@ -685,10 +681,10 @@ namespace Libplanet.Tx
             return rawTx;
         }
 
-        private static T ToAction(IImmutableDictionary<string, object> arg)
+        private static T ToAction(IValue value)
         {
             var action = new T();
-            action.LoadPlainValue(arg.ToImmutableDictionary());
+            action.LoadPlainValue(value);
             return action;
         }
 

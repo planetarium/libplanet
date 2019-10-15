@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
+using Bencodex.Types;
 using Libplanet.Action;
+using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Tests.Common.Action
 {
@@ -48,24 +51,32 @@ namespace Libplanet.Tests.Common.Action
 
         public bool Idempotent { get; private set; }
 
-        public IImmutableDictionary<string, object> PlainValue
+        public IValue PlainValue
         {
             get
             {
-                var plainValue = ImmutableDictionary<string, object>.Empty
-                    .Add("item", Item)
-                    .Add("target_address", TargetAddress.ToByteArray())
-                    .Add("record_rehearsal", RecordRehearsal);
+                var plainValue = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+                {
+                    [(Text)"item"] = (Text)Item,
+                    [(Text)"target_address"] = new Binary(TargetAddress.ToByteArray()),
+                    [(Text)"record_rehearsal"] = new Bencodex.Types.Boolean(RecordRehearsal),
+                });
                 if (RecordRandom)
                 {
                     // In order to avoid changing tx signatures in many test
                     // fixtures, adds field only if RecordRandom = true.
-                    plainValue = plainValue.Add("record_random", true);
+                    plainValue =
+                        (Dictionary)plainValue.Add(
+                            (Text)"record_random",
+                            new Bencodex.Types.Boolean(true));
                 }
 
                 if (Idempotent)
                 {
-                    plainValue = plainValue.Add("idempotent", Idempotent);
+                    plainValue =
+                        (Dictionary)plainValue.Add(
+                            (Text)"idempotent",
+                            new Bencodex.Types.Boolean(Idempotent));
                 }
 
                 return plainValue;
@@ -91,7 +102,7 @@ namespace Libplanet.Tests.Common.Action
                 return states;
             }
 
-            string items = (string)states.GetState(TargetAddress);
+            string items = (Text?)states.GetState(TargetAddress);
             string item = RecordRehearsal
                 ? $"{Item}:{context.Rehearsal}"
                 : Item;
@@ -110,11 +121,11 @@ namespace Libplanet.Tests.Common.Action
             {
                 states = states.SetState(
                     RandomRecordsAddress,
-                    context.Random.Next()
+                    (Integer)context.Random.Next()
                 );
             }
 
-            return states.SetState(TargetAddress, items);
+            return states.SetState(TargetAddress, (Text)items);
         }
 
         public void Render(
@@ -153,21 +164,26 @@ namespace Libplanet.Tests.Common.Action
             });
         }
 
+        public void LoadPlainValue(IValue plainValue)
+        {
+            LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
+        }
+
         public void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue
+            Dictionary plainValue
         )
         {
-            Item = (string)plainValue["item"];
-            TargetAddress = new Address((byte[])plainValue["target_address"]);
-            RecordRehearsal = (bool)plainValue["record_rehearsal"];
+            Item = plainValue.GetValue<Text>("item");
+            TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").Value);
+            RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
-                plainValue.ContainsKey("record_random") &&
-                plainValue["record_random"] is bool r &&
-                r;
+                plainValue.ContainsKey((Text)"record_random") &&
+                plainValue[(Text)"record_random"] is Boolean r &&
+                r.Value;
 
-            if (plainValue.ContainsKey("idempotent"))
+            if (plainValue.ContainsKey((Text)"idempotent"))
             {
-                Idempotent = (bool)plainValue["idempotent"];
+                Idempotent = plainValue.GetValue<Boolean>("idempotent").Value;
             }
         }
 
