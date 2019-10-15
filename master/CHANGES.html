@@ -99,10 +99,16 @@ became replaced by <code>LoadPlainValue(IValue)</code>.</li>
 <li>Added <code>BencodexExtension</code> static class.</li>
 </ul>
 </li>
+<li>Removed <code>BlockChain&lt;T&gt;.Blocks</code>.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.Transactions</code>.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
 <li>Added <code>BlockChain&lt;T&gt;.LongCount()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;[HashDigest&lt;T&gt;]</code> indexer.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.Contains(HashDigest&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.GetTransaction(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.Contains(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -889,7 +895,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/953c36c7caeed6c62ad0abacfa5e10f38558d4e7/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/24a2e5aa8e9cf7bf76564436059e0072251d9243/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
