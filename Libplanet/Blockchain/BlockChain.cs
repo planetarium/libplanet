@@ -19,6 +19,15 @@ using Libplanet.Tx;
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
 {
+    /// <summary>
+    /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
+    /// information.
+    /// </summary>
+    /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
+    /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
+    /// <seealso cref="IAction"/>
+    /// <seealso cref="Block{T}"/>
+    /// <seealso cref="Transaction{T}"/>
     public class BlockChain<T> : IReadOnlyList<Block<T>>
         where T : IAction, new()
     {
@@ -46,6 +55,13 @@ namespace Libplanet.Blockchain
         /// </summary>
         private IDictionary<TxId, Transaction<T>> _transactions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BlockChain{T}"/> class.
+        /// </summary>
+        /// <param name="policy"><see cref="IBlockPolicy{T}"/> to use in the
+        /// <see cref="BlockChain{T}"/>.</param>
+        /// <param name="store"><see cref="IStore"/> to store <see cref="Block{T}"/>s,
+        /// <see cref="Transaction{T}"/>s, and <see cref="BlockChain{T}"/> information.</param>
         public BlockChain(IBlockPolicy<T> policy, IStore store)
             : this(
                 policy,
@@ -117,9 +133,20 @@ namespace Libplanet.Blockchain
 
         internal IStore Store { get; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Gets the block corresponding to the <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">A number of index of <see cref="Block{T}"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given index of
+        /// <see cref="Block{T}"/> does not exist.</exception>
         public Block<T> this[int index] => this[(long)index];
 
+        /// <summary>
+        /// Gets the block corresponding to the <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">A number of index of <see cref="Block{T}"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the given index of
+        /// <see cref="Block{T}"/> does not exist.</exception>
         public Block<T> this[long index]
         {
             get
