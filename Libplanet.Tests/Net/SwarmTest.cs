@@ -426,7 +426,6 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 appProtocolVersion: 1,
                 dialTimeout: TimeSpan.FromMilliseconds(15000),
-                linger: TimeSpan.FromMilliseconds(1000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
@@ -474,7 +473,6 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 appProtocolVersion: 1,
                 dialTimeout: TimeSpan.FromMilliseconds(15000),
-                linger: TimeSpan.FromMilliseconds(1000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
@@ -528,7 +526,6 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 appProtocolVersion: 1,
                 dialTimeout: TimeSpan.FromMilliseconds(15000),
-                linger: TimeSpan.FromMilliseconds(1000),
                 tableSize: 1,
                 bucketSize: 1,
                 host: IPAddress.Loopback.ToString());
