@@ -38,6 +38,8 @@ To be released.
     `Operation on non-blocking socket would block`.  [[#405], [#485]]
  -  Fixed a bug that accessed all blocks from the genesis block when a swap
     occurred.  [[#575]]
+ -  Fixed a bug that `Swarm<T>` had thrown `InvalidBlockIndexException` during
+    synchronizing with other reorganized peer.  [[#528], [#576]]
 
 [#405]: https://github.com/planetarium/libplanet/issues/405
 [#447]: https://github.com/planetarium/libplanet/issues/447
@@ -45,6 +47,7 @@ To be released.
 [#469]: https://github.com/planetarium/libplanet/pull/469
 [#485]: https://github.com/planetarium/libplanet/pull/485
 [#510]: https://github.com/planetarium/libplanet/issues/510
+[#528]: https://github.com/planetarium/libplanet/issues/528
 [#545]: https://github.com/planetarium/libplanet/pull/545
 [#550]: https://github.com/planetarium/libplanet/issues/550
 [#555]: https://github.com/planetarium/libplanet/issues/555
@@ -55,6 +58,7 @@ To be released.
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#561]: https://github.com/planetarium/libplanet/pull/561
 [#575]: https://github.com/planetarium/libplanet/pull/575
+[#576]: https://github.com/planetarium/libplanet/pull/576
 
 
 Version 0.6.0

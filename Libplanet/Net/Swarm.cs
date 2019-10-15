@@ -631,6 +631,7 @@ namespace Libplanet.Net
                     // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
                     // it means states are already calculated so that it does not need to receive
                     // calculated states from trusted peers.
+                    complete = true;
                     return;
                 }
 
@@ -1092,7 +1093,7 @@ namespace Libplanet.Net
 
                 _logger.Debug("Synchronizing previous blocks from " +
                     $"[{peerWithLength.Item1.Address.ToHex()}]");
-                BlockChain<T> synced = await SyncPreviousBlocksAsync(
+                await SyncPreviousBlocksAsync(
                     blockChain,
                     peerWithLength.Item1,
                     null,
@@ -1101,10 +1102,6 @@ namespace Libplanet.Net
                     evaluateActions: render,
                     cancellationToken: cancellationToken
                 );
-                if (!synced.Id.Equals(blockChain.Id))
-                {
-                    blockChain.Swap(synced, render);
-                }
             }
         }
 
@@ -1462,7 +1459,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<BlockChain<T>> SyncPreviousBlocksAsync(
+        private async Task SyncPreviousBlocksAsync(
             BlockChain<T> blockChain,
             BoundPeer peer,
             HashDigest<SHA256>? stop,
@@ -1472,114 +1469,78 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            // Fix the tip here because it may change while receiving the block
-            // hashes.
-            Block<T> tip = blockChain.Tip;
-
-            _logger.Debug("Trying to find branchpoint...");
-            BlockLocator locator = blockChain.GetBlockLocator();
-            _logger.Debug($"Locator's count: {locator.Count()}");
-            IEnumerable<HashDigest<SHA256>> hashes = (
-                await GetBlockHashesAsync(
-                    peer, locator, stop, cancellationToken)
-            ).ToArray();
-
-            if (!hashes.Any())
-            {
-                _logger.Debug(
-                    "Peer [{0}] didn't return any hashes; ignored.",
-                    peer.PublicKey.ToAddress().ToHex());
-                return blockChain;
-            }
-
-            HashDigest<SHA256> branchPoint = hashes.First();
-
-            _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
-
-            BlockChain<T> synced;
-            if (tip is null || branchPoint.Equals(tip.Hash))
-            {
-                _logger.Debug("It doesn't need to fork.");
-                synced = blockChain;
-            }
-
-            // FIXME BlockChain.Blocks.ContainsKey() can be very
-            // expensive.
-            // we can omit this clause if assume every chain shares
-            // same genesis block...
-            else if (!blockChain.Blocks.ContainsKey(branchPoint))
-            {
-                // Create a whole new chain because the branch point doesn't exist on
-                // the current chain.
-                synced = new BlockChain<T>(blockChain.Policy, blockChain.Store, Guid.NewGuid());
-            }
-            else
-            {
-                _logger.Debug("Forking needed. Trying to fork...");
-                synced = blockChain.Fork(branchPoint);
-                _logger.Debug("Forking complete.");
-            }
-
-            _logger.Debug("Trying to fill up previous blocks...");
-
             int retry = 3;
             long previousTipIndex = blockChain.Tip?.Index ?? -1;
+            BlockChain<T> synced = null;
 
-            while (true)
+            try
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                while (true)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                try
-                {
-                    long currentTipIndex = blockChain.Tip?.Index ?? -1;
-                    long receivedBlockCount = currentTipIndex - previousTipIndex;
-
-                    await FillBlocksAsync(
-                        peer,
-                        synced,
-                        stop,
-                        progress,
-                        totalBlockCount,
-                        receivedBlockCount,
-                        evaluateActions,
-                        cancellationToken
-                    );
-                    break;
-                }
-
-                // We can't recover with OperationCanceledException and
-                // ObjectDisposedException. so just re-throw them.
-                catch (ObjectDisposedException)
-                {
-                    throw;
-                }
-                catch (OperationCanceledException)
-                {
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    if (retry > 0)
+                    try
                     {
-                        _logger.Error(
-                            e,
-                            $"{nameof(FillBlocksAsync)}() failed; retrying...: {e}"
+                        long currentTipIndex = blockChain.Tip?.Index ?? -1;
+                        long receivedBlockCount = currentTipIndex - previousTipIndex;
+
+                        synced = await FillBlocksAsync(
+                            peer,
+                            blockChain,
+                            stop,
+                            progress,
+                            totalBlockCount,
+                            receivedBlockCount,
+                            evaluateActions,
+                            cancellationToken
                         );
-                        retry--;
+                        break;
                     }
-                    else
-                    {
-                        if (blockChain.Id != synced.Id)
-                        {
-                            blockChain.Store.DeleteChainId(synced.Id);
-                        }
 
+                    // We can't recover with OperationCanceledException and
+                    // ObjectDisposedException. so just re-throw them.
+                    catch (ObjectDisposedException)
+                    {
                         throw;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw;
+                    }
+                    catch (Exception e)
+                    {
+                        if (retry > 0)
+                        {
+                            _logger.Error(
+                                e,
+                                $"{nameof(FillBlocksAsync)}() failed; retrying...: {e}"
+                            );
+                            retry--;
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
+            finally
+            {
+                if (synced is BlockChain<T> syncedNotNull &&
+                    !syncedNotNull.Id.Equals(blockChain?.Id))
+                {
+                    blockChain.Swap(synced, evaluateActions);
+                }
 
-            return synced;
+                IStore store = BlockChain.Store;
+                foreach (Guid chainId in store.ListChainIds().ToList())
+                {
+                    if (!chainId.Equals(blockChain.Id))
+                    {
+                        store.DeleteChainId(chainId);
+                    }
+                }
+            }
         }
 
         private async Task AppendBlocksAsync(
@@ -1595,44 +1556,24 @@ namespace Libplanet.Net
 
             if (tip is null || latest.Index > tip.Index)
             {
-                BlockChain<T> previousBlocks = null;
-                try
-                {
-                    _logger.Debug("Trying to fill up previous blocks...");
-                    previousBlocks = (oldest.PreviousHash is null)
-                        ? _blockChain
-                        : await SyncPreviousBlocksAsync(
-                            _blockChain,
-                            peer,
-                            oldest.PreviousHash,
-                            null,
-                            blocks.Count,
-                            evaluateActions: true,
-                            cancellationToken: cancellationToken
-                        );
-                    _logger.Debug("Filled up. trying to concatenation...");
+                _logger.Debug("Trying to fill up previous blocks...");
+                await SyncPreviousBlocksAsync(
+                    _blockChain,
+                    peer,
+                    oldest.PreviousHash,
+                    null,
+                    blocks.Count,
+                    evaluateActions: true,
+                    cancellationToken: cancellationToken
+                );
+                _logger.Debug("Filled up; trying to concatenation...");
 
-                    foreach (Block<T> block in blocks)
-                    {
-                        previousBlocks.Append(block);
-                    }
-
-                    _logger.Debug("Sync is done.");
-                    if (!previousBlocks.Id.Equals(_blockChain.Id))
-                    {
-                        _logger.Debug("trying to swapping chain...");
-                        _blockChain.Swap(previousBlocks, render: true);
-                        _logger.Debug("Swapping complete");
-                    }
-                }
-                finally
+                foreach (Block<T> block in blocks.SkipWhile(b => BlockChain.Contains(b)))
                 {
-                    Guid? canonicalChainId = _blockChain.Store.GetCanonicalChainId();
-                    if (!(previousBlocks is null) && canonicalChainId != previousBlocks.Id)
-                    {
-                        _blockChain.Store.DeleteChainId(previousBlocks.Id);
-                    }
+                    BlockChain.Append(block);
                 }
+
+                _logger.Debug("Sync is done.");
 
                 var blockHashes =
                     blocks.Aggregate(string.Empty, (current, block) =>
@@ -1655,7 +1596,7 @@ namespace Libplanet.Net
             BlockReceived.Set();
         }
 
-        private async Task FillBlocksAsync(
+        private async Task<BlockChain<T>> FillBlocksAsync(
             BoundPeer peer,
             BlockChain<T> blockChain,
             HashDigest<SHA256>? stop,
@@ -1666,16 +1607,64 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            BlockChain<T> workspace = blockChain;
+
             while (!cancellationToken.IsCancellationRequested)
             {
-                BlockLocator locator = blockChain.GetBlockLocator();
-                IEnumerable<HashDigest<SHA256>> hashes =
-                    await GetBlockHashesAsync(
-                        peer, locator, stop, cancellationToken);
-                if (blockChain.Tip != null)
+                Block<T> tip = workspace?.Tip;
+
+                _logger.Debug("Trying to find branchpoint...");
+                BlockLocator locator = workspace.GetBlockLocator();
+                _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
+                IEnumerable<HashDigest<SHA256>> hashes = (
+                    await GetBlockHashesAsync(peer, locator, stop, cancellationToken)
+                ).ToArray();
+
+                if (!hashes.Any())
+                {
+                    _logger.Debug(
+                        "Peer [{0}] didn't return any hashes; ignored.",
+                        peer.PublicKey.ToAddress().ToHex()
+                    );
+                    return workspace;
+                }
+
+                HashDigest<SHA256> branchPoint = hashes.First();
+
+                _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
+
+                if (tip is null || branchPoint.Equals(tip.Hash))
+                {
+                    _logger.Debug("It doesn't need to fork.");
+                }
+
+                // FIXME BlockChain.Blocks.ContainsKey() can be very
+                // expensive.
+                // we can omit this clause if assume every chain shares
+                // same genesis block...
+                else if (!workspace.Blocks.ContainsKey(branchPoint))
+                {
+                    // Create a whole new chain because the branch point doesn't exist on
+                    // the current chain.
+                    workspace = new BlockChain<T>(
+                        workspace.Policy,
+                        workspace.Store,
+                        Guid.NewGuid()
+                    );
+                }
+                else
+                {
+                    _logger.Debug("Forking needed. Trying to fork...");
+                    workspace = workspace.Fork(branchPoint);
+                    _logger.Debug("Forking complete.");
+                }
+
+                if (!(workspace.Tip is null))
                 {
                     hashes = hashes.Skip(1);
                 }
+
+                _logger.Debug("Trying to fill up previous blocks...");
 
                 var hashesAsArray =
                     hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
@@ -1687,7 +1676,7 @@ namespace Libplanet.Net
                 int hashCount = hashesAsArray.Count();
                 _logger.Debug(
                     $"Required hashes (count: {hashCount}). " +
-                    $"(tip: {blockChain.Tip?.Hash})"
+                    $"(tip: {workspace.Tip?.Hash})"
                 );
 
                 totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
@@ -1704,7 +1693,7 @@ namespace Libplanet.Net
                         // As actions in this block should be rendered
                         // after actions in stale blocks are unrendered,
                         // given the `render: false` option here.
-                        blockChain.Append(
+                        workspace.Append(
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
@@ -1721,6 +1710,8 @@ namespace Libplanet.Net
                     },
                     cancellationToken);
             }
+
+            return workspace;
         }
 
         private void TransferTxs(GetTxs getTxs)
