@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Serialization;
+using Bencodex.Types;
 using Libplanet.Serialization;
 
 namespace Libplanet.Tests.Common.Action
@@ -33,6 +35,21 @@ namespace Libplanet.Tests.Common.Action
         public IImmutableSet<string> UsedWeapons { get; }
 
         public IImmutableSet<string> Targets { get; }
+
+        public static BattleResult FromBencodex(Bencodex.Types.Dictionary dictionary)
+        {
+            return new BattleResult(
+                dictionary.GetValue<List>("used_weapons").Select(x => x.ToString()),
+                dictionary.GetValue<List>("targets").Select(x => x.ToString()));
+        }
+
+        public Bencodex.Types.Dictionary ToBencodex() =>
+            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            {
+                [(Text)"used_weapons"] = new List(
+                    UsedWeapons.Select(x => (IValue)((Text)x))),
+                [(Text)"targets"] = new List(Targets.Select(x => (IValue)((Text)x))),
+            });
 
         public override bool Equals(object other)
         {

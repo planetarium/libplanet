@@ -1,11 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using Bencodex.Types;
 using Libplanet.Serialization;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
@@ -24,14 +24,9 @@ namespace Libplanet.Tx
                     Address.Size),
                 timestamp: info.GetString("timestamp"),
                 signature: info.GetValue<byte[]>("signature").ToImmutableArray(),
-                actions: info.GetValue<IEnumerable>(
-                    "actions").OfType<IDictionary<string, object>>().Select(a =>
-                        a.ToImmutableDictionary(
-                            kv => kv.Key,
-                            kv => kv.Value
-                        )
-                    )
-              )
+                actions: info.GetValue<List>(
+                    "actions")
+            )
         {
         }
 
@@ -41,7 +36,7 @@ namespace Libplanet.Tx
             ImmutableArray<ImmutableArray<byte>> updatedAddresses,
             ImmutableArray<byte> publicKey,
             string timestamp,
-            IEnumerable<IImmutableDictionary<string, object>> actions
+            IEnumerable<IValue> actions
         )
             : this(
                 nonce,
@@ -61,7 +56,7 @@ namespace Libplanet.Tx
             ImmutableArray<ImmutableArray<byte>> updatedAddresses,
             ImmutableArray<byte> publicKey,
             string timestamp,
-            IEnumerable<IImmutableDictionary<string, object>> actions,
+            IEnumerable<IValue> actions,
             ImmutableArray<byte> signature
         )
         {
@@ -83,15 +78,9 @@ namespace Libplanet.Tx
                 Address.Size);
             PublicKey = ((byte[])dict["public_key"]).ToImmutableArray();
             Timestamp = (string)dict["timestamp"];
-            Actions = ((IEnumerable)dict["actions"])
-                .Cast<Dictionary<string, object>>()
-                .Select(a =>
-                    a.ToImmutableDictionary(
-                        kv => kv.Key,
-                        kv => kv.Value
-                    )
-                )
-                .ToList();
+
+            Actions = ((List)dict["actions"]).Value;
+
             if (dict.TryGetValue("signature", out object signature))
             {
                 Signature = ((byte[])signature).ToImmutableArray();
@@ -114,7 +103,7 @@ namespace Libplanet.Tx
 
         public ImmutableArray<byte> Signature { get; }
 
-        public IEnumerable<IImmutableDictionary<string, object>> Actions { get; }
+        public IEnumerable<IValue> Actions { get; }
 
         public void GetObjectData(
             SerializationInfo info,
@@ -140,12 +129,7 @@ namespace Libplanet.Tx
 
             info.AddValue("public_key", PublicKey.ToArray());
             info.AddValue("timestamp", Timestamp);
-            info.AddValue("actions", Actions.Select(a =>
-                a.ToDictionary(
-                    kv => kv.Key,
-                    kv => kv.Value
-                )
-            ));
+            info.AddValue("actions", Actions.ToImmutableList());
 
             if (Signature != ImmutableArray<byte>.Empty)
             {

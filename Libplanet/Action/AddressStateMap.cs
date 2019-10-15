@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.Serialization;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -16,15 +17,15 @@ namespace Libplanet.Action
     /// </summary>
     [Serializable]
     public class AddressStateMap
-        : IImmutableDictionary<Address, object>, ISerializable
+        : IImmutableDictionary<Address, IValue>, ISerializable
     {
-        private IImmutableDictionary<Address, object> _impl;
+        private IImmutableDictionary<Address, IValue> _impl;
 
         /// <summary>
         /// Creates an empty map.
         /// </summary>
         public AddressStateMap()
-            : this(new Dictionary<Address, object>().ToImmutableDictionary())
+            : this(new Dictionary<Address, IValue>().ToImmutableDictionary())
         {
         }
 
@@ -34,7 +35,7 @@ namespace Libplanet.Action
         /// </summary>
         /// <param name="dictionary">A dictionary of items to
         /// fill the new map with.</param>
-        public AddressStateMap(IImmutableDictionary<Address, object> dictionary)
+        public AddressStateMap(IImmutableDictionary<Address, IValue> dictionary)
         {
             _impl = dictionary;
         }
@@ -44,11 +45,11 @@ namespace Libplanet.Action
             StreamingContext context
         )
         {
-            var dict = new Dictionary<Address, object>();
+            var dict = new Dictionary<Address, IValue>();
 
             foreach (SerializationEntry entry in info)
             {
-                dict[new Address(entry.Name)] = entry.Value;
+                dict[new Address(entry.Name)] = (IValue)entry.Value;
             }
 
             _impl = dict.ToImmutableDictionary();
@@ -58,39 +59,39 @@ namespace Libplanet.Action
         public IEnumerable<Address> Keys => _impl.Keys;
 
         /// <inheritdoc />
-        public IEnumerable<object> Values => _impl.Values;
+        public IEnumerable<IValue> Values => _impl.Values;
 
         /// <inheritdoc />
         public int Count => _impl.Count;
 
         /// <inheritdoc />
-        public object this[Address key] => _impl[key];
+        public IValue this[Address key] => _impl[key];
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> Add(
+        public IImmutableDictionary<Address, IValue> Add(
             Address key,
-            object value
+            IValue value
         )
         {
             return new AddressStateMap(_impl.Add(key, value));
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> AddRange(
-            IEnumerable<KeyValuePair<Address, object>> pairs
+        public IImmutableDictionary<Address, IValue> AddRange(
+            IEnumerable<KeyValuePair<Address, IValue>> pairs
         )
         {
             return new AddressStateMap(_impl.AddRange(pairs));
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> Clear()
+        public IImmutableDictionary<Address, IValue> Clear()
         {
             return new AddressStateMap(_impl.Clear());
         }
 
         /// <inheritdoc />
-        public bool Contains(KeyValuePair<Address, object> pair)
+        public bool Contains(KeyValuePair<Address, IValue> pair)
         {
             return _impl.Contains(pair);
         }
@@ -102,19 +103,19 @@ namespace Libplanet.Action
         }
 
         /// <inheritdoc />
-        public IEnumerator<KeyValuePair<Address, object>> GetEnumerator()
+        public IEnumerator<KeyValuePair<Address, IValue>> GetEnumerator()
         {
             return _impl.GetEnumerator();
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> Remove(Address key)
+        public IImmutableDictionary<Address, IValue> Remove(Address key)
         {
             return new AddressStateMap(_impl.Remove(key));
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> RemoveRange(
+        public IImmutableDictionary<Address, IValue> RemoveRange(
             IEnumerable<Address> keys
         )
         {
@@ -122,17 +123,17 @@ namespace Libplanet.Action
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> SetItem(
+        public IImmutableDictionary<Address, IValue> SetItem(
             Address key,
-            object value
+            IValue value
         )
         {
             return new AddressStateMap(_impl.SetItem(key, value));
         }
 
         /// <inheritdoc />
-        public IImmutableDictionary<Address, object> SetItems(
-            IEnumerable<KeyValuePair<Address, object>> items
+        public IImmutableDictionary<Address, IValue> SetItems(
+            IEnumerable<KeyValuePair<Address, IValue>> items
         )
         {
             return new AddressStateMap(_impl.SetItems(items));
@@ -145,7 +146,7 @@ namespace Libplanet.Action
         }
 
         /// <inheritdoc />
-        public bool TryGetValue(Address key, out object value)
+        public bool TryGetValue(Address key, out IValue value)
         {
             return _impl.TryGetValue(key, out value);
         }

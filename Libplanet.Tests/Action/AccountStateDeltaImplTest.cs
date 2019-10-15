@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Xunit;
@@ -9,7 +10,7 @@ namespace Libplanet.Tests.Action
     public class AccountStateDeltaImplTest
     {
         private readonly Address[] _addr;
-        private readonly IImmutableDictionary<Address, object> _states;
+        private readonly IImmutableDictionary<Address, IValue> _states;
 
         public AccountStateDeltaImplTest()
         {
@@ -22,10 +23,10 @@ namespace Libplanet.Tests.Action
                 Addr(),
             };
 
-            _states = new Dictionary<Address, object>()
+            _states = new Dictionary<Address, IValue>
             {
-                [_addr[0]] = "a",
-                [_addr[1]] = "b",
+                [_addr[0]] = (Text)"a",
+                [_addr[1]] = (Text)"b",
             }.ToImmutableDictionary();
         }
 
@@ -34,8 +35,8 @@ namespace Libplanet.Tests.Action
         {
             IAccountStateDelta delta = new AccountStateDeltaImpl(GetState);
             Assert.Empty(delta.UpdatedAddresses);
-            Assert.Equal("a", delta.GetState(_addr[0]));
-            Assert.Equal("b", delta.GetState(_addr[1]));
+            Assert.Equal("a", (Text)delta.GetState(_addr[0]));
+            Assert.Equal("b", (Text)delta.GetState(_addr[1]));
             Assert.Null(delta.GetState(_addr[2]));
         }
 
@@ -43,11 +44,11 @@ namespace Libplanet.Tests.Action
         public void GetSetState()
         {
             IAccountStateDelta init = new AccountStateDeltaImpl(GetState);
-            IAccountStateDelta a = init.SetState(_addr[0], "A");
-            Assert.Equal("A", a.GetState(_addr[0]));
-            Assert.Equal("a", init.GetState(_addr[0]));
-            Assert.Equal("b", a.GetState(_addr[1]));
-            Assert.Equal("b", init.GetState(_addr[1]));
+            IAccountStateDelta a = init.SetState(_addr[0], (Text)"A");
+            Assert.Equal("A", (Text)a.GetState(_addr[0]));
+            Assert.Equal("a", (Text)init.GetState(_addr[0]));
+            Assert.Equal("b", (Text)a.GetState(_addr[1]));
+            Assert.Equal("b", (Text)init.GetState(_addr[1]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Null(init.GetState(_addr[2]));
             Assert.Equal(
@@ -56,12 +57,12 @@ namespace Libplanet.Tests.Action
             );
             Assert.Empty(init.UpdatedAddresses);
 
-            IAccountStateDelta b = a.SetState(_addr[0], "z");
-            Assert.Equal("z", b.GetState(_addr[0]));
-            Assert.Equal("A", a.GetState(_addr[0]));
-            Assert.Equal("a", init.GetState(_addr[0]));
-            Assert.Equal("b", b.GetState(_addr[1]));
-            Assert.Equal("b", a.GetState(_addr[1]));
+            IAccountStateDelta b = a.SetState(_addr[0], (Text)"z");
+            Assert.Equal("z", (Text)b.GetState(_addr[0]));
+            Assert.Equal("A", (Text)a.GetState(_addr[0]));
+            Assert.Equal("a", (Text)init.GetState(_addr[0]));
+            Assert.Equal("b", (Text)b.GetState(_addr[1]));
+            Assert.Equal("b", (Text)a.GetState(_addr[1]));
             Assert.Null(b.GetState(_addr[2]));
             Assert.Null(a.GetState(_addr[2]));
             Assert.Equal(
@@ -70,13 +71,13 @@ namespace Libplanet.Tests.Action
             );
             Assert.Empty(init.UpdatedAddresses);
 
-            IAccountStateDelta c = b.SetState(_addr[0], "a");
-            Assert.Equal("a", c.GetState(_addr[0]));
-            Assert.Equal("z", b.GetState(_addr[0]));
+            IAccountStateDelta c = b.SetState(_addr[0], (Text)"a");
+            Assert.Equal("a", (Text)c.GetState(_addr[0]));
+            Assert.Equal("z", (Text)b.GetState(_addr[0]));
             Assert.Empty(init.UpdatedAddresses);
         }
 
-        private object GetState(Address address)
+        private IValue GetState(Address address)
         {
             try
             {

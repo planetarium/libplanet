@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Tests.Common.Action;
@@ -582,25 +583,29 @@ namespace Libplanet.Tests.Tx
 
             Assert.Equal(2, tx.Actions.Count());
             Assert.IsType<Attack>(tx.Actions[0].InnerAction);
+
+            var targetAddress =
+                ((Bencodex.Types.Dictionary)tx.Actions[0].InnerAction.PlainValue)
+                    .GetValue<Binary>("target_address").Value;
             AssertBytesEqual(
                 new Address(publicKey).ToByteArray(),
-                (byte[])tx.Actions[0].InnerAction.PlainValue["target_address"]
+                targetAddress
             );
             Assert.Equal(
-                new Dictionary<string, object>()
+                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { "weapon", "wand" },
-                    { "target", "orc" },
-                    { "target_address", new Address(publicKey).ToByteArray() },
-                },
+                    { (Text)"weapon", (Text)"wand" },
+                    { (Text)"target", (Text)"orc" },
+                    { (Text)"target_address", (Binary)new Address(publicKey).ToByteArray() },
+                }),
                 tx.Actions[0].InnerAction.PlainValue
             );
             Assert.IsType<Sleep>(tx.Actions[1].InnerAction);
             Assert.Equal(
-                new Dictionary<string, object>()
+                new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { "zone_id", 10 },
-                },
+                    { (Text)"zone_id", (Integer)10 },
+                }),
                 tx.Actions[1].InnerAction.PlainValue
             );
         }
@@ -657,7 +662,7 @@ namespace Libplanet.Tests.Tx
                     Assert.Equal(1, eval.InputContext.BlockIndex);
                     Assert.Equal(rehearsal, eval.InputContext.Rehearsal);
                     Assert.Equal(
-                        eval.OutputStates.GetState(
+                        (Integer)eval.OutputStates.GetState(
                             DumbAction.RandomRecordsAddress
                         ),
                         eval.InputContext.Random.Next()
@@ -665,7 +670,7 @@ namespace Libplanet.Tests.Tx
                     Assert.Equal(
                         i > 0 ? addresses.Select(
                             evaluations[i - 1].OutputStates.GetState
-                        ) : new object[] { null, null, null },
+                        ) : new IValue[] { null, null, null },
                         addresses.Select(
                             eval.InputContext.PreviousStates.GetState
                         )
@@ -673,6 +678,7 @@ namespace Libplanet.Tests.Tx
                     Assert.Equal(
                         expectedStates[i],
                         addresses.Select(eval.OutputStates.GetState)
+                            .Select(x => x is Text t ? t.Value : null)
                     );
                 }
 
@@ -944,7 +950,7 @@ namespace Libplanet.Tests.Tx
                     0xae, 0xd3, 0xaa, 0xa2, 0x96,
                 }.ToImmutableArray(),
                 timestamp: "2018-11-21T00:00:00.000000Z",
-                actions: new List<IImmutableDictionary<string, object>>()
+                actions: default(List)
             );
             if (!includeSingature)
             {

@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -41,30 +41,27 @@ namespace Libplanet.Action
     /// of in-game logic:
     /// <code><![CDATA[
     /// using System;
+    /// using System.Collections.Generic;
     /// using System.Collections.Immutable;
+    /// using Bencodex.Types;
     /// using Libplanet;
     /// using Libplanet.Action;
-    ///
     /// public class MyAction : IAction
     /// {
     ///     // Declare an enum type to distinguish types of in-game logic.
     ///     public enum ActType { CreateCharacter, Attack, Heal }
-    ///
     ///     // Declare properties (or fields) to store "bound" argument values.
     ///     public ActType Type { get; private set; }
     ///     public Address TargetAddress { get; private set; }
-    ///
     ///     // Action must has a public parameterless constructor.
     ///     // Usually this is used only by Libplanet's internals.
     ///     public MyAction() {}
-    ///
     ///     // Take argument values to "bind" through constructor parameters.
     ///     public MyAction(ActType type, Address targetAddress)
     ///     {
     ///         Type = type;
     ///         TargetAddress = targetAddress;
     ///     }
-    ///
     ///     // The main game logic belongs to here.  It takes the
     ///     // previous states through its parameter named context,
     ///     // and is offered "bound" argument values through
@@ -75,13 +72,12 @@ namespace Libplanet.Action
     ///         // ImmutableDictionary<string, uint> is just for example,
     ///         // As far as it is serializable, you can store any types.
     ///         // (We recommend to use immutable types though.)
-    ///         var state = (ImmutableDictionary<string, uint>)
+    ///         var state =
     ///             context.PreviousStates.GetState(TargetAddress);
-    ///
+    ///         Dictionary dictionary;
     ///         // This variable purposes to store the state
     ///         // right after this action finishes.
-    ///         ImmutableDictionary<string, uint> nextState;
-    ///
+    ///         IImmutableDictionary<IKey, IValue> nextState;
     ///         // Does different things depending on the action's type.
     ///         // This way is against the common principals of programming
     ///         // as it is just an example.  You could compare this with
@@ -97,32 +93,38 @@ namespace Libplanet.Action
     ///                 else if (!(state is null))
     ///                     throw new Exception(
     ///                         "Character was already created.");
-    ///
-    ///                 nextState = ImmutableDictionary<string, uint>.Empty
-    ///                     .Add("hp", 20);
+    ///                 nextState = ImmutableDictionary<IKey, IValue>.Empty
+    ///                     .Add((Text)"hp", (Integer)20);
     ///                 break;
-    ///
     ///             case ActType.Attack:
+    ///                 dictionary = (Bencodex.Types.Dictionary)state;
     ///                 nextState =
-    ///                     state.SetItem("hp", Math.Max(state["hp"] - 5, 0));
+    ///                     dictionary.SetItem(
+    ///                         (Text)"hp",
+    ///                         (Integer)Math.Max(
+    ///                             (int)dictionary.GetValue<Integer>("hp").Value - 5,
+    ///                             0)
+    ///                     );
     ///                 break;
-    ///
     ///             case ActType.Heal:
+    ///                 dictionary = (Bencodex.Types.Dictionary)state;
     ///                 nextState =
-    ///                     state.SetItem("hp", Math.Min(state["hp"] + 5, 20));
+    ///                     dictionary.SetItem(
+    ///                         (Text)"hp",
+    ///                         (Integer)Math.Min(
+    ///                             (int)dictionary.GetValue<Integer>("hp").Value + 5,
+    ///                             20)
+    ///                     );
     ///                 break;
-    ///
     ///             default:
     ///                 throw new Exception(
     ///                     "Properties are not properly initialized.");
     ///         }
-    ///
     ///         // Builds a delta (dirty) from previous to next states, and
     ///         // returns it.
     ///         return context.PreviousStates.SetState(TargetAddress,
-    ///             nextState);
+    ///             (Dictionary)nextState);
     ///     }
-    ///
     ///     // Side effects, i.e., any effects on other than states, are
     ///     // done here.
     ///     void IAction.Render(
@@ -130,7 +132,6 @@ namespace Libplanet.Action
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c;
-    ///
     ///         // You could compare this with a better example of
     ///         // PolymorphicAction<T> class.
     ///         switch (Type)
@@ -142,20 +143,18 @@ namespace Libplanet.Action
     ///                     Hp = 0,
     ///                 };
     ///                 break;
-    ///
     ///             case ActType.Attack:
     ///             case ActType.Heal:
     ///                 c = Character.GetByAddress(TargetAddress);
     ///                 break;
-    ///
     ///             default:
-    ///                 break;
+    ///                 return;
     ///         }
-    ///
-    ///         c?.Hp = nextStates.GetState(TargetAddress)["hp"];
-    ///         c?.Draw();
+    ///         c.Hp =
+    ///             (int)((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
+    ///                 .GetValue<Integer>("hp").Value;
+    ///         c.Draw();
     ///     }
-    ///
     ///     // Sometimes a block to which an action belongs can be
     ///     // a "stale."  If that action already has been rendered,
     ///     // it should be undone.
@@ -164,7 +163,6 @@ namespace Libplanet.Action
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///
     ///         // You could compare this with a better example of
     ///         // PolymorphicAction<T> class.
     ///         switch (Type)
@@ -172,34 +170,34 @@ namespace Libplanet.Action
     ///             case ActType.CreateCharacter:
     ///                 c.Hide();
     ///                 break;
-    ///
     ///             case ActType.Attack:
     ///             case ActType.Heal:
     ///                 IAccountStateDelta prevStates = context.PreviousStates;
-    ///                 c.Hp = prevStates.GetState(TargetAddress)["hp"];
+    ///                 c.Hp = (int)((Bencodex.Types.Dictionary)prevStates.GetState(TargetAddress))
+    ///                     .GetValue<Integer>("hp").Value;
     ///                 c.Draw();
     ///                 break;
-    ///
     ///             default:
     ///                 break;
     ///         }
     ///     }
-    ///
     ///     // Serializes its "bound arguments" so that they are transmitted
     ///     // over network or stored to the persistent storage.
-    ///     // It uses .NET's built-in serialization mechanism.
-    ///     IImmutableDictionary<string, object> IAction.PlainValue =>
-    ///         ImmutableDictionary<string, object>.Empty
-    ///             .Add("type", Type)
-    ///             .Add("target_address", TargetAddress);
-    ///
+    ///     IValue IAction.PlainValue =>
+    ///         new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+    ///         {
+    ///             [(Text)"type"] = (Integer)((int)Type),
+    ///             [(Text)"target_address"] = (Binary)TargetAddress.ToByteArray(),
+    ///         });
     ///     // Deserializes "bound arguments".  That is, it is inverse
     ///     // of PlainValue property.
     ///     void IAction.LoadPlainValue(
-    ///         IImmutableDictionary<string, object> plainValue)
+    ///         IValue plainValue)
     ///     {
-    ///         Type = (ActType)plainValue["type"];
-    ///         TargetAddress = (Address)plainValue["target_address"];
+    ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
+    ///         Type = (ActType)(int)dictionary.GetValue<Integer>("type").Value;
+    ///         TargetAddress =
+    ///             new Address(dictionary.GetValue<Binary>("target_address").Value);
     ///     }
     /// }
     /// ]]></code>
@@ -213,20 +211,14 @@ namespace Libplanet.Action
         /// Serializes values bound to an action, which is held by properties
         /// (or fields) of an action, so that they can be transmitted over
         /// network or saved to persistent storage.
-        /// <para>Serialized values are deserialized by <see
-        /// cref="LoadPlainValue(IImmutableDictionary{string,object})"/> method
-        /// later.</para>
-        /// <para>It uses <a href=
-        /// "https://docs.microsoft.com/en-us/dotnet/standard/serialization/"
-        /// >.NET's built-in serialization mechanism</a>.</para>
+        /// <para>Serialized values are deserialized by
+        /// <see cref="LoadPlainValue(IValue)"/> method later.</para>
         /// </summary>
-        /// <returns>A value which encodes this action's bound values (held
-        /// by properties or fields).  It has to be <a href=
-        /// "https://docs.microsoft.com/en-us/dotnet/standard/serialization/"
-        /// >serializable</a>.</returns>
-        /// <seealso
-        /// cref="LoadPlainValue(IImmutableDictionary{string, object})"/>
-        IImmutableDictionary<string, object> PlainValue { get; }
+        /// <returns>A Bencodex value which encodes this action's bound values (held
+        /// by properties or fields).
+        /// </returns>
+        /// <seealso cref="LoadPlainValue(IValue)"/>
+        IValue PlainValue { get; }
 
         /// <summary>
         /// Deserializes serialized data (i.e., data <see cref="PlainValue"/>
@@ -237,7 +229,7 @@ namespace Libplanet.Action
         /// property) to be deserialized and assigned to this action's
         /// properties (or fields).</param>
         /// <seealso cref="PlainValue"/>
-        void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
+        void LoadPlainValue(IValue plainValue);
 
         /// <summary>
         /// Executes the main game logic of an action.  This should be

@@ -9,6 +9,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
+using Libplanet.Tx;
+using Boolean = Bencodex.Types.Boolean;
 
 namespace Libplanet.Serialization
 {
@@ -54,7 +57,22 @@ namespace Libplanet.Serialization
             foreach (var kv in bo)
             {
                 var key = FromBencodexKey(kv.Key);
-                serializationInfo.AddValue(key, FromBencodexValue(kv.Value));
+                object v;
+
+                // FIXME: This is needed to prevent that some properties become .NET object.
+                //        see issue #541, #552.
+                if ((typeof(T).Namespace == typeof(Transaction<>).Namespace &&
+                     typeof(T).Name == typeof(Transaction<>).Name && key == "actions") ||
+                    typeof(T) == typeof(AddressStateMap))
+                {
+                    v = kv.Value;
+                }
+                else
+                {
+                    v = FromBencodexValue(kv.Value);
+                }
+
+                serializationInfo.AddValue(key, v);
             }
 
             if (constructorInfo == null)
@@ -126,7 +144,7 @@ namespace Libplanet.Serialization
             {
                 case Null _:
                     return null;
-                case Bencodex.Types.Boolean b:
+                case Boolean b:
                     return b.Value;
                 case Binary bin:
                     return bin.Value;
@@ -137,10 +155,15 @@ namespace Libplanet.Serialization
                 case List l:
                     return l.Select(FromBencodexValue).ToList();
                 case Dictionary d:
-                    return d.ToDictionary(
-                        e => FromBencodexKey(e.Key),
-                        e => FromBencodexValue(e.Value)
-                    );
+                    var dictionary = new Dictionary<string, object>();
+                    foreach (var pair in d)
+                    {
+                        var key = FromBencodexKey(pair.Key);
+                        var value = key != "actions" ? FromBencodexValue(pair.Value) : pair.Value;
+                        dictionary.Add(key, value);
+                    }
+
+                    return dictionary;
                 default:
                     throw new SerializationException(
                         $"Can't convert {o} to plain object."
@@ -177,7 +200,7 @@ namespace Libplanet.Serialization
                 case null:
                     return default(Null);
                 case bool b:
-                    return new Bencodex.Types.Boolean(b);
+                    return new Boolean(b);
                 case string s:
                     return ToBencodexKey(s);
                 case long l:
@@ -192,6 +215,8 @@ namespace Libplanet.Serialization
                     return new Integer(bi);
                 case byte[] byteArray:
                     return ToBencodexKey(byteArray);
+                case IValue value:
+                    return value;
                 case IDictionary d:
                     return new Dictionary(
                         d.Cast<KeyValuePair<string, object>>().Select(
@@ -210,7 +235,7 @@ namespace Libplanet.Serialization
             }
 
             throw new SerializationException(
-                $"Can't convert {o} to IBObject."
+                $"Can't convert {o.GetType()} to IBObject."
             );
         }
 

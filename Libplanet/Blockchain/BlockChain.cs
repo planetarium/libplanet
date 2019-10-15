@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -1073,9 +1074,9 @@ namespace Libplanet.Blockchain
                     ImmutableHashSet<Address>.Empty,
                     (a, b) => a.Union(b)
                 );
-            ImmutableDictionary<Address, object> totalDelta =
+            ImmutableDictionary<Address, IValue> totalDelta =
                 updatedAddresses.Select(
-                    a => new KeyValuePair<Address, object>(
+                    a => new KeyValuePair<Address, IValue>(
                         a,
                         lastStates?.GetState(a)
                     )

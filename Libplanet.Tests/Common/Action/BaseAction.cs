@@ -1,11 +1,12 @@
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
 {
     public abstract class BaseAction : IAction
     {
-        public abstract IImmutableDictionary<string, object> PlainValue { get; }
+        public abstract IValue PlainValue { get; }
 
         public abstract IAccountStateDelta Execute(IActionContext context);
 
@@ -21,6 +22,6 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
-        public abstract void LoadPlainValue(IImmutableDictionary<string, object> plainValue);
+        public abstract void LoadPlainValue(IValue plainValue);
     }
 }

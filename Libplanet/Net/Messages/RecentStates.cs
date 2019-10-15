@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using Bencodex;
+using Bencodex.Types;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
@@ -14,7 +15,7 @@ namespace Libplanet.Net.Messages
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<
                 HashDigest<SHA256>,
-                IImmutableDictionary<Address, object>
+                IImmutableDictionary<Address, IValue>
             > blockStates,
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateReferences
         )
@@ -83,9 +84,9 @@ namespace Libplanet.Net.Messages
             int blocksLength = it.Current.ConvertToInt32();  // This is not height!
 
             var blockStates =
-                new Dictionary<HashDigest<SHA256>, IImmutableDictionary<Address, object>>(
+                new Dictionary<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
                     blocksLength);
-            var formatter = new BinaryFormatter();
+            var codec = new Codec();
 
             for (int j = 0; j < blocksLength; j++)
             {
@@ -95,7 +96,7 @@ namespace Libplanet.Net.Messages
                 it.MoveNext();
                 int statesLength = it.Current.ConvertToInt32();
 
-                var states = new Dictionary<Address, object>(statesLength);
+                var states = new Dictionary<Address, IValue>(statesLength);
                 for (int k = 0; k < statesLength; k++)
                 {
                     it.MoveNext();
@@ -104,7 +105,7 @@ namespace Libplanet.Net.Messages
                     it.MoveNext();
                     using (var stream = new MemoryStream(it.Current.Buffer))
                     {
-                        states[address] = formatter.Deserialize(stream);
+                        states[address] = codec.Decode(stream);
                     }
                 }
 
@@ -121,7 +122,7 @@ namespace Libplanet.Net.Messages
 
         public IImmutableDictionary<
             HashDigest<SHA256>,
-            IImmutableDictionary<Address, object>
+            IImmutableDictionary<Address, IValue>
         > BlockStates { get; }
 
         /// <summary>
@@ -175,7 +176,7 @@ namespace Libplanet.Net.Messages
             | | | 5.3.1. Key (20 bytes; account address)
             | | |   An account address having the following updated state (7.3.2).
             | | +
-            | | | 5.3.2. Value (varying bytes; .NET binary serialization format)
+            | | | 5.3.2. Value (varying bytes; <a href="https://bencodex.org">Bencodex</a> format)
             | | |   An updated state of the account (7.3.1).
             */
             get
@@ -207,23 +208,18 @@ namespace Libplanet.Net.Messages
                 }
 
                 yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(BlockStates.Count));
-                var formatter = new BinaryFormatter();
+                var codec = new Codec();
                 foreach (var blockState in BlockStates)
                 {
                     yield return new NetMQFrame(blockState.Key.ToByteArray());
 
-                    IImmutableDictionary<Address, object> states = blockState.Value;
+                    IImmutableDictionary<Address, IValue> states = blockState.Value;
                     yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(states.Count));
 
                     foreach (var addressState in states)
                     {
                         yield return new NetMQFrame(addressState.Key.ToByteArray());
-
-                        using (var stream = new MemoryStream())
-                        {
-                            formatter.Serialize(stream, addressState.Value);
-                            yield return new NetMQFrame(stream.GetBuffer());
-                        }
+                        yield return new NetMQFrame(codec.Encode(addressState.Value));
                     }
                 }
             }

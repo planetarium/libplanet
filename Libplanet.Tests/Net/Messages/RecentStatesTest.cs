@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
@@ -21,7 +22,7 @@ namespace Libplanet.Tests.Net.Messages
         {
             var emptyBlockStates = ImmutableDictionary<
                 HashDigest<SHA256>,
-                IImmutableDictionary<Address, object>
+                IImmutableDictionary<Address, IValue>
             >.Empty;
             Assert.Throws<ArgumentNullException>(() =>
                 new RecentStates(
@@ -52,22 +53,28 @@ namespace Libplanet.Tests.Net.Messages
 
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
             var randomBytesBuffer = new byte[HashDigest<SHA256>.Size];
-            (HashDigest<SHA256>, IImmutableDictionary<Address, object>)[] blockStates =
+            (HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)[] blockStates =
                 accounts.SelectMany(address =>
                 {
                     rng.GetNonZeroBytes(randomBytesBuffer);
                     var blockHash1 = new HashDigest<SHA256>(randomBytesBuffer);
                     rng.GetNonZeroBytes(randomBytesBuffer);
                     var blockHash2 = new HashDigest<SHA256>(randomBytesBuffer);
-                    IImmutableDictionary<Address, object> emptyState =
-                        ImmutableDictionary<Address, object>.Empty;
+                    IImmutableDictionary<Address, IValue> emptyState =
+                        ImmutableDictionary<Address, IValue>.Empty;
                     return new[]
                     {
-                        (blockHash1, emptyState.Add(address, $"A:{blockHash1}:{address}")),
-                        (blockHash2, emptyState.Add(address, $"B:{blockHash2}:{address}")),
+                        (
+                            blockHash1,
+                            emptyState.Add(address, (Text)$"A:{blockHash1}:{address}")
+                        ),
+                        (
+                            blockHash2,
+                            emptyState.Add(address, (Text)$"B:{blockHash2}:{address}")
+                        ),
                     };
                 }).ToArray();
-            IImmutableDictionary<HashDigest<SHA256>, IImmutableDictionary<Address, object>>
+            IImmutableDictionary<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>
                 compressedBlockStates = blockStates.Where(
                     (_, i) => i % 2 == 1
                 ).ToImmutableDictionary(p => p.Item1, p => p.Item2);
@@ -122,7 +129,7 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Empty(accounts);
             Assert.Equal(compressedBlockStates.Count, msg[blockStatesOffset].ConvertToInt32());
 
-            var formatter = new BinaryFormatter();
+            var codec = new Bencodex.Codec();
             for (int i = 0; i < compressedBlockStates.Count; i++)
             {
                 int offset = blockStatesOffset + 1 + (i * 4);
@@ -138,7 +145,7 @@ namespace Libplanet.Tests.Net.Messages
                 {
                     stream.Write(msg[offset + 3].Buffer, 0, msg[offset + 3].BufferSize);
                     stream.Seek(0, SeekOrigin.Begin);
-                    string state = (string)formatter.Deserialize(stream);
+                    string state = ((Text)codec.Decode(stream)).Value;
                     Assert.Equal($"B:{hash}:{addr}", state);
                 }
             }

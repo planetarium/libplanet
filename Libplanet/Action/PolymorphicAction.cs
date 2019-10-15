@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Bencodex.Types;
 
 namespace Libplanet.Action
 {
@@ -24,35 +24,30 @@ namespace Libplanet.Action
     /// subtype polymorphism):
     /// <code><![CDATA[
     /// using System;
-    /// using System.Collections.Immutable;
+    /// using System.Collections.Generic;
+    /// using Bencodex.Types;
     /// using Libplanet;
     /// using Libplanet.Action;
-    ///
     /// // Instead of having multiple in-game actions in a class,
     /// // in this example, we declare one abstract base class
     /// // and its three concrete subclasses.
     /// public abstract class ActionBase : IAction
     /// {
     ///     public ActionBase() { }
-    ///
     ///     public ActionBase(Address targetAddress)
     ///     {
     ///         TargetAddress = targetAddress;
     ///     }
-    ///
     ///     public Address TargetAddress { get; private set; }
-    ///
     ///     // Leaves Execute() abstract so that concrete subclasses
     ///     // implement their own logic.
     ///     public abstract IAccountStateDelta Execute(IActionContext context);
-    ///
     ///     // Makes Render() no-op by default, but overrideable by subclasses.
     ///     public virtual void Render(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
     ///     {
     ///     }
-    ///
     ///     // Makes Unrender() no-op by default,
     ///     // but overrideable by subclasses.
     ///     public virtual void Unrender(
@@ -60,18 +55,19 @@ namespace Libplanet.Action
     ///         IAccountStateDelta nextStates)
     ///     {
     ///     }
-    ///
-    ///     IImmutableDictionary<string, object> IAction.PlainValue =>
-    ///         ImmutableDictionary<string, object>.Empty
-    ///             .Add("target_address", TargetAddress);
-    ///
+    ///     IValue IAction.PlainValue =>
+    ///         new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+    ///         {
+    ///             [(Text)"target_address"] = (Binary)TargetAddress.ToByteArray(),
+    ///         });
     ///     void IAction.LoadPlainValue(
-    ///         IImmutableDictionary<string, object> plainValue)
+    ///         IValue plainValue)
     ///     {
-    ///         TargetAddress = (Address)plainValue["target_address"];
+    ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
+    ///         TargetAddress =
+    ///             new Address(dictionary.GetValue<Binary>("target_address").Value);
     ///     }
     /// }
-    ///
     /// // PolymorphicAction<T> requires concrete action classes marked with
     /// // ActionTypeAttribute.
     /// // There is only one required parameter to ActionTypeAttribute,
@@ -82,7 +78,7 @@ namespace Libplanet.Action
     /// {
     ///     public override IAccountStateDelta Execute(IActionContext context)
     ///     {
-    ///         var state = (ImmutableDictionary<string, uint>)
+    ///         var state =
     ///             context.PreviousStates.GetState(TargetAddress);
     ///         if (!TargetAddress.Equals(context.Signer))
     ///             throw new Exception(
@@ -93,10 +89,12 @@ namespace Libplanet.Action
     ///             throw new Exception("Character was already created.");
     ///         return context.PreviousStates.SetState(
     ///             TargetAddress,
-    ///             ImmutableDictionary<string, uint>.Empty.Add("hp", 20)
+    ///             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+    ///             {
+    ///                 [(Text)"hp"] = (Integer)20,
+    ///             })
     ///         );
     ///     }
-    ///
     ///     void IAction.Render(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
@@ -104,12 +102,11 @@ namespace Libplanet.Action
     ///         var c = new Character
     ///         {
     ///             Address = TargetAddress,
-    ///             Hp = nextStates.GetState(TargetAddress)["hp"],
+    ///             Hp = (int)((Integer)nextStates.GetState(TargetAddress)).Value,
     ///         };
     ///         c.Draw();
     ///         break;
     ///     }
-    ///
     ///     void IAction.Unrender(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
@@ -118,67 +115,74 @@ namespace Libplanet.Action
     ///         c.Hide();
     ///     }
     /// }
-    ///
     /// [ActionType("attack")]
     /// public sealed class Attack : ActionBase
     /// {
     ///     public override IAccountStateDelta Execute(IActionContext context)
     ///     {
-    ///         var state = (ImmutableDictionary<string, uint>)
-    ///             context.PreviousStates.GetState(TargetAddress);
+    ///         var state =
+    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
     ///         return context.PreviousStates.SetState(
     ///             TargetAddress,
-    ///             state.SetItem("hp", Math.Max(state["hp"] - 5, 0))
+    ///             (Bencodex.Types.Dictionary)state
+    ///                 .SetItem(
+    ///                     (Text)"hp",
+    ///                     (Integer)Math.Max((int)state.GetValue<Integer>("hp").Value - 5, 0))
     ///         );
     ///     }
-    ///
     ///     void IAction.Render(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         c.Hp = (int)((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
+    ///             .GetValue<Integer>("hp").Value;
     ///         c.Draw();
     ///     }
-    ///
     ///     void IAction.Unrender(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
+    ///         var target =
+    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
+    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
     ///         c.Draw();
     ///     }
     /// }
-    ///
     /// [ActionType("heal")]
     /// public sealed class Heal : ActionBase
     /// {
     ///     public override IAccountStateDelta Execute(IActionContext context)
     ///     {
-    ///         var state = (ImmutableDictionary<string, uint>)
-    ///             context.PreviousStates.GetState(TargetAddress);
+    ///         var state =
+    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
     ///         return context.PreviousStates.SetState(
     ///             TargetAddress,
-    ///             state.SetItem("hp", Math.Min(state["hp"] + 5, 20))
+    ///             (Bencodex.Types.Dictionary)state
+    ///                 .SetItem(
+    ///                     (Text)"hp",
+    ///                     (Integer)Math.Min((int)state.GetValue<Integer>("hp").Value + 5, 20))
     ///         );
     ///     }
-    ///
     ///     void IAction.Render(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = nextStates.GetState(TargetAddress)["hp"];
+    ///         var target =
+    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
+    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
     ///         c.Draw();
     ///     }
-    ///
     ///     void IAction.Unrender(
     ///         IActionContext context,
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = context.PreviousStates.GetState(TargetAddress)["hp"];
+    ///         var target =
+    ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
+    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
     ///         c.Draw();
     ///     }
     /// }
@@ -246,19 +250,18 @@ namespace Libplanet.Action
             }
         }
 
-        /// <inheritdoc/>
-        public IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>
+        public IValue PlainValue =>
+            new Dictionary(new Dictionary<IKey, IValue>
             {
                 {
-                    "type_id",
-                    ActionTypeAttribute.ValueOf(InnerAction.GetType())
+                    (Text)"type_id",
+                    (Text)ActionTypeAttribute.ValueOf(InnerAction.GetType())
                 },
                 {
-                    "values",
+                    (Text)"values",
                     InnerAction.PlainValue
                 },
-            }.ToImmutableDictionary();
+            });
 
         /// <summary>
         /// For convenience, an inner action <typeparamref name="T"/> can be
@@ -276,16 +279,21 @@ namespace Libplanet.Action
             return new PolymorphicAction<T>(innerAction);
         }
 
-        /// <inheritdoc/>
         public void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue
+            Dictionary plainValue
         )
         {
-            var typeStr = (string)plainValue["type_id"];
-            var innerAction = (T)Activator.CreateInstance(Types[typeStr]);
-            var values = (IDictionary<string, object>)plainValue["values"];
-            innerAction.LoadPlainValue(values.ToImmutableDictionary());
+            var typeStr = plainValue[(Text)"type_id"];
+            var innerAction = (T)Activator.CreateInstance(Types[typeStr.ToString()]);
+            var values = (Dictionary)plainValue[(Text)"values"];
+            innerAction.LoadPlainValue(values);
             InnerAction = innerAction;
+        }
+
+        /// <inheritdoc/>
+        public void LoadPlainValue(IValue plainValue)
+        {
+            LoadPlainValue((Dictionary)plainValue);
         }
 
         /// <inheritdoc/>

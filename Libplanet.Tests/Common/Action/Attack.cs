@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Bencodex.Types;
 using Libplanet.Action;
 
 namespace Libplanet.Tests.Common.Action
@@ -7,13 +8,13 @@ namespace Libplanet.Tests.Common.Action
     [ActionType("attack")]
     public class Attack : BaseAction
     {
-        public override IImmutableDictionary<string, object> PlainValue =>
-            new Dictionary<string, object>()
+        public override IValue PlainValue =>
+            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                { "weapon", Weapon },
-                { "target", Target },
-                { "target_address", TargetAddress.ToByteArray() },
-            }.ToImmutableDictionary();
+                [(Text)"weapon"] = (Text)Weapon,
+                [(Text)"target"] = (Text)Target,
+                [(Text)"target_address"] = new Binary(TargetAddress.ToByteArray()),
+            });
 
         public string Weapon { get; set; }
 
@@ -22,11 +23,16 @@ namespace Libplanet.Tests.Common.Action
         public Address TargetAddress { get; set; }
 
         public override void LoadPlainValue(
-            IImmutableDictionary<string, object> plainValue)
+            IValue plainValue)
         {
-            Weapon = (string)plainValue["weapon"];
-            Target = (string)plainValue["target"];
-            TargetAddress = new Address((byte[])plainValue["target_address"]);
+            LoadPlainValue((Bencodex.Types.Dictionary)plainValue);
+        }
+
+        public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
+        {
+            Weapon = (Text)plainValue[(Text)"weapon"];
+            Target = (Text)plainValue[(Text)"target"];
+            TargetAddress = new Address(((Binary)plainValue[(Text)"target_address"]).Value);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)
@@ -38,7 +44,7 @@ namespace Libplanet.Tests.Common.Action
             object value = previousStates.GetState(TargetAddress);
             if (!ReferenceEquals(value, null))
             {
-                var previousResult = (BattleResult)value;
+                var previousResult = BattleResult.FromBencodex((Bencodex.Types.Dictionary)value);
                 usedWeapons = previousResult.UsedWeapons;
                 targets = previousResult.Targets;
             }
@@ -47,7 +53,7 @@ namespace Libplanet.Tests.Common.Action
             targets = targets.Add(Target);
             var result = new BattleResult(usedWeapons, targets);
 
-            return previousStates.SetState(TargetAddress, result);
+            return previousStates.SetState(TargetAddress, result.ToBencodex());
         }
     }
 }
