@@ -39,6 +39,8 @@ namespace Libplanet.Store
 
         private readonly ReaderWriterLockSlim _txLock;
 
+        private readonly ReaderWriterLockSlim _blockLock;
+
         /// <summary>
         /// Creates a new <seealso cref="LiteDBStore"/>.
         /// </summary>
@@ -103,6 +105,7 @@ namespace Libplanet.Store
                     b => new Address(b.AsBinary));
             }
 
+            _blockLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
             _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
@@ -358,31 +361,55 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            return _db.FileStorage
-                .Find("block/")
-                .Select(file =>
-                    new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)));
+            _blockLock.EnterReadLock();
+            try
+            {
+                return _db.FileStorage
+                    .Find("block/")
+                    .Select(file => new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)))
+                    .ToList();
+            }
+            finally
+            {
+                _blockLock.ExitReadLock();
+            }
         }
 
         /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
-            foreach (Transaction<T> tx in block.Transactions)
+            _blockLock.EnterWriteLock();
+            try
             {
-                PutTransaction(tx);
-            }
+                foreach (Transaction<T> tx in block.Transactions)
+                {
+                    PutTransaction(tx);
+                }
 
-            UploadFile(
-                BlockFileId(block.Hash),
-                ByteUtil.Hex(block.Hash.ToByteArray()),
-                block.ToBencodex(true, false)
-            );
+                UploadFile(
+                    BlockFileId(block.Hash),
+                    ByteUtil.Hex(block.Hash.ToByteArray()),
+                    block.ToBencodex(true, false)
+                );
+            }
+            finally
+            {
+                _blockLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            return _db.FileStorage.Delete(BlockFileId(blockHash));
+            _blockLock.EnterWriteLock();
+            try
+            {
+                return _db.FileStorage.Delete(BlockFileId(blockHash));
+            }
+            finally
+            {
+                _blockLock.ExitWriteLock();
+            }
         }
 
         /// <inheritdoc/>
@@ -554,7 +581,15 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long CountBlocks()
         {
-            return _db.FileStorage.Find("block/").Count();
+            _blockLock.EnterReadLock();
+            try
+            {
+                return _db.FileStorage.Find("block/").Count();
+            }
+            finally
+            {
+                _blockLock.ExitReadLock();
+            }
         }
 
         public void Dispose()
@@ -571,20 +606,35 @@ namespace Libplanet.Store
 
         internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
         {
-            LiteFileInfo file =
-                _db.FileStorage.FindById(BlockFileId(blockHash));
-            if (file is null)
+            _blockLock.EnterUpgradeableReadLock();
+            try
             {
-                return null;
+                LiteFileInfo file = _db.FileStorage.FindById(BlockFileId(blockHash));
+                if (file is null)
+                {
+                    return null;
+                }
+
+                _blockLock.EnterWriteLock();
+                try
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        DownloadFile(file, stream);
+                        stream.Seek(0, SeekOrigin.Begin);
+
+                        var formatter = new BencodexFormatter<RawBlock>();
+                        return (RawBlock)formatter.Deserialize(stream);
+                    }
+                }
+                finally
+                {
+                    _blockLock.ExitWriteLock();
+                }
             }
-
-            using (var stream = new MemoryStream())
+            finally
             {
-                DownloadFile(file, stream);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var formatter = new BencodexFormatter<RawBlock>();
-                return (RawBlock)formatter.Deserialize(stream);
+                _blockLock.ExitUpgradeableReadLock();
             }
         }
 

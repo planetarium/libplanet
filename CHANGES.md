@@ -62,6 +62,7 @@ To be released.
     occurred.  [[#575]]
  -  Fixed a bug that `Swarm<T>` had thrown `InvalidBlockIndexException` during
     synchronizing with other reorganized peer.  [[#528], [#576]]
+ -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
@@ -87,6 +88,7 @@ To be released.
 [#576]: https://github.com/planetarium/libplanet/pull/576
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
+[#584]: https://github.com/planetarium/libplanet/pull/584
 
 
 Version 0.6.0
