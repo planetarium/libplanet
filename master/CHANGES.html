@@ -101,6 +101,11 @@ became replaced by <code>LoadPlainValue(IValue)</code>.</li>
 </li>
 <li>Removed <code>BlockChain&lt;T&gt;.Blocks</code>.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.Transactions</code>.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Removed the <code>linger</code> parameter from the <code>Swarm&lt;T&gt;()</code> constructor, and added
+the <code>waitFor</code> parameter to <code>Swarm&lt;T&gt;.StopAsync()</code> method instead.  [<a href="https://github.com/planetarium/libplanet/pull/581">#581</a>]</li>
+<li>Removed the <code>dialTimeout</code> parameter from the <code>Swarm&lt;T&gt;</code>() constructor, and
+added it to <code>Swarm&lt;T&gt;.PreloadAsync()</code> &amp; <code>Swarm&lt;T&gt;.StartAsync()</code> methods.
+[<a href="https://github.com/planetarium/libplanet/pull/581">#581</a>]</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -895,7 +900,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/24a2e5aa8e9cf7bf76564436059e0072251d9243/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/95c5e044cbb0b9856d9eddce5f4751cac0d8c383/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
