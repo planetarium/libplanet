@@ -252,8 +252,7 @@ namespace Libplanet.Store
             {
                 filenames = _db.FileStorage
                     .Find(TxIdPrefix)
-                    .Select(file => file.Filename)
-                    .ToList();
+                    .Select(file => file.Filename);
             }
             finally
             {
@@ -366,8 +365,7 @@ namespace Libplanet.Store
             {
                 return _db.FileStorage
                     .Find("block/")
-                    .Select(file => new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)))
-                    .ToList();
+                    .Select(file => new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)));
             }
             finally
             {
