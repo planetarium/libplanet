@@ -44,17 +44,13 @@ namespace Libplanet.Net
         private static readonly TimeSpan BlockHashRecvTimeout = TimeSpan.FromSeconds(3);
         private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
-
-        private readonly BlockChain<T> _blockChain;
         private readonly PrivateKey _privateKey;
         private readonly int _appProtocolVersion;
 
-        private readonly TimeSpan _dialTimeout;
         private readonly AsyncLock _runningMutex;
         private readonly AsyncLock _blockSyncMutex;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
-        private readonly TimeSpan _linger;
 
         private readonly ILogger _logger;
 
@@ -71,8 +67,6 @@ namespace Libplanet.Net
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationToken _cancellationToken;
         private IPAddress _publicIPAddress;
-        private IProtocol _protocol;
-
         private Task _runtimeProcessor;
 
         static Swarm()
@@ -87,36 +81,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
-            int millisecondsDialTimeout = 15000,
-            int millisecondsLinger = 1000,
-            string host = null,
-            int? listenPort = null,
-            DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs>
-                differentVersionPeerEncountered = null)
-            : this(
-                  blockChain,
-                  privateKey,
-                  appProtocolVersion,
-                  TimeSpan.FromMilliseconds(millisecondsDialTimeout),
-                  TimeSpan.FromMilliseconds(millisecondsLinger),
-                  null,
-                  null,
-                  host,
-                  listenPort,
-                  createdAt,
-                  iceServers,
-                  differentVersionPeerEncountered)
-        {
-        }
-
-        public Swarm(
-            BlockChain<T> blockChain,
-            PrivateKey privateKey,
-            int appProtocolVersion,
-            TimeSpan dialTimeout,
-            TimeSpan linger,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -127,8 +91,6 @@ namespace Libplanet.Net
                 blockChain,
                 privateKey,
                 appProtocolVersion,
-                dialTimeout,
-                linger,
                 null,
                 null,
                 host,
@@ -143,8 +105,6 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
-            TimeSpan dialTimeout,
-            TimeSpan linger,
             int? tableSize,
             int? bucketSize,
             string host = null,
@@ -156,9 +116,8 @@ namespace Libplanet.Net
         {
             Running = false;
 
-            _blockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
+            BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
-            _dialTimeout = dialTimeout;
             LastSeenTimestamps =
                 new ConcurrentDictionary<Peer, DateTimeOffset>();
 
@@ -175,7 +134,6 @@ namespace Libplanet.Net
             _host = host;
             _listenPort = listenPort;
             _appProtocolVersion = appProtocolVersion;
-            _linger = linger;
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
@@ -195,7 +153,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
-            _protocol = new KademliaProtocol<T>(
+            Protocol = new KademliaProtocol<T>(
                 this,
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
@@ -278,7 +236,7 @@ namespace Libplanet.Net
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
         /// synchronizes with.
         /// </summary>
-        public BlockChain<T> BlockChain => _blockChain;
+        public BlockChain<T> BlockChain { get; private set; }
 
         /// <summary>
         /// Whether this <see cref="Swarm{T}"/> instance is running.
@@ -300,9 +258,9 @@ namespace Libplanet.Net
             }
         }
 
-        internal ICollection<BoundPeer> Peers => _protocol.Peers;
+        internal ICollection<BoundPeer> Peers => Protocol.Peers;
 
-        internal IProtocol Protocol => _protocol;
+        internal IProtocol Protocol { get; private set; }
 
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
@@ -321,7 +279,16 @@ namespace Libplanet.Net
         }
 
         public async Task StopAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
+        {
+            await StopAsync(TimeSpan.FromSeconds(1), cancellationToken);
+        }
+
+        public async Task StopAsync(
+            TimeSpan waitFor,
+            CancellationToken cancellationToken = default(CancellationToken)
+        )
         {
             _workerCancellationTokenSource?.Cancel();
             _logger.Debug("Stopping...");
@@ -329,7 +296,7 @@ namespace Libplanet.Net
             {
                 if (Running)
                 {
-                    await Task.Delay(_linger, cancellationToken);
+                    await Task.Delay(waitFor, cancellationToken);
 
                     _broadcastQueue.ReceiveReady -= DoBroadcast;
                     _replyQueue.ReceiveReady -= DoReply;
@@ -353,18 +320,24 @@ namespace Libplanet.Net
         }
 
         public async Task StartAsync(
+            int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
+                TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
                 cancellationToken
             );
         }
 
+#pragma warning disable MEN002 // Line is too long
         /// <summary>
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
+        /// <param name="dialTimeout">
+        /// A timeout value for dialing.
+        /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
         /// /// <param name="cancellationToken">
@@ -380,9 +353,11 @@ namespace Libplanet.Net
         /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(IProgress{PreloadState}, IImmutableSet{Address}, CancellationToken)"
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address}, CancellationToken)"
         /// /> method too.</remarks>
+#pragma warning restore MEN002 // Line is too long
         public async Task StartAsync(
+            TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -457,7 +432,11 @@ namespace Libplanet.Net
 
             using (await _runningMutex.LockAsync())
             {
-                await PreloadAsync(render: true, cancellationToken: _cancellationToken);
+                await PreloadAsync(
+                    dialTimeout: dialTimeout,
+                    render: true,
+                    cancellationToken: _cancellationToken
+                );
                 Running = true;
             }
 
@@ -465,9 +444,9 @@ namespace Libplanet.Net
             {
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 tasks.Add(
-                    _protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
+                    Protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
                 tasks.Add(
-                    _protocol.RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+                    Protocol.RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(
                     Task.Run(() =>
                     {
@@ -540,7 +519,7 @@ namespace Libplanet.Net
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
 
-            await _protocol.BootstrapAsync(
+            await Protocol.BootstrapAsync(
                 peers.ToImmutableList(),
                 pingSeedTimeout,
                 findNeighborsTimeout,
@@ -568,6 +547,9 @@ namespace Libplanet.Net
         /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
+        /// <param name="dialTimeout">
+        /// A timeout value for dialing.
+        /// </param>
         /// <param name="progress">
         /// An instance that receives progress updates for block downloads.
         /// </param>
@@ -590,9 +572,10 @@ namespace Libplanet.Net
         /// </returns>
         /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
         /// If you want to render all <see cref="IAction"/>s from the genesis block to the recent
-        /// blocks use <see cref="StartAsync(TimeSpan, CancellationToken)"/> method
+        /// blocks use <see cref="StartAsync(TimeSpan, TimeSpan, CancellationToken)"/> method
         /// instead.</remarks>
         public Task PreloadAsync(
+            TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken)
@@ -600,6 +583,7 @@ namespace Libplanet.Net
         {
             return PreloadAsync(
                 render: false,
+                dialTimeout: dialTimeout,
                 progress: progress,
                 trustedStateValidators: trustedStateValidators,
                 cancellationToken: cancellationToken
@@ -609,6 +593,7 @@ namespace Libplanet.Net
         // FIXME: It is not guaranteed that states will be reported in order. see issue #436, #430
         internal async Task PreloadAsync(
             bool render,
+            TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
             CancellationToken cancellationToken = default(CancellationToken)
@@ -620,7 +605,10 @@ namespace Libplanet.Net
             }
 
             IList<(BoundPeer, long?)> peersWithHeight =
-                await DialToExistingPeers(cancellationToken).Select(pp =>
+                await DialToExistingPeers(
+                    dialTimeout,
+                    cancellationToken
+                ).Select(pp =>
                     (pp.Item1, pp.Item2.TipIndex)
                 ).ToListAsync(cancellationToken);
 
@@ -630,9 +618,9 @@ namespace Libplanet.Net
                 return;
             }
 
-            Block<T> initialTip = _blockChain.Tip;
-            BlockLocator initialLocator = _blockChain.GetBlockLocator();
-            _logger.Debug($"initialTip? : {_blockChain.Tip}");
+            Block<T> initialTip = BlockChain.Tip;
+            BlockLocator initialLocator = BlockChain.GetBlockLocator();
+            _logger.Debug($"initialTip? : {BlockChain.Tip}");
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -640,8 +628,8 @@ namespace Libplanet.Net
             // upon that forked workspace, and then if preloading ends replace the existing
             // blockchain with it.
             BlockChain<T> workspace = initialTip is Block<T> tip
-                ? _blockChain.Fork(tip.Hash)
-                : new BlockChain<T>(_blockChain.Policy, _blockChain.Store, Guid.NewGuid());
+                ? BlockChain.Fork(tip.Hash)
+                : new BlockChain<T>(BlockChain.Policy, BlockChain.Store, Guid.NewGuid());
 
             var complete = false;
 
@@ -732,7 +720,7 @@ namespace Libplanet.Net
                 }
 
                 if (!complete
-                    || workspace.Tip == _blockChain.Tip
+                    || workspace.Tip == BlockChain.Tip
                     || cancellationToken.IsCancellationRequested)
                 {
                     _logger.Debug(
@@ -740,8 +728,8 @@ namespace Libplanet.Net
                         "and make the existing chain ({2}: {3}) remains.",
                         workspace.Id,
                         workspace.Tip,
-                        _blockChain.Id,
-                        _blockChain.Tip
+                        BlockChain.Id,
+                        BlockChain.Tip
                     );
                     workspace.Store.DeleteChainId(workspace.Id);
                 }
@@ -750,12 +738,12 @@ namespace Libplanet.Net
                     _logger.Debug(
                         "Preloading finished; replace the existing chain ({0}: {1}) with " +
                         "the working chain ({2}: {3}).",
-                        _blockChain.Id,
-                        _blockChain.Tip,
+                        BlockChain.Id,
+                        BlockChain.Tip,
                         workspace.Id,
                         workspace.Tip
                     );
-                    _blockChain.Swap(workspace, render: false);
+                    BlockChain.Swap(workspace, render: false);
                 }
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -766,7 +754,7 @@ namespace Libplanet.Net
 #pragma warning disable SA1202
         public string TraceTable()
         {
-            return _protocol is null ? string.Empty : _protocol.Trace();
+            return Protocol is null ? string.Empty : Protocol.Trace();
         }
 #pragma warning restore SA1202
 
@@ -775,9 +763,9 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (_protocol is null)
+            if (Protocol is null)
             {
-                throw new ArgumentNullException(nameof(_protocol));
+                throw new ArgumentNullException(nameof(Protocol));
             }
 
             if (cancellationToken == default(CancellationToken))
@@ -787,7 +775,7 @@ namespace Libplanet.Net
 
             try
             {
-                KademliaProtocol<T> kp = (KademliaProtocol<T>)_protocol;
+                KademliaProtocol<T> kp = (KademliaProtocol<T>)Protocol;
 
                 var tasks = new List<Task>();
                 foreach (Peer peer in peers)
@@ -1075,6 +1063,7 @@ namespace Libplanet.Net
         }
 
         private IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
+            TimeSpan? dialTimeout,
             CancellationToken cancellationToken)
         {
             return new AsyncEnumerable<(BoundPeer, Pong)>(async yield =>
@@ -1084,7 +1073,11 @@ namespace Libplanet.Net
                     try
                     {
                         Message reply = await SendMessageWithReplyAsync(
-                            peer, new Ping(), _dialTimeout, cancellationToken);
+                            peer,
+                            new Ping(),
+                            dialTimeout,
+                            cancellationToken
+                        );
                         if (reply is Pong pong)
                         {
                             await yield.ReturnAsync((peer, pong));
@@ -1327,7 +1320,7 @@ namespace Libplanet.Net
                     await Task.Run(
                         () =>
                         {
-                            List<TxId> txIds = _blockChain
+                            List<TxId> txIds = BlockChain
                                 .GetStagedTransactionIds()
                                 .ToList();
 
@@ -1367,21 +1360,21 @@ namespace Libplanet.Net
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        _protocol.ReceiveMessage(this, ping);
+                        Protocol.ReceiveMessage(this, ping);
                         break;
                     }
 
                 case FindNeighbors findPeer:
                     {
                         _logger.Debug($"FindNeighbors received.");
-                        _protocol.ReceiveMessage(this, findPeer);
+                        Protocol.ReceiveMessage(this, findPeer);
                         break;
                     }
 
                 case GetBlockHashes getBlockHashes:
                     {
                         IEnumerable<HashDigest<SHA256>> hashes =
-                            _blockChain.FindNextHashes(
+                            BlockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 FindNextHashesChunkSize);
@@ -1442,7 +1435,7 @@ namespace Libplanet.Net
             }
 
             ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
-                .Where(hash => !_blockChain.Contains(hash))
+                .Where(hash => !BlockChain.Contains(hash))
                 .ToImmutableList();
 
             if (!newHashes.Any())
@@ -1587,13 +1580,13 @@ namespace Libplanet.Net
             // We assume that the blocks are sorted in order.
             Block<T> oldest = blocks.First();
             Block<T> latest = blocks.Last();
-            Block<T> tip = _blockChain.Tip;
+            Block<T> tip = BlockChain.Tip;
 
             if (tip is null || latest.Index > tip.Index)
             {
                 _logger.Debug("Trying to fill up previous blocks...");
                 await SyncPreviousBlocksAsync(
-                    _blockChain,
+                    BlockChain,
                     peer,
                     oldest.PreviousHash,
                     null,
@@ -1752,8 +1745,8 @@ namespace Libplanet.Net
         private void TransferTxs(GetTxs getTxs)
         {
             IEnumerable<Transaction<T>> txs = getTxs.TxIds
-                .Where(txId => _blockChain.Contains(txId))
-                .Select(_blockChain.GetTransaction);
+                .Where(txId => BlockChain.Contains(txId))
+                .Select(BlockChain.GetTransaction);
 
             foreach (Transaction<T> tx in txs)
             {
@@ -1780,7 +1773,7 @@ namespace Libplanet.Net
             _logger.Debug("Trying to fetch txs...");
 
             ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !_blockChain.Contains(id))
+                .Where(id => !BlockChain.Contains(id))
                 .ToImmutableHashSet();
 
             if (!newTxIds.Any())
@@ -1802,7 +1795,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            BlockChain.StageTransactions(txs.ToImmutableHashSet());
             TxReceived.Set();
             _logger.Debug("Txs staged successfully.");
 
@@ -1817,9 +1810,9 @@ namespace Libplanet.Net
 
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (_blockChain.Contains(hash))
+                if (BlockChain.Contains(hash))
                 {
-                    Block<T> block = _blockChain[hash];
+                    Block<T> block = BlockChain[hash];
                     byte[] payload = block.ToBencodex(true, true);
                     blocks.Add(payload);
                 }
@@ -1850,7 +1843,7 @@ namespace Libplanet.Net
         private void TransferRecentStates(GetRecentStates getRecentStates)
         {
             BlockLocator baseLocator = getRecentStates.BaseLocator;
-            HashDigest<SHA256>? @base = _blockChain.FindBranchPoint(baseLocator);
+            HashDigest<SHA256>? @base = BlockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, IValue>
@@ -1858,17 +1851,17 @@ namespace Libplanet.Net
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
 
-            if (_blockChain.Contains(target))
+            if (BlockChain.Contains(target))
             {
-                ReaderWriterLockSlim rwlock = _blockChain._rwlock;
+                ReaderWriterLockSlim rwlock = BlockChain._rwlock;
                 rwlock.EnterReadLock();
                 try
                 {
                     // FIXME: Swarm should not directly access to the IStore instance,
                     // but BlockChain<T> should have an indirect interface to its underlying
                     // store.
-                    IStore store = _blockChain.Store;
-                    Guid chainId = _blockChain.Id;
+                    IStore store = BlockChain.Store;
+                    Guid chainId = BlockChain.Id;
 
                     stateRefs = store.ListAllStateReferences(
                         chainId,
@@ -1993,8 +1986,8 @@ namespace Libplanet.Net
             try
             {
                 _logger.Debug($"Broadcasting message [{msg}]");
-                _logger.Debug($"Peers to broadcast : {_protocol.PeersToBroadcast.Count}");
-                _protocol.PeersToBroadcast.ParallelForEachAsync(async peer =>
+                _logger.Debug($"Peers to broadcast : {Protocol.PeersToBroadcast.Count}");
+                Protocol.PeersToBroadcast.ParallelForEachAsync(async peer =>
                 {
                     await SendMessageAsync(peer, msg);
                 });
@@ -2021,7 +2014,7 @@ namespace Libplanet.Net
             // FIXME: this works, but should be fixed.
             if (msg is Pong pong)
             {
-                pong.TipIndex = _blockChain.Tip?.Index;
+                pong.TipIndex = BlockChain.Tip?.Index;
                 msg = pong;
             }
 
@@ -2051,7 +2044,6 @@ namespace Libplanet.Net
 
                 using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
                 {
-                    dealer.Options.Linger = _linger;
                     _logger.Debug(
                         "Trying to send {@Message} to {PeerAddress}...",
                         req.Message,

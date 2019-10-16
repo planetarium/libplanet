@@ -26,6 +26,11 @@ To be released.
      -  Added `BencodexExtension` static class.
  -  Removed `BlockChain<T>.Blocks`.  [[#409], [#583]]
  -  Removed `BlockChain<T>.Transactions`.  [[#409], [#583]]
+ -  Removed the `linger` parameter from the `Swarm<T>()` constructor, and added
+    the `waitFor` parameter to `Swarm<T>.StopAsync()` method instead.  [[#581]]
+ -  Removed the `dialTimeout` parameter from the `Swarm<T>`() constructor, and
+    added it to `Swarm<T>.PreloadAsync()` & `Swarm<T>.StartAsync()` methods.
+    [[#581]]
 
 ### Added interfaces
 
@@ -80,6 +85,7 @@ To be released.
 [#566]: https://github.com/planetarium/libplanet/pull/566
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
+[#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
 
 
