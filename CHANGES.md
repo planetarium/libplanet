@@ -26,10 +26,11 @@ To be released.
      -  Added `BencodexExtension` static class.
  -  Removed `BlockChain<T>.Blocks`.  [[#409], [#583]]
  -  Removed `BlockChain<T>.Transactions`.  [[#409], [#583]]
- -  Removed the `linger` parameter from the `Swarm<T>` constructor and added
-    `waitFor` to `Swarm<T>.StopAsync()`.  [[#581]]
- -  Removed the `dialTimeout` parameter from the `Swarm<T>` constructor and
-    added it to `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()`.  [[#581]]
+ -  Removed the `linger` parameter from the `Swarm<T>()` constructor, and added
+    the `waitFor` parameter to `Swarm<T>.StopAsync()` method instead.  [[#581]]
+ -  Removed the `dialTimeout` parameter from the `Swarm<T>`() constructor, and
+    added it to `Swarm<T>.PreloadAsync()` & `Swarm<T>.StartAsync()` methods.
+    [[#581]]
 
 ### Added interfaces
 
