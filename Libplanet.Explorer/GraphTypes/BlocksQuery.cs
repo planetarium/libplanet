@@ -56,7 +56,7 @@ namespace Libplanet.Explorer.GraphTypes
                 {
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
-                    return _chain.Blocks[hash];
+                    return _chain[hash];
                 }
             );
 
@@ -107,7 +107,7 @@ namespace Libplanet.Explorer.GraphTypes
                     var id = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("id"))
                     );
-                    return _chain.Transactions[id];
+                    return _chain.GetTransaction(id);
                 }
             );
 
@@ -194,7 +194,7 @@ namespace Libplanet.Explorer.GraphTypes
         {
             if (desc && block.PreviousHash is HashDigest<SHA256> prev)
             {
-                return _chain.Blocks[prev];
+                return _chain[prev];
             }
             else if (!desc && block != _chain.Tip)
             {

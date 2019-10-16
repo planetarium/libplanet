@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -138,14 +139,14 @@ namespace Libplanet.Explorer.Executable
 
         internal class AppAgnosticAction : IAction
         {
-            public IImmutableDictionary<string, object> PlainValue
+            public IValue PlainValue
             {
                 get;
                 private set;
             }
 
             public void LoadPlainValue(
-                IImmutableDictionary<string, object> plainValue)
+                IValue plainValue)
             {
                 PlainValue = plainValue;
             }
