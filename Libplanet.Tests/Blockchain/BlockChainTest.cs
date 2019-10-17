@@ -420,6 +420,25 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task AppendWhenActionEvaluationFailed()
+        {
+            var policy = new NullPolicy<ThrowException>();
+            var blockChain = new BlockChain<ThrowException>(policy, _fx.Store);
+            var privateKey = new PrivateKey();
+
+            var action = new ThrowException { ThrowOnExecution = true };
+            var actions = new[] { action };
+            Transaction<ThrowException> tx = blockChain.MakeTransaction(privateKey, actions);
+
+            UnexpectedlyTerminatedActionException e =
+            await Assert.ThrowsAsync<UnexpectedlyTerminatedActionException>(async () =>
+                await blockChain.MineBlock(_fx.Address1));
+            Assert.IsType<ThrowException.SomeException>(e.InnerException);
+
+            Assert.Empty(blockChain);
+        }
+
+        [Fact]
         public void AppendValidatesBlock()
         {
             var blockChain = new BlockChain<DumbAction>(

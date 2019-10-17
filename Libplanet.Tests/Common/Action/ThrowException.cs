@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Bencodex.Types;
 using Libplanet.Action;
 using Boolean = Bencodex.Types.Boolean;
@@ -13,14 +12,15 @@ namespace Libplanet.Tests.Common.Action
         {
         }
 
-        public bool ThrowOnRehearsal { get; set; } = false;
+        public bool ThrowOnRehearsal { get; set; }
 
-        public bool ThrowOnExecution { get; set; } = false;
+        public bool ThrowOnExecution { get; set; }
 
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
-                [(Text)"throw"] = new Bencodex.Types.Boolean(ThrowOnRehearsal),
+                [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
+                [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
             });
 
         public void LoadPlainValue(IValue plainValue)
@@ -30,7 +30,8 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw").Value;
+            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal").Value;
+            ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution").Value;
         }
 
         public IAccountStateDelta Execute(IActionContext context)
