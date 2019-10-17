@@ -49,8 +49,6 @@ To be released.
  -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
- -  `BlockSerializationContext`, `TransactionSerializationContext`, `RawBlock`,
-	`RawTransaction` and `MessageRequest` became readonly structures.  [[#588]]
 
 ### Bug fixes
 
@@ -96,7 +94,6 @@ To be released.
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
 [#584]: https://github.com/planetarium/libplanet/pull/584
-[#588]: https://github.com/planetarium/libplanet/pull/588
 
 
 Version 0.6.0
