@@ -23,6 +23,7 @@ https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
+    <LangVersion>7.2</LangVersion>
     <PackageDocumentationFile>README.md</PackageDocumentationFile>
     <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>

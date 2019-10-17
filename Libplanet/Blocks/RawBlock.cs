@@ -4,7 +4,7 @@ using Libplanet.Serialization;
 
 namespace Libplanet.Blocks
 {
-    internal struct RawBlock : ISerializable
+    internal readonly struct RawBlock : ISerializable
     {
         public RawBlock(
             long index,

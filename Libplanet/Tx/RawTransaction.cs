@@ -12,7 +12,7 @@ using Libplanet.Serialization;
 namespace Libplanet.Tx
 {
     [Equals]
-    internal struct RawTransaction : ISerializable
+    internal readonly struct RawTransaction : ISerializable
     {
         public RawTransaction(SerializationInfo info, StreamingContext context)
             : this(
