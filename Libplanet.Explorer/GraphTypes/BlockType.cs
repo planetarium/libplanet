@@ -22,7 +22,7 @@ namespace Libplanet.Explorer.GraphTypes
             Field<BlockType<T>>(
                 "PreviousBlock",
                 resolve: ctx => ctx.Source.PreviousHash is HashDigest<SHA256> h
-                    ? ((BlockChain<T>)ctx.UserContext).Blocks[h]
+                    ? ((BlockChain<T>)ctx.UserContext)[h]
                     : null
             );
             Field(x => x.Timestamp);

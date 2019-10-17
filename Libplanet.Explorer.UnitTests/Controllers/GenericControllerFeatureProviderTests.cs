@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.Controllers;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -39,7 +40,7 @@ namespace Libplanet.Explorer.UnitTests.Controllers
 
         private class TestAction : IAction
         {
-            public void LoadPlainValue(IImmutableDictionary<string, object> plainValue)
+            public void LoadPlainValue(IValue plainValue)
             {
             }
 
@@ -53,8 +54,8 @@ namespace Libplanet.Explorer.UnitTests.Controllers
             {
             }
 
-            public IImmutableDictionary<string, object> PlainValue =>
-                ImmutableDictionary<string, object>.Empty;
+            public IValue PlainValue =>
+                default(Dictionary);
         }
 
         private class TestActionController
