@@ -502,7 +502,7 @@ namespace Libplanet.Blocks
             return rawBlock;
         }
 
-        private struct BlockSerializationContext
+        private readonly struct BlockSerializationContext
         {
             public BlockSerializationContext(bool hash, bool transactionData)
             {

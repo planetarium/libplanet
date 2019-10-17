@@ -854,15 +854,7 @@ namespace Libplanet.Net
                 _logger.Verbose("Adding request ({RequestId}) to queue...", reqId);
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 await _requests.AddAsync(
-                    new MessageRequest
-                    {
-                       Id = reqId,
-                       Message = message,
-                       Peer = peer,
-                       Timeout = timeout,
-                       ExpectedResponses = expectedResponses,
-                       TaskCompletionSource = tcs,
-                    }
+                    new MessageRequest(reqId, message, peer, timeout, expectedResponses, tcs)
                 );
                 _logger.Verbose("Request Added. waiting for reply...");
                 IEnumerable<Message> reply = await tcs.Task;
@@ -2170,19 +2162,35 @@ namespace Libplanet.Net
             }
         }
 
-        private struct MessageRequest
+        private readonly struct MessageRequest
         {
-            public Guid Id { get; set; }
+            public MessageRequest(
+                Guid id,
+                Message message,
+                BoundPeer peer,
+                TimeSpan? timeout,
+                int expectedResponses,
+                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
+            {
+                Id = id;
+                Message = message;
+                Peer = peer;
+                Timeout = timeout;
+                ExpectedResponses = expectedResponses;
+                TaskCompletionSource = taskCompletionSource;
+            }
 
-            public Message Message { get; set; }
+            public Guid Id { get; }
 
-            public BoundPeer Peer { get; set; }
+            public Message Message { get; }
 
-            public TimeSpan? Timeout { get; set; }
+            public BoundPeer Peer { get; }
 
-            public int ExpectedResponses { get; set; }
+            public TimeSpan? Timeout { get; }
 
-            public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; set; }
+            public int ExpectedResponses { get; }
+
+            public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
         }
     }
 }
