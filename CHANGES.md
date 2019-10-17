@@ -49,6 +49,7 @@ To be released.
  -  Added .NET Core 2.2 as a targeted framework.  [[#209], [#561]]
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
+ -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
 
 ### Bug fixes
 
@@ -94,6 +95,7 @@ To be released.
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
 [#584]: https://github.com/planetarium/libplanet/pull/584
+[#592]: https://github.com/planetarium/libplanet/pull/592
 
 
 Version 0.6.0
