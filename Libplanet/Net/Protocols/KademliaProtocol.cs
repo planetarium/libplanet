@@ -106,7 +106,7 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
-                    await RemovePeerAsync(peer);
+                    await RemovePeerAsync(peer, cancellationToken);
                     continue;
                 }
                 catch (Exception)
@@ -173,7 +173,7 @@ namespace Libplanet.Net.Protocols
 
                     _logger.Debug("Refreshing table...");
                     List<Task> tasks = PeersToBroadcast.Select(
-                        peer => PingAsync(peer, _requestTimeout, cancellationToken)).ToList();
+                        peer => ValidateAsync(peer, _requestTimeout, cancellationToken)).ToList();
 
                     await Task.WhenAll(tasks);
                     cancellationToken.ThrowIfCancellationRequested();
@@ -325,6 +325,32 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>.
+        /// </summary>
+        /// <param name="peer">A <see cref="BoundPeer"/> to validate.</param>
+        /// <param name="timeout">Timeout for waiting reply of <see cref="Ping"/>.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        private async Task ValidateAsync(
+            BoundPeer peer,
+            TimeSpan timeout,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            try
+            {
+                _logger.Debug("Validating {Peer}", peer.Address);
+                await PingAsync(peer, timeout, cancellationToken);
+            }
+            catch (TimeoutException)
+            {
+                _logger.Debug("{Peer} is invalid, removing...", peer.Address);
+                await RemovePeerAsync(peer, cancellationToken);
+                throw;
+            }
+        }
+
         // This updates routing table when receiving a message.
         // if corresponding bucket for remote peer is not full, just adds remote peer.
         // otherwise check whether if the least recently used (LRU) peer
@@ -372,14 +398,13 @@ namespace Libplanet.Net.Protocols
                         _routing.BucketOf(peer).ReplacementCache.Add(peer);
                     }
 
-                    await PingAsync(
+                    await ValidateAsync(
                         evictionCandidate,
                         _requestTimeout,
                         cancellationToken);
                 }
                 catch (TimeoutException)
                 {
-                    await RemovePeerAsync(evictionCandidate);
                     _logger.Verbose(
                         "Peer ({Candidate}) has been evicted.",
                         evictionCandidate);
@@ -388,7 +413,7 @@ namespace Libplanet.Net.Protocols
         }
 
         // FIXME: If this method is called almost same time, problem occurs.
-        private async Task RemovePeerAsync(BoundPeer peer)
+        private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
             _logger.Debug($"Removing peer [{peer.Address.ToHex()}] from table.");
             await _routing.RemovePeerAsync(peer);
@@ -397,10 +422,9 @@ namespace Libplanet.Net.Protocols
             bucket.ReplacementCache.CopyTo(cachePeers);
             foreach (BoundPeer replacement in cachePeers)
             {
-                // FIXME: appropriate cancellation token required.
                 try
                 {
-                    await PingAsync(replacement, _requestTimeout, CancellationToken.None);
+                    await PingAsync(replacement, _requestTimeout, cancellationToken);
                     break;
                 }
                 catch (TimeoutException)
@@ -506,7 +530,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException)
             {
-                await RemovePeerAsync(addressee);
+                await RemovePeerAsync(addressee, cancellationToken);
                 throw;
             }
         }
