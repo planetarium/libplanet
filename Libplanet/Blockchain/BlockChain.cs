@@ -750,6 +750,19 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
+        /// Render actions from block index of <paramref name="offset"/> + 1.
+        /// </summary>
+        /// <param name="offset">Index of latest block which was rendered.</param>
+        internal void Render(long offset)
+        {
+            foreach (var block in IterateBlocks((int)offset + 1))
+            {
+                // FIXME: Execution duplicated?
+                ExecuteActions(block, true);
+            }
+        }
+
+        /// <summary>
         /// Evaluates actions in the given <paramref name="block"/> and fills states with the
         /// results, and renders them if <paramref name="render"/> is turned on.
         /// </summary>
