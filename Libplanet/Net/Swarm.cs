@@ -1584,19 +1584,26 @@ namespace Libplanet.Net
 
             if (tip is null || latest.Index > tip.Index)
             {
-                _logger.Debug("Trying to fill up previous blocks...");
-                await SyncPreviousBlocksAsync(
-                    BlockChain,
-                    peer,
-                    oldest.PreviousHash,
-                    null,
-                    blocks.Count,
-                    evaluateActions: true,
-                    cancellationToken: cancellationToken
-                );
-                _logger.Debug("Filled up; trying to concatenation...");
+                if (oldest.PreviousHash is null)
+                {
+                    _logger.Debug("The oldest block[{block}] seems to be genesis.", oldest);
+                }
+                else
+                {
+                    _logger.Debug("Trying to fill up previous blocks...");
+                    await SyncPreviousBlocksAsync(
+                        BlockChain,
+                        peer,
+                        oldest.PreviousHash,
+                        null,
+                        blocks.Count,
+                        evaluateActions: true,
+                        cancellationToken: cancellationToken
+                    );
+                    _logger.Debug("Filled up; trying to concatenation...");
+                }
 
-                foreach (Block<T> block in blocks.SkipWhile(b => BlockChain.Contains(b.Hash)))
+                foreach (Block<T> block in blocks)
                 {
                     BlockChain.Append(block);
                 }
