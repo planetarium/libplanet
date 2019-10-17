@@ -172,8 +172,16 @@ namespace Libplanet.Net.Protocols
                     await Task.Delay(period, cancellationToken);
 
                     _logger.Debug("Refreshing table...");
-                    List<Task> tasks = PeersToBroadcast.Select(
-                        peer => ValidateAsync(peer, _requestTimeout, cancellationToken)).ToList();
+                    List<Task> tasks = _routing.NonEmptyBuckets
+                        .Where(bucket => bucket.Tail.Item1 > DateTimeOffset.UtcNow + period)
+                        .Select(bucket =>
+                            ValidateAsync(
+                                bucket.Tail.Item2,
+                                _requestTimeout,
+                                cancellationToken)
+                    ).ToList();
+
+                    _logger.Debug("Refresh candidates: {count}", tasks.Count);
 
                     await Task.WhenAll(tasks);
                     cancellationToken.ThrowIfCancellationRequested();
@@ -388,16 +396,16 @@ namespace Libplanet.Net.Protocols
             }
             else
             {
+                if (!_routing.BucketOf(peer).ReplacementCache.Contains(peer))
+                {
+                    _routing.BucketOf(peer).ReplacementCache.Add(peer);
+                }
+
                 _logger.Verbose(
                     "Need to evict {Candidate}; trying...",
                     evictionCandidate);
                 try
                 {
-                    if (!_routing.BucketOf(peer).ReplacementCache.Contains(peer))
-                    {
-                        _routing.BucketOf(peer).ReplacementCache.Add(peer);
-                    }
-
                     await ValidateAsync(
                         evictionCandidate,
                         _requestTimeout,
