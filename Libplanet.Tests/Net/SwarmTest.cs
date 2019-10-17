@@ -1258,6 +1258,92 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastBlockWithSkip()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var fx = new LiteDBStoreFixture(memory: true);
+            var blockChain = new BlockChain<DumbAction>(policy, fx.Store);
+            var privateKey = new PrivateKey();
+            var minerSwarm = new Swarm<DumbAction>(
+                blockChain,
+                privateKey,
+                appProtocolVersion: 1,
+                host: IPAddress.Loopback.ToString());
+            Swarm<DumbAction> receiverSwarm = _swarms[0];
+
+            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+
+            int renderCount = 0;
+
+            void RenderHandler(object target, IAction action)
+            {
+                renderCount += 1;
+            }
+
+            DumbAction.RenderEventHandler += RenderHandler;
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(fx.Address1);
+            blockChain.Append(genesis);
+            _blockchains[0].Append(genesis);
+            Transaction<DumbAction>[] transactions =
+            {
+                fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(fx.Address2, "foo"),
+                        new DumbAction(fx.Address2, "bar"),
+                    },
+                    timestamp: DateTimeOffset.MinValue,
+                    nonce: 0,
+                    privateKey: privateKey),
+                fx.MakeTransaction(
+                    new[]
+                    {
+                        new DumbAction(fx.Address2, "baz"),
+                        new DumbAction(fx.Address2, "qux"),
+                    },
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(5),
+                    nonce: 1,
+                    privateKey: privateKey),
+            };
+
+            try
+            {
+                await StartAsync(minerSwarm);
+                await StartAsync(receiverSwarm);
+
+                await BootstrapAsync(receiverSwarm, minerSwarm.AsPeer);
+
+                var block1 = TestUtils.MineNext(
+                    genesis,
+                    new[] { transactions[0] },
+                    null,
+                    policy.GetNextBlockDifficulty(blockChain));
+                blockChain.Append(block1, DateTimeOffset.MinValue.AddSeconds(3), true, false);
+                var block2 = TestUtils.MineNext(
+                    block1,
+                    new[] { transactions[1] },
+                    null,
+                    policy.GetNextBlockDifficulty(blockChain));
+                blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, false);
+                Log.Debug("Ready to broadcast blocks.");
+                minerSwarm.BroadcastBlocks(new[] { block2 });
+                await receiverSwarm.BlockReceived.WaitAsync();
+
+                Assert.Equal(3, _blockchains[0].Count());
+                Assert.Equal(4, renderCount);
+            }
+            finally
+            {
+                await minerSwarm.StopAsync();
+                await receiverSwarm.StopAsync();
+                fx.Dispose();
+                minerSwarm.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithoutGenesis()
         {
             Swarm<DumbAction> swarmA = _swarms[0];
