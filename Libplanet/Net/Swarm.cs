@@ -1596,7 +1596,7 @@ namespace Libplanet.Net
                 );
                 _logger.Debug("Filled up; trying to concatenation...");
 
-                foreach (Block<T> block in blocks.SkipWhile(b => BlockChain.Contains(b)))
+                foreach (Block<T> block in blocks.SkipWhile(b => BlockChain.Contains(b.Hash)))
                 {
                     BlockChain.Append(block);
                 }
