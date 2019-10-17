@@ -137,6 +137,10 @@ already received when blockchain is empty.  [<a href="https://github.com/planeta
 occurred.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had thrown <code>InvalidBlockIndexException</code> during
 synchronizing with other reorganized peer.  [<a href="https://github.com/planetarium/libplanet/issues/528">#528</a>, <a href="https://github.com/planetarium/libplanet/pull/576">#576</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> does not render actions in blocks which are
+filled from other peers.  [<a href="https://github.com/planetarium/libplanet/pull/579">#579</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> renders actions in same block multiple times
+when reorg happens.  [<a href="https://github.com/planetarium/libplanet/pull/579">#579</a>]</li>
 <li><code>LiteDBStore</code> became to guarantee atomicity of storing blocks. [<a href="https://github.com/planetarium/libplanet/pull/584">#584</a>]</li>
 </ul>
 <h2 id="version-060">Version 0.6.0</h2>
@@ -901,7 +905,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/1d75db47e36bda65e89884f6d9003cffa942f5a3/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/25f13ef133d8a013902bd6bf605799e5ded37622/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
