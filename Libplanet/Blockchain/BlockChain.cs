@@ -716,14 +716,14 @@ namespace Libplanet.Blockchain
                     nonceDeltas[txSigner] = nonceDelta + 1;
                 }
 
-                if (evaluateActions)
-                {
-                    evaluations = ExecuteActions(block);
-                }
-
                 _rwlock.EnterWriteLock();
                 try
                 {
+                    if (evaluateActions)
+                    {
+                        evaluations = ExecuteActions(block);
+                    }
+
                     Block<T> prevTip = Tip;
                     _blocks[block.Hash] = block;
                     foreach (KeyValuePair<Address, long> pair in nonceDeltas)
