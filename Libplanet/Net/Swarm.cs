@@ -604,11 +604,19 @@ namespace Libplanet.Net
                 trustedStateValidators = ImmutableHashSet<Address>.Empty;
             }
 
+            Block<T> initialTip = BlockChain.Tip;
+            BlockLocator initialLocator = BlockChain.GetBlockLocator();
+            _logger.Debug($"initialTip? : {BlockChain.Tip}");
+
             IList<(BoundPeer, long?)> peersWithHeight =
                 await DialToExistingPeers(
                     dialTimeout,
                     cancellationToken
-                ).Select(pp =>
+                )
+                .Where(
+                    pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1)
+                )
+                .Select(pp =>
                     (pp.Item1, pp.Item2.TipIndex)
                 ).ToListAsync(cancellationToken);
 
@@ -617,10 +625,6 @@ namespace Libplanet.Net
                 _logger.Information("There is no appropriate peer for preloading.");
                 return;
             }
-
-            Block<T> initialTip = BlockChain.Tip;
-            BlockLocator initialLocator = BlockChain.GetBlockLocator();
-            _logger.Debug($"initialTip? : {BlockChain.Tip}");
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
