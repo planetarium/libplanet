@@ -68,7 +68,7 @@ To be released.
  -  Fixed a bug where `Swarm<T>` renders actions in same block multiple times
     when reorg happens.  [[#579]]
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
- -  Fixed a bug that actions are executed after appending a block.  [[#591]]
+ -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to evaluate.  [[#591]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
