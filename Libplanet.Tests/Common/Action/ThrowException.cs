@@ -16,11 +16,14 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnExecution { get; set; }
 
+        public bool ThrowOnRendering { get; set; }
+
         public IValue PlainValue =>
-            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+            new Dictionary(new Dictionary<IKey, IValue>
             {
                 [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
                 [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
+                [(Text)"throw_on_rendering"] = new Boolean(ThrowOnRendering),
             });
 
         public void LoadPlainValue(IValue plainValue)
@@ -32,6 +35,7 @@ namespace Libplanet.Tests.Common.Action
         {
             ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal").Value;
             ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution").Value;
+            ThrowOnRendering = plainValue.GetValue<Boolean>("throw_on_rendering").Value;
         }
 
         public IAccountStateDelta Execute(IActionContext context)
@@ -48,6 +52,10 @@ namespace Libplanet.Tests.Common.Action
             IActionContext context,
             IAccountStateDelta nextStates)
         {
+            if (ThrowOnRendering)
+            {
+                throw new SomeException("An expected exception.");
+            }
         }
 
         public void Unrender(

@@ -701,7 +701,7 @@ namespace Libplanet.Net
                             continue;
                         }
 
-                        workspace.ExecuteActions(block, render: false);
+                        workspace.ExecuteActions(block);
                         _logger.Debug("Executed actions in the block {0}.", block.Hash);
                         progress?.Report(new ActionExecutionState()
                         {
@@ -1556,7 +1556,7 @@ namespace Libplanet.Net
                     {
                         if (evaluateActions)
                         {
-                            blockChain.Render(previousTipIndex);
+                            blockChain.RenderBlocks(previousTipIndex + 1);
                         }
                     }
                     else

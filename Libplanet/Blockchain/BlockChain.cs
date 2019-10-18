@@ -678,6 +678,7 @@ namespace Libplanet.Blockchain
 
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
+            IReadOnlyList<ActionEvaluation> evaluations = null;
             _rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -689,8 +690,6 @@ namespace Libplanet.Blockchain
                     _logger.Error(e, "Append failed. The block is invalid.");
                     throw e;
                 }
-
-                HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
 
                 var nonceDeltas = new Dictionary<Address, long>();
 
@@ -719,7 +718,7 @@ namespace Libplanet.Blockchain
 
                 if (evaluateActions)
                 {
-                    ExecuteActions(block, renderActions);
+                    evaluations = ExecuteActions(block);
                 }
 
                 _rwlock.EnterWriteLock();
@@ -759,60 +758,64 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitUpgradeableReadLock();
             }
+
+            if (renderActions)
+            {
+                RenderBlock(evaluations, block);
+            }
         }
 
         /// <summary>
-        /// Render actions from block index of <paramref name="offset"/> + 1.
+        /// Render actions from block index of <paramref name="offset"/>.
         /// </summary>
-        /// <param name="offset">Index of latest block which was rendered.</param>
-        internal void Render(long offset)
+        /// <param name="offset">Index of the block to start rendering from.</param>
+        internal void RenderBlocks(long offset)
         {
-            foreach (var block in IterateBlocks((int)offset + 1))
+            // FIXME: We should consider the case where block count is larger than int.MaxSize.
+            foreach (var block in IterateBlocks((int)offset))
             {
-                // FIXME: Execution duplicated?
-                ExecuteActions(block, true);
+                RenderBlock(null, block);
+            }
+        }
+
+        /// <summary>
+        /// Render actions of the given <paramref name="block"/>.
+        /// </summary>
+        /// <param name="evaluations"><see cref="ActionEvaluation"/>s of the block.  If it is
+        /// <c>null</c>, evaluate actions of the <paramref name="block"/> again.</param>
+        /// <param name="block"><see cref="Block{T}"/> to render actions.</param>
+        internal void RenderBlock(IReadOnlyList<ActionEvaluation> evaluations, Block<T> block)
+        {
+            _logger.Debug("Render actions in block {blockIndex}: {block}", block?.Index, block);
+
+            if (evaluations is null)
+            {
+                evaluations = EvaluateActions(block);
+            }
+
+            foreach (var evaluation in evaluations)
+            {
+                evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
             }
         }
 
         /// <summary>
         /// Evaluates actions in the given <paramref name="block"/> and fills states with the
-        /// results, and renders them if <paramref name="render"/> is turned on.
+        /// results.
         /// </summary>
         /// <param name="block">A block to execute.</param>
-        /// <param name="render">Whether to render actions.  This is not idempotent; even if
-        /// the given <paramref name="block"/> has executed before in the blockchain,
-        /// its actions are rendered anyway.</param>
+        /// <returns>The result of action evaluations of the given <paramref name="block"/>.
+        /// </returns>
         /// <remarks>This method is idempotent (except for rendering).  If the given
         /// <paramref name="block"/> has executed before, it does not execute it nor mutate states.
         /// </remarks>
-        internal void ExecuteActions(Block<T> block, bool render)
+        internal IReadOnlyList<ActionEvaluation> ExecuteActions(Block<T> block)
         {
             _logger.Debug("Execute action in block {blockIndex}: {block}", block?.Index, block);
-            IReadOnlyList<ActionEvaluation> EvaluateActions()
-            {
-                AccountStateGetter stateGetter;
-                if (block.PreviousHash is null)
-                {
-                    stateGetter = _ => null;
-                }
-                else
-                {
-                    stateGetter = a =>
-                        GetState(a, block.PreviousHash).GetValueOrDefault(a);
-                }
-
-                ImmutableList<ActionEvaluation> txEvaluations = block
-                    .Evaluate(DateTimeOffset.UtcNow, stateGetter)
-                    .ToImmutableList();
-                return Policy.BlockAction is IAction
-                    ? txEvaluations.Add(EvaluateBlockAction(block, txEvaluations))
-                    : txEvaluations;
-            }
-
             IReadOnlyList<ActionEvaluation> evaluations = null;
             if (Store.GetBlockStates(block.Hash) is null)
             {
-                evaluations = EvaluateActions();
+                evaluations = EvaluateActions(block);
                 _rwlock.EnterWriteLock();
                 try
                 {
@@ -824,27 +827,27 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            if (render)
+            return evaluations;
+        }
+
+        internal IReadOnlyList<ActionEvaluation> EvaluateActions(Block<T> block)
+        {
+            AccountStateGetter stateGetter;
+            if (block.PreviousHash is null)
             {
-                if (evaluations is null)
-                {
-                    evaluations = EvaluateActions();
-                }
-
-                _logger.Debug(
-                    "Evaluation in block {blockIndex}: {block} completed. Rendering...",
-                    block?.Index,
-                    block);
-
-                foreach (var evaluation in evaluations)
-                {
-                    _logger.Debug("Rendering action {action}", evaluation.Action);
-                    evaluation.Action.Render(
-                        evaluation.InputContext,
-                        evaluation.OutputStates
-                    );
-                }
+                stateGetter = _ => null;
             }
+            else
+            {
+                stateGetter = a => GetState(a, block.PreviousHash).GetValueOrDefault(a);
+            }
+
+            ImmutableList<ActionEvaluation> txEvaluations = block
+                .Evaluate(DateTimeOffset.UtcNow, stateGetter)
+                .ToImmutableList();
+            return Policy.BlockAction is null
+                ? txEvaluations
+                : txEvaluations.Add(EvaluateBlockAction(block, txEvaluations));
         }
 
         internal ActionEvaluation EvaluateBlockAction(
@@ -1184,28 +1187,7 @@ namespace Libplanet.Blockchain
                     ? branchPoint.Index + 1
                     : 0;
 
-                // FIXME: We should consider the case where block count is larger than int.MaxSize.
-                foreach (Block<T> b in IterateBlocks(offset: (int)startToRenderIndex))
-                {
-                    List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetState(a, b.PreviousHash).GetValueOrDefault(a))
-                        .Select(te => te.Item2).ToList();
-
-                    if (Policy.BlockAction is IAction)
-                    {
-                        evaluations.Add(EvaluateBlockAction(b, evaluations));
-                    }
-
-                    foreach (var evaluation in evaluations)
-                    {
-                        _logger.Debug("Rendering action {action}", evaluation.Action);
-                        evaluation.Action.Render(
-                            evaluation.InputContext,
-                            evaluation.OutputStates
-                        );
-                    }
-                }
-
+                RenderBlocks(startToRenderIndex);
                 _logger.Debug($"Render for {nameof(Swap)}() is completed.");
             }
         }
