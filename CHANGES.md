@@ -50,7 +50,7 @@ To be released.
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
- -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only staled
+ -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
     peers.  [[#568], [#593]]
 
 ### Bug fixes
@@ -72,8 +72,8 @@ To be released.
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
- -  Fixed a bug where `KademliaProtocol<T>.RefreshTableAsync()` didn't remove
-    staled peers.  [[#568], [#593]]
+ -  Fixed a bug where `KademliaProtocol<T>.RefreshTableAsync()` hadn't remove
+    stale peers.  [[#568], [#593]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
 
