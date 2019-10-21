@@ -92,3 +92,10 @@ See also: https://www.mono-project.com/
     & "$BaseDir\docfx\docfx.exe" "$BaseDir/docfx.json" @args
   }
 }
+
+if (-not (Test-Path "$BaseDir/_site/api/Libplanet.html")) {
+      Write-Error @"
+Failed to build: _site/api/Libplanet.html doesn't exist.
+"@
+    exit 127
+}
