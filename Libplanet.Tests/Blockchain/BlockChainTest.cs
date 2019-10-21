@@ -420,6 +420,42 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task AppendWhenActionEvaluationFailed()
+        {
+            var policy = new NullPolicy<ThrowException>();
+            var blockChain = new BlockChain<ThrowException>(policy, _fx.Store);
+            var privateKey = new PrivateKey();
+
+            var action = new ThrowException { ThrowOnExecution = true };
+            var actions = new[] { action };
+            blockChain.MakeTransaction(privateKey, actions);
+
+            UnexpectedlyTerminatedActionException e =
+            await Assert.ThrowsAsync<UnexpectedlyTerminatedActionException>(async () =>
+                await blockChain.MineBlock(_fx.Address1));
+            Assert.IsType<ThrowException.SomeException>(e.InnerException);
+
+            Assert.Empty(blockChain);
+        }
+
+        [Fact]
+        public async Task RenderAfterAppendComplete()
+        {
+             var policy = new NullPolicy<ThrowException>();
+             var blockChain = new BlockChain<ThrowException>(policy, _fx.Store);
+             var privateKey = new PrivateKey();
+
+             var action = new ThrowException { ThrowOnRendering = true };
+             var actions = new[] { action };
+             blockChain.MakeTransaction(privateKey, actions);
+
+             await Assert.ThrowsAsync<ThrowException.SomeException>(async () =>
+                 await blockChain.MineBlock(_fx.Address1));
+
+             Assert.Single(blockChain);
+        }
+
+        [Fact]
         public void AppendValidatesBlock()
         {
             var blockChain = new BlockChain<DumbAction>(
@@ -452,7 +488,7 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{addresses[4]},{addresses[4]}" },
             };
 
-            _blockChain.ExecuteActions(blocks[1], true);
+            _blockChain.ExecuteActions(blocks[1]);
             Assert.Equal(
                 expectedStates.ToImmutableDictionary(),
                 _blockChain.Store.GetBlockStates(blocks[1].Hash)
@@ -1374,7 +1410,7 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal(1, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
 
-            _blockChain.ExecuteActions(blocks[0], true);
+            _blockChain.ExecuteActions(blocks[0]);
             _blockChain.Append(
                 blocks[1],
                 DateTimeOffset.UtcNow,
