@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tx;
+using Serilog;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Blockchain
@@ -38,6 +39,7 @@ namespace Libplanet.Blockchain
             Justification = "Temporary visibility.")]
         internal readonly ReaderWriterLockSlim _rwlock;
         private readonly object _txLock;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
@@ -86,6 +88,9 @@ namespace Libplanet.Blockchain
             {
                 Store.SetCanonicalChainId(Id);
             }
+
+            _logger = Log.ForContext<BlockChain<T>>()
+                .ForContext("CanonicalChainId", Id);
         }
 
         ~BlockChain()
@@ -671,6 +676,8 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
+
             _rwlock.EnterUpgradeableReadLock();
             try
             {
@@ -679,6 +686,7 @@ namespace Libplanet.Blockchain
 
                 if (!(e is null))
                 {
+                    _logger.Error(e, "Append failed. The block is invalid.");
                     throw e;
                 }
 
@@ -697,6 +705,7 @@ namespace Libplanet.Blockchain
 
                     if (!expectedNonce.Equals(tx1.Nonce))
                     {
+                        _logger.Debug("Append failed. The tx `{transaction}` is invalid.", tx1);
                         throw new InvalidTxNonceException(
                             tx1.Id,
                             expectedNonce,
@@ -731,7 +740,10 @@ namespace Libplanet.Blockchain
                         .Select(t => t.Id)
                         .ToImmutableHashSet();
 
+                    _logger.Debug("Unstaging transactions...");
+
                     Store.UnstageTransactionIds(txIds);
+                    _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally
                 {
@@ -775,6 +787,7 @@ namespace Libplanet.Blockchain
         /// </remarks>
         internal void ExecuteActions(Block<T> block, bool render)
         {
+            _logger.Debug("Execute action in block {blockIndex}: {block}", block?.Index, block);
             IReadOnlyList<ActionEvaluation> EvaluateActions()
             {
                 AccountStateGetter stateGetter;
@@ -818,8 +831,14 @@ namespace Libplanet.Blockchain
                     evaluations = EvaluateActions();
                 }
 
+                _logger.Debug(
+                    "Evaluation in block {blockIndex}: {block} completed. Rendering...",
+                    block?.Index,
+                    block);
+
                 foreach (var evaluation in evaluations)
                 {
+                    _logger.Debug("Rendering action {action}", evaluation.Action);
                     evaluation.Action.Render(
                         evaluation.InputContext,
                         evaluation.OutputStates
@@ -837,6 +856,9 @@ namespace Libplanet.Blockchain
                 var message = "To evaluate block action, Policy.BlockAction must not be null.";
                 throw new InvalidOperationException(message);
             }
+
+            _logger.Debug(
+                "Evaluating block action in block {blockIndex}: {block}", block?.Index, block);
 
             IAccountStateDelta lastStates = null;
 
@@ -955,6 +977,12 @@ namespace Libplanet.Blockchain
         {
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             Guid forkedId = forked.Id;
+            _logger.Debug(
+                "Trying to fork chain at {branchPoint}" +
+                "(prevId: {prevChainId}) (forkedId: {forkedChainId})",
+                point,
+                Id,
+                forkedId);
             try
             {
                 _rwlock.EnterReadLock();
@@ -1060,6 +1088,9 @@ namespace Libplanet.Blockchain
         // we need to add a synchronization mechanism to handle this correctly.
         internal void Swap(BlockChain<T> other, bool render)
         {
+            _logger.Debug(
+                "Swaping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
+
             // Finds the branch point.
             Block<T> topmostCommon = null;
             if (render && !(Tip is null || other.Tip is null))
@@ -1081,8 +1112,13 @@ namespace Libplanet.Blockchain
                 }
             }
 
+            _logger.Debug(
+                "Branchpoint is {branchPoint} (at {index})", topmostCommon, topmostCommon?.Index);
+
             if (render)
             {
+                _logger.Debug("Unrendering abandoned actions...");
+
                 // Unrender stale actions.
                 for (
                     Block<T> b = Tip;
@@ -1104,12 +1140,15 @@ namespace Libplanet.Blockchain
 
                     foreach (var evaluation in evaluations)
                     {
+                        _logger.Debug("Unrender action {action}", evaluation.Action);
                         evaluation.Action.Unrender(
                             evaluation.InputContext,
                             evaluation.OutputStates
                         );
                     }
                 }
+
+                _logger.Debug($"Unrender for {nameof(Swap)}() is completed.");
             }
 
             try
@@ -1138,6 +1177,8 @@ namespace Libplanet.Blockchain
 
             if (render)
             {
+                _logger.Debug("Rendering actions in new chain");
+
                 // Render actions that had been behind.
                 long startToRenderIndex = topmostCommon is Block<T> branchPoint
                     ? branchPoint.Index + 1
@@ -1157,12 +1198,15 @@ namespace Libplanet.Blockchain
 
                     foreach (var evaluation in evaluations)
                     {
+                        _logger.Debug("Rendering action {action}", evaluation.Action);
                         evaluation.Action.Render(
                             evaluation.InputContext,
                             evaluation.OutputStates
                         );
                     }
                 }
+
+                _logger.Debug($"Render for {nameof(Swap)}() is completed.");
             }
         }
 
