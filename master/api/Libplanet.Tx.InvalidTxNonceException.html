@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | Libplanet </title>
+    <title>Class InvalidTxNonceException
+   | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | Libplanet ">
+    <meta name="title" content="Class InvalidTxNonceException
+   | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -348,8 +350,8 @@
                           <li class="">
                             <a href="Libplanet.Tx.InvalidTxIdException.html" title="InvalidTxIdException" class="">InvalidTxIdException</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="">InvalidTxNonceException</a>
+                          <li class="active">
+                            <a href="Libplanet.Tx.InvalidTxNonceException.html" title="InvalidTxNonceException" class="active">InvalidTxNonceException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Tx.InvalidTxPublicKeyException.html" title="InvalidTxPublicKeyException" class="">InvalidTxPublicKeyException</a>
@@ -374,10 +376,158 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-
-<meta http-equiv="refresh" content="0; url=Libplanet.html">
-Move to [Libplanet](Libplanet.yml)&hellip;
+            <article class="content wrap" id="_content" data-uid="Libplanet.Tx.InvalidTxNonceException">
+  
+  
+  <h1 id="Libplanet_Tx_InvalidTxNonceException" data-uid="Libplanet.Tx.InvalidTxNonceException" class="text-break">Class InvalidTxNonceException
+  </h1>
+  <div class="markdown level0 summary"><p>The exception that is thrown when the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>
+is different from <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a> result of
+the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><a class="xref" href="Libplanet.Tx.InvalidTxException.html">InvalidTxException</a></div>
+    <div class="level2"><span class="xref">InvalidTxNonceException</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Libplanet.Tx.InvalidTxException.html#Libplanet_Tx_InvalidTxException_TxId">InvalidTxException.TxId</a>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Tx.html">Libplanet.Tx</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Tx_InvalidTxNonceException_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class InvalidTxNonceException : InvalidTxException</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0b9ace2715f0d92692630171028c2a82b63b54f6/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException.%23ctor(Libplanet.Tx.TxId%2CSystem.Int64%2CSystem.Int64%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Libplanet/Tx/InvalidTxNonceException.cs/#L27">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_InvalidTxNonceException__ctor_" data-uid="Libplanet.Tx.InvalidTxNonceException.#ctor*"></a>
+  <h4 id="Libplanet_Tx_InvalidTxNonceException__ctor_Libplanet_Tx_TxId_System_Int64_System_Int64_System_String_" data-uid="Libplanet.Tx.InvalidTxNonceException.#ctor(Libplanet.Tx.TxId,System.Int64,System.Int64,System.String)">InvalidTxNonceException(TxId, Int64, Int64, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the
+<a class="xref" href="Libplanet.Tx.InvalidTxNonceException.html">InvalidTxNonceException</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InvalidTxNonceException(TxId txid, long expectedNonce, long improperNonce, string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Tx.TxId.html">TxId</a></td>
+        <td><span class="parametername">txid</span></td>
+        <td><p>The invalid <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>'s
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id">Id</a>.  It is automatically included to
+the <see cref="!:Exception.Message"></see> string.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">expectedNonce</span></td>
+        <td><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a>
+result of the <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">improperNonce</span></td>
+        <td><p>The actual
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message that describes the error.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0b9ace2715f0d92692630171028c2a82b63b54f6/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException_ExpectedNonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException.ExpectedNonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Libplanet/Tx/InvalidTxNonceException.cs/#L50">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_InvalidTxNonceException_ExpectedNonce_" data-uid="Libplanet.Tx.InvalidTxNonceException.ExpectedNonce*"></a>
+  <h4 id="Libplanet_Tx_InvalidTxNonceException_ExpectedNonce" data-uid="Libplanet.Tx.InvalidTxNonceException.ExpectedNonce">ExpectedNonce</h4>
+  <div class="markdown level1 summary"><p><a class="xref" href="Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_">GetNextTxNonce(Address)</a> result of the
+<a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signer">Signer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ExpectedNonce { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/0b9ace2715f0d92692630171028c2a82b63b54f6/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException_ImproperNonce.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException.ImproperNonce%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Libplanet/Tx/InvalidTxNonceException.cs/#L55">View Source</a>
+  </span>
+  <a id="Libplanet_Tx_InvalidTxNonceException_ImproperNonce_" data-uid="Libplanet.Tx.InvalidTxNonceException.ImproperNonce*"></a>
+  <h4 id="Libplanet_Tx_InvalidTxNonceException_ImproperNonce" data-uid="Libplanet.Tx.InvalidTxNonceException.ImproperNonce">ImproperNonce</h4>
+  <div class="markdown level1 summary"><p>The actual <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Nonce">Nonce</a>, which is improper.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ImproperNonce { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -386,7 +536,10 @@ Move to [Libplanet](Libplanet.yml)&hellip;
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Docs/api/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/0b9ace2715f0d92692630171028c2a82b63b54f6/apiSpec/new?filename=Libplanet_Tx_InvalidTxNonceException.md&amp;value=---%0Auid%3A%20Libplanet.Tx.InvalidTxNonceException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Libplanet/Tx/InvalidTxNonceException.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | Libplanet </title>
+    <title>Namespace Libplanet.Crypto
+   | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | Libplanet ">
+    <meta name="title" content="Namespace Libplanet.Crypto
+   | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -223,9 +225,9 @@
                             <a href="Libplanet.Blocks.InvalidBlockTimestampException.html" title="InvalidBlockTimestampException" class="">InvalidBlockTimestampException</a>
                           </li>
                         </ul>  </li>
-                    <li class="">
+                    <li class="active">
                       <span class="expand-stub"></span>
-                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="">Libplanet.Crypto</a>
+                      <a href="Libplanet.Crypto.html" title="Libplanet.Crypto" class="active">Libplanet.Crypto</a>
                         
                         <ul class="nav level2">
                           <li class="">
@@ -374,10 +376,51 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-
-<meta http-equiv="refresh" content="0; url=Libplanet.html">
-Move to [Libplanet](Libplanet.yml)&hellip;
+            <article class="content wrap" id="_content" data-uid="Libplanet.Crypto">
+  
+  <h1 id="Libplanet_Crypto" data-uid="Libplanet.Crypto" class="text-break">Namespace Libplanet.Crypto
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="Libplanet.Crypto.InvalidCiphertextException.html">InvalidCiphertextException</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></h4>
+      <section><p>A secret part of a key pair involved in
+<a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
+signature algorithm on which the Libplanet is based.  It can be used to
+create signatures, which can be verified with the corresponding
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>, as well as to decrypt
+messages which were encrypted with the corresponding
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a>.</p>
+<p>Note that it uses <a href="https://en.bitcoin.it/wiki/Secp256k1">secp256k1</a> as the parameters of the elliptic curve, which is
+the same to <a href="https://bitcoin.org/">Bitcoin</a> and
+<a href="https://www.ethereum.org/">Ethereum</a>.
+It means private keys generated for Bitcoin/Ethereum can be used by
+Libplanet-backed games/apps too.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></h4>
+      <section><p>A public part of a key pair involved in
+<a href="https://en.wikipedia.org/wiki/ECDSA">ECDSA</a>, the digital
+signature algorithm on which the Libplanet is based.
+It can be used to verify signatures created with the corresponding
+<a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> and to encrypt messages for someone
+possessing the corresponding <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a>.
+This can be distributed publicly, hence the name.</p>
+<p>Note that it uses <a href="https://en.bitcoin.it/wiki/Secp256k1">secp256k1</a> as the parameters of the elliptic curve, which is same to
+<a href="https://bitcoin.org/">Bitcoin</a> and
+<a href="https://www.ethereum.org/">Ethereum</a>.
+It means public keys generated for Bitcoin/Ethereum can be used by
+Libplanet-backed games/apps too.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a></h4>
+      <section><p>An <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">AES</a>-<a href="https://en.wikipedia.org/wiki/Galois/Counter_Mode">GCM</a> <a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">symmetric key</a>.  Unlike <a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a> and
+<a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a> that are involved in an asymmetric key
+cryptography, it uses the same <a class="xref" href="Libplanet.Crypto.SymmetricKey.html">SymmetricKey</a> for both
+encrypting a plaintext and decrypting a ciphertext.</p>
+</section>
 </article>
           </div>
           
@@ -385,9 +428,6 @@ Move to [Libplanet](Libplanet.yml)&hellip;
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Docs/api/index.md/#L1" class="contribution-link">Improve this Doc</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

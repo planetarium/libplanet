@@ -5,9 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title> | Libplanet </title>
+    <title>Namespace Libplanet.Action
+   | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content=" | Libplanet ">
+    <meta name="title" content="Namespace Libplanet.Action
+   | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -118,9 +120,9 @@
                             <a href="Libplanet.Nonce.html" title="Nonce" class="">Nonce</a>
                           </li>
                         </ul>  </li>
-                    <li class="">
+                    <li class="active">
                       <span class="expand-stub"></span>
-                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="">Libplanet.Action</a>
+                      <a href="Libplanet.Action.html" title="Libplanet.Action" class="active">Libplanet.Action</a>
                         
                         <ul class="nav level2">
                           <li class="">
@@ -374,10 +376,124 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="">
-
-<meta http-equiv="refresh" content="0; url=Libplanet.html">
-Move to [Libplanet](Libplanet.yml)&hellip;
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action">
+  
+  <h1 id="Libplanet_Action" data-uid="Libplanet.Action" class="text-break">Namespace Libplanet.Action
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a></h4>
+      <section><p>A record type to represent an evaluation plan and result of
+a single action.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a></h4>
+      <section><p>Indicates that an action class (i.e., a class implementing
+<a class="xref" href="Libplanet.Action.IAction.html">IAction</a>) can be held by transactions and blocks.
+It also gives an action class a <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for
+serialization and deserialization.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.AddressStateMap.html">AddressStateMap</a></h4>
+      <section><p>An immutable key–value data structure to represent states of
+multiple accounts.  Keys are an account <a class="xref" href="Libplanet.Address.html">Address</a>,
+and values are their state.</p>
+<p>Since this implements <see cref="!:System.Collections.Immutable.IImmutableDictionary&lt;TKey,TValue>"></see>
+interface, the usage is same.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
+      <section><p>The exception that is thrown when an action class without
+<a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> is tried to used with
+<a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.PolymorphicAction-1.html">PolymorphicAction&lt;T&gt;</a></h4>
+      <section><p>A decorator to enable subtype polymorphism for action classes.</p>
+<p>By convention, concrete action subclasses are named with verb
+phrases, e.g., <code>Heal</code>, <code>Sell</code>.</p>
+<p>One downside of this compared to the vanilla <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>
+is the fact that it uses reflection under the hood.  This may cause
+compatibility issues on certain platforms, and is slightly slower.
+</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.RandomExtension.html">RandomExtension</a></h4>
+      <section><p>This extension class provides some convenient methods
+to deal with <a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html">UnexpectedlyTerminatedActionException</a></h4>
+      <section><p>The exception that is thrown during an <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> is being evaluated.</p>
+<p>The actual exception that the <a class="xref" href="Libplanet.Action.UnexpectedlyTerminatedActionException.html#Libplanet_Action_UnexpectedlyTerminatedActionException_Action">Action</a> threw
+is stored in the <see cref="!:Exception.InnerException"></see> property.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></h4>
+      <section><p>An interface to manipulate account states with
+maintaining the set of <a class="xref" href="Libplanet.Action.IAccountStateDelta.html#Libplanet_Action_IAccountStateDelta_UpdatedAddresses">UpdatedAddresses</a>.</p>
+<p>It is like a map which is virtually initialized such
+that every possible <a class="xref" href="Libplanet.Address.html">Address</a> exists and
+is mapped to <code>null</code>.  That means that:</p>
+<ul><li>it does not have length,</li><li>its index getter never throws
+<see cref="!:KeyNotFoundException"></see>,
+but returns <code>null</code> instead, and</li><li>filling an <a class="xref" href="Libplanet.Address.html">Address</a> with
+<code>null</code> state cannot be distinguished from
+the <a class="xref" href="Libplanet.Address.html">Address</a> having never been set to
+any state.</li></ul>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></h4>
+      <section><p>An in-game action.  Every action should be replayable, because
+multiple nodes in a network should execute an action and get the same
+result.</p>
+<p>A “class” which implements this interface is
+analogous to a function, and its instance is analogous to a
+<a href="https://en.wikipedia.org/wiki/Partial_application">partial
+function application</a>, in other words, a function with some bound
+arguments.  Those parameters that will be bound at runtime should be
+represented as fields or properties in an action class, and bound
+argument values to these parameters should be received through
+a constructor parameters of that class.</p>
+<p>From a perspective of security, an action class belongs to
+the network protocol, and property values in an action belong to
+a node&apos;s will (i.e., a user/player&apos;s choice).
+That means if you define an action class it also defines what every
+honest node can do in the network.  Even if a malicious node changes
+their own action code it won&apos;t affect other honest nodes in
+the network.</p>
+<p>For example, where honest nodes share the common action
+<code>Heal(Target) => PreviousStates[Target] + 1</code>, suppose a malicious
+node <code>m</code> changes their own <code>Heal</code> action code to
+<code>Heal(Target) => PreviousStates[Target] + 2</code> (2 instead of 1),
+and then send an action <code>Heal(m)</code>.
+Fortunately, this action does not work as <code>m</code>&apos;s intention,
+because the changed code in itself is not used by other honest nodes,
+so they still increase only 1, not 2.  The effect of that double healing
+is a sort of “illusion” only visible to the malicious node
+alone.</p>
+<p>In conclusion, action code is a part of the protocol and it works with
+consensus in the network, so only things each node can affect the network
+in general is property values of each action they sign and send,
+not code of an action.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></h4>
+      <section><p>Contextual data determined by a transaction and a block.
+Passed to <a class="xref" href="Libplanet.Action.IAction.html#Libplanet_Action_IAction_Execute_Libplanet_Action_IActionContext_">Execute(IActionContext)</a> method.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.IRandom.html">IRandom</a></h4>
+      <section><p>An pseudorandom number generator interface equivalent to
+<see cref="!:System.Random"></see>.</p>
+<p>Although these two types have similar shapes, they are not
+compatible (i.e., disallowed to be casted to each other).</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></h4>
+      <section><p>An delegate to provide read-only view of account states.</p>
+<p>Gets an account state of the given
+<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
+<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
+its account status, returns <code>null</code> instead of throwing
+any exception.</p>
+</section>
 </article>
           </div>
           
@@ -385,9 +501,6 @@ Move to [Libplanet](Libplanet.yml)&hellip;
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
-                  <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0b9ace2715f0d92692630171028c2a82b63b54f6/Docs/api/index.md/#L1" class="contribution-link">Improve this Doc</a>
-                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
