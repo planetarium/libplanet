@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Common.Action
         public bool ThrowOnRendering { get; set; }
 
         public IValue PlainValue =>
-            new Dictionary(new Dictionary<IKey, IValue>
+            new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
                 [(Text)"throw_on_rehearsal"] = new Boolean(ThrowOnRehearsal),
                 [(Text)"throw_on_execution"] = new Boolean(ThrowOnExecution),
