@@ -50,6 +50,8 @@ To be released.
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
+ -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
+    peers.  [[#568], [#593]]
 
 ### Bug fixes
 
@@ -70,6 +72,8 @@ To be released.
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
+ -  Fixed a bug where `KademliaProtocol<T>.RefreshTableAsync()` hadn't remove
+    stale peers.  [[#568], [#593]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
 
@@ -94,6 +98,7 @@ To be released.
 [#562]: https://github.com/planetarium/libplanet/pull/562
 [#563]: https://github.com/planetarium/libplanet/pull/563
 [#566]: https://github.com/planetarium/libplanet/pull/566
+[#568]: https://github.com/planetarium/libplanet/issues/568
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
 [#579]: https://github.com/planetarium/libplanet/pull/579
@@ -102,6 +107,7 @@ To be released.
 [#584]: https://github.com/planetarium/libplanet/pull/584
 [#591]: https://github.com/planetarium/libplanet/pull/591
 [#592]: https://github.com/planetarium/libplanet/pull/592
+[#593]: https://github.com/planetarium/libplanet/pull/593
 [#599]: https://github.com/planetarium/libplanet/pull/599
 
 

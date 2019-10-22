@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Libplanet.Net.Protocols
 {
@@ -9,7 +10,7 @@ namespace Libplanet.Net.Protocols
     {
         private readonly int _size;
         private readonly Random _random;
-        private readonly List<BoundPeer> _peers;
+        private readonly List<(DateTimeOffset, BoundPeer)> _peers;
 
         private DateTimeOffset _lastUpdated;
 
@@ -17,7 +18,7 @@ namespace Libplanet.Net.Protocols
         {
             _size = size;
             _random = random;
-            _peers = new List<BoundPeer>();
+            _peers = new List<(DateTimeOffset, BoundPeer)>();
             ReplacementCache = new List<BoundPeer>();
 
             _lastUpdated = DateTimeOffset.UtcNow;
@@ -26,12 +27,15 @@ namespace Libplanet.Net.Protocols
         public int Count => _peers.Count;
 
         // get most recently used peer.
-        public BoundPeer Head => IsEmpty() ? null : _peers[_peers.Count - 1];
+        public (DateTimeOffset, BoundPeer) Head =>
+            IsEmpty() ? (DateTimeOffset.MinValue, null) : _peers[_peers.Count - 1];
 
         // get least recently used peer.
-        public BoundPeer Tail => IsEmpty() ? null : _peers[0];
+        public (DateTimeOffset, BoundPeer) Tail =>
+            IsEmpty() ? (DateTimeOffset.MinValue, null) : _peers[0];
 
-        public ImmutableList<BoundPeer> Peers => _peers.ToImmutableList();
+        public ImmutableList<BoundPeer> Peers =>
+            _peers.Select(peerInfo => peerInfo.Item2).ToImmutableList();
 
         // replacement candidate stored in this cache when
         // the bucket is full and least recently used peer responds.
@@ -42,28 +46,29 @@ namespace Libplanet.Net.Protocols
         {
             _lastUpdated = DateTimeOffset.UtcNow;
             ReplacementCache.Remove(peer);
-            BoundPeer exists = _peers.Find(p => p.PublicKey.Equals(peer.PublicKey));
+            int exists =
+                _peers.FindIndex(p => p.Item2.PublicKey.Equals(peer.PublicKey));
 
-            if (!(exists is null))
+            if (exists != -1)
             {
-                _peers.Remove(exists);
-                _peers.Add(peer);
+                _peers.RemoveAt(exists);
+                _peers.Add((DateTimeOffset.UtcNow, peer));
                 return null;
             }
             else if (IsFull())
             {
-                return Tail;
+                return Tail.Item2;
             }
             else
             {
-                _peers.Add(peer);
+                _peers.Add((DateTimeOffset.UtcNow, peer));
                 return null;
             }
         }
 
         public bool Contains(BoundPeer peer)
         {
-            return _peers.Contains(peer);
+            return _peers.FindIndex(item => item.Item2 == peer) != -1;
         }
 
         public void Clear()
@@ -74,7 +79,14 @@ namespace Libplanet.Net.Protocols
 
         public bool RemovePeer(BoundPeer peer)
         {
-            return _peers.Remove(peer);
+            int index = _peers.FindIndex(item => item.Item2 == peer);
+            if (index == -1)
+            {
+                return false;
+            }
+
+            _peers.RemoveAt(index);
+            return true;
         }
 
         public bool IsEmpty()
@@ -91,7 +103,7 @@ namespace Libplanet.Net.Protocols
         {
             int size = _peers.Count;
 
-            return size == 0 ? null : _peers[_random.Next(size)];
+            return size == 0 ? null : _peers[_random.Next(size)].Item2;
         }
     }
 }
