@@ -15,6 +15,7 @@ using Libplanet.Net;
 using Libplanet.Store;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using NetMQ;
 using Serilog;
 using Serilog.Events;
 
@@ -101,12 +102,19 @@ namespace Libplanet.Explorer.Executable
                         peers.Add(peer);
                     }
 
-                    await swarm.BootstrapAsync(
-                        peers,
-                        5000,
-                        5000,
-                        cancellationToken: cts.Token
-                    );
+                    try
+                    {
+                        await swarm.BootstrapAsync(
+                            peers,
+                            5000,
+                            5000,
+                            cancellationToken: cts.Token
+                        );
+                    }
+                    catch (TimeoutException)
+                    {
+                        Console.Error.WriteLine("No any neighbors.");
+                    }
 
                     // Since explorer does not require states, turn off trustedPeer option.
                     /*ImmutableHashSet<Address> trustedPeers =
@@ -117,7 +125,7 @@ namespace Libplanet.Explorer.Executable
                         trustedStateValidators: trustedPeers,
                         cancellationToken: cts.Token
                     );
-                    Console.WriteLine("Finished preloading.");
+                    Console.Error.WriteLine("Finished preloading.");
 
                     await swarm.StartAsync(cancellationToken: cts.Token);
                 },
@@ -133,6 +141,7 @@ namespace Libplanet.Explorer.Executable
                 if (swarm is Swarm<AppAgnosticAction>)
                 {
                     Task.WaitAll(swarm.StopAsync());
+                    NetMQConfig.Cleanup(false);
                 }
             }
         }
