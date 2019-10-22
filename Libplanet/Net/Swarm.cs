@@ -2056,6 +2056,7 @@ namespace Libplanet.Net
 
                 using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
                 {
+                    dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                     _logger.Debug(
                         "Trying to send {@Message} to {PeerAddress}...",
                         req.Message,

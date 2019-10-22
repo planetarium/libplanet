@@ -68,12 +68,16 @@ To be released.
  -  Fixed a bug where `Swarm<T>` renders actions in same block multiple times
     when reorg happens.  [[#579]]
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
- -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to evaluate.  [[#591]]
+ -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
+    evaluate.  [[#591]]
+ -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
+    connection through a TURN relay server. [[#453], [#599]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
 [#409]: https://github.com/planetarium/libplanet/issues/409
 [#447]: https://github.com/planetarium/libplanet/issues/447
+[#453]: https://github.com/planetarium/libplanet/issues/453
 [#462]: https://github.com/planetarium/libplanet/issues/462
 [#469]: https://github.com/planetarium/libplanet/pull/469
 [#485]: https://github.com/planetarium/libplanet/pull/485
@@ -98,6 +102,7 @@ To be released.
 [#584]: https://github.com/planetarium/libplanet/pull/584
 [#591]: https://github.com/planetarium/libplanet/pull/591
 [#592]: https://github.com/planetarium/libplanet/pull/592
+[#599]: https://github.com/planetarium/libplanet/pull/599
 
 
 Version 0.6.0
