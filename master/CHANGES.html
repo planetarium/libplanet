@@ -125,6 +125,8 @@ table when <code>Ping</code> is received.  [<a href="https://github.com/planetar
 <li><code>TurnClient.AcceptRelayedStreamAsync()</code> became to ignore disconnected
 connections.  [<a href="https://github.com/planetarium/libplanet/pull/469">#469</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to ignore peers with lower tip.  [<a href="https://github.com/planetarium/libplanet/pull/592">#592</a>]</li>
+<li><code>KademliaProtocol&lt;T&gt;.RefreshTableAsync()</code> became to validate only stale
+peers.  [<a href="https://github.com/planetarium/libplanet/issues/568">#568</a>, <a href="https://github.com/planetarium/libplanet/pull/593">#593</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -145,6 +147,8 @@ when reorg happens.  [<a href="https://github.com/planetarium/libplanet/pull/579
 <li><code>LiteDBStore</code> became to guarantee atomicity of storing blocks. [<a href="https://github.com/planetarium/libplanet/pull/584">#584</a>]</li>
 <li>Fixed a bug that <code>BlockChain&lt;T&gt;</code> had appended a block even if fails to
 evaluate.  [<a href="https://github.com/planetarium/libplanet/pull/591">#591</a>]</li>
+<li>Fixed a bug where <code>KademliaProtocol&lt;T&gt;.RefreshTableAsync()</code> hadn't remove
+stale peers.  [<a href="https://github.com/planetarium/libplanet/issues/568">#568</a>, <a href="https://github.com/planetarium/libplanet/pull/593">#593</a>]</li>
 <li>Fixed a bug that <code>TurnClient</code> had thrown <code>IOException</code> when accepting
 connection through a TURN relay server. [<a href="https://github.com/planetarium/libplanet/issues/453">#453</a>, <a href="https://github.com/planetarium/libplanet/pull/599">#599</a>]</li>
 </ul>
@@ -910,7 +914,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/24b545bad41fb5c746b18b32ddf430ec5c8e3145/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/ef099e0a6a38885488cd9f56bbe2b849fe5418de/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
