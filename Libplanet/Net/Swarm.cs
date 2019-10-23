@@ -444,9 +444,11 @@ namespace Libplanet.Net
             {
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 tasks.Add(
-                    Protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
-                tasks.Add(
-                    Protocol.RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+                    RefreshTableAsync(
+                        TimeSpan.FromSeconds(10),
+                        TimeSpan.FromSeconds(10),
+                        _cancellationToken));
+                tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(
                     Task.Run(() =>
                     {
@@ -2173,6 +2175,45 @@ namespace Libplanet.Net
                     $"Peer protocol version is different.",
                     _appProtocolVersion,
                     peer.AppProtocolVersion);
+            }
+        }
+
+        private async Task RefreshTableAsync(
+            TimeSpan period,
+            TimeSpan maxAge,
+            CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Task.Delay(period, cancellationToken);
+                    await Protocol.RefreshTableAsync(maxAge, cancellationToken);
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
+                    throw;
+                }
+            }
+        }
+
+        private async Task RebuildConnectionAsync(
+            TimeSpan period,
+            CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    await Protocol.RebuildConnectionAsync(cancellationToken);
+                    await Task.Delay(period, cancellationToken);
+                }
+                catch (OperationCanceledException e)
+                {
+                    _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
+                    throw;
+                }
             }
         }
 

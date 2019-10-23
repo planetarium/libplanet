@@ -9,8 +9,6 @@ namespace Libplanet.Net.Protocols
 {
     internal interface IProtocol
     {
-        int Count { get; }
-
         ImmutableList<BoundPeer> Peers { get; }
 
         ImmutableList<BoundPeer> PeersToBroadcast { get; }
@@ -21,9 +19,9 @@ namespace Libplanet.Net.Protocols
             TimeSpan? findPeerTimeout,
             CancellationToken cancellationToken);
 
-        Task RefreshTableAsync(TimeSpan period, CancellationToken cancellationToken);
+        Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken);
 
-        Task RebuildConnectionAsync(TimeSpan period, CancellationToken cancellationToken);
+        Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
         void ReceiveMessage(object sender, Message message);
 

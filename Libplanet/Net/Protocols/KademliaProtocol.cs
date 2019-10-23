@@ -48,8 +48,6 @@ namespace Libplanet.Net.Protocols
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
         }
 
-        public int Count => _routing.Count;
-
         public ImmutableList<BoundPeer> Peers
         {
             get
@@ -154,87 +152,66 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Periodically checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is
-        /// online by sending <see cref="Ping"/>.
+        /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
+        /// sending <see cref="Ping"/>.
         /// </summary>
-        /// <param name="period">The cycle in which the operation is executed.</param>
+        /// <param name="maxAge">Maximum age of peer to validate.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task RefreshTableAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
+        public async Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                try
-                {
-                    await Task.Delay(period, cancellationToken);
+                _logger.Debug("Refreshing table...");
+                List<Task> tasks = _routing.NonEmptyBuckets
+                    .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
+                    .Select(bucket =>
+                        ValidateAsync(
+                            bucket.Tail.Item2,
+                            _requestTimeout,
+                            cancellationToken)
+                ).ToList();
 
-                    _logger.Debug("Refreshing table...");
-                    List<Task> tasks = _routing.NonEmptyBuckets
-                        .Where(bucket => bucket.Tail.Item1 > DateTimeOffset.UtcNow + period)
-                        .Select(bucket =>
-                            ValidateAsync(
-                                bucket.Tail.Item2,
-                                _requestTimeout,
-                                cancellationToken)
-                    ).ToList();
+                _logger.Debug("Refresh candidates: {count}", tasks.Count);
 
-                    _logger.Debug("Refresh candidates: {count}", tasks.Count);
-
-                    await Task.WhenAll(tasks);
-                    cancellationToken.ThrowIfCancellationRequested();
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
-                    throw;
-                }
-                catch (TimeoutException)
-                {
-                }
+                await Task.WhenAll(tasks);
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            catch (TimeoutException)
+            {
             }
         }
 
         /// <summary>
-        /// Reconstructs network connection between peers on network. It runs operation once
-        /// right after called, repeated every <see cref="TimeSpan"/> of <paramref name="period"/>.
+        /// Reconstructs network connection between peers on network.
         /// </summary>
-        /// <param name="period">The cycle in which the operation is executed.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>>An awaitable task without value.</returns>
-        public async Task RebuildConnectionAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
+        public async Task RebuildConnectionAsync(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            _logger.Debug("Rebuilding connection...");
+            var buffer = new byte[20];
+            var tasks = new List<Task>();
+            for (int i = 0; i < Kademlia.FindConcurrency; i++)
             {
-                _logger.Debug("Rebuilding connection...");
-                var buffer = new byte[20];
-                var tasks = new List<Task>();
-                for (int i = 0; i < Kademlia.FindConcurrency; i++)
-                {
-                    _random.NextBytes(buffer);
-                    tasks.Add(FindPeerAsync(
-                        new Address(buffer),
-                        null,
-                        -1,
-                        _requestTimeout,
-                        cancellationToken));
-                }
+                _random.NextBytes(buffer);
+                tasks.Add(FindPeerAsync(
+                    new Address(buffer),
+                    null,
+                    -1,
+                    _requestTimeout,
+                    cancellationToken));
+            }
 
-                tasks.Add(FindPeerAsync(_address, null, -1, _requestTimeout, cancellationToken));
-                try
-                {
-                    await Task.WhenAll(tasks);
-                }
-                catch (TimeoutException)
-                {
-                }
-
-                await Task.Delay(period, cancellationToken);
+            tasks.Add(FindPeerAsync(_address, null, -1, _requestTimeout, cancellationToken));
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (TimeoutException)
+            {
             }
         }
 
