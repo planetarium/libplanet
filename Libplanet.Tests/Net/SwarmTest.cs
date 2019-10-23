@@ -414,6 +414,32 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task RemoveStalePeers()
+        {
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                Assert.Equal(1, swarmA.Peers.Count);
+
+                await swarmB.StopAsync();
+                await Task.Delay(100);
+                await swarmA.Protocol.RefreshTableAsync(
+                    TimeSpan.Zero,
+                    default(CancellationToken));
+                Assert.Equal(0, swarmA.Peers.Count);
+            }
+            finally
+            {
+                await swarmA.StopAsync();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task RoutingTableFull()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
