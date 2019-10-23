@@ -73,7 +73,7 @@ To be released.
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
  -  Fixed a bug where `KademliaProtocol<T>.RefreshTableAsync()` hadn't remove
-    stale peers.  [[#568], [#593]]
+    stale peers.  [[#568], [#593], [#602]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
 
@@ -109,6 +109,7 @@ To be released.
 [#592]: https://github.com/planetarium/libplanet/pull/592
 [#593]: https://github.com/planetarium/libplanet/pull/593
 [#599]: https://github.com/planetarium/libplanet/pull/599
+[#602]: https://github.com/planetarium/libplanet/pull/602
 
 
 Version 0.6.0
