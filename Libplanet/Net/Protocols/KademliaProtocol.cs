@@ -158,11 +158,13 @@ namespace Libplanet.Net.Protocols
         /// online by sending <see cref="Ping"/>.
         /// </summary>
         /// <param name="period">The cycle in which the operation is executed.</param>
+        /// <param name="grace">Maximum age of peer to validate.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         public async Task RefreshTableAsync(
             TimeSpan period,
+            TimeSpan grace,
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -173,7 +175,7 @@ namespace Libplanet.Net.Protocols
 
                     _logger.Debug("Refreshing table...");
                     List<Task> tasks = _routing.NonEmptyBuckets
-                        .Where(bucket => bucket.Tail.Item1 > DateTimeOffset.UtcNow + period)
+                        .Where(bucket => bucket.Tail.Item1 + grace < DateTimeOffset.UtcNow)
                         .Select(bucket =>
                             ValidateAsync(
                                 bucket.Tail.Item2,

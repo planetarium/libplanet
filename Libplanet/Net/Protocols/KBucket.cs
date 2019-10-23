@@ -68,7 +68,7 @@ namespace Libplanet.Net.Protocols
 
         public bool Contains(BoundPeer peer)
         {
-            return _peers.FindIndex(item => item.Item2 == peer) != -1;
+            return _peers.FindIndex(item => item.Item2.Equals(peer)) != -1;
         }
 
         public void Clear()
@@ -79,7 +79,7 @@ namespace Libplanet.Net.Protocols
 
         public bool RemovePeer(BoundPeer peer)
         {
-            int index = _peers.FindIndex(item => item.Item2 == peer);
+            int index = _peers.FindIndex(item => item.Item2.Equals(peer));
             if (index == -1)
             {
                 return false;

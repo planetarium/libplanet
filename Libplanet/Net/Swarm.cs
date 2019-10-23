@@ -444,7 +444,10 @@ namespace Libplanet.Net
             {
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 tasks.Add(
-                    Protocol.RefreshTableAsync(TimeSpan.FromSeconds(10), _cancellationToken));
+                    Protocol.RefreshTableAsync(
+                        TimeSpan.FromSeconds(10),
+                        TimeSpan.FromSeconds(10),
+                        _cancellationToken));
                 tasks.Add(
                     Protocol.RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
                 tasks.Add(
