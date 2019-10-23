@@ -2180,7 +2180,7 @@ namespace Libplanet.Net
 
         private async Task RefreshTableAsync(
             TimeSpan period,
-            TimeSpan grace,
+            TimeSpan maxAge,
             CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -2188,7 +2188,7 @@ namespace Libplanet.Net
                 try
                 {
                     await Task.Delay(period, cancellationToken);
-                    await Protocol.RefreshTableAsync(grace, cancellationToken);
+                    await Protocol.RefreshTableAsync(maxAge, cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {

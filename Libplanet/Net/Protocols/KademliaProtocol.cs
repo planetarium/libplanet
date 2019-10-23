@@ -155,17 +155,17 @@ namespace Libplanet.Net.Protocols
         /// Checks whether <see cref="Peer"/>s in <see cref="RoutingTable"/> is online by
         /// sending <see cref="Ping"/>.
         /// </summary>
-        /// <param name="grace">Maximum age of peer to validate.</param>
+        /// <param name="maxAge">Maximum age of peer to validate.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
-        public async Task RefreshTableAsync(TimeSpan grace, CancellationToken cancellationToken)
+        public async Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.Debug("Refreshing table...");
                 List<Task> tasks = _routing.NonEmptyBuckets
-                    .Where(bucket => bucket.Tail.Item1 + grace < DateTimeOffset.UtcNow)
+                    .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
                     .Select(bucket =>
                         ValidateAsync(
                             bucket.Tail.Item2,

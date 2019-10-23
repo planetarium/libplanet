@@ -424,14 +424,14 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
-                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Single(swarmA.Peers);
 
                 await swarmB.StopAsync();
                 await Task.Delay(100);
                 await swarmA.Protocol.RefreshTableAsync(
                     TimeSpan.Zero,
                     default(CancellationToken));
-                Assert.Equal(0, swarmA.Peers.Count);
+                Assert.Empty(swarmA.Peers);
             }
             finally
             {

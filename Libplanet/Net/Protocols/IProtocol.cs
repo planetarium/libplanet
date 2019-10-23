@@ -19,7 +19,7 @@ namespace Libplanet.Net.Protocols
             TimeSpan? findPeerTimeout,
             CancellationToken cancellationToken);
 
-        Task RefreshTableAsync(TimeSpan grace, CancellationToken cancellationToken);
+        Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken);
 
         Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
