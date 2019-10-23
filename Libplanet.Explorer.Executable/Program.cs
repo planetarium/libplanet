@@ -38,7 +38,11 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store = new LiteDBStore(options.StorePath, readOnly: options.Seed is null);
+            IStore store = new LiteDBStore(
+                path: options.StorePath,
+                flush: false,
+                readOnly: options.Seed is null
+            );
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
                 blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
