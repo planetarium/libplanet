@@ -9,8 +9,6 @@ namespace Libplanet.Net.Protocols
 {
     internal interface IProtocol
     {
-        int Count { get; }
-
         ImmutableList<BoundPeer> Peers { get; }
 
         ImmutableList<BoundPeer> PeersToBroadcast { get; }

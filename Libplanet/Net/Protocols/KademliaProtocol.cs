@@ -48,8 +48,6 @@ namespace Libplanet.Net.Protocols
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
         }
 
-        public int Count => _routing.Count;
-
         public ImmutableList<BoundPeer> Peers
         {
             get
