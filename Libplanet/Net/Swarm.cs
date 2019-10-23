@@ -864,7 +864,7 @@ namespace Libplanet.Net
                 IEnumerable<Message> reply = await tcs.Task;
 
                 _logger.Debug(
-                    "Received {@Reply} from {PeerAddress}...",
+                    "Received {Reply} from {PeerAddress}...",
                     reply,
                     peer.Address);
 
@@ -1145,7 +1145,7 @@ namespace Libplanet.Net
                 cancellationToken.ThrowIfCancellationRequested();
                 var request = new GetRecentStates(baseLocator, blockHash);
 
-                _logger.Debug("Requests recent states to a peer ({@Peer}).", peer);
+                _logger.Debug("Requests recent states to a peer ({Peer}).", peer);
                 Message reply;
                 try
                 {
@@ -1155,12 +1155,12 @@ namespace Libplanet.Net
                         timeout: TimeSpan.FromSeconds(30),
                         cancellationToken: cancellationToken
                     );
-                    _logger.Debug("Received recent states from a peer ({@Peer}).", peer);
+                    _logger.Debug("Received recent states from a peer ({Peer}).", peer);
                 }
                 catch (TimeoutException e)
                 {
                     _logger.Error(
-                        "Failed to receive recent states from a peer ({@Peer}): " + e,
+                        "Failed to receive recent states from a peer ({Peer}): " + e,
                         peer
                     );
                     continue;
@@ -1178,7 +1178,7 @@ namespace Libplanet.Net
                         Guid chainId = blockChain.Id;
 
                         int count = 0, totalCount = recentStates.StateReferences.Count;
-                        _logger.Debug("Starts to store state refs received from {@Peer}.", peer);
+                        _logger.Debug("Starts to store state refs received from {Peer}.", peer);
 
                         var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
                         foreach (var pair in recentStates.StateReferences)
@@ -1215,7 +1215,7 @@ namespace Libplanet.Net
 
                         count = 0;
                         totalCount = recentStates.BlockStates.Count;
-                        _logger.Debug("Starts to store block states received from {@Peer}.", peer);
+                        _logger.Debug("Starts to store block states received from {Peer}.", peer);
                         foreach (var pair in recentStates.BlockStates)
                         {
                             cancellationToken.ThrowIfCancellationRequested();
@@ -1239,7 +1239,7 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug(
-                    "A message received from {Peer} is not a RecentStates but {@Reply}.",
+                    "A message received from {Peer} is not a RecentStates but {Reply}.",
                     peer,
                     reply
                 );
@@ -1907,7 +1907,7 @@ namespace Libplanet.Net
                         : null;
                     var targetString = $"{BlockChain[target].Index}:{target}";
                     _logger.Debug(
-                        "State references to send (preload): {@StateReferences} ({Base}-{Target})",
+                        "State references to send (preload): {StateReferences} ({Base}-{Target})",
                         stateRefs.Select(kv =>
                             (
                                 kv.Key.ToString(),
@@ -1918,7 +1918,7 @@ namespace Libplanet.Net
                         targetString
                     );
                     _logger.Debug(
-                        "Block states to send (preload): {@BlockStates} ({Base}-{Target})",
+                        "Block states to send (preload): {BlockStates} ({Base}-{Target})",
                         blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
                         baseString,
                         targetString
@@ -2058,7 +2058,7 @@ namespace Libplanet.Net
                 {
                     dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                     _logger.Debug(
-                        "Trying to send {@Message} to {PeerAddress}...",
+                        "Trying to send {Message} to {PeerAddress}...",
                         req.Message,
                         req.Peer.Address
                     );
@@ -2073,7 +2073,7 @@ namespace Libplanet.Net
                             cancellationToken: cancellationToken
                         );
 
-                        _logger.Debug("A message {@Message} sent.", req.Message);
+                        _logger.Debug("A message {Message} sent.", req.Message);
 
                         foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                         {
@@ -2087,7 +2087,7 @@ namespace Libplanet.Net
                             );
                             Message reply = Message.Parse(raw, true);
                             _logger.Debug(
-                                "A reply has parsed: {@Reply} from {@ReplyRemote}",
+                                "A reply has parsed: {Reply} from {ReplyRemote}",
                                 reply,
                                 reply.Remote
                             );

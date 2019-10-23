@@ -313,13 +313,13 @@ namespace Libplanet.Net.Protocols
                 }
 
                 _logger.Verbose(
-                    $"Trying to {nameof(UpdateAsync)}() with pong: {{@Pong}}",
+                    $"Trying to {nameof(UpdateAsync)}() with pong: {{Pong}}",
                     pong);
 
                 // update process required
                 await UpdateAsync(pong.Remote, cancellationToken);
                 _logger.Verbose(
-                    $"{nameof(UpdateAsync)}() finished with pong: {{@Pong}}",
+                    $"{nameof(UpdateAsync)}() finished with pong: {{Pong}}",
                     pong);
             }
             catch (TimeoutException)
