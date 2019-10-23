@@ -24,7 +24,7 @@ namespace Libplanet.Explorer.Executable
     /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             Options options = Options.Parse(args, Console.Error);
 
@@ -38,7 +38,11 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store = new LiteDBStore(options.StorePath, readOnly: options.Seed is null);
+            IStore store = new LiteDBStore(
+                path: options.StorePath,
+                flush: false,
+                readOnly: options.Seed is null
+            );
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
                 blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
@@ -46,6 +50,12 @@ namespace Libplanet.Explorer.Executable
                 difficultyBoundDivisor: options.DifficultyBoundDivisor);
             var blockChain = new BlockChain<AppAgnosticAction>(policy, store);
             Startup.BlockChainSingleton = blockChain;
+
+            IWebHost webHost = WebHost.CreateDefaultBuilder()
+                .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
+                .UseSerilog()
+                .UseUrls($"http://{options.Host}:{options.Port}/")
+                .Build();
 
             Swarm<AppAgnosticAction> swarm = null;
             if (options.Seed is BoundPeer)
@@ -71,76 +81,71 @@ namespace Libplanet.Explorer.Executable
                 );
             }
 
-            IWebHost webHost = WebHost.CreateDefaultBuilder()
-                .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
-                .UseSerilog()
-                .UseUrls($"http://{options.Host}:{options.Port}/")
-                .Build();
-
-            var cts = new CancellationTokenSource();
-            Console.CancelKeyPress += (sender, eventArgs) =>
+            using (var cts = new CancellationTokenSource())
+            using (swarm)
             {
-                eventArgs.Cancel = true;
-                cts.Cancel();
-            };
-
-            Task swarmTask = Task.Run(
-                async () =>
+                Console.CancelKeyPress += (sender, eventArgs) =>
                 {
-                    if (swarm is null)
-                    {
-                        return;
-                    }
+                    eventArgs.Cancel = true;
+                    cts.Cancel();
+                };
 
-                    var peers = new HashSet<Peer>();
-                    if (options.Seed is Peer peer)
-                    {
-                        peers.Add(peer);
-                    }
-
-                    try
-                    {
-                        await swarm.BootstrapAsync(
-                            peers,
-                            5000,
-                            5000,
-                            cancellationToken: cts.Token
-                        );
-                    }
-                    catch (TimeoutException)
-                    {
-                        Console.Error.WriteLine("No any neighbors.");
-                    }
-
-                    // Since explorer does not require states, turn off trustedPeer option.
-                    /*ImmutableHashSet<Address> trustedPeers =
-                        peers.Select(p => p.Address).ToImmutableHashSet();*/
-                    var trustedPeers = ImmutableHashSet<Address>.Empty;
-                    Console.Error.WriteLine("Starts preloading.");
-                    await swarm.PreloadAsync(
-                        dialTimeout: TimeSpan.FromSeconds(15),
-                        trustedStateValidators: trustedPeers,
-                        cancellationToken: cts.Token
+                try
+                {
+                    await Task.WhenAll(
+                        webHost.RunAsync(cts.Token),
+                        StartSwarmAsync(swarm, options.Seed, cts.Token)
                     );
-                    Console.Error.WriteLine("Finished preloading.");
+                }
+                catch (OperationCanceledException)
+                {
+                    await swarm?.StopAsync(waitFor: TimeSpan.FromSeconds(1))
+                        .ContinueWith(_ => NetMQConfig.Cleanup(false));
+                }
+            }
+        }
 
-                    await swarm.StartAsync(cancellationToken: cts.Token);
-                },
-                cts.Token
-            );
+        private static async Task StartSwarmAsync(
+            Swarm<AppAgnosticAction> swarm,
+            Peer seed,
+            CancellationToken cancellationToken)
+        {
+            if (swarm is null)
+            {
+                return;
+            }
+
+            var peers = new HashSet<Peer>();
+            if (!(seed is null))
+            {
+                peers.Add(seed);
+            }
 
             try
             {
-                Task.WaitAll(webHost.RunAsync(cts.Token), swarmTask);
+                await swarm.BootstrapAsync(
+                    peers,
+                    5000,
+                    5000,
+                    cancellationToken: cancellationToken
+                );
             }
-            catch (OperationCanceledException)
+            catch (TimeoutException)
             {
-                if (swarm is Swarm<AppAgnosticAction>)
-                {
-                    Task.WaitAll(swarm.StopAsync(waitFor: TimeSpan.FromSeconds(1)));
-                    NetMQConfig.Cleanup(false);
-                }
+                Console.Error.WriteLine("No any neighbors.");
             }
+
+            // Since explorer does not require states, turn off trustedPeer option.
+            var trustedPeers = ImmutableHashSet<Address>.Empty;
+            Console.Error.WriteLine("Starts preloading.");
+            await swarm.PreloadAsync(
+                dialTimeout: TimeSpan.FromSeconds(15),
+                trustedStateValidators: trustedPeers,
+                cancellationToken: cancellationToken
+            );
+            Console.Error.WriteLine("Finished preloading.");
+
+            await swarm.StartAsync(cancellationToken: cancellationToken);
         }
 
         internal class AppAgnosticAction : IAction
