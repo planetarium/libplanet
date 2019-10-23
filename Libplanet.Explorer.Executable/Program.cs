@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -69,8 +67,6 @@ namespace Libplanet.Explorer.Executable
                     blockChain,
                     new PrivateKey(),
                     1,
-                    millisecondsDialTimeout: 1000 * 15,
-                    millisecondsLinger: 1000 * 1,
                     iceServers: new[] { options.IceServer }
                 );
             }
@@ -122,6 +118,7 @@ namespace Libplanet.Explorer.Executable
                     var trustedPeers = ImmutableHashSet<Address>.Empty;
                     Console.Error.WriteLine("Starts preloading.");
                     await swarm.PreloadAsync(
+                        dialTimeout: TimeSpan.FromSeconds(15),
                         trustedStateValidators: trustedPeers,
                         cancellationToken: cts.Token
                     );
@@ -140,7 +137,7 @@ namespace Libplanet.Explorer.Executable
             {
                 if (swarm is Swarm<AppAgnosticAction>)
                 {
-                    Task.WaitAll(swarm.StopAsync());
+                    Task.WaitAll(swarm.StopAsync(waitFor: TimeSpan.FromSeconds(1)));
                     NetMQConfig.Cleanup(false);
                 }
             }
