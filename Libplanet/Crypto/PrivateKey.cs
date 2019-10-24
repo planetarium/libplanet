@@ -62,9 +62,8 @@ namespace Libplanet.Crypto
         /// <param name="privateKey">A valid <see cref="byte"/> array that
         /// encodes an ECDSA private key.
         /// </param>
-        /// <remarks>A valid <see cref="byte"/> array for
-        /// a <see cref="PrivateKey"/> can be encoded using
-        /// <see cref="ByteArray"/> property.
+        /// <remarks>A valid <see cref="byte"/> array for a <see cref="PrivateKey"/>.
+        /// Can be encoded using <see cref="ByteArray"/> property.
         /// </remarks>
         /// <seealso cref="ByteArray"/>
         public PrivateKey(byte[] privateKey)
