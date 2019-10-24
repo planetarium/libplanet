@@ -449,7 +449,6 @@ namespace Libplanet.Net
                         TimeSpan.FromSeconds(10),
                         _cancellationToken));
                 tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
-                tasks.Add(CheckReplacementCacheAsync(TimeSpan.FromSeconds(5), _cancellationToken));
                 tasks.Add(
                     Task.Run(() =>
                     {
@@ -2190,6 +2189,7 @@ namespace Libplanet.Net
                 {
                     await Task.Delay(period, cancellationToken);
                     await Protocol.RefreshTableAsync(maxAge, cancellationToken);
+                    await Protocol.CheckReplacementCacheAsync(cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
@@ -2213,25 +2213,6 @@ namespace Libplanet.Net
                 catch (OperationCanceledException e)
                 {
                     _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
-                    throw;
-                }
-            }
-        }
-
-        private async Task CheckReplacementCacheAsync(
-            TimeSpan period,
-            CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-                    await Task.Delay(period, cancellationToken);
-                    await Protocol.CheckReplacementCacheAsync(cancellationToken);
-                }
-                catch (OperationCanceledException e)
-                {
-                    _logger.Warning(e, $"{nameof(CheckReplacementCacheAsync)}() is cancelled.");
                     throw;
                 }
             }

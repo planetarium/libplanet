@@ -216,8 +216,9 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Checks peers in ReplacementCache in each <see cref="KBucket"/> of
-        /// <see cref="RoutingTable"/>.
+        /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
+        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
+        /// in the <see cref="KBucket.ReplacementCache"/>.
         /// </summary>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
