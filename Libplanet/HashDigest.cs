@@ -29,6 +29,8 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
+        private readonly ImmutableArray<byte> _byteArray;
+
         static HashDigest()
         {
             var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(
@@ -68,7 +70,7 @@ namespace Libplanet
                 );
             }
 
-            ByteArray = hashDigest.ToImmutableArray();
+            _byteArray = hashDigest.ToImmutableArray();
         }
 
         /// <summary>
@@ -77,7 +79,18 @@ namespace Libplanet
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray { get; }
+        public ImmutableArray<byte> ByteArray
+        {
+            get
+            {
+                if (_byteArray == default)
+                {
+                    return (new byte[Size]).ToImmutableArray();
+                }
+
+                return _byteArray;
+            }
+        }
 
         /// <summary>
         /// Converts a given hexadecimal representation of a digest into

@@ -46,6 +46,8 @@ namespace Libplanet
         /// </summary>
         public const int Size = 20;
 
+        private readonly ImmutableArray<byte> _byteArray;
+
         /// <summary>
         /// Creates an <see cref="Address"/> instance from the given immutable <see
         /// cref="byte"/> array (i.e., <paramref name="address"/>).
@@ -65,7 +67,7 @@ namespace Libplanet
                 throw new ArgumentException("address must be 20 bytes", nameof(address));
             }
 
-            ByteArray = address;
+            _byteArray = address;
         }
 
         /// <summary>
@@ -140,7 +142,18 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray { get; }
+        public ImmutableArray<byte> ByteArray
+        {
+            get
+            {
+                if (_byteArray == default)
+                {
+                    return (new byte[Size]).ToImmutableArray();
+                }
+
+                return _byteArray;
+            }
+        }
 
         /// <summary>
         /// Gets a mutable array of 20 <see cref="byte"/>s that represent
