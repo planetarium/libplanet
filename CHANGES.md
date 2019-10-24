@@ -36,6 +36,8 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `IKdf` interface.  [[#577], [#614]]
+ -  Added `Pbkdf2` class.  [[#577], [#614]]
  -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
  -  Added `BlockChain<T>[HashDigest<T>]` indexer.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(HashDigest<T>)` method.  [[#409], [#583]]
@@ -113,6 +115,7 @@ To be released.
 [#568]: https://github.com/planetarium/libplanet/issues/568
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
+[#577]: https://github.com/planetarium/libplanet/issues/577
 [#579]: https://github.com/planetarium/libplanet/pull/579
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
