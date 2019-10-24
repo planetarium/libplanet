@@ -41,6 +41,7 @@ To be released.
  -  Added `BlockChain<T>.Contains(HashDigest<T>)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
+ -  Added `ByteUtil.Hex(ImmutableArray<byte>)` overloaded method.  [[#614]]
 
 ### Behavioral changes
 
@@ -124,6 +125,7 @@ To be released.
 [#608]: https://github.com/planetarium/libplanet/pull/608
 [#609]: https://github.com/planetarium/libplanet/pull/609
 [#610]: https://github.com/planetarium/libplanet/pull/610
+[#614]: https://github.com/planetarium/libplanet/pull/614
 [#622]: https://github.com/planetarium/libplanet/pull/622
 
 
