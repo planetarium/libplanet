@@ -54,7 +54,7 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
  -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
     peers.  [[#568], [#593]]
- -  Mark Address and HashDigest as readonly [[#610]].
+ -  Marked `Address` and `HashDigest` as readonly and made some initialization changes.  [[#610]]
 
 ### Bug fixes
 
