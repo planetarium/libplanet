@@ -634,7 +634,6 @@ namespace Libplanet.Blockchain
         /// <paramref name="actions"/>.</param>
         /// <param name="timestamp">The time this <see cref="Transaction{T}"/> is created and
         /// signed.</param>
-        /// <param name="broadcast">Whether to broadcast created transaction.</param>
         /// <returns>A created new <see cref="Transaction{T}"/> signed by the given
         /// <paramref name="privateKey"/>.</returns>
         /// <seealso cref="Transaction{T}.Create" />
@@ -642,8 +641,7 @@ namespace Libplanet.Blockchain
             PrivateKey privateKey,
             IEnumerable<T> actions,
             IImmutableSet<Address> updatedAddresses = null,
-            DateTimeOffset? timestamp = null,
-            bool broadcast = true)
+            DateTimeOffset? timestamp = null)
         {
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
             lock (_txLock)

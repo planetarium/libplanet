@@ -31,6 +31,8 @@ To be released.
  -  Removed the `dialTimeout` parameter from the `Swarm<T>`() constructor, and
     added it to `Swarm<T>.PreloadAsync()` & `Swarm<T>.StartAsync()` methods.
     [[#581]]
+ -  Removed `broadcast` parameter from `BlockChain<T>.MakeTransaction()` method.
+    [[#609]]
 
 ### Added interfaces
 
@@ -110,7 +112,7 @@ To be released.
 [#593]: https://github.com/planetarium/libplanet/pull/593
 [#599]: https://github.com/planetarium/libplanet/pull/599
 [#602]: https://github.com/planetarium/libplanet/pull/602
-
+[#609]: https://github.com/planetarium/libplanet/pull/609
 
 Version 0.6.0
 -------------
