@@ -38,15 +38,13 @@ namespace Libplanet
     /// <seealso cref="PublicKey"/>
     [Serializable]
     [Equals]
-    public struct Address : ISerializable, IComparable<Address>, IComparable
+    public readonly struct Address : ISerializable, IComparable<Address>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
         /// <para>It is 20 <see cref="byte"/>s.</para>
         /// </summary>
         public const int Size = 20;
-
-        private ImmutableArray<byte> _byteArray;
 
         /// <summary>
         /// Creates an <see cref="Address"/> instance from the given immutable <see
@@ -67,7 +65,7 @@ namespace Libplanet
                 throw new ArgumentException("address must be 20 bytes", nameof(address));
             }
 
-            _byteArray = address;
+            ByteArray = address;
         }
 
         /// <summary>
@@ -142,18 +140,7 @@ namespace Libplanet
         /// <remarks>This is immutable.  For a mutable array, call <see
         /// cref="ToByteArray()"/> method.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    _byteArray = new byte[Size].ToImmutableArray();
-                }
-
-                return _byteArray;
-            }
-        }
+        public ImmutableArray<byte> ByteArray { get; }
 
         /// <summary>
         /// Gets a mutable array of 20 <see cref="byte"/>s that represent
@@ -166,7 +153,7 @@ namespace Libplanet
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="Address(byte[])"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray == default ? new byte[Size] : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a mixed-case hexadecimal string of 40 letters that represent

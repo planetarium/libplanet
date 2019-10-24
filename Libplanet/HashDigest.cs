@@ -16,7 +16,7 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
-    public struct HashDigest<T> : IEquatable<HashDigest<T>>
+    public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>
         where T : HashAlgorithm
     {
         /// <summary>
@@ -28,8 +28,6 @@ namespace Libplanet
         /// and if <see cref="SHA256"/> it is <c>32</c>.</para>
         /// </summary>
         public static readonly int Size;
-
-        private ImmutableArray<byte> _byteArray;
 
         static HashDigest()
         {
@@ -70,7 +68,7 @@ namespace Libplanet
                 );
             }
 
-            _byteArray = hashDigest.ToImmutableArray();
+            ByteArray = hashDigest.ToImmutableArray();
         }
 
         /// <summary>
@@ -79,18 +77,7 @@ namespace Libplanet
         /// <remarks>It is immutable.  For a mutable array, use
         /// <see cref="ToByteArray()"/> method instead.</remarks>
         /// <seealso cref="ToByteArray()"/>
-        public ImmutableArray<byte> ByteArray
-        {
-            get
-            {
-                if (_byteArray.IsDefault)
-                {
-                    _byteArray = new byte[Size].ToImmutableArray();
-                }
-
-                return _byteArray;
-            }
-        }
+        public ImmutableArray<byte> ByteArray { get; }
 
         /// <summary>
         /// Converts a given hexadecimal representation of a digest into
@@ -169,7 +156,7 @@ namespace Libplanet
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray == default ? new byte[Size] : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a hexadecimal representation of a digest.
