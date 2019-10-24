@@ -36,6 +36,8 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `ICipher` interface.  [[#577], [#614]]
+ -  Added `Aes128Ctr` class.  [[#577], [#614]]
  -  Added `IKdf` interface.  [[#577], [#614]]
  -  Added `Pbkdf2` class.  [[#577], [#614]]
  -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
