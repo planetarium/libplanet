@@ -46,6 +46,8 @@ namespace Libplanet
         /// </summary>
         public const int Size = 20;
 
+        private static readonly byte[] _defaultByteArray = new byte[Size];
+
         private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
@@ -146,9 +148,9 @@ namespace Libplanet
         {
             get
             {
-                if (_byteArray == default)
+                if (_byteArray.IsDefault)
                 {
-                    return (new byte[Size]).ToImmutableArray();
+                    return _defaultByteArray.ToImmutableArray();
                 }
 
                 return _byteArray;
@@ -166,7 +168,9 @@ namespace Libplanet
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="Address(byte[])"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray == default ? new byte[Size] : ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray.IsDefault
+            ? _defaultByteArray
+            : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a mixed-case hexadecimal string of 40 letters that represent

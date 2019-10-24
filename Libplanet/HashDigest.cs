@@ -29,6 +29,8 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
+        private static readonly byte[] _defaultByteArray;
+
         private readonly ImmutableArray<byte> _byteArray;
 
         static HashDigest()
@@ -36,6 +38,8 @@ namespace Libplanet
             var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(
                 null, new object[0]);
             Size = thunk.HashSize / 8;
+
+            _defaultByteArray = new byte[Size];
         }
 
         /// <summary>
@@ -83,9 +87,9 @@ namespace Libplanet
         {
             get
             {
-                if (_byteArray == default)
+                if (_byteArray.IsDefault)
                 {
-                    return (new byte[Size]).ToImmutableArray();
+                    return _defaultByteArray.ToImmutableArray();
                 }
 
                 return _byteArray;
@@ -169,7 +173,9 @@ namespace Libplanet
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray == default ? new byte[Size] : ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray.IsDefault
+            ? _defaultByteArray
+            : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a hexadecimal representation of a digest.
