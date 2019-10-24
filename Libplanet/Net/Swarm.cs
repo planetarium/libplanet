@@ -929,7 +929,7 @@ namespace Libplanet.Net
                 $"but {parsedMessage}");
         }
 
-        internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        internal System.Collections.Async.IAsyncEnumerable<Block<T>> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes)
         {
@@ -981,7 +981,7 @@ namespace Libplanet.Net
             });
         }
 
-        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync(
+        internal System.Collections.Async.IAsyncEnumerable<Transaction<T>> GetTxsAsync(
             BoundPeer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -1060,7 +1060,7 @@ namespace Libplanet.Net
             }
         }
 
-        private IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
+        private System.Collections.Async.IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken)
         {
@@ -1446,7 +1446,7 @@ namespace Libplanet.Net
                 $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
                 newHashes.Count());
 
-            IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
+            System.Collections.Async.IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
                 newHashes
             );
@@ -1799,7 +1799,7 @@ namespace Libplanet.Net
             List<Transaction<T>> txs;
             try
             {
-                IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync(
+                System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched = GetTxsAsync(
                     peer, newTxIds, cancellationToken);
                 txs = await fetched.ToListAsync(cancellationToken);
             }

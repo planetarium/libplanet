@@ -47,6 +47,11 @@ https://docs.libplanet.io/</Description>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
+                             '$(MSBuildVersion)' >='16.3.0'">
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
     <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />

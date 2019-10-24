@@ -11,6 +11,11 @@
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
+                             '$(MSBuildVersion)' >='16.3.0'">
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
@@ -36,9 +41,6 @@
     </PackageReference>
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.msbuild" Version="2.4.1">
-      <NoWarn>NU1701</NoWarn>
-    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>
