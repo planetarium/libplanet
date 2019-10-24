@@ -54,8 +54,10 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
  -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
     peers.  [[#568], [#593]]
- -  `KademliaProtocol<T>.RemovePeerAsync()` became not to check cached peers
-    immediately.  [[#608]]
+ -  `KademliaProtocol<T>` became not to check cached peers immediately after
+    removing peers from table. Instead, added
+    `IProtocol.CheckReplacementCacheAsync()` to check cached peers
+    periodically.  [[#608]]
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
 
 ### Bug fixes
