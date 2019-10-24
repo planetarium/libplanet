@@ -54,6 +54,7 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
  -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
     peers.  [[#568], [#593]]
+ -  Mark Address and HashDigest as readonly [[#610]].
 
 ### Bug fixes
 
@@ -113,6 +114,8 @@ To be released.
 [#599]: https://github.com/planetarium/libplanet/pull/599
 [#602]: https://github.com/planetarium/libplanet/pull/602
 [#609]: https://github.com/planetarium/libplanet/pull/609
+[#610]: https://github.com/planetarium/libplanet/pull/610
+
 
 Version 0.6.0
 -------------
