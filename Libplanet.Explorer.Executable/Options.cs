@@ -124,7 +124,7 @@ If omitted (default) explorer only the local blockchain store.")]
         [Value(
             0,
             MetaName = "PATH",
-            Required = true,
+            Required = false,
             HelpText = "The path of the blockchain store.")]
         public string StorePath { get; set; }
 

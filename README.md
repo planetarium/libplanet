@@ -22,6 +22,9 @@ script on the command-line:
 a Libplanet-powered game.  If you need a sample data file please contact us
 on [our Discord chat][1]!
 
+If you omit `BLOCKCHAIN_STORE_PATH` in online mode, explorer will use memory to store
+blockchain instead of storage.
+
 [.NET Core]: https://dotnet.microsoft.com/
 [PowerShell]: https://microsoft.com/PowerShell
 [1]: https://discord.gg/ue9fgc3
