@@ -16,7 +16,7 @@ namespace Libplanet
     /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to
     /// a digest.  This determines <see cref="Size"/> of a digest.</typeparam>
     /// <seealso cref="HashAlgorithm"/>
-    public struct HashDigest<T> : IEquatable<HashDigest<T>>
+    public readonly struct HashDigest<T> : IEquatable<HashDigest<T>>
         where T : HashAlgorithm
     {
         /// <summary>
@@ -29,13 +29,17 @@ namespace Libplanet
         /// </summary>
         public static readonly int Size;
 
-        private ImmutableArray<byte> _byteArray;
+        private static readonly byte[] _defaultByteArray;
+
+        private readonly ImmutableArray<byte> _byteArray;
 
         static HashDigest()
         {
             var thunk = (T)typeof(T).GetMethod("Create", new Type[0]).Invoke(
                 null, new object[0]);
             Size = thunk.HashSize / 8;
+
+            _defaultByteArray = new byte[Size];
         }
 
         /// <summary>
@@ -85,7 +89,7 @@ namespace Libplanet
             {
                 if (_byteArray.IsDefault)
                 {
-                    _byteArray = new byte[Size].ToImmutableArray();
+                    return _defaultByteArray.ToImmutableArray();
                 }
 
                 return _byteArray;
@@ -169,7 +173,9 @@ namespace Libplanet
         /// </returns>
         /// <seealso cref="ByteArray"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray.IsDefault
+            ? _defaultByteArray
+            : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a hexadecimal representation of a digest.

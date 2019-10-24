@@ -38,7 +38,7 @@ namespace Libplanet
     /// <seealso cref="PublicKey"/>
     [Serializable]
     [Equals]
-    public struct Address : ISerializable, IComparable<Address>, IComparable
+    public readonly struct Address : ISerializable, IComparable<Address>, IComparable
     {
         /// <summary>
         /// The <see cref="byte"/>s size that each <see cref="Address"/> takes.
@@ -46,7 +46,9 @@ namespace Libplanet
         /// </summary>
         public const int Size = 20;
 
-        private ImmutableArray<byte> _byteArray;
+        private static readonly byte[] _defaultByteArray = new byte[Size];
+
+        private readonly ImmutableArray<byte> _byteArray;
 
         /// <summary>
         /// Creates an <see cref="Address"/> instance from the given immutable <see
@@ -148,7 +150,7 @@ namespace Libplanet
             {
                 if (_byteArray.IsDefault)
                 {
-                    _byteArray = new byte[Size].ToImmutableArray();
+                    return _defaultByteArray.ToImmutableArray();
                 }
 
                 return _byteArray;
@@ -166,7 +168,9 @@ namespace Libplanet
         /// <seealso cref="ByteArray"/>
         /// <seealso cref="Address(byte[])"/>
         [Pure]
-        public byte[] ToByteArray() => ByteArray.ToArray();
+        public byte[] ToByteArray() => ByteArray.IsDefault
+            ? _defaultByteArray
+            : ByteArray.ToArray();
 
         /// <summary>
         /// Gets a mixed-case hexadecimal string of 40 letters that represent
