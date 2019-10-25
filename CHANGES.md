@@ -83,6 +83,8 @@ To be released.
     stale peers.  [[#568], [#593], [#602]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
+ -  Fixed a bug that `KeyNotFoundException` occurred when sending a message
+    through the TurnClient.
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
