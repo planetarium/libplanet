@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace Libplanet.Stun
             _connectionAttempts =
                 new AsyncProducerConsumerQueue<ConnectionAttempt>();
             _responses =
-                new Dictionary<byte[], TaskCompletionSource<StunMessage>>(
+                new ConcurrentDictionary<byte[], TaskCompletionSource<StunMessage>>(
                     new ByteArrayComparer());
             _connMutex = new AsyncLock();
         }
