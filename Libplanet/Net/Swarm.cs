@@ -2053,60 +2053,78 @@ namespace Libplanet.Net
             while (!cancellationToken.IsCancellationRequested)
             {
                 _logger.Verbose("Waiting for new request...");
-                var req = await _requests.TakeAsync(cancellationToken);
-                _logger.Verbose("Request {RequestId} taken.", req.Id);
+                MessageRequest req = await _requests.TakeAsync(cancellationToken);
 
-                using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
+                try
                 {
-                    dealer.Options.Linger = Timeout.InfiniteTimeSpan;
+                    await ProcessRequest(req, cancellationToken);
+                }
+                catch (Exception e)
+                {
                     _logger.Debug(
-                        "Trying to send {Message} to {PeerAddress}...",
-                        req.Message,
-                        req.Peer.Address
+                        "Unexpected exception occurred during {ProcessRuntime}(). {e}",
+                        nameof(ProcessRuntime),
+                        e);
+                    await _requests.AddAsync(req, cancellationToken);
+                    await Task.Delay(100, cancellationToken);
+                }
+            }
+        }
+
+        private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
+        {
+            _logger.Verbose("Request {RequestId} taken.", req.Id);
+
+            using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
+            {
+                dealer.Options.Linger = Timeout.InfiniteTimeSpan;
+                _logger.Debug(
+                    "Trying to send {Message} to {PeerAddress}...",
+                    req.Message,
+                    req.Peer.Address
+                );
+                var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+                var result = new List<Message>();
+                TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+                try
+                {
+                    await dealer.SendMultipartMessageAsync(
+                        message,
+                        timeout: req.Timeout,
+                        cancellationToken: cancellationToken
                     );
-                    var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
-                    var result = new List<Message>();
-                    TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
-                    try
+
+                    _logger.Debug("A message {Message} sent.", req.Message);
+
+                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                     {
-                        await dealer.SendMultipartMessageAsync(
-                            message,
+                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
                             timeout: req.Timeout,
                             cancellationToken: cancellationToken
                         );
+                        _logger.Verbose(
+                            "A raw message ({FrameCount} frames) has replied.",
+                            raw.FrameCount
+                        );
+                        Message reply = Message.Parse(raw, true);
+                        _logger.Debug(
+                            "A reply has parsed: {Reply} from {ReplyRemote}",
+                            reply,
+                            reply.Remote
+                        );
 
-                        _logger.Debug("A message {Message} sent.", req.Message);
-
-                        foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                        {
-                            NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                                timeout: req.Timeout,
-                                cancellationToken: cancellationToken
-                            );
-                            _logger.Verbose(
-                                "A raw message ({FrameCount} frames) has replied.",
-                                raw.FrameCount
-                            );
-                            Message reply = Message.Parse(raw, true);
-                            _logger.Debug(
-                                "A reply has parsed: {Reply} from {ReplyRemote}",
-                                reply,
-                                reply.Remote
-                            );
-
-                            result.Add(reply);
-                        }
-
-                        tcs.SetResult(result);
-                    }
-                    catch (TimeoutException te)
-                    {
-                        tcs.SetException(te);
+                        result.Add(reply);
                     }
 
-                    // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
-                    await Task.Delay(100);
+                    tcs.SetResult(result);
                 }
+                catch (TimeoutException te)
+                {
+                    tcs.SetException(te);
+                }
+
+                // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
+                await Task.Delay(100, cancellationToken);
             }
         }
 
