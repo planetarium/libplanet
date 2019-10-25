@@ -514,15 +514,16 @@ namespace Libplanet.Tests.Net
                 await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
 
-                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Single(swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
 
                 await swarmA.StopAsync();
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await Task.Delay(Kademlia.IdleRequestTimeout + 1000);
+                await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-                Assert.Equal(1, swarm.Peers.Count);
+                Assert.Single(swarm.Peers);
                 Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
                 Assert.Contains(swarmB.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
@@ -566,7 +567,7 @@ namespace Libplanet.Tests.Net
                 await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
 
-                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Single(swarm.Peers);
                 Assert.Contains(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
 
@@ -575,8 +576,9 @@ namespace Libplanet.Tests.Net
 
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await Task.Delay(Kademlia.IdleRequestTimeout * 2 + 1000);
+                await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Single(swarm.Peers);
                 Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
                 Assert.Contains(swarmC.AsPeer, swarm.Peers);

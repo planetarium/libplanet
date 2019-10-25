@@ -23,6 +23,8 @@ namespace Libplanet.Net.Protocols
 
         Task RebuildConnectionAsync(CancellationToken cancellationToken);
 
+        Task CheckReplacementCacheAsync(CancellationToken cancellationToken);
+
         void ReceiveMessage(object sender, Message message);
 
         string Trace();

@@ -215,6 +215,43 @@ namespace Libplanet.Net.Protocols
             }
         }
 
+        /// <summary>
+        /// Checks the <see cref="KBucket"/> in the <see cref="RoutingTable"/> and if
+        /// there is an empty <see cref="KBucket"/>, fill it with <see cref="Peer"/>s
+        /// in the <see cref="KBucket.ReplacementCache"/>.
+        /// </summary>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>>An awaitable task without value.</returns>
+        public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
+        {
+            _logger.Debug("Checking replacement cache.");
+            foreach (var bucket in _routing.NonFullBuckets)
+            {
+                var cachePeers = new BoundPeer[bucket.ReplacementCache.Count];
+                bucket.ReplacementCache.CopyTo(cachePeers);
+                foreach (BoundPeer replacement in cachePeers)
+                {
+                    try
+                    {
+                        _logger.Debug("Send ping to {peer}.", replacement);
+                        await PingAsync(replacement, _requestTimeout, cancellationToken);
+
+                        if (bucket.IsFull())
+                        {
+                            break;
+                        }
+                    }
+                    catch (TimeoutException)
+                    {
+                        bucket.ReplacementCache.Remove(replacement);
+                    }
+                }
+            }
+
+            _logger.Debug("Replacement cache checked.");
+        }
+
 #pragma warning disable CS4014
         public void ReceiveMessage(object sender, Message message)
         {
@@ -311,7 +348,8 @@ namespace Libplanet.Net.Protocols
         }
 
         /// <summary>
-        /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>.
+        /// Validate peer by send <see cref="Ping"/> to <paramref name="peer"/>. If target peer
+        /// does not responds, remove it from the table.
         /// </summary>
         /// <param name="peer">A <see cref="BoundPeer"/> to validate.</param>
         /// <param name="timeout">Timeout for waiting reply of <see cref="Ping"/>.</param>
@@ -368,7 +406,7 @@ namespace Libplanet.Net.Protocols
                 if (!contains)
                 {
                     _routing.BucketOf(peer).ReplacementCache.Remove(peer);
-                    _logger.Debug($"Added [{peer.Address.ToHex()}] to table");
+                    _logger.Debug("Added [{peer}] to table", peer);
                 }
             }
             else
@@ -376,6 +414,7 @@ namespace Libplanet.Net.Protocols
                 if (!_routing.BucketOf(peer).ReplacementCache.Contains(peer))
                 {
                     _routing.BucketOf(peer).ReplacementCache.Add(peer);
+                    _logger.Debug("Added [{peer}] to replacement cache.", peer);
                 }
 
                 _logger.Verbose(
@@ -397,26 +436,10 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        // FIXME: If this method is called almost same time, problem occurs.
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
             _logger.Debug($"Removing peer [{peer.Address.ToHex()}] from table.");
             await _routing.RemovePeerAsync(peer);
-            var bucket = _routing.BucketOf(peer);
-            var cachePeers = new BoundPeer[bucket.ReplacementCache.Count];
-            bucket.ReplacementCache.CopyTo(cachePeers);
-            foreach (BoundPeer replacement in cachePeers)
-            {
-                try
-                {
-                    await PingAsync(replacement, _requestTimeout, cancellationToken);
-                    break;
-                }
-                catch (TimeoutException)
-                {
-                    bucket.ReplacementCache.Remove(replacement);
-                }
-            }
         }
 
         /// <summary>

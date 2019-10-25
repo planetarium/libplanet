@@ -2189,6 +2189,7 @@ namespace Libplanet.Net
                 {
                     await Task.Delay(period, cancellationToken);
                     await Protocol.RefreshTableAsync(maxAge, cancellationToken);
+                    await Protocol.CheckReplacementCacheAsync(cancellationToken);
                 }
                 catch (OperationCanceledException e)
                 {
