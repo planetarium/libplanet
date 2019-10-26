@@ -12,11 +12,6 @@
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
-                             '$(MSBuildVersion)' >='16.3.0'">
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
       <Link>Menees.Analyzers.Settings.xml</Link>
