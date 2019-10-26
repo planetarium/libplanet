@@ -23,6 +23,11 @@
     <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
+                             '$(MSBuildVersion)' >='16.3.0'">
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -43,9 +48,6 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.msbuild" Version="2.4.1">
-      <NoWarn>NU1701</NoWarn>
-    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
 
