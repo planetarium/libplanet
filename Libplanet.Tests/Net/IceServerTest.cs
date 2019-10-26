@@ -19,8 +19,8 @@ namespace Libplanet.Tests.Net
             var userInfo = turnUri.UserInfo.Split(':');
             var servers = new List<IceServer>()
             {
-                new IceServer(new[] { "turn:turn.does-not-exists.org" }),
-                new IceServer(new[] { "stun:stun.l.google.com:19302" }),
+                new IceServer(new[] { "turn://turn.does-not-exists.org" }),
+                new IceServer(new[] { "stun://stun.l.google.com:19302" }),
             };
 
             await Assert.ThrowsAsync<IceServerException>(

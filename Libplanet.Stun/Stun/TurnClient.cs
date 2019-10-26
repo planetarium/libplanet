@@ -64,7 +64,7 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await EnsureConnection();
+            EnsureConnection();
 
             NetworkStream stream = _control.GetStream();
             StunMessage response;
@@ -99,7 +99,7 @@ namespace Libplanet.Stun
             IPEndPoint peerAddress,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await EnsureConnection();
+            EnsureConnection();
 
             NetworkStream stream = _control.GetStream();
             var request = new CreatePermissionRequest(peerAddress);
@@ -119,7 +119,7 @@ namespace Libplanet.Stun
         {
             while (true)
             {
-                await EnsureConnection();
+                EnsureConnection();
 
                 ConnectionAttempt attempt =
                     await _connectionAttempts.DequeueAsync(cancellationToken);
@@ -153,7 +153,7 @@ namespace Libplanet.Stun
         public async Task<IPEndPoint> GetMappedAddressAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await EnsureConnection();
+            EnsureConnection();
 
             NetworkStream stream = _control.GetStream();
             var request = new BindingRequest();
@@ -174,7 +174,7 @@ namespace Libplanet.Stun
             TimeSpan lifetime,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await EnsureConnection();
+            EnsureConnection();
 
             NetworkStream stream = _control.GetStream();
             var request = new RefreshRequest((int)lifetime.TotalSeconds);
@@ -266,13 +266,17 @@ namespace Libplanet.Stun
             }
         }
 
-        private async Task EnsureConnection()
+        private void EnsureConnection()
         {
-            using (await _connMutex.LockAsync())
+            using (_connMutex.Lock())
             {
                 if (!_control.Connected)
                 {
-                    await _control.ConnectAsync(_host, _port);
+                    // We can't use TcpClient.ConnectAsync() because it hangs when received
+                    // unreachable host (on Linux Mono).
+#pragma warning disable PC001 // API not supported on all platforms
+                    _control.Connect(_host, _port);
+#pragma warning restore PC001 // API not supported on all platforms
                     _messageProcessor = ProcessMessage();
                 }
             }
