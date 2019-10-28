@@ -11,8 +11,8 @@
     <CodeAnalysisRuleSet>..\Libplanet.Tests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
-                             '$(MSBuildVersion)' >='16.3.0'">
+  <PropertyGroup Condition="'$(MSBuildRuntimeType)'!='Mono' And
+                            '$(MSBuildVersion)'>='16.3.0'">
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
