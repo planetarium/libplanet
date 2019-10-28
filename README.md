@@ -66,7 +66,7 @@ In the near future, we are going to submit it to [Unity Asset Store] too.
 Build
 -----
 
-You could build a *Libplanet.dll* and *Libplanet.Stun.dll* assemblies
+You could build *Libplanet.dll* and *Libplanet.Stun.dll* assemblies
 from the source code.
 
 The following command installs dependencies (required library packages) and
