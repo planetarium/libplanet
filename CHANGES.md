@@ -72,6 +72,10 @@ To be released.
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
  -  `IceServer.CreateTurnClient()` became to throw `ArgumentException` when
     received invalid url.  [[#622]]
+ -  `KademliaProtocol<T>` became to update peer table when receiving messages
+    that are not related with protocol.  [[#594], [#627]]
+ -  `KademliaProtocol<T>` became not to check least recently used peer when
+    new peer is updated.  [[#627]]
 
 ### Bug fixes
 
@@ -131,6 +135,7 @@ To be released.
 [#591]: https://github.com/planetarium/libplanet/pull/591
 [#592]: https://github.com/planetarium/libplanet/pull/592
 [#593]: https://github.com/planetarium/libplanet/pull/593
+[#594]: https://github.com/planetarium/libplanet/issues/594
 [#599]: https://github.com/planetarium/libplanet/pull/599
 [#602]: https://github.com/planetarium/libplanet/pull/602
 [#608]: https://github.com/planetarium/libplanet/pull/608
@@ -138,6 +143,7 @@ To be released.
 [#610]: https://github.com/planetarium/libplanet/pull/610
 [#614]: https://github.com/planetarium/libplanet/pull/614
 [#622]: https://github.com/planetarium/libplanet/pull/622
+[#627]: https://github.com/planetarium/libplanet/pull/627
 
 
 Version 0.6.0
