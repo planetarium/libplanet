@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Serilog;
@@ -17,11 +16,14 @@ namespace Libplanet.Net.Protocols
         private readonly KBucket[] _buckets;
         private readonly AsyncLock _bucketMutex;
 
+        private readonly ILogger _logger;
+
         public RoutingTable(
             Address address,
             int tableSize,
             int bucketSize,
-            Random random)
+            Random random,
+            ILogger logger)
         {
             if (tableSize <= 0)
             {
@@ -37,11 +39,12 @@ namespace Libplanet.Net.Protocols
             _tableSize = tableSize;
             _bucketSize = bucketSize;
             _random = random;
+            _logger = logger;
 
             _buckets = new KBucket[tableSize];
             for (int i = 0; i < _tableSize; i++)
             {
-                _buckets[i] = new KBucket(_bucketSize, _random);
+                _buckets[i] = new KBucket(_bucketSize, _random, _logger);
             }
 
             _bucketMutex = new AsyncLock();
@@ -84,6 +87,10 @@ namespace Libplanet.Net.Protocols
             using (await _bucketMutex.LockAsync())
             {
                 evicted = _buckets[index].AddPeer(peer);
+                _logger.Debug(
+                    "Adding [{peer}] to routing table. (eviced : {evicted})",
+                    peer,
+                    evicted);
             }
 
             return evicted;

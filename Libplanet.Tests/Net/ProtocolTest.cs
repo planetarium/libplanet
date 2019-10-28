@@ -1,10 +1,10 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
+using Serilog.Core;
 using Xunit;
 
 namespace Libplanet.Tests.Net
@@ -17,7 +17,7 @@ namespace Libplanet.Tests.Net
         [Fact]
         public void BucketTest()
         {
-            var bucket = new KBucket(4, new System.Random());
+            var bucket = new KBucket(4, new System.Random(), Logger.None);
             var peer1 = new BoundPeer(
                 new PrivateKey().PublicKey,
                 new DnsEndPoint("0.0.0.0", 1234),
@@ -87,7 +87,8 @@ namespace Libplanet.Tests.Net
                 pubKey0.ToAddress(),
                 1,
                 2,
-                new System.Random());
+                new System.Random(),
+                Logger.None);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234), 0);
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234), 0);
             var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234), 0);
@@ -114,7 +115,8 @@ namespace Libplanet.Tests.Net
                 pubKey1.ToAddress(),
                 1,
                 2,
-                new System.Random());
+                new System.Random(),
+                Logger.None);
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234), 0);
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234), 0);
 
@@ -143,7 +145,7 @@ namespace Libplanet.Tests.Net
 
         private RoutingTable CreateTable(Address addr)
         {
-            return new RoutingTable(addr, TableSize, BucketSize, new System.Random());
+            return new RoutingTable(addr, TableSize, BucketSize, new System.Random(), Logger.None);
         }
     }
 }

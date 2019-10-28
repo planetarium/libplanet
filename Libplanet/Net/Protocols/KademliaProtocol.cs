@@ -42,7 +42,7 @@ namespace Libplanet.Net.Protocols
             _random = new System.Random();
             _tableSize = tableSize ?? Kademlia.TableSize;
             _bucketSize = bucketSize ?? Kademlia.BucketSize;
-            _routing = new RoutingTable(_address, _tableSize, _bucketSize, _random);
+            _routing = new RoutingTable(_address, _tableSize, _bucketSize, _random, _logger);
             _requestTimeout =
                 requestTimeout ??
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
@@ -163,7 +163,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table...");
+                _logger.Debug("Refreshing table... total peers: {count}", Peers.Count);
                 List<Task> tasks = _routing.NonEmptyBuckets
                     .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
                     .Select(bucket =>
@@ -234,16 +234,19 @@ namespace Libplanet.Net.Protocols
                 {
                     try
                     {
-                        _logger.Debug("Send ping to {peer}.", replacement);
-                        await PingAsync(replacement, _requestTimeout, cancellationToken);
-
+                        _logger.Debug("Check {peer}.", replacement);
                         if (bucket.IsFull())
                         {
                             break;
                         }
+
+                        await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
                     catch (TimeoutException)
                     {
+                        _logger.Debug(
+                            "Remove stale peer [{peer}] from replacement cache.",
+                            replacement);
                         bucket.ReplacementCache.Remove(replacement);
                     }
                 }
@@ -363,12 +366,12 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Validating {Peer}", peer.Address);
+                _logger.Debug("Validating {Peer}", peer);
                 await PingAsync(peer, timeout, cancellationToken);
             }
             catch (TimeoutException)
             {
-                _logger.Debug("{Peer} is invalid, removing...", peer.Address);
+                _logger.Debug("{Peer} is invalid, removing...", peer);
                 await RemovePeerAsync(peer, cancellationToken);
                 throw;
             }
@@ -398,25 +401,9 @@ namespace Libplanet.Net.Protocols
                 throw new TaskCanceledException();
             }
 
-            bool contains = _routing.Contains(peer);
             BoundPeer evictionCandidate = await _routing.AddPeerAsync(peer);
-            if (evictionCandidate is null)
+            if (!(evictionCandidate is null))
             {
-                // added successfully since there was empty space in the bucket
-                if (!contains)
-                {
-                    _routing.BucketOf(peer).ReplacementCache.Remove(peer);
-                    _logger.Debug("Added [{peer}] to table", peer);
-                }
-            }
-            else
-            {
-                if (!_routing.BucketOf(peer).ReplacementCache.Contains(peer))
-                {
-                    _routing.BucketOf(peer).ReplacementCache.Add(peer);
-                    _logger.Debug("Added [{peer}] to replacement cache.", peer);
-                }
-
                 _logger.Verbose(
                     "Need to evict {Candidate}; trying...",
                     evictionCandidate);
@@ -438,7 +425,7 @@ namespace Libplanet.Net.Protocols
 
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
-            _logger.Debug($"Removing peer [{peer.Address.ToHex()}] from table.");
+            _logger.Debug("Removing peer [{peer}] from table.", peer);
             await _routing.RemovePeerAsync(peer);
         }
 

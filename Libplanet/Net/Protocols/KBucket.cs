@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Serilog;
 
 namespace Libplanet.Net.Protocols
 {
@@ -12,12 +12,15 @@ namespace Libplanet.Net.Protocols
         private readonly Random _random;
         private readonly List<(DateTimeOffset, BoundPeer)> _peers;
 
+        private readonly ILogger _logger;
+
         private DateTimeOffset _lastUpdated;
 
-        public KBucket(int size, Random random)
+        public KBucket(int size, Random random, ILogger logger)
         {
             _size = size;
             _random = random;
+            _logger = logger;
             _peers = new List<(DateTimeOffset, BoundPeer)>();
             ReplacementCache = new List<BoundPeer>();
 
@@ -45,22 +48,41 @@ namespace Libplanet.Net.Protocols
         public BoundPeer AddPeer(BoundPeer peer)
         {
             _lastUpdated = DateTimeOffset.UtcNow;
-            ReplacementCache.Remove(peer);
             int exists =
                 _peers.FindIndex(p => p.Item2.PublicKey.Equals(peer.PublicKey));
 
             if (exists != -1)
             {
+                _logger.Verbose("Bucket already contains [{peer}]", peer);
                 _peers.RemoveAt(exists);
                 _peers.Add((DateTimeOffset.UtcNow, peer));
                 return null;
             }
             else if (IsFull())
             {
+                _logger.Verbose("Bucket is full to add [{peer}]", peer);
+                if (!ReplacementCache.Contains(peer))
+                {
+                    ReplacementCache.Add(peer);
+                    _logger.Verbose(
+                        "Added [{peer}] to replacement cache. (total: {count})",
+                        peer,
+                        ReplacementCache.Count);
+                }
+
                 return Tail.Item2;
             }
             else
             {
+                _logger.Verbose("Bucket does not contains [{peer}]", peer);
+                if (ReplacementCache.Remove(peer))
+                {
+                    _logger.Verbose(
+                        "Removed [{peer}] from replacement cache. (total: {count})",
+                        peer,
+                        ReplacementCache.Count);
+                }
+
                 _peers.Add((DateTimeOffset.UtcNow, peer));
                 return null;
             }
@@ -79,7 +101,7 @@ namespace Libplanet.Net.Protocols
 
         public bool RemovePeer(BoundPeer peer)
         {
-            int index = _peers.FindIndex(item => item.Item2.Equals(peer));
+            int index = _peers.FindIndex(item => item.Item2.PublicKey.Equals(peer.PublicKey));
             if (index == -1)
             {
                 return false;
