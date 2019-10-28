@@ -13,7 +13,12 @@ namespace Libplanet.Explorer.GraphTypes
 
         public override object Serialize(object value)
         {
-            return ((Address?)value)?.ToString();
+            if (value is Address addr)
+            {
+                return addr.ToString();
+            }
+
+            return value;
         }
 
         public override object ParseValue(object value)
