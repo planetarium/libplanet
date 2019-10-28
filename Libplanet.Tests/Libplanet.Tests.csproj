@@ -18,14 +18,14 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And
+                             '$(MSBuildVersion)'>='16.3.0'">
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' And
                              '$(BuildingByReSharper)'!='true'">
     <TargetFramework>net471</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'=='Core' And
-                             '$(MSBuildVersion)' >='16.3.0'">
-    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
