@@ -1353,19 +1353,18 @@ namespace Libplanet.Net
             Message message,
             CancellationToken cancellationToken)
         {
+            Protocol.ReceiveMessage(this, message);
             switch (message)
             {
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        Protocol.ReceiveMessage(this, ping);
                         break;
                     }
 
                 case FindNeighbors findPeer:
                     {
                         _logger.Debug($"FindNeighbors received.");
-                        Protocol.ReceiveMessage(this, findPeer);
                         break;
                     }
 

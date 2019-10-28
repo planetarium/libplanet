@@ -88,7 +88,7 @@ namespace Libplanet.Net.Protocols
             {
                 evicted = _buckets[index].AddPeer(peer);
                 _logger.Debug(
-                    "Adding [{peer}] to routing table. (eviced : {evicted})",
+                    "Adding [{peer}] to routing table. (evicted : {evicted})",
                     peer,
                     evicted);
             }
