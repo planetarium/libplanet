@@ -23,7 +23,7 @@ for purposes in the *Libplanet* category:
  -  *#development-ko*: The same purpose to *#development*,
     except you can speak Korean instead English here.
 
-[Discord server]: https://discord.gg/ue9fgc3
+[Discord server]: https://discord.gg/planetarium
 
 
 Prerequisites

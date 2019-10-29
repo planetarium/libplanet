@@ -13,7 +13,7 @@ peer-to-peer network among equal nodes rather than an authorized central
 server.  Under the hood, it incorporates many features (e.g.,
 [digital signature], [BFT] consensus, data replication) of a [blockchain].
 
-[Discord]: https://discord.gg/ue9fgc3
+[Discord]: https://discord.gg/planetarium
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&branchName=master
 [Codecov]: https://codecov.io/gh/planetarium/libplanet
 [NuGet]: https://www.nuget.org/packages/Libplanet/
