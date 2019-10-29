@@ -37,7 +37,8 @@ namespace Libplanet.Net.Protocols
         public (DateTimeOffset, BoundPeer) Tail =>
             IsEmpty() ? (DateTimeOffset.MinValue, null) : _peers[0];
 
-        public ImmutableList<BoundPeer> Peers =>
+        public ImmutableList<BoundPeer> Peers => IsEmpty() ?
+            ImmutableList<BoundPeer>.Empty :
             _peers.Select(peerInfo => peerInfo.Item2).ToImmutableList();
 
         // replacement candidate stored in this cache when
