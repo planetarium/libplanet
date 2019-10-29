@@ -39,6 +39,7 @@ namespace Libplanet.Tests.Net
                 new DnsEndPoint("0.0.0.0", 1234),
                 0);
 
+            Assert.Empty(bucket.Peers);
             Assert.True(bucket.IsEmpty());
             Assert.Null(bucket.AddPeer(peer1));
             Assert.True(bucket.Contains(peer1));
