@@ -1353,7 +1353,7 @@ namespace Libplanet.Net
             Message message,
             CancellationToken cancellationToken)
         {
-            Protocol.ReceiveMessage(this, message);
+            Protocol.ReceiveMessage(message);
             switch (message)
             {
                 case Ping ping:

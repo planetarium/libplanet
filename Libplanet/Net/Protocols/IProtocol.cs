@@ -25,7 +25,7 @@ namespace Libplanet.Net.Protocols
 
         Task CheckReplacementCacheAsync(CancellationToken cancellationToken);
 
-        void ReceiveMessage(object sender, Message message);
+        void ReceiveMessage(Message message);
 
         string Trace();
     }

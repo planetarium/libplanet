@@ -256,7 +256,7 @@ namespace Libplanet.Net.Protocols
         }
 
 #pragma warning disable CS4014
-        public void ReceiveMessage(object sender, Message message)
+        public void ReceiveMessage(Message message)
         {
             switch (message)
             {
