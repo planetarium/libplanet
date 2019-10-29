@@ -725,9 +725,10 @@ namespace Libplanet.Net
                         initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
                         ? 0
                         : initialTip.Index + 1;
-                    int count = 0, totalCount = workspace.Count() - (int)initHeight;
+                    int count = 0, totalCount = (int)(workspace.Count - initHeight);
                     _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
-                    foreach (HashDigest<SHA256> hash in workspace.BlockHashes.Skip((int)initHeight))
+                    var blockHashes = workspace.IterateBlockHashes((int)initHeight);
+                    foreach (HashDigest<SHA256> hash in blockHashes)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Libplanet.Action;
+using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 
@@ -20,11 +21,10 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
-        public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks) =>
-            blocks.Any() ? _difficulty : 0;
+        public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
+            blocks.Count == 0 ? 0 : _difficulty;
 
-        public InvalidBlockException ValidateNextBlock(
-            IReadOnlyList<Block<T>> blocks, Block<T> nextBlock) =>
+        public InvalidBlockException ValidateNextBlock(BlockChain<T> blocks, Block<T> nextBlock) =>
             _exceptionToThrow;
     }
 }

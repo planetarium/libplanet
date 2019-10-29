@@ -42,11 +42,11 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
-            Assert.Contains(block, _blockChain);
+            Assert.True(_blockChain.Contains(block));
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
-            Assert.Contains(anotherBlock, _blockChain);
+            Assert.True(_blockChain.Contains(anotherBlock));
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
-            Assert.Contains(block, _blockChain);
+            Assert.True(_blockChain.Contains(block));
             Assert.Contains(txs[0], block.Transactions);
             Assert.Contains(txs[1], block.Transactions);
             Assert.DoesNotContain(txs[2], block.Transactions);
@@ -137,26 +137,22 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void Enumerate()
+        public async void BlockHashes()
         {
-            Assert.Empty(_blockChain);
             Assert.Empty(_blockChain.BlockHashes);
 
             Block<DumbAction> genesis = await _blockChain.MineBlock(_fx.Address1);
-            Assert.Equal(new Block<DumbAction>[] { genesis }, _blockChain);
-            Assert.Equal(new HashDigest<SHA256>[] { genesis.Hash }, _blockChain.BlockHashes);
+            Assert.Equal(new[] { genesis.Hash }, _blockChain.BlockHashes);
 
             Block<DumbAction> b1 = await _blockChain.MineBlock(_fx.Address1);
-            Assert.Equal(new Block<DumbAction>[] { genesis, b1 }, _blockChain);
             Assert.Equal(
-                new HashDigest<SHA256>[] { genesis.Hash, b1.Hash },
+                new[] { genesis.Hash, b1.Hash },
                 _blockChain.BlockHashes
             );
 
             Block<DumbAction> b2 = await _blockChain.MineBlock(_fx.Address1);
-            Assert.Equal(new Block<DumbAction>[] { genesis, b1, b2 }, _blockChain);
             Assert.Equal(
-                new HashDigest<SHA256>[] { genesis.Hash, b1.Hash, b2.Hash },
+                new[] { genesis.Hash, b1.Hash, b2.Hash },
                 _blockChain.BlockHashes
             );
         }
@@ -294,22 +290,27 @@ namespace Libplanet.Tests.Blockchain
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
-            (Address[] addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            (Address[] addresses, Block<DumbAction> genesis, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests();
 
-            Assert.Empty(_blockChain);
+            Assert.Equal(0, _blockChain.Count);
             Assert.Empty(MinerReward.RenderRecords.Value);
             try
             {
-                _blockChain.Append(blocks[0]);
-                Assert.Contains(blocks[0], _blockChain);
-                Assert.Equal(new[] { blocks[0] }, _blockChain.ToArray());
-                Assert.NotNull(_blockChain.Store.GetBlockStates(blocks[0].Hash));
+                _blockChain.Append(genesis);
+                Assert.True(_blockChain.Contains(genesis));
+                Assert.NotNull(_blockChain.Store.GetBlockStates(genesis.Hash));
                 Assert.Empty(DumbAction.RenderRecords.Value);
 
-                _blockChain.Append(blocks[1]);
-                Assert.Contains(blocks[1], _blockChain);
-                Assert.Equal(blocks, _blockChain.ToArray());
-                Assert.NotNull(_blockChain.Store.GetBlockStates(blocks[1].Hash));
+                Block<DumbAction> block1 = TestUtils.MineNext(
+                    genesis,
+                    txs,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+                );
+
+                _blockChain.Append(block1);
+                Assert.True(_blockChain.Contains(block1));
+                Assert.NotNull(_blockChain.Store.GetBlockStates(block1.Hash));
                 var renders = DumbAction.RenderRecords.Value;
                 var actions = renders.Select(r => (DumbAction)r.Action).ToArray();
                 Assert.Equal(4, renders.Count);
@@ -388,29 +389,30 @@ namespace Libplanet.Tests.Blockchain
         {
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
 
-            (_, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            (_, Block<DumbAction> genesis, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests();
 
             try
             {
                 Assert.Throws<ArgumentException>(() =>
                     _blockChain.Append(
-                        blocks[0],
+                        genesis,
                         DateTimeOffset.UtcNow,
                         evaluateActions: false,
                         renderActions: true
                     )
                 );
-                Assert.DoesNotContain(blocks[0], _blockChain);
+                Assert.False(_blockChain.Contains(genesis));
                 Assert.Empty(DumbAction.RenderRecords.Value);
 
                 _blockChain.Append(
-                    blocks[0],
+                    genesis,
                     DateTimeOffset.UtcNow,
                     evaluateActions: false,
                     renderActions: false
                 );
-                Assert.Equal(blocks[0], _blockChain.Tip);
-                Assert.Null(_blockChain.Store.GetBlockStates(blocks[0].Hash));
+                Assert.Equal(genesis, _blockChain.Tip);
+                Assert.Null(_blockChain.Store.GetBlockStates(genesis.Hash));
                 Assert.Empty(DumbAction.RenderRecords.Value);
             }
             finally
@@ -435,7 +437,7 @@ namespace Libplanet.Tests.Blockchain
                 await blockChain.MineBlock(_fx.Address1));
             Assert.IsType<ThrowException.SomeException>(e.InnerException);
 
-            Assert.Empty(blockChain);
+            Assert.Equal(0, blockChain.Count);
         }
 
         [Fact]
@@ -452,7 +454,7 @@ namespace Libplanet.Tests.Blockchain
              await Assert.ThrowsAsync<ThrowException.SomeException>(async () =>
                  await blockChain.MineBlock(_fx.Address1));
 
-             Assert.Single(blockChain);
+             Assert.Equal(1, blockChain.Count);
         }
 
         [Fact]
@@ -469,10 +471,18 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ExecuteActions()
         {
-            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
-            _blockChain.Append(blocks[0]);
+            (var addresses, Block<DumbAction> genesis, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests();
+            _blockChain.Append(genesis);
+
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                genesis,
+                txs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+            );
+
             _blockChain.Append(
-                blocks[1],
+                block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderActions: false
@@ -488,10 +498,10 @@ namespace Libplanet.Tests.Blockchain
                 { MinerReward.RewardRecordAddress, (Text)$"{addresses[4]},{addresses[4]}" },
             };
 
-            _blockChain.ExecuteActions(blocks[1]);
+            _blockChain.ExecuteActions(block1);
             Assert.Equal(
                 expectedStates.ToImmutableDictionary(),
-                _blockChain.Store.GetBlockStates(blocks[1].Hash)
+                _blockChain.Store.GetBlockStates(block1.Hash)
             );
         }
 
@@ -553,8 +563,17 @@ namespace Libplanet.Tests.Blockchain
 
             BlockChain<DumbAction> forked = _blockChain.Fork(block2.Hash);
 
-            Assert.Equal(new[] { block1, block2, block3 }, _blockChain);
-            Assert.Equal(new[] { block1, block2 }, forked);
+            Assert.Equal(
+                new[] { block1, block2, block3 },
+                new[] { _blockChain[0], _blockChain[1], _blockChain[2] }
+            );
+            Assert.Equal(3, _blockChain.Count);
+
+            Assert.Equal(
+                new[] { block1, block2 },
+                new[] { forked[0], forked[1] }
+            );
+            Assert.Equal(2, forked.Count);
         }
 
         [Fact]
@@ -562,7 +581,8 @@ namespace Libplanet.Tests.Blockchain
         {
             (_, _, BlockChain<DumbAction> chain) = MakeIncompleteBlockStates();
             BlockChain<DumbAction> forked = chain.Fork(chain[5].Hash);
-            Assert.Equal(chain.Take(6), forked);
+            Assert.Equal(chain[5], forked.Tip);
+            Assert.Equal(6, forked.Count);
         }
 
         [Fact]
@@ -777,11 +797,16 @@ namespace Libplanet.Tests.Blockchain
         [InlineData(false)]
         public void Swap(bool render)
         {
-            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
-            foreach (Block<DumbAction> block in blocks)
-            {
-                _blockChain.Append(block);
-            }
+            (var addresses, Block<DumbAction> genesis, Transaction<DumbAction>[] txs1) =
+                MakeFixturesForAppendTests();
+            _blockChain.Append(genesis);
+
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                genesis,
+                txs1,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+            );
+            _blockChain.Append(block1);
 
             PrivateKey privateKey = new PrivateKey(new byte[]
             {
@@ -1054,7 +1079,6 @@ namespace Libplanet.Tests.Blockchain
         {
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
                 = MakeIncompleteBlockStates();
-            Block<DumbAction>[] blocks = chain.ToArray();
             StoreTracker store = (StoreTracker)chain.Store;
 
             HashDigest<SHA256>[] ListStateReferences(Address address)
@@ -1098,16 +1122,19 @@ namespace Libplanet.Tests.Blockchain
             Assert.Empty(
                 store.Logs.Where(l => l.Item1 == "StoreStateReference")
             );
-            foreach (Block<DumbAction> block in blocks.Take(blocks.Length - 1))
+
+            foreach (var blockHash in chain.BlockHashes.Take((int)chain.Count - 1))
             {
+                var block = chain[blockHash];
                 Assert.Null(store.GetBlockStates(block.Hash));
             }
 
             store.ClearLogs();
             chain.GetState(addresses[0], completeStates: true);
 
-            foreach (Block<DumbAction> block in blocks)
+            foreach (var blockHash in chain.BlockHashes)
             {
+                var block = chain[blockHash];
                 Assert.NotNull(store.GetBlockStates(block.Hash));
             }
 
@@ -1451,29 +1478,37 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void EvaluateBlockAction()
         {
-            (var addresses, Block<DumbAction>[] blocks) = MakeFixturesForAppendTests();
+            (var addresses, Block<DumbAction> genesis, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests();
+
             _blockChain.Append(
-                blocks[0],
+                genesis,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderActions: false);
 
+            Block<DumbAction> block1 = TestUtils.MineNext(
+                genesis,
+                txs,
+                difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain)
+            );
+
             var miner = addresses[4];
-            var blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[0], null);
+            var blockActionEvaluation = _blockChain.EvaluateBlockAction(genesis, null);
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
             Assert.Equal((Integer)1, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
 
-            _blockChain.ExecuteActions(blocks[0]);
+            _blockChain.ExecuteActions(genesis);
             _blockChain.Append(
-                blocks[1],
+                block1,
                 DateTimeOffset.UtcNow,
                 evaluateActions: false,
                 renderActions: false);
 
-            var txEvaluations = blocks[1].EvaluateActionsPerTx(a =>
-                    _blockChain.GetState(a, blocks[1].PreviousHash).GetValueOrDefault(a))
+            var txEvaluations = block1.EvaluateActionsPerTx(a =>
+                    _blockChain.GetState(a, block1.PreviousHash).GetValueOrDefault(a))
                 .Select(te => te.Item2).ToList();
-            blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[1], txEvaluations);
+            blockActionEvaluation = _blockChain.EvaluateBlockAction(block1, txEvaluations);
 
             Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
         }
@@ -1611,7 +1646,8 @@ namespace Libplanet.Tests.Blockchain
             return (signer, addresses, chain);
         }
 
-        private (Address[], Block<DumbAction>[]) MakeFixturesForAppendTests()
+        private (Address[], Block<DumbAction>, Transaction<DumbAction>[])
+            MakeFixturesForAppendTests()
         {
             Address[] addresses =
             {
@@ -1652,16 +1688,8 @@ namespace Libplanet.Tests.Blockchain
                     nonce: 1,
                     privateKey: privateKey),
             };
-            Block<DumbAction> b1 = TestUtils.MineNext(
-                b0,
-                txs,
-                null,
-                _blockChain.Policy.GetNextBlockDifficulty(
-                    _blockChain.ToImmutableList().Add(b0)
-                )
-            );
 
-            return (addresses, new[] { b0, b1 });
+            return (addresses, b0, txs);
         }
 
         [Fact]

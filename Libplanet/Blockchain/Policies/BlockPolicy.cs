@@ -100,7 +100,7 @@ namespace Libplanet.Blockchain.Policies
         /// An appropriate interval between consecutive <see cref="Block{T}"/>s.
         /// It is usually from 20 to 30 seconds.
         /// <para>If a previous interval took longer than this
-        /// <see cref="GetNextBlockDifficulty(IReadOnlyList{Block{T}})"/> method
+        /// <see cref="GetNextBlockDifficulty(BlockChain{T})"/> method
         /// raises the <see cref="Block{T}.Difficulty"/>.  If it took shorter
         /// than this <see cref="Block{T}.Difficulty"/> is dropped.</para>
         /// </summary>
@@ -112,10 +112,10 @@ namespace Libplanet.Blockchain.Policies
 
         /// <inheritdoc/>
         public InvalidBlockException ValidateNextBlock(
-            IReadOnlyList<Block<T>> blocks,
+            BlockChain<T> blocks,
             Block<T> nextBlock)
         {
-            int index = blocks.Count;
+            long index = blocks.Count;
             long difficulty = GetNextBlockDifficulty(blocks);
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
@@ -165,9 +165,9 @@ namespace Libplanet.Blockchain.Policies
         }
 
         /// <inheritdoc />
-        public long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks)
+        public long GetNextBlockDifficulty(BlockChain<T> blocks)
         {
-            int index = blocks.Count;
+            long index = blocks.Count;
 
             if (index < 0)
             {
