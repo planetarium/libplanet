@@ -42,7 +42,7 @@ If it's Windows please check if the environment variable named
 `MSBuildSDKsPath` refers to the proper version of .NET Core SDK.
 If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
 at the highest.  .NET Core SDK higher than the version 2.2.105 is not
-recognized Visual Studio 2017.
+recognized by Visual Studio 2017.
 
 Although it is not necessary, you should install a proper IDE for .NET
 (or an [OmniSharp] extension for your favorite editor — except it takes
