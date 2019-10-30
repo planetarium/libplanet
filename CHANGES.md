@@ -38,6 +38,7 @@ To be released.
 
  -  Added `ProtectedPrivateKey` class.  [[#577], [#614]]
  -  Added `IncorrectPassphraseException` class.  [[#577], [#614]]
+ -  Added `MismatchedAddressException` class.  [[#577], [#614]]
  -  Added `ICipher` interface.  [[#577], [#614]]
  -  Added `Aes128Ctr` class.  [[#577], [#614]]
  -  Added `IKdf` interface.  [[#577], [#614]]

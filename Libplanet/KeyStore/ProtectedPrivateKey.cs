@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -17,41 +18,57 @@ namespace Libplanet.KeyStore
         /// <summary>
         /// Loads a protected private key.
         /// </summary>
+        /// <param name="address">The address of the protected private key.</param>
         /// <param name="kdf">A key derivation function to derive a symmetric key to decrypt
         /// a <see cref="PrivateKey"/>.</param>
         /// <param name="mac">MAC digest to check if a derived key is correct or not.</param>
         /// <param name="cipher">A symmetric cipher to decrypt a <see cref="PrivateKey"/>.</param>
         /// <param name="ciphertext">An encrypted <see cref="PrivateKey"/>.</param>
         public ProtectedPrivateKey(
+            Address address,
             IKdf kdf,
             byte[] mac,
             ICipher cipher,
             byte[] ciphertext
         )
-            : this(kdf, ImmutableArray.Create(mac), cipher, ImmutableArray.Create(ciphertext))
+            : this(
+                address,
+                kdf,
+                ImmutableArray.Create(mac),
+                cipher,
+                ImmutableArray.Create(ciphertext)
+            )
         {
         }
 
         /// <summary>
         /// Loads a protected private key.
         /// </summary>
+        /// <param name="address">The address of the protected private key.</param>
         /// <param name="kdf">A key derivation function to derive a symmetric key to decrypt
         /// a <see cref="PrivateKey"/>.</param>
         /// <param name="mac">MAC digest to check if a derived key is correct or not.</param>
         /// <param name="cipher">A symmetric cipher to decrypt a <see cref="PrivateKey"/>.</param>
         /// <param name="ciphertext">An encrypted <see cref="PrivateKey"/>.</param>
         public ProtectedPrivateKey(
+            Address address,
             IKdf kdf,
             ImmutableArray<byte> mac,
             ICipher cipher,
             ImmutableArray<byte> ciphertext
         )
         {
+            Address = address;
             Kdf = kdf;
             Mac = mac;
             Cipher = cipher;
             Ciphertext = ciphertext;
         }
+
+        /// <summary>
+        /// The address of the protected private key.
+        /// </summary>
+        public Address Address { get; }
 
         /// <summary>
         /// A key derivation function to derive a symmetric key to decrypt
@@ -99,7 +116,8 @@ namespace Libplanet.KeyStore
                 ImmutableArray.Create(privateKey.ByteArray)
             );
             ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
-            return new ProtectedPrivateKey(kdf, mac, cipher, ciphertext);
+            Address address = privateKey.PublicKey.ToAddress();
+            return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
         }
 
         /// <summary>
@@ -125,7 +143,20 @@ namespace Libplanet.KeyStore
 
             ImmutableArray<byte> encKey = MakeEncryptionKey(derivedKey);
             ImmutableArray<byte> plaintext = Cipher.Decrypt(encKey, Ciphertext);
-            return new PrivateKey(plaintext.ToBuilder().ToArray());
+
+            var key = new PrivateKey(plaintext.ToBuilder().ToArray());
+            Address actualAddress = key.PublicKey.ToAddress();
+            if (!Address.Equals(actualAddress))
+            {
+                throw new MismatchedAddressException(
+                    "The actual address of the unprotected private key does not match to " +
+                    "the expected address of the protected private key.",
+                    Address,
+                    actualAddress
+                );
+            }
+
+            return key;
         }
 
         private static ImmutableArray<byte> MakeEncryptionKey(ImmutableArray<byte> derivedKey)

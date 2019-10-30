@@ -43,13 +43,26 @@ namespace Libplanet.Tests.KeyStore
 
             var kdf = new Pbkdf2<Sha256Digest>(10240, salt, 32);
             var cipher = new Aes128Ctr(iv);
-            var ppk = new ProtectedPrivateKey(kdf, mac, cipher, ciphertext);
+            var address = new Address("d80d933db45cc0cf69e9632090f8aaff635dc8e5");
+            var ppk = new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
 
-            Assert.Equal(
-                new Address("d80d933db45cc0cf69e9632090f8aaff635dc8e5"),
-                ppk.Unprotect("asdf").PublicKey.ToAddress()
+            Assert.Equal(address, ppk.Address);
+            Assert.Equal(address, ppk.Unprotect("asdf").PublicKey.ToAddress());
+            var incorrectPassphraseException = Assert.Throws<IncorrectPassphraseException>(
+                () => ppk.Unprotect("wrong passphrase")
             );
-            Assert.Throws<IncorrectPassphraseException>(() => ppk.Unprotect("wrong passphrase"));
+            TestUtils.AssertBytesEqual(
+                mac.ToImmutableArray(),
+                incorrectPassphraseException.ExpectedMac
+            );
+            Assert.NotEqual(mac, incorrectPassphraseException.InputMac);
+
+            var invalidPpk = new ProtectedPrivateKey(default, kdf, mac, cipher, ciphertext);
+            var mismatchedAddressException = Assert.Throws<MismatchedAddressException>(
+                () => invalidPpk.Unprotect("asdf")
+            );
+            Assert.Equal(default(Address), mismatchedAddressException.ExpectedAddress);
+            Assert.Equal(address, mismatchedAddressException.ActualAddress);
         }
 
         [Fact]
