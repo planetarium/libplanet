@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -122,7 +123,9 @@ namespace Libplanet.KeyStore
         }
 
         /// <summary>
-        /// Loads a <see cref="ProtectedPrivateKey"/> from a JSON.
+        /// Loads a <see cref="ProtectedPrivateKey"/> from a JSON, according to Ethereum's
+        /// <a href="https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition">Web3
+        /// Secret Storage Definition</a>.
         /// </summary>
         /// <param name="json">A JSON string that encodes a <see cref="ProtectedPrivateKey"/>.
         /// </param>
@@ -329,6 +332,49 @@ namespace Libplanet.KeyStore
             }
 
             return key;
+        }
+
+        /// <summary>
+        /// Dumps the cipher parameters as a JSON representation according to Ethereum's
+        /// <a href="https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition">Web3
+        /// Secret Storage Definition</a>.
+        /// </summary>
+        /// <param name="writer">A JSON writer which has not begun object nor array.</param>
+        /// <param name="id">A unique identifier, which goes to the <c>id</c> field in the key JSON
+        /// file.  If <c>null</c> (which is default) it is random-generated.</param>
+        public void WriteJson(Utf8JsonWriter writer, [Pure] in Guid? id = null)
+        {
+            writer.WriteStartObject();
+            writer.WriteNumber("version", 3);
+            writer.WriteString("id", (id ?? Guid.NewGuid()).ToString().ToLower());
+            writer.WriteString("address", Address.ToHex().ToLower());
+            writer.WriteStartObject("crypto");
+            writer.WriteString("ciphertext", ByteUtil.Hex(Ciphertext));
+            writer.WritePropertyName("cipherparams");
+            string cipherName = Cipher.WriteJson(writer);
+            writer.WriteString("cipher", cipherName);
+            writer.WritePropertyName("kdfparams");
+            string kdfName = Kdf.WriteJson(writer);
+            writer.WriteString("kdf", kdfName);
+            writer.WriteString("mac", ByteUtil.Hex(Mac));
+            writer.WriteEndObject();
+            writer.WriteEndObject();
+        }
+
+        /// <summary>
+        /// Dumps the cipher parameters as a JSON representation according to Ethereum's
+        /// <a href="https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition">Web3
+        /// Secret Storage Definition</a>.
+        /// </summary>
+        /// <param name="stream">The destination for writing JSON text.</param>
+        /// <param name="id">A unique identifier, which goes to the <c>id</c> field in the key JSON
+        /// file.  If <c>null</c> (which is default) it is random-generated.</param>
+        public void WriteJson(Stream stream, [Pure] in Guid? id = null)
+        {
+            using (var writer = new Utf8JsonWriter(stream))
+            {
+                WriteJson(writer, id);
+            }
         }
 
         private static ImmutableArray<byte> MakeEncryptionKey(ImmutableArray<byte> derivedKey)

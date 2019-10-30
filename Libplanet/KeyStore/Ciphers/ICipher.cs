@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Text.Json;
 
 namespace Libplanet.KeyStore.Ciphers
 {
@@ -33,5 +34,15 @@ namespace Libplanet.KeyStore.Ciphers
             in ImmutableArray<byte> key,
             in ImmutableArray<byte> ciphertext
         );
+
+        /// <summary>
+        /// Dumps the cipher parameters as a JSON representation according to Ethereum's
+        /// <a href="https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition">Web3
+        /// Secret Storage Definition</a>.
+        /// </summary>
+        /// <param name="writer">A JSON writer which has not begun object nor array.</param>
+        /// <returns>A unique identifier of the cipher algorithm.  This is going to be the
+        /// <c>crypto.cipher</c> field in the key JSON file.</returns>
+        string WriteJson(Utf8JsonWriter writer);
     }
 }

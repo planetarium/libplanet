@@ -11,6 +11,7 @@ namespace Libplanet.KeyStore.Ciphers
     /// <summary>
     /// AES-128-CTR (AES 128-bit in counter moder).
     /// </summary>
+    [Pure]
     public sealed class Aes128Ctr : ICipher
     {
         /// <summary>
@@ -65,6 +66,15 @@ namespace Libplanet.KeyStore.Ciphers
             in ImmutableArray<byte> ciphertext
         ) =>
             Cipher(false, key, ciphertext);
+
+        /// <inheritdoc />
+        public string WriteJson(Utf8JsonWriter writer)
+        {
+            writer.WriteStartObject();
+            writer.WriteString("iv", ByteUtil.Hex(Iv));
+            writer.WriteEndObject();
+            return "aes-128-ctr";
+        }
 
         internal static ICipher FromJson(in JsonElement paramsElement)
         {

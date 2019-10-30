@@ -19,6 +19,7 @@ namespace Libplanet.KeyStore.Kdfs
         "Microsoft.StyleCop.CSharp.ReadabilityRules",
         "SA1402",
         Justification = "There are just generic & non-generic versions of the same name classes.")]
+    [Pure]
     public sealed class Pbkdf2<T> : IKdf
         where T : GeneralDigest, new()
     {
@@ -78,6 +79,21 @@ namespace Libplanet.KeyStore.Kdfs
             );
             var key = (KeyParameter)pdb.GenerateDerivedMacParameters(KeyLength * 8);
             return ImmutableArray.Create(key.GetKey(), 0, KeyLength);
+        }
+
+        /// <inheritdoc/>
+        public string WriteJson(Utf8JsonWriter writer)
+        {
+            writer.WriteStartObject();
+            writer.WriteNumber("c", Iterations);
+            writer.WriteNumber("dklen", KeyLength);
+            writer.WriteString(
+                "prf",
+                "hmac-" + new T().AlgorithmName.ToLower().Replace("-", string.Empty)
+            );
+            writer.WriteString("salt", ByteUtil.Hex(Salt));
+            writer.WriteEndObject();
+            return "pbkdf2";
         }
     }
 
