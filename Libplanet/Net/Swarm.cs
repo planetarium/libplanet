@@ -641,13 +641,47 @@ namespace Libplanet.Net
 
             try
             {
-                await SyncBehindsBlocksFromPeerAsync(
-                    workspace,
-                    peersWithHeight.First(),
-                    progress,
-                    cancellationToken,
-                    render
-                );
+                var blockDownloadComplete = false;
+                foreach ((BoundPeer Peer, long? Height) peerWithHeight in peersWithHeight)
+                {
+                    try
+                    {
+                        _logger.Information(
+                            "Try to download blocks from {EndPoint}@{Address}",
+                            peerWithHeight.Peer.EndPoint,
+                            peerWithHeight.Peer.Address.ToHex());
+                        await SyncBehindsBlocksFromPeerAsync(
+                            workspace,
+                            peerWithHeight,
+                            progress,
+                            cancellationToken,
+                            render
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(
+                            "Exception was thrown during block download with {EndPoint}@{Address}\n"
+                            + "{Exception}",
+                            peerWithHeight.Peer.EndPoint,
+                            peerWithHeight.Peer.Address.ToHex(),
+                            e);
+                        continue;
+                    }
+
+                    _logger.Information(
+                        "Finished to download blocks from {EndPoint}@{Address}",
+                        peerWithHeight.Peer.EndPoint,
+                        peerWithHeight.Peer.Address.ToHex());
+                    blockDownloadComplete = true;
+                    break;
+                }
+
+                if (!blockDownloadComplete)
+                {
+                    _logger.Information("Failed to download blocks from peers.");
+                    return;
+                }
 
                 if (workspace.Tip is null)
                 {
@@ -1748,6 +1782,7 @@ namespace Libplanet.Net
                                     TotalBlockCount = totalBlockCount,
                                     ReceivedBlockCount = receivedBlockCount,
                                     ReceivedBlockHash = block.Hash,
+                                    SourcePeer = peer,
                                 });
                                 _logger.Debug($"Block[{block.Hash}] is appended.");
                             },
@@ -1761,6 +1796,8 @@ namespace Libplanet.Net
                     IStore store = blockChain.Store;
                     store.DeleteChainId(workspace.Id);
                 }
+
+                throw;
             }
             finally
             {

@@ -1718,6 +1718,7 @@ namespace Libplanet.Tests.Net
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
+                        SourcePeer = minerSwarm.AsPeer as BoundPeer,
                     };
                 }).ToArray();
                 (expectedStates[10] as BlockDownloadState).TotalBlockCount = 11;
@@ -1805,6 +1806,7 @@ namespace Libplanet.Tests.Net
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
+                        SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
                     };
                 }).ToArray();
 
@@ -1834,6 +1836,55 @@ namespace Libplanet.Tests.Net
                 fxForNominers[0].Dispose();
                 fxForNominers[1].Dispose();
             }
+        }
+
+        [Theory(Timeout = Timeout)]
+        [InlineData(4)]
+        [InlineData(8)]
+        [InlineData(16)]
+        [InlineData(32)]
+        public async Task PreloadRetryWithNextPeers(int blockCount)
+        {
+            Swarm<DumbAction> swarm0 = _swarms[0];
+            Swarm<DumbAction> swarm1 = _swarms[1];
+            Swarm<DumbAction> receiverSwarm = _swarms[2];
+
+            swarm0.FindNextHashesChunkSize = blockCount / 2;
+            swarm1.FindNextHashesChunkSize = blockCount / 2;
+
+            for (int i = 0; i < blockCount; ++i)
+            {
+                var block = await swarm0.BlockChain.MineBlock(swarm0.Address);
+                swarm1.BlockChain.Append(block);
+            }
+
+            await StartAsync(swarm0);
+            await StartAsync(swarm1);
+
+            Assert.Equal(swarm0.BlockChain, swarm1.BlockChain);
+
+            await receiverSwarm.AddPeersAsync(new[] { swarm0.AsPeer, swarm1.AsPeer }, null);
+            Assert.Equal(
+                new[] { swarm0.AsPeer, swarm1.AsPeer }.ToImmutableHashSet(),
+                receiverSwarm.Peers.ToImmutableHashSet());
+
+            var startedStop = false;
+            var shouldStopSwarm =
+                swarm0.AsPeer.Equals(receiverSwarm.Peers.First()) ? swarm0 : swarm1;
+            await receiverSwarm.PreloadAsync(
+                progress: new Progress<PreloadState>(async (state) =>
+                {
+                    if (startedStop)
+                    {
+                        return;
+                    }
+
+                    startedStop = true;
+                    await shouldStopSwarm.StopAsync(TimeSpan.Zero);
+                }));
+
+            Assert.Equal(swarm1.BlockChain, receiverSwarm.BlockChain);
+            Assert.Equal(swarm0.BlockChain, receiverSwarm.BlockChain);
         }
 
         [Theory(Timeout = Timeout)]

@@ -26,5 +26,10 @@ namespace Libplanet.Net
 
         /// <inheritdoc />
         public override int CurrentPhase => 1;
+
+        /// <summary>
+        /// The peer which sent the block.
+        /// </summary>
+        public BoundPeer SourcePeer { get; internal set; }
     }
 }
