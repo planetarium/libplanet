@@ -72,10 +72,10 @@ To be released.
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
  -  `IceServer.CreateTurnClient()` became to throw `ArgumentException` when
     received invalid url.  [[#622]]
- -  `KademliaProtocol<T>` became to update peer table when receiving messages
-    that are not related with protocol.  [[#594], [#627]]
- -  `KademliaProtocol<T>` became not to check least recently used peer when
-    new peer is updated.  [[#627]]
+ -  `Swarm<T>` became to update peer table when receiving messages that are
+    not related with [Kademlia protocol][Kademlia].  [[#594], [#627]]
+ -  `Swarm<T>` became not to check least recently used peer every time when
+    new peer is fetched.  [[#627]]
 
 ### Bug fixes
 
