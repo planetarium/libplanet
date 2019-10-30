@@ -1,4 +1,4 @@
-on: [push]
+on: push
 name: push docker image
 jobs:
   build_and_push:
