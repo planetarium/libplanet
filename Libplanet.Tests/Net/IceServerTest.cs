@@ -17,10 +17,17 @@ namespace Libplanet.Tests.Net
                 Environment.GetEnvironmentVariable(
                     FactOnlyTurnAvailable.TurnUrlVarName));
             var userInfo = turnUri.UserInfo.Split(':');
+            await Assert.ThrowsAsync<ArgumentException>(
+                async () =>
+                {
+                    await IceServer.CreateTurnClient(
+                       new[] { new IceServer(new[] { "stun://stun.l.google.com:19302" }) }
+                    );
+                }
+            );
             var servers = new List<IceServer>()
             {
-                new IceServer(new[] { "turn:turn.does-not-exists.org" }),
-                new IceServer(new[] { "stun:stun.l.google.com:19302" }),
+                new IceServer(new[] { "turn://turn.does-not-exists.org" }),
             };
 
             await Assert.ThrowsAsync<IceServerException>(
