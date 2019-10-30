@@ -59,6 +59,8 @@ To be released.
     `IProtocol.CheckReplacementCacheAsync()` to check cached peers
     periodically.  [[#608]]
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
+ -  `IceServer.CreateTurnClient()` became to throw `ArgumentException` when
+    received invalid url.  [[#622]]
 
 ### Bug fixes
 
@@ -122,6 +124,7 @@ To be released.
 [#608]: https://github.com/planetarium/libplanet/pull/608
 [#609]: https://github.com/planetarium/libplanet/pull/609
 [#610]: https://github.com/planetarium/libplanet/pull/610
+[#622]: https://github.com/planetarium/libplanet/pull/622
 
 
 Version 0.6.0

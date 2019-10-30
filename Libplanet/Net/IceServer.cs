@@ -42,7 +42,7 @@ namespace Libplanet.Net
                 {
                     if (url.Scheme != "turn")
                     {
-                        continue;
+                        throw new ArgumentException($"{url} isn't valid TURN url.");
                     }
 
                     try
