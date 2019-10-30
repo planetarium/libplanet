@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.Json;
 using Libplanet.Crypto;
 using Libplanet.KeyStore.Ciphers;
 using Libplanet.KeyStore.Kdfs;
@@ -118,6 +119,177 @@ namespace Libplanet.KeyStore
             ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
             Address address = privateKey.PublicKey.ToAddress();
             return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
+        }
+
+        /// <summary>
+        /// Loads a <see cref="ProtectedPrivateKey"/> from a JSON.
+        /// </summary>
+        /// <param name="json">A JSON string that encodes a <see cref="ProtectedPrivateKey"/>.
+        /// </param>
+        /// <returns>A protected private key loaded from the given <paramref name="json"/>.
+        /// </returns>
+        /// <exception cref="JsonException">Thrown when the given <paramref name="json"/> is not
+        /// a valid JSON.</exception>
+        /// <exception cref="InvalidKeyJsonException">Thrown when the given key data lacks some
+        /// required fields or consists of wrong types.</exception>
+        /// <exception cref="UnsupportedKeyJsonException">Thrown when the given key data depends on
+        /// an unsupported features (e.g., KDF).</exception>
+        public static ProtectedPrivateKey FromJson(string json)
+        {
+            var options = new JsonDocumentOptions
+            {
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip,
+            };
+
+            using (JsonDocument doc = JsonDocument.Parse(json, options))
+            {
+                JsonElement rootElement = doc.RootElement;
+                if (rootElement.ValueKind != JsonValueKind.Object)
+                {
+                    throw new InvalidKeyJsonException(
+                        "The root of the key JSON must be an object, but it is a/an " +
+                        $"{rootElement.ValueKind}."
+                    );
+                }
+
+                if (!rootElement.TryGetProperty("version", out JsonElement versionElement))
+                {
+                    throw new InvalidKeyJsonException(
+                        "The key JSON must contain \"version\" field, but it lacks."
+                    );
+                }
+
+                if (versionElement.ValueKind != JsonValueKind.Number ||
+                    !versionElement.TryGetDecimal(out decimal versionNum))
+                {
+                    throw new InvalidKeyJsonException("The \"version\" field must be a number.");
+                }
+                else if (versionNum != 3)
+                {
+                    throw new UnsupportedKeyJsonException(
+                        $"The key JSON format version {versionNum} is unsupported; " +
+                        "Only version 3 is supported."
+                    );
+                }
+
+                string GetStringProperty(JsonElement element, string fieldName)
+                {
+                    if (!element.TryGetProperty(fieldName, out JsonElement fieldElement))
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The key JSON must contain \"{fieldName}\" field, but it lacks."
+                        );
+                    }
+
+                    string str;
+                    try
+                    {
+                        str = fieldElement.GetString();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The \"{fieldName}\" field must be a string."
+                        );
+                    }
+
+                    if (str is null)
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The \"{fieldName}\" field must not be null, but a string."
+                        );
+                    }
+
+                    return str;
+                }
+
+                JsonElement GetObjectProperty(JsonElement element, string fieldName)
+                {
+                    if (!element.TryGetProperty(fieldName, out var fieldElement))
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The key JSON must contain \"{fieldName}\" field, but it lacks."
+                        );
+                    }
+                    else if (fieldElement.ValueKind != JsonValueKind.Object)
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The \"{fieldName}\" field must be an object, but it is a/an " +
+                            $"{fieldElement.ValueKind}."
+                        );
+                    }
+
+                    return fieldElement;
+                }
+
+                byte[] GetHexProperty(JsonElement element, string fieldName)
+                {
+                    string str = GetStringProperty(element, fieldName);
+                    byte[] bytes;
+                    try
+                    {
+                        bytes = ByteUtil.ParseHex(str);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new InvalidKeyJsonException(
+                            $"The \"{fieldName}\" field must be a hexadecimal string.\n{e}"
+                        );
+                    }
+
+                    return bytes;
+                }
+
+                JsonElement crypto = GetObjectProperty(rootElement, "crypto");
+                string cipherType = GetStringProperty(crypto, "cipher");
+                JsonElement cipherParamsElement = GetObjectProperty(crypto, "cipherparams");
+                byte[] ciphertext = GetHexProperty(crypto, "ciphertext");
+                byte[] mac = GetHexProperty(crypto, "mac");
+                string kdfType = GetStringProperty(crypto, "kdf");
+                JsonElement kdfParamsElement = GetObjectProperty(crypto, "kdfparams");
+                byte[] addressBytes = GetHexProperty(rootElement, "address");
+                Address address;
+                try
+                {
+                    address = new Address(addressBytes);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new InvalidKeyJsonException(
+                        "The \"address\" field must contain an Ethereum-style address which " +
+                        "consists of 40 hexadecimal letters: " + e
+                    );
+                }
+
+                ICipher cipher;
+                switch (cipherType)
+                {
+                    case "aes-128-ctr":
+                        cipher = Aes128Ctr.FromJson(cipherParamsElement);
+                        break;
+
+                    default:
+                        throw new UnsupportedKeyJsonException(
+                            $"Unsupported cipher type: \"{cipherType}\"."
+                        );
+                }
+
+                IKdf kdf;
+                switch (kdfType)
+                {
+                    case "pbkdf2":
+                        kdf = Pbkdf2.FromJson(kdfParamsElement);
+                        break;
+
+                    default:
+                        throw new UnsupportedKeyJsonException(
+                            $"Unsupported cipher type: \"{kdfType}\"."
+                        );
+                }
+
+                return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
+            }
         }
 
         /// <summary>

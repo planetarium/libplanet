@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Text.Json;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Generators;
@@ -12,6 +15,10 @@ namespace Libplanet.KeyStore.Kdfs
     /// </summary>
     /// <typeparam name="T">PRF (pseudorandom function) to use, e.g.,
     /// <see cref="Sha256Digest"/>.</typeparam>
+    [SuppressMessage(
+        "Microsoft.StyleCop.CSharp.ReadabilityRules",
+        "SA1402",
+        Justification = "There are just generic & non-generic versions of the same name classes.")]
     public sealed class Pbkdf2<T> : IKdf
         where T : GeneralDigest, new()
     {
@@ -71,6 +78,112 @@ namespace Libplanet.KeyStore.Kdfs
             );
             var key = (KeyParameter)pdb.GenerateDerivedMacParameters(KeyLength * 8);
             return ImmutableArray.Create(key.GetKey(), 0, KeyLength);
+        }
+    }
+
+    internal static class Pbkdf2
+    {
+        internal static IKdf FromJson(in JsonElement element)
+        {
+            if (!element.TryGetProperty("c", out JsonElement c))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"kdfparams\" field must have a \"c\" field, the number of iterations."
+                );
+            }
+
+            if (c.ValueKind != JsonValueKind.Number || !c.TryGetInt32(out int iterations))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"c\" field, the number of iterations, must be a number."
+                );
+            }
+
+            if (!element.TryGetProperty("dklen", out JsonElement dklen))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"kdfparams\" field must have a \"dklen\" field, " +
+                    "the length of key in bytes."
+                );
+            }
+
+            if (dklen.ValueKind != JsonValueKind.Number ||
+                !dklen.TryGetInt32(out int keyLength))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"dklen\" field, the length of key in bytes, must be a number."
+                );
+            }
+
+            if (!element.TryGetProperty("salt", out JsonElement saltElement))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"kdfparams\" field must have a \"salt\" field."
+                );
+            }
+
+            string saltString;
+            try
+            {
+                saltString = saltElement.GetString();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidKeyJsonException("The \"salt\" field must be a string.");
+            }
+
+            byte[] salt;
+            try
+            {
+                salt = ByteUtil.ParseHex(saltString);
+            }
+            catch (ArgumentNullException)
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"salt\" field must not be null, but a string."
+                );
+            }
+            catch (Exception e)
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"salt\" field must be a hexadecimal string of bytes.\n" + e
+                );
+            }
+
+            if (!element.TryGetProperty("prf", out JsonElement prfElement))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"kdfparams\" field must have a \"prf\" field."
+                );
+            }
+
+            string prf;
+            try
+            {
+                prf = prfElement.GetString();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"prf\" field must be a string."
+                );
+            }
+
+            switch (prf)
+            {
+                case "hmac-sha256":
+                    return new Pbkdf2<Sha256Digest>(iterations, salt, keyLength);
+
+                case null:
+                    throw new InvalidKeyJsonException(
+                        "The \"prf\" field must not be null, but a string."
+                    );
+
+                default:
+                    throw new UnsupportedKeyJsonException(
+                        $"Unsupported \"prf\" type: \"{prf}\"."
+                    );
+            }
         }
     }
 }

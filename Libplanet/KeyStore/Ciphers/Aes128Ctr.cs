@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Text.Json;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
@@ -64,6 +65,47 @@ namespace Libplanet.KeyStore.Ciphers
             in ImmutableArray<byte> ciphertext
         ) =>
             Cipher(false, key, ciphertext);
+
+        internal static ICipher FromJson(in JsonElement paramsElement)
+        {
+            if (!paramsElement.TryGetProperty("iv", out JsonElement ivElement))
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"cipherparams\" field must have an \"iv\" field."
+                );
+            }
+
+            string ivString;
+            try
+            {
+                ivString = ivElement.GetString();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidKeyJsonException("The \"iv\" field must be a string.");
+            }
+
+            if (ivString is null)
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"iv\" field must not be null, but a string."
+                );
+            }
+
+            byte[] iv;
+            try
+            {
+                iv = ByteUtil.ParseHex(ivString);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidKeyJsonException(
+                    "The \"iv\" field must be a hexadecimal string of bytes.\n" + e
+                );
+            }
+
+            return new Aes128Ctr(iv);
+        }
 
         private ImmutableArray<byte> Cipher(
             in bool encrypt,

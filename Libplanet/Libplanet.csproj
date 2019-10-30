@@ -93,6 +93,7 @@ https://docs.libplanet.io/</Description>
       </IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
   </ItemGroup>
 
   <!-- The above hacky trick is borrowed from the following Stack Overflow
