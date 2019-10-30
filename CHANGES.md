@@ -102,6 +102,8 @@ To be released.
     connection through a TURN relay server. [[#453], [#599]]
  -  Fixed a bug that `KeyNotFoundException` occurred when sending a message
     through the TurnClient.
+ -  Fixed a bug where `BlockChain<T>.GetNextTxNonce` only returned the same
+    nonce when transactions with an old nonce were staged.  [[#637]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
@@ -144,6 +146,7 @@ To be released.
 [#614]: https://github.com/planetarium/libplanet/pull/614
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
+[#637]: https://github.com/planetarium/libplanet/pull/637
 
 
 Version 0.6.0

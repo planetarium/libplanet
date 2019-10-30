@@ -1289,6 +1289,34 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task GetNextTxNonceWithStaleTx()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(address, "foo") };
+
+            Transaction<DumbAction>[] txs =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+            };
+
+            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            await _blockChain.MineBlock(address);
+
+            var staleTx = _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0);
+            _blockChain.StageTransactions(new[] { staleTx }.ToImmutableHashSet());
+
+            Assert.Equal(2, _blockChain.GetNextTxNonce(address));
+
+            _blockChain.MakeTransaction(privateKey, actions);
+            Assert.Equal(3, _blockChain.GetNextTxNonce(address));
+
+            _blockChain.MakeTransaction(privateKey, actions);
+            Assert.Equal(4, _blockChain.GetNextTxNonce(address));
+        }
+
+        [Fact]
         public void ValidateTxNonces()
         {
             var privateKey = new PrivateKey();
