@@ -1359,6 +1359,31 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task MakeTransactionConcurrency()
+        {
+            var privateKey = new PrivateKey();
+            Address address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(address, "foo") };
+
+            var tasks = Enumerable.Range(0, 10)
+                .Select(_ => Task.Run(() => _blockChain.MakeTransaction(privateKey, actions)));
+
+            await Task.WhenAll(tasks);
+
+            var txIds = _blockChain.GetStagedTransactionIds();
+
+            var nonces = txIds
+                .Select(_blockChain.GetTransaction)
+                .Select(tx => tx.Nonce)
+                .OrderBy(nonce => nonce).ToArray();
+
+            Assert.Equal(
+                nonces,
+                new long[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+            );
+        }
+
+        [Fact]
         public async void MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
