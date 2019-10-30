@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And
-                             '$(MSBuildVersion)'>='16.3.0'">
+                             '$(MSBuildVersion)'&gt;='16.3.0'">
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
