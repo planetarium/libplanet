@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Text.Json;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Digests;
@@ -74,7 +75,7 @@ namespace Libplanet.KeyStore.Kdfs
             var pdb = new Pkcs5S2ParametersGenerator(new T());
             pdb.Init(
                 PbeParametersGenerator.Pkcs5PasswordToBytes(passphrase.ToCharArray()),
-                Salt.ToBuilder().ToArray(),
+                Salt.ToArray(),
                 Iterations
             );
             var key = (KeyParameter)pdb.GenerateDerivedMacParameters(KeyLength * 8);

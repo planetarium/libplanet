@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Text.Json;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
@@ -138,12 +139,12 @@ namespace Libplanet.KeyStore.Ciphers
 
             KeyParameter keyParam = ParameterUtilities.CreateKeyParameter(
                 "AES128",
-                key.ToBuilder().ToArray()
+                key.ToArray()
             );
-            byte[] iv = Iv.ToBuilder().ToArray();
+            byte[] iv = Iv.ToArray();
             ICipherParameters cipherParams = new ParametersWithIV(keyParam, iv);
             cipher.Init(encrypt, cipherParams);
-            return cipher.DoFinal(input.ToBuilder().ToArray()).ToImmutableArray();
+            return cipher.DoFinal(input.ToArray()).ToImmutableArray();
         }
     }
 }

@@ -62,7 +62,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             ImmutableArray<byte> actual
         )
         {
-            AssertBytesEqual(expected.ToBuilder().ToArray(), actual.ToBuilder().ToArray());
+            AssertBytesEqual(expected.ToArray(), actual.ToArray());
         }
 
         internal static void AssertBytesEqual(TxId expected, TxId actual)

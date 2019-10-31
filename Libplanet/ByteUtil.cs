@@ -89,7 +89,7 @@ namespace Libplanet
         /// <paramref name="bytes"/> is <c>null</c>.</exception>
         [Pure]
         public static string Hex(in ImmutableArray<byte> bytes) =>
-            Hex(bytes.ToBuilder().ToArray());
+            Hex(bytes.ToArray());
 
         /// <summary>
         /// Calculates a deterministic hash code from a given
