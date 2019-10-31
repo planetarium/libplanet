@@ -105,21 +105,23 @@ namespace Libplanet.KeyStore
         public static ProtectedPrivateKey Protect(PrivateKey privateKey, string passphrase)
         {
             var salt = new byte[32];
-            var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(salt);
-            var kdf = new Pbkdf2<Sha256Digest>(10240, salt, 32);
-            ImmutableArray<byte> derivedKey = kdf.Derive(passphrase);
-            ImmutableArray<byte> encKey = MakeEncryptionKey(derivedKey);
-            var iv = new byte[16];
-            rng.GetBytes(iv);
-            var cipher = new Aes128Ctr(iv);
-            ImmutableArray<byte> ciphertext = cipher.Encrypt(
-                encKey,
-                ImmutableArray.Create(privateKey.ByteArray)
-            );
-            ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
-            Address address = privateKey.PublicKey.ToAddress();
-            return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+                var kdf = new Pbkdf2<Sha256Digest>(10240, salt, 32);
+                ImmutableArray<byte> derivedKey = kdf.Derive(passphrase);
+                ImmutableArray<byte> encKey = MakeEncryptionKey(derivedKey);
+                var iv = new byte[16];
+                rng.GetBytes(iv);
+                var cipher = new Aes128Ctr(iv);
+                ImmutableArray<byte> ciphertext = cipher.Encrypt(
+                    encKey,
+                    ImmutableArray.Create(privateKey.ByteArray)
+                );
+                ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
+                Address address = privateKey.PublicKey.ToAddress();
+                return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
+            }
         }
 
         /// <summary>

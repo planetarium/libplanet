@@ -16,8 +16,11 @@ namespace Libplanet.Tests.KeyStore.Kdfs
         public void Derive(int size)
         {
             var randomBytes = new byte[size];
-            RandomNumberGenerator rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomBytes);
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+
             T kdf = MakeInstance(randomBytes);
             ImmutableArray<byte> dFoo = kdf.Derive("foo");
             Assert.Equal(size, dFoo.Length);
