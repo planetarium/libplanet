@@ -52,6 +52,7 @@ To be released.
  -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
  -  Added `ByteUtil.Hex(ImmutableArray<byte>)` overloaded method.  [[#614]]
+ -  Added `BlockDownloadState.SourcePeer` property.  [[#636]]
 
 ### Behavioral changes
 
@@ -80,6 +81,8 @@ To be released.
     incomplete states from the beginning if necessary.  [[#645]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
+ -  `PreloadAsync()` became to retry block-download process with another peers
+    when the process failed.  [[#636]]
 
 ### Bug fixes
 
@@ -155,6 +158,7 @@ To be released.
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
 [#628]: https://github.com/planetarium/libplanet/issues/628
+[#636]: https://github.com/planetarium/libplanet/pull/636
 [#637]: https://github.com/planetarium/libplanet/pull/637
 [#641]: https://github.com/planetarium/libplanet/pull/641
 [#644]: https://github.com/planetarium/libplanet/pull/644
