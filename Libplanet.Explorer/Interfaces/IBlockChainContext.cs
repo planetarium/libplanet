@@ -3,6 +3,7 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Explorer.GraphTypes;
+using Libplanet.Explorer.Queries;
 
 namespace Libplanet.Explorer.Interfaces
 {
@@ -24,7 +25,7 @@ namespace Libplanet.Explorer.Interfaces
                 context,
                 (_) =>
                 {
-                    var s = new Schema { Query = new BlocksQuery<T>(context.BlockChain) };
+                    var s = new Schema { Query = new Query<T>(context.BlockChain) };
                     return s;
                 }
             );

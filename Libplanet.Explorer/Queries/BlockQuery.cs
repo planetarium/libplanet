@@ -1,21 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blockchain;
-using Libplanet.Blocks;
+using Libplanet.Explorer.GraphTypes;
 using Libplanet.Tx;
 
-namespace Libplanet.Explorer.GraphTypes
+namespace Libplanet.Explorer.Queries
 {
-    public class BlocksQuery<T> : ObjectGraphType
+    public class BlockQuery<T> : ObjectGraphType
         where T : IAction, new()
     {
-        private BlockChain<T> _chain;
-
-        public BlocksQuery(BlockChain<T> chain)
+        public BlockQuery()
         {
             Field<NonNullGraphType<ListGraphType<NonNullGraphType<BlockType<T>>>>>(
                 "blocks",
@@ -43,7 +37,7 @@ namespace Libplanet.Explorer.GraphTypes
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
                     bool excludeEmptyTxs = context.GetArgument<bool>("excludeEmptyTxs");
-                    return ListBlocks(desc, offset, limit, excludeEmptyTxs);
+                    return Query<T>.ListBlocks(desc, offset, limit, excludeEmptyTxs);
                 }
             );
 
@@ -56,7 +50,7 @@ namespace Libplanet.Explorer.GraphTypes
                 {
                     HashDigest<SHA256> hash = HashDigest<SHA256>.FromString(
                         context.GetArgument<string>("hash"));
-                    return _chain[hash];
+                    return Query<T>.GetBlock(hash);
                 }
             );
 
@@ -93,7 +87,7 @@ namespace Libplanet.Explorer.GraphTypes
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
-                    return ListTransactions(signer, involved, desc, offset, limit);
+                    return Query<T>.ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
 
@@ -107,118 +101,11 @@ namespace Libplanet.Explorer.GraphTypes
                     var id = new TxId(
                         ByteUtil.ParseHex(context.GetArgument<string>("id"))
                     );
-                    return _chain.GetTransaction(id);
+                    return Query<T>.GetTransaction(id);
                 }
             );
 
-            _chain = chain;
             Name = "BlockQuery";
-        }
-
-        private IEnumerable<Block<T>> ListBlocks(
-            bool desc,
-            long offset,
-            long? limit,
-            bool excludeEmptyTxs)
-        {
-            Block<T> tip = _chain.Tip;
-            long tipIndex = tip.Index;
-
-            if (offset < 0)
-            {
-                offset = tipIndex + offset + 1;
-            }
-
-            if (tipIndex < offset || offset < 0)
-            {
-                yield break;
-            }
-
-            Block<T> block = desc ? _chain[tipIndex - offset] : _chain[offset];
-
-            while (limit is null || limit > 0)
-            {
-                if (!excludeEmptyTxs || block.Transactions.Any())
-                {
-                    limit--;
-                    yield return block;
-                }
-
-                block = GetNextBlock(block, desc);
-
-                if (block is null)
-                {
-                    break;
-                }
-            }
-        }
-
-        private IEnumerable<Transaction<T>> ListTransactions(
-            Address? signer, Address? involved, bool desc, long offset, int? limit)
-        {
-            Block<T> tip = _chain.Tip;
-            long tipIndex = tip?.Index ?? -1;
-
-            if (offset < 0)
-            {
-                offset = tipIndex + offset + 1;
-            }
-
-            if (tipIndex < offset || offset < 0)
-            {
-                yield break;
-            }
-
-            Block<T> block = _chain[desc ? tipIndex - offset : offset];
-
-            while (!(block is null) && (limit is null || limit > 0))
-            {
-                foreach (var tx in desc ? block.Transactions.Reverse() : block.Transactions)
-                {
-                    if (IsValidTransacion(tx, signer, involved))
-                    {
-                        yield return tx;
-                        limit--;
-                        if (limit <= 0)
-                        {
-                            break;
-                        }
-                    }
-                }
-
-                block = GetNextBlock(block, desc);
-            }
-        }
-
-        private Block<T> GetNextBlock(Block<T> block, bool desc)
-        {
-            if (desc && block.PreviousHash is HashDigest<SHA256> prev)
-            {
-                return _chain[prev];
-            }
-            else if (!desc && block != _chain.Tip)
-            {
-                return _chain[block.Index + 1];
-            }
-
-            return null;
-        }
-
-        private bool IsValidTransacion(Transaction<T> tx, Address? signer, Address? involved)
-        {
-            if (involved is null && !(signer is null) &&
-                tx.Signer.Equals(signer.Value))
-            {
-                return true;
-            }
-            else if (!(involved is null) &&
-                (tx.Signer.Equals(involved.Value) ||
-                tx.UpdatedAddresses.Contains(involved.Value)))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
