@@ -1968,7 +1968,7 @@ namespace Libplanet.Tests.Net
                         completeStates: false);
                     Assert.Single(minerState);
                     Assert.Equal(
-                        (genesisWithAction ? 1 : 0) + repeat * fixturePairs.Length,
+                        (Integer)((genesisWithAction ? 1 : 0) + repeat * fixturePairs.Length),
                         (Integer)minerState[minerSwarm.Address]
                     );
                 }

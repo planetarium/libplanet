@@ -65,7 +65,7 @@ namespace Libplanet.Action
     ///     {
     ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
     ///         TargetAddress =
-    ///             new Address(dictionary.GetValue<Binary>("target_address").Value);
+    ///             new Address(dictionary.GetValue<Binary>("target_address"));
     ///     }
     /// }
     /// // PolymorphicAction<T> requires concrete action classes marked with
@@ -102,10 +102,9 @@ namespace Libplanet.Action
     ///         var c = new Character
     ///         {
     ///             Address = TargetAddress,
-    ///             Hp = (int)((Integer)nextStates.GetState(TargetAddress)).Value,
+    ///             Hp = (Integer)nextStates.GetState(TargetAddress),
     ///         };
     ///         c.Draw();
-    ///         break;
     ///     }
     ///     void IAction.Unrender(
     ///         IActionContext context,
@@ -127,7 +126,7 @@ namespace Libplanet.Action
     ///             (Bencodex.Types.Dictionary)state
     ///                 .SetItem(
     ///                     (Text)"hp",
-    ///                     (Integer)Math.Max((int)state.GetValue<Integer>("hp").Value - 5, 0))
+    ///                     (Integer)Math.Max(state.GetValue<Integer>("hp") - 5, 0))
     ///         );
     ///     }
     ///     void IAction.Render(
@@ -135,8 +134,8 @@ namespace Libplanet.Action
     ///         IAccountStateDelta nextStates)
     ///     {
     ///         Character c = Character.GetByAddress(TargetAddress);
-    ///         c.Hp = (int)((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
-    ///             .GetValue<Integer>("hp").Value;
+    ///         c.Hp = ((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
+    ///             .GetValue<Integer>("hp");
     ///         c.Draw();
     ///     }
     ///     void IAction.Unrender(
@@ -146,7 +145,7 @@ namespace Libplanet.Action
     ///         Character c = Character.GetByAddress(TargetAddress);
     ///         var target =
     ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
+    ///         c.Hp = target.GetValue<Integer>("hp");
     ///         c.Draw();
     ///     }
     /// }
@@ -162,7 +161,7 @@ namespace Libplanet.Action
     ///             (Bencodex.Types.Dictionary)state
     ///                 .SetItem(
     ///                     (Text)"hp",
-    ///                     (Integer)Math.Min((int)state.GetValue<Integer>("hp").Value + 5, 20))
+    ///                     (Integer)Math.Min(state.GetValue<Integer>("hp") + 5, 20))
     ///         );
     ///     }
     ///     void IAction.Render(
@@ -172,7 +171,7 @@ namespace Libplanet.Action
     ///         Character c = Character.GetByAddress(TargetAddress);
     ///         var target =
     ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
+    ///         c.Hp = target.GetValue<Integer>("hp");
     ///         c.Draw();
     ///     }
     ///     void IAction.Unrender(
@@ -182,7 +181,7 @@ namespace Libplanet.Action
     ///         Character c = Character.GetByAddress(TargetAddress);
     ///         var target =
     ///             (Bencodex.Types.Dictionary)context.PreviousStates.GetState(TargetAddress);
-    ///         c.Hp = (int)target.GetValue<Integer>("hp").Value;
+    ///         c.Hp = target.GetValue<Integer>("hp");
     ///         c.Draw();
     ///     }
     /// }

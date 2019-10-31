@@ -274,7 +274,7 @@ namespace Libplanet.Tests.Blocks
                     (Integer)eval.OutputStates.GetState(
                         DumbAction.RandomRecordsAddress
                     ),
-                    randomValue
+                    (Integer)randomValue
                 );
                 Assert.Equal(
                     expect.Item3,

@@ -33,9 +33,9 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal").Value;
-            ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution").Value;
-            ThrowOnRendering = plainValue.GetValue<Boolean>("throw_on_rendering").Value;
+            ThrowOnRehearsal = plainValue.GetValue<Boolean>("throw_on_rehearsal");
+            ThrowOnExecution = plainValue.GetValue<Boolean>("throw_on_execution");
+            ThrowOnRendering = plainValue.GetValue<Boolean>("throw_on_rendering");
         }
 
         public IAccountStateDelta Execute(IActionContext context)

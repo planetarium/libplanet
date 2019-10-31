@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Common.Action
         public void LoadPlainValue(
             Dictionary plainValue)
         {
-            ZoneId = (int)plainValue.GetValue<Integer>("zone_id").Value;
+            ZoneId = plainValue.GetValue<Integer>("zone_id");
         }
     }
 }

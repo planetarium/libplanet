@@ -102,7 +102,7 @@ namespace Libplanet.Action
     ///                     dictionary.SetItem(
     ///                         (Text)"hp",
     ///                         (Integer)Math.Max(
-    ///                             (int)dictionary.GetValue<Integer>("hp").Value - 5,
+    ///                             dictionary.GetValue<Integer>("hp") - 5,
     ///                             0)
     ///                     );
     ///                 break;
@@ -112,7 +112,7 @@ namespace Libplanet.Action
     ///                     dictionary.SetItem(
     ///                         (Text)"hp",
     ///                         (Integer)Math.Min(
-    ///                             (int)dictionary.GetValue<Integer>("hp").Value + 5,
+    ///                             dictionary.GetValue<Integer>("hp") + 5,
     ///                             20)
     ///                     );
     ///                 break;
@@ -151,8 +151,8 @@ namespace Libplanet.Action
     ///                 return;
     ///         }
     ///         c.Hp =
-    ///             (int)((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
-    ///                 .GetValue<Integer>("hp").Value;
+    ///             ((Bencodex.Types.Dictionary)nextStates.GetState(TargetAddress))
+    ///                 .GetValue<Integer>("hp");
     ///         c.Draw();
     ///     }
     ///     // Sometimes a block to which an action belongs can be
@@ -173,8 +173,8 @@ namespace Libplanet.Action
     ///             case ActType.Attack:
     ///             case ActType.Heal:
     ///                 IAccountStateDelta prevStates = context.PreviousStates;
-    ///                 c.Hp = (int)((Bencodex.Types.Dictionary)prevStates.GetState(TargetAddress))
-    ///                     .GetValue<Integer>("hp").Value;
+    ///                 c.Hp = ((Bencodex.Types.Dictionary)prevStates.GetState(TargetAddress))
+    ///                     .GetValue<Integer>("hp");
     ///                 c.Draw();
     ///                 break;
     ///             default:
@@ -186,7 +186,7 @@ namespace Libplanet.Action
     ///     IValue IAction.PlainValue =>
     ///         new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
     ///         {
-    ///             [(Text)"type"] = (Integer)((int)Type),
+    ///             [(Text)"type"] = (Integer)(int)Type,
     ///             [(Text)"target_address"] = (Binary)TargetAddress.ToByteArray(),
     ///         });
     ///     // Deserializes "bound arguments".  That is, it is inverse
@@ -195,7 +195,7 @@ namespace Libplanet.Action
     ///         IValue plainValue)
     ///     {
     ///         var dictionary = (Bencodex.Types.Dictionary)plainValue;
-    ///         Type = (ActType)(int)dictionary.GetValue<Integer>("type").Value;
+    ///         Type = (ActType)(int)dictionary.GetValue<Integer>("type");
     ///         TargetAddress =
     ///             new Address(dictionary.GetValue<Binary>("target_address").Value);
     ///     }
