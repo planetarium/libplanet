@@ -111,11 +111,22 @@ added it to <code>Swarm&lt;T&gt;.PreloadAsync()</code> &amp; <code>Swarm&lt;T&gt
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
+<li>Added <code>ProtectedPrivateKey</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>IncorrectPassphraseException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>MismatchedAddressException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>KeyJsonException</code> abstract class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>InvalidKeyJsonException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>UnsupportedKeyJsonException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>ICipher</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>Aes128Ctr</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>IKdf</code> interface.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>Pbkdf2</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/577">#577</a>, <a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.LongCount()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/575">#575</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;[HashDigest&lt;T&gt;]</code> indexer.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Contains(HashDigest&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetTransaction(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Contains(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
+<li>Added <code>ByteUtil.Hex(ImmutableArray&lt;byte&gt;)</code> overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -925,7 +936,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/157c95a7c9dc01439a824278859ffd1d9b0bd795/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/7a719d763cbcb86f7687f99b3de8e209bc39de8a/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

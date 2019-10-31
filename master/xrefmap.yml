@@ -2312,6 +2312,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.ByteUtil.CalculateHashCode
   nameWithType: ByteUtil.CalculateHashCode
+- uid: Libplanet.ByteUtil.Hex(ImmutableArray{System.Byte}@)
+  name: Hex(ImmutableArray<Byte>)
+  href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_Hex_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.ByteUtil.Hex(ImmutableArray{System.Byte}@)
+  name.vb: Hex(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.ByteUtil.Hex(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.ByteUtil.Hex(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: ByteUtil.Hex(ImmutableArray<Byte>)
+  nameWithType.vb: ByteUtil.Hex(ByRef ImmutableArray(Of Byte))
 - uid: Libplanet.ByteUtil.Hex(System.Byte[])
   name: Hex(Byte[])
   href: api/Libplanet.ByteUtil.html#Libplanet_ByteUtil_Hex_System_Byte___
@@ -2847,6 +2856,630 @@ references:
   fullName.vb: Libplanet.HashDigestExtension.ToHashDigest(Of T)(System.String)
   nameWithType: HashDigestExtension.ToHashDigest<T>(String)
   nameWithType.vb: HashDigestExtension.ToHashDigest(Of T)(String)
+- uid: Libplanet.KeyStore
+  name: Libplanet.KeyStore
+  href: api/Libplanet.KeyStore.html
+  commentId: N:Libplanet.KeyStore
+  fullName: Libplanet.KeyStore
+  nameWithType: Libplanet.KeyStore
+- uid: Libplanet.KeyStore.Ciphers
+  name: Libplanet.KeyStore.Ciphers
+  href: api/Libplanet.KeyStore.Ciphers.html
+  commentId: N:Libplanet.KeyStore.Ciphers
+  fullName: Libplanet.KeyStore.Ciphers
+  nameWithType: Libplanet.KeyStore.Ciphers
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr
+  name: Aes128Ctr
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html
+  commentId: T:Libplanet.KeyStore.Ciphers.Aes128Ctr
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr
+  nameWithType: Aes128Ctr
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(ImmutableArray{System.Byte}@)
+  name: Aes128Ctr(ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr__ctor_ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(ImmutableArray{System.Byte}@)
+  name.vb: Aes128Ctr(ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(ByRef ImmutableArray(Of System.Byte))
+  nameWithType: Aes128Ctr.Aes128Ctr(ImmutableArray<Byte>)
+  nameWithType.vb: Aes128Ctr.Aes128Ctr(ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(System.Byte[])
+  name: Aes128Ctr(Byte[])
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr__ctor_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor(System.Byte[])
+  name.vb: Aes128Ctr(Byte())
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(System.Byte[])
+  fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr(System.Byte())
+  nameWithType: Aes128Ctr.Aes128Ctr(Byte[])
+  nameWithType.vb: Aes128Ctr.Aes128Ctr(Byte())
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor*
+  name: Aes128Ctr
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr__ctor_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.Aes128Ctr.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Aes128Ctr
+  nameWithType: Aes128Ctr.Aes128Ctr
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name: Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Decrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name.vb: Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
+  nameWithType: Aes128Ctr.Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType.vb: Aes128Ctr.Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt*
+  name: Decrypt
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Decrypt_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Decrypt
+  nameWithType: Aes128Ctr.Decrypt
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name: Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Encrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name.vb: Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
+  nameWithType: Aes128Ctr.Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType.vb: Aes128Ctr.Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt*
+  name: Encrypt
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Encrypt_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Encrypt
+  nameWithType: Aes128Ctr.Encrypt
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv
+  name: Iv
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Iv
+  commentId: P:Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv
+  nameWithType: Aes128Ctr.Iv
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv*
+  name: Iv
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_Iv_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.Iv
+  nameWithType: Aes128Ctr.Iv
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson(Utf8JsonWriter)
+  name: WriteJson(Utf8JsonWriter)
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_WriteJson_Utf8JsonWriter_
+  commentId: M:Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson(Utf8JsonWriter)
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson(Utf8JsonWriter)
+  nameWithType: Aes128Ctr.WriteJson(Utf8JsonWriter)
+- uid: Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.Ciphers.Aes128Ctr.html#Libplanet_KeyStore_Ciphers_Aes128Ctr_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.Aes128Ctr.WriteJson
+  nameWithType: Aes128Ctr.WriteJson
+- uid: Libplanet.KeyStore.Ciphers.ICipher
+  name: ICipher
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html
+  commentId: T:Libplanet.KeyStore.Ciphers.ICipher
+  fullName: Libplanet.KeyStore.Ciphers.ICipher
+  nameWithType: ICipher
+- uid: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name: Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Decrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name.vb: Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.Ciphers.ICipher.Decrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
+  nameWithType: ICipher.Decrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType.vb: ICipher.Decrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.Ciphers.ICipher.Decrypt*
+  name: Decrypt
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Decrypt_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.ICipher.Decrypt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Decrypt
+  nameWithType: ICipher.Decrypt
+- uid: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name: Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Encrypt_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name.vb: Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.Ciphers.ICipher.Encrypt(ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
+  nameWithType: ICipher.Encrypt(ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType.vb: ICipher.Encrypt(ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.Ciphers.ICipher.Encrypt*
+  name: Encrypt
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_Encrypt_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.ICipher.Encrypt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.Encrypt
+  nameWithType: ICipher.Encrypt
+- uid: Libplanet.KeyStore.Ciphers.ICipher.WriteJson(Utf8JsonWriter)
+  name: WriteJson(Utf8JsonWriter)
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_WriteJson_Utf8JsonWriter_
+  commentId: M:Libplanet.KeyStore.Ciphers.ICipher.WriteJson(Utf8JsonWriter)
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.WriteJson(Utf8JsonWriter)
+  nameWithType: ICipher.WriteJson(Utf8JsonWriter)
+- uid: Libplanet.KeyStore.Ciphers.ICipher.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.Ciphers.ICipher.html#Libplanet_KeyStore_Ciphers_ICipher_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.Ciphers.ICipher.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Ciphers.ICipher.WriteJson
+  nameWithType: ICipher.WriteJson
+- uid: Libplanet.KeyStore.IncorrectPassphraseException
+  name: IncorrectPassphraseException
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html
+  commentId: T:Libplanet.KeyStore.IncorrectPassphraseException
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException
+  nameWithType: IncorrectPassphraseException
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.#ctor(System.String,System.String,ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name: IncorrectPassphraseException(String, String, ImmutableArray<Byte>, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException__ctor_System_String_System_String_ImmutableArray_System_Byte___ImmutableArray_System_Byte___
+  commentId: M:Libplanet.KeyStore.IncorrectPassphraseException.#ctor(System.String,System.String,ImmutableArray{System.Byte}@,ImmutableArray{System.Byte}@)
+  name.vb: IncorrectPassphraseException(String, String, ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException(System.String, System.String, ImmutableArray<System.Byte>, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException(System.String, System.String, ByRef ImmutableArray(Of System.Byte), ByRef ImmutableArray(Of System.Byte))
+  nameWithType: IncorrectPassphraseException.IncorrectPassphraseException(String, String, ImmutableArray<Byte>, ImmutableArray<Byte>)
+  nameWithType.vb: IncorrectPassphraseException.IncorrectPassphraseException(String, String, ByRef ImmutableArray(Of Byte), ByRef ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.#ctor*
+  name: IncorrectPassphraseException
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException__ctor_
+  commentId: Overload:Libplanet.KeyStore.IncorrectPassphraseException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.IncorrectPassphraseException
+  nameWithType: IncorrectPassphraseException.IncorrectPassphraseException
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac
+  name: ExpectedMac
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException_ExpectedMac
+  commentId: P:Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac
+  nameWithType: IncorrectPassphraseException.ExpectedMac
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac*
+  name: ExpectedMac
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException_ExpectedMac_
+  commentId: Overload:Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.ExpectedMac
+  nameWithType: IncorrectPassphraseException.ExpectedMac
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.InputMac
+  name: InputMac
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException_InputMac
+  commentId: P:Libplanet.KeyStore.IncorrectPassphraseException.InputMac
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.InputMac
+  nameWithType: IncorrectPassphraseException.InputMac
+- uid: Libplanet.KeyStore.IncorrectPassphraseException.InputMac*
+  name: InputMac
+  href: api/Libplanet.KeyStore.IncorrectPassphraseException.html#Libplanet_KeyStore_IncorrectPassphraseException_InputMac_
+  commentId: Overload:Libplanet.KeyStore.IncorrectPassphraseException.InputMac
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IncorrectPassphraseException.InputMac
+  nameWithType: IncorrectPassphraseException.InputMac
+- uid: Libplanet.KeyStore.InvalidKeyJsonException
+  name: InvalidKeyJsonException
+  href: api/Libplanet.KeyStore.InvalidKeyJsonException.html
+  commentId: T:Libplanet.KeyStore.InvalidKeyJsonException
+  fullName: Libplanet.KeyStore.InvalidKeyJsonException
+  nameWithType: InvalidKeyJsonException
+- uid: Libplanet.KeyStore.InvalidKeyJsonException.#ctor(System.String)
+  name: InvalidKeyJsonException(String)
+  href: api/Libplanet.KeyStore.InvalidKeyJsonException.html#Libplanet_KeyStore_InvalidKeyJsonException__ctor_System_String_
+  commentId: M:Libplanet.KeyStore.InvalidKeyJsonException.#ctor(System.String)
+  fullName: Libplanet.KeyStore.InvalidKeyJsonException.InvalidKeyJsonException(System.String)
+  nameWithType: InvalidKeyJsonException.InvalidKeyJsonException(String)
+- uid: Libplanet.KeyStore.InvalidKeyJsonException.#ctor*
+  name: InvalidKeyJsonException
+  href: api/Libplanet.KeyStore.InvalidKeyJsonException.html#Libplanet_KeyStore_InvalidKeyJsonException__ctor_
+  commentId: Overload:Libplanet.KeyStore.InvalidKeyJsonException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.InvalidKeyJsonException.InvalidKeyJsonException
+  nameWithType: InvalidKeyJsonException.InvalidKeyJsonException
+- uid: Libplanet.KeyStore.Kdfs
+  name: Libplanet.KeyStore.Kdfs
+  href: api/Libplanet.KeyStore.Kdfs.html
+  commentId: N:Libplanet.KeyStore.Kdfs
+  fullName: Libplanet.KeyStore.Kdfs
+  nameWithType: Libplanet.KeyStore.Kdfs
+- uid: Libplanet.KeyStore.Kdfs.IKdf
+  name: IKdf
+  href: api/Libplanet.KeyStore.Kdfs.IKdf.html
+  commentId: T:Libplanet.KeyStore.Kdfs.IKdf
+  fullName: Libplanet.KeyStore.Kdfs.IKdf
+  nameWithType: IKdf
+- uid: Libplanet.KeyStore.Kdfs.IKdf.Derive(System.String)
+  name: Derive(String)
+  href: api/Libplanet.KeyStore.Kdfs.IKdf.html#Libplanet_KeyStore_Kdfs_IKdf_Derive_System_String_
+  commentId: M:Libplanet.KeyStore.Kdfs.IKdf.Derive(System.String)
+  fullName: Libplanet.KeyStore.Kdfs.IKdf.Derive(System.String)
+  nameWithType: IKdf.Derive(String)
+- uid: Libplanet.KeyStore.Kdfs.IKdf.Derive*
+  name: Derive
+  href: api/Libplanet.KeyStore.Kdfs.IKdf.html#Libplanet_KeyStore_Kdfs_IKdf_Derive_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.IKdf.Derive
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.IKdf.Derive
+  nameWithType: IKdf.Derive
+- uid: Libplanet.KeyStore.Kdfs.IKdf.WriteJson(Utf8JsonWriter)
+  name: WriteJson(Utf8JsonWriter)
+  href: api/Libplanet.KeyStore.Kdfs.IKdf.html#Libplanet_KeyStore_Kdfs_IKdf_WriteJson_Utf8JsonWriter_
+  commentId: M:Libplanet.KeyStore.Kdfs.IKdf.WriteJson(Utf8JsonWriter)
+  fullName: Libplanet.KeyStore.Kdfs.IKdf.WriteJson(Utf8JsonWriter)
+  nameWithType: IKdf.WriteJson(Utf8JsonWriter)
+- uid: Libplanet.KeyStore.Kdfs.IKdf.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.Kdfs.IKdf.html#Libplanet_KeyStore_Kdfs_IKdf_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.IKdf.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.IKdf.WriteJson
+  nameWithType: IKdf.WriteJson
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1
+  name: Pbkdf2<T>
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html
+  commentId: T:Libplanet.KeyStore.Kdfs.Pbkdf2`1
+  name.vb: Pbkdf2(Of T)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T)
+  nameWithType: Pbkdf2<T>
+  nameWithType.vb: Pbkdf2(Of T)
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32)
+  name: Pbkdf2(Int32, ImmutableArray<Byte>, Int32)
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1__ctor_System_Int32_ImmutableArray_System_Byte___System_Int32_
+  commentId: M:Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32)
+  name.vb: Pbkdf2(Int32, ByRef ImmutableArray(Of Byte), Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Pbkdf2(System.Int32, ImmutableArray<System.Byte>, System.Int32)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Pbkdf2(System.Int32, ByRef ImmutableArray(Of System.Byte), System.Int32)
+  nameWithType: Pbkdf2<T>.Pbkdf2(Int32, ImmutableArray<Byte>, Int32)
+  nameWithType.vb: Pbkdf2(Of T).Pbkdf2(Int32, ByRef ImmutableArray(Of Byte), Int32)
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,System.Byte[],System.Int32)
+  name: Pbkdf2(Int32, Byte[], Int32)
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1__ctor_System_Int32_System_Byte___System_Int32_
+  commentId: M:Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor(System.Int32,System.Byte[],System.Int32)
+  name.vb: Pbkdf2(Int32, Byte(), Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Pbkdf2(System.Int32, System.Byte[], System.Int32)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Pbkdf2(System.Int32, System.Byte(), System.Int32)
+  nameWithType: Pbkdf2<T>.Pbkdf2(Int32, Byte[], Int32)
+  nameWithType.vb: Pbkdf2(Of T).Pbkdf2(Int32, Byte(), Int32)
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor*
+  name: Pbkdf2
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1__ctor_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Pbkdf2
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Pbkdf2
+  nameWithType: Pbkdf2<T>.Pbkdf2
+  nameWithType.vb: Pbkdf2(Of T).Pbkdf2
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Derive(System.String)
+  name: Derive(String)
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Derive_System_String_
+  commentId: M:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Derive(System.String)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Derive(System.String)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Derive(System.String)
+  nameWithType: Pbkdf2<T>.Derive(String)
+  nameWithType.vb: Pbkdf2(Of T).Derive(String)
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Derive*
+  name: Derive
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Derive_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Derive
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Derive
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Derive
+  nameWithType: Pbkdf2<T>.Derive
+  nameWithType.vb: Pbkdf2(Of T).Derive
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Iterations
+  name: Iterations
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Iterations
+  commentId: P:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Iterations
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Iterations
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Iterations
+  nameWithType: Pbkdf2<T>.Iterations
+  nameWithType.vb: Pbkdf2(Of T).Iterations
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Iterations*
+  name: Iterations
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Iterations_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Iterations
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Iterations
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Iterations
+  nameWithType: Pbkdf2<T>.Iterations
+  nameWithType.vb: Pbkdf2(Of T).Iterations
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.KeyLength
+  name: KeyLength
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_KeyLength
+  commentId: P:Libplanet.KeyStore.Kdfs.Pbkdf2`1.KeyLength
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.KeyLength
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).KeyLength
+  nameWithType: Pbkdf2<T>.KeyLength
+  nameWithType.vb: Pbkdf2(Of T).KeyLength
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.KeyLength*
+  name: KeyLength
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_KeyLength_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.KeyLength
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.KeyLength
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).KeyLength
+  nameWithType: Pbkdf2<T>.KeyLength
+  nameWithType.vb: Pbkdf2(Of T).KeyLength
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Salt
+  name: Salt
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Salt
+  commentId: P:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Salt
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Salt
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Salt
+  nameWithType: Pbkdf2<T>.Salt
+  nameWithType.vb: Pbkdf2(Of T).Salt
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.Salt*
+  name: Salt
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_Salt_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.Salt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.Salt
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).Salt
+  nameWithType: Pbkdf2<T>.Salt
+  nameWithType.vb: Pbkdf2(Of T).Salt
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.WriteJson(Utf8JsonWriter)
+  name: WriteJson(Utf8JsonWriter)
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_WriteJson_Utf8JsonWriter_
+  commentId: M:Libplanet.KeyStore.Kdfs.Pbkdf2`1.WriteJson(Utf8JsonWriter)
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.WriteJson(Utf8JsonWriter)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).WriteJson(Utf8JsonWriter)
+  nameWithType: Pbkdf2<T>.WriteJson(Utf8JsonWriter)
+  nameWithType.vb: Pbkdf2(Of T).WriteJson(Utf8JsonWriter)
+- uid: Libplanet.KeyStore.Kdfs.Pbkdf2`1.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.Kdfs.Pbkdf2-1.html#Libplanet_KeyStore_Kdfs_Pbkdf2_1_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Pbkdf2`1.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Pbkdf2<T>.WriteJson
+  fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).WriteJson
+  nameWithType: Pbkdf2<T>.WriteJson
+  nameWithType.vb: Pbkdf2(Of T).WriteJson
+- uid: Libplanet.KeyStore.KeyJsonException
+  name: KeyJsonException
+  href: api/Libplanet.KeyStore.KeyJsonException.html
+  commentId: T:Libplanet.KeyStore.KeyJsonException
+  fullName: Libplanet.KeyStore.KeyJsonException
+  nameWithType: KeyJsonException
+- uid: Libplanet.KeyStore.KeyJsonException.#ctor(System.String)
+  name: KeyJsonException(String)
+  href: api/Libplanet.KeyStore.KeyJsonException.html#Libplanet_KeyStore_KeyJsonException__ctor_System_String_
+  commentId: M:Libplanet.KeyStore.KeyJsonException.#ctor(System.String)
+  fullName: Libplanet.KeyStore.KeyJsonException.KeyJsonException(System.String)
+  nameWithType: KeyJsonException.KeyJsonException(String)
+- uid: Libplanet.KeyStore.KeyJsonException.#ctor*
+  name: KeyJsonException
+  href: api/Libplanet.KeyStore.KeyJsonException.html#Libplanet_KeyStore_KeyJsonException__ctor_
+  commentId: Overload:Libplanet.KeyStore.KeyJsonException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.KeyJsonException.KeyJsonException
+  nameWithType: KeyJsonException.KeyJsonException
+- uid: Libplanet.KeyStore.MismatchedAddressException
+  name: MismatchedAddressException
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html
+  commentId: T:Libplanet.KeyStore.MismatchedAddressException
+  fullName: Libplanet.KeyStore.MismatchedAddressException
+  nameWithType: MismatchedAddressException
+- uid: Libplanet.KeyStore.MismatchedAddressException.#ctor(System.String,Libplanet.Address@,Libplanet.Address@)
+  name: MismatchedAddressException(String, Address, Address)
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException__ctor_System_String_Libplanet_Address__Libplanet_Address__
+  commentId: M:Libplanet.KeyStore.MismatchedAddressException.#ctor(System.String,Libplanet.Address@,Libplanet.Address@)
+  name.vb: MismatchedAddressException(String, ByRef Address, ByRef Address)
+  fullName: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException(System.String, Libplanet.Address, Libplanet.Address)
+  fullName.vb: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException(System.String, ByRef Libplanet.Address, ByRef Libplanet.Address)
+  nameWithType: MismatchedAddressException.MismatchedAddressException(String, Address, Address)
+  nameWithType.vb: MismatchedAddressException.MismatchedAddressException(String, ByRef Address, ByRef Address)
+- uid: Libplanet.KeyStore.MismatchedAddressException.#ctor*
+  name: MismatchedAddressException
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException__ctor_
+  commentId: Overload:Libplanet.KeyStore.MismatchedAddressException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.MismatchedAddressException.MismatchedAddressException
+  nameWithType: MismatchedAddressException.MismatchedAddressException
+- uid: Libplanet.KeyStore.MismatchedAddressException.ActualAddress
+  name: ActualAddress
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException_ActualAddress
+  commentId: P:Libplanet.KeyStore.MismatchedAddressException.ActualAddress
+  fullName: Libplanet.KeyStore.MismatchedAddressException.ActualAddress
+  nameWithType: MismatchedAddressException.ActualAddress
+- uid: Libplanet.KeyStore.MismatchedAddressException.ActualAddress*
+  name: ActualAddress
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException_ActualAddress_
+  commentId: Overload:Libplanet.KeyStore.MismatchedAddressException.ActualAddress
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.MismatchedAddressException.ActualAddress
+  nameWithType: MismatchedAddressException.ActualAddress
+- uid: Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
+  name: ExpectedAddress
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException_ExpectedAddress
+  commentId: P:Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
+  fullName: Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
+  nameWithType: MismatchedAddressException.ExpectedAddress
+- uid: Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress*
+  name: ExpectedAddress
+  href: api/Libplanet.KeyStore.MismatchedAddressException.html#Libplanet_KeyStore_MismatchedAddressException_ExpectedAddress_
+  commentId: Overload:Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
+  nameWithType: MismatchedAddressException.ExpectedAddress
+- uid: Libplanet.KeyStore.ProtectedPrivateKey
+  name: ProtectedPrivateKey
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html
+  commentId: T:Libplanet.KeyStore.ProtectedPrivateKey
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey
+  nameWithType: ProtectedPrivateKey
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.#ctor(Libplanet.Address,Libplanet.KeyStore.Kdfs.IKdf,ImmutableArray{System.Byte},Libplanet.KeyStore.Ciphers.ICipher,ImmutableArray{System.Byte})
+  name: ProtectedPrivateKey(Address, IKdf, ImmutableArray<Byte>, ICipher, ImmutableArray<Byte>)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey__ctor_Libplanet_Address_Libplanet_KeyStore_Kdfs_IKdf_ImmutableArray_System_Byte__Libplanet_KeyStore_Ciphers_ICipher_ImmutableArray_System_Byte__
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.#ctor(Libplanet.Address,Libplanet.KeyStore.Kdfs.IKdf,ImmutableArray{System.Byte},Libplanet.KeyStore.Ciphers.ICipher,ImmutableArray{System.Byte})
+  name.vb: ProtectedPrivateKey(Address, IKdf, ImmutableArray(Of Byte), ICipher, ImmutableArray(Of Byte))
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.ProtectedPrivateKey(Libplanet.Address, Libplanet.KeyStore.Kdfs.IKdf, ImmutableArray<System.Byte>, Libplanet.KeyStore.Ciphers.ICipher, ImmutableArray<System.Byte>)
+  fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.ProtectedPrivateKey(Libplanet.Address, Libplanet.KeyStore.Kdfs.IKdf, ImmutableArray(Of System.Byte), Libplanet.KeyStore.Ciphers.ICipher, ImmutableArray(Of System.Byte))
+  nameWithType: ProtectedPrivateKey.ProtectedPrivateKey(Address, IKdf, ImmutableArray<Byte>, ICipher, ImmutableArray<Byte>)
+  nameWithType.vb: ProtectedPrivateKey.ProtectedPrivateKey(Address, IKdf, ImmutableArray(Of Byte), ICipher, ImmutableArray(Of Byte))
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.#ctor(Libplanet.Address,Libplanet.KeyStore.Kdfs.IKdf,System.Byte[],Libplanet.KeyStore.Ciphers.ICipher,System.Byte[])
+  name: ProtectedPrivateKey(Address, IKdf, Byte[], ICipher, Byte[])
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey__ctor_Libplanet_Address_Libplanet_KeyStore_Kdfs_IKdf_System_Byte___Libplanet_KeyStore_Ciphers_ICipher_System_Byte___
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.#ctor(Libplanet.Address,Libplanet.KeyStore.Kdfs.IKdf,System.Byte[],Libplanet.KeyStore.Ciphers.ICipher,System.Byte[])
+  name.vb: ProtectedPrivateKey(Address, IKdf, Byte(), ICipher, Byte())
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.ProtectedPrivateKey(Libplanet.Address, Libplanet.KeyStore.Kdfs.IKdf, System.Byte[], Libplanet.KeyStore.Ciphers.ICipher, System.Byte[])
+  fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.ProtectedPrivateKey(Libplanet.Address, Libplanet.KeyStore.Kdfs.IKdf, System.Byte(), Libplanet.KeyStore.Ciphers.ICipher, System.Byte())
+  nameWithType: ProtectedPrivateKey.ProtectedPrivateKey(Address, IKdf, Byte[], ICipher, Byte[])
+  nameWithType.vb: ProtectedPrivateKey.ProtectedPrivateKey(Address, IKdf, Byte(), ICipher, Byte())
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.#ctor*
+  name: ProtectedPrivateKey
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey__ctor_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.ProtectedPrivateKey
+  nameWithType: ProtectedPrivateKey.ProtectedPrivateKey
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Address
+  name: Address
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Address
+  commentId: P:Libplanet.KeyStore.ProtectedPrivateKey.Address
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Address
+  nameWithType: ProtectedPrivateKey.Address
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Address*
+  name: Address
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Address_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Address
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Address
+  nameWithType: ProtectedPrivateKey.Address
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Cipher
+  name: Cipher
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Cipher
+  commentId: P:Libplanet.KeyStore.ProtectedPrivateKey.Cipher
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Cipher
+  nameWithType: ProtectedPrivateKey.Cipher
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Cipher*
+  name: Cipher
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Cipher_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Cipher
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Cipher
+  nameWithType: ProtectedPrivateKey.Cipher
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext
+  name: Ciphertext
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Ciphertext
+  commentId: P:Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext
+  nameWithType: ProtectedPrivateKey.Ciphertext
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext*
+  name: Ciphertext
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Ciphertext_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Ciphertext
+  nameWithType: ProtectedPrivateKey.Ciphertext
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.FromJson(System.String)
+  name: FromJson(String)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_FromJson_System_String_
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.FromJson(System.String)
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.FromJson(System.String)
+  nameWithType: ProtectedPrivateKey.FromJson(String)
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.FromJson*
+  name: FromJson
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_FromJson_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.FromJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.FromJson
+  nameWithType: ProtectedPrivateKey.FromJson
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Kdf
+  name: Kdf
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Kdf
+  commentId: P:Libplanet.KeyStore.ProtectedPrivateKey.Kdf
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Kdf
+  nameWithType: ProtectedPrivateKey.Kdf
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Kdf*
+  name: Kdf
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Kdf_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Kdf
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Kdf
+  nameWithType: ProtectedPrivateKey.Kdf
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Mac
+  name: Mac
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Mac
+  commentId: P:Libplanet.KeyStore.ProtectedPrivateKey.Mac
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Mac
+  nameWithType: ProtectedPrivateKey.Mac
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Mac*
+  name: Mac
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Mac_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Mac
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Mac
+  nameWithType: ProtectedPrivateKey.Mac
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Protect(Libplanet.Crypto.PrivateKey,System.String)
+  name: Protect(PrivateKey, String)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Protect_Libplanet_Crypto_PrivateKey_System_String_
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.Protect(Libplanet.Crypto.PrivateKey,System.String)
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Protect(Libplanet.Crypto.PrivateKey, System.String)
+  nameWithType: ProtectedPrivateKey.Protect(PrivateKey, String)
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Protect*
+  name: Protect
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Protect_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Protect
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Protect
+  nameWithType: ProtectedPrivateKey.Protect
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Unprotect(System.String)
+  name: Unprotect(String)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Unprotect_System_String_
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.Unprotect(System.String)
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Unprotect(System.String)
+  nameWithType: ProtectedPrivateKey.Unprotect(String)
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.Unprotect*
+  name: Unprotect
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_Unprotect_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.Unprotect
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.Unprotect
+  nameWithType: ProtectedPrivateKey.Unprotect
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Stream,System.Nullable{Guid}@)
+  name: WriteJson(Stream, Nullable<Guid>)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_WriteJson_Stream_System_Nullable_Guid___
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Stream,System.Nullable{Guid}@)
+  name.vb: WriteJson(Stream, ByRef Nullable(Of Guid))
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Stream, System.Nullable<Guid>)
+  fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Stream, ByRef System.Nullable(Of Guid))
+  nameWithType: ProtectedPrivateKey.WriteJson(Stream, Nullable<Guid>)
+  nameWithType.vb: ProtectedPrivateKey.WriteJson(Stream, ByRef Nullable(Of Guid))
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter,System.Nullable{Guid}@)
+  name: WriteJson(Utf8JsonWriter, Nullable<Guid>)
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_WriteJson_Utf8JsonWriter_System_Nullable_Guid___
+  commentId: M:Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter,System.Nullable{Guid}@)
+  name.vb: WriteJson(Utf8JsonWriter, ByRef Nullable(Of Guid))
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter, System.Nullable<Guid>)
+  fullName.vb: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson(Utf8JsonWriter, ByRef System.Nullable(Of Guid))
+  nameWithType: ProtectedPrivateKey.WriteJson(Utf8JsonWriter, Nullable<Guid>)
+  nameWithType.vb: ProtectedPrivateKey.WriteJson(Utf8JsonWriter, ByRef Nullable(Of Guid))
+- uid: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.ProtectedPrivateKey.html#Libplanet_KeyStore_ProtectedPrivateKey_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.ProtectedPrivateKey.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.ProtectedPrivateKey.WriteJson
+  nameWithType: ProtectedPrivateKey.WriteJson
+- uid: Libplanet.KeyStore.UnsupportedKeyJsonException
+  name: UnsupportedKeyJsonException
+  href: api/Libplanet.KeyStore.UnsupportedKeyJsonException.html
+  commentId: T:Libplanet.KeyStore.UnsupportedKeyJsonException
+  fullName: Libplanet.KeyStore.UnsupportedKeyJsonException
+  nameWithType: UnsupportedKeyJsonException
+- uid: Libplanet.KeyStore.UnsupportedKeyJsonException.#ctor(System.String)
+  name: UnsupportedKeyJsonException(String)
+  href: api/Libplanet.KeyStore.UnsupportedKeyJsonException.html#Libplanet_KeyStore_UnsupportedKeyJsonException__ctor_System_String_
+  commentId: M:Libplanet.KeyStore.UnsupportedKeyJsonException.#ctor(System.String)
+  fullName: Libplanet.KeyStore.UnsupportedKeyJsonException.UnsupportedKeyJsonException(System.String)
+  nameWithType: UnsupportedKeyJsonException.UnsupportedKeyJsonException(String)
+- uid: Libplanet.KeyStore.UnsupportedKeyJsonException.#ctor*
+  name: UnsupportedKeyJsonException
+  href: api/Libplanet.KeyStore.UnsupportedKeyJsonException.html#Libplanet_KeyStore_UnsupportedKeyJsonException__ctor_
+  commentId: Overload:Libplanet.KeyStore.UnsupportedKeyJsonException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.UnsupportedKeyJsonException.UnsupportedKeyJsonException
+  nameWithType: UnsupportedKeyJsonException.UnsupportedKeyJsonException
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html
