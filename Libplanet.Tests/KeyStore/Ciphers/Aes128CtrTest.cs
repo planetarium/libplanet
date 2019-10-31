@@ -9,17 +9,15 @@ namespace Libplanet.Tests.KeyStore.Ciphers
 {
     public class Aes128CtrTest : CipherTest<Aes128Ctr>
     {
-        private Aes128Ctr _cipher;
-
         public Aes128CtrTest()
         {
             var random = new Random();
             var buffer = new byte[16];
             random.NextBytes(buffer);
-            _cipher = new Aes128Ctr(buffer.ToImmutableArray());
+            Cipher = new Aes128Ctr(buffer.ToImmutableArray());
         }
 
-        public override Aes128Ctr Cipher => _cipher;
+        public override Aes128Ctr Cipher { get; }
 
         [Fact]
         public void Constructor()
