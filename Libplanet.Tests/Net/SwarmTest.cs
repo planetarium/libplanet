@@ -944,14 +944,14 @@ namespace Libplanet.Tests.Net
                     new[] { genesis.Hash, block1.Hash },
                     inventories2);
 
-                List<Block<DumbAction>> receivedBlocks =
+                List<(Block<DumbAction>, bool)> receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer as BoundPeer, inventories1
                     ).ToListAsync();
 
                 Assert.Equal(
                     new[] { genesis, block1, block2 },
-                    receivedBlocks);
+                    receivedBlocks.Select(item => item.Item1));
             }
             finally
             {
@@ -1718,6 +1718,7 @@ namespace Libplanet.Tests.Net
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
+                        Downloaded = true,
                     };
                 }).ToArray();
                 (expectedStates[10] as BlockDownloadState).TotalBlockCount = 11;
@@ -1805,6 +1806,7 @@ namespace Libplanet.Tests.Net
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
+                        Downloaded = true,
                     };
                 }).ToArray();
 
@@ -2119,7 +2121,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Timeout = Timeout)]
         public async Task RemoveForkedChainWhenFillBlocksAsyncFail()
         {
             // This test makes 2 different policies to reproduce an exception
@@ -2247,6 +2249,80 @@ namespace Libplanet.Tests.Net
                 miner2.Dispose();
                 receiver.Dispose();
             }
+        }
+
+        [Fact]
+        public async Task KeepDownloadedBlocksWhenPreloadFail()
+        {
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            Block<DumbAction> b1 = TestUtils.MineNext(
+                genesis,
+                difficulty: swarmA.BlockChain.Policy.GetNextBlockDifficulty(new[] { genesis }));
+            Block<DumbAction> b2 = TestUtils.MineNext(
+                b1,
+                difficulty: swarmA.BlockChain.Policy.GetNextBlockDifficulty(new[] { b1 }));
+
+            swarmA.BlockChain.Append(genesis);
+            swarmB.BlockChain.Append(genesis);
+            swarmA.BlockChain.Append(b1);
+            swarmA.BlockChain.Append(b2);
+
+            Assert.Equal(genesis, swarmB.BlockChain.Tip);
+
+            var cts = new CancellationTokenSource();
+            var progress1 = new Progress<PreloadState>(_ => { cts.Cancel(); });
+
+            await StartAsync(swarmA);
+            swarmA.FindNextHashesChunkSize = 2;
+
+            await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+            try
+            {
+                await swarmB.PreloadAsync(progress: progress1, cancellationToken: cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+
+            Assert.True(swarmB.BlockChain.Contains(b1.Hash));
+            Assert.Equal(genesis, swarmB.BlockChain.Tip);
+
+            var downloadState = new List<PreloadState>();
+            var progress2 = new Progress<PreloadState>(state =>
+            {
+                if (state is BlockDownloadState bds)
+                {
+                    downloadState.Add(bds);
+                }
+            });
+
+            PreloadState[] expectedStates =
+            {
+                new BlockDownloadState
+                {
+                    ReceivedBlockHash = b1.Hash,
+                    TotalBlockCount = 2,
+                    ReceivedBlockCount = 1,
+                    Downloaded = false,
+                },
+                new BlockDownloadState
+                {
+                    ReceivedBlockHash = b2.Hash,
+                    TotalBlockCount = 2,
+                    ReceivedBlockCount = 2,
+                    Downloaded = true,
+                },
+            };
+
+            var cts2 = new CancellationTokenSource();
+            cts2.CancelAfter(1000);
+            await swarmB.PreloadAsync(progress: progress2, cancellationToken: cts2.Token);
+
+            Assert.Equal(b2, swarmB.BlockChain.Tip);
+            Assert.Equal(expectedStates, downloadState);
         }
 
         private static async Task<(Address, Block<DumbAction>[])>
