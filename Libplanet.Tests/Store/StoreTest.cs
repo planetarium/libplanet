@@ -765,8 +765,8 @@ namespace Libplanet.Tests.Store
                 Assert.Single(tx.Actions);
                 AtomicityTestAction action = tx.Actions[0];
                 Assert.Equal(
-                    md5Hasher.ComputeHash(action.ArbitraryBytes.ToBuilder().ToArray()),
-                    action.Md5Digest.ToBuilder().ToArray()
+                    md5Hasher.ComputeHash(action.ArbitraryBytes.ToArray()),
+                    action.Md5Digest.ToArray()
                 );
             }
         }
@@ -780,8 +780,8 @@ namespace Libplanet.Tests.Store
             public IValue PlainValue =>
                 new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    { (Text)"bytes", new Binary(ArbitraryBytes.ToBuilder().ToArray()) },
-                    { (Text)"md5", new Binary(Md5Digest.ToBuilder().ToArray()) },
+                    { (Text)"bytes", new Binary(ArbitraryBytes.ToArray()) },
+                    { (Text)"md5", new Binary(Md5Digest.ToArray()) },
                 });
 
             public void LoadPlainValue(IValue plainValue)

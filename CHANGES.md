@@ -36,11 +36,22 @@ To be released.
 
 ### Added interfaces
 
+ -  Added `ProtectedPrivateKey` class.  [[#577], [#614]]
+ -  Added `IncorrectPassphraseException` class.  [[#577], [#614]]
+ -  Added `MismatchedAddressException` class.  [[#577], [#614]]
+ -  Added `KeyJsonException` abstract class.  [[#577], [#614]]
+ -  Added `InvalidKeyJsonException` class.  [[#577], [#614]]
+ -  Added `UnsupportedKeyJsonException` class.  [[#577], [#614]]
+ -  Added `ICipher` interface.  [[#577], [#614]]
+ -  Added `Aes128Ctr` class.  [[#577], [#614]]
+ -  Added `IKdf` interface.  [[#577], [#614]]
+ -  Added `Pbkdf2` class.  [[#577], [#614]]
  -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
  -  Added `BlockChain<T>[HashDigest<T>]` indexer.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(HashDigest<T>)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
+ -  Added `ByteUtil.Hex(ImmutableArray<byte>)` overloaded method.  [[#614]]
 
 ### Behavioral changes
 
@@ -112,6 +123,7 @@ To be released.
 [#568]: https://github.com/planetarium/libplanet/issues/568
 [#575]: https://github.com/planetarium/libplanet/pull/575
 [#576]: https://github.com/planetarium/libplanet/pull/576
+[#577]: https://github.com/planetarium/libplanet/issues/577
 [#579]: https://github.com/planetarium/libplanet/pull/579
 [#581]: https://github.com/planetarium/libplanet/pull/581
 [#583]: https://github.com/planetarium/libplanet/pull/583
@@ -124,6 +136,7 @@ To be released.
 [#608]: https://github.com/planetarium/libplanet/pull/608
 [#609]: https://github.com/planetarium/libplanet/pull/609
 [#610]: https://github.com/planetarium/libplanet/pull/610
+[#614]: https://github.com/planetarium/libplanet/pull/614
 [#622]: https://github.com/planetarium/libplanet/pull/622
 
 

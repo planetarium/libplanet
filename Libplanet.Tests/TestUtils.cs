@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -54,6 +55,14 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 );
                 return bytes.LongLength > limit ? $"{s}, ..." : s;
             }
+        }
+
+        internal static void AssertBytesEqual(
+            ImmutableArray<byte> expected,
+            ImmutableArray<byte> actual
+        )
+        {
+            AssertBytesEqual(expected.ToArray(), actual.ToArray());
         }
 
         internal static void AssertBytesEqual(TxId expected, TxId actual)
