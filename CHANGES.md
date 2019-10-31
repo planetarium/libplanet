@@ -74,6 +74,10 @@ To be released.
     not related with [Kademlia protocol][Kademlia].  [[#594], [#627]]
  -  `Swarm<T>` became not to check least recently used peer every time when
     new peer is fetched.  [[#627]]
+ -  `IAction` became guaranteed that the given
+    `IActionContext.PreviousStates.GetState()` never throws
+    `IncompleteBlockStatesException`. Instead, now it may calculate the
+    incomplete states from the beginning if necessary.  [[#645]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
 
@@ -154,6 +158,8 @@ To be released.
 [#637]: https://github.com/planetarium/libplanet/pull/637
 [#641]: https://github.com/planetarium/libplanet/pull/641
 [#644]: https://github.com/planetarium/libplanet/pull/644
+[#645]: https://github.com/planetarium/libplanet/pull/645
+[#647]: https://github.com/planetarium/libplanet/pull/647
 
 
 Version 0.6.0

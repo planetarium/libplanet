@@ -384,19 +384,7 @@ namespace Libplanet.Blockchain
                             continue;
                         }
 
-                        List<ActionEvaluation> evaluations =
-                            b.Evaluate(
-                                DateTimeOffset.UtcNow,
-                                a => GetState(
-                                     a,
-                                     b.PreviousHash
-                                ).GetValueOrDefault(a)
-                            ).ToList();
-
-                        if (Policy.BlockAction is IAction)
-                        {
-                            evaluations.Add(EvaluateBlockAction(b, evaluations));
-                        }
+                        IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(b);
 
                         _rwlock.EnterWriteLock();
 
@@ -845,7 +833,7 @@ namespace Libplanet.Blockchain
             }
             else
             {
-                stateGetter = a => GetState(a, block.PreviousHash).GetValueOrDefault(a);
+                stateGetter = a => GetState(a, block.PreviousHash, true).GetValueOrDefault(a);
             }
 
             ImmutableList<ActionEvaluation> txEvaluations = block
@@ -881,7 +869,7 @@ namespace Libplanet.Blockchain
             if (lastStates is null)
             {
                 lastStates = new AccountStateDeltaImpl(
-                    a => GetState(a, block.PreviousHash).GetValueOrDefault(a));
+                    a => GetState(a, block.PreviousHash, true).GetValueOrDefault(a));
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
@@ -1136,15 +1124,7 @@ namespace Libplanet.Blockchain
                     b = this[ph]
                 )
                 {
-                    List<ActionEvaluation> evaluations = b.EvaluateActionsPerTx(a =>
-                            GetState(a, b.PreviousHash).GetValueOrDefault(a))
-                        .Select(te => te.Item2).ToList();
-
-                    if (Policy.BlockAction is IAction)
-                    {
-                        evaluations.Add(EvaluateBlockAction(b, evaluations));
-                    }
-
+                    List<ActionEvaluation> evaluations = EvaluateActions(b).ToList();
                     evaluations.Reverse();
 
                     foreach (var evaluation in evaluations)
