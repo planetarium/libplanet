@@ -2059,10 +2059,13 @@ namespace Libplanet.Tests.Net
             (Address address, IEnumerable<Block<DumbAction>> blocks) =
                 await MakeFixtureBlocksForPreloadAsyncCancellationTest();
 
-            foreach (Block<DumbAction> block in blocks)
+            var blockArray = blocks.ToArray();
+            foreach (Block<DumbAction> block in blockArray)
             {
                 minerChain.Append(block);
             }
+
+            receiverChain.Append(blockArray[0]);
 
             Assert.NotNull(minerChain.Tip);
 
@@ -2094,8 +2097,11 @@ namespace Libplanet.Tests.Net
             if (canceled)
             {
                 Assert.Equal(receiverChainId, receiverChain.Id);
-                Assert.Null(receiverChain.Tip);
-                Assert.Null(receiverChain.GetState(address).GetValueOrDefault(address));
+                Assert.Equal(blockArray[0], receiverChain.Tip);
+                Assert.Equal(
+                    string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
+                    receiverChain.GetState(address).GetValueOrDefault(address)?.ToString()
+                );
             }
             else
             {
