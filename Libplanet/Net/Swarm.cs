@@ -1647,7 +1647,7 @@ namespace Libplanet.Net
         )
         {
             BlockChain<T> workspace = blockChain;
-            List<Guid> scope = new List<Guid>();
+            var scope = new List<Guid>();
 
             try
             {
