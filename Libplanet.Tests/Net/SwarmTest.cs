@@ -427,10 +427,7 @@ namespace Libplanet.Tests.Net
                 Assert.Single(swarmA.Peers);
 
                 await swarmB.StopAsync();
-                await Task.Delay(100);
-                await swarmA.Protocol.RefreshTableAsync(
-                    TimeSpan.Zero,
-                    default(CancellationToken));
+                await swarmA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 Assert.Empty(swarmA.Peers);
             }
             finally
@@ -520,7 +517,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.StopAsync();
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
-                await Task.Delay(Kademlia.IdleRequestTimeout + 1000);
+                await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
                 Assert.Single(swarm.Peers);
@@ -575,7 +572,7 @@ namespace Libplanet.Tests.Net
                 await swarmB.StopAsync();
 
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
-                await Task.Delay(Kademlia.IdleRequestTimeout * 2 + 1000);
+                await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
                 Assert.Single(swarm.Peers);

@@ -256,7 +256,7 @@ namespace Libplanet.Net.Protocols
         }
 
 #pragma warning disable CS4014
-        public void ReceiveMessage(object sender, Message message)
+        public void ReceiveMessage(Message message)
         {
             switch (message)
             {
@@ -401,26 +401,7 @@ namespace Libplanet.Net.Protocols
                 throw new TaskCanceledException();
             }
 
-            BoundPeer evictionCandidate = await _routing.AddPeerAsync(peer);
-            if (!(evictionCandidate is null))
-            {
-                _logger.Verbose(
-                    "Need to evict {Candidate}; trying...",
-                    evictionCandidate);
-                try
-                {
-                    await ValidateAsync(
-                        evictionCandidate,
-                        _requestTimeout,
-                        cancellationToken);
-                }
-                catch (TimeoutException)
-                {
-                    _logger.Verbose(
-                        "Peer ({Candidate}) has been evicted.",
-                        evictionCandidate);
-                }
-            }
+            await _routing.AddPeerAsync(peer);
         }
 
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)

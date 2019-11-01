@@ -917,6 +917,7 @@ namespace Libplanet.Net
                 cancellationToken: token
             );
 
+            Protocol.ReceiveMessage(parsedMessage);
             ValidateSender(parsedMessage.Remote);
 
             if (parsedMessage is BlockHashes blockHashes)
@@ -957,6 +958,7 @@ namespace Libplanet.Net
 
                 foreach (Message message in replies)
                 {
+                    Protocol.ReceiveMessage(message);
                     ValidateSender(message.Remote);
                     if (message is Messages.Blocks blockMessage)
                     {
@@ -1004,6 +1006,7 @@ namespace Libplanet.Net
 
                 foreach (Message message in replies)
                 {
+                    Protocol.ReceiveMessage(message);
                     ValidateSender(message.Remote);
                     if (message is Messages.Tx parsed)
                     {
@@ -1078,6 +1081,7 @@ namespace Libplanet.Net
                         );
                         if (reply is Pong pong)
                         {
+                            Protocol.ReceiveMessage(reply);
                             await yield.ReturnAsync((peer, pong));
                         }
                     }
@@ -1157,6 +1161,9 @@ namespace Libplanet.Net
                         timeout: TimeSpan.FromSeconds(30),
                         cancellationToken: cancellationToken
                     );
+
+                    // Do not call Protocol.ReceiveMessage since swarm is not started
+                    // when synchronizing previous states.
                     _logger.Debug("Received recent states from a peer ({Peer}).", peer);
                 }
                 catch (TimeoutException e)
@@ -1353,19 +1360,18 @@ namespace Libplanet.Net
             Message message,
             CancellationToken cancellationToken)
         {
+            Protocol.ReceiveMessage(message);
             switch (message)
             {
                 case Ping ping:
                     {
                         _logger.Debug($"Ping received.");
-                        Protocol.ReceiveMessage(this, ping);
                         break;
                     }
 
                 case FindNeighbors findPeer:
                     {
                         _logger.Debug($"FindNeighbors received.");
-                        Protocol.ReceiveMessage(this, findPeer);
                         break;
                     }
 
