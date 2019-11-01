@@ -930,54 +930,103 @@ namespace Libplanet.Net
                 $"but {parsedMessage}");
         }
 
-        internal System.Collections.Async.IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        /// <summary>
+        /// Request blocks with <paramref name="blockHashes"/> from <paramref name="peer"/>.
+        /// If store already has block with <see cref="HashDigest{SHA256}"/>, return from storage.
+        /// </summary>
+        /// <param name="peer"><see cref="BoundPeer"/> to request <see cref="Block{T}"/>s.</param>
+        /// <param name="blockHashes"><see cref="HashDigest{SHA256}"/>s of <see cref="Block{T}"/>
+        /// to request.</param>
+        /// <returns>A pair of <see cref="Block{T}"/> and <c>bool</c> value represents whether
+        /// the block is downloaded from <paramref name="peer"/>.</returns>
+        /// <exception cref="InvalidMessageException">
+        /// Thrown when invalid message is received.
+        /// </exception>
+        /// <exception cref="SwarmException">
+        /// Thrown when storage failed to load blocks.
+        /// </exception>
+        internal System.Collections.Async.IAsyncEnumerable<(Block<T>, bool)> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes)
         {
-            return new AsyncEnumerable<Block<T>>(async yield =>
+            return new AsyncEnumerable<(Block<T>, bool)>(async yield =>
             {
                 CancellationToken yieldToken = yield.CancellationToken;
+
+                // FIXME: This code intended to select blocks that are not in
+                // local storage, not main chain.
                 var blockHashesAsArray =
                     blockHashes as HashDigest<SHA256>[] ??
                     blockHashes.ToArray();
-                var request = new GetBlocks(blockHashesAsArray);
-                int hashCount = blockHashesAsArray.Count();
+                var requestHashes = blockHashesAsArray.Where(hash => !BlockChain.Contains(hash));
+                var requestHashesAsArray =
+                    requestHashes as HashDigest<SHA256>[] ??
+                    requestHashes.ToArray();
+                var request = new GetBlocks(requestHashesAsArray);
+                int hashCount = requestHashesAsArray.Count();
 
-                if (hashCount < 1)
+                if (!requestHashesAsArray.Any())
                 {
-                    yield.Break();
-                }
-
-                IEnumerable<Message> replies = await SendMessageWithReplyAsync(
-                    peer,
-                    request,
-                    BlockRecvTimeout,
-                    ((hashCount - 1) / request.ChunkSize) + 1,
-                    yieldToken
-                );
-
-                foreach (Message message in replies)
-                {
-                    Protocol.ReceiveMessage(message);
-                    ValidateSender(message.Remote);
-                    if (message is Messages.Blocks blockMessage)
+                    _logger.Debug("No any blocks to fetch. Load from local storage.");
+                    foreach (var hash in blockHashesAsArray)
                     {
-                        IList<byte[]> payloads = blockMessage.Payloads;
-                        _logger.Debug(
-                            "Received {0} blocks from {1}.",
-                            payloads.Count,
-                            message.Remote.PublicKey.ToAddress().ToHex());
-                        foreach (byte[] payload in payloads)
+                        if (!BlockChain.Contains(hash))
                         {
-                            Block<T> block = Block<T>.FromBencodex(payload);
-                            await yield.ReturnAsync(block);
+                            throw new SwarmException(
+                                $"BlockChain does not contains corresponding hash {hash}.");
+                        }
+
+                        await yield.ReturnAsync((BlockChain[hash], false));
+                    }
+                }
+                else
+                {
+                    IEnumerable<Message> replies = await SendMessageWithReplyAsync(
+                        peer,
+                        request,
+                        BlockRecvTimeout,
+                        ((hashCount - 1) / request.ChunkSize) + 1,
+                        yieldToken
+                    );
+
+                    var blocks = new Dictionary<HashDigest<SHA256>, Block<T>>();
+                    foreach (Message message in replies)
+                    {
+                        Protocol.ReceiveMessage(message);
+                        ValidateSender(message.Remote);
+                        if (message is Messages.Blocks blockMessage)
+                        {
+                            IList<byte[]> payloads = blockMessage.Payloads;
+                            _logger.Debug(
+                                "Received {0} blocks from {1}.",
+                                payloads.Count,
+                                message.Remote.PublicKey.ToAddress().ToHex());
+                            foreach (byte[] payload in payloads)
+                            {
+                                Block<T> block = Block<T>.FromBencodex(payload);
+                                blocks[block.Hash] = block;
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidMessageException(
+                                $"The response of GetData isn't a Block. " +
+                                $"but {message}");
                         }
                     }
-                    else
+
+                    foreach (var hash in blockHashesAsArray)
                     {
-                        throw new InvalidMessageException(
-                            $"The response of GetData isn't a Block. " +
-                            $"but {message}");
+                        if (blocks.ContainsKey(hash))
+                        {
+                            _logger.Debug("Return downloaded {hash}.", hash);
+                            await yield.ReturnAsync((blocks[hash], true));
+                        }
+                        else
+                        {
+                            _logger.Debug("Reuse containing {hash}.", hash);
+                            await yield.ReturnAsync((BlockChain[hash], false));
+                        }
                     }
                 }
             });
@@ -1451,14 +1500,15 @@ namespace Libplanet.Net
                 $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
                 newHashes.Count());
 
-            System.Collections.Async.IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
+            System.Collections.Async.IAsyncEnumerable<(Block<T>, bool)> fetched = GetBlocksAsync(
                 peer,
                 newHashes
             );
 
-            List<Block<T>> blocks = await fetched.ToListAsync(
+            List<(Block<T>, bool)> blocksWithDownload = await fetched.ToListAsync(
                 cancellationToken
             );
+            List<Block<T>> blocks = blocksWithDownload.Select(item => item.Item1).ToList();
             _logger.Debug($"{nameof(GetBlocksAsync)}() complete.");
 
             if (!blocks.Any())
@@ -1514,6 +1564,8 @@ namespace Libplanet.Net
                     {
                         long currentTipIndex = blockChain.Tip?.Index ?? -1;
                         long receivedBlockCount = currentTipIndex - previousTipIndex;
+
+                        _logger.Debug("Try to run FillBlocksAsync in SyncPreviousBlocksAsync.");
 
                         synced = await FillBlocksAsync(
                             peer,
@@ -1726,8 +1778,10 @@ namespace Libplanet.Net
 
                     await GetBlocksAsync(peer, hashesAsArray)
                         .ForEachAsync(
-                            block =>
+                            item =>
                             {
+                                var block = item.Item1;
+                                var downloaded = item.Item2;
                                 _logger.Debug(
                                     $"Trying to append block[{block.Hash}]...");
 
@@ -1742,13 +1796,18 @@ namespace Libplanet.Net
                                     evaluateActions: evaluateActions,
                                     renderActions: false
                                 );
+
+                                // FIXME: receivedBlockCount represents number of blocks downloaded,
+                                // but it became to behave as appendBlockCount.
                                 receivedBlockCount++;
                                 progress?.Report(new BlockDownloadState
                                 {
                                     TotalBlockCount = totalBlockCount,
                                     ReceivedBlockCount = receivedBlockCount,
                                     ReceivedBlockHash = block.Hash,
+                                    Downloaded = downloaded,
                                 });
+
                                 _logger.Debug($"Block[{block.Hash}] is appended.");
                             },
                             cancellationToken);

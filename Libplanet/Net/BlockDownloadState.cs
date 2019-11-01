@@ -24,6 +24,11 @@ namespace Libplanet.Net
         /// </summary>
         public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
 
+        /// <summary>
+        /// Whether the block is downloaded from other peer.
+        /// </summary>
+        public bool Downloaded { get; internal set; }
+
         /// <inheritdoc />
         public override int CurrentPhase => 1;
     }
