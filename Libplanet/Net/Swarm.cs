@@ -1421,8 +1421,7 @@ namespace Libplanet.Net
                     }
 
                 default:
-                    Trace.Fail($"Can't handle message. [{message}]");
-                    break;
+                    throw new InvalidMessageException($"Can't handle message: {message}", message);
             }
         }
 
