@@ -359,7 +359,7 @@ namespace Libplanet.Tests.Blockchain
                 var blockRenders = MinerReward.RenderRecords.Value;
 
                 Assert.Equal(
-                    2,
+                    (Integer)2,
                     (Integer)_blockChain.GetState(minerAddress)[minerAddress]);
                 Assert.Equal(2, blockRenders.Count);
                 Assert.True(blockRenders.All(r => r.Render));
@@ -367,13 +367,13 @@ namespace Libplanet.Tests.Blockchain
                 Assert.Equal(1, blockRenders[1].Context.BlockIndex);
 
                 Assert.Equal(
-                    1,
+                    (Integer)1,
                     (Integer)blockRenders[0].NextStates.GetState(minerAddress));
                 Assert.Equal(
-                    1,
+                    (Integer)1,
                     (Integer)blockRenders[1].Context.PreviousStates.GetState(minerAddress));
                 Assert.Equal(
-                    2,
+                    (Integer)2,
                     (Integer)blockRenders[1].NextStates.GetState(minerAddress));
             }
             finally
@@ -922,7 +922,7 @@ namespace Libplanet.Tests.Blockchain
                     var blockRenders = MinerReward.RenderRecords.Value;
 
                     Assert.Equal(
-                        totalBlockCount,
+                        (Integer)totalBlockCount,
                         (Integer)_blockChain.GetState(minerAddress)[minerAddress]);
                     Assert.Equal(totalBlockCount, blockRenders.Count);
                     Assert.True(blockRenders.Take(unRenderBlockCount).All(r => r.Unrender));
@@ -1408,7 +1408,7 @@ namespace Libplanet.Tests.Blockchain
             var miner = addresses[4];
             var blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[0], null);
             Assert.Equal(_blockChain.Policy.BlockAction, blockActionEvaluation.Action);
-            Assert.Equal(1, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
+            Assert.Equal((Integer)1, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
 
             _blockChain.ExecuteActions(blocks[0]);
             _blockChain.Append(
@@ -1422,7 +1422,7 @@ namespace Libplanet.Tests.Blockchain
                 .Select(te => te.Item2).ToList();
             blockActionEvaluation = _blockChain.EvaluateBlockAction(blocks[1], txEvaluations);
 
-            Assert.Equal(2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
+            Assert.Equal((Integer)2, (Integer)blockActionEvaluation.OutputStates.GetState(miner));
         }
 
         [Fact]

@@ -665,7 +665,7 @@ namespace Libplanet.Tests.Tx
                         (Integer)eval.OutputStates.GetState(
                             DumbAction.RandomRecordsAddress
                         ),
-                        eval.InputContext.Random.Next()
+                        (Integer)eval.InputContext.Random.Next()
                     );
                     Assert.Equal(
                         i > 0 ? addresses.Select(

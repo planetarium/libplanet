@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Dictionary plainValue)
         {
-            Reward = (int)plainValue.GetValue<Integer>("reward").Value;
+            Reward = plainValue.GetValue<Integer>("reward");
         }
 
         public IAccountStateDelta Execute(IActionContext ctx)

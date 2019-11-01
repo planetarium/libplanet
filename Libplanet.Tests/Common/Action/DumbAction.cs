@@ -187,7 +187,7 @@ namespace Libplanet.Tests.Common.Action
 
             if (plainValue.ContainsKey((Text)"idempotent"))
             {
-                Idempotent = plainValue.GetValue<Boolean>("idempotent").Value;
+                Idempotent = plainValue.GetValue<Boolean>("idempotent");
             }
         }
 

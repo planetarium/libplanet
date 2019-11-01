@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Common.Action
         {
             Weapon = (Text)plainValue[(Text)"weapon"];
             Target = (Text)plainValue[(Text)"target"];
-            TargetAddress = new Address(((Binary)plainValue[(Text)"target_address"]).Value);
+            TargetAddress = new Address((Binary)plainValue[(Text)"target_address"]);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)
