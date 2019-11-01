@@ -526,26 +526,34 @@ namespace Libplanet.Blockchain
         /// <paramref name="address"/>.</returns>
         public long GetNextTxNonce(Address address)
         {
-            long nonce = Store.GetTxNonce(Id, address);
-            IEnumerable<Transaction<T>> stagedTxs = Store
-                .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .Where(tx => tx.Signer.Equals(address))
-                .OrderBy(tx => tx.Nonce);
+            _rwlock.EnterReadLock();
 
-            long prevNonce = nonce - 1;
-            foreach (long n in stagedTxs.Select(tx => tx.Nonce))
+            try
             {
-                if (n != prevNonce + 1)
+                long nonce = Store.GetTxNonce(Id, address);
+                var prevNonce = nonce - 1;
+                var stagedTxNonces = Store.IterateStagedTransactionIds()
+                    .Select(Store.GetTransaction<T>)
+                    .Where(tx => tx.Signer.Equals(address) && tx.Nonce >= prevNonce)
+                    .Select(tx => tx.Nonce)
+                    .OrderBy(n => n);
+
+                foreach (long n in stagedTxNonces)
                 {
-                    return prevNonce + 1;
+                    if (n != nonce)
+                    {
+                        break;
+                    }
+
+                    nonce++;
                 }
 
-                nonce = n + 1;
-                prevNonce = n;
+                return nonce;
             }
-
-            return nonce;
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
         }
 
         /// <summary>

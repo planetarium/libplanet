@@ -1289,6 +1289,34 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task GetNextTxNonceWithStaleTx()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(address, "foo") };
+
+            Transaction<DumbAction>[] txs =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+            };
+
+            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            await _blockChain.MineBlock(address);
+
+            var staleTx = _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0);
+            _blockChain.StageTransactions(new[] { staleTx }.ToImmutableHashSet());
+
+            Assert.Equal(2, _blockChain.GetNextTxNonce(address));
+
+            _blockChain.MakeTransaction(privateKey, actions);
+            Assert.Equal(3, _blockChain.GetNextTxNonce(address));
+
+            _blockChain.MakeTransaction(privateKey, actions);
+            Assert.Equal(4, _blockChain.GetNextTxNonce(address));
+        }
+
+        [Fact]
         public void ValidateTxNonces()
         {
             var privateKey = new PrivateKey();
@@ -1356,6 +1384,31 @@ namespace Libplanet.Tests.Blockchain
             Assert.Equal(1, transaction.Nonce);
             Assert.Equal(address, transaction.Signer);
             Assert.Equal(actions, transaction.Actions);
+        }
+
+        [Fact]
+        public async Task MakeTransactionConcurrency()
+        {
+            var privateKey = new PrivateKey();
+            Address address = privateKey.PublicKey.ToAddress();
+            var actions = new[] { new DumbAction(address, "foo") };
+
+            var tasks = Enumerable.Range(0, 10)
+                .Select(_ => Task.Run(() => _blockChain.MakeTransaction(privateKey, actions)));
+
+            await Task.WhenAll(tasks);
+
+            var txIds = _blockChain.GetStagedTransactionIds();
+
+            var nonces = txIds
+                .Select(_blockChain.GetTransaction)
+                .Select(tx => tx.Nonce)
+                .OrderBy(nonce => nonce).ToArray();
+
+            Assert.Equal(
+                nonces,
+                new long[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }
+            );
         }
 
         [Fact]
