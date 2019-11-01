@@ -102,6 +102,8 @@ To be released.
     through the TurnClient.
  -  Fixed a bug where `BlockChain<T>.GetNextTxNonce` only returned the same
     nonce when transactions with an old nonce were staged.  [[#637]]
+ -  Fixed a bug that `BlockChain<T>` had reset when `Swarm<T>.PreloadAsync()`
+    fails.  [[#644]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
@@ -145,6 +147,7 @@ To be released.
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
 [#637]: https://github.com/planetarium/libplanet/pull/637
+[#644]: https://github.com/planetarium/libplanet/pull/644
 
 
 Version 0.6.0

@@ -1572,15 +1572,6 @@ namespace Libplanet.Net
                         blockChain.Swap(synced, evaluateActions);
                     }
                 }
-
-                IStore store = BlockChain.Store;
-                foreach (Guid chainId in store.ListChainIds().ToList())
-                {
-                    if (!chainId.Equals(blockChain.Id))
-                    {
-                        store.DeleteChainId(chainId);
-                    }
-                }
             }
         }
 
@@ -1656,107 +1647,129 @@ namespace Libplanet.Net
         )
         {
             BlockChain<T> workspace = blockChain;
+            var scope = new List<Guid>();
 
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                Block<T> tip = workspace?.Tip;
-
-                _logger.Debug("Trying to find branchpoint...");
-                BlockLocator locator = workspace.GetBlockLocator();
-                _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
-                IEnumerable<HashDigest<SHA256>> hashes = (
-                    await GetBlockHashesAsync(peer, locator, stop, cancellationToken)
-                ).ToArray();
-
-                if (!hashes.Any())
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    _logger.Debug(
-                        "Peer [{0}] didn't return any hashes; ignored.",
-                        peer.PublicKey.ToAddress().ToHex()
-                    );
-                    return workspace;
-                }
+                    Block<T> tip = workspace?.Tip;
 
-                HashDigest<SHA256> branchPoint = hashes.First();
+                    _logger.Debug("Trying to find branchpoint...");
+                    BlockLocator locator = workspace.GetBlockLocator();
+                    _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
+                    IEnumerable<HashDigest<SHA256>> hashes = (
+                        await GetBlockHashesAsync(peer, locator, stop, cancellationToken)
+                    ).ToArray();
 
-                _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
-
-                if (tip is null || branchPoint.Equals(tip.Hash))
-                {
-                    _logger.Debug("It doesn't need to fork.");
-                }
-
-                // FIXME BlockChain<T>.Contains() can be very
-                // expensive.
-                // we can omit this clause if assume every chain shares
-                // same genesis block...
-                else if (!workspace.Contains(branchPoint))
-                {
-                    // Create a whole new chain because the branch point doesn't exist on
-                    // the current chain.
-                    workspace = new BlockChain<T>(
-                        workspace.Policy,
-                        workspace.Store,
-                        Guid.NewGuid()
-                    );
-                }
-                else
-                {
-                    _logger.Debug("Forking needed. Trying to fork...");
-                    workspace = workspace.Fork(branchPoint);
-                    _logger.Debug("Forking complete.");
-                }
-
-                if (!(workspace.Tip is null))
-                {
-                    hashes = hashes.Skip(1);
-                }
-
-                _logger.Debug("Trying to fill up previous blocks...");
-
-                var hashesAsArray =
-                    hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
-                if (!hashesAsArray.Any())
-                {
-                    break;
-                }
-
-                int hashCount = hashesAsArray.Count();
-                _logger.Debug(
-                    $"Required hashes (count: {hashCount}). " +
-                    $"(tip: {workspace.Tip?.Hash})"
-                );
-
-                totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
-
-                await GetBlocksAsync(peer, hashesAsArray)
-                    .ForEachAsync(
-                    block =>
+                    if (!hashes.Any())
                     {
                         _logger.Debug(
-                            $"Trying to append block[{block.Hash}]...");
-
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        // As actions in this block should be rendered
-                        // after actions in stale blocks are unrendered,
-                        // given the `render: false` option here.
-                        workspace.Append(
-                            block,
-                            DateTimeOffset.UtcNow,
-                            evaluateActions: evaluateActions,
-                            renderActions: false
+                            "Peer [{0}] didn't return any hashes; ignored.",
+                            peer.PublicKey.ToAddress().ToHex()
                         );
-                        receivedBlockCount++;
-                        progress?.Report(new BlockDownloadState
-                        {
-                            TotalBlockCount = totalBlockCount,
-                            ReceivedBlockCount = receivedBlockCount,
-                            ReceivedBlockHash = block.Hash,
-                        });
-                        _logger.Debug($"Block[{block.Hash}] is appended.");
-                    },
-                    cancellationToken);
+                        return workspace;
+                    }
+
+                    HashDigest<SHA256> branchPoint = hashes.First();
+
+                    _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
+
+                    if (tip is null || branchPoint.Equals(tip.Hash))
+                    {
+                        _logger.Debug("It doesn't need to fork.");
+                    }
+
+                    // FIXME BlockChain<T>.Contains() can be very
+                    // expensive.
+                    // we can omit this clause if assume every chain shares
+                    // same genesis block...
+                    else if (!workspace.Contains(branchPoint))
+                    {
+                        // Create a whole new chain because the branch point doesn't exist on
+                        // the current chain.
+                        workspace = new BlockChain<T>(
+                            workspace.Policy,
+                            workspace.Store,
+                            Guid.NewGuid()
+                        );
+                        scope.Add(workspace.Id);
+                    }
+                    else
+                    {
+                        _logger.Debug("Forking needed. Trying to fork...");
+                        workspace = workspace.Fork(branchPoint);
+                        scope.Add(workspace.Id);
+                        _logger.Debug("Forking complete.");
+                    }
+
+                    if (!(workspace.Tip is null))
+                    {
+                        hashes = hashes.Skip(1);
+                    }
+
+                    _logger.Debug("Trying to fill up previous blocks...");
+
+                    var hashesAsArray =
+                        hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
+                    if (!hashesAsArray.Any())
+                    {
+                        break;
+                    }
+
+                    int hashCount = hashesAsArray.Count();
+                    _logger.Debug(
+                        $"Required hashes (count: {hashCount}). " +
+                        $"(tip: {workspace.Tip?.Hash})"
+                    );
+
+                    totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
+
+                    await GetBlocksAsync(peer, hashesAsArray)
+                        .ForEachAsync(
+                            block =>
+                            {
+                                _logger.Debug(
+                                    $"Trying to append block[{block.Hash}]...");
+
+                                cancellationToken.ThrowIfCancellationRequested();
+
+                                // As actions in this block should be rendered
+                                // after actions in stale blocks are unrendered,
+                                // given the `render: false` option here.
+                                workspace.Append(
+                                    block,
+                                    DateTimeOffset.UtcNow,
+                                    evaluateActions: evaluateActions,
+                                    renderActions: false
+                                );
+                                receivedBlockCount++;
+                                progress?.Report(new BlockDownloadState
+                                {
+                                    TotalBlockCount = totalBlockCount,
+                                    ReceivedBlockCount = receivedBlockCount,
+                                    ReceivedBlockHash = block.Hash,
+                                });
+                                _logger.Debug($"Block[{block.Hash}] is appended.");
+                            },
+                            cancellationToken);
+                }
+            }
+            catch
+            {
+                if (!(workspace is null))
+                {
+                    IStore store = blockChain.Store;
+                    store.DeleteChainId(workspace.Id);
+                }
+            }
+            finally
+            {
+                IStore store = blockChain.Store;
+                foreach (var id in scope.Where(guid => guid != workspace.Id))
+                {
+                    store.DeleteChainId(id);
+                }
             }
 
             return workspace;
