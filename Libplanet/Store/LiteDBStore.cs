@@ -376,6 +376,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
+            // checks whether a block already exists or not.
+            if (!(_db.FileStorage.FindById(BlockFileId(block.Hash)) is null))
+            {
+                return;
+            }
+
             _blockLock.EnterWriteLock();
             try
             {
