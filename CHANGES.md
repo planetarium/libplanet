@@ -63,11 +63,9 @@ To be released.
  -  `TurnClient.AcceptRelayedStreamAsync()` became to ignore disconnected
     connections.  [[#469]]
  -  `Swarm<T>.PreloadAsync()` became to ignore peers with lower tip.  [[#592]]
- -  `KademliaProtocol<T>.RefreshTableAsync()` became to validate only stale
-    peers.  [[#568], [#593]]
- -  `KademliaProtocol<T>` became not to check cached peers immediately after
-    removing peers from table. Instead, added
-    `IProtocol.CheckReplacementCacheAsync()` to check cached peers
+ -  `Swarm<T>` became to validate only stale peers.  [[#568], [#593]]
+ -  `Swarm<T>` became not to check cached peers immediately after
+    removing peers from its routing table. Instead, it checks cached peers
     periodically.  [[#608]]
  -  Marked `Address` and `HashDigest` as readonly.  [[#610]]
  -  `IceServer.CreateTurnClient()` became to throw `ArgumentException` when
@@ -79,8 +77,8 @@ To be released.
 
 ### Bug fixes
 
- -  Fixed a bug where `KademliaProtocol<T>.UpdateAsync()` runs infinitely when
-    a peer is evicted from `Bucket` and replacement cache is used.  [[#566]]
+ -  Fixed a bug where `Swarm<T>` had tried to update a peer infinitely when
+    the peer is evicted from its table.  [[#566]]
  -  Fixed a bug where `Swarm<T>.AppendBlocksAsync()` re-requests blocks that
     already received when blockchain is empty.  [[#550], [#562]]
  -  Fixed a bug that `Swarm<T>` had thrown `SocketException` with a message
@@ -96,8 +94,8 @@ To be released.
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
- -  Fixed a bug where `KademliaProtocol<T>.RefreshTableAsync()` hadn't remove
-    stale peers.  [[#568], [#593], [#602]]
+ -  Fixed a bug where `Swarm<T>` hadn't removed stale peers.
+    [[#568], [#593], [#602]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
  -  Fixed a bug that `KeyNotFoundException` occurred when sending a message
