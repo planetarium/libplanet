@@ -179,6 +179,8 @@ through the TurnClient.</li>
 nonce when transactions with an old nonce were staged.  [<a href="https://github.com/planetarium/libplanet/pull/637">#637</a>]</li>
 <li>Fixed a bug that <code>BlockChain&lt;T&gt;</code> had reset when <code>Swarm&lt;T&gt;.PreloadAsync()</code>
 fails.  [<a href="https://github.com/planetarium/libplanet/pull/644">#644</a>]</li>
+<li>Fixed bug that whole processes could halt when received an invalid
+type of message.  [<a href="https://github.com/planetarium/libplanet/issues/628">#628</a>, <a href="https://github.com/planetarium/libplanet/pull/641">#641</a>]</li>
 </ul>
 <h2 id="version-060">Version 0.6.0</h2>
 <p>Released on October 1, 2019.</p>
@@ -942,7 +944,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/64e7f9b76729d8f39ab5bcabd8d9cb365362b660/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/5a01f240c7d8273cca39009db7b457101325f949/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
