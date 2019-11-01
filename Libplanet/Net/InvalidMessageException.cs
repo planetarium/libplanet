@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.Serialization;
+using Libplanet.Net.Messages;
 
 namespace Libplanet.Net
 {
@@ -20,6 +21,12 @@ namespace Libplanet.Net
         {
         }
 
+        internal InvalidMessageException(string message, Message receivedMessage)
+            : base(message)
+        {
+            ReceivedMessage = receivedMessage;
+        }
+
         protected InvalidMessageException(
             SerializationInfo info,
             StreamingContext context
@@ -27,5 +34,7 @@ namespace Libplanet.Net
             : base(info, context)
         {
         }
+
+        internal Message ReceivedMessage { get; }
     }
 }

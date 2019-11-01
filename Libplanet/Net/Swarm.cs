@@ -1421,7 +1421,7 @@ namespace Libplanet.Net
                     }
 
                 default:
-                    throw new InvalidMessageException($"Can't handle message: {message}");
+                    throw new InvalidMessageException($"Can't handle message: {message}", message);
             }
         }
 
