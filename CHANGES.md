@@ -94,7 +94,7 @@ To be released.
  -  `LiteDBStore` became to guarantee atomicity of storing blocks. [[#584]]
  -  Fixed a bug that `BlockChain<T>` had appended a block even if fails to
     evaluate.  [[#591]]
- -  Fixed a bug where `Swarm<T>` hadn't remove stale peers.
+ -  Fixed a bug where `Swarm<T>` hadn't removed stale peers.
     [[#568], [#593], [#602]]
  -  Fixed a bug that `TurnClient` had thrown `IOException` when accepting
     connection through a TURN relay server. [[#453], [#599]]
