@@ -104,6 +104,8 @@ To be released.
     nonce when transactions with an old nonce were staged.  [[#637]]
  -  Fixed a bug that `BlockChain<T>` had reset when `Swarm<T>.PreloadAsync()`
     fails.  [[#644]]
+ -  Fixed bug that whole processes could halt when received an invalid
+    type of message.  [[#628], [#641]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
@@ -146,7 +148,9 @@ To be released.
 [#614]: https://github.com/planetarium/libplanet/pull/614
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
+[#628]: https://github.com/planetarium/libplanet/issues/628
 [#637]: https://github.com/planetarium/libplanet/pull/637
+[#641]: https://github.com/planetarium/libplanet/pull/641
 [#644]: https://github.com/planetarium/libplanet/pull/644
 
 
