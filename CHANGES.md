@@ -52,6 +52,8 @@ To be released.
  -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
  -  Added `ByteUtil.Hex(ImmutableArray<byte>)` overloaded method.  [[#614]]
+ -  Added `BlockDownloadState.Downloaded` property to report whether
+    the appended block is downloaded or loaded from storage.  [[#649]]
 
 ### Behavioral changes
 
@@ -76,6 +78,8 @@ To be released.
     new peer is fetched.  [[#627]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
+ -  `Swarm<T>.PreloadAsync()` became not to re-download blocks that already has
+    in storage.  [[#634], [#649]]
 
 ### Bug fixes
 
@@ -151,9 +155,11 @@ To be released.
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
 [#628]: https://github.com/planetarium/libplanet/issues/628
+[#634]: https://github.com/planetarium/libplanet/issues/634
 [#637]: https://github.com/planetarium/libplanet/pull/637
 [#641]: https://github.com/planetarium/libplanet/pull/641
 [#644]: https://github.com/planetarium/libplanet/pull/644
+[#649]: https://github.com/planetarium/libplanet/pull/649
 
 
 Version 0.6.0
