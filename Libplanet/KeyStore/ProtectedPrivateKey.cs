@@ -303,6 +303,12 @@ namespace Libplanet.KeyStore
         /// </summary>
         /// <param name="passphrase">A user input passphrase (i.e., password).</param>
         /// <returns>A bare <see cref="PrivateKey"/>.</returns>
+        /// <exception cref="IncorrectPassphraseException">Thrown when the given
+        /// <paramref name="passphrase"/> does not match to the <see cref="ProtectedPrivateKey"/>'s
+        /// passphrase.</exception>
+        /// <exception cref="MismatchedAddressException">Thrown when the unprotected
+        /// <see cref="PrivateKey"/> does not match to the expected <see cref="Address"/>.
+        /// </exception>
         [Pure]
         public PrivateKey Unprotect(string passphrase)
         {
