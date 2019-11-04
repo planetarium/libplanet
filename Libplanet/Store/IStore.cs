@@ -154,6 +154,7 @@ namespace Libplanet.Store
 
         /// <summary>
         /// Puts the given <paramref name="block"/> in to the store.
+        /// If the same block already exists in the store it does nothing.
         /// </summary>
         /// <param name="block">A <see cref="Block{T}"/> to put into the store.
         /// </param>

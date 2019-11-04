@@ -74,6 +74,8 @@ To be released.
     not related with [Kademlia protocol][Kademlia].  [[#594], [#627]]
  -  `Swarm<T>` became not to check least recently used peer every time when
     new peer is fetched.  [[#627]]
+ -  `IStore.PutBlock<T>()` became to do nothing when it takes
+    the `Block<T>` more than once.  [[#647]]
 
 ### Bug fixes
 
