@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -47,41 +48,40 @@ namespace Libplanet.Explorer.Executable
 The format is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
 E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
 If omitted (default) explorer only the local blockchain store.")]
-        public string SeedString
+        public IEnumerable<string> SeedStrings
         {
             get
             {
-                if (Seed is null)
-                {
-                    return null;
-                }
-
-                byte[] pubkey = Seed.PublicKey.Format(true);
-                return $"{ByteUtil.Hex(pubkey)},{Seed.EndPoint.Host},{Seed.EndPoint.Port}";
+                return Seeds?.Select(seed => $"{ByteUtil.Hex(seed.PublicKey.Format(true))}," +
+                                             $"{seed.EndPoint.Host},{seed.EndPoint.Port}");
             }
 
             set
             {
                 if (value is null)
                 {
-                    Seed = null;
+                    Seeds = null;
                     return;
                 }
 
-                string[] parts = value.Split(',');
-                if (parts.Length != 3)
+                Seeds = value.Select(str =>
                 {
-                    throw new FormatException("A seed must be a command-separated triple.");
-                }
+                    string[] parts = str.Split(',');
+                    if (parts.Length != 3)
+                    {
+                        throw new FormatException(
+                            $"A seed must be a command-separated triple. {str}");
+                    }
 
-                byte[] pubkeyBytes = ByteUtil.ParseHex(parts[0]);
-                var pubkey = new PublicKey(pubkeyBytes);
-                var endpoint = new DnsEndPoint(parts[1], int.Parse(parts[2]));
-                Seed = new BoundPeer(pubkey, endpoint, 0);
+                    byte[] pubkeyBytes = ByteUtil.ParseHex(parts[0]);
+                    var pubkey = new PublicKey(pubkeyBytes);
+                    var endpoint = new DnsEndPoint(parts[1], int.Parse(parts[2]));
+                    return new BoundPeer(pubkey, endpoint, 0);
+                });
             }
         }
 
-        public BoundPeer Seed { get; set; }
+        public IEnumerable<BoundPeer> Seeds { get; set; }
 
         [Option(
             'I',
@@ -121,11 +121,12 @@ If omitted (default) explorer only the local blockchain store.")]
 
         public IceServer IceServer { get; set; }
 
-        [Value(
-            0,
-            MetaName = "PATH",
-            Required = false,
-            HelpText = "The path of the blockchain store.")]
+        [Option(
+            'P',
+            "store-path",
+            Default = null,
+            HelpText = @"The path of the blockchain store. If omitted (default) 
+in memory version is used.")]
         public string StorePath { get; set; }
 
         public static Options Parse(string[] args, TextWriter errorWriter)
