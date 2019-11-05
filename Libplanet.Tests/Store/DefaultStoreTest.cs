@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Libplanet.Crypto;
 using Libplanet.Store;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Store
 {
@@ -10,8 +11,9 @@ namespace Libplanet.Tests.Store
     {
         private readonly DefaultStoreFixture _fx;
 
-        public DefaultStoreTest()
+        public DefaultStoreTest(ITestOutputHelper testOutputHelper)
         {
+            TestOutputHelper = testOutputHelper;
             Fx = _fx = new DefaultStoreFixture();
         }
 

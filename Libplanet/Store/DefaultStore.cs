@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -13,32 +12,36 @@ using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
 using Serilog;
+using Zio;
+using Zio.FileSystems;
 using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Store
 {
     /// <summary>
-    /// The default built-in <see cref="IStore"/> implementation.  This stores data in files
-    /// using <a href="https://www.litedb.org/">LiteDB</a>.
+    /// The default built-in <see cref="IStore"/> implementation.  This stores data in
+    /// the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+    /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
     public class DefaultStore : BaseStore, IDisposable
     {
-        private const string TxIdPrefix = "tx/";
-
         private const string IndexColPrefix = "index_";
 
         private const string StateRefIdPrefix = "stateref_";
 
         private const string TxNonceIdPrefix = "nonce_";
 
+        private static readonly UPath TxRootPath = UPath.Root / "tx";
+
         private readonly ILogger _logger;
+
+        private readonly IFileSystem _root;
+        private readonly SubFileSystem _txs;
 
         private readonly MemoryStream _memoryStream;
 
         private readonly LiteDatabase _db;
-
-        private readonly ReaderWriterLockSlim _txLock;
 
         private readonly ReaderWriterLockSlim _blockLock;
 
@@ -66,6 +69,7 @@ namespace Libplanet.Store
 
             if (path is null)
             {
+                _root = new MemoryFileSystem();
                 _memoryStream = new MemoryStream();
                 _db = new LiteDatabase(_memoryStream);
             }
@@ -75,6 +79,13 @@ namespace Libplanet.Store
                 {
                     Directory.CreateDirectory(path);
                 }
+
+                var pfs = new PhysicalFileSystem();
+                _root = new SubFileSystem(
+                    pfs,
+                    pfs.ConvertPathFromInternal(path),
+                    owned: true
+                );
 
                 var connectionString = new ConnectionString
                 {
@@ -111,8 +122,10 @@ namespace Libplanet.Store
                     b => new Address(b.AsBinary));
             }
 
+            _root.CreateDirectory(TxRootPath);
+            _txs = new SubFileSystem(_root, TxRootPath, owned: false);
+
             _blockLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-            _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -252,66 +265,55 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            IEnumerable<string> filenames;
-            _txLock.EnterReadLock();
-            try
+            foreach (UPath path in _txs.EnumerateDirectories("/"))
             {
-                filenames = _db.FileStorage
-                    .Find(TxIdPrefix)
-                    .Select(file => file.Filename);
-            }
-            finally
-            {
-                _txLock.ExitReadLock();
-            }
+                string upper = path.GetName();
+                if (upper.Length != 2)
+                {
+                    continue;
+                }
 
-            return filenames.Select(filename => new TxId(ByteUtil.ParseHex(filename)));
+                foreach (UPath subPath in _txs.EnumerateFiles(path))
+                {
+                    string lower = subPath.GetName();
+                    if (lower.Length != 62)
+                    {
+                        continue;
+                    }
+
+                    string name = upper + lower;
+                    TxId txid;
+                    try
+                    {
+                        txid = new TxId(ByteUtil.ParseHex(name));
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
+                    yield return txid;
+                }
+            }
         }
 
         /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
-            string fileId = TxFileId(txid);
-            byte[] bytes;
+            UPath path = TxPath(txid);
+            if (!_txs.FileExists(path))
+            {
+                return null;
+            }
 
-            _txLock.EnterUpgradeableReadLock();
+            byte[] bytes;
             try
             {
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                if (file is null)
-                {
-                    return null;
-                }
-
-                using (var stream = new MemoryStream())
-                {
-                    DownloadFile(file, stream);
-
-                    bytes = stream.ToArray();
-                    if (bytes.Length != file.Length || bytes.Length < 1)
-                    {
-                        _logger.Warning(
-                            "The data file for the transaction {TxId} seems corrupted; " +
-                            "it will be treated nonexistent and removed at all.",
-                            txid
-                        );
-                        _txLock.EnterWriteLock();
-                        try
-                        {
-                            _db.FileStorage.Delete(fileId);
-                        }
-                        finally
-                        {
-                            _txLock.ExitWriteLock();
-                        }
-
-                        return null;
-                    }
-                }
+                bytes = _txs.ReadAllBytes(path);
             }
-            finally
+            catch (FileNotFoundException)
             {
-                _txLock.ExitUpgradeableReadLock();
+                return null;
             }
 
             return Transaction<T>.FromBencodex(bytes);
@@ -320,47 +322,60 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void PutTransaction<T>(Transaction<T> tx)
         {
-            string fileId = TxFileId(tx.Id);
-            string filename = tx.Id.ToHex();
             byte[] txBytes = tx.ToBencodex(true);
-            _txLock.EnterUpgradeableReadLock();
-            try
-            {
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                if (file is LiteFileInfo)
-                {
-                    // No-op if already exists.
-                    return;
-                }
+            UPath path = TxPath(tx.Id);
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_txs, dirPath);
 
-                _txLock.EnterWriteLock();
+            if (_root is MemoryFileSystem)
+            {
+                _txs.WriteAllBytes(path, txBytes);
+            }
+            else
+            {
+                // For atomicity, writes bytes into an intermediate temp file,
+                // and then renames it to the final destination.
+                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
                 try
                 {
-                    UploadFile(fileId, filename, txBytes);
+                    _txs.WriteAllBytes(tmpPath, txBytes);
+                    try
+                    {
+                        _txs.MoveFile(tmpPath, path);
+                    }
+                    catch (IOException)
+                    {
+                        if (_txs.FileExists(path) && _txs.GetFileLength(path) == txBytes.LongLength)
+                        {
+                            // For the same txid, the content is the same as well.  Don't have
+                            // to be written more than once.
+                            return;
+                        }
+
+                        throw;
+                    }
                 }
                 finally
                 {
-                    _txLock.ExitWriteLock();
+                    if (_txs.FileExists(tmpPath))
+                    {
+                        _txs.DeleteFile(tmpPath);
+                    }
                 }
-            }
-            finally
-            {
-                _txLock.ExitUpgradeableReadLock();
             }
         }
 
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            _txLock.EnterWriteLock();
-            try
+            var path = TxPath(txid);
+            if (_txs.FileExists(path))
             {
-                return _db.FileStorage.Delete(TxFileId(txid));
+                _txs.DeleteFile(path);
+                return true;
             }
-            finally
-            {
-                _txLock.ExitWriteLock();
-            }
+
+            return false;
         }
 
         /// <inheritdoc/>
@@ -585,7 +600,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long CountTransactions()
         {
-            return _db.FileStorage.Find(TxIdPrefix).Count();
+            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
+            // unused (except for unit tests).  If this is never used why should we maintain
+            // this?  This is basically only for making TransactionSet<T> class to implement
+            // IDictionary<TxId, Transaction<T>>.Count property, which is never used either.
+            // We'd better to refactor all such things so that unnecessary APIs are gone away.
+            return IterateTransactionIds().LongCount();
         }
 
         /// <inheritdoc/>
@@ -606,6 +626,7 @@ namespace Libplanet.Store
         {
             _db?.Dispose();
             _memoryStream?.Dispose();
+            _root.Dispose();
         }
 
         internal static Guid ParseChainId(string chainIdString) =>
@@ -648,9 +669,19 @@ namespace Libplanet.Store
             }
         }
 
-        private string TxFileId(TxId txid)
+        private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
         {
-            return $"{TxIdPrefix}{txid.ToHex()}";
+            if (!fs.DirectoryExists(path))
+            {
+                CreateDirectoryRecursively(fs, path.GetDirectory());
+                fs.CreateDirectory(path);
+            }
+        }
+
+        private UPath TxPath(TxId txid)
+        {
+            string idHex = txid.ToHex();
+            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
         private string BlockFileId(HashDigest<SHA256> blockHash)
@@ -671,17 +702,6 @@ namespace Libplanet.Store
         private string TxNonceId(Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
-        }
-
-        private IEnumerable<Transaction<T>> GetTransactions<T>(
-            IEnumerable transactions
-        )
-            where T : IAction, new()
-        {
-            return transactions
-                .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
-                .Where(tx => tx != null);
         }
 
         private void UploadFile(string fileId, string filename, byte[] bytes)
