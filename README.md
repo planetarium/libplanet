@@ -15,14 +15,14 @@ on Linux, macOS, and Windows.  After you install them, execute the *run.ps1*
 script on the command-line:
 
 ~~~~ bash
-./run.ps1 BLOCKCHAIN_STORE_PATH
+./run.ps1 --store-path BLOCKCHAIN_STORE_PATH
 ~~~~
 
 `BLOCKCHAIN_STORE_PATH` refers to a directory or a file made by
 a Libplanet-powered game.  If you need a sample data file please contact us
 on [our Discord chat][1]!
 
-If you omit `BLOCKCHAIN_STORE_PATH` in online mode, explorer will use memory to store
+If you omit `--store-path` switch in online mode, explorer will use memory to store
 blockchain instead of storage.
 
 [.NET Core]: https://dotnet.microsoft.com/
