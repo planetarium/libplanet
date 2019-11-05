@@ -49,7 +49,7 @@ namespace Libplanet.Benchmarks
         [IterationSetup]
         public void InitializeFixture()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _store = _fx.Store;
         }
 

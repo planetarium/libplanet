@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Blockchain
 
         public BlockChainTest()
         {
-            _fx = new LiteDBStoreFixture(memory: true);
+            _fx = new DefaultStoreFixture(memory: true);
             _blockChain = new BlockChain<DumbAction>(
                 new BlockPolicy<DumbAction>(new MinerReward(1)),
                 _fx.Store
@@ -1210,8 +1210,8 @@ namespace Libplanet.Tests.Blockchain
             var emptyLocator = new BlockLocator(new HashDigest<SHA256>[0]);
             var locator = new BlockLocator(new[] { b4.Hash, b3.Hash, b1.Hash });
 
-            using (var emptyFx = new LiteDBStoreFixture(memory: true))
-            using (var forkFx = new LiteDBStoreFixture(memory: true))
+            using (var emptyFx = new DefaultStoreFixture(memory: true))
+            using (var forkFx = new DefaultStoreFixture(memory: true))
             {
                 var emptyChain = new BlockChain<DumbAction>(_blockChain.Policy, emptyFx.Store);
                 var fork = new BlockChain<DumbAction>(_blockChain.Policy, forkFx.Store);
@@ -1755,8 +1755,8 @@ namespace Libplanet.Tests.Blockchain
             // because to make a mining task run forever just for testing.
             var policy1 = new NullPolicy<DumbAction>(difficulty: 1);
             var policy2 = new NullPolicy<DumbAction>(difficulty: -1);
-            StoreFixture fx1 = new LiteDBStoreFixture();
-            StoreFixture fx2 = new LiteDBStoreFixture();
+            StoreFixture fx1 = new DefaultStoreFixture();
+            StoreFixture fx2 = new DefaultStoreFixture();
             var chain1 = new BlockChain<DumbAction>(policy1, fx1.Store);
             var chain2 = new BlockChain<DumbAction>(policy2, fx2.Store);
 

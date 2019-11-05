@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         private readonly ITestOutputHelper _output;
 
-        private LiteDBStoreFixture _fx;
+        private StoreFixture _fx;
         private BlockChain<DumbAction> _chain;
         private IBlockPolicy<DumbAction> _policy;
         private List<Transaction<DumbAction>> _emptyTransaction;
@@ -29,7 +29,7 @@ namespace Libplanet.Tests.Blockchain.Policies
 
         public BlockPolicyTest(ITestOutputHelper output)
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _output = output;
             _policy = new BlockPolicy<DumbAction>(
                 null,

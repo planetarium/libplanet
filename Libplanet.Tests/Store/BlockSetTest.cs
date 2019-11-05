@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Store
 
         public BlockSetTest()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _set = new BlockSet<DumbAction>(_fx.Store);
         }
 

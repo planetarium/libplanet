@@ -58,9 +58,9 @@ namespace Libplanet.Tests.Net
             _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            _fx1 = new LiteDBStoreFixture(memory: true);
-            _fx2 = new LiteDBStoreFixture(memory: true);
-            _fx3 = new LiteDBStoreFixture(memory: true);
+            _fx1 = new DefaultStoreFixture(memory: true);
+            _fx2 = new DefaultStoreFixture(memory: true);
+            _fx3 = new DefaultStoreFixture(memory: true);
 
             _blockchains = new List<BlockChain<DumbAction>>
             {
@@ -439,7 +439,7 @@ namespace Libplanet.Tests.Net
         public async Task RoutingTableFull()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new LiteDBStoreFixture(memory: true);
+            var fx = new DefaultStoreFixture(memory: true);
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
@@ -485,7 +485,7 @@ namespace Libplanet.Tests.Net
         public async Task ReplacementCache()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new LiteDBStoreFixture(memory: true);
+            var fx = new DefaultStoreFixture(memory: true);
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
@@ -538,7 +538,7 @@ namespace Libplanet.Tests.Net
         public async Task RemoveDeadReplacementCache()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new LiteDBStoreFixture(memory: true);
+            var fx = new DefaultStoreFixture(memory: true);
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
@@ -671,7 +671,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < size; i++)
             {
-                fxs[i] = new LiteDBStoreFixture(memory: true);
+                fxs[i] = new DefaultStoreFixture(memory: true);
                 blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
                 swarms[i] = new Swarm<DumbAction>(
                     blockchains[i],
@@ -804,7 +804,7 @@ namespace Libplanet.Tests.Net
                 appProtocolVersion: 2);
             var d = new Swarm<DumbAction>(
                 new BlockChain<DumbAction>(
-                    _blockchains[0].Policy, new LiteDBStoreFixture(memory: true).Store),
+                    _blockchains[0].Policy, new DefaultStoreFixture(memory: true).Store),
                 new PrivateKey(),
                 host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 3);
@@ -1165,7 +1165,7 @@ namespace Libplanet.Tests.Net
 
             for (int i = 0; i < size; i++)
             {
-                fxs[i] = new LiteDBStoreFixture(memory: true);
+                fxs[i] = new DefaultStoreFixture(memory: true);
                 blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
                 swarms[i] = new Swarm<DumbAction>(
                     blockchains[i],
@@ -1283,7 +1283,7 @@ namespace Libplanet.Tests.Net
         public async Task BroadcastBlockWithSkip()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-            var fx = new LiteDBStoreFixture(memory: true);
+            var fx = new DefaultStoreFixture(memory: true);
             var blockChain = new BlockChain<DumbAction>(policy, fx.Store);
             var privateKey = new PrivateKey();
             var minerSwarm = new Swarm<DumbAction>(
@@ -1753,8 +1753,8 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> minerSwarm = _swarms[0];
             Swarm<DumbAction> receiverSwarm = _swarms[1];
             var fxForNominers = new StoreFixture[2];
-            fxForNominers[0] = new LiteDBStoreFixture(memory: true);
-            fxForNominers[1] = new LiteDBStoreFixture(memory: true);
+            fxForNominers[0] = new DefaultStoreFixture(memory: true);
+            fxForNominers[1] = new DefaultStoreFixture(memory: true);
             var policy = new BlockPolicy<DumbAction>();
             var blockChainsForNominers = new BlockChain<DumbAction>[2];
             blockChainsForNominers[0] = new BlockChain<DumbAction>(policy, fxForNominers[0].Store);
@@ -2192,8 +2192,8 @@ namespace Libplanet.Tests.Net
             // while FillBlocksAsync.
             var policy1 = new BlockPolicy<DumbAction>();
             var policy2 = new NullPolicy<DumbAction>();
-            var fx1 = new LiteDBStoreFixture();
-            var fx2 = new LiteDBStoreFixture();
+            var fx1 = new DefaultStoreFixture();
+            var fx2 = new DefaultStoreFixture();
 
             var chain1 = new BlockChain<DumbAction>(policy1, fx1.Store);
             var chain2 = new BlockChain<DumbAction>(policy2, fx2.Store);
@@ -2396,7 +2396,7 @@ namespace Libplanet.Tests.Net
             if (blocks is null)
             {
                 var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-                using (var storeFx = new LiteDBStoreFixture(memory: true))
+                using (var storeFx = new DefaultStoreFixture(memory: true))
                 {
                     var chain = new BlockChain<DumbAction>(policy, storeFx.Store);
                     Address miner = new PrivateKey().PublicKey.ToAddress();

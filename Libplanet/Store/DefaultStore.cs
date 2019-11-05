@@ -18,10 +18,11 @@ using FileMode = LiteDB.FileMode;
 namespace Libplanet.Store
 {
     /// <summary>
-    /// <see cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
+    /// The default built-in <see cref="IStore"/> implementation.  This stores data in files
+    /// using <a href="https://www.litedb.org/">LiteDB</a>.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class LiteDBStore : BaseStore, IDisposable
+    public class DefaultStore : BaseStore, IDisposable
     {
         private const string TxIdPrefix = "tx/";
 
@@ -42,7 +43,7 @@ namespace Libplanet.Store
         private readonly ReaderWriterLockSlim _blockLock;
 
         /// <summary>
-        /// Creates a new <seealso cref="LiteDBStore"/>.
+        /// Creates a new <seealso cref="DefaultStore"/>.
         /// </summary>
         /// <param name="path">The path where the storage file will be saved.  If the path is
         /// <c>null</c>, The database is created in memory with <see cref="MemoryStream"/>.</param>
@@ -53,7 +54,7 @@ namespace Libplanet.Store
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
-        public LiteDBStore(
+        public DefaultStore(
             string path,
             bool journal = true,
             int cacheSize = 50000,
@@ -61,7 +62,7 @@ namespace Libplanet.Store
             bool readOnly = false
         )
         {
-            _logger = Log.ForContext<LiteDBStore>();
+            _logger = Log.ForContext<DefaultStore>();
 
             var connectionString = new ConnectionString
             {

@@ -6,13 +6,13 @@ using Xunit;
 
 namespace Libplanet.Tests.Store
 {
-    public class LiteDBStoreTest : StoreTest, IDisposable
+    public class DefaultStoreTest : StoreTest, IDisposable
     {
-        private readonly LiteDBStoreFixture _fx;
+        private readonly DefaultStoreFixture _fx;
 
-        public LiteDBStoreTest()
+        public DefaultStoreTest()
         {
-            Fx = _fx = new LiteDBStoreFixture();
+            Fx = _fx = new DefaultStoreFixture();
         }
 
         public void Dispose()
@@ -28,13 +28,13 @@ namespace Libplanet.Tests.Store
             var bytes = new byte[32];
             random.NextBytes(bytes);
             var hashDigest = new HashDigest<SHA256>(bytes);
-            var stateRef = new LiteDBStore.StateRefDoc
+            var stateRef = new DefaultStore.StateRefDoc
             {
                 Address = address,
                 BlockIndex = 123,
                 BlockHash = hashDigest,
             };
-            var stateRef2 = new LiteDBStore.StateRefDoc
+            var stateRef2 = new DefaultStore.StateRefDoc
             {
                 AddressString = stateRef.AddressString,
                 BlockIndex = 123,

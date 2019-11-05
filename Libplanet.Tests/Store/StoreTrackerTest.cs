@@ -10,7 +10,7 @@ namespace Libplanet.Tests.Store
 
         public StoreTrackerTest()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _tracker = new StoreTracker(_fx.Store);
         }
 
