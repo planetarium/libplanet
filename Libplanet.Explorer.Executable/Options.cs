@@ -44,8 +44,8 @@ namespace Libplanet.Explorer.Executable
         [Option(
             's',
             "seed",
-            HelpText = @"A seed node to join to the network as a node.
-The format is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
+            HelpText = @"Seed nodes to join to the network as a node. The format of each
+seed is a comma-separated triple of a peer's hexadecimal public key, host, and port number.
 E.g., `02ed49dbe0f2c34d9dff8335d6dd9097f7a3ef17dfb5f048382eebc7f451a50aa1,example.com,31234'.
 If omitted (default) explorer only the local blockchain store.")]
         public IEnumerable<string> SeedStrings
