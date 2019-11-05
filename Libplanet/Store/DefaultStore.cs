@@ -45,8 +45,8 @@ namespace Libplanet.Store
         /// <summary>
         /// Creates a new <seealso cref="DefaultStore"/>.
         /// </summary>
-        /// <param name="path">The path where the storage file will be saved.  If the path is
-        /// <c>null</c>, The database is created in memory with <see cref="MemoryStream"/>.</param>
+        /// <param name="path">The path of the directory where the storage files will be saved.
+        /// If the path is <c>null</c>, the database is created in memory.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
@@ -64,25 +64,6 @@ namespace Libplanet.Store
         {
             _logger = Log.ForContext<DefaultStore>();
 
-            var connectionString = new ConnectionString
-            {
-                Filename = path,
-                Journal = journal,
-                CacheSize = cacheSize,
-                Flush = flush,
-            };
-
-            if (readOnly)
-            {
-                connectionString.Mode = FileMode.ReadOnly;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
-                Type.GetType("Mono.Runtime") is null)
-            {
-                // macOS + .NETCore doesn't support shared lock.
-                connectionString.Mode = FileMode.Exclusive;
-            }
-
             if (path is null)
             {
                 _memoryStream = new MemoryStream();
@@ -90,6 +71,30 @@ namespace Libplanet.Store
             }
             else
             {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                var connectionString = new ConnectionString
+                {
+                    Filename = Path.Combine(path, "index.ldb"),
+                    Journal = journal,
+                    CacheSize = cacheSize,
+                    Flush = flush,
+                };
+
+                if (readOnly)
+                {
+                    connectionString.Mode = FileMode.ReadOnly;
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                    Type.GetType("Mono.Runtime") is null)
+                {
+                    // macOS + .NETCore doesn't support shared lock.
+                    connectionString.Mode = FileMode.Exclusive;
+                }
+
                 _db = new LiteDatabase(connectionString);
             }
 

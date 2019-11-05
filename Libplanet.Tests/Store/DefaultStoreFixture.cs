@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Store
             string postfix = Guid.NewGuid().ToString();
             Path = memory
                 ? null
-                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}.db");
+                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}");
             Store = new DefaultStore(Path);
         }
 
@@ -23,7 +23,7 @@ namespace Libplanet.Tests.Store
 
             if (!(Path is null))
             {
-                File.Delete(Path);
+                Directory.Delete(Path, true);
             }
         }
     }
