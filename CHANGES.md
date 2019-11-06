@@ -81,8 +81,8 @@ To be released.
     incomplete states from the beginning if necessary.  [[#645]]
  -  `IStore.PutBlock<T>()` became to do nothing when it takes
     the `Block<T>` more than once.  [[#647]]
- -  `PreloadAsync()` became to retry block-download process with another peers
-    when the process failed.  [[#636]]
+ -  `Swarm<T>.PreloadAsync()` became to try downloading blocks from all neighbor peers,
+    even if any peer among them is unavailable to send blocks.  [[#636]]
 
 ### Bug fixes
 

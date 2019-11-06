@@ -647,7 +647,7 @@ namespace Libplanet.Net
                     try
                     {
                         _logger.Information(
-                            "Try to download blocks from {EndPoint}@{Address}",
+                            "Try to download blocks from {EndPoint}@{Address}.",
                             peerWithHeight.Peer.EndPoint,
                             peerWithHeight.Peer.Address.ToHex());
                         await SyncBehindsBlocksFromPeerAsync(
@@ -661,8 +661,8 @@ namespace Libplanet.Net
                     catch (Exception e)
                     {
                         _logger.Error(
-                            "Exception was thrown during block download with {EndPoint}@{Address}\n"
-                            + "{Exception}",
+                            "Exception was thrown during downloading blocks from "
+                            + "{EndPoint}@{Address}.\n{Exception}",
                             peerWithHeight.Peer.EndPoint,
                             peerWithHeight.Peer.Address.ToHex(),
                             e);
@@ -670,7 +670,7 @@ namespace Libplanet.Net
                     }
 
                     _logger.Information(
-                        "Finished to download blocks from {EndPoint}@{Address}",
+                        "Finished to download blocks from {EndPoint}@{Address}.",
                         peerWithHeight.Peer.EndPoint,
                         peerWithHeight.Peer.Address.ToHex());
                     blockDownloadComplete = true;
