@@ -1074,12 +1074,19 @@ namespace Libplanet.Blockchain
         // we need to add a synchronization mechanism to handle this correctly.
         internal void Swap(BlockChain<T> other, bool render)
         {
+            if (other?.Tip is null)
+            {
+                throw new ArgumentException(
+                        $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
+                        nameof(other));
+            }
+
             _logger.Debug(
-                "Swaping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
+                "Swapping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
 
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            if (render && !(Tip is null || other.Tip is null))
+            if (render && !(Tip is null))
             {
                 long shorterHeight =
                     Math.Min(Count, other.Count) - 1;
