@@ -77,7 +77,7 @@ Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/s
 We write as complete tests as possible to the corresponding implementation code.
 Going near to the [code coverage][3] 100% is one of our goals.
 
-The *Libplanet* solution consists of 4 projects.  *Libplanet* and
+The *Libplanet* solution consists of several projects.  *Libplanet* and
 *Libplanet.Stun* are actual implementations.  These are built to *Libplanet.dll*
 and *Libplanet.Stun.dll* assemblies and packed into one NuGet package.
 
@@ -175,6 +175,36 @@ support EditorConfig, e.g., [Atom], [Emacs], [Vim], [VS Code].
 [Vim]: https://github.com/editorconfig/editorconfig-vim
 [VS Code]: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
 
+
+Benchmarks
+----------
+
+In order to track performance improvements or regressions, we maintain a set of
+benchmarks and continuously measure them in the CI.  You can run benchmarks
+on your local environment too:
+
+    dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"
+
+Note that there is `-j short`; without this a whole set of benchmarks takes
+quite a long time.  This will print like below:
+
+    |               Method | UnrollFactor |      Mean |      Error |    StdDev |
+    |--------------------- |------------- |----------:|-----------:|----------:|
+    |       MineBlockEmpty |           16 |  12.20 ms |  11.649 ms | 0.6385 ms |
+    |  MineBlockOneTran... |            1 |  14.54 ms |   3.602 ms | 0.1974 ms |
+    |                  ... |          ... |       ... |        ... |       ... |
+
+You can measure only part of benchmarks by `-f`/`--filter`ing them:
+
+    dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*MineBlock*"
+
+All benchmark code is placed under *Libplanet.Benchmarks* project.
+As our benchmarks are based on [BenchmarkDotNet], please read their official
+docs for details.
+
+[BenchmarkDotNet]: https://benchmarkdotnet.org/
+
+
 Troubleshooting
 --------------
 
@@ -194,4 +224,3 @@ Your .NET Core SDK version probably is outdated.  Our recommended version is: *2
     export DOTNET_ROOT="$YOUR_DOTNET_INSTALLATION_PATH/dotnet"
     export PATH="$PATH:$DOTNET_ROOT"
     ~~~~
-
