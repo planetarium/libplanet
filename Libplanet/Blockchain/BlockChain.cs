@@ -961,6 +961,22 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
+            if (!Contains(point))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist.",
+                    nameof(point));
+            }
+
+            Block<T> pointBlock = this[point];
+
+            if (!point.Equals(this[pointBlock.Index].Hash))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist in the chain index.",
+                    nameof(point));
+            }
+
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             Guid forkedId = forked.Id;
             _logger.Debug(
@@ -974,7 +990,6 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.ForkBlockIndexes(Id, forkedId, point);
-                Block<T> pointBlock = _blocks[point];
 
                 var signersToStrip = new Dictionary<Address, int>();
 

@@ -577,6 +577,26 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task ForkWithBlockNotExistInChain()
+        {
+            var genesis = await _blockChain.MineBlock(_fx.Address1);
+
+            for (var i = 0; i < 2; i++)
+            {
+                await _blockChain.MineBlock(_fx.Address1);
+            }
+
+            var newBlock = TestUtils.MineNext(genesis, difficulty: 1024);
+
+            Assert.Throws<ArgumentException>(() =>
+                _blockChain.Fork(newBlock.Hash));
+
+            _blockChain.Store.PutBlock(newBlock);
+            Assert.Throws<ArgumentException>(() =>
+                _blockChain.Fork(newBlock.Hash));
+        }
+
+        [Fact]
         public void ForkChainWithIncompleteBlockStates()
         {
             (_, _, BlockChain<DumbAction> chain) = MakeIncompleteBlockStates();
