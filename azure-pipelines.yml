@@ -186,4 +186,4 @@ jobs:
     inputs:
       script: |
         pushd Libplanet.Benchmarks
-        dotnet run -c Release -- -f *
+        dotnet run -c Release -- -j short -f "*"
