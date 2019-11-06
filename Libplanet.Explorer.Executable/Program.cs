@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -41,7 +42,7 @@ namespace Libplanet.Explorer.Executable
             IStore store = new LiteDBStore(
                 path: options.StorePath,
                 flush: false,
-                readOnly: options.Seed is null
+                readOnly: options.Seeds is null
             );
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
@@ -58,8 +59,11 @@ namespace Libplanet.Explorer.Executable
                 .Build();
 
             Swarm<AppAgnosticAction> swarm = null;
-            if (options.Seed is BoundPeer)
+            if (!(options.Seeds is null))
             {
+                Console.WriteLine(
+                    $"Seeds are {options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1)}");
+
                 // TODO: Take privateKey as a CLI option
                 // TODO: Take appProtocolVersion as a CLI option
                 // TODO: Take host as a CLI option
@@ -94,7 +98,7 @@ namespace Libplanet.Explorer.Executable
                 {
                     await Task.WhenAll(
                         webHost.RunAsync(cts.Token),
-                        StartSwarmAsync(swarm, options.Seed, cts.Token)
+                        StartSwarmAsync(swarm, options.Seeds, cts.Token)
                     );
                 }
                 catch (OperationCanceledException)
@@ -107,7 +111,7 @@ namespace Libplanet.Explorer.Executable
 
         private static async Task StartSwarmAsync(
             Swarm<AppAgnosticAction> swarm,
-            Peer seed,
+            IEnumerable<Peer> seeds,
             CancellationToken cancellationToken)
         {
             if (swarm is null)
@@ -115,16 +119,10 @@ namespace Libplanet.Explorer.Executable
                 return;
             }
 
-            var peers = new HashSet<Peer>();
-            if (!(seed is null))
-            {
-                peers.Add(seed);
-            }
-
             try
             {
                 await swarm.BootstrapAsync(
-                    peers,
+                    seeds,
                     5000,
                     5000,
                     cancellationToken: cancellationToken
