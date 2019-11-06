@@ -3589,6 +3589,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDownloadState.ReceivedBlockHash
   nameWithType: BlockDownloadState.ReceivedBlockHash
+- uid: Libplanet.Net.BlockDownloadState.SourcePeer
+  name: SourcePeer
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_SourcePeer
+  commentId: P:Libplanet.Net.BlockDownloadState.SourcePeer
+  fullName: Libplanet.Net.BlockDownloadState.SourcePeer
+  nameWithType: BlockDownloadState.SourcePeer
+- uid: Libplanet.Net.BlockDownloadState.SourcePeer*
+  name: SourcePeer
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_SourcePeer_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.SourcePeer
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.SourcePeer
+  nameWithType: BlockDownloadState.SourcePeer
 - uid: Libplanet.Net.BlockDownloadState.TotalBlockCount
   name: TotalBlockCount
   href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_TotalBlockCount
