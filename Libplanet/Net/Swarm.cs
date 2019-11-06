@@ -1714,14 +1714,15 @@ namespace Libplanet.Net
                         _logger.Debug("It doesn't need to fork.");
                     }
 
-                    // FIXME BlockChain<T>.Contains() can be very
-                    // expensive.
-                    // we can omit this clause if assume every chain shares
+                    // We can omit this clause if assume every chain shares
                     // same genesis block...
-                    else if (!workspace.Contains(branchPoint))
+                    else if (!workspace.Contains(branchPoint)
+                             || (workspace[branchPoint].Index is long branchPointIndex
+                                 && !workspace[branchPointIndex].Hash.Equals(branchPoint)))
                     {
                         // Create a whole new chain because the branch point doesn't exist on
                         // the current chain.
+                        _logger.Debug("Create new chain...");
                         workspace = new BlockChain<T>(
                             workspace.Policy,
                             workspace.Store,

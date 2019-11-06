@@ -127,6 +127,8 @@ To be released.
     fails.  [[#644]]
  -  Fixed bug that whole processes could halt when received an invalid
     type of message.  [[#628], [#641]]
+ -  Fixed a bug that received blocks could not be processed if a branch point
+    is a stale block.  [[#655]]
 
 [#209]: https://github.com/planetarium/libplanet/issues/209
 [#405]: https://github.com/planetarium/libplanet/issues/405
@@ -179,6 +181,7 @@ To be released.
 [#645]: https://github.com/planetarium/libplanet/pull/645
 [#647]: https://github.com/planetarium/libplanet/pull/647
 [#654]: https://github.com/planetarium/libplanet/pull/654
+[#655]: https://github.com/planetarium/libplanet/pull/655
 
 
 Version 0.6.0
