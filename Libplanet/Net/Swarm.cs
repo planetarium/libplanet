@@ -1803,7 +1803,7 @@ namespace Libplanet.Net
             finally
             {
                 IStore store = blockChain.Store;
-                foreach (var id in scope.Where(guid => guid != workspace.Id))
+                foreach (var id in scope.Where(guid => guid != workspace?.Id))
                 {
                     store.DeleteChainId(id);
                 }
