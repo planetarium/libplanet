@@ -11,7 +11,6 @@ namespace Libplanet.Blockchain.Policies
     /// </summary>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
-    /// <seealso cref="BlockPolicyExtension"/>
     public interface IBlockPolicy<T>
         where T : IAction, new()
     {
@@ -33,9 +32,8 @@ namespace Libplanet.Blockchain.Policies
         /// <returns>The reason why the given <paramref name="blocks"/> are
         /// <em>invalid</em>, or <c>null</c> if <paramref name="blocks"/> are
         /// <em>valid</em>.</returns>
-        /// <seealso cref="BlockPolicyExtension.ValidateBlocks{T}"/>
         InvalidBlockException ValidateNextBlock(
-            IReadOnlyList<Block<T>> blocks,
+            BlockChain<T> blocks,
             Block<T> nextBlock);
 
         /// <summary>
@@ -47,6 +45,6 @@ namespace Libplanet.Blockchain.Policies
         /// followed by a new <see cref="Block{T}"/> to be mined.</param>
         /// <returns>A right <see cref="Block{T}.Difficulty"/>
         /// for a new <see cref="Block{T}"/> to be mined.</returns>
-        long GetNextBlockDifficulty(IReadOnlyList<Block<T>> blocks);
+        long GetNextBlockDifficulty(BlockChain<T> blocks);
     }
 }

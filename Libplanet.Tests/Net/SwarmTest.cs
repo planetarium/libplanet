@@ -25,6 +25,7 @@ using NetMQ.Sockets;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Libplanet.Tests.Net
 {
@@ -249,12 +250,12 @@ namespace Libplanet.Tests.Net
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
                 Assert.Contains(seed.AsPeer, swarmB.Peers);
 
-                seed.BroadcastBlocks(new[] { chainWithBlocks.Last() });
+                seed.BroadcastBlocks(new[] { chainWithBlocks.Tip });
 
                 await swarmB.BlockReceived.WaitAsync();
 
-                Assert.NotEqual(chainWithBlocks.AsEnumerable(), _blockchains[1]);
-                Assert.Equal(chainWithBlocks.AsEnumerable(), _blockchains[2]);
+                Assert.NotEqual(chainWithBlocks.BlockHashes, _blockchains[1].BlockHashes);
+                Assert.Equal(chainWithBlocks.BlockHashes, _blockchains[2].BlockHashes);
             }
             finally
             {
@@ -749,7 +750,7 @@ namespace Libplanet.Tests.Net
                         }
                     }
 
-                    swarm.BroadcastBlocks(new[] { chain.Last() });
+                    swarm.BroadcastBlocks(new[] { chain[-1] });
                     Log.Debug("Mining complete.");
                 });
             }
@@ -781,9 +782,7 @@ namespace Libplanet.Tests.Net
             Log.Debug($"chainA: {string.Join(",", chainA)}");
             Log.Debug($"chainB: {string.Join(",", chainB)}");
 
-            Assert.Subset(
-                chainA.AsEnumerable().ToHashSet(),
-                chainB.AsEnumerable().ToHashSet());
+            Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
         }
 
         [Fact(Timeout = Timeout)]
@@ -1257,22 +1256,22 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                swarmB.BroadcastBlocks(new[] { chainB.Last() });
+                swarmB.BroadcastBlocks(new[] { chainB[-1] });
 
                 await Task.Delay(5000);
 
                 // chainB doesn't applied to chainA since chainB is shorter
                 // than chainA
-                Assert.NotEqual(chainB.AsEnumerable(), chainA);
+                Assert.NotEqual(chainB, chainA);
 
-                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA[-1] });
 
                 await Task.Delay(20000);
 
                 Log.Debug("Compare chainA and chainB");
-                Assert.Equal(chainA.AsEnumerable(), chainB);
+                Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
                 Log.Debug("Compare chainA and chainC");
-                Assert.Equal(chainA.AsEnumerable(), chainC);
+                Assert.Equal(chainA.BlockHashes, chainC.BlockHashes);
             }
             finally
             {
@@ -1356,7 +1355,7 @@ namespace Libplanet.Tests.Net
                 minerSwarm.BroadcastBlocks(new[] { block2 });
                 await receiverSwarm.BlockReceived.WaitAsync();
 
-                Assert.Equal(3, _blockchains[0].Count());
+                Assert.Equal(3, _blockchains[0].Count);
                 Assert.Equal(4, renderCount);
             }
             finally
@@ -1385,18 +1384,18 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
 
                 await chainA.MineBlock(_fx1.Address1);
-                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA[-1] });
 
                 await swarmB.BlockReceived.WaitAsync();
 
-                Assert.Equal(chainB.AsEnumerable(), chainA);
+                Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
                 await chainA.MineBlock(_fx1.Address1);
-                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA[-1] });
 
                 await swarmB.BlockReceived.WaitAsync();
 
-                Assert.Equal(chainB.AsEnumerable(), chainA);
+                Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
             }
             finally
             {
@@ -1428,13 +1427,13 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
-                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA[-1] });
                 await swarmB.BlockReceived.WaitAsync();
 
-                Assert.Equal(chainA.AsEnumerable(), chainB);
+                Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
 
                 CancellationTokenSource cts = new CancellationTokenSource();
-                swarmA.BroadcastBlocks(new[] { chainA.Last() });
+                swarmA.BroadcastBlocks(new[] { chainA[-1] });
                 Task t = swarmB.BlockReceived.WaitAsync(cts.Token);
 
                 // Actually, previous code may pass this test if message is
@@ -1622,7 +1621,7 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.PreloadAsync();
 
-                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
             }
             finally
             {
@@ -1664,7 +1663,7 @@ namespace Libplanet.Tests.Net
                 var states = receiverChain.GetState(address);
 
                 Assert.Equal("foo,bar,baz", (Text)states[address]);
-                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
             }
             finally
             {
@@ -1709,27 +1708,36 @@ namespace Libplanet.Tests.Net
                 minerSwarm.FindNextHashesChunkSize = 2;
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
-                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
-                PreloadState[] expectedStates = minerChain.Select((b, i) =>
+                var expectedStates = new List<PreloadState>();
+
+                for (var i = 0; i < minerChain.Count; i++)
                 {
-                    return new BlockDownloadState
+                    var b = minerChain[i];
+                    var state = new BlockDownloadState
                     {
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
                         SourcePeer = minerSwarm.AsPeer as BoundPeer,
                     };
-                }).ToArray();
-                (expectedStates[10] as BlockDownloadState).TotalBlockCount = 11;
+                    expectedStates.Add(state);
+                }
 
-                expectedStates = expectedStates.Concat(minerChain.Select(
-                    (b, i) => new ActionExecutionState()
+                ((BlockDownloadState)expectedStates[10]).TotalBlockCount = 11;
+
+                for (var i = 0; i < minerChain.Count; i++)
+                {
+                    var b = minerChain[i];
+                    var state = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
                         TotalBlockCount = 11,
                         ExecutedBlockCount = i + 1,
-                    })).ToArray();
+                    };
+                    expectedStates.Add(state);
+                }
 
                 Assert.True(expectedStates.ToImmutableHashSet()
                         .SetEquals(actualStates.ToImmutableHashSet()));
@@ -1797,31 +1805,40 @@ namespace Libplanet.Tests.Net
                 await receiverSwarm.AddPeersAsync(new[] { nominerSwarm1.AsPeer }, null);
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
-                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
-                PreloadState[] expectedStates = minerChain.Select((b, i) =>
+                var expectedStates = new List<PreloadState>();
+
+                for (var i = 0; i < minerChain.Count; i++)
                 {
-                    return new BlockDownloadState
+                    var b = minerChain[i];
+                    var state = new BlockDownloadState
                     {
                         ReceivedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i + 1,
                         SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
                     };
-                }).ToArray();
+                    expectedStates.Add(state);
+                }
 
-                expectedStates = expectedStates.Concat(minerChain.Select(
-                    (b, i) => new ActionExecutionState()
+                for (var i = 0; i < minerChain.Count; i++)
+                {
+                    var b = minerChain[i];
+                    var state = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
                         TotalBlockCount = 10,
                         ExecutedBlockCount = i + 1,
-                    })).ToArray();
+                    };
+                    expectedStates.Add(state);
+                }
 
                 // FIXME: this test does not ensures block download in order
                 Assert.Equal(
                     expectedStates.ToHashSet(),
-                    actualStates.ToHashSet());
+                    actualStates.ToHashSet()
+                );
             }
             finally
             {
@@ -1861,7 +1878,7 @@ namespace Libplanet.Tests.Net
             await StartAsync(swarm0);
             await StartAsync(swarm1);
 
-            Assert.Equal(swarm0.BlockChain, swarm1.BlockChain);
+            Assert.Equal(swarm0.BlockChain.BlockHashes, swarm1.BlockChain.BlockHashes);
 
             await receiverSwarm.AddPeersAsync(new[] { swarm0.AsPeer, swarm1.AsPeer }, null);
             Assert.Equal(
@@ -1883,8 +1900,8 @@ namespace Libplanet.Tests.Net
                     await shouldStopSwarm.StopAsync(TimeSpan.Zero);
                 }));
 
-            Assert.Equal(swarm1.BlockChain, receiverSwarm.BlockChain);
-            Assert.Equal(swarm0.BlockChain, receiverSwarm.BlockChain);
+            Assert.Equal(swarm1.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
+            Assert.Equal(swarm0.BlockChain.BlockHashes, receiverSwarm.BlockChain.BlockHashes);
         }
 
         [Theory(Timeout = Timeout)]
@@ -1959,7 +1976,7 @@ namespace Libplanet.Tests.Net
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Empty(MinerReward.RenderRecords.Value);
-                Assert.Equal(minerChain.AsEnumerable(), receiverChain.AsEnumerable());
+                Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
                 int i = 0;
                 foreach (Address target in targets)
                 {
@@ -2083,7 +2100,7 @@ namespace Libplanet.Tests.Net
                 await senderSwarm.StopAsync();
             }
 
-            Assert.Equal(senderChain, receiverChain);
+            Assert.Equal(senderChain.BlockHashes, receiverChain.BlockHashes);
             Assert.DoesNotContain(g.Hash, receivedBlockStates);
             Assert.DoesNotContain(bp.Hash, receivedBlockStates);
         }
@@ -2329,7 +2346,15 @@ namespace Libplanet.Tests.Net
                         Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
                     }
 
-                    blocks = chain.ToArray();
+                    var blockList = new List<Block<DumbAction>>();
+                    for (var i = 0; i < chain.Count; i++)
+                    {
+                        Block<DumbAction> block = chain[i];
+                        blockList.Add(block);
+                    }
+
+                    blocks = blockList.ToArray();
+
                     _fixtureBlocksForPreloadAsyncCancellationTest = blocks;
                 }
             }

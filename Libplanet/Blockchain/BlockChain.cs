@@ -29,7 +29,7 @@ namespace Libplanet.Blockchain
     /// <seealso cref="IAction"/>
     /// <seealso cref="Block{T}"/>
     /// <seealso cref="Transaction{T}"/>
-    public class BlockChain<T> : IReadOnlyList<Block<T>>
+    public class BlockChain<T>
         where T : IAction, new()
     {
         // FIXME: The _rwlock field should be private.
@@ -129,12 +129,18 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// All <see cref="Block{T}.Hash"/>es in the current index.  The genesis block's hash goes
         /// first, and the tip goes last.
+        /// Returns a <see cref="long"/> integer that represents the number of elements in the
+        /// <see cref="BlockChain{T}"/>.
         /// </summary>
         public IEnumerable<HashDigest<SHA256>> BlockHashes => IterateBlockHashes();
 
-        /// <inheritdoc/>
-        int IReadOnlyCollection<Block<T>>.Count =>
-            checked((int)Store.CountIndex(Id));
+        /// <summary>
+        /// Returns a <see cref="long"/> integer that represents the number of elements in the
+        /// <see cref="BlockChain{T}"/>.
+        /// </summary>
+        /// <returns>A number that represents how many elements in the <see cref="BlockChain{T}"/>.
+        /// </returns>
+        public long Count => Store.CountIndex(Id);
 
         internal IStore Store { get; }
 
@@ -195,6 +201,20 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitReadLock();
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="block">The <see cref="Block{T}"/> to check if it is in the
+        /// <see cref="BlockChain{T}"/>.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool Contains(Block<T> block)
+        {
+            return Contains(block.Hash);
         }
 
         /// <summary>
@@ -262,38 +282,6 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.ExitReadLock();
             }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="long"/> integer that represents the number of elements in the
-        /// <see cref="BlockChain{T}"/>.
-        /// </summary>
-        /// <returns>A number that represents how many elements in the <see cref="BlockChain{T}"/>.
-        /// </returns>
-        public long LongCount() => Store.CountIndex(Id);
-
-        public void Validate(
-            IReadOnlyList<Block<T>> blocks,
-            DateTimeOffset currentTime
-        )
-        {
-            InvalidBlockException e =
-                Policy.ValidateBlocks(blocks, currentTime);
-
-            if (e != null)
-            {
-                throw e;
-            }
-        }
-
-        public IEnumerator<Block<T>> GetEnumerator()
-        {
-            return BlockHashes.Select(hash => _blocks[hash]).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         /// <summary>
@@ -377,8 +365,9 @@ namespace Libplanet.Blockchain
                 {
                     // Calculates and fills the incomplete states
                     // on the fly.
-                    foreach (Block<T> b in this)
+                    foreach (HashDigest<SHA256> hash in BlockHashes)
                     {
+                        Block<T> b = this[hash];
                         if (!(Store.GetBlockStates(b.Hash) is null))
                         {
                             continue;
@@ -1093,7 +1082,7 @@ namespace Libplanet.Blockchain
             if (render && !(Tip is null || other.Tip is null))
             {
                 long shorterHeight =
-                    Math.Min(LongCount(), other.LongCount()) - 1;
+                    Math.Min(Count, other.Count) - 1;
                 for (
                     Block<T> t = this[shorterHeight], o = other[shorterHeight];
                     t.PreviousHash is HashDigest<SHA256> tp &&
@@ -1228,7 +1217,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
+        internal IEnumerable<Block<T>> IterateBlocks(int offset = 0, int? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();
 
@@ -1245,7 +1234,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        private IEnumerable<HashDigest<SHA256>>
+        internal IEnumerable<HashDigest<SHA256>>
             IterateBlockHashes(int offset = 0, int? limit = null)
         {
             _rwlock.EnterUpgradeableReadLock();

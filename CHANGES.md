@@ -33,6 +33,16 @@ To be released.
     [[#581]]
  -  Removed `broadcast` parameter from `BlockChain<T>.MakeTransaction()` method.
     [[#609]]
+ -  `BlockChain<T>` does not implement `IReadOnlyList<T>` anymore.  [[#630]]
+     -  Added `BlockChain<T>.Count` property.  [[#630]]
+     -  Removed `BlockChain<T>.LongCount()` method.  [[#630]]
+     -  Removed `BlockChain<T>.Validate()` method.  [[#630]]
+     -  Removed `BlockChain<T>.GetEnumerate()` method.  [[#630]]
+     -  Removed `BlockPolicyExtension.ValidateBlocks()` method.  [[#630]]
+     -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
+        `BlockChain<T>` instead of `IReadOnlyList<Block<<T>>`.  [[#630]]
+     -  `IBlockPolicy<T>.ValidateNextBlock()` method became to receive
+        `BlockChain<T>` instead of `IReadOnlyList<Block<<T>>`.  [[#630]]
 
 ### Added interfaces
 
@@ -52,6 +62,7 @@ To be released.
  -  Added `BlockChain<T>.GetTransaction(TxId)` method.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(TxId)` method.  [[#409], [#583]]
  -  Added `ByteUtil.Hex(ImmutableArray<byte>)` overloaded method.  [[#614]]
+ -  Added `BlockChain<T>.Contains(Block<T>)` method.  [[#630]]
  -  Added `BlockDownloadState.SourcePeer` property.  [[#636]]
 
 ### Behavioral changes
@@ -158,6 +169,7 @@ To be released.
 [#622]: https://github.com/planetarium/libplanet/pull/622
 [#627]: https://github.com/planetarium/libplanet/pull/627
 [#628]: https://github.com/planetarium/libplanet/issues/628
+[#630]: https://github.com/planetarium/libplanet/pull/630
 [#636]: https://github.com/planetarium/libplanet/pull/636
 [#637]: https://github.com/planetarium/libplanet/pull/637
 [#641]: https://github.com/planetarium/libplanet/pull/641
