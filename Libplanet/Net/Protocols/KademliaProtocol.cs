@@ -255,23 +255,21 @@ namespace Libplanet.Net.Protocols
             _logger.Debug("Replacement cache checked.");
         }
 
-#pragma warning disable CS4014
+#pragma warning disable CS4014 // To run UpdateAsync() without await.
         public void ReceiveMessage(Message message)
         {
             switch (message)
             {
                 case Ping ping:
-                    ReceivePingAsync(ping);
+                    ReceivePing(ping);
                     break;
 
                 case FindNeighbors findPeer:
-                    ReceiveFindPeerAsync(findPeer);
-                    break;
-
-                default:
-                    UpdateAsync(message.Remote);
+                    ReceiveFindPeer(findPeer);
                     break;
             }
+
+            UpdateAsync(message?.Remote);
         }
 #pragma warning restore CS4014
 
@@ -512,7 +510,7 @@ namespace Libplanet.Net.Protocols
         }
 
         // send pong back to remote
-        private async Task ReceivePingAsync(Ping ping)
+        private void ReceivePing(Ping ping)
         {
             if (ping.Remote.Address.Equals(_address))
             {
@@ -526,8 +524,6 @@ namespace Libplanet.Net.Protocols
             };
 
             _swarm.ReplyMessage(pong);
-
-            await UpdateAsync(ping.Remote);
         }
 
         /// <summary>
@@ -624,13 +620,8 @@ namespace Libplanet.Net.Protocols
 
         // FIXME: this method is not safe from amplification attack
         // maybe ping/pong/ping/pong is required
-        private async Task ReceiveFindPeerAsync(FindNeighbors findNeighbors)
+        private void ReceiveFindPeer(FindNeighbors findNeighbors)
         {
-            if (!(findNeighbors.Remote is null))
-            {
-                await UpdateAsync(findNeighbors.Remote);
-            }
-
             List<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize).ToList();
 
             Neighbors neighbors = new Neighbors(found)
