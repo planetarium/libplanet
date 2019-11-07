@@ -1188,6 +1188,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockHashes
   nameWithType: BlockChain<T>.BlockHashes
   nameWithType.vb: BlockChain(Of T).BlockHashes
+- uid: Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Blocks.Block{`0})
+  name: Contains(Block<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Blocks.Block{`0})
+  name.vb: Contains(Block(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.Contains(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains(Libplanet.Blocks.Block(Of T))
+  nameWithType: BlockChain<T>.Contains(Block<T>)
+  nameWithType.vb: BlockChain(Of T).Contains(Block(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.HashDigest{SHA256})
   name: Contains(HashDigest<SHA256>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_Libplanet_HashDigest_SHA256__
@@ -1214,6 +1223,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains
   nameWithType: BlockChain<T>.Contains
   nameWithType.vb: BlockChain(Of T).Contains
+- uid: Libplanet.Blockchain.BlockChain`1.Count
+  name: Count
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Count
+  commentId: P:Libplanet.Blockchain.BlockChain`1.Count
+  fullName: Libplanet.Blockchain.BlockChain<T>.Count
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Count
+  nameWithType: BlockChain<T>.Count
+  nameWithType.vb: BlockChain(Of T).Count
+- uid: Libplanet.Blockchain.BlockChain`1.Count*
+  name: Count
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Count_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Count
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.Count
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Count
+  nameWithType: BlockChain<T>.Count
+  nameWithType.vb: BlockChain(Of T).Count
 - uid: Libplanet.Blockchain.BlockChain`1.Finalize
   name: Finalize()
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Finalize
@@ -1231,23 +1257,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Finalize
   nameWithType: BlockChain<T>.Finalize
   nameWithType.vb: BlockChain(Of T).Finalize
-- uid: Libplanet.Blockchain.BlockChain`1.GetEnumerator
-  name: GetEnumerator()
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetEnumerator
-  commentId: M:Libplanet.Blockchain.BlockChain`1.GetEnumerator
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetEnumerator()
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetEnumerator()
-  nameWithType: BlockChain<T>.GetEnumerator()
-  nameWithType.vb: BlockChain(Of T).GetEnumerator()
-- uid: Libplanet.Blockchain.BlockChain`1.GetEnumerator*
-  name: GetEnumerator
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetEnumerator_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.GetEnumerator
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.GetEnumerator
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).GetEnumerator
-  nameWithType: BlockChain<T>.GetEnumerator
-  nameWithType.vb: BlockChain(Of T).GetEnumerator
 - uid: Libplanet.Blockchain.BlockChain`1.GetNextTxNonce(Libplanet.Address)
   name: GetNextTxNonce(Address)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_
@@ -1353,23 +1362,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
-- uid: Libplanet.Blockchain.BlockChain`1.LongCount
-  name: LongCount()
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_LongCount
-  commentId: M:Libplanet.Blockchain.BlockChain`1.LongCount
-  fullName: Libplanet.Blockchain.BlockChain<T>.LongCount()
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).LongCount()
-  nameWithType: BlockChain<T>.LongCount()
-  nameWithType.vb: BlockChain(Of T).LongCount()
-- uid: Libplanet.Blockchain.BlockChain`1.LongCount*
-  name: LongCount
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_LongCount_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.LongCount
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.LongCount
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).LongCount
-  nameWithType: BlockChain<T>.LongCount
-  nameWithType.vb: BlockChain(Of T).LongCount
 - uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
   name: MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
@@ -1568,24 +1560,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransactions
   nameWithType: BlockChain<T>.UnstageTransactions
   nameWithType.vb: BlockChain(Of T).UnstageTransactions
-- uid: Libplanet.Blockchain.BlockChain`1.Validate(IReadOnlyList{Libplanet.Blocks.Block{`0}},DateTimeOffset)
-  name: Validate(IReadOnlyList<Block<T>>, DateTimeOffset)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Validate_IReadOnlyList_Libplanet_Blocks_Block__0___DateTimeOffset_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Validate(IReadOnlyList{Libplanet.Blocks.Block{`0}},DateTimeOffset)
-  name.vb: Validate(IReadOnlyList(Of Block(Of T)), DateTimeOffset)
-  fullName: Libplanet.Blockchain.BlockChain<T>.Validate(IReadOnlyList<Libplanet.Blocks.Block<T>>, DateTimeOffset)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Validate(IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), DateTimeOffset)
-  nameWithType: BlockChain<T>.Validate(IReadOnlyList<Block<T>>, DateTimeOffset)
-  nameWithType.vb: BlockChain(Of T).Validate(IReadOnlyList(Of Block(Of T)), DateTimeOffset)
-- uid: Libplanet.Blockchain.BlockChain`1.Validate*
-  name: Validate
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Validate_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Validate
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Validate
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Validate
-  nameWithType: BlockChain<T>.Validate
-  nameWithType.vb: BlockChain(Of T).Validate
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
@@ -1739,15 +1713,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockInterval
   nameWithType: BlockPolicy<T>.BlockInterval
   nameWithType.vb: BlockPolicy(Of T).BlockInterval
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(IReadOnlyList{Libplanet.Blocks.Block{`0}})
-  name: GetNextBlockDifficulty(IReadOnlyList<Block<T>>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_IReadOnlyList_Libplanet_Blocks_Block__0___
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(IReadOnlyList{Libplanet.Blocks.Block{`0}})
-  name.vb: GetNextBlockDifficulty(IReadOnlyList(Of Block(Of T)))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetNextBlockDifficulty(IReadOnlyList<Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty(IReadOnlyList(Of Libplanet.Blocks.Block(Of T)))
-  nameWithType: BlockPolicy<T>.GetNextBlockDifficulty(IReadOnlyList<Block<T>>)
-  nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty(IReadOnlyList(Of Block(Of T)))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name: GetNextBlockDifficulty(BlockChain<T>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name.vb: GetNextBlockDifficulty(BlockChain(Of T))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: BlockPolicy<T>.GetNextBlockDifficulty(BlockChain<T>)
+  nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty(BlockChain(Of T))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty*
   name: GetNextBlockDifficulty
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_
@@ -1757,15 +1731,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: BlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: BlockPolicy(Of T).GetNextBlockDifficulty
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(IReadOnlyList{Libplanet.Blocks.Block{`0}},Libplanet.Blocks.Block{`0})
-  name: ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(IReadOnlyList{Libplanet.Blocks.Block{`0}},Libplanet.Blocks.Block{`0})
-  name.vb: ValidateNextBlock(IReadOnlyList(Of Block(Of T)), Block(Of T))
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Libplanet.Blocks.Block<T>>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlock(IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), Libplanet.Blocks.Block(Of T))
-  nameWithType: BlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)
-  nameWithType.vb: BlockPolicy(Of T).ValidateNextBlock(IReadOnlyList(Of Block(Of T)), Block(Of T))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name: ValidateNextBlock(BlockChain<T>, Block<T>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name.vb: ValidateNextBlock(BlockChain(Of T), Block(Of T))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.ValidateNextBlock(Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlock(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: BlockPolicy<T>.ValidateNextBlock(BlockChain<T>, Block<T>)
+  nameWithType.vb: BlockPolicy(Of T).ValidateNextBlock(BlockChain(Of T), Block(Of T))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.ValidateNextBlock*
   name: ValidateNextBlock
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_ValidateNextBlock_
@@ -1775,28 +1749,6 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).ValidateNextBlock
   nameWithType: BlockPolicy<T>.ValidateNextBlock
   nameWithType.vb: BlockPolicy(Of T).ValidateNextBlock
-- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension
-  name: BlockPolicyExtension
-  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html
-  commentId: T:Libplanet.Blockchain.Policies.BlockPolicyExtension
-  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension
-  nameWithType: BlockPolicyExtension
-- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks*
-  name: ValidateBlocks
-  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html#Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks_
-  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks
-  isSpec: "True"
-  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks
-  nameWithType: BlockPolicyExtension.ValidateBlocks
-- uid: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
-  name: ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicyExtension.html#Libplanet_Blockchain_Policies_BlockPolicyExtension_ValidateBlocks__1_Libplanet_Blockchain_Policies_IBlockPolicy___0__IReadOnlyList_Libplanet_Blocks_Block___0___DateTimeOffset_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks``1(Libplanet.Blockchain.Policies.IBlockPolicy{``0},IReadOnlyList{Libplanet.Blocks.Block{``0}},DateTimeOffset)
-  name.vb: ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks<T>(Libplanet.Blockchain.Policies.IBlockPolicy<T>, IReadOnlyList<Libplanet.Blocks.Block<T>>, DateTimeOffset)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicyExtension.ValidateBlocks(Of T)(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), DateTimeOffset)
-  nameWithType: BlockPolicyExtension.ValidateBlocks<T>(IBlockPolicy<T>, IReadOnlyList<Block<T>>, DateTimeOffset)
-  nameWithType.vb: BlockPolicyExtension.ValidateBlocks(Of T)(IBlockPolicy(Of T), IReadOnlyList(Of Block(Of T)), DateTimeOffset)
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1
   name: IBlockPolicy<T>
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html
@@ -1823,15 +1775,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).BlockAction
   nameWithType: IBlockPolicy<T>.BlockAction
   nameWithType.vb: IBlockPolicy(Of T).BlockAction
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(IReadOnlyList{Libplanet.Blocks.Block{`0}})
-  name: GetNextBlockDifficulty(IReadOnlyList<Block<T>>)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_IReadOnlyList_Libplanet_Blocks_Block__0___
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(IReadOnlyList{Libplanet.Blocks.Block{`0}})
-  name.vb: GetNextBlockDifficulty(IReadOnlyList(Of Block(Of T)))
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetNextBlockDifficulty(IReadOnlyList<Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty(IReadOnlyList(Of Libplanet.Blocks.Block(Of T)))
-  nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty(IReadOnlyList<Block<T>>)
-  nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty(IReadOnlyList(Of Block(Of T)))
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name: GetNextBlockDifficulty(BlockChain<T>)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
+  name.vb: GetNextBlockDifficulty(BlockChain(Of T))
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain(Of T))
+  nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty(BlockChain<T>)
+  nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty(BlockChain(Of T))
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty*
   name: GetNextBlockDifficulty
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_
@@ -1841,15 +1793,15 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).GetNextBlockDifficulty
   nameWithType: IBlockPolicy<T>.GetNextBlockDifficulty
   nameWithType.vb: IBlockPolicy(Of T).GetNextBlockDifficulty
-- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(IReadOnlyList{Libplanet.Blocks.Block{`0}},Libplanet.Blocks.Block{`0})
-  name: ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)
-  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_IReadOnlyList_Libplanet_Blocks_Block__0___Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(IReadOnlyList{Libplanet.Blocks.Block{`0}},Libplanet.Blocks.Block{`0})
-  name.vb: ValidateNextBlock(IReadOnlyList(Of Block(Of T)), Block(Of T))
-  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Libplanet.Blocks.Block<T>>, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlock(IReadOnlyList(Of Libplanet.Blocks.Block(Of T)), Libplanet.Blocks.Block(Of T))
-  nameWithType: IBlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)
-  nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlock(IReadOnlyList(Of Block(Of T)), Block(Of T))
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name: ValidateNextBlock(BlockChain<T>, Block<T>)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_Libplanet_Blockchain_BlockChain__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock(Libplanet.Blockchain.BlockChain{`0},Libplanet.Blocks.Block{`0})
+  name.vb: ValidateNextBlock(BlockChain(Of T), Block(Of T))
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.ValidateNextBlock(Libplanet.Blockchain.BlockChain<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).ValidateNextBlock(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: IBlockPolicy<T>.ValidateNextBlock(BlockChain<T>, Block<T>)
+  nameWithType.vb: IBlockPolicy(Of T).ValidateNextBlock(BlockChain(Of T), Block(Of T))
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.ValidateNextBlock*
   name: ValidateNextBlock
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_ValidateNextBlock_

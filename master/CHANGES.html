@@ -108,6 +108,19 @@ added it to <code>Swarm&lt;T&gt;.PreloadAsync()</code> &amp; <code>Swarm&lt;T&gt
 [<a href="https://github.com/planetarium/libplanet/pull/581">#581</a>]</li>
 <li>Removed <code>broadcast</code> parameter from <code>BlockChain&lt;T&gt;.MakeTransaction()</code> method.
 [<a href="https://github.com/planetarium/libplanet/pull/609">#609</a>]</li>
+<li><code>BlockChain&lt;T&gt;</code> does not implement <code>IReadOnlyList&lt;T&gt;</code> anymore.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]
+<ul>
+<li>Added <code>BlockChain&lt;T&gt;.Count</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.LongCount()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.Validate()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.GetEnumerate()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li>Removed <code>BlockPolicyExtension.ValidateBlocks()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li><code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> method became to receive
+<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<li><code>IBlockPolicy&lt;T&gt;.ValidateNextBlock()</code> method became to receive
+<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+</ul>
+</li>
 </ul>
 <h3 id="added-interfaces">Added interfaces</h3>
 <ul>
@@ -127,6 +140,7 @@ added it to <code>Swarm&lt;T&gt;.PreloadAsync()</code> &amp; <code>Swarm&lt;T&gt
 <li>Added <code>BlockChain&lt;T&gt;.GetTransaction(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Contains(TxId)</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/409">#409</a>, <a href="https://github.com/planetarium/libplanet/pull/583">#583</a>]</li>
 <li>Added <code>ByteUtil.Hex(ImmutableArray&lt;byte&gt;)</code> overloaded method.  [<a href="https://github.com/planetarium/libplanet/pull/614">#614</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.Contains(Block&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
 <li>Added <code>BlockDownloadState.SourcePeer</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/636">#636</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
@@ -953,7 +967,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0ecb52f5b40e9579d640c315db6c5d0db9105aef/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/7310035e4060011cffac2145eedd73a12893b2c6/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
