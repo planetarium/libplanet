@@ -437,6 +437,7 @@ namespace Libplanet.Net
             _broadcastQueue.ReceiveReady += DoBroadcast;
 
             _logger.Debug("Starting swarm...");
+            _logger.Debug("Peer information : {Peer}", AsPeer);
 
             using (await _runningMutex.LockAsync())
             {
@@ -2177,9 +2178,9 @@ namespace Libplanet.Net
             {
                 dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                 _logger.Debug(
-                    "Trying to send {Message} to {PeerAddress}...",
+                    "Trying to send {Message} to {Peer}...",
                     req.Message,
-                    req.Peer.Address
+                    req.Peer
                 );
                 var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
                 var result = new List<Message>();
