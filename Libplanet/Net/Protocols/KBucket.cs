@@ -50,7 +50,7 @@ namespace Libplanet.Net.Protocols
         {
             _lastUpdated = DateTimeOffset.UtcNow;
             int exists =
-                _peers.FindIndex(p => p.Item2.PublicKey.Equals(peer.PublicKey));
+                _peers.FindIndex(p => p.Item2.Address.Equals(peer.Address));
 
             if (exists != -1)
             {
@@ -102,7 +102,7 @@ namespace Libplanet.Net.Protocols
 
         public bool RemovePeer(BoundPeer peer)
         {
-            int index = _peers.FindIndex(item => item.Item2.PublicKey.Equals(peer.PublicKey));
+            int index = _peers.FindIndex(item => item.Item2.Address.Equals(peer.Address));
             if (index == -1)
             {
                 return false;
