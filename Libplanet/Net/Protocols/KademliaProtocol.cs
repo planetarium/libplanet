@@ -4,18 +4,16 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Net.Messages;
 using Serilog;
 using Random = System.Random;
 
 namespace Libplanet.Net.Protocols
 {
-    internal class KademliaProtocol<T> : IProtocol
-        where T : IAction, new()
+    internal class KademliaProtocol : IProtocol
     {
         private readonly TimeSpan _requestTimeout;
-        private readonly Swarm<T> _swarm;
+        private readonly ISwarm _swarm;
         private readonly Address _address;
         private readonly int _appProtocolVersion;
         private readonly Random _random;
@@ -26,7 +24,7 @@ namespace Libplanet.Net.Protocols
         private readonly ILogger _logger;
 
         public KademliaProtocol(
-            Swarm<T> swarm,
+            ISwarm swarm,
             Address address,
             int appProtocolVersion,
             ILogger logger,

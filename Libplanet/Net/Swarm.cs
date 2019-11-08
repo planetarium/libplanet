@@ -30,7 +30,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T> : IDisposable
+    public class Swarm<T> : ISwarm, IDisposable
         where T : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
@@ -155,7 +155,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
-            Protocol = new KademliaProtocol<T>(
+            Protocol = new KademliaProtocol(
                 this,
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
@@ -825,7 +825,7 @@ namespace Libplanet.Net
 
             try
             {
-                KademliaProtocol<T> kp = (KademliaProtocol<T>)Protocol;
+                KademliaProtocol kp = (KademliaProtocol)Protocol;
 
                 var tasks = new List<Task>();
                 foreach (Peer peer in peers)
@@ -871,7 +871,8 @@ namespace Libplanet.Net
             await SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
         }
 
-        internal async Task<Message> SendMessageWithReplyAsync(
+#pragma warning disable SA1202
+        async Task<Message> ISwarm.SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -884,8 +885,9 @@ namespace Libplanet.Net
 
             return reply;
         }
+#pragma warning restore SA1202
 
-        internal async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        internal virtual async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -977,7 +979,7 @@ namespace Libplanet.Net
         {
             var request = new GetBlockHashes(locator, stop);
 
-            Message parsedMessage = await SendMessageWithReplyAsync(
+            Message parsedMessage = await (this as ISwarm).SendMessageWithReplyAsync(
                 peer,
                 request,
                 timeout: BlockHashRecvTimeout,
@@ -1090,10 +1092,12 @@ namespace Libplanet.Net
             });
         }
 
-        internal void ReplyMessage(Message message)
+#pragma warning disable SA1202
+        void ISwarm.ReplyMessage(Message message)
         {
             _replyQueue.Enqueue(message);
         }
+#pragma warning restore SA1202
 
         private void BroadcastMessage(Message message)
         {
@@ -1140,7 +1144,7 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        Message reply = await SendMessageWithReplyAsync(
+                        Message reply = await (this as ISwarm).SendMessageWithReplyAsync(
                             peer,
                             new Ping(),
                             dialTimeout,
@@ -1222,7 +1226,7 @@ namespace Libplanet.Net
                 Message reply;
                 try
                 {
-                    reply = await SendMessageWithReplyAsync(
+                    reply = await (this as ISwarm).SendMessageWithReplyAsync(
                         peer,
                         request,
                         timeout: TimeSpan.FromSeconds(30),
@@ -1450,7 +1454,7 @@ namespace Libplanet.Net
                         {
                             Identity = getBlockHashes.Identity,
                         };
-                        ReplyMessage(reply);
+                        (this as ISwarm).ReplyMessage(reply);
                         break;
                     }
 
@@ -1846,7 +1850,7 @@ namespace Libplanet.Net
                 {
                     Identity = getTxs.Identity,
                 };
-                ReplyMessage(response);
+                (this as ISwarm).ReplyMessage(response);
             }
         }
 
@@ -1928,7 +1932,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    ReplyMessage(response);
+                    (this as ISwarm).ReplyMessage(response);
                     blocks.Clear();
                 }
 
@@ -1947,7 +1951,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                ReplyMessage(response);
+                (this as ISwarm).ReplyMessage(response);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
@@ -2031,7 +2035,7 @@ namespace Libplanet.Net
             {
                 Identity = getRecentStates.Identity,
             };
-            ReplyMessage(reply);
+            (this as ISwarm).ReplyMessage(reply);
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
