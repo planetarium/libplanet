@@ -72,6 +72,7 @@ https://docs.libplanet.io/</Description>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

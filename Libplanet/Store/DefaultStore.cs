@@ -11,6 +11,7 @@ using Libplanet.Blocks;
 using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
+using LruCacheNet;
 using Serilog;
 using Zio;
 using Zio.FileSystems;
@@ -38,6 +39,8 @@ namespace Libplanet.Store
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
+
+        private readonly LruCache<TxId, object> _txCache;
 
         private readonly MemoryStream _memoryStream;
 
@@ -125,6 +128,7 @@ namespace Libplanet.Store
             _root.CreateDirectory(TxRootPath);
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
 
+            _txCache = new LruCache<TxId, object>(capacity: 1024);
             _blockLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
         }
 
@@ -300,6 +304,11 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
+            if (_txCache.TryGetValue(txid, out object cachedTx))
+            {
+                return (Transaction<T>)cachedTx;
+            }
+
             UPath path = TxPath(txid);
             if (!_txs.FileExists(path))
             {
@@ -316,12 +325,19 @@ namespace Libplanet.Store
                 return null;
             }
 
-            return Transaction<T>.FromBencodex(bytes);
+            Transaction<T> tx = Transaction<T>.FromBencodex(bytes);
+            _txCache.AddOrUpdate(txid, tx);
+            return tx;
         }
 
         /// <inheritdoc/>
         public override void PutTransaction<T>(Transaction<T> tx)
         {
+            if (_txCache.ContainsKey(tx.Id))
+            {
+                return;
+            }
+
             byte[] txBytes = tx.ToBencodex(true);
             UPath path = TxPath(tx.Id);
             UPath dirPath = path.GetDirectory();
@@ -330,6 +346,7 @@ namespace Libplanet.Store
             if (_root is MemoryFileSystem)
             {
                 _txs.WriteAllBytes(path, txBytes);
+                _txCache.AddOrUpdate(tx.Id, tx);
             }
             else
             {
@@ -345,14 +362,13 @@ namespace Libplanet.Store
                     }
                     catch (IOException)
                     {
-                        if (_txs.FileExists(path) && _txs.GetFileLength(path) == txBytes.LongLength)
+                        // For the same txid, the content is the same as well.  Don't have
+                        // to be written more than once.
+                        if (!_txs.FileExists(path) ||
+                            _txs.GetFileLength(path) != txBytes.LongLength)
                         {
-                            // For the same txid, the content is the same as well.  Don't have
-                            // to be written more than once.
-                            return;
+                            throw;
                         }
-
-                        throw;
                     }
                 }
                 finally
@@ -363,11 +379,14 @@ namespace Libplanet.Store
                     }
                 }
             }
+
+            _txCache.AddOrUpdate(tx.Id, tx);
         }
 
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
+            _txCache.Remove(txid);
             var path = TxPath(txid);
             if (_txs.FileExists(path))
             {
