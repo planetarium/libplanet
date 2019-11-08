@@ -281,16 +281,27 @@ namespace Libplanet.KeyStore
                 }
 
                 IKdf kdf;
-                switch (kdfType)
+                try
                 {
-                    case "pbkdf2":
-                        kdf = Pbkdf2.FromJson(kdfParamsElement);
-                        break;
+                    switch (kdfType)
+                    {
+                        case "pbkdf2":
+                            kdf = Pbkdf2.FromJson(kdfParamsElement);
+                            break;
 
-                    default:
-                        throw new UnsupportedKeyJsonException(
-                            $"Unsupported cipher type: \"{kdfType}\"."
-                        );
+                        case "scrypt":
+                            kdf = Scrypt.FromJson(kdfParamsElement);
+                            break;
+
+                        default:
+                            throw new UnsupportedKeyJsonException(
+                                $"Unsupported cipher type: \"{kdfType}\"."
+                            );
+                    }
+                }
+                catch (ArgumentException e)
+                {
+                    throw new InvalidKeyJsonException(e.Message);
                 }
 
                 return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);

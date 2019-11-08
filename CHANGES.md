@@ -56,6 +56,7 @@ To be released.
  -  Added `Aes128Ctr` class.  [[#577], [#614]]
  -  Added `IKdf` interface.  [[#577], [#614]]
  -  Added `Pbkdf2` class.  [[#577], [#614]]
+ -  Added `Scrypt` class.  [[#642], [#654]]
  -  Added `BlockChain<T>.LongCount()` method.  [[#575]]
  -  Added `BlockChain<T>[HashDigest<T>]` indexer.  [[#409], [#583]]
  -  Added `BlockChain<T>.Contains(HashDigest<T>)` method.  [[#409], [#583]]
@@ -173,9 +174,11 @@ To be released.
 [#636]: https://github.com/planetarium/libplanet/pull/636
 [#637]: https://github.com/planetarium/libplanet/pull/637
 [#641]: https://github.com/planetarium/libplanet/pull/641
+[#642]: https://github.com/planetarium/libplanet/issues/642
 [#644]: https://github.com/planetarium/libplanet/pull/644
 [#645]: https://github.com/planetarium/libplanet/pull/645
 [#647]: https://github.com/planetarium/libplanet/pull/647
+[#654]: https://github.com/planetarium/libplanet/pull/654
 
 
 Version 0.6.0
