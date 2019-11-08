@@ -961,6 +961,22 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
+            if (!Contains(point))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist.",
+                    nameof(point));
+            }
+
+            Block<T> pointBlock = this[point];
+
+            if (!point.Equals(this[pointBlock.Index].Hash))
+            {
+                throw new ArgumentException(
+                    $"The block [{point}] doesn't exist in the chain index.",
+                    nameof(point));
+            }
+
             var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
             Guid forkedId = forked.Id;
             _logger.Debug(
@@ -974,7 +990,6 @@ namespace Libplanet.Blockchain
                 _rwlock.EnterReadLock();
 
                 Store.ForkBlockIndexes(Id, forkedId, point);
-                Block<T> pointBlock = _blocks[point];
 
                 var signersToStrip = new Dictionary<Address, int>();
 
@@ -1074,12 +1089,19 @@ namespace Libplanet.Blockchain
         // we need to add a synchronization mechanism to handle this correctly.
         internal void Swap(BlockChain<T> other, bool render)
         {
+            if (other?.Tip is null)
+            {
+                throw new ArgumentException(
+                        $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
+                        nameof(other));
+            }
+
             _logger.Debug(
-                "Swaping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
+                "Swapping block chain. (from: {fromChainId}) (to: {toChainId})", Id, other.Id);
 
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            if (render && !(Tip is null || other.Tip is null))
+            if (render && !(Tip is null))
             {
                 long shorterHeight =
                     Math.Min(Count, other.Count) - 1;

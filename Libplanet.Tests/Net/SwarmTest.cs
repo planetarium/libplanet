@@ -15,7 +15,6 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
-using Libplanet.Net.Protocols;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -2314,6 +2313,79 @@ namespace Libplanet.Tests.Net
                 miner1.Dispose();
                 miner2.Dispose();
                 receiver.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task CreateNewChainWhenBranchPointNotExist()
+        {
+            // If the bucket stored peers are the same, the block may not propagate,
+            // so specify private keys to make the buckets different.
+            var keyA = ByteUtil.ParseHex(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
+            var keyB = ByteUtil.ParseHex(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
+            var keyC = ByteUtil.ParseHex(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
+
+            var minerSwarmA = new Swarm<DumbAction>(
+                _blockchains[0],
+                new PrivateKey(keyA),
+                1,
+                host: IPAddress.Loopback.ToString());
+            var minerSwarmB = new Swarm<DumbAction>(
+                _blockchains[1],
+                new PrivateKey(keyB),
+                1,
+                host: IPAddress.Loopback.ToString());
+            var receiverSwarm = new Swarm<DumbAction>(
+                _blockchains[2],
+                new PrivateKey(keyC),
+                1,
+                host: IPAddress.Loopback.ToString());
+
+            BlockChain<DumbAction> minerChainA = _blockchains[0];
+            BlockChain<DumbAction> minerChainB = _blockchains[1];
+            BlockChain<DumbAction> receiverChain = _blockchains[2];
+
+            try
+            {
+                await StartAsync(minerSwarmA);
+                await StartAsync(minerSwarmB);
+                await StartAsync(receiverSwarm);
+
+                await BootstrapAsync(minerSwarmA, receiverSwarm.AsPeer);
+                await BootstrapAsync(minerSwarmB, receiverSwarm.AsPeer);
+
+                // Broadcast SwarmA's first block.
+                var b1 = await minerChainA.MineBlock(_fx1.Address1);
+                await minerChainB.MineBlock(_fx1.Address1);
+                minerSwarmA.BroadcastBlocks(new[] { b1 });
+                await receiverSwarm.BlockReceived.WaitAsync();
+                Assert.Equal(receiverChain.Tip, minerChainA.Tip);
+
+                // Broadcast SwarmB's second block.
+                await minerChainA.MineBlock(_fx1.Address1);
+                var b2 = await minerChainB.MineBlock(_fx1.Address1);
+                minerSwarmB.BroadcastBlocks(new[] { b2 });
+                await receiverSwarm.BlockReceived.WaitAsync();
+                Assert.Equal(receiverChain.Tip, minerChainB.Tip);
+
+                // Broadcast SwarmA's third block.
+                var b3 = await minerChainA.MineBlock(_fx1.Address1);
+                await minerChainB.MineBlock(_fx1.Address1);
+                minerSwarmA.BroadcastBlocks(new[] { b3 });
+                await receiverSwarm.BlockReceived.WaitAsync();
+                Assert.Equal(receiverChain.Tip, minerChainA.Tip);
+            }
+            finally
+            {
+                await minerSwarmA.StopAsync();
+                await minerSwarmB.StopAsync();
+                await receiverSwarm.StopAsync();
+                minerSwarmA.Dispose();
+                minerSwarmB.Dispose();
+                receiverSwarm.Dispose();
             }
         }
 
