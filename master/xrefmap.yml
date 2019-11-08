@@ -3186,6 +3186,128 @@ references:
   fullName.vb: Libplanet.KeyStore.Kdfs.Pbkdf2(Of T).WriteJson
   nameWithType: Pbkdf2<T>.WriteJson
   nameWithType.vb: Pbkdf2(Of T).WriteJson
+- uid: Libplanet.KeyStore.Kdfs.Scrypt
+  name: Scrypt
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html
+  commentId: T:Libplanet.KeyStore.Kdfs.Scrypt
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt
+  nameWithType: Scrypt
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32,System.Int32,System.Int32)
+  name: Scrypt(Int32, ImmutableArray<Byte>, Int32, Int32, Int32)
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt__ctor_System_Int32_ImmutableArray_System_Byte___System_Int32_System_Int32_System_Int32_
+  commentId: M:Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,ImmutableArray{System.Byte}@,System.Int32,System.Int32,System.Int32)
+  name.vb: Scrypt(Int32, ByRef ImmutableArray(Of Byte), Int32, Int32, Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, ImmutableArray<System.Byte>, System.Int32, System.Int32, System.Int32)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, ByRef ImmutableArray(Of System.Byte), System.Int32, System.Int32, System.Int32)
+  nameWithType: Scrypt.Scrypt(Int32, ImmutableArray<Byte>, Int32, Int32, Int32)
+  nameWithType.vb: Scrypt.Scrypt(Int32, ByRef ImmutableArray(Of Byte), Int32, Int32, Int32)
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,System.Byte[],System.Int32,System.Int32,System.Int32)
+  name: Scrypt(Int32, Byte[], Int32, Int32, Int32)
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt__ctor_System_Int32_System_Byte___System_Int32_System_Int32_System_Int32_
+  commentId: M:Libplanet.KeyStore.Kdfs.Scrypt.#ctor(System.Int32,System.Byte[],System.Int32,System.Int32,System.Int32)
+  name.vb: Scrypt(Int32, Byte(), Int32, Int32, Int32)
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, System.Byte[], System.Int32, System.Int32, System.Int32)
+  fullName.vb: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt(System.Int32, System.Byte(), System.Int32, System.Int32, System.Int32)
+  nameWithType: Scrypt.Scrypt(Int32, Byte[], Int32, Int32, Int32)
+  nameWithType.vb: Scrypt.Scrypt(Int32, Byte(), Int32, Int32, Int32)
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.#ctor*
+  name: Scrypt
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt__ctor_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Scrypt
+  nameWithType: Scrypt.Scrypt
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.BlockSize
+  name: BlockSize
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_BlockSize
+  commentId: P:Libplanet.KeyStore.Kdfs.Scrypt.BlockSize
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.BlockSize
+  nameWithType: Scrypt.BlockSize
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.BlockSize*
+  name: BlockSize
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_BlockSize_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.BlockSize
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.BlockSize
+  nameWithType: Scrypt.BlockSize
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Cost
+  name: Cost
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Cost
+  commentId: P:Libplanet.KeyStore.Kdfs.Scrypt.Cost
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Cost
+  nameWithType: Scrypt.Cost
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Cost*
+  name: Cost
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Cost_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.Cost
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Cost
+  nameWithType: Scrypt.Cost
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Derive(System.String)
+  name: Derive(String)
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Derive_System_String_
+  commentId: M:Libplanet.KeyStore.Kdfs.Scrypt.Derive(System.String)
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Derive(System.String)
+  nameWithType: Scrypt.Derive(String)
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Derive*
+  name: Derive
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Derive_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.Derive
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Derive
+  nameWithType: Scrypt.Derive
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.KeyLength
+  name: KeyLength
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_KeyLength
+  commentId: P:Libplanet.KeyStore.Kdfs.Scrypt.KeyLength
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.KeyLength
+  nameWithType: Scrypt.KeyLength
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.KeyLength*
+  name: KeyLength
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_KeyLength_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.KeyLength
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.KeyLength
+  nameWithType: Scrypt.KeyLength
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Parallelization
+  name: Parallelization
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Parallelization
+  commentId: P:Libplanet.KeyStore.Kdfs.Scrypt.Parallelization
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Parallelization
+  nameWithType: Scrypt.Parallelization
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Parallelization*
+  name: Parallelization
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Parallelization_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.Parallelization
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Parallelization
+  nameWithType: Scrypt.Parallelization
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Salt
+  name: Salt
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Salt
+  commentId: P:Libplanet.KeyStore.Kdfs.Scrypt.Salt
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Salt
+  nameWithType: Scrypt.Salt
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.Salt*
+  name: Salt
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_Salt_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.Salt
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.Salt
+  nameWithType: Scrypt.Salt
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.WriteJson(Utf8JsonWriter)
+  name: WriteJson(Utf8JsonWriter)
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_WriteJson_Utf8JsonWriter_
+  commentId: M:Libplanet.KeyStore.Kdfs.Scrypt.WriteJson(Utf8JsonWriter)
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.WriteJson(Utf8JsonWriter)
+  nameWithType: Scrypt.WriteJson(Utf8JsonWriter)
+- uid: Libplanet.KeyStore.Kdfs.Scrypt.WriteJson*
+  name: WriteJson
+  href: api/Libplanet.KeyStore.Kdfs.Scrypt.html#Libplanet_KeyStore_Kdfs_Scrypt_WriteJson_
+  commentId: Overload:Libplanet.KeyStore.Kdfs.Scrypt.WriteJson
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Kdfs.Scrypt.WriteJson
+  nameWithType: Scrypt.WriteJson
 - uid: Libplanet.KeyStore.KeyJsonException
   name: KeyJsonException
   href: api/Libplanet.KeyStore.KeyJsonException.html
