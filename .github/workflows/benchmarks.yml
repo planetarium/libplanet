@@ -1,0 +1,23 @@
+on:
+  push: []
+  pull_request: []
+name: benchmarks
+
+jobs:
+  build:
+    name: benchmarks
+    strategy:
+      matrix:
+        os:
+        - macos-latest
+        - ubuntu-18.04
+        - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@master
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@master
+      if: github.event_name == 'pull_request'
+      with:
+        ref: ${{ github.pull_request.head.sha }}
+    - run: 'dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"'
