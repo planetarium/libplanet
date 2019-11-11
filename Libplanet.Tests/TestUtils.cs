@@ -12,12 +12,12 @@ using Xunit;
 
 namespace Libplanet.Tests
 {
-    internal class TestUtils
+    public class TestUtils
     {
-        internal static readonly Address GenesisMinerAddress =
+        public static readonly Address GenesisMinerAddress =
             new Address("21744f4f08db23e044178dafb8273aeb5ebe6644");
 
-        internal static void AssertBytesEqual(byte[] expected, byte[] actual)
+        public static void AssertBytesEqual(byte[] expected, byte[] actual)
         {
             string msg;
             if (expected.LongLength < 1024 && actual.LongLength < 1024 &&
@@ -57,7 +57,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             }
         }
 
-        internal static void AssertBytesEqual(
+        public static void AssertBytesEqual(
             ImmutableArray<byte> expected,
             ImmutableArray<byte> actual
         )
@@ -65,12 +65,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.ToArray(), actual.ToArray());
         }
 
-        internal static void AssertBytesEqual(TxId expected, TxId actual)
+        public static void AssertBytesEqual(TxId expected, TxId actual)
         {
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
         }
 
-        internal static void AssertBytesEqual<T>(
+        public static void AssertBytesEqual<T>(
             HashDigest<T> expected,
             HashDigest<T> actual
         )
@@ -79,7 +79,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             AssertBytesEqual(expected.ToByteArray(), actual.ToByteArray());
         }
 
-        internal static byte[] GetRandomBytes(int size)
+        public static byte[] GetRandomBytes(int size)
         {
             var random = new System.Random();
             var bytes = new byte[size];
@@ -88,7 +88,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        internal static Block<T> MineGenesis<T>(Address? miner = null)
+        public static Block<T> MineGenesis<T>(Address? miner = null)
             where T : IAction, new()
         {
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
@@ -103,7 +103,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
-        internal static Block<T> MineNext<T>(
+        public static Block<T> MineNext<T>(
             Block<T> previousBlock,
             IEnumerable<Transaction<T>> txs = null,
             byte[] nonce = null,
@@ -144,7 +144,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             );
         }
 
-        internal static string ToString(BitArray bitArray)
+        public static string ToString(BitArray bitArray)
         {
             return new string(
                 bitArray.OfType<bool>().Select(b => b ? '1' : '0').ToArray()
