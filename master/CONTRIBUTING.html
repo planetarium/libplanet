@@ -123,7 +123,7 @@ builds the entire <em>Libplanet</em> solution:</p>
 <h2 id="tests-build-status-codecov">Tests <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master"><img src="https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
 Going near to the <a href="https://codecov.io/gh/planetarium/libplanet">code coverage</a> 100% is one of our goals.</p>
-<p>The <em>Libplanet</em> solution consists of 4 projects.  <em>Libplanet</em> and
+<p>The <em>Libplanet</em> solution consists of several projects.  <em>Libplanet</em> and
 <em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
 and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
 <p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly, and
@@ -183,6 +183,26 @@ and will warn you if there are any style errors.</p>
 favorite editor.  Some recent editors have built-in support for EditorConfig,
 e.g., Rider (IntelliJ IDEA), Visual Studio.  Many editors have an extension to
 support EditorConfig, e.g., <a href="https://atom.io/packages/editorconfig">Atom</a>, <a href="https://github.com/editorconfig/editorconfig-emacs">Emacs</a>, <a href="https://github.com/editorconfig/editorconfig-vim">Vim</a>, <a href="https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig">VS Code</a>.</p>
+<h2 id="benchmarks">Benchmarks</h2>
+<p>In order to track performance improvements or regressions, we maintain a set of
+benchmarks and continuously measure them in the CI.  You can run benchmarks
+on your local environment too:</p>
+<pre><code>dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f &quot;*&quot;
+</code></pre>
+<p>Note that there is <code>-j short</code>; without this a whole set of benchmarks takes
+quite a long time.  This will print like below:</p>
+<pre><code>|               Method | UnrollFactor |      Mean |      Error |    StdDev |
+|--------------------- |------------- |----------:|-----------:|----------:|
+|       MineBlockEmpty |           16 |  12.20 ms |  11.649 ms | 0.6385 ms |
+|  MineBlockOneTran... |            1 |  14.54 ms |   3.602 ms | 0.1974 ms |
+|                  ... |          ... |       ... |        ... |       ... |
+</code></pre>
+<p>You can measure only part of benchmarks by <code>-f</code>/<code>--filter</code>ing them:</p>
+<pre><code>dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f &quot;*MineBlock*&quot;
+</code></pre>
+<p>All benchmark code is placed under <em>Libplanet.Benchmarks</em> project.
+As our benchmarks are based on <a href="https://benchmarkdotnet.org/">BenchmarkDotNet</a>, please read their official
+docs for details.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="i-got-the-error-like-fody-is-only-supported-on-msbuild-16-and-above-current-version-15">I got the error like <code>Fody is only supported on MSBuild 16 and above. Current version: 15.</code></h3>
 <p>Your .NET Core SDK version probably is outdated.  Our recommended version is: <em>2.2.300</em>.</p>
@@ -206,7 +226,7 @@ export PATH=&quot;$PATH:$DOTNET_ROOT&quot;
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/e85d0063fb159d736c3fefd8c628e75af1fd92d6/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/b1265c71a8f6e8b0e26fce4f6f436f594d0c3656/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
