@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
@@ -34,19 +33,20 @@ namespace Libplanet.Store
         private const string TxNonceIdPrefix = "nonce_";
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
+        private static readonly UPath BlockRootPath = UPath.Root / "block";
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
+        private readonly SubFileSystem _blocks;
 
         private readonly LruCache<TxId, object> _txCache;
+        private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
 
         private readonly MemoryStream _memoryStream;
 
         private readonly LiteDatabase _db;
-
-        private readonly ReaderWriterLockSlim _blockLock;
 
         /// <summary>
         /// Creates a new <seealso cref="DefaultStore"/>.
@@ -127,9 +127,11 @@ namespace Libplanet.Store
 
             _root.CreateDirectory(TxRootPath);
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
+            _root.CreateDirectory(BlockRootPath);
+            _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
 
             _txCache = new LruCache<TxId, object>(capacity: 1024);
-            _blockLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+            _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: 512);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -269,7 +271,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            foreach (UPath path in _txs.EnumerateDirectories("/"))
+            foreach (UPath path in _txs.EnumerateDirectories(UPath.Root))
             {
                 string upper = path.GetName();
                 if (upper.Length != 2)
@@ -346,7 +348,6 @@ namespace Libplanet.Store
             if (_root is MemoryFileSystem)
             {
                 _txs.WriteAllBytes(path, txBytes);
-                _txCache.AddOrUpdate(tx.Id, tx);
             }
             else
             {
@@ -386,11 +387,11 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            _txCache.Remove(txid);
             var path = TxPath(txid);
             if (_txs.FileExists(path))
             {
                 _txs.DeleteFile(path);
+                _txCache.Remove(txid);
                 return true;
             }
 
@@ -400,60 +401,107 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            _blockLock.EnterReadLock();
-            try
+            foreach (UPath path in _blocks.EnumerateDirectories(UPath.Root))
             {
-                return _db.FileStorage
-                    .Find("block/")
-                    .Select(file => new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)));
-            }
-            finally
-            {
-                _blockLock.ExitReadLock();
+                string upper = path.GetName();
+                if (upper.Length != 2)
+                {
+                    continue;
+                }
+
+                foreach (UPath subPath in _blocks.EnumerateFiles(path))
+                {
+                    string lower = subPath.GetName();
+                    if (lower.Length != 62)
+                    {
+                        continue;
+                    }
+
+                    string name = upper + lower;
+                    HashDigest<SHA256> blockHash;
+                    try
+                    {
+                        blockHash = new HashDigest<SHA256>(ByteUtil.ParseHex(name));
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
+                    yield return blockHash;
+                }
             }
         }
 
         /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
-            // checks whether a block already exists or not.
-            if (!(_db.FileStorage.FindById(BlockFileId(block.Hash)) is null))
+            if (_blockCache.ContainsKey(block.Hash))
             {
                 return;
             }
 
-            _blockLock.EnterWriteLock();
-            try
+            foreach (Transaction<T> tx in block.Transactions)
             {
-                foreach (Transaction<T> tx in block.Transactions)
-                {
-                    PutTransaction(tx);
-                }
+                PutTransaction(tx);
+            }
 
-                UploadFile(
-                    BlockFileId(block.Hash),
-                    ByteUtil.Hex(block.Hash.ToByteArray()),
-                    block.ToBencodex(true, false)
-                );
-            }
-            finally
+            byte[] blockBytes = block.ToBencodex(true, false);
+            UPath path = BlockPath(block.Hash);
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_blocks, dirPath);
+
+            if (_root is MemoryFileSystem)
             {
-                _blockLock.ExitWriteLock();
+                _blocks.WriteAllBytes(path, blockBytes);
             }
+            else
+            {
+                // For atomicity, writes bytes into an intermediate temp file,
+                // and then renames it to the final destination.
+                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
+                try
+                {
+                    _blocks.WriteAllBytes(tmpPath, blockBytes);
+                    try
+                    {
+                        _blocks.MoveFile(tmpPath, path);
+                    }
+                    catch (IOException)
+                    {
+                        // For the same hash, the content is the same as well.  Don't have
+                        // to be written more than once.
+                        if (!_blocks.FileExists(path) ||
+                            _blocks.GetFileLength(path) != blockBytes.LongLength)
+                        {
+                            throw;
+                        }
+                    }
+                }
+                finally
+                {
+                    if (_blocks.FileExists(tmpPath))
+                    {
+                        _blocks.DeleteFile(tmpPath);
+                    }
+                }
+            }
+
+            _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
         /// <inheritdoc/>
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            _blockLock.EnterWriteLock();
-            try
+            var path = BlockPath(blockHash);
+            if (_blocks.FileExists(path))
             {
-                return _db.FileStorage.Delete(BlockFileId(blockHash));
+                _blocks.DeleteFile(path);
+                _blockCache.Remove(blockHash);
+                return true;
             }
-            finally
-            {
-                _blockLock.ExitWriteLock();
-            }
+
+            return false;
         }
 
         /// <inheritdoc/>
@@ -630,15 +678,12 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long CountBlocks()
         {
-            _blockLock.EnterReadLock();
-            try
-            {
-                return _db.FileStorage.Find("block/").Count();
-            }
-            finally
-            {
-                _blockLock.ExitReadLock();
-            }
+            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
+            // unused (except for unit tests).  If this is never used why should we maintain
+            // this?  This is basically only for making BlockSet<T> class to implement
+            // IDictionary<HashDigest<SHA256>, Block<T>>.Count property, which is never used either.
+            // We'd better to refactor all such things so that unnecessary APIs are gone away.
+            return IterateBlockHashes().LongCount();
         }
 
         public void Dispose()
@@ -656,36 +701,34 @@ namespace Libplanet.Store
 
         internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
         {
-            _blockLock.EnterUpgradeableReadLock();
+            if (_blockCache.TryGetValue(blockHash, out RawBlock cahcedBlock))
+            {
+                return cahcedBlock;
+            }
+
+            UPath path = BlockPath(blockHash);
+            if (!_blocks.FileExists(path))
+            {
+                return null;
+            }
+
+            RawBlock rawBlock;
             try
             {
-                LiteFileInfo file = _db.FileStorage.FindById(BlockFileId(blockHash));
-                if (file is null)
+                var formatter = new BencodexFormatter<RawBlock>();
+                using (Stream stream = _blocks.OpenFile(
+                    path, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    return null;
-                }
-
-                _blockLock.EnterWriteLock();
-                try
-                {
-                    using (var stream = new MemoryStream())
-                    {
-                        DownloadFile(file, stream);
-                        stream.Seek(0, SeekOrigin.Begin);
-
-                        var formatter = new BencodexFormatter<RawBlock>();
-                        return (RawBlock)formatter.Deserialize(stream);
-                    }
-                }
-                finally
-                {
-                    _blockLock.ExitWriteLock();
+                    rawBlock = (RawBlock)formatter.Deserialize(stream);
                 }
             }
-            finally
+            catch (FileNotFoundException)
             {
-                _blockLock.ExitUpgradeableReadLock();
+                return null;
             }
+
+            _blockCache.AddOrUpdate(blockHash, rawBlock);
+            return rawBlock;
         }
 
         private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
@@ -697,15 +740,16 @@ namespace Libplanet.Store
             }
         }
 
+        private UPath BlockPath(HashDigest<SHA256> blockHash)
+        {
+            string idHex = ByteUtil.Hex(blockHash.ByteArray);
+            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
+        }
+
         private UPath TxPath(TxId txid)
         {
             string idHex = txid.ToHex();
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
-        }
-
-        private string BlockFileId(HashDigest<SHA256> blockHash)
-        {
-            return $"block/{blockHash}";
         }
 
         private string BlockStateFileId(HashDigest<SHA256> blockHash)
