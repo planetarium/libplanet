@@ -1,5 +1,3 @@
-using Libplanet.Stun;
-
 namespace Libplanet.Stun.Tests.Messages
 {
     internal class TestStunContext : IStunContext

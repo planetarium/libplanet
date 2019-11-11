@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+#pragma warning disable S1128 // Remove this unnecessary 'using'
 using Libplanet.Blockchain;
+#pragma warning restore S1128 // Remove this unnecessary 'using'
 
 namespace Libplanet.Tx
 {

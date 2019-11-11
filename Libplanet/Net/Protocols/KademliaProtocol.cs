@@ -99,18 +99,15 @@ namespace Libplanet.Net.Protocols
                 catch (DifferentAppProtocolVersionException)
                 {
                     _logger.Error("Version is different from seed peer.");
-                    continue;
                 }
                 catch (TimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
                     await RemovePeerAsync(peer, cancellationToken);
-                    continue;
                 }
                 catch (Exception)
                 {
                     _logger.Error("An unexpected exception occurred connecting to seed peer.");
-                    continue;
                 }
             }
 
@@ -142,13 +139,6 @@ namespace Libplanet.Net.Protocols
                 _logger.Error("An unexpected exception occurred during BootstrapAsync().");
                 throw;
             }
-
-            // TODO: Remove seed peers from table
-            // This requires a seed peer that does not run any blockchain related tasks.
-            /*foreach (BoundPeer peer in bootstrapPeers)
-            {
-                await RemovePeerAsync(peer);
-            }*/
         }
 
         /// <summary>
@@ -468,7 +458,6 @@ namespace Libplanet.Net.Protocols
                 }
                 catch (TimeoutException)
                 {
-                    continue;
                 }
             }
 

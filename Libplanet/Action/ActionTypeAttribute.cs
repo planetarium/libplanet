@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Libplanet.Tx;
 
 namespace Libplanet.Action
 {

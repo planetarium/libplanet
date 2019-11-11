@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Libplanet.Action;
 using Libplanet.Serialization;
 using Libplanet.Tx;

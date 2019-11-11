@@ -1420,7 +1420,7 @@ namespace Libplanet.Tests.Blockchain
                 .OrderBy(tx => tx.Nonce)
                 .ToList();
 
-            Assert.Equal(2, txs.Count());
+            Assert.Equal(2, txs.Count);
 
             var transaction = txs[0];
             Assert.Equal(0, transaction.Nonce);

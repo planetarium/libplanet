@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using Libplanet.Crypto;
 using Xunit;

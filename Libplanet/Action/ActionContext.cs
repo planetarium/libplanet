@@ -1,5 +1,3 @@
-using System;
-
 namespace Libplanet.Action
 {
     internal class ActionContext : IActionContext

@@ -46,4 +46,45 @@
     <Rule Id="MEN010" Action="None" />
     <Rule Id="MEN011" Action="None" />
   </Rules>
+
+  <Rules AnalyzerId="SonarAnalyzer" RuleNamespace="SonarAnalyzer">
+    <!-- Either remove or fill this block of code. -->
+    <Rule Id="S108" Action="None" />
+    <!-- Add the default parameter value defined in the overridden method. -->
+    <Rule Id="S1006" Action="None" />
+    <!-- Take the required action to fix the issue indicated by this
+    'FIXME' comment. -->
+    <Rule Id="S1134" Action="None" />
+    <!-- Complete the task associated to this 'TODO' comment. -->
+    <Rule Id="S1135" Action="None" />
+    <!-- Add a nested comment explaining why this method is empty, throw a
+    'NotSupportedException' or complete the implementation. -->
+    <Rule Id="S1186" Action="None" />
+    <!-- Make field 'readonly'. -->
+    <Rule Id="S2933" Action="None" />
+    <!-- Return 'Task' instead. -->
+    <Rule Id="S3168" Action="None" />
+    <!-- Make this test method non-'async' or return 'Task'. -->
+    <Rule Id="S3433" Action="None" />
+    <!-- Fix this implementation of 'IDisposable' to conform to the dispose
+    pattern. -->
+    <Rule Id="S3881" Action="None" />
+
+    <!-- Rename parameter 'A' to 'B' to match the interface declaration. -->
+    <Rule Id="S927" Action="None" />
+    <!-- Add a 'protected' constructor or the 'static' keyword to the class
+    declaration. -->
+    <Rule Id="S1118" Action="None" />
+    <!-- Remove the unused local variable 'x'. -->
+    <Rule Id="S1481" Action="None" />
+    <!-- Parameters to 'Equal' have the same names but not the same order as
+    the method arguments. -->
+    <Rule Id="S2234" Action="None" />
+    <!-- Change the visibility of this constructor to 'protected'. -->
+    <Rule Id="S3442" Action="None" />
+    <!-- Seal class or implement 'IEqualityComparer<T>' instead. -->
+    <Rule Id="S4035" Action="None" />
+    <!-- Remove this unnecessary null check; 'is' returns false for nulls. -->
+    <Rule Id="S4201" Action="None" />
+  </Rules>
 </RuleSet>
