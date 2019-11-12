@@ -159,6 +159,11 @@ namespace Libplanet.Store
             return IndexCollection(chainId).Count();
         }
 
+        public override bool Contains(HashDigest<SHA256> hashDigest)
+        {
+            return IterateBlockHashes().Contains(hashDigest);
+        }
+
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateIndexes(
             Guid chainId,
