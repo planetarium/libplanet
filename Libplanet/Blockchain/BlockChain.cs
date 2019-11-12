@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
@@ -557,6 +558,7 @@ namespace Libplanet.Blockchain
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
                 .Where(tx => tx.Nonce < GetNextTxNonce(tx.Signer));
+            Block<T> prevBlock = Store.GetBlock<T>(prevHash.Value);
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =
@@ -576,6 +578,7 @@ namespace Libplanet.Blockchain
                     () => Block<T>.Mine(
                         index: index,
                         difficulty: difficulty,
+                        previousTotalDifficulty: prevBlock.TotalDifficulty,
                         miner: miner,
                         previousHash: prevHash,
                         timestamp: currentTime,
