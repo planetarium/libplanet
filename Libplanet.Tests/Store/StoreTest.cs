@@ -529,7 +529,7 @@ namespace Libplanet.Tests.Store
                 targetChainId,
                 branchPoint);
 
-            var actual = Fx.Store.LookupStateReference(
+            Fx.Store.LookupStateReference(
                 Fx.StoreChainId,
                 address1,
                 blocks[3]);
@@ -551,8 +551,6 @@ namespace Libplanet.Tests.Store
         public void ForkStateReferencesChainIdNotFound()
         {
             var targetChainId = Guid.NewGuid();
-            Address address = Fx.Address1;
-
             Assert.Throws<ChainIdNotFoundException>(() =>
                 Fx.Store.ForkStateReferences(Fx.StoreChainId, targetChainId, Fx.Block1)
             );

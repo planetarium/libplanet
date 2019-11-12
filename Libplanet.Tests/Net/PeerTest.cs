@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Net
             using (var stream = new MemoryStream())
             {
                 formatter.Serialize(stream, peer);
-                byte[] serialized = stream.ToArray();
+                stream.ToArray();
                 stream.Seek(0, SeekOrigin.Begin);
                 Peer deserialized = (Peer)formatter.Deserialize(stream);
                 Assert.IsType(peer.GetType(), deserialized);

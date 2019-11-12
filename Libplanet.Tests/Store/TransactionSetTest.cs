@@ -88,7 +88,9 @@ namespace Libplanet.Tests.Store
             Assert.False(_set.Remove(_fx.Transaction1.Id));
             _set[_fx.Transaction1.Id] = _fx.Transaction1;
             Assert.True(_set.Remove(_fx.Transaction1.Id));
+#pragma warning disable S1481 // Remove this unnecessary variable 'chain'
             Assert.Throws<KeyNotFoundException>(() => { var val = _set[_fx.Transaction1.Id]; });
+#pragma warning restore S1481 // Remove this unnecessary variable 'chain'
         }
 
         public void Dispose()

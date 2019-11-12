@@ -271,7 +271,6 @@ namespace Libplanet.Tests.Net
         public async Task StopAsync()
         {
             Swarm<DumbAction> swarm = _swarms[0];
-            BlockChain<DumbAction> chain = _blockchains[0];
 
             await swarm.StopAsync();
             var task = await StartAsync(swarm);
@@ -291,7 +290,6 @@ namespace Libplanet.Tests.Net
         public async Task CanWaitForRunning()
         {
             Swarm<DumbAction> swarm = _swarms[0];
-            BlockChain<DumbAction> chain = _blockchains[0];
 
             Assert.False(swarm.Running);
 
@@ -303,10 +301,12 @@ namespace Libplanet.Tests.Net
                 }
             );
 
-            Task producerTask = Task.Run(async () =>
+#pragma warning disable CS4014 // Does not await by intention
+            Task.Run(async () =>
             {
                 await swarm.StartAsync();
             });
+#pragma warning disable CS4014 // Does not await by intention
 
             await consumerTask;
             Assert.True(swarm.Running);

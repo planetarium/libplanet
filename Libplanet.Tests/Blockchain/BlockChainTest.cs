@@ -109,7 +109,9 @@ namespace Libplanet.Tests.Blockchain
         public async void CanFindBlockByIndex()
         {
             // use assignment to snooze compiler error (CS0201)
+#pragma warning disable S1481  // Remove the unused local variable 'x'.
             Assert.Throws<ArgumentOutOfRangeException>(() => { var x = _blockChain[0]; });
+#pragma warning restore S1481  // Remove the unused local variable 'x'.
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             Assert.Equal(block, _blockChain[0]);
 

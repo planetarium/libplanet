@@ -75,8 +75,6 @@
     <!-- Add a 'protected' constructor or the 'static' keyword to the class
     declaration. -->
     <Rule Id="S1118" Action="None" />
-    <!-- Remove the unused local variable 'x'. -->
-    <Rule Id="S1481" Action="None" />
     <!-- Parameters to 'Equal' have the same names but not the same order as
     the method arguments. -->
     <Rule Id="S2234" Action="None" />

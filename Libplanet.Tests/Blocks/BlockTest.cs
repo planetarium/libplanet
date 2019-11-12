@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.Hash
             );
 
-            Block<PolymorphicAction<BaseAction>> next = MineNext(_fx.Genesis);
+            MineNext(_fx.Genesis);
 
             Assert.Equal(1, _fx.Next.Index);
             Assert.Equal(1, _fx.Next.Difficulty);
