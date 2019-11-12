@@ -101,6 +101,51 @@ namespace Libplanet.Blocks
                 .ToImmutableArray();
         }
 
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
+        /// For a more automated way, see also <see cref="Mine"/> method.
+        /// </summary>
+        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// </param>
+        /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
+        /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="previousTotalDifficulty">Total difficulty of previous block.</param>
+        /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
+        /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
+        /// <param name="miner">An optional address refers to who mines this block.
+        /// Goes to the <see cref="Miner"/>.</param>
+        /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
+        /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
+        /// Goes to the <see cref="PreviousHash"/>.</param>
+        /// <param name="timestamp">The time this block is created.  Goes to
+        /// the <see cref="Timestamp"/>.</param>
+        /// <param name="transactions">The transactions to be mined together with this block.
+        /// Transactions become sorted in an unpredicted-before-mined order and then go to
+        /// the <see cref="Transactions"/> property.
+        /// </param>
+        /// <seealso cref="Mine"/>
+        public Block(
+            long index,
+            long difficulty,
+            long previousTotalDifficulty,
+            Nonce nonce,
+            Address? miner,
+            HashDigest<SHA256>? previousHash,
+            DateTimeOffset timestamp,
+            IEnumerable<Transaction<T>> transactions)
+            : this(
+                index,
+                difficulty,
+                nonce,
+                miner,
+                previousHash,
+                timestamp,
+                transactions
+            )
+        {
+            TotalDifficulty = difficulty + previousTotalDifficulty;
+        }
+
         protected Block(SerializationInfo info, StreamingContext context)
             : this(new RawBlock(info, context))
         {
@@ -135,6 +180,8 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public long Difficulty { get; }
 
+        public long TotalDifficulty { get; }
+
         [IgnoreDuringEquals]
         public Nonce Nonce { get; }
 
@@ -154,8 +201,8 @@ namespace Libplanet.Blocks
         /// Generate a block with given <paramref name="transactions"/>.
         /// </summary>
         /// <param name="index">Index of the block.</param>
-        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
-        /// <see cref="Nonce"/>.</param>
+        /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>.</param>
+        /// <param name="previousTotalDifficulty">total difficulty of previous block.</param>
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="previousHash">
         /// The <see cref="HashDigest{SHA256}"/> of previous block.
@@ -170,6 +217,7 @@ namespace Libplanet.Blocks
         public static Block<T> Mine(
             long index,
             long difficulty,
+            long previousTotalDifficulty,
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
@@ -180,6 +228,7 @@ namespace Libplanet.Blocks
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
+                previousTotalDifficulty,
                 n,
                 miner,
                 previousHash,

@@ -120,12 +120,14 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             HashDigest<SHA256> previousHash = previousBlock.Hash;
             DateTimeOffset timestamp = previousBlock.Timestamp.AddDays(1);
             Address miner = previousBlock.Miner.Value;
+            long previousTotalDifficulty = previousBlock.TotalDifficulty;
 
             if (nonce == null)
             {
                 return Block<T>.Mine(
                     index: index,
                     difficulty: difficulty,
+                    previousTotalDifficulty: previousTotalDifficulty,
                     miner: miner,
                     previousHash: previousHash,
                     timestamp: timestamp,
@@ -136,6 +138,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return new Block<T>(
                 index: index,
                 difficulty: difficulty,
+                previousTotalDifficulty: previousTotalDifficulty,
                 nonce: new Nonce(nonce),
                 miner: miner,
                 previousHash: previousHash,

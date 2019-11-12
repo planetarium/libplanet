@@ -496,6 +496,7 @@ namespace Libplanet.Tests.Blocks
             var block = Block<DumbAction>.Mine(
                 _fx.Next.Index,
                 _fx.Next.Difficulty,
+                _fx.Next.TotalDifficulty,
                 _fx.Next.Miner.Value,
                 _fx.Genesis.Hash,
                 now + TimeSpan.FromSeconds(901),
@@ -647,6 +648,19 @@ namespace Libplanet.Tests.Blocks
 
             Assert.True(sameBlock1.Equals(sameBlock2));
             Assert.False(sameBlock2.Equals(differentBlock));
+        }
+
+        [Fact]
+        public void TotalDifficulty()
+        {
+            Block<PolymorphicAction<BaseAction>> genesis = _fx.Genesis;
+            Assert.Equal(0, genesis.Difficulty);
+            Assert.Equal(0, genesis.TotalDifficulty);
+
+            Block<PolymorphicAction<BaseAction>> blockA = _fx.Next;
+
+            Assert.Equal(1, blockA.Difficulty);
+            Assert.Equal(1, blockA.TotalDifficulty);
         }
     }
 }
