@@ -14,9 +14,15 @@ To be released.
 
 ### Added APIs
 
+- Added `IStore.Contains(HashDigest<SHA256>)`.  [[#615], [#667]]
+
 ### Behavioral changes
 
 ### Bug fixes
+
+
+[#615]: https://github.com/planetarium/libplanet/issues/615
+[#667]: https://github.com/planetarium/libplanet/pull/667
 
 
 Version 0.7.0
