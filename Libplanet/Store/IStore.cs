@@ -45,6 +45,8 @@ namespace Libplanet.Store
 
         long CountIndex(Guid chainId);
 
+        bool Contains(HashDigest<SHA256> hashDigest);
+
         /// <summary>
         /// Lists all block hashes in the <parmaref name="chainId"/>.
         /// </summary>

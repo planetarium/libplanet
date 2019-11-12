@@ -23,6 +23,8 @@ namespace Libplanet.Store
 
         public abstract long CountIndex(Guid chainId);
 
+        public abstract bool Contains(HashDigest<SHA256> hashDigest);
+
         public abstract IEnumerable<HashDigest<SHA256>> IterateIndexes(
             Guid chainId,
             int offset,
