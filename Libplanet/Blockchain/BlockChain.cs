@@ -573,10 +573,23 @@ namespace Libplanet.Blockchain
             Block<T> block;
             try
             {
+                long totalDifficulty = 0;
+
+                if (prevHash is null)
+                {
+                    totalDifficulty = difficulty;
+                }
+                else
+                {
+                    totalDifficulty =
+                        this[prevHash.Value].TotalDifficulty + difficulty;
+                }
+
                 block = await Task.Run(
                     () => Block<T>.Mine(
                         index: index,
                         difficulty: difficulty,
+                        totalDifficulty: totalDifficulty,
                         miner: miner,
                         previousHash: prevHash,
                         timestamp: currentTime,

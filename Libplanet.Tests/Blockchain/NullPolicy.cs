@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Blockchain
         private readonly InvalidBlockException _exceptionToThrow;
         private readonly long _difficulty;
 
-        public NullPolicy(InvalidBlockException exceptionToThrow = null, long difficulty = 1)
+        public NullPolicy(InvalidBlockException exceptionToThrow = null, long difficulty = 1, long totalDifficulty = 1)
         {
             _exceptionToThrow = exceptionToThrow;
             _difficulty = difficulty;

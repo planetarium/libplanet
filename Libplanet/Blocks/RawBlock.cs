@@ -12,6 +12,7 @@ namespace Libplanet.Blocks
             byte[] nonce,
             byte[] miner,
             long difficulty,
+            long totalDifficulty,
             byte[] previousHash,
             IEnumerable transactions)
             : this(
@@ -20,6 +21,7 @@ namespace Libplanet.Blocks
                 nonce,
                 miner,
                 difficulty,
+                totalDifficulty,
                 previousHash,
                 transactions,
                 null
@@ -33,6 +35,7 @@ namespace Libplanet.Blocks
             byte[] nonce,
             byte[] miner,
             long difficulty,
+            long totalDifficulty,
             byte[] previousHash,
             IEnumerable transactions,
             byte[] hash)
@@ -42,6 +45,7 @@ namespace Libplanet.Blocks
             Nonce = nonce;
             Miner = miner;
             Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
             PreviousHash = previousHash;
             Transactions = transactions;
             Hash = hash;
@@ -54,6 +58,7 @@ namespace Libplanet.Blocks
                 nonce: info.GetValue<byte[]>("nonce"),
                 miner: info.GetValue<byte[]>("reward_beneficiary"),
                 difficulty: info.GetInt32("difficulty"),
+                totalDifficulty: info.GetInt32("total_difficulty"),
                 previousHash: info.GetValueOrDefault<byte[]>(
                     "previous_hash",
                     null
@@ -74,6 +79,8 @@ namespace Libplanet.Blocks
 
         public long Difficulty { get; }
 
+        public long TotalDifficulty { get; }
+
         public byte[] PreviousHash { get; }
 
         public byte[] Hash { get; }
@@ -89,6 +96,7 @@ namespace Libplanet.Blocks
             info.AddValue("timestamp", Timestamp);
             info.AddValue("reward_beneficiary", Miner);
             info.AddValue("difficulty", Difficulty);
+            info.AddValue("total_difficulty", TotalDifficulty);
             info.AddValue("transactions", Transactions);
             info.AddValue("nonce", Nonce);
 
@@ -110,6 +118,7 @@ namespace Libplanet.Blocks
                 timestamp: Timestamp,
                 miner: Miner,
                 difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
                 nonce: Nonce,
                 previousHash: PreviousHash,
                 transactions: Transactions,

@@ -35,6 +35,8 @@ namespace Libplanet.Blocks
         /// </param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/> has to
         /// satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The mining total difficulty that <paramref name="nonce"/>
+        /// has to satisfy.  Goes to the <see cref="TotalDifficulty"/>.</param>
         /// <param name="nonce">The nonce which satisfy the given <paramref name="difficulty"/> with
         /// any other field values.  Goes to the <see cref="Nonce"/>.</param>
         /// <param name="miner">An optional address refers to who mines this block.
@@ -52,6 +54,7 @@ namespace Libplanet.Blocks
         public Block(
             long index,
             long difficulty,
+            long totalDifficulty,
             Nonce nonce,
             Address? miner,
             HashDigest<SHA256>? previousHash,
@@ -60,6 +63,7 @@ namespace Libplanet.Blocks
         {
             Index = index;
             Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
             Nonce = nonce;
             Miner = miner;
             PreviousHash = previousHash;
@@ -111,6 +115,7 @@ namespace Libplanet.Blocks
             : this(
                 rb.Index,
                 rb.Difficulty,
+                rb.TotalDifficulty,
                 new Nonce(rb.Nonce),
                 rb.Miner is null ? (Address?)null : new Address(rb.Miner),
 #pragma warning disable MEN002 // Line is too long
@@ -137,6 +142,9 @@ namespace Libplanet.Blocks
         public long Difficulty { get; }
 
         [IgnoreDuringEquals]
+        public long TotalDifficulty { get; }
+
+        [IgnoreDuringEquals]
         public Nonce Nonce { get; }
 
         [IgnoreDuringEquals]
@@ -157,6 +165,8 @@ namespace Libplanet.Blocks
         /// <param name="index">Index of the block.</param>
         /// <param name="difficulty">Difficulty to find the <see cref="Block{T}"/>
         /// <see cref="Nonce"/>.</param>
+        /// <param name="totalDifficulty">Total difficulty to find the <see cref="Block{T}"/>.
+        /// </param>
         /// <param name="miner">The <see cref="Address"/> of miner that mined the block.</param>
         /// <param name="previousHash">
         /// The <see cref="HashDigest{SHA256}"/> of previous block.
@@ -171,6 +181,7 @@ namespace Libplanet.Blocks
         public static Block<T> Mine(
             long index,
             long difficulty,
+            long totalDifficulty,
             Address miner,
             HashDigest<SHA256>? previousHash,
             DateTimeOffset timestamp,
@@ -181,11 +192,13 @@ namespace Libplanet.Blocks
             Block<T> MakeBlock(Nonce n) => new Block<T>(
                 index,
                 difficulty,
+                totalDifficulty,
                 n,
                 miner,
                 previousHash,
                 timestamp,
-                txs);
+                txs
+            );
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
@@ -490,6 +503,7 @@ namespace Libplanet.Blocks
                 nonce: Nonce.ToByteArray(),
                 miner: Miner?.ToByteArray(),
                 difficulty: Difficulty,
+                totalDifficulty: TotalDifficulty,
                 transactions: transactions,
                 previousHash: PreviousHash?.ToByteArray()
             );

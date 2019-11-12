@@ -78,6 +78,7 @@ namespace Libplanet.Store
                 return new Block<T>(
                     index: rawBlock.Index,
                     difficulty: rawBlock.Difficulty,
+                    totalDifficulty: rawBlock.TotalDifficulty,
                     nonce: new Nonce(rawBlock.Nonce),
                     miner: new Address(rawBlock.Miner),
                     previousHash: prevHash,
