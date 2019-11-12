@@ -492,8 +492,8 @@ namespace Libplanet.Store
         public override void StoreStateReference(
             Guid chainId,
             IImmutableSet<Address> addresses,
-            HashDigest<SHA256> hash,
-            long index)
+            HashDigest<SHA256> blockHash,
+            long blockIndex)
         {
             string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
@@ -501,8 +501,8 @@ namespace Libplanet.Store
                 .Select(addr => new StateRefDoc
                 {
                     Address = addr,
-                    BlockIndex = index,
-                    BlockHash = hash,
+                    BlockIndex = blockIndex,
+                    BlockHash = blockHash,
                 })
                 .Where(doc => !coll.Exists(d => d.Id == doc.Id));
             coll.InsertBulk(stateRefDocs);

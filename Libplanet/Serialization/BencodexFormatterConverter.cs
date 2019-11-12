@@ -84,14 +84,14 @@ namespace Libplanet.Serialization
             return _impl.ToSingle(value);
         }
 
-        public string ToString(object o)
+        public string ToString(object value)
         {
-            if (o is byte[] bytes)
+            if (value is byte[] bytes)
             {
                 return Encoding.UTF8.GetString(bytes);
             }
 
-            return (string)o;
+            return (string)value;
         }
 
         public ushort ToUInt16(object value)
