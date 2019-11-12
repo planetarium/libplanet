@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.Net;
 using System.Runtime.Serialization;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 
 namespace Libplanet.Net
 {

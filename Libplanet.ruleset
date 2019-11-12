@@ -40,4 +40,90 @@
     <Rule Id="MEN010" Action="None" />
     <Rule Id="MEN011" Action="None" />
   </Rules>
+
+  <Rules AnalyzerId="SonarAnalyzer" RuleNamespace="SonarAnalyzer">
+    <!-- Either remove or fill this block of code. -->
+    <Rule Id="S108" Action="None" />
+    <!-- 'System.NullReferenceException' should not be thrown by user code. -->
+    <Rule Id="S112" Action="None" />
+    <!-- Rename parameter 'A' to 'B' to match the interface declaration. -->
+    <Rule Id="S927" Action="None" />
+    <!-- Add the default parameter value defined in the overridden method. -->
+    <Rule Id="S1006" Action="None" />
+    <!-- Add a 'protected' constructor or the 'static' keyword to the class
+    declaration. -->
+    <Rule Id="S1118" Action="None" />
+    <!-- Add an explanation -->
+    <Rule Id="S1123" Action="None" />
+    <!-- Take the required action to fix the issue indicated by this
+    'FIXME' comment. -->
+    <Rule Id="S1134" Action="None" />
+    <!-- Complete the task associated to this 'TODO' comment. -->
+    <Rule Id="S1135" Action="None" />
+    <!-- Return an empty collection instead of null. -->
+    <Rule Id="S1168" Action="None" />
+    <!-- Remove this unused method parameter 'cancellationToken'. -->
+    <Rule Id="S1172" Action="None" />
+    <!-- This struct overrides 'GetHashCode' and should therefore also override
+    'Equals'. -->
+    <Rule Id="S1206" Action="None" />
+    <!-- When implementing IComparable<T> or IComparable, you should also
+    override Equals, <, >, <=, >=, ==, !=. -->
+    <Rule Id="S1210" Action="None" />
+    <!-- Use a StringBuilder instead. -->
+    <Rule Id="S1643" Action="None" />
+    <!-- Use a 'null' check instead. -->
+    <Rule Id="S2219" Action="None" />
+    <!-- variable is null on at least one execution path. -->
+    <Rule Id="S2259" Action="None" />
+    <!-- Combine this 'try' with the one starting on line x. -->
+    <Rule Id="S2327" Action="None" />
+    <!-- Refactor property into a method, properties should not copy
+    collections. -->
+    <Rule Id="S2365" Action="None" />
+    <!-- Replace the control character at position 1 by its escape sequence
+    '\n'. -->
+    <Rule Id="S2479" Action="None" />
+    <!-- A static field in a generic type is not shared among instances of
+    different close constructed types. -->
+    <Rule Id="S2743" Action="None" />
+    <!-- Make field 'readonly'. -->
+    <Rule Id="S2933" Action="None" />
+    <!-- Change the visibility of this constructor to 'protected'. -->
+    <Rule Id="S3442" Action="None" />
+    <!-- Fix this implementation of 'IDisposable' to conform to the dispose
+    pattern. -->
+    <Rule Id="S3881" Action="None" />
+    <!-- Update this implementation of 'ISerializable' to conform to the
+    recommended serialization pattern. -->
+    <Rule Id="S3925" Action="None" />
+    <!-- Use a constructor overloads that allows a more meaningful exception
+    message to be provided. -->
+    <Rule Id="S3928" Action="None" />
+    <!-- Initialize all 'static fields' inline and remove the
+    'static constructor'. -->
+    <Rule Id="S3963" Action="None" />
+    <!-- Update this implementation of 'ISerializable' to conform to the
+    recommended serialization pattern. -->
+    <Rule Id="S3925" Action="None" />
+    <!-- Split this method into two, one handling parameters check and the
+    other handling the asynchronous code. -->
+    <Rule Id="S4457" Action="None" />
+
+    <!-- Merge this if statement with the enclosing one. -->
+    <Rule Id="S1066" Action="None" />
+    <!-- Remove the unnecessary Boolean literal(s). -->
+    <Rule Id="S1125" Action="None" />
+    <!-- Remove the field '_bucketSize' and declare it as a local variable
+    in the relevant methods. -->
+    <Rule Id="S1450" Action="None" />
+    <!-- Remove the unused local variable 'x'. -->
+    <Rule Id="S1481" Action="None" />
+    <!-- Extract this nested ternary operation into an independent
+    statement. -->
+    <Rule Id="S3358" Action="None" />
+    <!-- Seal class 'Transaction' or implement 'IEqualityComparer<T>'
+    instead. -->
+    <Rule Id="S4035" Action="None" />
+  </Rules>
 </RuleSet>

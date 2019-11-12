@@ -63,11 +63,9 @@ namespace Libplanet.Net
                     }
                     catch (ArgumentException)
                     {
-                        continue;
                     }
                     catch (SocketException)
                     {
-                        continue;
                     }
                 }
             }

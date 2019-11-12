@@ -15,7 +15,7 @@ namespace Libplanet.Tests.Net
         {
             var turnUri = new Uri(
                 Environment.GetEnvironmentVariable(
-                    FactOnlyTurnAvailable.TurnUrlVarName));
+                    FactOnlyTurnAvailableAttribute.TurnUrlVarName));
             var userInfo = turnUri.UserInfo.Split(':');
             await Assert.ThrowsAsync<ArgumentException>(
                 async () =>

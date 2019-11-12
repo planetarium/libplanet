@@ -24,7 +24,6 @@ using NetMQ.Sockets;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace Libplanet.Tests.Net
 {
@@ -1535,9 +1534,9 @@ namespace Libplanet.Tests.Net
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ExchangeWithIceServer()
         {
-            Uri turnUrl = FactOnlyTurnAvailable.TurnUri;
-            string username = FactOnlyTurnAvailable.Username;
-            string password = FactOnlyTurnAvailable.Password;
+            Uri turnUrl = FactOnlyTurnAvailableAttribute.TurnUri;
+            string username = FactOnlyTurnAvailableAttribute.Username;
+            string password = FactOnlyTurnAvailableAttribute.Password;
 
             IEnumerable<IceServer> iceServers = new[]
             {

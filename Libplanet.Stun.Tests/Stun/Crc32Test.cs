@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Libplanet.Stun;
 using Xunit;
 
 namespace Libplanet.Stun.Tests

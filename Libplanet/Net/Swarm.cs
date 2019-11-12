@@ -1315,7 +1315,6 @@ namespace Libplanet.Net
                         e,
                         $"An unexpected exception occurred during {nameof(RefreshAllocate)}(): {e}"
                     );
-                    continue;
                 }
             }
         }
@@ -1342,7 +1341,6 @@ namespace Libplanet.Net
                     var msg = "An unexpected exception occurred during " +
                               $"{nameof(RefreshPermissions)}(): {{0}}";
                     _logger.Error(e, msg, e);
-                    continue;
                 }
             }
         }
@@ -1484,7 +1482,7 @@ namespace Libplanet.Net
 
             _logger.Debug(
                 $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
-                newHashes.Count());
+                newHashes.Count);
 
             System.Collections.Async.IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,

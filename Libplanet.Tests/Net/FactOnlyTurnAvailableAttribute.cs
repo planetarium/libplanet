@@ -3,11 +3,11 @@ using Xunit;
 
 namespace Libplanet.Tests.Net
 {
-    public sealed class FactOnlyTurnAvailable : FactAttribute
+    public sealed class FactOnlyTurnAvailableAttribute : FactAttribute
     {
         public const string TurnUrlVarName = "TURN_SERVER_URL";
 
-        static FactOnlyTurnAvailable()
+        static FactOnlyTurnAvailableAttribute()
         {
             string turnUrlStr =
                 Environment.GetEnvironmentVariable(TurnUrlVarName);
@@ -25,7 +25,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        public FactOnlyTurnAvailable()
+        public FactOnlyTurnAvailableAttribute()
         {
             if (TurnUri == null)
             {

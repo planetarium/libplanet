@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.Serialization;
 using Bencodex.Types;
 using Libplanet.Serialization;

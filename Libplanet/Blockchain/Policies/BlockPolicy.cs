@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;

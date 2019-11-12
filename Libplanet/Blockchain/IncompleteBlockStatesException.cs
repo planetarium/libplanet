@@ -1,6 +1,8 @@
 using System;
 using System.Security.Cryptography;
+#pragma warning disable S1128
 using Libplanet.Blocks;
+#pragma warning restore S1128
 
 namespace Libplanet.Blockchain
 {

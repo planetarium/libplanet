@@ -273,9 +273,9 @@ namespace Libplanet.Crypto
             );
 
             // For sanity check.
-#pragma warning disable SA1312
+#pragma warning disable SA1312, S1481
             var _ = new PrivateKey(param).PublicKey;
-#pragma warning restore SA1312
+#pragma warning restore SA1312, S1481
             return param;
         }
 

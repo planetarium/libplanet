@@ -2,7 +2,6 @@ using System;
 using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text;
-using Libplanet.Tx;
 
 namespace Libplanet.Serialization
 {

@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using Libplanet.Blocks;
 
 namespace Libplanet.Net
 {
