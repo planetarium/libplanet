@@ -5871,6 +5871,486 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.ChainIdNotFoundException.ChainId
   nameWithType: ChainIdNotFoundException.ChainId
+- uid: Libplanet.Store.DefaultStore
+  name: DefaultStore
+  href: api/Libplanet.Store.DefaultStore.html
+  commentId: T:Libplanet.Store.DefaultStore
+  fullName: Libplanet.Store.DefaultStore
+  nameWithType: DefaultStore
+- uid: Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Boolean,System.Boolean)
+  name: DefaultStore(String, Boolean, Int32, Boolean, Boolean)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Boolean,System.Boolean)
+  fullName: Libplanet.Store.DefaultStore.DefaultStore(System.String, System.Boolean, System.Int32, System.Boolean, System.Boolean)
+  nameWithType: DefaultStore.DefaultStore(String, Boolean, Int32, Boolean, Boolean)
+- uid: Libplanet.Store.DefaultStore.#ctor*
+  name: DefaultStore
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_
+  commentId: Overload:Libplanet.Store.DefaultStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DefaultStore
+  nameWithType: DefaultStore.DefaultStore
+- uid: Libplanet.Store.DefaultStore.AppendIndex(Guid,Libplanet.HashDigest{SHA256})
+  name: AppendIndex(Guid, HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_AppendIndex_Guid_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.AppendIndex(Guid,Libplanet.HashDigest{SHA256})
+  name.vb: AppendIndex(Guid, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.AppendIndex(Guid, Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.AppendIndex(Guid, Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.AppendIndex(Guid, HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.AppendIndex(Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.AppendIndex*
+  name: AppendIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_AppendIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.AppendIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.AppendIndex
+  nameWithType: DefaultStore.AppendIndex
+- uid: Libplanet.Store.DefaultStore.CountBlocks
+  name: CountBlocks()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountBlocks
+  commentId: M:Libplanet.Store.DefaultStore.CountBlocks
+  fullName: Libplanet.Store.DefaultStore.CountBlocks()
+  nameWithType: DefaultStore.CountBlocks()
+- uid: Libplanet.Store.DefaultStore.CountBlocks*
+  name: CountBlocks
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountBlocks_
+  commentId: Overload:Libplanet.Store.DefaultStore.CountBlocks
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.CountBlocks
+  nameWithType: DefaultStore.CountBlocks
+- uid: Libplanet.Store.DefaultStore.CountIndex(Guid)
+  name: CountIndex(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountIndex_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.CountIndex(Guid)
+  fullName: Libplanet.Store.DefaultStore.CountIndex(Guid)
+  nameWithType: DefaultStore.CountIndex(Guid)
+- uid: Libplanet.Store.DefaultStore.CountIndex*
+  name: CountIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.CountIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.CountIndex
+  nameWithType: DefaultStore.CountIndex
+- uid: Libplanet.Store.DefaultStore.CountTransactions
+  name: CountTransactions()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountTransactions
+  commentId: M:Libplanet.Store.DefaultStore.CountTransactions
+  fullName: Libplanet.Store.DefaultStore.CountTransactions()
+  nameWithType: DefaultStore.CountTransactions()
+- uid: Libplanet.Store.DefaultStore.CountTransactions*
+  name: CountTransactions
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountTransactions_
+  commentId: Overload:Libplanet.Store.DefaultStore.CountTransactions
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.CountTransactions
+  nameWithType: DefaultStore.CountTransactions
+- uid: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest{SHA256})
+  name: DeleteBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest{SHA256})
+  name.vb: DeleteBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.DeleteBlock(Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.DeleteBlock(HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.DeleteBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.DeleteBlock*
+  name: DeleteBlock
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteBlock_
+  commentId: Overload:Libplanet.Store.DefaultStore.DeleteBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DeleteBlock
+  nameWithType: DefaultStore.DeleteBlock
+- uid: Libplanet.Store.DefaultStore.DeleteChainId(Guid)
+  name: DeleteChainId(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteChainId_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.DeleteChainId(Guid)
+  fullName: Libplanet.Store.DefaultStore.DeleteChainId(Guid)
+  nameWithType: DefaultStore.DeleteChainId(Guid)
+- uid: Libplanet.Store.DefaultStore.DeleteChainId*
+  name: DeleteChainId
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteChainId_
+  commentId: Overload:Libplanet.Store.DefaultStore.DeleteChainId
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DeleteChainId
+  nameWithType: DefaultStore.DeleteChainId
+- uid: Libplanet.Store.DefaultStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
+  name: DeleteIndex(Guid, HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
+  name.vb: DeleteIndex(Guid, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.DeleteIndex(Guid, Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.DeleteIndex(Guid, Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.DeleteIndex(Guid, HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.DeleteIndex(Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.DeleteIndex*
+  name: DeleteIndex
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteIndex_
+  commentId: Overload:Libplanet.Store.DefaultStore.DeleteIndex
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DeleteIndex
+  nameWithType: DefaultStore.DeleteIndex
+- uid: Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
+  name: DeleteTransaction(TxId)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
+  nameWithType: DefaultStore.DeleteTransaction(TxId)
+- uid: Libplanet.Store.DefaultStore.DeleteTransaction*
+  name: DeleteTransaction
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTransaction_
+  commentId: Overload:Libplanet.Store.DefaultStore.DeleteTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.DeleteTransaction
+  nameWithType: DefaultStore.DeleteTransaction
+- uid: Libplanet.Store.DefaultStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_Dispose
+  commentId: M:Libplanet.Store.DefaultStore.Dispose
+  fullName: Libplanet.Store.DefaultStore.Dispose()
+  nameWithType: DefaultStore.Dispose()
+- uid: Libplanet.Store.DefaultStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_Dispose_
+  commentId: Overload:Libplanet.Store.DefaultStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.Dispose
+  nameWithType: DefaultStore.Dispose
+- uid: Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})
+  name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})
+  name.vb: ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid, Guid, Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.ForkBlockIndexes(Guid, Guid, Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.ForkBlockIndexes*
+  name: ForkBlockIndexes
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkBlockIndexes_
+  commentId: Overload:Libplanet.Store.DefaultStore.ForkBlockIndexes
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ForkBlockIndexes
+  nameWithType: DefaultStore.ForkBlockIndexes
+- uid: Libplanet.Store.DefaultStore.ForkStateReferences*
+  name: ForkStateReferences
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkStateReferences_
+  commentId: Overload:Libplanet.Store.DefaultStore.ForkStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ForkStateReferences
+  nameWithType: DefaultStore.ForkStateReferences
+- uid: Libplanet.Store.DefaultStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})
+  name: ForkStateReferences<T>(Guid, Guid, Block<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.DefaultStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})
+  name.vb: ForkStateReferences(Of T)(Guid, Guid, Block(Of T))
+  fullName: Libplanet.Store.DefaultStore.ForkStateReferences<T>(Guid, Guid, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.ForkStateReferences(Of T)(Guid, Guid, Libplanet.Blocks.Block(Of T))
+  nameWithType: DefaultStore.ForkStateReferences<T>(Guid, Guid, Block<T>)
+  nameWithType.vb: DefaultStore.ForkStateReferences(Of T)(Guid, Guid, Block(Of T))
+- uid: Libplanet.Store.DefaultStore.GetBlockStates(Libplanet.HashDigest{SHA256})
+  name: GetBlockStates(HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockStates_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.GetBlockStates(Libplanet.HashDigest{SHA256})
+  name.vb: GetBlockStates(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.GetBlockStates(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.GetBlockStates(Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.GetBlockStates(HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.GetBlockStates(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.GetBlockStates*
+  name: GetBlockStates
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetBlockStates_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetBlockStates
+  nameWithType: DefaultStore.GetBlockStates
+- uid: Libplanet.Store.DefaultStore.GetCanonicalChainId
+  name: GetCanonicalChainId()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetCanonicalChainId
+  commentId: M:Libplanet.Store.DefaultStore.GetCanonicalChainId
+  fullName: Libplanet.Store.DefaultStore.GetCanonicalChainId()
+  nameWithType: DefaultStore.GetCanonicalChainId()
+- uid: Libplanet.Store.DefaultStore.GetCanonicalChainId*
+  name: GetCanonicalChainId
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetCanonicalChainId_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetCanonicalChainId
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetCanonicalChainId
+  nameWithType: DefaultStore.GetCanonicalChainId
+- uid: Libplanet.Store.DefaultStore.GetTransaction*
+  name: GetTransaction
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTransaction_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetTransaction
+  nameWithType: DefaultStore.GetTransaction
+- uid: Libplanet.Store.DefaultStore.GetTransaction``1(Libplanet.Tx.TxId)
+  name: GetTransaction<T>(TxId)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTransaction__1_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.DefaultStore.GetTransaction``1(Libplanet.Tx.TxId)
+  name.vb: GetTransaction(Of T)(TxId)
+  fullName: Libplanet.Store.DefaultStore.GetTransaction<T>(Libplanet.Tx.TxId)
+  fullName.vb: Libplanet.Store.DefaultStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
+  nameWithType: DefaultStore.GetTransaction<T>(TxId)
+  nameWithType.vb: DefaultStore.GetTransaction(Of T)(TxId)
+- uid: Libplanet.Store.DefaultStore.GetTxNonce(Guid,Libplanet.Address)
+  name: GetTxNonce(Guid, Address)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTxNonce_Guid_Libplanet_Address_
+  commentId: M:Libplanet.Store.DefaultStore.GetTxNonce(Guid,Libplanet.Address)
+  fullName: Libplanet.Store.DefaultStore.GetTxNonce(Guid, Libplanet.Address)
+  nameWithType: DefaultStore.GetTxNonce(Guid, Address)
+- uid: Libplanet.Store.DefaultStore.GetTxNonce*
+  name: GetTxNonce
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_GetTxNonce_
+  commentId: Overload:Libplanet.Store.DefaultStore.GetTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.GetTxNonce
+  nameWithType: DefaultStore.GetTxNonce
+- uid: Libplanet.Store.DefaultStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
+  name: IncreaseTxNonce(Guid, Address, Int64)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_
+  commentId: M:Libplanet.Store.DefaultStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
+  fullName: Libplanet.Store.DefaultStore.IncreaseTxNonce(Guid, Libplanet.Address, System.Int64)
+  nameWithType: DefaultStore.IncreaseTxNonce(Guid, Address, Int64)
+- uid: Libplanet.Store.DefaultStore.IncreaseTxNonce*
+  name: IncreaseTxNonce
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IncreaseTxNonce_
+  commentId: Overload:Libplanet.Store.DefaultStore.IncreaseTxNonce
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IncreaseTxNonce
+  nameWithType: DefaultStore.IncreaseTxNonce
+- uid: Libplanet.Store.DefaultStore.IndexBlockHash(Guid,System.Int64)
+  name: IndexBlockHash(Guid, Int64)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IndexBlockHash_Guid_System_Int64_
+  commentId: M:Libplanet.Store.DefaultStore.IndexBlockHash(Guid,System.Int64)
+  fullName: Libplanet.Store.DefaultStore.IndexBlockHash(Guid, System.Int64)
+  nameWithType: DefaultStore.IndexBlockHash(Guid, Int64)
+- uid: Libplanet.Store.DefaultStore.IndexBlockHash*
+  name: IndexBlockHash
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IndexBlockHash_
+  commentId: Overload:Libplanet.Store.DefaultStore.IndexBlockHash
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IndexBlockHash
+  nameWithType: DefaultStore.IndexBlockHash
+- uid: Libplanet.Store.DefaultStore.IterateBlockHashes
+  name: IterateBlockHashes()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateBlockHashes
+  commentId: M:Libplanet.Store.DefaultStore.IterateBlockHashes
+  fullName: Libplanet.Store.DefaultStore.IterateBlockHashes()
+  nameWithType: DefaultStore.IterateBlockHashes()
+- uid: Libplanet.Store.DefaultStore.IterateBlockHashes*
+  name: IterateBlockHashes
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateBlockHashes_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateBlockHashes
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateBlockHashes
+  nameWithType: DefaultStore.IterateBlockHashes
+- uid: Libplanet.Store.DefaultStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name: IterateIndexes(Guid, Int32, Nullable<Int32>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.DefaultStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
+  name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
+  fullName: Libplanet.Store.DefaultStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.DefaultStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
+  nameWithType: DefaultStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
+  nameWithType.vb: DefaultStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
+- uid: Libplanet.Store.DefaultStore.IterateIndexes*
+  name: IterateIndexes
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateIndexes_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateIndexes
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateIndexes
+  nameWithType: DefaultStore.IterateIndexes
+- uid: Libplanet.Store.DefaultStore.IterateStagedTransactionIds
+  name: IterateStagedTransactionIds()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStagedTransactionIds
+  commentId: M:Libplanet.Store.DefaultStore.IterateStagedTransactionIds
+  fullName: Libplanet.Store.DefaultStore.IterateStagedTransactionIds()
+  nameWithType: DefaultStore.IterateStagedTransactionIds()
+- uid: Libplanet.Store.DefaultStore.IterateStagedTransactionIds*
+  name: IterateStagedTransactionIds
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStagedTransactionIds_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateStagedTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateStagedTransactionIds
+  nameWithType: DefaultStore.IterateStagedTransactionIds
+- uid: Libplanet.Store.DefaultStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.DefaultStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: DefaultStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: DefaultStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+- uid: Libplanet.Store.DefaultStore.IterateStateReferences*
+  name: IterateStateReferences
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStateReferences_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateStateReferences
+  nameWithType: DefaultStore.IterateStateReferences
+- uid: Libplanet.Store.DefaultStore.IterateTransactionIds
+  name: IterateTransactionIds()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTransactionIds
+  commentId: M:Libplanet.Store.DefaultStore.IterateTransactionIds
+  fullName: Libplanet.Store.DefaultStore.IterateTransactionIds()
+  nameWithType: DefaultStore.IterateTransactionIds()
+- uid: Libplanet.Store.DefaultStore.IterateTransactionIds*
+  name: IterateTransactionIds
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateTransactionIds_
+  commentId: Overload:Libplanet.Store.DefaultStore.IterateTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.IterateTransactionIds
+  nameWithType: DefaultStore.IterateTransactionIds
+- uid: Libplanet.Store.DefaultStore.ListAddresses(Guid)
+  name: ListAddresses(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAddresses_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.ListAddresses(Guid)
+  fullName: Libplanet.Store.DefaultStore.ListAddresses(Guid)
+  nameWithType: DefaultStore.ListAddresses(Guid)
+- uid: Libplanet.Store.DefaultStore.ListAddresses*
+  name: ListAddresses
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAddresses_
+  commentId: Overload:Libplanet.Store.DefaultStore.ListAddresses
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ListAddresses
+  nameWithType: DefaultStore.ListAddresses
+- uid: Libplanet.Store.DefaultStore.ListChainIds
+  name: ListChainIds()
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListChainIds
+  commentId: M:Libplanet.Store.DefaultStore.ListChainIds
+  fullName: Libplanet.Store.DefaultStore.ListChainIds()
+  nameWithType: DefaultStore.ListChainIds()
+- uid: Libplanet.Store.DefaultStore.ListChainIds*
+  name: ListChainIds
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListChainIds_
+  commentId: Overload:Libplanet.Store.DefaultStore.ListChainIds
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ListChainIds
+  nameWithType: DefaultStore.ListChainIds
+- uid: Libplanet.Store.DefaultStore.ListTxNonces(Guid)
+  name: ListTxNonces(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListTxNonces_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.ListTxNonces(Guid)
+  fullName: Libplanet.Store.DefaultStore.ListTxNonces(Guid)
+  nameWithType: DefaultStore.ListTxNonces(Guid)
+- uid: Libplanet.Store.DefaultStore.ListTxNonces*
+  name: ListTxNonces
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListTxNonces_
+  commentId: Overload:Libplanet.Store.DefaultStore.ListTxNonces
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ListTxNonces
+  nameWithType: DefaultStore.ListTxNonces
+- uid: Libplanet.Store.DefaultStore.PutBlock*
+  name: PutBlock
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock_
+  commentId: Overload:Libplanet.Store.DefaultStore.PutBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PutBlock
+  nameWithType: DefaultStore.PutBlock
+- uid: Libplanet.Store.DefaultStore.PutBlock``1(Libplanet.Blocks.Block{``0})
+  name: PutBlock<T>(Block<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock__1_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.DefaultStore.PutBlock``1(Libplanet.Blocks.Block{``0})
+  name.vb: PutBlock(Of T)(Block(Of T))
+  fullName: Libplanet.Store.DefaultStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
+  nameWithType: DefaultStore.PutBlock<T>(Block<T>)
+  nameWithType.vb: DefaultStore.PutBlock(Of T)(Block(Of T))
+- uid: Libplanet.Store.DefaultStore.PutTransaction*
+  name: PutTransaction
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTransaction_
+  commentId: Overload:Libplanet.Store.DefaultStore.PutTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PutTransaction
+  nameWithType: DefaultStore.PutTransaction
+- uid: Libplanet.Store.DefaultStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name: PutTransaction<T>(Transaction<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutTransaction__1_Libplanet_Tx_Transaction___0__
+  commentId: M:Libplanet.Store.DefaultStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
+  name.vb: PutTransaction(Of T)(Transaction(Of T))
+  fullName: Libplanet.Store.DefaultStore.PutTransaction<T>(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
+  nameWithType: DefaultStore.PutTransaction<T>(Transaction<T>)
+  nameWithType.vb: DefaultStore.PutTransaction(Of T)(Transaction(Of T))
+- uid: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
+  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_
+  commentId: M:Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
+  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+  fullName: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest<SHA256>, Libplanet.Action.AddressStateMap)
+  fullName.vb: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), Libplanet.Action.AddressStateMap)
+  nameWithType: DefaultStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
+  nameWithType.vb: DefaultStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+- uid: Libplanet.Store.DefaultStore.SetBlockStates*
+  name: SetBlockStates
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_
+  commentId: Overload:Libplanet.Store.DefaultStore.SetBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.SetBlockStates
+  nameWithType: DefaultStore.SetBlockStates
+- uid: Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)
+  name: SetCanonicalChainId(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetCanonicalChainId_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)
+  fullName: Libplanet.Store.DefaultStore.SetCanonicalChainId(Guid)
+  nameWithType: DefaultStore.SetCanonicalChainId(Guid)
+- uid: Libplanet.Store.DefaultStore.SetCanonicalChainId*
+  name: SetCanonicalChainId
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetCanonicalChainId_
+  commentId: Overload:Libplanet.Store.DefaultStore.SetCanonicalChainId
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.SetCanonicalChainId
+  nameWithType: DefaultStore.SetCanonicalChainId
+- uid: Libplanet.Store.DefaultStore.StageTransactionIds(IImmutableSet{Libplanet.Tx.TxId})
+  name: StageTransactionIds(IImmutableSet<TxId>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StageTransactionIds_IImmutableSet_Libplanet_Tx_TxId__
+  commentId: M:Libplanet.Store.DefaultStore.StageTransactionIds(IImmutableSet{Libplanet.Tx.TxId})
+  name.vb: StageTransactionIds(IImmutableSet(Of TxId))
+  fullName: Libplanet.Store.DefaultStore.StageTransactionIds(IImmutableSet<Libplanet.Tx.TxId>)
+  fullName.vb: Libplanet.Store.DefaultStore.StageTransactionIds(IImmutableSet(Of Libplanet.Tx.TxId))
+  nameWithType: DefaultStore.StageTransactionIds(IImmutableSet<TxId>)
+  nameWithType.vb: DefaultStore.StageTransactionIds(IImmutableSet(Of TxId))
+- uid: Libplanet.Store.DefaultStore.StageTransactionIds*
+  name: StageTransactionIds
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StageTransactionIds_
+  commentId: Overload:Libplanet.Store.DefaultStore.StageTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.StageTransactionIds
+  nameWithType: DefaultStore.StageTransactionIds
+- uid: Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
+  name: StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_
+  commentId: M:Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
+  name.vb: StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
+  fullName: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet<Libplanet.Address>, Libplanet.HashDigest<SHA256>, System.Int64)
+  fullName.vb: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet(Of Libplanet.Address), Libplanet.HashDigest(Of SHA256), System.Int64)
+  nameWithType: DefaultStore.StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
+  nameWithType.vb: DefaultStore.StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
+- uid: Libplanet.Store.DefaultStore.StoreStateReference*
+  name: StoreStateReference
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StoreStateReference_
+  commentId: Overload:Libplanet.Store.DefaultStore.StoreStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.StoreStateReference
+  nameWithType: DefaultStore.StoreStateReference
+- uid: Libplanet.Store.DefaultStore.UnstageTransactionIds(ISet{Libplanet.Tx.TxId})
+  name: UnstageTransactionIds(ISet<TxId>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_UnstageTransactionIds_ISet_Libplanet_Tx_TxId__
+  commentId: M:Libplanet.Store.DefaultStore.UnstageTransactionIds(ISet{Libplanet.Tx.TxId})
+  name.vb: UnstageTransactionIds(ISet(Of TxId))
+  fullName: Libplanet.Store.DefaultStore.UnstageTransactionIds(ISet<Libplanet.Tx.TxId>)
+  fullName.vb: Libplanet.Store.DefaultStore.UnstageTransactionIds(ISet(Of Libplanet.Tx.TxId))
+  nameWithType: DefaultStore.UnstageTransactionIds(ISet<TxId>)
+  nameWithType.vb: DefaultStore.UnstageTransactionIds(ISet(Of TxId))
+- uid: Libplanet.Store.DefaultStore.UnstageTransactionIds*
+  name: UnstageTransactionIds
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_UnstageTransactionIds_
+  commentId: Overload:Libplanet.Store.DefaultStore.UnstageTransactionIds
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.UnstageTransactionIds
+  nameWithType: DefaultStore.UnstageTransactionIds
 - uid: Libplanet.Store.IStore
   name: IStore
   href: api/Libplanet.Store.IStore.html
@@ -6357,486 +6837,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.UnstageTransactionIds
   nameWithType: IStore.UnstageTransactionIds
-- uid: Libplanet.Store.LiteDBStore
-  name: LiteDBStore
-  href: api/Libplanet.Store.LiteDBStore.html
-  commentId: T:Libplanet.Store.LiteDBStore
-  fullName: Libplanet.Store.LiteDBStore
-  nameWithType: LiteDBStore
-- uid: Libplanet.Store.LiteDBStore.#ctor(System.String,System.Boolean,System.Int32,System.Boolean,System.Boolean)
-  name: LiteDBStore(String, Boolean, Int32, Boolean, Boolean)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_System_String_System_Boolean_System_Int32_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Store.LiteDBStore.#ctor(System.String,System.Boolean,System.Int32,System.Boolean,System.Boolean)
-  fullName: Libplanet.Store.LiteDBStore.LiteDBStore(System.String, System.Boolean, System.Int32, System.Boolean, System.Boolean)
-  nameWithType: LiteDBStore.LiteDBStore(String, Boolean, Int32, Boolean, Boolean)
-- uid: Libplanet.Store.LiteDBStore.#ctor*
-  name: LiteDBStore
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore__ctor_
-  commentId: Overload:Libplanet.Store.LiteDBStore.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.LiteDBStore
-  nameWithType: LiteDBStore.LiteDBStore
-- uid: Libplanet.Store.LiteDBStore.AppendIndex(Guid,Libplanet.HashDigest{SHA256})
-  name: AppendIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_AppendIndex_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.LiteDBStore.AppendIndex(Guid,Libplanet.HashDigest{SHA256})
-  name.vb: AppendIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.LiteDBStore.AppendIndex(Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.LiteDBStore.AppendIndex(Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: LiteDBStore.AppendIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: LiteDBStore.AppendIndex(Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.LiteDBStore.AppendIndex*
-  name: AppendIndex
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_AppendIndex_
-  commentId: Overload:Libplanet.Store.LiteDBStore.AppendIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.AppendIndex
-  nameWithType: LiteDBStore.AppendIndex
-- uid: Libplanet.Store.LiteDBStore.CountBlocks
-  name: CountBlocks()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountBlocks
-  commentId: M:Libplanet.Store.LiteDBStore.CountBlocks
-  fullName: Libplanet.Store.LiteDBStore.CountBlocks()
-  nameWithType: LiteDBStore.CountBlocks()
-- uid: Libplanet.Store.LiteDBStore.CountBlocks*
-  name: CountBlocks
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountBlocks_
-  commentId: Overload:Libplanet.Store.LiteDBStore.CountBlocks
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.CountBlocks
-  nameWithType: LiteDBStore.CountBlocks
-- uid: Libplanet.Store.LiteDBStore.CountIndex(Guid)
-  name: CountIndex(Guid)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountIndex_Guid_
-  commentId: M:Libplanet.Store.LiteDBStore.CountIndex(Guid)
-  fullName: Libplanet.Store.LiteDBStore.CountIndex(Guid)
-  nameWithType: LiteDBStore.CountIndex(Guid)
-- uid: Libplanet.Store.LiteDBStore.CountIndex*
-  name: CountIndex
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountIndex_
-  commentId: Overload:Libplanet.Store.LiteDBStore.CountIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.CountIndex
-  nameWithType: LiteDBStore.CountIndex
-- uid: Libplanet.Store.LiteDBStore.CountTransactions
-  name: CountTransactions()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountTransactions
-  commentId: M:Libplanet.Store.LiteDBStore.CountTransactions
-  fullName: Libplanet.Store.LiteDBStore.CountTransactions()
-  nameWithType: LiteDBStore.CountTransactions()
-- uid: Libplanet.Store.LiteDBStore.CountTransactions*
-  name: CountTransactions
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_CountTransactions_
-  commentId: Overload:Libplanet.Store.LiteDBStore.CountTransactions
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.CountTransactions
-  nameWithType: LiteDBStore.CountTransactions
-- uid: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest{SHA256})
-  name: DeleteBlock(HashDigest<SHA256>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteBlock_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest{SHA256})
-  name.vb: DeleteBlock(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.LiteDBStore.DeleteBlock(Libplanet.HashDigest(Of SHA256))
-  nameWithType: LiteDBStore.DeleteBlock(HashDigest<SHA256>)
-  nameWithType.vb: LiteDBStore.DeleteBlock(HashDigest(Of SHA256))
-- uid: Libplanet.Store.LiteDBStore.DeleteBlock*
-  name: DeleteBlock
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteBlock_
-  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteBlock
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.DeleteBlock
-  nameWithType: LiteDBStore.DeleteBlock
-- uid: Libplanet.Store.LiteDBStore.DeleteChainId(Guid)
-  name: DeleteChainId(Guid)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteChainId_Guid_
-  commentId: M:Libplanet.Store.LiteDBStore.DeleteChainId(Guid)
-  fullName: Libplanet.Store.LiteDBStore.DeleteChainId(Guid)
-  nameWithType: LiteDBStore.DeleteChainId(Guid)
-- uid: Libplanet.Store.LiteDBStore.DeleteChainId*
-  name: DeleteChainId
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteChainId_
-  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteChainId
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.DeleteChainId
-  nameWithType: LiteDBStore.DeleteChainId
-- uid: Libplanet.Store.LiteDBStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name: DeleteIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.LiteDBStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name.vb: DeleteIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.LiteDBStore.DeleteIndex(Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.LiteDBStore.DeleteIndex(Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: LiteDBStore.DeleteIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: LiteDBStore.DeleteIndex(Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.LiteDBStore.DeleteIndex*
-  name: DeleteIndex
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteIndex_
-  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.DeleteIndex
-  nameWithType: LiteDBStore.DeleteIndex
-- uid: Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  name: DeleteTransaction(TxId)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteTransaction_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  fullName: Libplanet.Store.LiteDBStore.DeleteTransaction(Libplanet.Tx.TxId)
-  nameWithType: LiteDBStore.DeleteTransaction(TxId)
-- uid: Libplanet.Store.LiteDBStore.DeleteTransaction*
-  name: DeleteTransaction
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_DeleteTransaction_
-  commentId: Overload:Libplanet.Store.LiteDBStore.DeleteTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.DeleteTransaction
-  nameWithType: LiteDBStore.DeleteTransaction
-- uid: Libplanet.Store.LiteDBStore.Dispose
-  name: Dispose()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_Dispose
-  commentId: M:Libplanet.Store.LiteDBStore.Dispose
-  fullName: Libplanet.Store.LiteDBStore.Dispose()
-  nameWithType: LiteDBStore.Dispose()
-- uid: Libplanet.Store.LiteDBStore.Dispose*
-  name: Dispose
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_Dispose_
-  commentId: Overload:Libplanet.Store.LiteDBStore.Dispose
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.Dispose
-  nameWithType: LiteDBStore.Dispose
-- uid: Libplanet.Store.LiteDBStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})
-  name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.LiteDBStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})
-  name.vb: ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.LiteDBStore.ForkBlockIndexes(Guid, Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.LiteDBStore.ForkBlockIndexes(Guid, Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: LiteDBStore.ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
-  nameWithType.vb: LiteDBStore.ForkBlockIndexes(Guid, Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.LiteDBStore.ForkBlockIndexes*
-  name: ForkBlockIndexes
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkBlockIndexes_
-  commentId: Overload:Libplanet.Store.LiteDBStore.ForkBlockIndexes
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.ForkBlockIndexes
-  nameWithType: LiteDBStore.ForkBlockIndexes
-- uid: Libplanet.Store.LiteDBStore.ForkStateReferences*
-  name: ForkStateReferences
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkStateReferences_
-  commentId: Overload:Libplanet.Store.LiteDBStore.ForkStateReferences
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.ForkStateReferences
-  nameWithType: LiteDBStore.ForkStateReferences
-- uid: Libplanet.Store.LiteDBStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})
-  name: ForkStateReferences<T>(Guid, Guid, Block<T>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.LiteDBStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})
-  name.vb: ForkStateReferences(Of T)(Guid, Guid, Block(Of T))
-  fullName: Libplanet.Store.LiteDBStore.ForkStateReferences<T>(Guid, Guid, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.LiteDBStore.ForkStateReferences(Of T)(Guid, Guid, Libplanet.Blocks.Block(Of T))
-  nameWithType: LiteDBStore.ForkStateReferences<T>(Guid, Guid, Block<T>)
-  nameWithType.vb: LiteDBStore.ForkStateReferences(Of T)(Guid, Guid, Block(Of T))
-- uid: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest{SHA256})
-  name: GetBlockStates(HashDigest<SHA256>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlockStates_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest{SHA256})
-  name.vb: GetBlockStates(HashDigest(Of SHA256))
-  fullName: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.LiteDBStore.GetBlockStates(Libplanet.HashDigest(Of SHA256))
-  nameWithType: LiteDBStore.GetBlockStates(HashDigest<SHA256>)
-  nameWithType.vb: LiteDBStore.GetBlockStates(HashDigest(Of SHA256))
-- uid: Libplanet.Store.LiteDBStore.GetBlockStates*
-  name: GetBlockStates
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetBlockStates_
-  commentId: Overload:Libplanet.Store.LiteDBStore.GetBlockStates
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.GetBlockStates
-  nameWithType: LiteDBStore.GetBlockStates
-- uid: Libplanet.Store.LiteDBStore.GetCanonicalChainId
-  name: GetCanonicalChainId()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetCanonicalChainId
-  commentId: M:Libplanet.Store.LiteDBStore.GetCanonicalChainId
-  fullName: Libplanet.Store.LiteDBStore.GetCanonicalChainId()
-  nameWithType: LiteDBStore.GetCanonicalChainId()
-- uid: Libplanet.Store.LiteDBStore.GetCanonicalChainId*
-  name: GetCanonicalChainId
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetCanonicalChainId_
-  commentId: Overload:Libplanet.Store.LiteDBStore.GetCanonicalChainId
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.GetCanonicalChainId
-  nameWithType: LiteDBStore.GetCanonicalChainId
-- uid: Libplanet.Store.LiteDBStore.GetTransaction*
-  name: GetTransaction
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTransaction_
-  commentId: Overload:Libplanet.Store.LiteDBStore.GetTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.GetTransaction
-  nameWithType: LiteDBStore.GetTransaction
-- uid: Libplanet.Store.LiteDBStore.GetTransaction``1(Libplanet.Tx.TxId)
-  name: GetTransaction<T>(TxId)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTransaction__1_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Store.LiteDBStore.GetTransaction``1(Libplanet.Tx.TxId)
-  name.vb: GetTransaction(Of T)(TxId)
-  fullName: Libplanet.Store.LiteDBStore.GetTransaction<T>(Libplanet.Tx.TxId)
-  fullName.vb: Libplanet.Store.LiteDBStore.GetTransaction(Of T)(Libplanet.Tx.TxId)
-  nameWithType: LiteDBStore.GetTransaction<T>(TxId)
-  nameWithType.vb: LiteDBStore.GetTransaction(Of T)(TxId)
-- uid: Libplanet.Store.LiteDBStore.GetTxNonce(Guid,Libplanet.Address)
-  name: GetTxNonce(Guid, Address)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTxNonce_Guid_Libplanet_Address_
-  commentId: M:Libplanet.Store.LiteDBStore.GetTxNonce(Guid,Libplanet.Address)
-  fullName: Libplanet.Store.LiteDBStore.GetTxNonce(Guid, Libplanet.Address)
-  nameWithType: LiteDBStore.GetTxNonce(Guid, Address)
-- uid: Libplanet.Store.LiteDBStore.GetTxNonce*
-  name: GetTxNonce
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_GetTxNonce_
-  commentId: Overload:Libplanet.Store.LiteDBStore.GetTxNonce
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.GetTxNonce
-  nameWithType: LiteDBStore.GetTxNonce
-- uid: Libplanet.Store.LiteDBStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
-  name: IncreaseTxNonce(Guid, Address, Int64)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_
-  commentId: M:Libplanet.Store.LiteDBStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)
-  fullName: Libplanet.Store.LiteDBStore.IncreaseTxNonce(Guid, Libplanet.Address, System.Int64)
-  nameWithType: LiteDBStore.IncreaseTxNonce(Guid, Address, Int64)
-- uid: Libplanet.Store.LiteDBStore.IncreaseTxNonce*
-  name: IncreaseTxNonce
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IncreaseTxNonce_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IncreaseTxNonce
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IncreaseTxNonce
-  nameWithType: LiteDBStore.IncreaseTxNonce
-- uid: Libplanet.Store.LiteDBStore.IndexBlockHash(Guid,System.Int64)
-  name: IndexBlockHash(Guid, Int64)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IndexBlockHash_Guid_System_Int64_
-  commentId: M:Libplanet.Store.LiteDBStore.IndexBlockHash(Guid,System.Int64)
-  fullName: Libplanet.Store.LiteDBStore.IndexBlockHash(Guid, System.Int64)
-  nameWithType: LiteDBStore.IndexBlockHash(Guid, Int64)
-- uid: Libplanet.Store.LiteDBStore.IndexBlockHash*
-  name: IndexBlockHash
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IndexBlockHash_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IndexBlockHash
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IndexBlockHash
-  nameWithType: LiteDBStore.IndexBlockHash
-- uid: Libplanet.Store.LiteDBStore.IterateBlockHashes
-  name: IterateBlockHashes()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBlockHashes
-  commentId: M:Libplanet.Store.LiteDBStore.IterateBlockHashes
-  fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes()
-  nameWithType: LiteDBStore.IterateBlockHashes()
-- uid: Libplanet.Store.LiteDBStore.IterateBlockHashes*
-  name: IterateBlockHashes
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateBlockHashes_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateBlockHashes
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateBlockHashes
-  nameWithType: LiteDBStore.IterateBlockHashes
-- uid: Libplanet.Store.LiteDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
-  name: IterateIndexes(Guid, Int32, Nullable<Int32>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.LiteDBStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})
-  name.vb: IterateIndexes(Guid, Int32, Nullable(Of Int32))
-  fullName: Libplanet.Store.LiteDBStore.IterateIndexes(Guid, System.Int32, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.LiteDBStore.IterateIndexes(Guid, System.Int32, System.Nullable(Of System.Int32))
-  nameWithType: LiteDBStore.IterateIndexes(Guid, Int32, Nullable<Int32>)
-  nameWithType.vb: LiteDBStore.IterateIndexes(Guid, Int32, Nullable(Of Int32))
-- uid: Libplanet.Store.LiteDBStore.IterateIndexes*
-  name: IterateIndexes
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateIndexes_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateIndexes
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateIndexes
-  nameWithType: LiteDBStore.IterateIndexes
-- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  name: IterateStagedTransactionIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds
-  commentId: M:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds()
-  nameWithType: LiteDBStore.IterateStagedTransactionIds()
-- uid: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds*
-  name: IterateStagedTransactionIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStagedTransactionIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateStagedTransactionIds
-  nameWithType: LiteDBStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.LiteDBStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
-  fullName: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.LiteDBStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
-  nameWithType: LiteDBStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  nameWithType.vb: LiteDBStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
-- uid: Libplanet.Store.LiteDBStore.IterateStateReferences*
-  name: IterateStateReferences
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateStateReferences_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateStateReferences
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateStateReferences
-  nameWithType: LiteDBStore.IterateStateReferences
-- uid: Libplanet.Store.LiteDBStore.IterateTransactionIds
-  name: IterateTransactionIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateTransactionIds
-  commentId: M:Libplanet.Store.LiteDBStore.IterateTransactionIds
-  fullName: Libplanet.Store.LiteDBStore.IterateTransactionIds()
-  nameWithType: LiteDBStore.IterateTransactionIds()
-- uid: Libplanet.Store.LiteDBStore.IterateTransactionIds*
-  name: IterateTransactionIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_IterateTransactionIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.IterateTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.IterateTransactionIds
-  nameWithType: LiteDBStore.IterateTransactionIds
-- uid: Libplanet.Store.LiteDBStore.ListAddresses(Guid)
-  name: ListAddresses(Guid)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListAddresses_Guid_
-  commentId: M:Libplanet.Store.LiteDBStore.ListAddresses(Guid)
-  fullName: Libplanet.Store.LiteDBStore.ListAddresses(Guid)
-  nameWithType: LiteDBStore.ListAddresses(Guid)
-- uid: Libplanet.Store.LiteDBStore.ListAddresses*
-  name: ListAddresses
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListAddresses_
-  commentId: Overload:Libplanet.Store.LiteDBStore.ListAddresses
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.ListAddresses
-  nameWithType: LiteDBStore.ListAddresses
-- uid: Libplanet.Store.LiteDBStore.ListChainIds
-  name: ListChainIds()
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListChainIds
-  commentId: M:Libplanet.Store.LiteDBStore.ListChainIds
-  fullName: Libplanet.Store.LiteDBStore.ListChainIds()
-  nameWithType: LiteDBStore.ListChainIds()
-- uid: Libplanet.Store.LiteDBStore.ListChainIds*
-  name: ListChainIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListChainIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.ListChainIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.ListChainIds
-  nameWithType: LiteDBStore.ListChainIds
-- uid: Libplanet.Store.LiteDBStore.ListTxNonces(Guid)
-  name: ListTxNonces(Guid)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListTxNonces_Guid_
-  commentId: M:Libplanet.Store.LiteDBStore.ListTxNonces(Guid)
-  fullName: Libplanet.Store.LiteDBStore.ListTxNonces(Guid)
-  nameWithType: LiteDBStore.ListTxNonces(Guid)
-- uid: Libplanet.Store.LiteDBStore.ListTxNonces*
-  name: ListTxNonces
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_ListTxNonces_
-  commentId: Overload:Libplanet.Store.LiteDBStore.ListTxNonces
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.ListTxNonces
-  nameWithType: LiteDBStore.ListTxNonces
-- uid: Libplanet.Store.LiteDBStore.PutBlock*
-  name: PutBlock
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutBlock_
-  commentId: Overload:Libplanet.Store.LiteDBStore.PutBlock
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.PutBlock
-  nameWithType: LiteDBStore.PutBlock
-- uid: Libplanet.Store.LiteDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name: PutBlock<T>(Block<T>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutBlock__1_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.LiteDBStore.PutBlock``1(Libplanet.Blocks.Block{``0})
-  name.vb: PutBlock(Of T)(Block(Of T))
-  fullName: Libplanet.Store.LiteDBStore.PutBlock<T>(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.LiteDBStore.PutBlock(Of T)(Libplanet.Blocks.Block(Of T))
-  nameWithType: LiteDBStore.PutBlock<T>(Block<T>)
-  nameWithType.vb: LiteDBStore.PutBlock(Of T)(Block(Of T))
-- uid: Libplanet.Store.LiteDBStore.PutTransaction*
-  name: PutTransaction
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutTransaction_
-  commentId: Overload:Libplanet.Store.LiteDBStore.PutTransaction
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.PutTransaction
-  nameWithType: LiteDBStore.PutTransaction
-- uid: Libplanet.Store.LiteDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
-  name: PutTransaction<T>(Transaction<T>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_PutTransaction__1_Libplanet_Tx_Transaction___0__
-  commentId: M:Libplanet.Store.LiteDBStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})
-  name.vb: PutTransaction(Of T)(Transaction(Of T))
-  fullName: Libplanet.Store.LiteDBStore.PutTransaction<T>(Libplanet.Tx.Transaction<T>)
-  fullName.vb: Libplanet.Store.LiteDBStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
-  nameWithType: LiteDBStore.PutTransaction<T>(Transaction<T>)
-  nameWithType.vb: LiteDBStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_
-  commentId: M:Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
-  fullName: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest<SHA256>, Libplanet.Action.AddressStateMap)
-  fullName.vb: Libplanet.Store.LiteDBStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), Libplanet.Action.AddressStateMap)
-  nameWithType: LiteDBStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  nameWithType.vb: LiteDBStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
-- uid: Libplanet.Store.LiteDBStore.SetBlockStates*
-  name: SetBlockStates
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetBlockStates_
-  commentId: Overload:Libplanet.Store.LiteDBStore.SetBlockStates
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.SetBlockStates
-  nameWithType: LiteDBStore.SetBlockStates
-- uid: Libplanet.Store.LiteDBStore.SetCanonicalChainId(Guid)
-  name: SetCanonicalChainId(Guid)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetCanonicalChainId_Guid_
-  commentId: M:Libplanet.Store.LiteDBStore.SetCanonicalChainId(Guid)
-  fullName: Libplanet.Store.LiteDBStore.SetCanonicalChainId(Guid)
-  nameWithType: LiteDBStore.SetCanonicalChainId(Guid)
-- uid: Libplanet.Store.LiteDBStore.SetCanonicalChainId*
-  name: SetCanonicalChainId
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_SetCanonicalChainId_
-  commentId: Overload:Libplanet.Store.LiteDBStore.SetCanonicalChainId
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.SetCanonicalChainId
-  nameWithType: LiteDBStore.SetCanonicalChainId
-- uid: Libplanet.Store.LiteDBStore.StageTransactionIds(IImmutableSet{Libplanet.Tx.TxId})
-  name: StageTransactionIds(IImmutableSet<TxId>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_IImmutableSet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.LiteDBStore.StageTransactionIds(IImmutableSet{Libplanet.Tx.TxId})
-  name.vb: StageTransactionIds(IImmutableSet(Of TxId))
-  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds(IImmutableSet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.LiteDBStore.StageTransactionIds(IImmutableSet(Of Libplanet.Tx.TxId))
-  nameWithType: LiteDBStore.StageTransactionIds(IImmutableSet<TxId>)
-  nameWithType.vb: LiteDBStore.StageTransactionIds(IImmutableSet(Of TxId))
-- uid: Libplanet.Store.LiteDBStore.StageTransactionIds*
-  name: StageTransactionIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StageTransactionIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.StageTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.StageTransactionIds
-  nameWithType: LiteDBStore.StageTransactionIds
-- uid: Libplanet.Store.LiteDBStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name: StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_
-  commentId: M:Libplanet.Store.LiteDBStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name.vb: StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
-  fullName: Libplanet.Store.LiteDBStore.StoreStateReference(Guid, IImmutableSet<Libplanet.Address>, Libplanet.HashDigest<SHA256>, System.Int64)
-  fullName.vb: Libplanet.Store.LiteDBStore.StoreStateReference(Guid, IImmutableSet(Of Libplanet.Address), Libplanet.HashDigest(Of SHA256), System.Int64)
-  nameWithType: LiteDBStore.StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  nameWithType.vb: LiteDBStore.StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
-- uid: Libplanet.Store.LiteDBStore.StoreStateReference*
-  name: StoreStateReference
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_StoreStateReference_
-  commentId: Overload:Libplanet.Store.LiteDBStore.StoreStateReference
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.StoreStateReference
-  nameWithType: LiteDBStore.StoreStateReference
-- uid: Libplanet.Store.LiteDBStore.UnstageTransactionIds(ISet{Libplanet.Tx.TxId})
-  name: UnstageTransactionIds(ISet<TxId>)
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_UnstageTransactionIds_ISet_Libplanet_Tx_TxId__
-  commentId: M:Libplanet.Store.LiteDBStore.UnstageTransactionIds(ISet{Libplanet.Tx.TxId})
-  name.vb: UnstageTransactionIds(ISet(Of TxId))
-  fullName: Libplanet.Store.LiteDBStore.UnstageTransactionIds(ISet<Libplanet.Tx.TxId>)
-  fullName.vb: Libplanet.Store.LiteDBStore.UnstageTransactionIds(ISet(Of Libplanet.Tx.TxId))
-  nameWithType: LiteDBStore.UnstageTransactionIds(ISet<TxId>)
-  nameWithType.vb: LiteDBStore.UnstageTransactionIds(ISet(Of TxId))
-- uid: Libplanet.Store.LiteDBStore.UnstageTransactionIds*
-  name: UnstageTransactionIds
-  href: api/Libplanet.Store.LiteDBStore.html#Libplanet_Store_LiteDBStore_UnstageTransactionIds_
-  commentId: Overload:Libplanet.Store.LiteDBStore.UnstageTransactionIds
-  isSpec: "True"
-  fullName: Libplanet.Store.LiteDBStore.UnstageTransactionIds
-  nameWithType: LiteDBStore.UnstageTransactionIds
 - uid: Libplanet.Store.StoreExtension
   name: StoreExtension
   href: api/Libplanet.Store.StoreExtension.html
