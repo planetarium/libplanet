@@ -40,7 +40,6 @@ namespace Libplanet.Store
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
-        private readonly bool _writeIntermediateFile;
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
@@ -74,7 +73,6 @@ namespace Libplanet.Store
             if (path is null)
             {
                 _root = new MemoryFileSystem();
-                _writeIntermediateFile = false;
                 _memoryStream = new MemoryStream();
                 _db = new LiteDatabase(_memoryStream);
             }
@@ -91,7 +89,6 @@ namespace Libplanet.Store
                     pfs.ConvertPathFromInternal(path),
                     owned: true
                 );
-                _writeIntermediateFile = true;
 
                 var connectionString = new ConnectionString
                 {
@@ -683,38 +680,31 @@ namespace Libplanet.Store
                 return;
             }
 
-            if (_writeIntermediateFile)
+            // For atomicity, writes bytes into an intermediate temp file,
+            // and then renames it to the final destination.
+            UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
+            try
             {
-                // For atomicity, writes bytes into an intermediate temp file,
-                // and then renames it to the final destination.
-                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
+                fs.WriteAllBytes(tmpPath, contents);
                 try
                 {
-                    fs.WriteAllBytes(tmpPath, contents);
-                    try
-                    {
-                        fs.MoveFile(tmpPath, path);
-                    }
-                    catch (IOException)
-                    {
-                        if (!fs.FileExists(path) ||
-                            fs.GetFileLength(path) != contents.LongLength)
-                        {
-                            throw;
-                        }
-                    }
+                    fs.MoveFile(tmpPath, path);
                 }
-                finally
+                catch (IOException)
                 {
-                    if (fs.FileExists(tmpPath))
+                    if (!fs.FileExists(path) ||
+                        fs.GetFileLength(path) != contents.LongLength)
                     {
-                        fs.DeleteFile(tmpPath);
+                        throw;
                     }
                 }
             }
-            else
+            finally
             {
-                fs.WriteAllBytes(path, contents);
+                if (fs.FileExists(tmpPath))
+                {
+                    fs.DeleteFile(tmpPath);
+                }
             }
         }
 
