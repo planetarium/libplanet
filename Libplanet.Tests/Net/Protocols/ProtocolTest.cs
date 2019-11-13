@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
+using Libplanet.Net.Protocols;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -28,6 +29,27 @@ namespace Libplanet.Tests.Net.Protocols
                 .ForContext<ProtocolTest>();
 
             _swarms = new Dictionary<Address, TestSwarm>();
+        }
+
+        [Fact]
+        public void KademliaTest()
+        {
+            var addr1 = new Address("0000000000000000000000000000000000000000");
+            var addr2 = new Address("0000000000000000000000000000000000000001");
+            var addr3 = new Address("000000000000000000000000000000000000000c");
+            var addr4 = new Address("0000000001000001111110001000011001000001");
+
+            Assert.Equal(
+                new Address("000000000100000111111000100001100100000d"),
+                Kademlia.CalculateDistance(addr3, addr4));
+
+            Assert.Equal(159, Kademlia.CommonPrefixLength(addr1, addr2));
+            Assert.Equal(156, Kademlia.CommonPrefixLength(addr1, addr3));
+            Assert.Equal(39, Kademlia.CommonPrefixLength(addr1, addr4));
+
+            Assert.True(string.CompareOrdinal(addr1.ToHex(), addr2.ToHex()) < 1);
+            Assert.True(string.CompareOrdinal(addr2.ToHex(), addr3.ToHex()) < 1);
+            Assert.True(string.CompareOrdinal(addr3.ToHex(), addr4.ToHex()) < 1);
         }
 
         [Fact(Timeout = Timeout)]

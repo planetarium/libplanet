@@ -131,19 +131,6 @@ namespace Libplanet.Tests.Net.Protocols
             Assert.True(ret);
         }
 
-        [Fact]
-        public void PrefixLength()
-        {
-            var addr1 = new Address("0000000000000000000000000000000000000000");
-            var addr2 = new Address("0000000000000000000000000000000000000001");
-            var addr3 = new Address("000000000000000000000000000000000000000c");
-            var addr4 = new Address("0000000001000001111110001000011001000001");
-
-            Assert.Equal(159, Kademlia.CommonPrefixLength(addr1, addr2));
-            Assert.Equal(156, Kademlia.CommonPrefixLength(addr1, addr3));
-            Assert.Equal(39, Kademlia.CommonPrefixLength(addr1, addr4));
-        }
-
         private RoutingTable CreateTable(Address addr)
         {
             return new RoutingTable(addr, TableSize, BucketSize, new System.Random(), Logger.None);
