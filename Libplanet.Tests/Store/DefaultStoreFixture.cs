@@ -4,26 +4,26 @@ using Libplanet.Store;
 
 namespace Libplanet.Tests.Store
 {
-    public class LiteDBStoreFixture : StoreFixture, IDisposable
+    public class DefaultStoreFixture : StoreFixture, IDisposable
     {
-        public LiteDBStoreFixture(bool memory = false)
+        public DefaultStoreFixture(bool memory = false)
         {
             string postfix = Guid.NewGuid().ToString();
             Path = memory
                 ? null
-                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}.db");
-            Store = new LiteDBStore(Path);
+                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}");
+            Store = new DefaultStore(Path);
         }
 
         public string Path { get; }
 
         public override void Dispose()
         {
-            (Store as LiteDBStore)?.Dispose();
+            (Store as DefaultStore)?.Dispose();
 
             if (!(Path is null))
             {
-                File.Delete(Path);
+                Directory.Delete(Path, true);
             }
         }
     }

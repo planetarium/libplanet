@@ -14,11 +14,14 @@ using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Store
 {
     public abstract class StoreTest
     {
+        protected ITestOutputHelper TestOutputHelper { get; set; }
+
         protected StoreFixture Fx { get; set; }
 
         [Fact]
@@ -755,7 +758,19 @@ namespace Libplanet.Tests.Store
                 tasks[i] = task;
             }
 
-            Task.WaitAll(tasks);
+            try
+            {
+                Task.WaitAll(tasks);
+            }
+            catch (AggregateException e)
+            {
+                foreach (Exception innerException in e.InnerExceptions)
+                {
+                    TestOutputHelper.WriteLine(innerException.ToString());
+                }
+
+                throw;
+            }
 
             Assert.Equal(1 + (taskCount * txCount), Fx.Store.CountTransactions());
             foreach (TxId txid in Fx.Store.IterateTransactionIds())

@@ -72,6 +72,7 @@ https://docs.libplanet.io/</Description>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="LruCacheNet" Version="1.2.0" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -99,6 +100,7 @@ https://docs.libplanet.io/</Description>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
     <PackageReference Include="System.Text.Json" Version="4.6.0" />
+    <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
 
   <!-- The above hacky trick is borrowed from the following Stack Overflow
