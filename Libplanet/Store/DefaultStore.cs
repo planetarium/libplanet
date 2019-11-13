@@ -344,47 +344,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            byte[] txBytes = tx.ToBencodex(true);
-            UPath path = TxPath(tx.Id);
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(_txs, dirPath);
-
-            if (_writeIntermediateFile)
-            {
-                // For atomicity, writes bytes into an intermediate temp file,
-                // and then renames it to the final destination.
-                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
-                try
-                {
-                    _txs.WriteAllBytes(tmpPath, txBytes);
-                    try
-                    {
-                        _txs.MoveFile(tmpPath, path);
-                    }
-                    catch (IOException)
-                    {
-                        // For the same txid, the content is the same as well.  Don't have
-                        // to be written more than once.
-                        if (!_txs.FileExists(path) ||
-                            _txs.GetFileLength(path) != txBytes.LongLength)
-                        {
-                            throw;
-                        }
-                    }
-                }
-                finally
-                {
-                    if (_txs.FileExists(tmpPath))
-                    {
-                        _txs.DeleteFile(tmpPath);
-                    }
-                }
-            }
-            else
-            {
-                _txs.WriteAllBytes(path, txBytes);
-            }
-
+            AtomicallyWriteFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
@@ -451,47 +411,7 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            byte[] blockBytes = block.ToBencodex(true, false);
-            UPath path = BlockPath(block.Hash);
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(_blocks, dirPath);
-
-            if (_writeIntermediateFile)
-            {
-                // For atomicity, writes bytes into an intermediate temp file,
-                // and then renames it to the final destination.
-                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
-                try
-                {
-                    _blocks.WriteAllBytes(tmpPath, blockBytes);
-                    try
-                    {
-                        _blocks.MoveFile(tmpPath, path);
-                    }
-                    catch (IOException)
-                    {
-                        // For the same hash, the content is the same as well.  Don't have
-                        // to be written more than once.
-                        if (!_blocks.FileExists(path) ||
-                            _blocks.GetFileLength(path) != blockBytes.LongLength)
-                        {
-                            throw;
-                        }
-                    }
-                }
-                finally
-                {
-                    if (_blocks.FileExists(tmpPath))
-                    {
-                        _blocks.DeleteFile(tmpPath);
-                    }
-                }
-            }
-            else
-            {
-                _blocks.WriteAllBytes(path, blockBytes);
-            }
-
+            AtomicallyWriteFile(_blocks, BlockPath(block.Hash), block.ToBencodex(true, false));
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
@@ -742,6 +662,48 @@ namespace Libplanet.Store
             {
                 CreateDirectoryRecursively(fs, path.GetDirectory());
                 fs.CreateDirectory(path);
+            }
+        }
+
+        private void AtomicallyWriteFile(IFileSystem fs, UPath path, byte[] contents)
+        {
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(fs, dirPath);
+
+            if (_writeIntermediateFile)
+            {
+                // For atomicity, writes bytes into an intermediate temp file,
+                // and then renames it to the final destination.
+                UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
+                try
+                {
+                    fs.WriteAllBytes(tmpPath, contents);
+                    try
+                    {
+                        fs.MoveFile(tmpPath, path);
+                    }
+                    catch (IOException)
+                    {
+                        // Assuming the filename is content-addressable, so that if there is
+                        // already the file of the same name the content is the same as well.
+                        if (!fs.FileExists(path) ||
+                            fs.GetFileLength(path) != contents.LongLength)
+                        {
+                            throw;
+                        }
+                    }
+                }
+                finally
+                {
+                    if (fs.FileExists(tmpPath))
+                    {
+                        fs.DeleteFile(tmpPath);
+                    }
+                }
+            }
+            else
+            {
+                fs.WriteAllBytes(path, contents);
             }
         }
 
