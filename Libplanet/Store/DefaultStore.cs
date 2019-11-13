@@ -295,6 +295,7 @@ namespace Libplanet.Store
                     }
                     catch (Exception)
                     {
+                        // Skip if a filename does not match to the format.
                         continue;
                     }
 
@@ -425,6 +426,7 @@ namespace Libplanet.Store
                     }
                     catch (Exception)
                     {
+                        // Skip if a filename does not match to the format.
                         continue;
                     }
 
