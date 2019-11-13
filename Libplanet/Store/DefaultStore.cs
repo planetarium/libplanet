@@ -406,16 +406,18 @@ namespace Libplanet.Store
                 return;
             }
 
+            UPath path = BlockPath(block.Hash);
+            if (_blocks.FileExists(path))
+            {
+                return;
+            }
+
             foreach (Transaction<T> tx in block.Transactions)
             {
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(
-                _blocks,
-                BlockPath(block.Hash),
-                block.ToBencodex(true, false)
-            );
+            WriteContentAddressableFile(_blocks, path, block.ToBencodex(true, false));
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
