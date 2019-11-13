@@ -344,7 +344,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            AtomicallyWriteFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
+            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
@@ -411,7 +411,11 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            AtomicallyWriteFile(_blocks, BlockPath(block.Hash), block.ToBencodex(true, false));
+            WriteContentAddressableFile(
+                _blocks,
+                BlockPath(block.Hash),
+                block.ToBencodex(true, false)
+            );
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
@@ -665,10 +669,17 @@ namespace Libplanet.Store
             }
         }
 
-        private void AtomicallyWriteFile(IFileSystem fs, UPath path, byte[] contents)
+        private void WriteContentAddressableFile(IFileSystem fs, UPath path, byte[] contents)
         {
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(fs, dirPath);
+
+            // Assuming the filename is content-addressable, so that if there is
+            // already the file of the same name the content is the same as well.
+            if (fs.FileExists(path))
+            {
+                return;
+            }
 
             if (_writeIntermediateFile)
             {
@@ -684,8 +695,6 @@ namespace Libplanet.Store
                     }
                     catch (IOException)
                     {
-                        // Assuming the filename is content-addressable, so that if there is
-                        // already the file of the same name the content is the same as well.
                         if (!fs.FileExists(path) ||
                             fs.GetFileLength(path) != contents.LongLength)
                         {

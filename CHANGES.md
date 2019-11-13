@@ -14,10 +14,10 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
- -  The introduced `DefaultStore` is incompatible with the existed `LiteDBStore`
-    at file-level.  `DefaultStore` became to take a directory instead of
-    a single file, and it consists of multiple subdirectories and
-    a LiteDB file for indices.  [[#662]]
+ -  The introduced `DefaultStore` is incompatible at the file-level with
+    the `LiteDBStore` which had existed.  `DefaultStore` became to take
+    a directory instead of a single file, and it consists of multiple
+    subdirectories and a LiteDB file for indices.  [[#662]]
 
 ### Added APIs
 
