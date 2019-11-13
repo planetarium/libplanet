@@ -40,6 +40,7 @@ namespace Libplanet.Store
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
+        private readonly bool _writeIntermediateFile;
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
@@ -73,6 +74,7 @@ namespace Libplanet.Store
             if (path is null)
             {
                 _root = new MemoryFileSystem();
+                _writeIntermediateFile = false;
                 _memoryStream = new MemoryStream();
                 _db = new LiteDatabase(_memoryStream);
             }
@@ -89,6 +91,7 @@ namespace Libplanet.Store
                     pfs.ConvertPathFromInternal(path),
                     owned: true
                 );
+                _writeIntermediateFile = true;
 
                 var connectionString = new ConnectionString
                 {
@@ -346,11 +349,7 @@ namespace Libplanet.Store
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_txs, dirPath);
 
-            if (_root is MemoryFileSystem)
-            {
-                _txs.WriteAllBytes(path, txBytes);
-            }
-            else
+            if (_writeIntermediateFile)
             {
                 // For atomicity, writes bytes into an intermediate temp file,
                 // and then renames it to the final destination.
@@ -380,6 +379,10 @@ namespace Libplanet.Store
                         _txs.DeleteFile(tmpPath);
                     }
                 }
+            }
+            else
+            {
+                _txs.WriteAllBytes(path, txBytes);
             }
 
             _txCache.AddOrUpdate(tx.Id, tx);
@@ -453,11 +456,7 @@ namespace Libplanet.Store
             UPath dirPath = path.GetDirectory();
             CreateDirectoryRecursively(_blocks, dirPath);
 
-            if (_root is MemoryFileSystem)
-            {
-                _blocks.WriteAllBytes(path, blockBytes);
-            }
-            else
+            if (_writeIntermediateFile)
             {
                 // For atomicity, writes bytes into an intermediate temp file,
                 // and then renames it to the final destination.
@@ -487,6 +486,10 @@ namespace Libplanet.Store
                         _blocks.DeleteFile(tmpPath);
                     }
                 }
+            }
+            else
+            {
+                _blocks.WriteAllBytes(path, blockBytes);
             }
 
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
