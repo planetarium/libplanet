@@ -7,9 +7,9 @@ using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Tests.Net.Protocols
 {
-    public class ProtocolTest
+    public class RoutingTableTest
     {
         private const int BucketSize = 16;
         private const int TableSize = Address.Size * sizeof(byte) * 8;

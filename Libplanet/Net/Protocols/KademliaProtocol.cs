@@ -103,9 +103,12 @@ namespace Libplanet.Net.Protocols
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
                     await RemovePeerAsync(peer, cancellationToken);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    _logger.Error("An unexpected exception occurred connecting to seed peer.");
+                    _logger.Error(
+                        e,
+                        "An unexpected exception occurred connecting to seed peer. {e}",
+                        e);
                 }
             }
 

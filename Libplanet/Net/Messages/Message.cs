@@ -81,7 +81,7 @@ namespace Libplanet.Net.Messages
 
         public byte[] Identity { get; set; }
 
-        public Peer Remote { get; private set; }
+        public Peer Remote { get; set; }
 
         protected abstract MessageType Type { get; }
 
