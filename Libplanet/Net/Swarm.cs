@@ -1560,18 +1560,7 @@ namespace Libplanet.Net
                         );
                         break;
                     }
-
-                    // We can't recover with OperationCanceledException and
-                    // ObjectDisposedException. so just re-throw them.
-                    catch (ObjectDisposedException)
-                    {
-                        throw;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
+                    catch (TimeoutException e)
                     {
                         if (retry > 0)
                         {
