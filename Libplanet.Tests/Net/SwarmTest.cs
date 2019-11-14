@@ -2388,6 +2388,40 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotDeleteCanonicalChainWhenBlockDownloadFailed()
+        {
+            var chainA = _blockchains[0];
+            var chainB = _blockchains[1];
+
+            var swarmA = _swarms[0];
+            var swarmB = _swarms[1];
+
+            var genesis = await chainA.MineBlock(_fx1.Address1);
+            chainB.Append(genesis);
+
+            var block = await chainA.MineBlock(_fx1.Address1);
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await BootstrapAsync(swarmA, swarmB.AsPeer);
+
+                swarmA.BroadcastBlocks(new[] { block });
+                await swarmB.FillBlocksAsyncStarted.WaitAsync();
+                await swarmA.StopAsync();
+                await swarmB.FillBlocksAsyncFailed.WaitAsync();
+
+                Assert.NotEmpty(chainB.GetState(_fx1.Address1));
+            }
+            finally
+            {
+                await swarmA.StopAsync();
+                await swarmB.StopAsync();
+            }
+        }
+
         private static async Task<(Address, Block<DumbAction>[])>
             MakeFixtureBlocksForPreloadAsyncCancellationTest()
         {
