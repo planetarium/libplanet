@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -140,11 +139,6 @@ namespace Libplanet.Tests.Net.Protocols
                 foreach (var swarm in swarms)
                 {
                     await swarm.BootstrapAsync(new[] { seed.AsPeer });
-                }
-
-                foreach (var swarm in swarms)
-                {
-                    await swarm.Protocol.RebuildConnectionAsync(default(CancellationToken));
                 }
 
                 Log.Debug("Bootstrap completed.");
