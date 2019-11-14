@@ -1206,14 +1206,6 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains(Libplanet.HashDigest(Of SHA256))
   nameWithType: BlockChain<T>.Contains(HashDigest<SHA256>)
   nameWithType.vb: BlockChain(Of T).Contains(HashDigest(Of SHA256))
-- uid: Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Tx.TxId)
-  name: Contains(TxId)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_Libplanet_Tx_TxId_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Tx.TxId)
-  fullName: Libplanet.Blockchain.BlockChain<T>.Contains(Libplanet.Tx.TxId)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains(Libplanet.Tx.TxId)
-  nameWithType: BlockChain<T>.Contains(TxId)
-  nameWithType.vb: BlockChain(Of T).Contains(TxId)
 - uid: Libplanet.Blockchain.BlockChain`1.Contains*
   name: Contains
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_
@@ -5209,6 +5201,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.AppendIndex
   nameWithType: BaseStore.AppendIndex
+- uid: Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)
+  name: ContainsTransaction(TxId)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)
+  nameWithType: BaseStore.ContainsTransaction(TxId)
+- uid: Libplanet.Store.BaseStore.ContainsTransaction*
+  name: ContainsTransaction
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsTransaction_
+  commentId: Overload:Libplanet.Store.BaseStore.ContainsTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ContainsTransaction
+  nameWithType: BaseStore.ContainsTransaction
 - uid: Libplanet.Store.BaseStore.CountBlocks
   name: CountBlocks()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_CountBlocks
@@ -5906,6 +5911,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.AppendIndex
   nameWithType: DefaultStore.AppendIndex
+- uid: Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)
+  name: ContainsTransaction(TxId)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)
+  nameWithType: DefaultStore.ContainsTransaction(TxId)
+- uid: Libplanet.Store.DefaultStore.ContainsTransaction*
+  name: ContainsTransaction
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsTransaction_
+  commentId: Overload:Libplanet.Store.DefaultStore.ContainsTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ContainsTransaction
+  nameWithType: DefaultStore.ContainsTransaction
 - uid: Libplanet.Store.DefaultStore.CountBlocks
   name: CountBlocks()
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_CountBlocks
@@ -6373,6 +6391,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.AppendIndex
   nameWithType: IStore.AppendIndex
+- uid: Libplanet.Store.IStore.ContainsTransaction(Libplanet.Tx.TxId)
+  name: ContainsTransaction(TxId)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsTransaction_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Store.IStore.ContainsTransaction(Libplanet.Tx.TxId)
+  fullName: Libplanet.Store.IStore.ContainsTransaction(Libplanet.Tx.TxId)
+  nameWithType: IStore.ContainsTransaction(TxId)
+- uid: Libplanet.Store.IStore.ContainsTransaction*
+  name: ContainsTransaction
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsTransaction_
+  commentId: Overload:Libplanet.Store.IStore.ContainsTransaction
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ContainsTransaction
+  nameWithType: IStore.ContainsTransaction
 - uid: Libplanet.Store.IStore.CountBlocks
   name: CountBlocks()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_CountBlocks
