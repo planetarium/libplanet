@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -85,6 +86,7 @@ namespace Libplanet.Net.Protocols
             }
 
             var findPeerTasks = new List<Task>();
+            var history = new ConcurrentBag<BoundPeer>();
 
             foreach (BoundPeer peer in bootstrapPeers.Where(peer => !peer.Address.Equals(_address)))
             {
@@ -94,6 +96,7 @@ namespace Libplanet.Net.Protocols
                     await PingAsync(peer, pingSeedTimeout, cancellationToken);
                     findPeerTasks.Add(
                         FindPeerAsync(
+                            history,
                             _address,
                             peer,
                             depth,
@@ -195,6 +198,7 @@ namespace Libplanet.Net.Protocols
             {
                 _random.NextBytes(buffer);
                 tasks.Add(FindPeerAsync(
+                    new ConcurrentBag<BoundPeer>(),
                     new Address(buffer),
                     null,
                     -1,
@@ -202,7 +206,14 @@ namespace Libplanet.Net.Protocols
                     cancellationToken));
             }
 
-            tasks.Add(FindPeerAsync(_address, null, -1, _requestTimeout, cancellationToken));
+            tasks.Add(
+                FindPeerAsync(
+                    new ConcurrentBag<BoundPeer>(),
+                    _address,
+                    null,
+                    -1,
+                    _requestTimeout,
+                    cancellationToken));
             try
             {
                 await Task.WhenAll(tasks);
@@ -373,6 +384,7 @@ namespace Libplanet.Net.Protocols
             Peer rawPeer,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            _logger.Verbose($"Try to {nameof(UpdateAsync)}() {{Peer}}.", rawPeer);
             if (rawPeer is null)
             {
                 throw new ArgumentNullException(nameof(rawPeer));
@@ -402,6 +414,7 @@ namespace Libplanet.Net.Protocols
         /// Send <see cref="FindNeighbors"/> messages to <paramref name="viaPeer"/>
         /// to find <see cref="Peer"/>s near <paramref name="target"/>.
         /// </summary>
+        /// <param name="history">The <see cref="Peer"/> that searched.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
         /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
         /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
@@ -413,6 +426,7 @@ namespace Libplanet.Net.Protocols
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         private async Task FindPeerAsync(
+            ConcurrentBag<BoundPeer> history,
             Address target,
             BoundPeer viaPeer,
             int depth,
@@ -433,33 +447,37 @@ namespace Libplanet.Net.Protocols
             IEnumerable<BoundPeer> found;
             if (viaPeer is null)
             {
-                found = await QueryNeighborsAsync(target, timeout, cancellationToken);
+                found = await QueryNeighborsAsync(history, target, timeout, cancellationToken);
             }
             else
             {
                 found = await GetNeighbors(viaPeer, target, timeout, cancellationToken);
+                history.Add(viaPeer);
             }
 
-            await ProcessFoundAsync(found, target, depth, timeout, cancellationToken);
+            await ProcessFoundAsync(history, found, target, depth, timeout, cancellationToken);
         }
 
         private async Task<IEnumerable<BoundPeer>> QueryNeighborsAsync(
+            ConcurrentBag<BoundPeer> history,
             Address target,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize).ToList();
             var found = new List<BoundPeer>();
-            int count = (neighbors.Count < Kademlia.FindConcurrency)
+            int count = neighbors.Count < Kademlia.FindConcurrency
                 ? neighbors.Count
                 : Kademlia.FindConcurrency;
-            bool timeoutOccurred = true;
-            for (int i = 0; i < count; i++)
+            var timeoutOccurred = true;
+            for (var i = 0; i < count; i++)
             {
                 try
                 {
-                    found.AddRange(
-                        await GetNeighbors(neighbors[i], target, timeout, cancellationToken));
+                    var peers =
+                        await GetNeighbors(neighbors[i], target, timeout, cancellationToken);
+                    history.Add(neighbors[i]);
+                    found.AddRange(peers.Where(peer => !found.Contains(peer)));
                     timeoutOccurred = false;
                 }
                 catch (TimeoutException)
@@ -525,6 +543,7 @@ namespace Libplanet.Net.Protocols
         /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighbors"/>
         /// request.
         /// </summary>
+        /// <param name="history"><see cref="Peer"/>s that already searched.</param>
         /// <param name="found"><see cref="Peer"/>s that found.</param>
         /// <param name="target">The target <see cref="Address"/> to search.</param>
         /// <param name="depth">Target depth of recursive operation. If -1 is given,
@@ -537,6 +556,7 @@ namespace Libplanet.Net.Protocols
         /// <exception cref="TimeoutException">Thrown when all peers that found are
         /// not online.</exception>
         private async Task ProcessFoundAsync(
+            ConcurrentBag<BoundPeer> history,
             IEnumerable<BoundPeer> found,
             Address target,
             int depth,
@@ -544,7 +564,10 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             List<BoundPeer> peers = found.Where(
-                peer => !peer.Address.Equals(_address) && !_routing.Contains(peer)).ToList();
+                peer =>
+                    !peer.Address.Equals(_address) &&
+                    !_routing.Contains(peer) &&
+                    !history.Contains(peer)).ToList();
 
             if (peers.Count == 0)
             {
@@ -594,7 +617,13 @@ namespace Libplanet.Net.Protocols
                     break;
                 }
 
+                if (history.Contains(peer))
+                {
+                    continue;
+                }
+
                 findNeighboursTasks.Add(FindPeerAsync(
+                    history,
                     target,
                     peer,
                     depth == -1 ? depth : depth - 1,
