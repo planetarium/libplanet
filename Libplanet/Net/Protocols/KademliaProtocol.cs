@@ -390,13 +390,13 @@ namespace Libplanet.Net.Protocols
                 throw new TaskCanceledException();
             }
 
-            await _routing.AddPeerAsync(peer);
+            await _routing.AddPeerAsync(peer, cancellationToken);
         }
 
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
             _logger.Debug("Removing peer [{peer}] from table.", peer);
-            await _routing.RemovePeerAsync(peer);
+            await _routing.RemovePeerAsync(peer, cancellationToken);
         }
 
         /// <summary>

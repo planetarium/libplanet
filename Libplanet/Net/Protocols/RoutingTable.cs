@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Serilog;
@@ -68,7 +69,9 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public async Task<BoundPeer> AddPeerAsync(BoundPeer peer)
+        public async Task<BoundPeer> AddPeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (peer is null)
             {
@@ -84,7 +87,7 @@ namespace Libplanet.Net.Protocols
             BoundPeer evicted;
 
             // lock required
-            using (await _bucketMutex.LockAsync())
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
                 evicted = _buckets[index].AddPeer(peer);
             }
@@ -92,7 +95,9 @@ namespace Libplanet.Net.Protocols
             return evicted;
         }
 
-        public async Task<bool> RemovePeerAsync(BoundPeer peer)
+        public async Task<bool> RemovePeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (peer is null)
             {
@@ -108,7 +113,7 @@ namespace Libplanet.Net.Protocols
             bool ret;
 
             // lock required
-            using (await _bucketMutex.LockAsync())
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
                 ret = _buckets[index].RemovePeer(peer);
             }
