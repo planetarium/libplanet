@@ -1477,7 +1477,7 @@ namespace Libplanet.Net
             }
 
             ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
-                .Where(hash => !BlockChain.Contains(hash))
+                .Where(hash => !_store.ContainsBlock(hash))
                 .ToImmutableList();
 
             if (!newHashes.Any())
@@ -1710,9 +1710,7 @@ namespace Libplanet.Net
 
                     // We can omit this clause if assume every chain shares
                     // same genesis block...
-                    else if (!workspace.Contains(branchPoint)
-                             || (workspace[branchPoint].Index is long branchPointIndex
-                                 && !workspace[branchPointIndex].Hash.Equals(branchPoint)))
+                    else if (!BlockChain.ContainsBlock(branchPoint))
                     {
                         // Create a whole new chain because the branch point doesn't exist on
                         // the current chain.
@@ -1874,9 +1872,9 @@ namespace Libplanet.Net
 
             foreach (HashDigest<SHA256> hash in getData.BlockHashes)
             {
-                if (BlockChain.Contains(hash))
+                if (_store.ContainsBlock(hash))
                 {
-                    Block<T> block = BlockChain[hash];
+                    Block<T> block = _store.GetBlock<T>(hash);
                     byte[] payload = block.ToBencodex(true, true);
                     blocks.Add(payload);
                 }
@@ -1915,7 +1913,7 @@ namespace Libplanet.Net
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
 
-            if (BlockChain.Contains(target))
+            if (BlockChain.ContainsBlock(target))
             {
                 ReaderWriterLockSlim rwlock = BlockChain._rwlock;
                 rwlock.EnterReadLock();
@@ -1948,7 +1946,7 @@ namespace Libplanet.Net
 
             if (_logger.IsEnabled(LogEventLevel.Debug))
             {
-                if (BlockChain.Contains(target))
+                if (_store.ContainsBlock(target))
                 {
                     var baseString = @base is HashDigest<SHA256> h
                         ? $"{BlockChain[h].Index}:{h}"
@@ -2123,6 +2121,7 @@ namespace Libplanet.Net
 
             using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
             {
+                dealer.Options.Identity = req.Id.ToByteArray();
                 dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                 _logger.Debug(
                     "Trying to send {Message} to {PeerAddress}...",

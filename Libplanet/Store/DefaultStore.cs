@@ -444,6 +444,18 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override bool ContainsBlock(HashDigest<SHA256> blockHash)
+        {
+            if (_blockCache.ContainsKey(blockHash))
+            {
+                return true;
+            }
+
+            UPath blockPath = BlockPath(blockHash);
+            return _root.FileExists(blockPath);
+        }
+
+        /// <inheritdoc/>
         public override AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
         {
             LiteFileInfo file =

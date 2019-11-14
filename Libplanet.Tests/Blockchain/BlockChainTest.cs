@@ -42,11 +42,13 @@ namespace Libplanet.Tests.Blockchain
         {
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
             block.Validate(DateTimeOffset.UtcNow);
-            Assert.True(_blockChain.Contains(block));
+
+            Assert.True(_blockChain.ContainsBlock(block.Hash));
 
             Block<DumbAction> anotherBlock = await _blockChain.MineBlock(_fx.Address2);
             anotherBlock.Validate(DateTimeOffset.UtcNow);
-            Assert.True(_blockChain.Contains(anotherBlock));
+
+            Assert.True(_blockChain.ContainsBlock(anotherBlock.Hash));
         }
 
         [Fact]
@@ -93,7 +95,8 @@ namespace Libplanet.Tests.Blockchain
 
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
-            Assert.True(_blockChain.Contains(block));
+
+            Assert.True(_blockChain.ContainsBlock(block.Hash));
             Assert.Contains(txs[0], block.Transactions);
             Assert.Contains(txs[1], block.Transactions);
             Assert.DoesNotContain(txs[2], block.Transactions);
@@ -299,7 +302,8 @@ namespace Libplanet.Tests.Blockchain
             try
             {
                 _blockChain.Append(genesis);
-                Assert.True(_blockChain.Contains(genesis));
+
+                Assert.True(_blockChain.ContainsBlock(genesis.Hash));
                 Assert.NotNull(_blockChain.Store.GetBlockStates(genesis.Hash));
                 Assert.Empty(DumbAction.RenderRecords.Value);
 
@@ -310,7 +314,7 @@ namespace Libplanet.Tests.Blockchain
                 );
 
                 _blockChain.Append(block1);
-                Assert.True(_blockChain.Contains(block1));
+                Assert.True(_blockChain.ContainsBlock(block1.Hash));
                 Assert.NotNull(_blockChain.Store.GetBlockStates(block1.Hash));
                 var renders = DumbAction.RenderRecords.Value;
                 var actions = renders.Select(r => (DumbAction)r.Action).ToArray();
@@ -403,7 +407,7 @@ namespace Libplanet.Tests.Blockchain
                         renderActions: true
                     )
                 );
-                Assert.False(_blockChain.Contains(genesis));
+                Assert.False(_blockChain.ContainsBlock(genesis.Hash));
                 Assert.Empty(DumbAction.RenderRecords.Value);
 
                 _blockChain.Append(

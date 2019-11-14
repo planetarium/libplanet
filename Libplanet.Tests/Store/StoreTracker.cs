@@ -56,6 +56,12 @@ namespace Libplanet.Tests.Store
             return _store.DeleteBlock(blockHash);
         }
 
+        public bool ContainsBlock(HashDigest<SHA256> blockHash)
+        {
+            _logs.Add((nameof(ContainsBlock), blockHash, null));
+            return _store.ContainsBlock(blockHash);
+        }
+
         public bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
         {
             _logs.Add((nameof(DeleteIndex), chainId, hash));

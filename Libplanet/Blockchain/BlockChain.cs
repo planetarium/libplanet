@@ -180,20 +180,27 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Gets the block corresponding to the <paramref name="hash"/>.
+        /// Gets the block corresponding to the <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="hash">A <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> to get.
-        /// </param>
+        /// <param name="blockHash">A <see cref="Block{T}.Hash"/> of the <see cref="Block{T}"/> to
+        /// get. </param>
         /// <exception cref="KeyNotFoundException">Thrown when there is no <see cref="Block{T}"/>
-        /// with a given <paramref name="hash"/>.</exception>
-        public Block<T> this[HashDigest<SHA256> hash]
+        /// with a given <paramref name="blockHash"/>.</exception>
+        public Block<T> this[HashDigest<SHA256> blockHash]
         {
             get
             {
+                if (!ContainsBlock(blockHash))
+                {
+                    throw new KeyNotFoundException(
+                        $"The given hash[{blockHash}] was not found in this chain."
+                    );
+                }
+
                 _rwlock.EnterReadLock();
                 try
                 {
-                    return _blocks[hash];
+                    return _blocks[blockHash];
                 }
                 finally
                 {
@@ -203,35 +210,24 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>.
-        /// </summary>
-        /// <param name="block">The <see cref="Block{T}"/> to check if it is in the
-        /// <see cref="BlockChain{T}"/>.</param>
-        /// <returns>
-        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public bool Contains(Block<T> block)
-        {
-            return Contains(block.Hash);
-        }
-
-        /// <summary>
         /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/>
-        /// the specified <paramref name="hash"/>.
+        /// the specified <paramref name="blockHash"/>.
         /// </summary>
-        /// <param name="hash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
+        /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
         /// check if it is in the <see cref="BlockChain{T}"/>.</param>
         /// <returns>
         /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Block{T}"/> with
-        /// the specified <paramref name="hash"/>; otherwise, <c>false</c>.
+        /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(HashDigest<SHA256> hash)
+        public bool ContainsBlock(HashDigest<SHA256> blockHash)
         {
             _rwlock.EnterReadLock();
             try
             {
-                return _blocks.ContainsKey(hash);
+                return _blocks.ContainsKey(blockHash) &&
+                       _blocks[blockHash].Index is long branchPointIndex &&
+                       branchPointIndex <= Tip.Index &&
+                       this[branchPointIndex].Hash.Equals(blockHash);
             }
             finally
             {
@@ -937,7 +933,7 @@ namespace Libplanet.Blockchain
 
         internal BlockChain<T> Fork(HashDigest<SHA256> point)
         {
-            if (!Contains(point))
+            if (!ContainsBlock(point))
             {
                 throw new ArgumentException(
                     $"The block [{point}] doesn't exist.",
