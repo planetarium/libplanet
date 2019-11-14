@@ -21,7 +21,7 @@ namespace Libplanet.Tests.Net.Protocols
         private readonly ILogger _logger;
         private readonly ConcurrentDictionary<byte[], Address> _peersToReply;
         private readonly ConcurrentDictionary<byte[], Message> _replyToReceive;
-        private readonly List<Request> _requests;
+        private readonly AsyncCollection<Request> _requests;
         private readonly List<string> _ignoreTestMessageWithData;
         private readonly PrivateKey _privateKey;
         private readonly Random _random;
@@ -48,7 +48,7 @@ namespace Libplanet.Tests.Net.Protocols
             _swarms = swarms;
             _swarms[privateKey.PublicKey.ToAddress()] = this;
             _networkDelay = networkDelay ?? TimeSpan.Zero;
-            _requests = new List<Request>();
+            _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
         }
@@ -178,13 +178,14 @@ namespace Libplanet.Tests.Net.Protocols
             _random.NextBytes(bytes);
             message.Identity = _privateKey.PublicKey.ToAddress().ByteArray.Concat(bytes).ToArray();
             var sendTime = DateTimeOffset.UtcNow;
-            _requests.Add(new Request()
-            {
-                RequestTime = sendTime,
-                Message = message,
-                Target = peer,
-            });
             _logger.Debug("Adding request of {Message} of {Identity}.", message, message.Identity);
+            await _requests.AddAsync(
+                new Request()
+                {
+                    RequestTime = sendTime,
+                    Message = message,
+                    Target = peer,
+                }, cancellationToken);
 
             while (!cancellationToken.IsCancellationRequested &&
                    !_replyToReceive.ContainsKey(message.Identity))
@@ -311,23 +312,22 @@ namespace Libplanet.Tests.Net.Protocols
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var copy = new Request[_requests.Count];
-                _requests.CopyTo(copy);
-                foreach (var request in copy)
-                {
-                    if (request.RequestTime <= DateTimeOffset.UtcNow + _networkDelay)
-                    {
-                        _logger.Debug(
-                            "Send {Message} with {Identity} to {Peer}.",
-                            request.Message,
-                            request.Message.Identity,
-                            request.Target);
-                        _swarms[request.Target.Address].ReceiveMessage(request.Message);
-                        _requests.Remove(request);
-                    }
-                }
+                Request req = await _requests.TakeAsync(cancellationToken);
 
-                await Task.Delay(10, cancellationToken);
+                if (req.RequestTime + _networkDelay <= DateTimeOffset.UtcNow)
+                {
+                    _logger.Debug(
+                        "Send {Message} with {Identity} to {Peer}.",
+                        req.Message,
+                        req.Message.Identity,
+                        req.Target);
+                    _swarms[req.Target.Address].ReceiveMessage(req.Message);
+                }
+                else
+                {
+                    await _requests.AddAsync(req, cancellationToken);
+                    await Task.Delay(10, cancellationToken);
+                }
             }
         }
 
