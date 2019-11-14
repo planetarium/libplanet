@@ -264,6 +264,10 @@ namespace Libplanet.Net
 
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
+        internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
+
+        internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
+
         /// <summary>
         /// Waits until this <see cref="Swarm{T}"/> instance gets started to run.
         /// </summary>
@@ -1560,18 +1564,7 @@ namespace Libplanet.Net
                         );
                         break;
                     }
-
-                    // We can't recover with OperationCanceledException and
-                    // ObjectDisposedException. so just re-throw them.
-                    catch (ObjectDisposedException)
-                    {
-                        throw;
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
+                    catch (TimeoutException e)
                     {
                         if (retry > 0)
                         {
@@ -1678,6 +1671,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
+            FillBlocksAsyncStarted.Set();
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
 
@@ -1791,12 +1785,13 @@ namespace Libplanet.Net
             }
             catch
             {
-                if (!(workspace is null))
+                if (!(workspace is null) && !workspace.Id.Equals(BlockChain.Id))
                 {
                     IStore store = blockChain.Store;
                     store.DeleteChainId(workspace.Id);
                 }
 
+                FillBlocksAsyncFailed.Set();
                 throw;
             }
             finally
