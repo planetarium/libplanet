@@ -127,8 +127,8 @@ namespace Libplanet.Store
         public abstract void StoreStateReference(
             Guid chainId,
             IImmutableSet<Address> addresses,
-            HashDigest<SHA256> hashDigest,
-            long index);
+            HashDigest<SHA256> blockHash,
+            long blockIndex);
 
         /// <inheritdoc />
         public abstract void ForkStateReferences<T>(

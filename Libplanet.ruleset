@@ -46,8 +46,6 @@
     <Rule Id="S108" Action="None" />
     <!-- 'System.NullReferenceException' should not be thrown by user code. -->
     <Rule Id="S112" Action="None" />
-    <!-- Rename parameter 'A' to 'B' to match the interface declaration. -->
-    <Rule Id="S927" Action="None" />
     <!-- Add the default parameter value defined in the overridden method. -->
     <Rule Id="S1006" Action="None" />
     <!-- Add a 'protected' constructor or the 'static' keyword to the class

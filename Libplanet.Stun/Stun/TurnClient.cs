@@ -291,24 +291,24 @@ namespace Libplanet.Stun
 
         private class ByteArrayComparer : IEqualityComparer<byte[]>
         {
-            public bool Equals(byte[] left, byte[] right)
+            public bool Equals(byte[] x, byte[] y)
             {
-                if (left == null || right == null)
+                if (x == null || y == null)
                 {
-                    return left == right;
+                    return x == y;
                 }
 
-                return left.SequenceEqual(right);
+                return x.SequenceEqual(y);
             }
 
-            public int GetHashCode(byte[] key)
+            public int GetHashCode(byte[] obj)
             {
-                if (key == null)
+                if (obj == null)
                 {
-                    throw new ArgumentNullException(nameof(key));
+                    throw new ArgumentNullException(nameof(obj));
                 }
 
-                return key.Sum(b => b);
+                return obj.Sum(b => b);
             }
         }
     }
