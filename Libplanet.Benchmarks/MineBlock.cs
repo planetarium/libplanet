@@ -16,7 +16,7 @@ namespace Libplanet.Benchmarks
 
         public MineBlock()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _blockChain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 _fx.Store

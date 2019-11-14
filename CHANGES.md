@@ -8,15 +8,26 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
+ -  The introduced `DefaultStore` is incompatible at the file-level with
+    the `LiteDBStore` which had existed.  `DefaultStore` became to take
+    a directory instead of a single file, and it consists of multiple
+    subdirectories and a LiteDB file for indices.  [[#662]]
+
 ### Added APIs
+
+ -  Added `DefaultStore` class to replace `LiteDBStore`.  [[#662]]
 
 ### Behavioral changes
 
 ### Bug fixes
+
+[#662]: https://github.com/planetarium/libplanet/pull/662
 
 
 Version 0.7.0

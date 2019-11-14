@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Store
 
         public TransactionSetTest()
         {
-            _fx = new LiteDBStoreFixture();
+            _fx = new DefaultStoreFixture();
             _set = new TransactionSet<DumbAction>(_fx.Store);
         }
 

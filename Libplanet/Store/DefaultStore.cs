@@ -1,51 +1,58 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Threading;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
+using LruCacheNet;
 using Serilog;
+using Zio;
+using Zio.FileSystems;
 using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Store
 {
     /// <summary>
-    /// <see cref="IStore"/> implementation using <a href="https://www.litedb.org/">LiteDB</a>.
+    /// The default built-in <see cref="IStore"/> implementation.  This stores data in
+    /// the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+    /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class LiteDBStore : BaseStore, IDisposable
+    public class DefaultStore : BaseStore, IDisposable
     {
-        private const string TxIdPrefix = "tx/";
-
         private const string IndexColPrefix = "index_";
 
         private const string StateRefIdPrefix = "stateref_";
 
         private const string TxNonceIdPrefix = "nonce_";
 
+        private static readonly UPath TxRootPath = UPath.Root / "tx";
+        private static readonly UPath BlockRootPath = UPath.Root / "block";
+
         private readonly ILogger _logger;
+
+        private readonly IFileSystem _root;
+        private readonly SubFileSystem _txs;
+        private readonly SubFileSystem _blocks;
+
+        private readonly LruCache<TxId, object> _txCache;
+        private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
 
         private readonly MemoryStream _memoryStream;
 
         private readonly LiteDatabase _db;
 
-        private readonly ReaderWriterLockSlim _txLock;
-
-        private readonly ReaderWriterLockSlim _blockLock;
-
         /// <summary>
-        /// Creates a new <seealso cref="LiteDBStore"/>.
+        /// Creates a new <seealso cref="DefaultStore"/>.
         /// </summary>
-        /// <param name="path">The path where the storage file will be saved.  If the path is
-        /// <c>null</c>, The database is created in memory with <see cref="MemoryStream"/>.</param>
+        /// <param name="path">The path of the directory where the storage files will be saved.
+        /// If the path is <c>null</c>, the database is created in memory.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
@@ -53,7 +60,7 @@ namespace Libplanet.Store
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
-        public LiteDBStore(
+        public DefaultStore(
             string path,
             bool journal = true,
             int cacheSize = 50000,
@@ -61,34 +68,47 @@ namespace Libplanet.Store
             bool readOnly = false
         )
         {
-            _logger = Log.ForContext<LiteDBStore>();
-
-            var connectionString = new ConnectionString
-            {
-                Filename = path,
-                Journal = journal,
-                CacheSize = cacheSize,
-                Flush = flush,
-            };
-
-            if (readOnly)
-            {
-                connectionString.Mode = FileMode.ReadOnly;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
-                Type.GetType("Mono.Runtime") is null)
-            {
-                // macOS + .NETCore doesn't support shared lock.
-                connectionString.Mode = FileMode.Exclusive;
-            }
+            _logger = Log.ForContext<DefaultStore>();
 
             if (path is null)
             {
+                _root = new MemoryFileSystem();
                 _memoryStream = new MemoryStream();
                 _db = new LiteDatabase(_memoryStream);
             }
             else
             {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                var pfs = new PhysicalFileSystem();
+                _root = new SubFileSystem(
+                    pfs,
+                    pfs.ConvertPathFromInternal(path),
+                    owned: true
+                );
+
+                var connectionString = new ConnectionString
+                {
+                    Filename = Path.Combine(path, "index.ldb"),
+                    Journal = journal,
+                    CacheSize = cacheSize,
+                    Flush = flush,
+                };
+
+                if (readOnly)
+                {
+                    connectionString.Mode = FileMode.ReadOnly;
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                    Type.GetType("Mono.Runtime") is null)
+                {
+                    // macOS + .NETCore doesn't support shared lock.
+                    connectionString.Mode = FileMode.Exclusive;
+                }
+
                 _db = new LiteDatabase(connectionString);
             }
 
@@ -105,8 +125,13 @@ namespace Libplanet.Store
                     b => new Address(b.AsBinary));
             }
 
-            _blockLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-            _txLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+            _root.CreateDirectory(TxRootPath);
+            _txs = new SubFileSystem(_root, TxRootPath, owned: false);
+            _root.CreateDirectory(BlockRootPath);
+            _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
+
+            _txCache = new LruCache<TxId, object>(capacity: 1024);
+            _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: 512);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -246,174 +271,165 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            IEnumerable<string> filenames;
-            _txLock.EnterReadLock();
-            try
+            foreach (UPath path in _txs.EnumerateDirectories(UPath.Root))
             {
-                filenames = _db.FileStorage
-                    .Find(TxIdPrefix)
-                    .Select(file => file.Filename);
-            }
-            finally
-            {
-                _txLock.ExitReadLock();
-            }
+                string upper = path.GetName();
+                if (upper.Length != 2)
+                {
+                    continue;
+                }
 
-            return filenames.Select(filename => new TxId(ByteUtil.ParseHex(filename)));
+                foreach (UPath subPath in _txs.EnumerateFiles(path))
+                {
+                    string lower = subPath.GetName();
+                    if (lower.Length != 62)
+                    {
+                        continue;
+                    }
+
+                    string name = upper + lower;
+                    TxId txid;
+                    try
+                    {
+                        txid = new TxId(ByteUtil.ParseHex(name));
+                    }
+                    catch (Exception)
+                    {
+                        // Skip if a filename does not match to the format.
+                        continue;
+                    }
+
+                    yield return txid;
+                }
+            }
         }
 
         /// <inheritdoc/>
         public override Transaction<T> GetTransaction<T>(TxId txid)
         {
-            string fileId = TxFileId(txid);
-            byte[] bytes;
+            if (_txCache.TryGetValue(txid, out object cachedTx))
+            {
+                return (Transaction<T>)cachedTx;
+            }
 
-            _txLock.EnterUpgradeableReadLock();
+            UPath path = TxPath(txid);
+            if (!_txs.FileExists(path))
+            {
+                return null;
+            }
+
+            byte[] bytes;
             try
             {
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                if (file is null)
-                {
-                    return null;
-                }
-
-                using (var stream = new MemoryStream())
-                {
-                    DownloadFile(file, stream);
-
-                    bytes = stream.ToArray();
-                    if (bytes.Length != file.Length || bytes.Length < 1)
-                    {
-                        _logger.Warning(
-                            "The data file for the transaction {TxId} seems corrupted; " +
-                            "it will be treated nonexistent and removed at all.",
-                            txid
-                        );
-                        _txLock.EnterWriteLock();
-                        try
-                        {
-                            _db.FileStorage.Delete(fileId);
-                        }
-                        finally
-                        {
-                            _txLock.ExitWriteLock();
-                        }
-
-                        return null;
-                    }
-                }
+                bytes = _txs.ReadAllBytes(path);
             }
-            finally
+            catch (FileNotFoundException)
             {
-                _txLock.ExitUpgradeableReadLock();
+                return null;
             }
 
-            return Transaction<T>.FromBencodex(bytes);
+            Transaction<T> tx = Transaction<T>.FromBencodex(bytes);
+            _txCache.AddOrUpdate(txid, tx);
+            return tx;
         }
 
         /// <inheritdoc/>
         public override void PutTransaction<T>(Transaction<T> tx)
         {
-            string fileId = TxFileId(tx.Id);
-            string filename = tx.Id.ToHex();
-            byte[] txBytes = tx.ToBencodex(true);
-            _txLock.EnterUpgradeableReadLock();
-            try
+            if (_txCache.ContainsKey(tx.Id))
             {
-                LiteFileInfo file = _db.FileStorage.FindById(fileId);
-                if (file is LiteFileInfo)
-                {
-                    // No-op if already exists.
-                    return;
-                }
+                return;
+            }
 
-                _txLock.EnterWriteLock();
-                try
-                {
-                    UploadFile(fileId, filename, txBytes);
-                }
-                finally
-                {
-                    _txLock.ExitWriteLock();
-                }
-            }
-            finally
-            {
-                _txLock.ExitUpgradeableReadLock();
-            }
+            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
+            _txCache.AddOrUpdate(tx.Id, tx);
         }
 
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            _txLock.EnterWriteLock();
-            try
+            var path = TxPath(txid);
+            if (_txs.FileExists(path))
             {
-                return _db.FileStorage.Delete(TxFileId(txid));
+                _txs.DeleteFile(path);
+                _txCache.Remove(txid);
+                return true;
             }
-            finally
-            {
-                _txLock.ExitWriteLock();
-            }
+
+            return false;
         }
 
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            _blockLock.EnterReadLock();
-            try
+            foreach (UPath path in _blocks.EnumerateDirectories(UPath.Root))
             {
-                return _db.FileStorage
-                    .Find("block/")
-                    .Select(file => new HashDigest<SHA256>(ByteUtil.ParseHex(file.Filename)));
-            }
-            finally
-            {
-                _blockLock.ExitReadLock();
+                string upper = path.GetName();
+                if (upper.Length != 2)
+                {
+                    continue;
+                }
+
+                foreach (UPath subPath in _blocks.EnumerateFiles(path))
+                {
+                    string lower = subPath.GetName();
+                    if (lower.Length != 62)
+                    {
+                        continue;
+                    }
+
+                    string name = upper + lower;
+                    HashDigest<SHA256> blockHash;
+                    try
+                    {
+                        blockHash = new HashDigest<SHA256>(ByteUtil.ParseHex(name));
+                    }
+                    catch (Exception)
+                    {
+                        // Skip if a filename does not match to the format.
+                        continue;
+                    }
+
+                    yield return blockHash;
+                }
             }
         }
 
         /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
-            // checks whether a block already exists or not.
-            if (!(_db.FileStorage.FindById(BlockFileId(block.Hash)) is null))
+            if (_blockCache.ContainsKey(block.Hash))
             {
                 return;
             }
 
-            _blockLock.EnterWriteLock();
-            try
+            UPath path = BlockPath(block.Hash);
+            if (_blocks.FileExists(path))
             {
-                foreach (Transaction<T> tx in block.Transactions)
-                {
-                    PutTransaction(tx);
-                }
+                return;
+            }
 
-                UploadFile(
-                    BlockFileId(block.Hash),
-                    ByteUtil.Hex(block.Hash.ToByteArray()),
-                    block.ToBencodex(true, false)
-                );
-            }
-            finally
+            foreach (Transaction<T> tx in block.Transactions)
             {
-                _blockLock.ExitWriteLock();
+                PutTransaction(tx);
             }
+
+            WriteContentAddressableFile(_blocks, path, block.ToBencodex(true, false));
+            _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
         /// <inheritdoc/>
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            _blockLock.EnterWriteLock();
-            try
+            var path = BlockPath(blockHash);
+            if (_blocks.FileExists(path))
             {
-                return _db.FileStorage.Delete(BlockFileId(blockHash));
+                _blocks.DeleteFile(path);
+                _blockCache.Remove(blockHash);
+                return true;
             }
-            finally
-            {
-                _blockLock.ExitWriteLock();
-            }
+
+            return false;
         }
 
         /// <inheritdoc/>
@@ -579,27 +595,30 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long CountTransactions()
         {
-            return _db.FileStorage.Find(TxIdPrefix).Count();
+            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
+            // unused (except for unit tests).  If this is never used why should we maintain
+            // this?  This is basically only for making TransactionSet<T> class to implement
+            // IDictionary<TxId, Transaction<T>>.Count property, which is never used either.
+            // We'd better to refactor all such things so that unnecessary APIs are gone away.
+            return IterateTransactionIds().LongCount();
         }
 
         /// <inheritdoc/>
         public override long CountBlocks()
         {
-            _blockLock.EnterReadLock();
-            try
-            {
-                return _db.FileStorage.Find("block/").Count();
-            }
-            finally
-            {
-                _blockLock.ExitReadLock();
-            }
+            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
+            // unused (except for unit tests).  If this is never used why should we maintain
+            // this?  This is basically only for making BlockSet<T> class to implement
+            // IDictionary<HashDigest<SHA256>, Block<T>>.Count property, which is never used either.
+            // We'd better to refactor all such things so that unnecessary APIs are gone away.
+            return IterateBlockHashes().LongCount();
         }
 
         public void Dispose()
         {
             _db?.Dispose();
             _memoryStream?.Dispose();
+            _root.Dispose();
         }
 
         internal static Guid ParseChainId(string chainIdString) =>
@@ -610,46 +629,95 @@ namespace Libplanet.Store
 
         internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
         {
-            _blockLock.EnterUpgradeableReadLock();
+            if (_blockCache.TryGetValue(blockHash, out RawBlock cahcedBlock))
+            {
+                return cahcedBlock;
+            }
+
+            UPath path = BlockPath(blockHash);
+            if (!_blocks.FileExists(path))
+            {
+                return null;
+            }
+
+            RawBlock rawBlock;
             try
             {
-                LiteFileInfo file = _db.FileStorage.FindById(BlockFileId(blockHash));
-                if (file is null)
+                var formatter = new BencodexFormatter<RawBlock>();
+                using (Stream stream = _blocks.OpenFile(
+                    path, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    return null;
+                    rawBlock = (RawBlock)formatter.Deserialize(stream);
                 }
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
 
-                _blockLock.EnterWriteLock();
+            _blockCache.AddOrUpdate(blockHash, rawBlock);
+            return rawBlock;
+        }
+
+        private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
+        {
+            if (!fs.DirectoryExists(path))
+            {
+                CreateDirectoryRecursively(fs, path.GetDirectory());
+                fs.CreateDirectory(path);
+            }
+        }
+
+        private void WriteContentAddressableFile(IFileSystem fs, UPath path, byte[] contents)
+        {
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(fs, dirPath);
+
+            // Assuming the filename is content-addressable, so that if there is
+            // already the file of the same name the content is the same as well.
+            if (fs.FileExists(path))
+            {
+                return;
+            }
+
+            // For atomicity, writes bytes into an intermediate temp file,
+            // and then renames it to the final destination.
+            UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
+            try
+            {
+                fs.WriteAllBytes(tmpPath, contents);
                 try
                 {
-                    using (var stream = new MemoryStream())
-                    {
-                        DownloadFile(file, stream);
-                        stream.Seek(0, SeekOrigin.Begin);
-
-                        var formatter = new BencodexFormatter<RawBlock>();
-                        return (RawBlock)formatter.Deserialize(stream);
-                    }
+                    fs.MoveFile(tmpPath, path);
                 }
-                finally
+                catch (IOException)
                 {
-                    _blockLock.ExitWriteLock();
+                    if (!fs.FileExists(path) ||
+                        fs.GetFileLength(path) != contents.LongLength)
+                    {
+                        throw;
+                    }
                 }
             }
             finally
             {
-                _blockLock.ExitUpgradeableReadLock();
+                if (fs.FileExists(tmpPath))
+                {
+                    fs.DeleteFile(tmpPath);
+                }
             }
         }
 
-        private string TxFileId(TxId txid)
+        private UPath BlockPath(HashDigest<SHA256> blockHash)
         {
-            return $"{TxIdPrefix}{txid.ToHex()}";
+            string idHex = ByteUtil.Hex(blockHash.ByteArray);
+            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private string BlockFileId(HashDigest<SHA256> blockHash)
+        private UPath TxPath(TxId txid)
         {
-            return $"block/{blockHash}";
+            string idHex = txid.ToHex();
+            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
         private string BlockStateFileId(HashDigest<SHA256> blockHash)
@@ -665,17 +733,6 @@ namespace Libplanet.Store
         private string TxNonceId(Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
-        }
-
-        private IEnumerable<Transaction<T>> GetTransactions<T>(
-            IEnumerable transactions
-        )
-            where T : IAction, new()
-        {
-            return transactions
-                .Cast<byte[]>()
-                .Select(bytes => GetTransaction<T>(new TxId(bytes)))
-                .Where(tx => tx != null);
         }
 
         private void UploadFile(string fileId, string filename, byte[] bytes)

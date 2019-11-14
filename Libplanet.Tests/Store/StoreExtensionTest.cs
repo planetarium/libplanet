@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Store
         {
             get
             {
-                yield return new object[] { new LiteDBStoreFixture() };
+                yield return new object[] { new DefaultStoreFixture() };
             }
         }
 
