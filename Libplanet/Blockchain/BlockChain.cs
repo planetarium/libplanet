@@ -240,29 +240,6 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Determines whether the <see cref="BlockChain{T}"/> contains <see cref="Transaction{T}"/>
-        /// the specified <paramref name="txId"/>.
-        /// </summary>
-        /// <param name="txId">The <see cref="HashDigest{T}"/> of the <see cref="Transaction{T}"/>
-        /// to check if it is in the <see cref="BlockChain{T}"/>.</param>
-        /// <returns>
-        /// <c>true</c> if the <see cref="BlockChain{T}"/> contains <see cref="Transaction{T}"/>
-        /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Contains(TxId txId)
-        {
-            _rwlock.EnterReadLock();
-            try
-            {
-                return _transactions.ContainsKey(txId);
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-        }
-
-        /// <summary>
         /// Gets the transaction corresponding to the <paramref name="txId"/>.
         /// </summary>
         /// <param name="txId">A <see cref="TxId"/> of the <see cref="Transaction{T}"/> to get.

@@ -301,6 +301,18 @@ namespace Libplanet.Store
         /// <seealso cref="GetTxNonce(Guid, Address)"/>
         void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1);
 
+        /// <summary>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="Transaction{T}"/>
+        /// the specified <paramref name="txId"/>.
+        /// </summary>
+        /// <param name="txId">The <see cref="TxId"/> of the <see cref="Transaction{T}"/>
+        /// to check if it is in the <see cref="IStore"/>.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="IStore"/> contains <see cref="Transaction{T}"/>
+        /// with the specified <paramref name="txId"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsTransaction(TxId txId);
+
         long CountTransactions();
 
         long CountBlocks();

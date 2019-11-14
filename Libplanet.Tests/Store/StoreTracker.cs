@@ -156,6 +156,12 @@ namespace Libplanet.Tests.Store
             _store.PutTransaction<T>(tx);
         }
 
+        public bool ContainsTransaction(TxId txId)
+        {
+            _logs.Add((nameof(ContainsTransaction), txId, null));
+            return _store.ContainsTransaction(txId);
+        }
+
         public void SetBlockStates(
             HashDigest<SHA256> blockHash,
             AddressStateMap states

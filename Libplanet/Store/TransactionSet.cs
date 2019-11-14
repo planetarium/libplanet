@@ -65,12 +65,12 @@ namespace Libplanet.Store
 
         public override bool Contains(KeyValuePair<TxId, Transaction<T>> item)
         {
-            return Store.IterateTransactionIds().Contains(item.Key);
+            return Store.ContainsTransaction(item.Key);
         }
 
         public override bool ContainsKey(TxId key)
         {
-            return Store.GetTransaction<T>(key) is Transaction<T>;
+            return Store.ContainsTransaction(key);
         }
 
         public override bool Remove(TxId key)

@@ -360,6 +360,17 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override bool ContainsTransaction(TxId txId)
+        {
+            if (_txCache.ContainsKey(txId))
+            {
+                return true;
+            }
+
+            return _root.FileExists(TxPath(txId));
+        }
+
+        /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
             foreach (UPath path in _blocks.EnumerateDirectories(UPath.Root))

@@ -9,6 +9,8 @@ To be released.
 ### Backward-incompatible API changes
 
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
+ -  Removed `BlockChain<T>.Contains(TxId)` method.
+    Use `IStore.ContainsTransaction(TxId)` instead.  [[#676]]
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +33,7 @@ To be released.
 
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#675]: https://github.com/planetarium/libplanet/pull/675
+[#676]: https://github.com/planetarium/libplanet/pull/676
 
 
 Version 0.7.0
