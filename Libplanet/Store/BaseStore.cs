@@ -158,6 +158,9 @@ namespace Libplanet.Store
 
         public abstract bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash);
 
+        /// <inheritdoc />
+        public abstract bool ContainsTransaction(TxId txId);
+
         /// <inheritdoc/>
         public abstract void DeleteChainId(Guid chainId);
 

@@ -165,12 +165,13 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            Assert.Empty(txs.Where(tx => _blockChain.Contains(tx.Id)));
+            Assert.Empty(txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)));
 
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             Assert.Equal(
                 txs,
-                txs.Where(tx => _blockChain.Contains(tx.Id)).ToHashSet());
+                txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)).ToHashSet()
+            );
         }
 
         [Fact]

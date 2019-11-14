@@ -201,6 +201,8 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id));
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
             Assert.False(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
+            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
+            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction1);
             Assert.Equal(1, Fx.Store.CountTransactions());
@@ -216,6 +218,8 @@ namespace Libplanet.Tests.Store
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction1.Id)
             );
             Assert.Null(Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
+            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Fx.Store.PutTransaction(Fx.Transaction2);
             Assert.Equal(2, Fx.Store.CountTransactions());
@@ -234,6 +238,8 @@ namespace Libplanet.Tests.Store
             Assert.Equal(
                 Fx.Transaction2,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
 
             Assert.True(Fx.Store.DeleteTransaction(Fx.Transaction1.Id));
             Assert.Equal(1, Fx.Store.CountTransactions());
@@ -249,6 +255,8 @@ namespace Libplanet.Tests.Store
                 Fx.Transaction2,
                 Fx.Store.GetTransaction<DumbAction>(Fx.Transaction2.Id)
             );
+            Assert.False(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
         }
 
         [Fact]

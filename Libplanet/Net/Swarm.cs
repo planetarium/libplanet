@@ -69,6 +69,8 @@ namespace Libplanet.Net
         private IPAddress _publicIPAddress;
         private Task _runtimeProcessor;
 
+        private IStore _store;
+
         static Swarm()
         {
             if (!(Type.GetType("Mono.Runtime") is null))
@@ -117,6 +119,7 @@ namespace Libplanet.Net
             Running = false;
 
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
+            _store = BlockChain.Store;
             _privateKey = privateKey ?? throw new ArgumentNullException(nameof(privateKey));
             LastSeenTimestamps =
                 new ConcurrentDictionary<Peer, DateTimeOffset>();
@@ -639,7 +642,7 @@ namespace Libplanet.Net
             // blockchain with it.
             BlockChain<T> workspace = initialTip is Block<T> tip
                 ? BlockChain.Fork(tip.Hash)
-                : new BlockChain<T>(BlockChain.Policy, BlockChain.Store, Guid.NewGuid());
+                : new BlockChain<T>(BlockChain.Policy, _store, Guid.NewGuid());
 
             var complete = false;
 
@@ -776,7 +779,7 @@ namespace Libplanet.Net
                         BlockChain.Id,
                         BlockChain.Tip
                     );
-                    workspace.Store.DeleteChainId(workspace.Id);
+                    _store.DeleteChainId(workspace.Id);
                 }
                 else
                 {
@@ -1222,7 +1225,6 @@ namespace Libplanet.Net
                     rwlock.EnterWriteLock();
                     try
                     {
-                        IStore store = blockChain.Store;
                         Guid chainId = blockChain.Id;
 
                         int count = 0, totalCount = recentStates.StateReferences.Count;
@@ -1249,9 +1251,9 @@ namespace Libplanet.Net
                         {
                             HashDigest<SHA256> hash = pair.Key;
                             IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
-                            if (store.GetBlockIndex(hash) is long index)
+                            if (_store.GetBlockIndex(hash) is long index)
                             {
-                                store.StoreStateReference(chainId, addresses, hash, index);
+                                _store.StoreStateReference(chainId, addresses, hash, index);
 
                                 progress?.Report(new StateReferenceDownloadState()
                                 {
@@ -1267,7 +1269,7 @@ namespace Libplanet.Net
                         foreach (var pair in recentStates.BlockStates)
                         {
                             cancellationToken.ThrowIfCancellationRequested();
-                            store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                            _store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
                             progress?.Report(new BlockStateDownloadState()
                             {
                                 TotalBlockStateCount = totalCount,
@@ -1787,8 +1789,7 @@ namespace Libplanet.Net
             {
                 if (!(workspace is null) && !workspace.Id.Equals(BlockChain.Id))
                 {
-                    IStore store = blockChain.Store;
-                    store.DeleteChainId(workspace.Id);
+                    _store.DeleteChainId(workspace.Id);
                 }
 
                 FillBlocksAsyncFailed.Set();
@@ -1796,10 +1797,9 @@ namespace Libplanet.Net
             }
             finally
             {
-                IStore store = blockChain.Store;
                 foreach (var id in scope.Where(guid => guid != workspace?.Id))
                 {
-                    store.DeleteChainId(id);
+                    _store.DeleteChainId(id);
                 }
             }
 
@@ -1809,7 +1809,7 @@ namespace Libplanet.Net
         private void TransferTxs(GetTxs getTxs)
         {
             IEnumerable<Transaction<T>> txs = getTxs.TxIds
-                .Where(txId => BlockChain.Contains(txId))
+                .Where(txId => _store.ContainsTransaction(txId))
                 .Select(BlockChain.GetTransaction);
 
             foreach (Transaction<T> tx in txs)
@@ -1837,7 +1837,7 @@ namespace Libplanet.Net
             _logger.Debug("Trying to fetch txs...");
 
             ImmutableHashSet<TxId> newTxIds = message.Ids
-                .Where(id => !BlockChain.Contains(id))
+                .Where(id => !_store.ContainsTransaction(id))
                 .ToImmutableHashSet();
 
             if (!newTxIds.Any())
@@ -1921,13 +1921,9 @@ namespace Libplanet.Net
                 rwlock.EnterReadLock();
                 try
                 {
-                    // FIXME: Swarm should not directly access to the IStore instance,
-                    // but BlockChain<T> should have an indirect interface to its underlying
-                    // store.
-                    IStore store = BlockChain.Store;
                     Guid chainId = BlockChain.Id;
 
-                    stateRefs = store.ListAllStateReferences(
+                    stateRefs = _store.ListAllStateReferences(
                         chainId,
                         onlyAfter: @base,
                         ignoreAfter: target
@@ -1940,7 +1936,7 @@ namespace Libplanet.Net
                             new KeyValuePair<
                                 HashDigest<SHA256>,
                                 IImmutableDictionary<Address, IValue>
-                            >(bh, store.GetBlockStates(bh))
+                            >(bh, _store.GetBlockStates(bh))
                         )
                         .ToImmutableDictionary();
                 }
