@@ -119,11 +119,11 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
-        // TODO: scale up to 200 by boosting bootstrapping
         [Theory(Timeout = Timeout)]
         [InlineData(1)]
         [InlineData(5)]
         [InlineData(20)]
+        [InlineData(50)]
         public async Task BroadcastMessage(int count)
         {
             var seed = CreateTestSwarm();
@@ -147,9 +147,10 @@ namespace Libplanet.Tests.Net.Protocols
                     await swarm.Protocol.RebuildConnectionAsync(default(CancellationToken));
                 }
 
-                Log.Debug("Start broadcasting.");
+                Log.Debug("Bootstrap completed.");
+
                 seed.BroadcastTestMessage("foo");
-                Log.Debug("End broadcasting.");
+                Log.Debug("Broadcast completed.");
 
                 var tasks = swarms.Select(swarm => swarm.WaitForTestMessageWithData("foo"));
 
