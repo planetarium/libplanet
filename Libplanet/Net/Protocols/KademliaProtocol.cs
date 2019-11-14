@@ -437,7 +437,7 @@ namespace Libplanet.Net.Protocols
                 return;
             }
 
-            ImmutableList<BoundPeer> found;
+            IEnumerable<BoundPeer> found;
             if (viaPeer is null)
             {
                 found = await QueryNeighborsAsync(target, timeout, cancellationToken);
@@ -450,7 +450,7 @@ namespace Libplanet.Net.Protocols
             await ProcessFoundAsync(found, target, depth, timeout, cancellationToken);
         }
 
-        private async Task<ImmutableList<BoundPeer>> QueryNeighborsAsync(
+        private async Task<IEnumerable<BoundPeer>> QueryNeighborsAsync(
             Address target,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
@@ -481,10 +481,10 @@ namespace Libplanet.Net.Protocols
                     $"Timeout occurred during {nameof(QueryNeighborsAsync)}.");
             }
 
-            return found.ToImmutableList();
+            return found;
         }
 
-        private async Task<ImmutableList<BoundPeer>> GetNeighbors(
+        private async Task<IEnumerable<BoundPeer>> GetNeighbors(
             BoundPeer addressee,
             Address target,
             TimeSpan? timeout,
@@ -502,7 +502,7 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException("Reply of FindNeighbors is invalid.");
                 }
 
-                return neighbors.Found.ToImmutableList();
+                return neighbors.Found;
             }
             catch (TimeoutException)
             {
@@ -544,7 +544,7 @@ namespace Libplanet.Net.Protocols
         /// <exception cref="TimeoutException">Thrown when all peers that found are
         /// not online.</exception>
         private async Task ProcessFoundAsync(
-            ImmutableList<BoundPeer> found,
+            IEnumerable<BoundPeer> found,
             Address target,
             int depth,
             TimeSpan? timeout,
@@ -601,7 +601,6 @@ namespace Libplanet.Net.Protocols
                     break;
                 }
 
-
                 findNeighboursTasks.Add(FindPeerAsync(
                     target,
                     peer,
@@ -632,7 +631,7 @@ namespace Libplanet.Net.Protocols
         // maybe ping/pong/ping/pong is required
         private void ReceiveFindPeer(FindNeighbors findNeighbors)
         {
-            List<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize).ToList();
+            IEnumerable<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize);
 
             Neighbors neighbors = new Neighbors(found)
             {

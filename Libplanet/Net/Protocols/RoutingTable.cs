@@ -146,14 +146,14 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public ICollection<BoundPeer> Neighbors(Peer target, int k)
+        public IEnumerable<BoundPeer> Neighbors(Peer target, int k)
         {
             return Neighbors(target.Address, k);
         }
 
         // returns k nearest peers to given parameter peer from routing table.
         // return value is already sorted with respect to target.
-        public ICollection<BoundPeer> Neighbors(Address target, int k)
+        public IEnumerable<BoundPeer> Neighbors(Address target, int k)
         {
             var sorted = _buckets
                 .Where(b => !b.IsEmpty())
