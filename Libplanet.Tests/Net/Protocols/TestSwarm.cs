@@ -66,6 +66,8 @@ namespace Libplanet.Tests.Net.Protocols
 
         internal IProtocol Protocol { get; }
 
+        internal bool Running => !(swarmCancellationTokenSource is null);
+
         public void Dispose()
         {
         }
@@ -73,14 +75,14 @@ namespace Libplanet.Tests.Net.Protocols
         public async void Start()
         {
             swarmCancellationTokenSource = new CancellationTokenSource();
-            await DoSendMessage(swarmCancellationTokenSource.Token);
+            await ProcessRuntime(swarmCancellationTokenSource.Token);
         }
 
         public Task BootstrapAsync(
             IEnumerable<BoundPeer> peers,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -110,7 +112,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public void SendPing(Peer target, TimeSpan? timeSpan = null)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -131,7 +133,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public void BroadcastTestMessage(string data)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -161,7 +163,7 @@ namespace Libplanet.Tests.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -182,6 +184,7 @@ namespace Libplanet.Tests.Net.Protocols
                 Message = message,
                 Target = peer,
             });
+            _logger.Debug("Adding request of {Message} of {Identity}.", message, message.Identity);
 
             while (!cancellationToken.IsCancellationRequested &&
                    !_replyToReceive.ContainsKey(message.Identity))
@@ -189,8 +192,10 @@ namespace Libplanet.Tests.Net.Protocols
                 if (DateTimeOffset.UtcNow - sendTime > (timeout ?? TimeSpan.MaxValue))
                 {
                     _logger.Error(
-                        "Reply of {Message} did not received in expected timespan {TimeSpan}.",
+                        "Reply of {Message} of {identity} did not received in " +
+                        "expected timespan {TimeSpan}.",
                         message,
+                        message.Identity,
                         timeout ?? TimeSpan.MaxValue);
                     throw new TimeoutException(
                         $"Timeout occurred during {nameof(ISwarm.SendMessageWithReplyAsync)}().");
@@ -227,7 +232,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         void ISwarm.ReplyMessage(Message message)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -244,7 +249,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public async Task WaitForTestMessageWithData(string data)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -257,7 +262,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public bool ReceivedTestMessageOfData(string data)
         {
-            if (swarmCancellationTokenSource is null)
+            if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
@@ -302,7 +307,7 @@ namespace Libplanet.Tests.Net.Protocols
             _replyToReceive[message.Identity] = message;
         }
 
-        private async Task DoSendMessage(CancellationToken cancellationToken)
+        private async Task ProcessRuntime(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {

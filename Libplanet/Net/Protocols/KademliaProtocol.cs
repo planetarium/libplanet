@@ -324,15 +324,8 @@ namespace Libplanet.Net.Protocols
                         "Cannot receive pong from self");
                 }
 
-                _logger.Verbose(
-                    $"Trying to {nameof(UpdateAsync)}() with pong: {{Pong}}",
-                    pong);
-
                 // update process required
                 await UpdateAsync(pong.Remote, cancellationToken);
-                _logger.Verbose(
-                    $"{nameof(UpdateAsync)}() finished with pong: {{Pong}}",
-                    pong);
             }
             catch (TimeoutException)
             {

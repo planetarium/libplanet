@@ -75,7 +75,7 @@ namespace Libplanet.Net.Protocols
             }
             else
             {
-                _logger.Verbose("Bucket does not contains [{peer}]", peer);
+                _logger.Verbose("Add [{peer}] to bucket.", peer);
                 if (ReplacementCache.Remove(peer))
                 {
                     _logger.Verbose(
