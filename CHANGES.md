@@ -919,7 +919,6 @@ Released on May 31, 2019.
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
 [#191]: https://github.com/planetarium/libplanet/pull/191
-[#192]: https://github.com/planetarium/libplanet/pull/192
 [#193]: https://github.com/planetarium/libplanet/pull/193
 [#197]: https://github.com/planetarium/libplanet/pull/197
 [#198]: https://github.com/planetarium/libplanet/pull/198

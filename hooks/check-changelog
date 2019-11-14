@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+duplicated_links() {
+  grep -E '^\[[^]\n]+\]: ' "$1" \
+  | awk 'BEGIN {FS = ": "}; {print $1}' \
+  | sort \
+  | uniq -d
+}
+
+if [[ "$(duplicated_links CHANGES.md)" != "" ]]; then
+  if [[ -t 2 ]]; then
+    color=always
+  else
+    color=never
+  fi
+  {
+    echo "CHANGES.md contains duplicated link definitions:"
+    duplicated_links CHANGES.md | while read -r link; do
+      grep --color="$color" -nF "$link" CHANGES.md
+    done | sed -e 's/^/  /'
+  } > /dev/stderr
+  exit 1
+fi

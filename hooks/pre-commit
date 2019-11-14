@@ -2,5 +2,6 @@
 set -e
 
 "$(dirname "$0")/check-bom"
+"$(dirname "$0")/check-changelog"
 
 # vim: set filetype=sh ts=2 sw=2 et:
