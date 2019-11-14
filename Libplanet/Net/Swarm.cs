@@ -497,12 +497,14 @@ namespace Libplanet.Net
            IEnumerable<Peer> seedPeers,
            double pingSeedTimeout,
            double findPeerTimeout,
+           int depth = Kademlia.MaxDepth,
            CancellationToken cancellationToken = default(CancellationToken))
         {
             await BootstrapAsync(
                 seedPeers,
                 TimeSpan.FromMilliseconds(pingSeedTimeout),
                 TimeSpan.FromMilliseconds(findPeerTimeout),
+                depth,
                 cancellationToken);
         }
 
@@ -512,6 +514,8 @@ namespace Libplanet.Net
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="pingSeedTimeout">Timeout for connecting to seed peers.</param>
         /// <param name="findNeighborsTimeout">Timeout for requesting neighbors.</param>
+        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
+        /// from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -521,6 +525,7 @@ namespace Libplanet.Net
             IEnumerable<Peer> seedPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findNeighborsTimeout,
+            int depth = Kademlia.MaxDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (seedPeers is null)
@@ -534,6 +539,7 @@ namespace Libplanet.Net
                 peers.ToImmutableList(),
                 pingSeedTimeout,
                 findNeighborsTimeout,
+                depth,
                 cancellationToken);
         }
 

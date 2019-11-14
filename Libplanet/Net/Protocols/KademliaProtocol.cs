@@ -76,6 +76,7 @@ namespace Libplanet.Net.Protocols
             ImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findPeerTimeout,
+            int depth,
             CancellationToken cancellationToken)
         {
             if (bootstrapPeers is null)
@@ -92,7 +93,12 @@ namespace Libplanet.Net.Protocols
                 {
                     await PingAsync(peer, pingSeedTimeout, cancellationToken);
                     findPeerTasks.Add(
-                        FindPeerAsync(_address, peer, 0, findPeerTimeout, cancellationToken));
+                        FindPeerAsync(
+                            _address,
+                            peer,
+                            depth,
+                            findPeerTimeout,
+                            cancellationToken));
                 }
                 catch (DifferentAppProtocolVersionException)
                 {
@@ -420,7 +426,13 @@ namespace Libplanet.Net.Protocols
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            if (depth >= Kademlia.MaxDepth)
+            _logger.Debug(
+                $"{nameof(FindPeerAsync)}() with {{target}} to {{viaPeer}}. " +
+                "(depth: {depth})",
+                target,
+                viaPeer,
+                depth);
+            if (depth == 0)
             {
                 return;
             }
@@ -577,20 +589,28 @@ namespace Libplanet.Net.Protocols
 
             var findNeighboursTasks = new List<Task>();
             Peer closestKnown = closestCandidate.Count == 0 ? null : closestCandidate[0];
-            for (int i = 0; i < Kademlia.FindConcurrency && i < peers.Count; i++)
+            var count = 0;
+            foreach (var peer in peers)
             {
-                if (closestKnown is null ||
-                    string.CompareOrdinal(
-                        Kademlia.CalculateDistance(peers[i].Address, target).ToHex(),
-                        Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
-                    ) < 1)
+                if (!(closestKnown is null) &&
+                   string.CompareOrdinal(
+                       Kademlia.CalculateDistance(peer.Address, target).ToHex(),
+                       Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
+                   ) >= 1)
                 {
-                    findNeighboursTasks.Add(FindPeerAsync(
-                        target,
-                        peers[i],
-                        (depth == -1) ? depth : depth + 1,
-                        timeout,
-                        cancellationToken));
+                    break;
+                }
+
+
+                findNeighboursTasks.Add(FindPeerAsync(
+                    target,
+                    peer,
+                    depth == -1 ? depth : depth - 1,
+                    timeout,
+                    cancellationToken));
+                if (count++ >= Kademlia.FindConcurrency)
+                {
+                    break;
                 }
             }
 

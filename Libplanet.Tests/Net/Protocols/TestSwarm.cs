@@ -96,6 +96,7 @@ namespace Libplanet.Tests.Net.Protocols
                     peers.ToImmutableList(),
                     null,
                     null,
+                    Kademlia.MaxDepth,
                     cancellationToken);
             }
 
