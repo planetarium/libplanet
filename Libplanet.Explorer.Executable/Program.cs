@@ -39,7 +39,7 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store = new LiteDBStore(
+            IStore store = new DefaultStore(
                 path: options.StorePath,
                 flush: false,
                 readOnly: options.Seeds is null
