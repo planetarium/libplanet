@@ -2337,11 +2337,11 @@ namespace Libplanet.Net
         private readonly struct MessageRequest
         {
             public MessageRequest(
-                Guid id,
+                in Guid id,
                 Message message,
                 BoundPeer peer,
-                TimeSpan? timeout,
-                int expectedResponses,
+                in TimeSpan? timeout,
+                in int expectedResponses,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
             {
                 Id = id;
