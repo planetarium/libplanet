@@ -11,7 +11,6 @@ namespace Libplanet.Benchmarks
 {
     public class BlockChain
     {
-        
         private StoreFixture _fx;
         private BlockChain<DumbAction> _blockChain;
 
