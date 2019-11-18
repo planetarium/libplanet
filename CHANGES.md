@@ -26,7 +26,7 @@ To be released.
  -  The introduced `DefaultStore` is incompatible at the file-level with
     the `LiteDBStore` which had existed.  `DefaultStore` became to take
     a directory instead of a single file, and it consists of multiple
-    subdirectories and a LiteDB file for indices.  [[#662]]
+    subdirectories and a LiteDB file for indices.  [[#662], [#680]]
 
 ### Added APIs
 
@@ -42,6 +42,7 @@ To be released.
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
 [#678]: https://github.com/planetarium/libplanet/pull/678
+[#680]: https://github.com/planetarium/libplanet/pull/680
 
 
 Version 0.7.0
