@@ -11,6 +11,13 @@ To be released.
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
  -  Removed `BlockChain<T>.Contains(TxId)` method.
     Use `IStore.ContainsTransaction(TxId)` instead.  [[#676]]
+ -  Renamed `BlockChain<T>.Contains(HashDigest<SHA256>)` method to
+    `BlockChain<T>.ContainsBlock(HashDigest<SHA256>)`.  [[#678]]
+ -  Removed `BlockChain<T>.Contains(Block<T>)` method.  [[#678]]
+ -  Changed semantics of `BlockChain<T>.ContainsBlock(HashDigest<SHA256>)`
+    method and `BlockChain<T>[HashDigest<SHA256>]` indexer as lookups only
+    the current chain, not entire storage.  [[#678]]
+ -  Added `IStore.ContainsBlock(HashDigest<SHA256>)` method.  [[#678]]
 
 ### Backward-incompatible network protocol changes
 
@@ -34,6 +41,7 @@ To be released.
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
+[#678]: https://github.com/planetarium/libplanet/pull/678
 
 
 Version 0.7.0

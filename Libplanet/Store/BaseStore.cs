@@ -107,6 +107,9 @@ namespace Libplanet.Store
 
         public abstract bool DeleteBlock(HashDigest<SHA256> blockHash);
 
+        /// <inheritdoc />
+        public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
+
         public abstract AddressStateMap GetBlockStates(
             HashDigest<SHA256> blockHash
         );

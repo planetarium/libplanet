@@ -137,6 +137,9 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
             Assert.False(Fx.Store.DeleteBlock(Fx.Block1.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block1.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block2.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
 
             Fx.Store.PutBlock(Fx.Block1);
             Assert.Equal(1, Fx.Store.CountBlocks());
@@ -154,6 +157,9 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block1.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block2.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
 
             Fx.Store.PutBlock(Fx.Block2);
             Assert.Equal(2, Fx.Store.CountBlocks());
@@ -174,6 +180,9 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Block1.Index, Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block1.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block2.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
 
             Assert.True(Fx.Store.DeleteBlock(Fx.Block1.Hash));
             Assert.Equal(1, Fx.Store.CountBlocks());
@@ -191,6 +200,9 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block1.Hash));
             Assert.Equal(Fx.Block2.Index, Fx.Store.GetBlockIndex(Fx.Block2.Hash));
             Assert.Null(Fx.Store.GetBlockIndex(Fx.Block3.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block1.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block2.Hash));
+            Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
         [Fact]

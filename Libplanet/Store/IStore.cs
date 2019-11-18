@@ -165,6 +165,18 @@ namespace Libplanet.Store
         bool DeleteBlock(HashDigest<SHA256> blockHash);
 
         /// <summary>
+        /// Determines whether the <see cref="IStore"/> contains <see cref="Block{T}"/>
+        /// the specified <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash">The <see cref="HashDigest{T}"/> of the <see cref="Block{T}"/> to
+        /// check if it is in the <see cref="IStore"/>.</param>
+        /// <returns>
+        /// <c>true</c> if the <see cref="IStore"/> contains <see cref="Block{T}"/> with
+        /// the specified <paramref name="blockHash"/>; otherwise, <c>false</c>.
+        /// </returns>
+        bool ContainsBlock(HashDigest<SHA256> blockHash);
+
+        /// <summary>
         /// Gets the states updated by actions in the inquired block.
         /// </summary>
         /// <param name="blockHash"><see cref="Block{T}.Hash"/> to query.

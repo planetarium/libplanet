@@ -60,12 +60,12 @@ namespace Libplanet.Store
         public override bool Contains(
             KeyValuePair<HashDigest<SHA256>, Block<T>> item)
         {
-            return Store.IterateBlockHashes().Contains(item.Key);
+            return Store.ContainsBlock(item.Key);
         }
 
         public override bool ContainsKey(HashDigest<SHA256> key)
         {
-            return Store.GetBlock<T>(key) is Block<T>;
+            return Store.ContainsBlock(key);
         }
 
         public override bool Remove(HashDigest<SHA256> key)
