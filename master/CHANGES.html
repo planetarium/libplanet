@@ -83,6 +83,13 @@
 <li>Removed <code>LiteDBStore</code> class.  Use <code>DefaultStore</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.Contains(TxId)</code> method.
 Use <code>IStore.ContainsTransaction(TxId)</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/676">#676</a>]</li>
+<li>Renamed <code>BlockChain&lt;T&gt;.Contains(HashDigest&lt;SHA256&gt;)</code> method to
+<code>BlockChain&lt;T&gt;.ContainsBlock(HashDigest&lt;SHA256&gt;)</code>.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
+<li>Removed <code>BlockChain&lt;T&gt;.Contains(Block&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
+<li>Changed semantics of <code>BlockChain&lt;T&gt;.ContainsBlock(HashDigest&lt;SHA256&gt;)</code>
+method and <code>BlockChain&lt;T&gt;[HashDigest&lt;SHA256&gt;]</code> indexer as lookups only
+the current chain, not entire storage.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
+<li>Added <code>IStore.ContainsBlock(HashDigest&lt;SHA256&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -996,7 +1003,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

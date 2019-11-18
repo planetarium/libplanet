@@ -1188,33 +1188,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockHashes
   nameWithType: BlockChain<T>.BlockHashes
   nameWithType.vb: BlockChain(Of T).BlockHashes
-- uid: Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Blocks.Block{`0})
-  name: Contains(Block<T>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_Libplanet_Blocks_Block__0__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.Blocks.Block{`0})
-  name.vb: Contains(Block(Of T))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Contains(Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains(Libplanet.Blocks.Block(Of T))
-  nameWithType: BlockChain<T>.Contains(Block<T>)
-  nameWithType.vb: BlockChain(Of T).Contains(Block(Of T))
-- uid: Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.HashDigest{SHA256})
-  name: Contains(HashDigest<SHA256>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Blockchain.BlockChain`1.Contains(Libplanet.HashDigest{SHA256})
-  name.vb: Contains(HashDigest(Of SHA256))
-  fullName: Libplanet.Blockchain.BlockChain<T>.Contains(Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains(Libplanet.HashDigest(Of SHA256))
-  nameWithType: BlockChain<T>.Contains(HashDigest<SHA256>)
-  nameWithType.vb: BlockChain(Of T).Contains(HashDigest(Of SHA256))
-- uid: Libplanet.Blockchain.BlockChain`1.Contains*
-  name: Contains
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Contains_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Contains
+- uid: Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name: ContainsBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ContainsBlock_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name.vb: ContainsBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Blockchain.BlockChain<T>.ContainsBlock(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ContainsBlock(Libplanet.HashDigest(Of SHA256))
+  nameWithType: BlockChain<T>.ContainsBlock(HashDigest<SHA256>)
+  nameWithType.vb: BlockChain(Of T).ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Blockchain.BlockChain`1.ContainsBlock*
+  name: ContainsBlock
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_ContainsBlock_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.ContainsBlock
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.Contains
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Contains
-  nameWithType: BlockChain<T>.Contains
-  nameWithType.vb: BlockChain(Of T).Contains
+  fullName: Libplanet.Blockchain.BlockChain<T>.ContainsBlock
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).ContainsBlock
+  nameWithType: BlockChain<T>.ContainsBlock
+  nameWithType.vb: BlockChain(Of T).ContainsBlock
 - uid: Libplanet.Blockchain.BlockChain`1.Count
   name: Count
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Count
@@ -5201,6 +5192,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.AppendIndex
   nameWithType: BaseStore.AppendIndex
+- uid: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name: ContainsBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name.vb: ContainsBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest(Of SHA256))
+  nameWithType: BaseStore.ContainsBlock(HashDigest<SHA256>)
+  nameWithType.vb: BaseStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.BaseStore.ContainsBlock*
+  name: ContainsBlock
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsBlock_
+  commentId: Overload:Libplanet.Store.BaseStore.ContainsBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ContainsBlock
+  nameWithType: BaseStore.ContainsBlock
 - uid: Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)
   name: ContainsTransaction(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_
@@ -5911,6 +5918,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.AppendIndex
   nameWithType: DefaultStore.AppendIndex
+- uid: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name: ContainsBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsBlock_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name.vb: ContainsBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.DefaultStore.ContainsBlock(Libplanet.HashDigest(Of SHA256))
+  nameWithType: DefaultStore.ContainsBlock(HashDigest<SHA256>)
+  nameWithType.vb: DefaultStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.DefaultStore.ContainsBlock*
+  name: ContainsBlock
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsBlock_
+  commentId: Overload:Libplanet.Store.DefaultStore.ContainsBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ContainsBlock
+  nameWithType: DefaultStore.ContainsBlock
 - uid: Libplanet.Store.DefaultStore.ContainsTransaction(Libplanet.Tx.TxId)
   name: ContainsTransaction(TxId)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ContainsTransaction_Libplanet_Tx_TxId_
@@ -6391,6 +6414,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.AppendIndex
   nameWithType: IStore.AppendIndex
+- uid: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name: ContainsBlock(HashDigest<SHA256>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsBlock_Libplanet_HashDigest_SHA256__
+  commentId: M:Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest{SHA256})
+  name.vb: ContainsBlock(HashDigest(Of SHA256))
+  fullName: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest<SHA256>)
+  fullName.vb: Libplanet.Store.IStore.ContainsBlock(Libplanet.HashDigest(Of SHA256))
+  nameWithType: IStore.ContainsBlock(HashDigest<SHA256>)
+  nameWithType.vb: IStore.ContainsBlock(HashDigest(Of SHA256))
+- uid: Libplanet.Store.IStore.ContainsBlock*
+  name: ContainsBlock
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsBlock_
+  commentId: Overload:Libplanet.Store.IStore.ContainsBlock
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ContainsBlock
+  nameWithType: IStore.ContainsBlock
 - uid: Libplanet.Store.IStore.ContainsTransaction(Libplanet.Tx.TxId)
   name: ContainsTransaction(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ContainsTransaction_Libplanet_Tx_TxId_

@@ -451,10 +451,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendIndex_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendIndex(Guid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_AppendIndex_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.AppendIndex(Guid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L33">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L33">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_AppendIndex_" data-uid="Libplanet.Store.BaseStore.AppendIndex*"></a>
   <h4 id="Libplanet_Store_BaseStore_AppendIndex_Guid_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.AppendIndex(Guid,Libplanet.HashDigest{SHA256})">AppendIndex(Guid, HashDigest&lt;SHA256&gt;)</h4>
@@ -503,10 +503,63 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ContainsBlock_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L162">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L111">View Source</a>
+  </span>
+  <a id="Libplanet_Store_BaseStore_ContainsBlock_" data-uid="Libplanet.Store.BaseStore.ContainsBlock*"></a>
+  <h4 id="Libplanet_Store_BaseStore_ContainsBlock_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.ContainsBlock(Libplanet.HashDigest{SHA256})">ContainsBlock(HashDigest&lt;SHA256&gt;)</h4>
+  <div class="markdown level1 summary"><p>Determines whether the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract bool ContainsBlock(HashDigest&lt;SHA256&gt; blockHash)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
+        <td><span class="parametername">blockHash</span></td>
+        <td><p>The <a class="xref" href="Libplanet.HashDigest-1.html">HashDigest&lt;T&gt;</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> to
+check if it is in the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> with
+the specified <code data-dev-comment-type="paramref" class="paramref">blockHash</code>; otherwise, <code>false</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L165">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ContainsTransaction_" data-uid="Libplanet.Store.BaseStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
@@ -556,10 +609,10 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_CountBlocks.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountBlocks%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L154">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L157">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountBlocks_" data-uid="Libplanet.Store.BaseStore.CountBlocks*"></a>
   <h4 id="Libplanet_Store_BaseStore_CountBlocks" data-uid="Libplanet.Store.BaseStore.CountBlocks">CountBlocks()</h4>
@@ -586,10 +639,10 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountIndex(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_CountIndex_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountIndex(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L24">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L24">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountIndex_" data-uid="Libplanet.Store.BaseStore.CountIndex*"></a>
   <h4 id="Libplanet_Store_BaseStore_CountIndex_Guid_" data-uid="Libplanet.Store.BaseStore.CountIndex(Guid)">CountIndex(Guid)</h4>
@@ -633,10 +686,10 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_CountTransactions.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.CountTransactions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L149">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L152">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_CountTransactions_" data-uid="Libplanet.Store.BaseStore.CountTransactions*"></a>
   <h4 id="Libplanet_Store_BaseStore_CountTransactions" data-uid="Libplanet.Store.BaseStore.CountTransactions">CountTransactions()</h4>
@@ -663,10 +716,10 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L108">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L108">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteBlock_" data-uid="Libplanet.Store.BaseStore.DeleteBlock*"></a>
   <h4 id="Libplanet_Store_BaseStore_DeleteBlock_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteBlock(Libplanet.HashDigest{SHA256})">DeleteBlock(HashDigest&lt;SHA256&gt;)</h4>
@@ -710,10 +763,10 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L165">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L168">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteChainId_" data-uid="Libplanet.Store.BaseStore.DeleteChainId*"></a>
   <h4 id="Libplanet_Store_BaseStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.BaseStore.DeleteChainId(Guid)">DeleteChainId(Guid)</h4>
@@ -751,10 +804,10 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteIndex(Guid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteIndex(Guid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L159">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L162">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteIndex_" data-uid="Libplanet.Store.BaseStore.DeleteIndex*"></a>
   <h4 id="Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})">DeleteIndex(Guid, HashDigest&lt;SHA256&gt;)</h4>
@@ -803,10 +856,10 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L65">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L65">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteTransaction_" data-uid="Libplanet.Store.BaseStore.DeleteTransaction*"></a>
   <h4 id="Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)">DeleteTransaction(TxId)</h4>
@@ -850,10 +903,10 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ForkBlockIndexes(Guid%2CGuid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L39">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L39">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ForkBlockIndexes_" data-uid="Libplanet.Store.BaseStore.ForkBlockIndexes*"></a>
   <h4 id="Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})">ForkBlockIndexes(Guid, Guid, HashDigest&lt;SHA256&gt;)</h4>
@@ -923,10 +976,10 @@ to fork.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ForkStateReferences%60%601(Guid%2CGuid%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ForkStateReferences%60%601(Guid%2CGuid%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L134">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L137">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ForkStateReferences_" data-uid="Libplanet.Store.BaseStore.ForkStateReferences*"></a>
   <h4 id="Libplanet_Store_BaseStore_ForkStateReferences__1_Guid_Guid_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.BaseStore.ForkStateReferences``1(Guid,Guid,Libplanet.Blocks.Block{``0})">ForkStateReferences&lt;T&gt;(Guid, Guid, Block&lt;T&gt;)</h4>
@@ -981,10 +1034,10 @@ to fork.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlock%60%601(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L70">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L70">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlock_" data-uid="Libplanet.Store.BaseStore.GetBlock*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetBlock__1_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlock``1(Libplanet.HashDigest{SHA256})">GetBlock&lt;T&gt;(HashDigest&lt;SHA256&gt;)</h4>
@@ -1051,10 +1104,10 @@ to <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>'s typ
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L99">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L99">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlockIndex_" data-uid="Libplanet.Store.BaseStore.GetBlockIndex*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetBlockIndex_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlockIndex(Libplanet.HashDigest{SHA256})">GetBlockIndex(HashDigest&lt;SHA256&gt;)</h4>
@@ -1106,10 +1159,10 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockStates(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetBlockStates(Libplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L110">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L113">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetBlockStates_" data-uid="Libplanet.Store.BaseStore.GetBlockStates*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetBlockStates_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.GetBlockStates(Libplanet.HashDigest{SHA256})">GetBlockStates(HashDigest&lt;SHA256&gt;)</h4>
@@ -1153,10 +1206,10 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetCanonicalChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetCanonicalChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L19">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L19">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetCanonicalChainId_" data-uid="Libplanet.Store.BaseStore.GetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetCanonicalChainId" data-uid="Libplanet.Store.BaseStore.GetCanonicalChainId">GetCanonicalChainId()</h4>
@@ -1189,10 +1242,10 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTransaction%60%601(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L59">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L59">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetTransaction_" data-uid="Libplanet.Store.BaseStore.GetTransaction*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetTransaction__1_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.GetTransaction``1(Libplanet.Tx.TxId)">GetTransaction&lt;T&gt;(TxId)</h4>
@@ -1252,10 +1305,10 @@ unlike <a class="xref" href="Libplanet.Store.IStore.html#Libplanet_Store_IStore_
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTxNonce_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTxNonce(Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_GetTxNonce_Guid_Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.GetTxNonce(Guid%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L144">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L147">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_GetTxNonce_" data-uid="Libplanet.Store.BaseStore.GetTxNonce*"></a>
   <h4 id="Libplanet_Store_BaseStore_GetTxNonce_Guid_Libplanet_Address_" data-uid="Libplanet.Store.BaseStore.GetTxNonce(Guid,Libplanet.Address)">GetTxNonce(Guid, Address)</h4>
@@ -1315,10 +1368,10 @@ previous <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IncreaseTxNonce(Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IncreaseTxNonce(Guid%2CLibplanet.Address%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L147">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L150">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IncreaseTxNonce_" data-uid="Libplanet.Store.BaseStore.IncreaseTxNonce*"></a>
   <h4 id="Libplanet_Store_BaseStore_IncreaseTxNonce_Guid_Libplanet_Address_System_Int64_" data-uid="Libplanet.Store.BaseStore.IncreaseTxNonce(Guid,Libplanet.Address,System.Int64)">IncreaseTxNonce(Guid, Address, Int64)</h4>
@@ -1368,10 +1421,10 @@ the counter.  1 by default.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IndexBlockHash_Guid_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IndexBlockHash(Guid%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L31">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L31">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IndexBlockHash_" data-uid="Libplanet.Store.BaseStore.IndexBlockHash*"></a>
   <h4 id="Libplanet_Store_BaseStore_IndexBlockHash_Guid_System_Int64_" data-uid="Libplanet.Store.BaseStore.IndexBlockHash(Guid,System.Int64)">IndexBlockHash(Guid, Int64)</h4>
@@ -1420,10 +1473,10 @@ the counter.  1 by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateBlockHashes.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateBlockHashes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L67">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L67">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateBlockHashes_" data-uid="Libplanet.Store.BaseStore.IterateBlockHashes*"></a>
   <h4 id="Libplanet_Store_BaseStore_IterateBlockHashes" data-uid="Libplanet.Store.BaseStore.IterateBlockHashes">IterateBlockHashes()</h4>
@@ -1450,10 +1503,10 @@ the counter.  1 by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateIndexes(Guid%2CSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L26">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateIndexes_" data-uid="Libplanet.Store.BaseStore.IterateIndexes*"></a>
   <h4 id="Libplanet_Store_BaseStore_IterateIndexes_Guid_System_Int32_System_Nullable_System_Int32__" data-uid="Libplanet.Store.BaseStore.IterateIndexes(Guid,System.Int32,System.Nullable{System.Int32})">IterateIndexes(Guid, Int32, Nullable&lt;Int32&gt;)</h4>
@@ -1507,10 +1560,10 @@ the counter.  1 by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStagedTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStagedTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L55">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L55">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateStagedTransactionIds_" data-uid="Libplanet.Store.BaseStore.IterateStagedTransactionIds*"></a>
   <h4 id="Libplanet_Store_BaseStore_IterateStagedTransactionIds" data-uid="Libplanet.Store.BaseStore.IterateStagedTransactionIds">IterateStagedTransactionIds()</h4>
@@ -1539,10 +1592,10 @@ the counter.  1 by default.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStateReferences(Guid%2CLibplanet.Address%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateStateReferences(Guid%2CLibplanet.Address%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int64%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L120">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L123">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateStateReferences_" data-uid="Libplanet.Store.BaseStore.IterateStateReferences*"></a>
   <h4 id="Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__" data-uid="Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})">IterateStateReferences(Guid, Address, Nullable&lt;Int64&gt;, Nullable&lt;Int64&gt;, Nullable&lt;Int32&gt;)</h4>
@@ -1623,10 +1676,10 @@ first and the lowest index (i.e., the closest to the genesis) goes last.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_IterateTransactionIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.IterateTransactionIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L57">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L57">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_IterateTransactionIds_" data-uid="Libplanet.Store.BaseStore.IterateTransactionIds*"></a>
   <h4 id="Libplanet_Store_BaseStore_IterateTransactionIds" data-uid="Libplanet.Store.BaseStore.IterateTransactionIds">IterateTransactionIds()</h4>
@@ -1653,10 +1706,10 @@ first and the lowest index (i.e., the closest to the genesis) goes last.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ListAddresses_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListAddresses(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ListAddresses_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListAddresses(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L45">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L45">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ListAddresses_" data-uid="Libplanet.Store.BaseStore.ListAddresses*"></a>
   <h4 id="Libplanet_Store_BaseStore_ListAddresses_Guid_" data-uid="Libplanet.Store.BaseStore.ListAddresses(Guid)">ListAddresses(Guid)</h4>
@@ -1704,10 +1757,10 @@ be vary for each call.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListChainIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ListChainIds.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListChainIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L16">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L16">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ListChainIds_" data-uid="Libplanet.Store.BaseStore.ListChainIds*"></a>
   <h4 id="Libplanet_Store_BaseStore_ListChainIds" data-uid="Libplanet.Store.BaseStore.ListChainIds">ListChainIds()</h4>
@@ -1736,10 +1789,10 @@ be vary for each call.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListTxNonces(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_ListTxNonces_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListTxNonces(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L141">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L144">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ListTxNonces_" data-uid="Libplanet.Store.BaseStore.ListTxNonces*"></a>
   <h4 id="Libplanet_Store_BaseStore_ListTxNonces_Guid_" data-uid="Libplanet.Store.BaseStore.ListTxNonces(Guid)">ListTxNonces(Guid)</h4>
@@ -1793,10 +1846,10 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutBlock%60%601(Libplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L105">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L105">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_PutBlock_" data-uid="Libplanet.Store.BaseStore.PutBlock*"></a>
   <h4 id="Libplanet_Store_BaseStore_PutBlock__1_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.BaseStore.PutBlock``1(Libplanet.Blocks.Block{``0})">PutBlock&lt;T&gt;(Block&lt;T&gt;)</h4>
@@ -1841,10 +1894,10 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_PutTransaction__1_Libplanet_Tx_Transaction___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.PutTransaction%60%601(Libplanet.Tx.Transaction%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L62">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L62">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_PutTransaction_" data-uid="Libplanet.Store.BaseStore.PutTransaction*"></a>
   <h4 id="Libplanet_Store_BaseStore_PutTransaction__1_Libplanet_Tx_Transaction___0__" data-uid="Libplanet.Store.BaseStore.PutTransaction``1(Libplanet.Tx.Transaction{``0})">PutTransaction&lt;T&gt;(Transaction&lt;T&gt;)</h4>
@@ -1889,10 +1942,10 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest%7BSHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest%7BSHA256%7D%2CLibplanet.Action.AddressStateMap)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L114">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L117">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_SetBlockStates_" data-uid="Libplanet.Store.BaseStore.SetBlockStates*"></a>
   <h4 id="Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_" data-uid="Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)">SetBlockStates(HashDigest&lt;SHA256&gt;, AddressStateMap)</h4>
@@ -1926,10 +1979,10 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetCanonicalChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.SetCanonicalChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L22">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L22">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_SetCanonicalChainId_" data-uid="Libplanet.Store.BaseStore.SetCanonicalChainId*"></a>
   <h4 id="Libplanet_Store_BaseStore_SetCanonicalChainId_Guid_" data-uid="Libplanet.Store.BaseStore.SetCanonicalChainId(Guid)">SetCanonicalChainId(Guid)</h4>
@@ -1964,10 +2017,10 @@ than 0.  (If there are underlying entries having zero nonces these must be hidde
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_StageTransactionIds_IImmutableSet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StageTransactionIds(IImmutableSet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_StageTransactionIds_IImmutableSet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StageTransactionIds(IImmutableSet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L48">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L48">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_StageTransactionIds_" data-uid="Libplanet.Store.BaseStore.StageTransactionIds*"></a>
   <h4 id="Libplanet_Store_BaseStore_StageTransactionIds_IImmutableSet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.StageTransactionIds(IImmutableSet{Libplanet.Tx.TxId})">StageTransactionIds(IImmutableSet&lt;TxId&gt;)</h4>
@@ -2000,10 +2053,10 @@ a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> t
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StoreStateReference(Guid%2CIImmutableSet%7BLibplanet.Address%7D%2CLibplanet.HashDigest%7BSHA256%7D%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.StoreStateReference(Guid%2CIImmutableSet%7BLibplanet.Address%7D%2CLibplanet.HashDigest%7BSHA256%7D%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L127">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L130">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_StoreStateReference_" data-uid="Libplanet.Store.BaseStore.StoreStateReference*"></a>
   <h4 id="Libplanet_Store_BaseStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_" data-uid="Libplanet.Store.BaseStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)">StoreStateReference(Guid, IImmutableSet&lt;Address&gt;, HashDigest&lt;SHA256&gt;, Int64)</h4>
@@ -2047,10 +2100,10 @@ a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> t
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore_UnstageTransactionIds_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.UnstageTransactionIds(ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore_UnstageTransactionIds_ISet_Libplanet_Tx_TxId__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.UnstageTransactionIds(ISet%7BLibplanet.Tx.TxId%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L50">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L50">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_UnstageTransactionIds_" data-uid="Libplanet.Store.BaseStore.UnstageTransactionIds*"></a>
   <h4 id="Libplanet_Store_BaseStore_UnstageTransactionIds_ISet_Libplanet_Tx_TxId__" data-uid="Libplanet.Store.BaseStore.UnstageTransactionIds(ISet{Libplanet.Tx.TxId})">UnstageTransactionIds(ISet&lt;TxId&gt;)</h4>
@@ -2089,10 +2142,10 @@ a next <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> t
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/0d84f4c7348cd748157f28d9b6403b37f811cc9d/apiSpec/new?filename=Libplanet_Store_BaseStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/67d8b17985be0a976645c6412edfa63e717d1bf2/apiSpec/new?filename=Libplanet_Store_BaseStore.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/0d84f4c7348cd748157f28d9b6403b37f811cc9d/Libplanet/Store/BaseStore.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/67d8b17985be0a976645c6412edfa63e717d1bf2/Libplanet/Store/BaseStore.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
