@@ -71,21 +71,9 @@ namespace Libplanet.Tests.Net
 
             _swarms = new List<Swarm<DumbAction>>
             {
-                new Swarm<DumbAction>(
-                    _blockchains[0],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString()),
-                new Swarm<DumbAction>(
-                    _blockchains[1],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString()),
-                new Swarm<DumbAction>(
-                    _blockchains[2],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString()),
+                CreateSwarm(_blockchains[0]),
+                CreateSwarm(_blockchains[1]),
+                CreateSwarm(_blockchains[2]),
             };
 
             Log.Logger.Debug($"Finished to initialize a {nameof(SwarmTest)} instance.");
@@ -159,26 +147,10 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task HandleReconnection()
         {
-            Swarm<DumbAction> seed = new Swarm<DumbAction>(
-                blockChain: _blockchains[0],
-                privateKey: new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString());
+            Swarm<DumbAction> seed = CreateSwarm(_blockchains[0]);
 
-            BlockChain<DumbAction> blockChain = _blockchains[1];
-            PrivateKey privateKey = new PrivateKey();
-            string host = IPAddress.Loopback.ToString();
-
-            Swarm<DumbAction> swarmA = new Swarm<DumbAction>(
-                blockChain: blockChain,
-                privateKey: privateKey,
-                appProtocolVersion: 1,
-                host: host);
-            Swarm<DumbAction> swarmB = new Swarm<DumbAction>(
-                blockChain: blockChain,
-                privateKey: privateKey,
-                appProtocolVersion: 1,
-                host: host);
+            Swarm<DumbAction> swarmA = CreateSwarm(_blockchains[1]);
+            Swarm<DumbAction> swarmB = CreateSwarm(_blockchains[2]);
 
             try
             {
@@ -208,25 +180,11 @@ namespace Libplanet.Tests.Net
         public async Task BroadcastBlockToReconnectedPeer()
         {
             BlockChain<DumbAction> chainWithBlocks = _blockchains[0];
-            Swarm<DumbAction> seed = new Swarm<DumbAction>(
-                blockChain: chainWithBlocks,
-                privateKey: new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString());
+            Swarm<DumbAction> seed = CreateSwarm(chainWithBlocks);
 
-            PrivateKey privateKey = new PrivateKey();
-            string host = IPAddress.Loopback.ToString();
-
-            Swarm<DumbAction> swarmA = new Swarm<DumbAction>(
-                blockChain: _blockchains[1],
-                privateKey: privateKey,
-                appProtocolVersion: 1,
-                host: host);
-            Swarm<DumbAction> swarmB = new Swarm<DumbAction>(
-                blockChain: _blockchains[2],
-                privateKey: privateKey,
-                appProtocolVersion: 1,
-                host: host);
+            var privateKey = new PrivateKey();
+            Swarm<DumbAction> swarmA = CreateSwarm(_blockchains[1], privateKey);
+            Swarm<DumbAction> swarmB = CreateSwarm(_blockchains[2], privateKey);
 
             foreach (int i in Enumerable.Range(0, 10))
             {
@@ -363,21 +321,9 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task PingToClosedPeer()
         {
-            Swarm<DumbAction> swarmA = new Swarm<DumbAction>(
-                    _blockchains[0],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString());
-            Swarm<DumbAction> swarmB = new Swarm<DumbAction>(
-                    _blockchains[1],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString());
-            Swarm<DumbAction> swarmC = new Swarm<DumbAction>(
-                    _blockchains[2],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString());
+            Swarm<DumbAction> swarmA = CreateSwarm(_blockchains[0]);
+            Swarm<DumbAction> swarmB = CreateSwarm(_blockchains[1]);
+            Swarm<DumbAction> swarmC = CreateSwarm(_blockchains[2]);
 
             try
             {
@@ -443,13 +389,7 @@ namespace Libplanet.Tests.Net
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
-            var swarm = new Swarm<DumbAction>(
-                blockchain,
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                tableSize: 1,
-                bucketSize: 1,
-                host: IPAddress.Loopback.ToString());
+            var swarm = CreateSwarm(blockchain, tableSize: 1, bucketSize: 1);
             var swarmA = _swarms[0];
             var swarmB = _swarms[1];
             var swarmC = _swarms[2];
@@ -489,13 +429,7 @@ namespace Libplanet.Tests.Net
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
-            var swarm = new Swarm<DumbAction>(
-                blockchain,
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                tableSize: 1,
-                bucketSize: 1,
-                host: IPAddress.Loopback.ToString());
+            var swarm = CreateSwarm(blockchain, tableSize: 1, bucketSize: 1);
             var swarmA = _swarms[0];
             var swarmB = _swarms[1];
             var swarmC = _swarms[2];
@@ -542,13 +476,7 @@ namespace Libplanet.Tests.Net
 
             var blockchain = new BlockChain<DumbAction>(policy, fx.Store);
 
-            var swarm = new Swarm<DumbAction>(
-                blockchain,
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                tableSize: 1,
-                bucketSize: 1,
-                host: IPAddress.Loopback.ToString());
+            var swarm = CreateSwarm(blockchain, tableSize: 1, bucketSize: 1);
             var swarmA = _swarms[0];
             var swarmB = _swarms[1];
             var swarmC = _swarms[2];
@@ -666,18 +594,14 @@ namespace Libplanet.Tests.Net
 
             var policy = new BlockPolicy<DumbAction>();
             StoreFixture[] fxs = new StoreFixture[size];
-            BlockChain<DumbAction>[] blockchains = new BlockChain<DumbAction>[size];
+            BlockChain<DumbAction>[] blockChains = new BlockChain<DumbAction>[size];
             Swarm<DumbAction>[] swarms = new Swarm<DumbAction>[size];
 
             for (int i = 0; i < size; i++)
             {
                 fxs[i] = new DefaultStoreFixture(memory: true);
-                blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
-                swarms[i] = new Swarm<DumbAction>(
-                    blockchains[i],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString());
+                blockChains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
+                swarms[i] = CreateSwarm(blockChains[0]);
             }
 
             try
@@ -786,28 +710,12 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
         {
-            var a = new Swarm<DumbAction>(
-                _blockchains[0],
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 2);
-            var b = new Swarm<DumbAction>(
-                _blockchains[1],
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 3);
+            var blockChain = _blockchains[0];
 
-            var c = new Swarm<DumbAction>(
-                _blockchains[2],
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 2);
-            var d = new Swarm<DumbAction>(
-                new BlockChain<DumbAction>(
-                    _blockchains[0].Policy, new DefaultStoreFixture(memory: true).Store),
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 3);
+            var a = CreateSwarm(blockChain, appProtocolVersion: 2);
+            var b = CreateSwarm(blockChain, appProtocolVersion: 3);
+            var c = CreateSwarm(blockChain, appProtocolVersion: 2);
+            var d = CreateSwarm(blockChain, appProtocolVersion: 3);
 
             try
             {
@@ -847,17 +755,11 @@ namespace Libplanet.Tests.Net
                 isCalled = true;
             }
 
-            var a = new Swarm<DumbAction>(
+            var a = CreateSwarm(
                 _blockchains[0],
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
                 appProtocolVersion: 2,
                 differentVersionPeerEncountered: GameHandler);
-            var b = new Swarm<DumbAction>(
-                _blockchains[1],
-                new PrivateKey(),
-                host: IPAddress.Loopback.ToString(),
-                appProtocolVersion: 3);
+            var b = CreateSwarm(_blockchains[1], appProtocolVersion: 3);
 
             try
             {
@@ -966,11 +868,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainB = _blockchains[1];
 
             Swarm<DumbAction> swarmA = _swarms[0];
-            Swarm<DumbAction> swarmB = new Swarm<DumbAction>(
-                chainB,
-                privateKey,
-                1,
-                host: IPAddress.Loopback.ToString());
+            Swarm<DumbAction> swarmB = CreateSwarm(chainB, privateKey);
 
             Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
@@ -1160,18 +1058,14 @@ namespace Libplanet.Tests.Net
 
             var policy = new BlockPolicy<DumbAction>();
             StoreFixture[] fxs = new StoreFixture[size];
-            BlockChain<DumbAction>[] blockchains = new BlockChain<DumbAction>[size];
+            BlockChain<DumbAction>[] blockChains = new BlockChain<DumbAction>[size];
             Swarm<DumbAction>[] swarms = new Swarm<DumbAction>[size];
 
             for (int i = 0; i < size; i++)
             {
                 fxs[i] = new DefaultStoreFixture(memory: true);
-                blockchains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
-                swarms[i] = new Swarm<DumbAction>(
-                    blockchains[i],
-                    new PrivateKey(),
-                    appProtocolVersion: 1,
-                    host: IPAddress.Loopback.ToString());
+                blockChains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store);
+                swarms[i] = CreateSwarm(blockChains[i]);
             }
 
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
@@ -1180,7 +1074,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            blockchains[size - 1]
+            blockChains[size - 1]
                 .StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
 
             try
@@ -1205,7 +1099,7 @@ namespace Libplanet.Tests.Net
 
                 for (int i = 0; i < size; i++)
                 {
-                    Assert.Equal(tx, blockchains[i].GetTransaction(tx.Id));
+                    Assert.Equal(tx, blockChains[i].GetTransaction(tx.Id));
                 }
             }
             finally
@@ -1286,11 +1180,7 @@ namespace Libplanet.Tests.Net
             var fx = new DefaultStoreFixture(memory: true);
             var blockChain = new BlockChain<DumbAction>(policy, fx.Store);
             var privateKey = new PrivateKey();
-            var minerSwarm = new Swarm<DumbAction>(
-                blockChain,
-                privateKey,
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString());
+            var minerSwarm = CreateSwarm(blockChain, privateKey);
             Swarm<DumbAction> receiverSwarm = _swarms[0];
 
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
@@ -1482,12 +1372,8 @@ namespace Libplanet.Tests.Net
         public void CanResolveEndPoint()
         {
             var expected = new DnsEndPoint("1.2.3.4", 5678);
-            using (Swarm<DumbAction> s = new Swarm<DumbAction>(
-                _blockchains[0],
-                new PrivateKey(),
-                1,
-                host: "1.2.3.4",
-                listenPort: 5678))
+            using (Swarm<DumbAction> s = CreateSwarm(
+                _blockchains[0], host: "1.2.3.4", listenPort: 5678))
             {
                 Assert.Equal(expected, s.EndPoint);
                 Assert.Equal(expected, (s.AsPeer as BoundPeer)?.EndPoint);
@@ -1516,12 +1402,7 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task AsPeer()
         {
-            using (Swarm<DumbAction> swarm = new Swarm<DumbAction>(
-                _blockchains[0],
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString()
-            ))
+            using (Swarm<DumbAction> swarm = CreateSwarm(_blockchains[0]))
             {
                 Assert.IsNotType<BoundPeer>(swarm.AsPeer);
 
@@ -1546,21 +1427,9 @@ namespace Libplanet.Tests.Net
                     credential: password),
             };
 
-            var seed = new Swarm<DumbAction>(
-                _blockchains[0],
-                new PrivateKey(),
-                1,
-                host: "localhost");
-            var swarmA = new Swarm<DumbAction>(
-                _blockchains[1],
-                new PrivateKey(),
-                1,
-                iceServers: iceServers);
-            var swarmB = new Swarm<DumbAction>(
-                _blockchains[2],
-                new PrivateKey(),
-                1,
-                iceServers: iceServers);
+            var seed = CreateSwarm(_blockchains[0], host: "localhost");
+            var swarmA = CreateSwarm(_blockchains[1], iceServers: iceServers);
+            var swarmB = CreateSwarm(_blockchains[2], iceServers: iceServers);
 
             try
             {
@@ -1759,16 +1628,8 @@ namespace Libplanet.Tests.Net
             var blockChainsForNominers = new BlockChain<DumbAction>[2];
             blockChainsForNominers[0] = new BlockChain<DumbAction>(policy, fxForNominers[0].Store);
             blockChainsForNominers[1] = new BlockChain<DumbAction>(policy, fxForNominers[1].Store);
-            var nominerSwarm0 = new Swarm<DumbAction>(
-                blockChain: blockChainsForNominers[0],
-                privateKey: new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString());
-            var nominerSwarm1 = new Swarm<DumbAction>(
-                blockChain: blockChainsForNominers[1],
-                privateKey: new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString());
+            var nominerSwarm0 = CreateSwarm(blockChainsForNominers[0]);
+            var nominerSwarm1 = CreateSwarm(blockChainsForNominers[1]);
 
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
@@ -2206,16 +2067,8 @@ namespace Libplanet.Tests.Net
 
             var block3 = await chain2.MineBlock(_fx1.Address1);
 
-            var swarm1 = new Swarm<DumbAction>(
-                chain1,
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString());
-            var swarm2 = new Swarm<DumbAction>(
-                chain2,
-                new PrivateKey(),
-                1,
-                host: IPAddress.Loopback.ToString());
+            var swarm1 = CreateSwarm(chain1);
+            var swarm2 = CreateSwarm(chain2);
 
             try
             {
@@ -2243,33 +2096,9 @@ namespace Libplanet.Tests.Net
         public async Task HandleReorgInSynchronizing()
         {
             var policy = new BlockPolicy<Sleep>(new MinerReward(1));
-            var miner1 = new Swarm<Sleep>(
-                new BlockChain<Sleep>(
-                    policy,
-                    _fx1.Store
-                ),
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString()
-            );
-            var miner2 = new Swarm<Sleep>(
-                new BlockChain<Sleep>(
-                    policy,
-                    _fx2.Store
-                ),
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString()
-            );
-            var receiver = new Swarm<Sleep>(
-                new BlockChain<Sleep>(
-                    policy,
-                    _fx3.Store
-                ),
-                new PrivateKey(),
-                appProtocolVersion: 1,
-                host: IPAddress.Loopback.ToString()
-            );
+            var miner1 = CreateSwarm(new BlockChain<Sleep>(policy, _fx1.Store));
+            var miner2 = CreateSwarm(new BlockChain<Sleep>(policy, _fx2.Store));
+            var receiver = CreateSwarm(new BlockChain<Sleep>(policy, _fx3.Store));
 
             foreach (var i in Enumerable.Range(0, 8))
             {
@@ -2327,21 +2156,9 @@ namespace Libplanet.Tests.Net
             var keyC = ByteUtil.ParseHex(
                 "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
 
-            var minerSwarmA = new Swarm<DumbAction>(
-                _blockchains[0],
-                new PrivateKey(keyA),
-                1,
-                host: IPAddress.Loopback.ToString());
-            var minerSwarmB = new Swarm<DumbAction>(
-                _blockchains[1],
-                new PrivateKey(keyB),
-                1,
-                host: IPAddress.Loopback.ToString());
-            var receiverSwarm = new Swarm<DumbAction>(
-                _blockchains[2],
-                new PrivateKey(keyC),
-                1,
-                host: IPAddress.Loopback.ToString());
+            var minerSwarmA = CreateSwarm(_blockchains[0], new PrivateKey(keyA));
+            var minerSwarmB = CreateSwarm(_blockchains[1], new PrivateKey(keyB));
+            var receiverSwarm = CreateSwarm(_blockchains[2], new PrivateKey(keyC));
 
             BlockChain<DumbAction> minerChainA = _blockchains[0];
             BlockChain<DumbAction> minerChainB = _blockchains[1];
@@ -2465,6 +2282,32 @@ namespace Libplanet.Tests.Net
             }
 
             return (blocks[0].Transactions.First().Actions.First().TargetAddress, blocks);
+        }
+
+        private Swarm<T> CreateSwarm<T>(
+            BlockChain<T> blockChain,
+            PrivateKey privateKey = null,
+            int appProtocolVersion = 1,
+            int? tableSize = null,
+            int? bucketSize = null,
+            string host = null,
+            int? listenPort = null,
+            DateTimeOffset? createdAt = null,
+            IEnumerable<IceServer> iceServers = null,
+            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
+            where T : IAction, new()
+        {
+            return new Swarm<T>(
+                blockChain,
+                privateKey ?? new PrivateKey(),
+                appProtocolVersion,
+                tableSize,
+                bucketSize,
+                host ?? IPAddress.Loopback.ToString(),
+                listenPort,
+                createdAt,
+                iceServers,
+                differentVersionPeerEncountered);
         }
 
         private async Task<Task> StartAsync<T>(
