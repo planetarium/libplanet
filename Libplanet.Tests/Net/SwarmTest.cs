@@ -45,7 +45,7 @@ namespace Libplanet.Tests.Net
         public SwarmTest(ITestOutputHelper output)
         {
             const string outputTemplate =
-                "{Timestamp:HH:mm:ss}[@{SwarmId}][{ThreadId}] - {Message}";
+                "{Timestamp:HH:mm:ss:ffffffZ}[@{SwarmId}][{ThreadId}] - {Message}";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.WithThreadId()
