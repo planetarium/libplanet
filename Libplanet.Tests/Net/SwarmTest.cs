@@ -1736,6 +1736,8 @@ namespace Libplanet.Tests.Net
             Swarm<DumbAction> swarm1 = _swarms[1];
             Swarm<DumbAction> receiverSwarm = _swarms[2];
 
+            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(100);
+
             swarm0.FindNextHashesChunkSize = blockCount / 2;
             swarm1.FindNextHashesChunkSize = blockCount / 2;
 
@@ -2224,6 +2226,7 @@ namespace Libplanet.Tests.Net
 
             var swarmA = _swarms[0];
             var swarmB = _swarms[1];
+            swarmB.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
 
             var genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
