@@ -1116,9 +1116,18 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task CanBroadcastBlock()
         {
-            Swarm<DumbAction> swarmA = _swarms[0];
-            Swarm<DumbAction> swarmB = _swarms[1];
-            Swarm<DumbAction> swarmC = _swarms[2];
+            // If the bucket stored peers are the same, the block may not propagate,
+            // so specify private keys to make the buckets different.
+            var keyA = ByteUtil.ParseHex(
+                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
+            var keyB = ByteUtil.ParseHex(
+                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
+            var keyC = ByteUtil.ParseHex(
+                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
+
+            var swarmA = CreateSwarm(_blockchains[0], new PrivateKey(keyA));
+            var swarmB = CreateSwarm(_blockchains[1], new PrivateKey(keyB));
+            var swarmC = CreateSwarm(_blockchains[2], new PrivateKey(keyC));
 
             BlockChain<DumbAction> chainA = _blockchains[0];
             BlockChain<DumbAction> chainB = _blockchains[1];
@@ -1150,7 +1159,8 @@ namespace Libplanet.Tests.Net
 
                 swarmB.BroadcastBlocks(new[] { chainB[-1] });
 
-                await Task.Delay(5000);
+                await swarmA.BlockReceived.WaitAsync();
+                await swarmC.BlockReceived.WaitAsync();
 
                 // chainB doesn't applied to chainA since chainB is shorter
                 // than chainA
@@ -1158,7 +1168,8 @@ namespace Libplanet.Tests.Net
 
                 swarmA.BroadcastBlocks(new[] { chainA[-1] });
 
-                await Task.Delay(20000);
+                await swarmB.BlockReceived.WaitAsync();
+                await swarmC.BlockReceived.WaitAsync();
 
                 Log.Debug("Compare chainA and chainB");
                 Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
@@ -2077,7 +2088,7 @@ namespace Libplanet.Tests.Net
                 await swarm1.AddPeersAsync(new[] { swarm2.AsPeer }, null);
 
                 swarm2.BroadcastBlocks(new[] { block3 });
-                await Task.Delay(2000);
+                await swarm1.FillBlocksAsyncFailed.WaitAsync();
 
                 List<Guid> chainIds = fx1.Store.ListChainIds().ToList();
                 Assert.Single(chainIds);
