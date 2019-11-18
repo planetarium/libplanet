@@ -8,10 +8,18 @@ namespace Libplanet.Tests.Store
     {
         public DefaultStoreFixture(bool memory = false)
         {
-            string postfix = Guid.NewGuid().ToString();
-            Path = memory
-                ? null
-                : System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"litedb_{postfix}");
+            if (memory)
+            {
+                Path = null;
+            }
+            else
+            {
+                Path = System.IO.Path.Combine(
+                    System.IO.Path.GetTempPath(),
+                    $"defaultstore_test_{Guid.NewGuid()}"
+                );
+            }
+
             Store = new DefaultStore(Path);
         }
 

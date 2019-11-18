@@ -78,6 +78,8 @@ namespace Libplanet.Store
             }
             else
             {
+                path = Path.GetFullPath(path);
+
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
