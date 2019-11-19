@@ -262,7 +262,7 @@ namespace Libplanet.Net
 
         internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
 
-        internal ICollection<BoundPeer> Peers => Protocol.Peers;
+        internal IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         internal IProtocol Protocol { get; private set; }
 
@@ -2097,9 +2097,10 @@ namespace Libplanet.Net
             // FIXME Should replace with PUB/SUB model.
             try
             {
+                var peers = Protocol.PeersToBroadcast.ToList();
                 _logger.Debug($"Broadcasting message [{msg}]");
-                _logger.Debug($"Peers to broadcast : {Protocol.PeersToBroadcast.Count}");
-                Protocol.PeersToBroadcast.ParallelForEachAsync(async peer =>
+                _logger.Debug($"Peers to broadcast : {peers.Count}");
+                peers.ParallelForEachAsync(async peer =>
                 {
                     await SendMessageAsync(peer, msg);
                 });

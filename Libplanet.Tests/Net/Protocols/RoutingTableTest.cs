@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -15,7 +16,7 @@ namespace Libplanet.Tests.Net.Protocols
         private const int TableSize = Address.Size * sizeof(byte) * 8;
 
         [Fact]
-        public void BucketTest()
+        public async void BucketTest()
         {
             var bucket = new KBucket(4, new System.Random(), Logger.None);
             var peer1 = new BoundPeer(
@@ -41,21 +42,31 @@ namespace Libplanet.Tests.Net.Protocols
 
             Assert.Empty(bucket.Peers);
             Assert.True(bucket.IsEmpty());
-            Assert.Null(bucket.AddPeer(peer1));
+            await bucket.AddPeerAsync(peer1);
             Assert.True(bucket.Contains(peer1));
             Assert.False(bucket.Contains(peer2));
             Assert.False(bucket.IsEmpty());
             Assert.False(bucket.IsFull());
-            Assert.Null(bucket.AddPeer(peer2));
-            Assert.Null(bucket.AddPeer(peer3));
-            Assert.Null(bucket.AddPeer(peer4));
+            await bucket.AddPeerAsync(peer2);
+            await bucket.AddPeerAsync(peer3);
+            await bucket.AddPeerAsync(peer4);
             Assert.True(bucket.IsFull());
+            Assert.Equal(
+                bucket.Peers.ToHashSet(),
+                new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
+            );
             Assert.Contains(
                 bucket.GetRandomPeer(),
-                new[] { peer1, peer2, peer3, peer4 });
-            Assert.Equal(peer1, bucket.AddPeer(peer5));
+                new[] { peer1, peer2, peer3, peer4 }
+            );
+            await bucket.AddPeerAsync(peer5);
             Assert.True(bucket.Contains(peer1));
             Assert.False(bucket.Contains(peer5));
+            Assert.Equal(peer4, bucket.Head.Key);
+            Assert.Equal(peer1, bucket.Tail.Key);
+            await bucket.AddPeerAsync(peer1);
+            Assert.Equal(peer1, bucket.Head.Key);
+            Assert.Equal(peer2, bucket.Tail.Key);
             bucket.Clear();
             Assert.True(bucket.IsEmpty());
         }
@@ -93,18 +104,15 @@ namespace Libplanet.Tests.Net.Protocols
             var peer1 = new BoundPeer(pubKey1, new DnsEndPoint("0.0.0.0", 1234), 0);
             var peer2 = new BoundPeer(pubKey2, new DnsEndPoint("0.0.0.0", 1234), 0);
             var peer3 = new BoundPeer(pubKey3, new DnsEndPoint("0.0.0.0", 1234), 0);
-            Peer evict = await table.AddPeerAsync(peer1);
-            Assert.Null(evict);
-            evict = await table.AddPeerAsync(peer1);
-            Assert.Null(evict);
-            evict = await table.AddPeerAsync(peer2);
-            Assert.Null(evict);
-            evict = await table.AddPeerAsync(peer3);
-            Assert.NotNull(evict);
-            Assert.Equal(peer1, evict);
             await table.AddPeerAsync(peer1);
-            evict = await table.AddPeerAsync(peer3);
-            Assert.Equal(peer2, evict);
+            await table.AddPeerAsync(peer2);
+            await table.AddPeerAsync(peer3);
+            await table.AddPeerAsync(peer1);
+            await table.AddPeerAsync(peer3);
+            Assert.Equal(
+                new HashSet<BoundPeer> { peer1, peer2 },
+                table.Peers.ToHashSet()
+            );
         }
 
         [Fact]

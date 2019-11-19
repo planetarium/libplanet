@@ -139,7 +139,7 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             var message = new TestMessage(data) { Remote = AsPeer };
-            var peers = Protocol.PeersToBroadcast;
+            var peers = Protocol.PeersToBroadcast.ToList();
             _ignoreTestMessageWithData.Add(data);
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers.",

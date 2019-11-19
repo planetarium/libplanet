@@ -47,29 +47,9 @@ namespace Libplanet.Net.Protocols
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
         }
 
-        public ImmutableList<BoundPeer> Peers
-        {
-            get
-            {
-                var peers = new List<BoundPeer>();
-                foreach (KBucket bucket in _routing.NonEmptyBuckets)
-                {
-                    peers.AddRange(bucket.Peers);
-                }
+        public IEnumerable<BoundPeer> Peers => _routing.Peers;
 
-                return peers.ToImmutableList();
-            }
-        }
-
-        public ImmutableList<BoundPeer> PeersToBroadcast
-        {
-            get
-            {
-                return _routing.NonEmptyBuckets
-                    .Select(bucket => bucket.GetRandomPeer())
-                    .ToImmutableList();
-            }
-        }
+        public IEnumerable<BoundPeer> PeersToBroadcast => _routing.PeersToBroadcast;
 
         // FIXME: Currently bootstrap is done until it finds closest peer, but it should halt
         // when found neighbor's count is reached 2*k.
@@ -121,7 +101,7 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            if (Peers.Count == 0)
+            if (!Peers.Any())
             {
                 // FIXME: Need more precise exception
                 throw new SwarmException("No seed available.");
@@ -165,12 +145,11 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count);
-                List<Task> tasks = _routing.NonEmptyBuckets
-                    .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
-                    .Select(bucket =>
+                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count());
+                List<Task> tasks = _routing.PeersToRefresh(maxAge)
+                    .Select(peer =>
                         ValidateAsync(
-                            bucket.Tail.Item2,
+                            peer,
                             _requestTimeout,
                             cancellationToken)
                 ).ToList();
@@ -236,19 +215,15 @@ namespace Libplanet.Net.Protocols
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
             _logger.Debug("Checking replacement cache.");
-            foreach (var bucket in _routing.NonFullBuckets)
+            foreach (var cache in _routing.CachesToCheck)
             {
-                var cachePeers = new BoundPeer[bucket.ReplacementCache.Count];
-                bucket.ReplacementCache.CopyTo(cachePeers);
+                var cachePeers = new BoundPeer[cache.Count];
+                cache.CopyTo(cachePeers);
                 foreach (BoundPeer replacement in cachePeers)
                 {
                     try
                     {
                         _logger.Debug("Check peer {Peer}.", replacement);
-                        if (bucket.IsFull())
-                        {
-                            break;
-                        }
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
@@ -257,7 +232,7 @@ namespace Libplanet.Net.Protocols
                         _logger.Debug(
                             "Remove stale peer {Peer} from replacement cache.",
                             replacement);
-                        bucket.ReplacementCache.Remove(replacement);
+                        cache.Remove(replacement);
                     }
                 }
             }

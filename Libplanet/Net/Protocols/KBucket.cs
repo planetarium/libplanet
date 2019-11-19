@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Protocols
@@ -10,7 +14,8 @@ namespace Libplanet.Net.Protocols
     {
         private readonly int _size;
         private readonly Random _random;
-        private readonly List<(DateTimeOffset, BoundPeer)> _peers;
+        private readonly ConcurrentDictionary<BoundPeer, DateTimeOffset> _peers;
+        private readonly AsyncLock _bucketMutex;
 
         private readonly ILogger _logger;
 
@@ -21,77 +26,110 @@ namespace Libplanet.Net.Protocols
             _size = size;
             _random = random;
             _logger = logger;
-            _peers = new List<(DateTimeOffset, BoundPeer)>();
+            _peers = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             ReplacementCache = new List<BoundPeer>();
+            _bucketMutex = new AsyncLock();
 
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
         public int Count => _peers.Count;
 
-        // get most recently used peer.
-        public (DateTimeOffset, BoundPeer) Head =>
-            IsEmpty() ? (DateTimeOffset.MinValue, null) : _peers[_peers.Count - 1];
+        /// <summary>
+        /// Most recently used peer.
+        /// </summary>
+        public KeyValuePair<BoundPeer, DateTimeOffset> Head
+        {
+            get
+            {
+                var kvs = _peers.
+                    ToImmutableList()
+                    .Sort((kv1, kv2) => (int)(kv1.Value - kv2.Value).Ticks);
+                return kvs.LastOrDefault();
+            }
+        }
 
-        // get least recently used peer.
-        public (DateTimeOffset, BoundPeer) Tail =>
-            IsEmpty() ? (DateTimeOffset.MinValue, null) : _peers[0];
+        /// <summary>
+        /// Least recently used peer.
+        /// </summary>
+        public KeyValuePair<BoundPeer, DateTimeOffset> Tail
+        {
+            get
+            {
+                var kvs = _peers.
+                    ToImmutableList()
+                    .Sort((kv1, kv2) => (int)(kv1.Value - kv2.Value).Ticks);
+                return kvs.FirstOrDefault();
+            }
+        }
 
-        public ImmutableList<BoundPeer> Peers => IsEmpty() ?
-            ImmutableList<BoundPeer>.Empty :
-            _peers.Select(peerInfo => peerInfo.Item2).ToImmutableList();
+        public IEnumerable<BoundPeer> Peers => _peers.Keys;
 
         // replacement candidate stored in this cache when
         // the bucket is full and least recently used peer responds.
         public List<BoundPeer> ReplacementCache { get; }
 
         // returns head if the bucket is full and doest not containing target.
-        public BoundPeer AddPeer(BoundPeer peer)
+        public async Task AddPeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            _lastUpdated = DateTimeOffset.UtcNow;
-            int exists =
-                _peers.FindIndex(p => p.Item2.Address.Equals(peer.Address));
-
-            if (exists != -1)
+            if (peer is null)
             {
-                _logger.Verbose("Bucket already contains peer {Peer}", peer);
-                _peers.RemoveAt(exists);
-                _peers.Add((DateTimeOffset.UtcNow, peer));
-                return null;
+                throw new ArgumentNullException(nameof(peer));
             }
-            else if (IsFull())
-            {
-                _logger.Verbose("Bucket is full to add peer {Peer}", peer);
-                if (!ReplacementCache.Contains(peer))
-                {
-                    ReplacementCache.Add(peer);
-                    _logger.Verbose(
-                        "Added peer {Peer} to replacement cache. (total: {Count})",
-                        peer,
-                        ReplacementCache.Count);
-                }
 
-                return Tail.Item2;
-            }
-            else
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
-                _logger.Verbose("Adding peer {Peer} to bucket.", peer);
-                if (ReplacementCache.Remove(peer))
-                {
-                    _logger.Verbose(
-                        "Removed peer {Peer} from replacement cache. (total: {Count})",
-                        peer,
-                        ReplacementCache.Count);
-                }
+                _lastUpdated = DateTimeOffset.UtcNow;
+                BoundPeer hasPeer =
+                    _peers.FirstOrDefault(kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
 
-                _peers.Add((DateTimeOffset.UtcNow, peer));
-                return null;
+                if (hasPeer is null)
+                {
+                    if (IsFull())
+                    {
+                        _logger.Verbose("Bucket is full to add peer {Peer}", peer);
+                        if (!ReplacementCache.Contains(peer))
+                        {
+                            ReplacementCache.Add(peer);
+                            _logger.Verbose(
+                                "Added {Peer} to replacement cache. (total: {Count})",
+                                peer,
+                                ReplacementCache.Count);
+                        }
+                    }
+                    else
+                    {
+                        _logger.Verbose("Bucket does not contains peer {Peer}", peer);
+                        if (ReplacementCache.Remove(peer))
+                        {
+                            _logger.Verbose(
+                                "Removed peer {Peer} from replacement cache. (total: {Count})",
+                                peer,
+                                ReplacementCache.Count);
+                        }
+
+                        _peers[peer] = DateTimeOffset.UtcNow;
+                    }
+                }
+                else
+                {
+                    _logger.Verbose("Bucket already contains peer {Peer}", peer);
+
+                    // This done because peer's other attribute except public key might be changed.
+                    // (eg. public IP address, endpoint)
+                    _peers.TryRemove(hasPeer, out var dateTimeOffset);
+                    _peers[peer] = DateTimeOffset.UtcNow;
+                }
             }
         }
 
         public bool Contains(BoundPeer peer)
         {
-            return _peers.FindIndex(item => item.Item2.Equals(peer)) != -1;
+            return !(_peers.FirstOrDefault(
+                kv => kv.Key.PublicKey.Equals(peer.PublicKey)
+            ).Key is null);
         }
 
         public void Clear()
@@ -100,16 +138,22 @@ namespace Libplanet.Net.Protocols
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
-        public bool RemovePeer(BoundPeer peer)
+        public async Task<bool> RemovePeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            int index = _peers.FindIndex(item => item.Item2.Address.Equals(peer.Address));
-            if (index == -1)
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
-                return false;
-            }
+                BoundPeer hasPeer = _peers.FirstOrDefault(
+                    kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
+                if (hasPeer is null)
+                {
+                    return false;
+                }
 
-            _peers.RemoveAt(index);
-            return true;
+                _peers.TryRemove(hasPeer, out var dateTimeOffset);
+                return true;
+            }
         }
 
         public bool IsEmpty()
@@ -124,9 +168,10 @@ namespace Libplanet.Net.Protocols
 
         public BoundPeer GetRandomPeer()
         {
+            var peers = _peers.Keys.ToArray();
             int size = _peers.Count;
 
-            return size == 0 ? null : _peers[_random.Next(size)].Item2;
+            return size == 0 ? null : peers[_random.Next(size)];
         }
     }
 }
