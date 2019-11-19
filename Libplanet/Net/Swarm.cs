@@ -561,6 +561,30 @@ namespace Libplanet.Net
             BroadcastTxIds(txIds);
         }
 
+        public string TraceTable()
+        {
+            return Protocol is null ? string.Empty : Protocol.Trace();
+        }
+
+        async Task<Message> ISwarm.SendMessageWithReplyAsync(
+            BoundPeer peer,
+            Message message,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken)
+        {
+            IEnumerable<Message> replies =
+                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
+            Message reply = replies.First();
+            ValidateSender(reply.Remote);
+
+            return reply;
+        }
+
+        void ISwarm.ReplyMessage(Message message)
+        {
+            _replyQueue.Enqueue(message);
+        }
+
         /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
@@ -806,14 +830,6 @@ namespace Libplanet.Net
             }
         }
 
-        // FIXME: This method became public just for testing
-#pragma warning disable SA1202
-        public string TraceTable()
-        {
-            return Protocol is null ? string.Empty : Protocol.Trace();
-        }
-#pragma warning restore SA1202
-
         internal async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
@@ -876,22 +892,6 @@ namespace Libplanet.Net
         {
             await SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
         }
-
-#pragma warning disable SA1202
-        async Task<Message> ISwarm.SendMessageWithReplyAsync(
-            BoundPeer peer,
-            Message message,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            IEnumerable<Message> replies =
-                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
-            Message reply = replies.First();
-            ValidateSender(reply.Remote);
-
-            return reply;
-        }
-#pragma warning restore SA1202
 
         internal virtual async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
@@ -1097,13 +1097,6 @@ namespace Libplanet.Net
                 }
             });
         }
-
-#pragma warning disable SA1202
-        void ISwarm.ReplyMessage(Message message)
-        {
-            _replyQueue.Enqueue(message);
-        }
-#pragma warning restore SA1202
 
         private void BroadcastMessage(Message message)
         {
