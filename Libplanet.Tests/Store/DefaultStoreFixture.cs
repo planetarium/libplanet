@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Store
                 );
             }
 
-            Store = new DefaultStore(Path);
+            Store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
         }
 
         public string Path { get; }

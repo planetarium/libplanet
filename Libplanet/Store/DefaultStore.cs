@@ -56,14 +56,18 @@ namespace Libplanet.Store
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
-        /// <param name="cacheSize">Max number of pages in the cache.</param>
+        /// <param name="indexCacheSize">Max number of pages in the index cache.</param>
+        /// <param name="blockCacheSize">The capacity of the block cache.</param>
+        /// <param name="txCacheSize">The capacity of the transaction cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
             string path,
             bool journal = true,
-            int cacheSize = 50000,
+            int indexCacheSize = 50000,
+            int blockCacheSize = 512,
+            int txCacheSize = 1024,
             bool flush = true,
             bool readOnly = false
         )
@@ -96,7 +100,7 @@ namespace Libplanet.Store
                 {
                     Filename = Path.Combine(path, "index.ldb"),
                     Journal = journal,
-                    CacheSize = cacheSize,
+                    CacheSize = indexCacheSize,
                     Flush = flush,
                 };
 
@@ -132,8 +136,8 @@ namespace Libplanet.Store
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
 
-            _txCache = new LruCache<TxId, object>(capacity: 1024);
-            _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: 512);
+            _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
+            _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: blockCacheSize);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -369,7 +373,7 @@ namespace Libplanet.Store
                 return true;
             }
 
-            return _root.FileExists(TxPath(txId));
+            return _txs.FileExists(TxPath(txId));
         }
 
         /// <inheritdoc/>
@@ -454,7 +458,7 @@ namespace Libplanet.Store
             }
 
             UPath blockPath = BlockPath(blockHash);
-            return _root.FileExists(blockPath);
+            return _blocks.FileExists(blockPath);
         }
 
         /// <inheritdoc/>

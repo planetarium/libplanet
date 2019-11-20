@@ -91,6 +91,7 @@ namespace Libplanet.Tests.Store
 
             Transaction1 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
             Transaction2 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
+            Transaction3 = MakeTransaction(new List<DumbAction>(), ImmutableHashSet<Address>.Empty);
         }
 
         public Guid StoreChainId { get; }
@@ -126,6 +127,8 @@ namespace Libplanet.Tests.Store
         public Transaction<DumbAction> Transaction1 { get; }
 
         public Transaction<DumbAction> Transaction2 { get; }
+
+        public Transaction<DumbAction> Transaction3 { get; }
 
         public IStore Store { get; set; }
 
