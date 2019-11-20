@@ -226,7 +226,7 @@ namespace Libplanet.Blockchain
             {
                 return _blocks.ContainsKey(blockHash) &&
                        _blocks[blockHash].Index is long branchPointIndex &&
-                       branchPointIndex <= Tip.Index &&
+                       branchPointIndex <= Tip?.Index &&
                        this[branchPointIndex].Hash.Equals(blockHash);
             }
             finally

@@ -1554,6 +1554,7 @@ namespace Libplanet.Net
                         long currentTipIndex = blockChain.Tip?.Index ?? -1;
                         long receivedBlockCount = currentTipIndex - previousTipIndex;
 
+                        FillBlocksAsyncStarted.Set();
                         synced = await FillBlocksAsync(
                             peer,
                             blockChain,
@@ -1578,8 +1579,14 @@ namespace Libplanet.Net
                         }
                         else
                         {
+                            FillBlocksAsyncFailed.Set();
                             throw;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        FillBlocksAsyncFailed.Set();
+                        throw;
                     }
                 }
             }
@@ -1673,7 +1680,6 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         )
         {
-            FillBlocksAsyncStarted.Set();
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
 
@@ -1785,12 +1791,11 @@ namespace Libplanet.Net
             }
             catch
             {
-                if (!(workspace is null) && !workspace.Id.Equals(BlockChain.Id))
+                if (workspace?.Id is Guid workspaceId && scope.Contains(workspaceId))
                 {
-                    _store.DeleteChainId(workspace.Id);
+                    _store.DeleteChainId(workspaceId);
                 }
 
-                FillBlocksAsyncFailed.Set();
                 throw;
             }
             finally

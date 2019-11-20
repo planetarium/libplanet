@@ -37,12 +37,14 @@ To be released.
 ### Bug fixes
  -  Fixed a bug where the canonical chain could be deleted if `Swarm<T>` failed
     to download blocks due to network connection.  [[#675]]
+ -  Fixed bug that re-download block from scratch in preloading.  [[#685]]
 
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
 [#678]: https://github.com/planetarium/libplanet/pull/678
 [#680]: https://github.com/planetarium/libplanet/pull/680
+[#685]: https://github.com/planetarium/libplanet/pull/685
 
 
 Version 0.7.0
