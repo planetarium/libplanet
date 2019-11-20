@@ -719,6 +719,30 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void ContainsBlockWithoutCache()
+        {
+            Fx.Store.PutBlock(Fx.Block1);
+            Fx.Store.PutBlock(Fx.Block2);
+            Fx.Store.PutBlock(Fx.Block3);
+
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block1.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block2.Hash));
+            Assert.True(Fx.Store.ContainsBlock(Fx.Block3.Hash));
+        }
+
+        [Fact]
+        public void ContainsTransactionWithoutCache()
+        {
+            Fx.Store.PutTransaction(Fx.Transaction1);
+            Fx.Store.PutTransaction(Fx.Transaction2);
+            Fx.Store.PutTransaction(Fx.Transaction3);
+
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction1.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
+            Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction3.Id));
+        }
+
+        [Fact]
         public void TxAtomicity()
         {
             Transaction<AtomicityTestAction> MakeTx(
