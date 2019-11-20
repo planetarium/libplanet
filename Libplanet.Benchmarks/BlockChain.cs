@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Libplanet.Blockchain;
+using Libplanet.Crypto;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -28,7 +29,10 @@ namespace Libplanet.Benchmarks
         public void SetupChain()
         {
             _fx = new DefaultStoreFixture();
-            _blockChain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), _fx.Store);
+            _blockChain = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                _fx.Store,
+                _fx.GenesisBlock);
             for (var i = 0; i < 500; i++)
             {
                 _blockChain.MineBlock(_fx.Address1).Wait();

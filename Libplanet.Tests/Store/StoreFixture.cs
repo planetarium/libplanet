@@ -84,8 +84,8 @@ namespace Libplanet.Tests.Store
                 0x9c, 0xee,
             });
 
-            // FIXME: Following names are misleading, because we index the genesis block 0, not 1.
-            Block1 = TestUtils.MineGenesis<DumbAction>();
+            GenesisBlock = TestUtils.MineGenesis<DumbAction>();
+            Block1 = TestUtils.MineNext(GenesisBlock);
             Block2 = TestUtils.MineNext(Block1);
             Block3 = TestUtils.MineNext(Block2);
 
@@ -117,6 +117,8 @@ namespace Libplanet.Tests.Store
         public HashDigest<SHA256> Hash2 { get; }
 
         public HashDigest<SHA256> Hash3 { get; }
+
+        public Block<DumbAction> GenesisBlock { get; }
 
         public Block<DumbAction> Block1 { get; }
 

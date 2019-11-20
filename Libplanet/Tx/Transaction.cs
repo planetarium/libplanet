@@ -122,32 +122,7 @@ namespace Libplanet.Tx
         {
         }
 
-        // ReSharper disable once UnusedMember.Local
-        private Transaction(SerializationInfo info, StreamingContext context)
-            : this(new RawTransaction(info, context))
-        {
-        }
-
-        private Transaction(
-            long nonce,
-            Address signer,
-            PublicKey publicKey,
-            IImmutableSet<Address> updatedAddresses,
-            DateTimeOffset timestamp,
-            IEnumerable<T> actions)
-            : this(
-                nonce,
-                signer,
-                publicKey,
-                updatedAddresses,
-                timestamp,
-                actions.ToImmutableList(),
-                new byte[0],
-                false)
-        {
-        }
-
-        private Transaction(
+        internal Transaction(
             long nonce,
             Address signer,
             PublicKey publicKey,
@@ -179,6 +154,30 @@ namespace Libplanet.Tx
             {
                 Validate();
             }
+        }
+
+        private Transaction(SerializationInfo info, StreamingContext context)
+            : this(new RawTransaction(info, context))
+        {
+        }
+
+        private Transaction(
+            long nonce,
+            Address signer,
+            PublicKey publicKey,
+            IImmutableSet<Address> updatedAddresses,
+            DateTimeOffset timestamp,
+            IEnumerable<T> actions)
+            : this(
+                nonce,
+                signer,
+                publicKey,
+                updatedAddresses,
+                timestamp,
+                actions.ToImmutableList(),
+                new byte[0],
+                false)
+        {
         }
 
         /// <summary>

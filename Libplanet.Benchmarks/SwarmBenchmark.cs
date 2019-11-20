@@ -121,12 +121,13 @@ namespace Libplanet.Benchmarks
                 0x13, 0xf2,
             });
 
+            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
             var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {
                 _keys[i] = _keys[i] ?? new PrivateKey();
                 _fxs[i] = new DefaultStoreFixture(memory: true);
-                _blockChains[i] = new BlockChain<DumbAction>(_policy, _fxs[i].Store);
+                _blockChains[i] = new BlockChain<DumbAction>(_policy, _fxs[i].Store, _blocks[0]);
                 _swarms[i] = new Swarm<DumbAction>(
                     _blockChains[i],
                     _keys[i],
@@ -143,7 +144,6 @@ namespace Libplanet.Benchmarks
                     .Wait(WaitTimeout);
             }
 
-            _blockChains[0].Append(_blocks[0]);
             _blockChains[0].Append(_blocks[1]);
             _blockChains[0].Append(_blocks[2]);
             _blockChains[0].Append(_blocks[3]);

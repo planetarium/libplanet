@@ -131,7 +131,14 @@ namespace Libplanet.Tests.Store
         {
             Address address1 = Fx.Address1;
             Address address2 = Fx.Address2;
-            Address address3 = new PrivateKey().PublicKey.ToAddress();
+            Address address3 = Fx.Address3;
+
+            var store = new DefaultStore(null);
+            var chain = TestUtils.MakeBlockChain(new NullPolicy<DumbAction>(), store);
+
+            var block1 = TestUtils.MineNext(chain.Genesis);
+            var block2 = TestUtils.MineNext(block1);
+            var block3 = TestUtils.MineNext(block2);
 
             Transaction<DumbAction> tx4 = Fx.MakeTransaction(
                 new[]
@@ -140,7 +147,10 @@ namespace Libplanet.Tests.Store
                     new DumbAction(address2, "foo2"),
                 }
             );
-            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
+            Block<DumbAction> block4 = TestUtils.MineNext(
+                block3,
+                new[] { tx4 },
+                blockInterval: TimeSpan.FromSeconds(10));
 
             Transaction<DumbAction> tx5 = Fx.MakeTransaction(
                 new[]
@@ -149,14 +159,18 @@ namespace Libplanet.Tests.Store
                     new DumbAction(address3, "bar3"),
                 }
             );
-            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
+            Block<DumbAction> block5 = TestUtils.MineNext(
+                block4,
+                new[] { tx5 },
+                blockInterval: TimeSpan.FromSeconds(10));
 
-            Block<DumbAction> block6 = TestUtils.MineNext(block5, new Transaction<DumbAction>[0]);
+            Block<DumbAction> block6 = TestUtils.MineNext(
+                block5,
+                blockInterval: TimeSpan.FromSeconds(10));
 
-            var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), Fx.Store);
-            chain.Append(Fx.Block1);
-            chain.Append(Fx.Block2);
-            chain.Append(Fx.Block3);
+            chain.Append(block1);
+            chain.Append(block2);
+            chain.Append(block3);
             chain.Append(block4);
             chain.Append(block5);
             chain.Append(block6);
@@ -164,7 +178,7 @@ namespace Libplanet.Tests.Store
             Guid chainId = chain.Id;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> refs;
 
-            refs = Fx.Store.ListAllStateReferences(chainId);
+            refs = store.ListAllStateReferences(chainId);
             Assert.Equal(
                 new HashSet<Address> { address1, address2, address3 },
                 refs.Keys.ToHashSet()
@@ -173,12 +187,12 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { block4.Hash }, refs[address2]);
             Assert.Equal(new[] { block5.Hash }, refs[address3]);
 
-            refs = Fx.Store.ListAllStateReferences(chainId, onlyAfter: block4.Hash);
+            refs = store.ListAllStateReferences(chainId, onlyAfter: block4.Hash);
             Assert.Equal(new HashSet<Address> { address1, address3 }, refs.Keys.ToHashSet());
             Assert.Equal(new[] { block5.Hash }, refs[address1]);
             Assert.Equal(new[] { block5.Hash }, refs[address3]);
 
-            refs = Fx.Store.ListAllStateReferences(chainId, ignoreAfter: block4.Hash);
+            refs = store.ListAllStateReferences(chainId, ignoreAfter: block4.Hash);
             Assert.Equal(new HashSet<Address> { address1, address2, }, refs.Keys.ToHashSet());
             Assert.Equal(new[] { block4.Hash }, refs[address1]);
             Assert.Equal(new[] { block4.Hash }, refs[address2]);
@@ -638,7 +652,7 @@ namespace Libplanet.Tests.Store
                 Fx.Store.ForkStateReferences(Fx.StoreChainId, targetChainId, Fx.Block1)
             );
 
-            var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), Fx.Store);
+            var chain = TestUtils.MakeBlockChain(new NullPolicy<DumbAction>(), Fx.Store);
             chain.Append(Fx.Block1);
 
             // Even if state references in a chain are empty it should not throw
