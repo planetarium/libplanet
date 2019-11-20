@@ -29,6 +29,8 @@ To be released.
     to take `preloadBlockDownloadFailed` event handler as an argument.
     [[#694]]
  -  Removed `StoreExtension.ListAllStateReferences<T>()` method.  [[#701]]
+ -  Added the `genesisBlock` parameter to
+    `BlockChain<T>()` constructor.  [[#688]]
 
 ### Backward-incompatible network protocol changes
 
@@ -43,6 +45,9 @@ To be released.
 
  -  Added `DefaultStore` class to replace `LiteDBStore`.  [[#662]]
  -  Added `IStore.ListAllStateReferences<T>()` method.  [[#701]]
+ -  Added `BlockChain<T>.Genesis` property.  [[#688]]
+ -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
+ -  Added `InvalidGenesisBlockException` class.  [[#688]]
 
 ### Behavioral changes
 
@@ -70,6 +75,7 @@ To be released.
 [#679]: https://github.com/planetarium/libplanet/pull/679
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
+[#688]: https://github.com/planetarium/libplanet/pull/688
 [#692]: https://github.com/planetarium/libplanet/pull/692
 [#694]: https://github.com/planetarium/libplanet/pull/694
 [#701]: https://github.com/planetarium/libplanet/pull/701
