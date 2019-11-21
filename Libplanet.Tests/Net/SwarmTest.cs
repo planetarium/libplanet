@@ -2239,7 +2239,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [Fact]
+        [Fact(Skip="This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {
             var policy = new BlockPolicy<Sleep>(new MinerReward(1));
