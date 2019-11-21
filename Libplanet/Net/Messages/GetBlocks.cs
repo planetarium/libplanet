@@ -10,7 +10,7 @@ namespace Libplanet.Net.Messages
     {
         public GetBlocks(
             IEnumerable<HashDigest<SHA256>> hashes,
-            int chunkSize = 500)
+            int chunkSize = 100)
         {
             if (chunkSize <= 0)
             {

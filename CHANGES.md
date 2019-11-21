@@ -34,7 +34,12 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` became to send 100 blocks (instead of 500 blocks) for each
+    reply during IDL, in order to stabilize connection in high latency
+    environments.  [[#679]]
+
 ### Bug fixes
+
  -  Fixed a bug where the canonical chain could be deleted if `Swarm<T>` failed
     to download blocks due to network connection.  [[#675]]
  -  Fixed bug that re-download block from scratch in preloading.  [[#685]]
@@ -43,6 +48,7 @@ To be released.
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
 [#678]: https://github.com/planetarium/libplanet/pull/678
+[#679]: https://github.com/planetarium/libplanet/pull/679
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
 
@@ -919,7 +925,6 @@ Released on May 31, 2019.
 [#187]: https://github.com/planetarium/libplanet/issues/187
 [#190]: https://github.com/planetarium/libplanet/pull/190
 [#191]: https://github.com/planetarium/libplanet/pull/191
-[#192]: https://github.com/planetarium/libplanet/pull/192
 [#193]: https://github.com/planetarium/libplanet/pull/193
 [#197]: https://github.com/planetarium/libplanet/pull/197
 [#198]: https://github.com/planetarium/libplanet/pull/198

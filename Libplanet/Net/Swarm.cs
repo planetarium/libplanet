@@ -266,7 +266,7 @@ namespace Libplanet.Net
 
         internal IProtocol Protocol { get; private set; }
 
-        internal int FindNextHashesChunkSize { get; set; } = 500;
+        internal int FindNextHashesChunkSize { get; set; } = 100;
 
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
@@ -900,45 +900,68 @@ namespace Libplanet.Net
             Guid reqId = Guid.NewGuid();
             try
             {
-                _logger.Verbose("Adding request ({RequestId}) to queue...", reqId);
+                _logger.Verbose(
+                    "Enqueue a request {RequestId} to {PeerAddress}: {Message}.",
+                    reqId,
+                    peer.Address,
+                    message
+                );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 await _requests.AddAsync(
                     new MessageRequest(reqId, message, peer, timeout, expectedResponses, tcs)
                 );
-                _logger.Verbose("Request Added. waiting for reply...");
-                IEnumerable<Message> reply = await tcs.Task;
+                _logger.Verbose(
+                    "Enqueued a request {RequestId} to {PeerAddress}: {Message}.",
+                    reqId,
+                    peer.Address,
+                    message
+                );
 
-                _logger.Debug(
-                    "Received {Reply} from {PeerAddress}...",
-                    reply,
-                    peer.Address);
+                var reply = (await tcs.Task).ToList();
+                const string logMsg =
+                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                    "from {PeerAddress}: {ReplyMessages}.";
+                _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
 
                 return reply;
             }
             catch (DifferentAppProtocolVersionException e)
             {
-                _logger.Error(e, "Different version received.");
+                const string logMsg =
+                    "{PeerAddress} sent a reply to {RequestId} with " +
+                    "a different app protocol version; " +
+                    "expected: {ExpectedVersion}; actual: {ActualVersion}.";
+                _logger.Error(e, logMsg, peer.Address, reqId, e.ExpectedVersion, e.ActualVersion);
                 throw;
             }
             catch (TimeoutException)
             {
                 _logger.Debug(
-                    $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}() " +
-                    "after {0}.",
-                    timeout);
+                    $"{nameof(Swarm<T>)}.{nameof(SendMessageWithReplyAsync)}() timed out " +
+                    "after {Timeout} of waiting a reply to {RequestId} from {PeerAddress}.",
+                    timeout,
+                    reqId,
+                    peer.Address
+                );
                 throw;
             }
             catch (TaskCanceledException)
             {
-                _logger.Debug($"Task canceled during {nameof(SendMessageWithReplyAsync)}().");
+                _logger.Debug(
+                    $"{nameof(Swarm<T>)}.{nameof(SendMessageWithReplyAsync)}() was cancelled to " +
+                    "wait a reply to {RequestId} from {PeerAddress}.",
+                    reqId,
+                    peer.Address
+                );
                 throw;
             }
             catch (Exception e)
             {
-                var msg = "An unexpected exception occurred during " +
-                        $"{nameof(SendMessageWithReplyAsync)}(). {{0}}";
-                _logger.Error(
-                    e, msg, e);
+                var msg =
+                    $"{nameof(Swarm<T>)}.{nameof(SendMessageWithReplyAsync)}() encountered " +
+                    "an unexpected exception during sending a request {RequestId} to " +
+                    "{PeerAddress} and waiting a reply to it: {Exception}.";
+                _logger.Error(e, msg, reqId, peer.Address, e);
                 throw;
             }
         }
@@ -1872,12 +1895,20 @@ namespace Libplanet.Net
 
         private void TransferBlocks(GetBlocks getData)
         {
-            _logger.Debug("Trying to transfer blocks...");
+            string identityHex = ByteUtil.Hex(getData.Identity);
+            _logger.Verbose("Preparing a blocks reply to request {Identity}...", identityHex);
 
             var blocks = new List<byte[]>();
 
-            foreach (HashDigest<SHA256> hash in getData.BlockHashes)
+            List<HashDigest<SHA256>> hashes = getData.BlockHashes.ToList();
+            int i = 1;
+            int total = hashes.Count;
+            const string logMsg =
+                "Fetching a block #{Index}/{Total} ({Hash}) to include to " +
+                "a reply to {Identity}...";
+            foreach (HashDigest<SHA256> hash in hashes)
             {
+                _logger.Verbose(logMsg, i, total, hash, identityHex);
                 if (_store.ContainsBlock(hash))
                 {
                     Block<T> block = _store.GetBlock<T>(hash);
@@ -1891,9 +1922,16 @@ namespace Libplanet.Net
                     {
                         Identity = getData.Identity,
                     };
+                    _logger.Verbose(
+                        "Enqueuing a blocks reply (...{Index}/{Total})...",
+                        i,
+                        total
+                    );
                     ReplyMessage(response);
                     blocks.Clear();
                 }
+
+                i++;
             }
 
             if (blocks.Any())
@@ -1902,10 +1940,16 @@ namespace Libplanet.Net
                 {
                     Identity = getData.Identity,
                 };
+                _logger.Verbose(
+                    "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
+                    total,
+                    total,
+                    identityHex
+                );
                 ReplyMessage(response);
             }
 
-            _logger.Debug("Transfer complete.");
+            _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
         }
 
         private void TransferRecentStates(GetRecentStates getRecentStates)
@@ -2082,18 +2126,19 @@ namespace Libplanet.Net
                 msg = pong;
             }
 
-            _logger.Debug($"Reply {msg} to {ByteUtil.Hex(msg.Identity)}...");
+            string identityHex = ByteUtil.Hex(msg.Identity);
+            _logger.Debug("Reply {Message} to {Identity}...", msg, identityHex);
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
             if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
             {
-                _logger.Debug($"Message[{msg}] replied.");
+                _logger.Debug("A reply sent to {Identity}: {Message}", msg, identityHex);
             }
             else
             {
-                _logger.Debug($"Message[{msg}] replying failed.");
+                _logger.Debug("Failed to reply to {Identity}: {Message}", msg, identityHex);
             }
         }
 
@@ -2102,7 +2147,7 @@ namespace Libplanet.Net
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.Verbose("Waiting for new request...");
+                _logger.Verbose("Waiting for a new request...");
                 MessageRequest req = await _requests.TakeAsync(cancellationToken);
 
                 try
@@ -2111,12 +2156,15 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
+                    const int retryAfter = 100;
                     _logger.Debug(
-                        "Unexpected exception occurred during {ProcessRuntime}(). {e}",
-                        nameof(ProcessRuntime),
-                        e);
+                        $"Unexpected exception occurred during {nameof(ProcessRuntime)}(): " +
+                        "{Exception}; retry after {DelayMs} ms...",
+                        e,
+                        retryAfter
+                    );
                     await _requests.AddAsync(req, cancellationToken);
-                    await Task.Delay(100, cancellationToken);
+                    await Task.Delay(retryAfter, cancellationToken);
                 }
             }
         }
@@ -2127,7 +2175,6 @@ namespace Libplanet.Net
 
             using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
             {
-                dealer.Options.Identity = req.Id.ToByteArray();
                 dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                 _logger.Debug(
                     "Trying to send {Message} to {PeerAddress}...",
@@ -2290,11 +2337,11 @@ namespace Libplanet.Net
         private readonly struct MessageRequest
         {
             public MessageRequest(
-                Guid id,
+                in Guid id,
                 Message message,
                 BoundPeer peer,
-                TimeSpan? timeout,
-                int expectedResponses,
+                in TimeSpan? timeout,
+                in int expectedResponses,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
             {
                 Id = id;
