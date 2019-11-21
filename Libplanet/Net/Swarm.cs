@@ -41,7 +41,6 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnPermissionLifetime =
             TimeSpan.FromMinutes(5);
 
-        private static readonly TimeSpan BlockHashRecvTimeout = TimeSpan.FromSeconds(3);
         private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
         private readonly PrivateKey _privateKey;
@@ -260,6 +259,8 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
 
         internal ICollection<BoundPeer> Peers => Protocol.Peers;
 
