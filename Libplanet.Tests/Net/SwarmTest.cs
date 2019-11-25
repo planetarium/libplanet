@@ -201,6 +201,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await StopAsync(swarmA);
+                await seed.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarmB.AddPeersAsync(new[] { seed.AsPeer }, null);
 
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
