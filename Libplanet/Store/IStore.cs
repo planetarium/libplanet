@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -197,11 +198,11 @@ namespace Libplanet.Store
         /// <c>a = 1; b = 2; c = 1</c> (all states) nor
         /// <c>b = 1; c = 1</c> (delta).</para>
         /// </remarks>
-        AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash);
+        IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash);
 
         void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            AddressStateMap states
+            IImmutableDictionary<Address, IValue> states
         );
 
         /// <summary>

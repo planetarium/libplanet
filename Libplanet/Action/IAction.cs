@@ -240,7 +240,7 @@ namespace Libplanet.Action
         /// and a deterministic random seed.</para>
         /// <para>Other &#x201c;bound&#x201d; information resides in the action
         /// object in itself, as its properties (or fields).</para>
-        /// <para>A returned <see cref="AddressStateMap"/> object functions as
+        /// <para>A returned <see cref="IAccountStateDelta"/> object functions as
         /// a delta which shifts from previous states to next states.</para>
         /// </summary>
         /// <param name="context">A context object containing addresses that

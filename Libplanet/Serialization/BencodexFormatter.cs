@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -9,7 +10,6 @@ using System.Runtime.Serialization;
 using System.Text;
 using Bencodex;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Tx;
 using Boolean = Bencodex.Types.Boolean;
 
@@ -63,7 +63,10 @@ namespace Libplanet.Serialization
                 //        see issue #541, #552.
                 if ((typeof(T).Namespace == typeof(Transaction<>).Namespace &&
                      typeof(T).Name == typeof(Transaction<>).Name && key == "actions") ||
-                    typeof(T) == typeof(AddressStateMap))
+                    (typeof(T).Namespace == typeof(IImmutableDictionary<,>).Namespace &&
+                     typeof(T).Name == typeof(IImmutableDictionary<,>).Name &&
+                     typeof(T).IsGenericType &&
+                     typeof(T).GetGenericArguments().Last() == typeof(IValue)))
                 {
                     v = kv.Value;
                 }

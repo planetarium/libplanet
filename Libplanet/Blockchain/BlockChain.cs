@@ -274,8 +274,8 @@ namespace Libplanet.Blockchain
         /// for the same situation.
         /// Just-in-time calculation of states could take a long time so that
         /// the overall latency of an application may rise.</param>
-        /// <returns>The <see cref="AddressStateMap"/> of given
-        /// <paramref name="address"/>.</returns>
+        /// <returns>The current state of given <paramref name="address"/>.  This can be <c>null</c>
+        /// if <paramref name="address"/> has no value.</returns>
         /// <exception cref="IncompleteBlockStatesException">Thrown when
         /// the <see cref="BlockChain{T}"/> instance does not contain
         /// states dirty of the block which lastly updated states of a requested
@@ -284,7 +284,7 @@ namespace Libplanet.Blockchain
         /// this exception is not thrown and incomplete states are calculated
         /// and filled on the fly instead.
         /// </exception>
-        public AddressStateMap GetState(
+        public IValue GetState(
             Address address,
             HashDigest<SHA256>? offset = null,
             bool completeStates = false
@@ -303,11 +303,9 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            var states = new AddressStateMap();
-
             if (offset == null)
             {
-                return states;
+                return null;
             }
 
             Block<T> block = this[offset.Value];
@@ -325,12 +323,12 @@ namespace Libplanet.Blockchain
 
             if (stateReference is null)
             {
-                return states;
+                return null;
             }
 
             HashDigest<SHA256> hashValue = stateReference.Item1;
 
-            AddressStateMap blockStates = Store.GetBlockStates(hashValue);
+            IImmutableDictionary<Address, IValue> blockStates = Store.GetBlockStates(hashValue);
             if (blockStates is null)
             {
                 if (completeStates)
@@ -371,11 +369,12 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            states = (AddressStateMap)states.SetItems(
-                blockStates.Where(kv => address.Equals(kv.Key))
-            );
+            if (blockStates.TryGetValue(address, out IValue state))
+            {
+                return state;
+            }
 
-            return states;
+            return null;
         }
 
         /// <summary>
@@ -794,7 +793,7 @@ namespace Libplanet.Blockchain
             }
             else
             {
-                stateGetter = a => GetState(a, block.PreviousHash, true).GetValueOrDefault(a);
+                stateGetter = a => GetState(a, block.PreviousHash, true);
             }
 
             ImmutableList<ActionEvaluation> txEvaluations = block
@@ -829,8 +828,7 @@ namespace Libplanet.Blockchain
 
             if (lastStates is null)
             {
-                lastStates = new AccountStateDeltaImpl(
-                    a => GetState(a, block.PreviousHash, true).GetValueOrDefault(a));
+                lastStates = new AccountStateDeltaImpl(a => GetState(a, block.PreviousHash, true));
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
@@ -1200,10 +1198,7 @@ namespace Libplanet.Blockchain
                     )
                 ).ToImmutableDictionary();
 
-            Store.SetBlockStates(
-                blockHash,
-                new AddressStateMap(totalDelta)
-            );
+            Store.SetBlockStates(blockHash, totalDelta);
 
             if (buildStateReferences)
             {
