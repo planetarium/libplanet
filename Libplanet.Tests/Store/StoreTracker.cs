@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
@@ -99,7 +100,7 @@ namespace Libplanet.Tests.Store
             return _store.GetBlockIndex(blockHash);
         }
 
-        public AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
+        public IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
         {
             _logs.Add((nameof(GetBlockStates), blockHash, null));
             return _store.GetBlockStates(blockHash);
@@ -170,7 +171,7 @@ namespace Libplanet.Tests.Store
 
         public void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            AddressStateMap states
+            IImmutableDictionary<Address, IValue> states
         )
         {
             _logs.Add((nameof(SetBlockStates), blockHash, states));

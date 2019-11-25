@@ -18,6 +18,13 @@ To be released.
     method and `BlockChain<T>[HashDigest<SHA256>]` indexer as lookups only
     the current chain, not entire storage.  [[#678]]
  -  Added `IStore.ContainsBlock(HashDigest<SHA256>)` method.  [[#678]]
+ -  Removed `AddressStateMap` class.  [[#98], [#692]]
+     -  The return type of `BlockChain<T>.GetState()` method became `IValue`
+        (was `AddressStateMap`).
+     -  The return type of `IStore.GetBlockStates()` method became
+        `IImmutableDictionary<Address, IValue>` (was `AddressStateMap`).
+     -  `IStore.SetBlockStates()` method became to take
+        `IImmutableDictionary<Address, IValue>` instead of `AddressStateMap`.
 
 ### Backward-incompatible network protocol changes
 
@@ -54,6 +61,7 @@ To be released.
 [#679]: https://github.com/planetarium/libplanet/pull/679
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
+[#692]: https://github.com/planetarium/libplanet/pull/692
 
 
 Version 0.7.0

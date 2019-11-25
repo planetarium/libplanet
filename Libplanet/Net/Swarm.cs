@@ -1297,7 +1297,7 @@ namespace Libplanet.Net
                         foreach (var pair in recentStates.BlockStates)
                         {
                             cancellationToken.ThrowIfCancellationRequested();
-                            _store.SetBlockStates(pair.Key, new AddressStateMap(pair.Value));
+                            _store.SetBlockStates(pair.Key, pair.Value);
                             progress?.Report(new BlockStateDownloadState()
                             {
                                 TotalBlockStateCount = totalCount,

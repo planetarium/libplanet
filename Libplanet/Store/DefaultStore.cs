@@ -5,7 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Libplanet.Action;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Serialization;
 using Libplanet.Tx;
@@ -47,6 +48,7 @@ namespace Libplanet.Store
         private readonly MemoryStream _memoryStream;
 
         private readonly LiteDatabase _db;
+        private readonly Codec _codec;
 
         /// <summary>
         /// Creates a new <seealso cref="DefaultStore"/>.
@@ -138,6 +140,8 @@ namespace Libplanet.Store
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: blockCacheSize);
+
+            _codec = new Codec();
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -462,7 +466,9 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override AddressStateMap GetBlockStates(HashDigest<SHA256> blockHash)
+        public override IImmutableDictionary<Address, IValue> GetBlockStates(
+            HashDigest<SHA256> blockHash
+        )
         {
             LiteFileInfo file =
                 _db.FileStorage.FindById(BlockStateFileId(blockHash));
@@ -475,20 +481,31 @@ namespace Libplanet.Store
             {
                 DownloadFile(file, stream);
                 stream.Seek(0, SeekOrigin.Begin);
-                var formatter = new BencodexFormatter<AddressStateMap>();
-                return (AddressStateMap)formatter.Deserialize(stream);
+
+                var deserialized = (Bencodex.Types.Dictionary)_codec.Decode(stream);
+                return deserialized.ToImmutableDictionary(
+                    kv => new Address((Binary)kv.Key),
+                    kv => kv.Value
+                );
             }
         }
 
         /// <inheritdoc/>
         public override void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            AddressStateMap states)
+            IImmutableDictionary<Address, IValue> states)
         {
+            var serialized = new Bencodex.Types.Dictionary(
+                states.Select(kv =>
+                    new KeyValuePair<IKey, IValue>(
+                        new Binary(kv.Key.ToByteArray()),
+                        kv.Value
+                    )
+                )
+            );
             using (var stream = new MemoryStream())
             {
-                var formatter = new BencodexFormatter<AddressStateMap>();
-                formatter.Serialize(stream, states);
+                _codec.Encode(serialized, stream);
                 stream.Seek(0, SeekOrigin.Begin);
                 _db.FileStorage.Upload(
                     BlockStateFileId(blockHash),

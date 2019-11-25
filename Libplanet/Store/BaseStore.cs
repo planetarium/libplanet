@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Tx;
@@ -110,13 +111,13 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
 
-        public abstract AddressStateMap GetBlockStates(
+        public abstract IImmutableDictionary<Address, IValue> GetBlockStates(
             HashDigest<SHA256> blockHash
         );
 
         public abstract void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            AddressStateMap states
+            IImmutableDictionary<Address, IValue> states
         );
 
         /// <inheritdoc />

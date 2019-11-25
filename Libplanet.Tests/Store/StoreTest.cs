@@ -647,22 +647,20 @@ namespace Libplanet.Tests.Store
         public void BlockState()
         {
             Assert.Null(Fx.Store.GetBlockStates(Fx.Hash1));
-            AddressStateMap states = new AddressStateMap(
-                new Dictionary<Address, IValue>()
+            IImmutableDictionary<Address, IValue> states = new Dictionary<Address, IValue>()
+            {
+                [Fx.Address1] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
                 {
-                    [Fx.Address1] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                    {
-                        { (Text)"a", (Integer)1 },
-                    }),
-                    [Fx.Address2] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
-                    {
-                        { (Text)"b", (Integer)2 },
-                    }),
-                }.ToImmutableDictionary()
-            );
+                    { (Text)"a", (Integer)1 },
+                }),
+                [Fx.Address2] = new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
+                {
+                    { (Text)"b", (Integer)2 },
+                }),
+            }.ToImmutableDictionary();
             Fx.Store.SetBlockStates(Fx.Hash1, states);
 
-            AddressStateMap actual = Fx.Store.GetBlockStates(Fx.Hash1);
+            IImmutableDictionary<Address, IValue> actual = Fx.Store.GetBlockStates(Fx.Hash1);
             Assert.Equal(states[Fx.Address1], actual[Fx.Address1]);
             Assert.Equal(states[Fx.Address2], actual[Fx.Address2]);
         }
