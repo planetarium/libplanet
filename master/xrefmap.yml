@@ -122,282 +122,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionTypeAttribute.ValueOf
   nameWithType: ActionTypeAttribute.ValueOf
-- uid: Libplanet.Action.AddressStateMap
-  name: AddressStateMap
-  href: api/Libplanet.Action.AddressStateMap.html
-  commentId: T:Libplanet.Action.AddressStateMap
-  fullName: Libplanet.Action.AddressStateMap
-  nameWithType: AddressStateMap
-- uid: Libplanet.Action.AddressStateMap.#ctor
-  name: AddressStateMap()
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap__ctor
-  commentId: M:Libplanet.Action.AddressStateMap.#ctor
-  fullName: Libplanet.Action.AddressStateMap.AddressStateMap()
-  nameWithType: AddressStateMap.AddressStateMap()
-- uid: Libplanet.Action.AddressStateMap.#ctor(IImmutableDictionary{Libplanet.Address,IValue})
-  name: AddressStateMap(IImmutableDictionary<Address, IValue>)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap__ctor_IImmutableDictionary_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Action.AddressStateMap.#ctor(IImmutableDictionary{Libplanet.Address,IValue})
-  name.vb: AddressStateMap(IImmutableDictionary(Of Address, IValue))
-  fullName: Libplanet.Action.AddressStateMap.AddressStateMap(IImmutableDictionary<Libplanet.Address, IValue>)
-  fullName.vb: Libplanet.Action.AddressStateMap.AddressStateMap(IImmutableDictionary(Of Libplanet.Address, IValue))
-  nameWithType: AddressStateMap.AddressStateMap(IImmutableDictionary<Address, IValue>)
-  nameWithType.vb: AddressStateMap.AddressStateMap(IImmutableDictionary(Of Address, IValue))
-- uid: Libplanet.Action.AddressStateMap.#ctor(SerializationInfo,StreamingContext)
-  name: AddressStateMap(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.AddressStateMap.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.AddressStateMap.AddressStateMap(SerializationInfo, StreamingContext)
-  nameWithType: AddressStateMap.AddressStateMap(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.AddressStateMap.#ctor*
-  name: AddressStateMap
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap__ctor_
-  commentId: Overload:Libplanet.Action.AddressStateMap.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.AddressStateMap
-  nameWithType: AddressStateMap.AddressStateMap
-- uid: Libplanet.Action.AddressStateMap.Add(Libplanet.Address,IValue)
-  name: Add(Address, IValue)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Add_Libplanet_Address_IValue_
-  commentId: M:Libplanet.Action.AddressStateMap.Add(Libplanet.Address,IValue)
-  fullName: Libplanet.Action.AddressStateMap.Add(Libplanet.Address, IValue)
-  nameWithType: AddressStateMap.Add(Address, IValue)
-- uid: Libplanet.Action.AddressStateMap.Add*
-  name: Add
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Add_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Add
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Add
-  nameWithType: AddressStateMap.Add
-- uid: Libplanet.Action.AddressStateMap.AddRange(IEnumerable{KeyValuePair{Libplanet.Address,IValue}})
-  name: AddRange(IEnumerable<KeyValuePair<Address, IValue>>)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_AddRange_IEnumerable_KeyValuePair_Libplanet_Address_IValue___
-  commentId: M:Libplanet.Action.AddressStateMap.AddRange(IEnumerable{KeyValuePair{Libplanet.Address,IValue}})
-  name.vb: AddRange(IEnumerable(Of KeyValuePair(Of Address, IValue)))
-  fullName: Libplanet.Action.AddressStateMap.AddRange(IEnumerable<KeyValuePair<Libplanet.Address, IValue>>)
-  fullName.vb: Libplanet.Action.AddressStateMap.AddRange(IEnumerable(Of KeyValuePair(Of Libplanet.Address, IValue)))
-  nameWithType: AddressStateMap.AddRange(IEnumerable<KeyValuePair<Address, IValue>>)
-  nameWithType.vb: AddressStateMap.AddRange(IEnumerable(Of KeyValuePair(Of Address, IValue)))
-- uid: Libplanet.Action.AddressStateMap.AddRange*
-  name: AddRange
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_AddRange_
-  commentId: Overload:Libplanet.Action.AddressStateMap.AddRange
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.AddRange
-  nameWithType: AddressStateMap.AddRange
-- uid: Libplanet.Action.AddressStateMap.Clear
-  name: Clear()
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Clear
-  commentId: M:Libplanet.Action.AddressStateMap.Clear
-  fullName: Libplanet.Action.AddressStateMap.Clear()
-  nameWithType: AddressStateMap.Clear()
-- uid: Libplanet.Action.AddressStateMap.Clear*
-  name: Clear
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Clear_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Clear
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Clear
-  nameWithType: AddressStateMap.Clear
-- uid: Libplanet.Action.AddressStateMap.Contains(KeyValuePair{Libplanet.Address,IValue})
-  name: Contains(KeyValuePair<Address, IValue>)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Contains_KeyValuePair_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Action.AddressStateMap.Contains(KeyValuePair{Libplanet.Address,IValue})
-  name.vb: Contains(KeyValuePair(Of Address, IValue))
-  fullName: Libplanet.Action.AddressStateMap.Contains(KeyValuePair<Libplanet.Address, IValue>)
-  fullName.vb: Libplanet.Action.AddressStateMap.Contains(KeyValuePair(Of Libplanet.Address, IValue))
-  nameWithType: AddressStateMap.Contains(KeyValuePair<Address, IValue>)
-  nameWithType.vb: AddressStateMap.Contains(KeyValuePair(Of Address, IValue))
-- uid: Libplanet.Action.AddressStateMap.Contains*
-  name: Contains
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Contains_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Contains
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Contains
-  nameWithType: AddressStateMap.Contains
-- uid: Libplanet.Action.AddressStateMap.ContainsKey(Libplanet.Address)
-  name: ContainsKey(Address)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_ContainsKey_Libplanet_Address_
-  commentId: M:Libplanet.Action.AddressStateMap.ContainsKey(Libplanet.Address)
-  fullName: Libplanet.Action.AddressStateMap.ContainsKey(Libplanet.Address)
-  nameWithType: AddressStateMap.ContainsKey(Address)
-- uid: Libplanet.Action.AddressStateMap.ContainsKey*
-  name: ContainsKey
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_ContainsKey_
-  commentId: Overload:Libplanet.Action.AddressStateMap.ContainsKey
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.ContainsKey
-  nameWithType: AddressStateMap.ContainsKey
-- uid: Libplanet.Action.AddressStateMap.Count
-  name: Count
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Count
-  commentId: P:Libplanet.Action.AddressStateMap.Count
-  fullName: Libplanet.Action.AddressStateMap.Count
-  nameWithType: AddressStateMap.Count
-- uid: Libplanet.Action.AddressStateMap.Count*
-  name: Count
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Count_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Count
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Count
-  nameWithType: AddressStateMap.Count
-- uid: Libplanet.Action.AddressStateMap.GetEnumerator
-  name: GetEnumerator()
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_GetEnumerator
-  commentId: M:Libplanet.Action.AddressStateMap.GetEnumerator
-  fullName: Libplanet.Action.AddressStateMap.GetEnumerator()
-  nameWithType: AddressStateMap.GetEnumerator()
-- uid: Libplanet.Action.AddressStateMap.GetEnumerator*
-  name: GetEnumerator
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_GetEnumerator_
-  commentId: Overload:Libplanet.Action.AddressStateMap.GetEnumerator
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.GetEnumerator
-  nameWithType: AddressStateMap.GetEnumerator
-- uid: Libplanet.Action.AddressStateMap.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Action.AddressStateMap.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Action.AddressStateMap.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: AddressStateMap.GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Action.AddressStateMap.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_GetObjectData_
-  commentId: Overload:Libplanet.Action.AddressStateMap.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.GetObjectData
-  nameWithType: AddressStateMap.GetObjectData
-- uid: Libplanet.Action.AddressStateMap.Item(Libplanet.Address)
-  name: Item[Address]
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Item_Libplanet_Address_
-  commentId: P:Libplanet.Action.AddressStateMap.Item(Libplanet.Address)
-  name.vb: Item(Address)
-  fullName: Libplanet.Action.AddressStateMap.Item[Libplanet.Address]
-  fullName.vb: Libplanet.Action.AddressStateMap.Item(Libplanet.Address)
-  nameWithType: AddressStateMap.Item[Address]
-  nameWithType.vb: AddressStateMap.Item(Address)
-- uid: Libplanet.Action.AddressStateMap.Item*
-  name: Item
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Item_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Item
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Item
-  nameWithType: AddressStateMap.Item
-- uid: Libplanet.Action.AddressStateMap.Keys
-  name: Keys
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Keys
-  commentId: P:Libplanet.Action.AddressStateMap.Keys
-  fullName: Libplanet.Action.AddressStateMap.Keys
-  nameWithType: AddressStateMap.Keys
-- uid: Libplanet.Action.AddressStateMap.Keys*
-  name: Keys
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Keys_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Keys
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Keys
-  nameWithType: AddressStateMap.Keys
-- uid: Libplanet.Action.AddressStateMap.Remove(Libplanet.Address)
-  name: Remove(Address)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Remove_Libplanet_Address_
-  commentId: M:Libplanet.Action.AddressStateMap.Remove(Libplanet.Address)
-  fullName: Libplanet.Action.AddressStateMap.Remove(Libplanet.Address)
-  nameWithType: AddressStateMap.Remove(Address)
-- uid: Libplanet.Action.AddressStateMap.Remove*
-  name: Remove
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Remove_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Remove
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Remove
-  nameWithType: AddressStateMap.Remove
-- uid: Libplanet.Action.AddressStateMap.RemoveRange(IEnumerable{Libplanet.Address})
-  name: RemoveRange(IEnumerable<Address>)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_RemoveRange_IEnumerable_Libplanet_Address__
-  commentId: M:Libplanet.Action.AddressStateMap.RemoveRange(IEnumerable{Libplanet.Address})
-  name.vb: RemoveRange(IEnumerable(Of Address))
-  fullName: Libplanet.Action.AddressStateMap.RemoveRange(IEnumerable<Libplanet.Address>)
-  fullName.vb: Libplanet.Action.AddressStateMap.RemoveRange(IEnumerable(Of Libplanet.Address))
-  nameWithType: AddressStateMap.RemoveRange(IEnumerable<Address>)
-  nameWithType.vb: AddressStateMap.RemoveRange(IEnumerable(Of Address))
-- uid: Libplanet.Action.AddressStateMap.RemoveRange*
-  name: RemoveRange
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_RemoveRange_
-  commentId: Overload:Libplanet.Action.AddressStateMap.RemoveRange
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.RemoveRange
-  nameWithType: AddressStateMap.RemoveRange
-- uid: Libplanet.Action.AddressStateMap.SetItem(Libplanet.Address,IValue)
-  name: SetItem(Address, IValue)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_SetItem_Libplanet_Address_IValue_
-  commentId: M:Libplanet.Action.AddressStateMap.SetItem(Libplanet.Address,IValue)
-  fullName: Libplanet.Action.AddressStateMap.SetItem(Libplanet.Address, IValue)
-  nameWithType: AddressStateMap.SetItem(Address, IValue)
-- uid: Libplanet.Action.AddressStateMap.SetItem*
-  name: SetItem
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_SetItem_
-  commentId: Overload:Libplanet.Action.AddressStateMap.SetItem
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.SetItem
-  nameWithType: AddressStateMap.SetItem
-- uid: Libplanet.Action.AddressStateMap.SetItems(IEnumerable{KeyValuePair{Libplanet.Address,IValue}})
-  name: SetItems(IEnumerable<KeyValuePair<Address, IValue>>)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_SetItems_IEnumerable_KeyValuePair_Libplanet_Address_IValue___
-  commentId: M:Libplanet.Action.AddressStateMap.SetItems(IEnumerable{KeyValuePair{Libplanet.Address,IValue}})
-  name.vb: SetItems(IEnumerable(Of KeyValuePair(Of Address, IValue)))
-  fullName: Libplanet.Action.AddressStateMap.SetItems(IEnumerable<KeyValuePair<Libplanet.Address, IValue>>)
-  fullName.vb: Libplanet.Action.AddressStateMap.SetItems(IEnumerable(Of KeyValuePair(Of Libplanet.Address, IValue)))
-  nameWithType: AddressStateMap.SetItems(IEnumerable<KeyValuePair<Address, IValue>>)
-  nameWithType.vb: AddressStateMap.SetItems(IEnumerable(Of KeyValuePair(Of Address, IValue)))
-- uid: Libplanet.Action.AddressStateMap.SetItems*
-  name: SetItems
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_SetItems_
-  commentId: Overload:Libplanet.Action.AddressStateMap.SetItems
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.SetItems
-  nameWithType: AddressStateMap.SetItems
-- uid: Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address,Libplanet.Address@)
-  name: TryGetKey(Address, out Address)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_TryGetKey_Libplanet_Address_Libplanet_Address__
-  commentId: M:Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address,Libplanet.Address@)
-  name.vb: TryGetKey(Address, ByRef Address)
-  fullName: Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address, out Libplanet.Address)
-  fullName.vb: Libplanet.Action.AddressStateMap.TryGetKey(Libplanet.Address, ByRef Libplanet.Address)
-  nameWithType: AddressStateMap.TryGetKey(Address, out Address)
-  nameWithType.vb: AddressStateMap.TryGetKey(Address, ByRef Address)
-- uid: Libplanet.Action.AddressStateMap.TryGetKey*
-  name: TryGetKey
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_TryGetKey_
-  commentId: Overload:Libplanet.Action.AddressStateMap.TryGetKey
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.TryGetKey
-  nameWithType: AddressStateMap.TryGetKey
-- uid: Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address,IValue@)
-  name: TryGetValue(Address, out IValue)
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_TryGetValue_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address,IValue@)
-  name.vb: TryGetValue(Address, ByRef IValue)
-  fullName: Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address, out IValue)
-  fullName.vb: Libplanet.Action.AddressStateMap.TryGetValue(Libplanet.Address, ByRef IValue)
-  nameWithType: AddressStateMap.TryGetValue(Address, out IValue)
-  nameWithType.vb: AddressStateMap.TryGetValue(Address, ByRef IValue)
-- uid: Libplanet.Action.AddressStateMap.TryGetValue*
-  name: TryGetValue
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_TryGetValue_
-  commentId: Overload:Libplanet.Action.AddressStateMap.TryGetValue
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.TryGetValue
-  nameWithType: AddressStateMap.TryGetValue
-- uid: Libplanet.Action.AddressStateMap.Values
-  name: Values
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Values
-  commentId: P:Libplanet.Action.AddressStateMap.Values
-  fullName: Libplanet.Action.AddressStateMap.Values
-  nameWithType: AddressStateMap.Values
-- uid: Libplanet.Action.AddressStateMap.Values*
-  name: Values
-  href: api/Libplanet.Action.AddressStateMap.html#Libplanet_Action_AddressStateMap_Values_
-  commentId: Overload:Libplanet.Action.AddressStateMap.Values
-  isSpec: "True"
-  fullName: Libplanet.Action.AddressStateMap.Values
-  nameWithType: AddressStateMap.Values
 - uid: Libplanet.Action.IAccountStateDelta
   name: IAccountStateDelta
   href: api/Libplanet.Action.IAccountStateDelta.html
@@ -5608,15 +5332,15 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: BaseStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: BaseStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_
-  commentId: M:Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
-  fullName: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest<SHA256>, Libplanet.Action.AddressStateMap)
-  fullName.vb: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), Libplanet.Action.AddressStateMap)
-  nameWithType: BaseStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  nameWithType.vb: BaseStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+- uid: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
+  commentId: M:Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+  fullName: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
+  fullName.vb: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
+  nameWithType: BaseStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  nameWithType.vb: BaseStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
 - uid: Libplanet.Store.BaseStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_
@@ -6315,15 +6039,15 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: DefaultStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: DefaultStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_
-  commentId: M:Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
-  fullName: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest<SHA256>, Libplanet.Action.AddressStateMap)
-  fullName.vb: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), Libplanet.Action.AddressStateMap)
-  nameWithType: DefaultStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  nameWithType.vb: DefaultStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+- uid: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
+  commentId: M:Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+  fullName: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
+  fullName.vb: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
+  nameWithType: DefaultStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  nameWithType.vb: DefaultStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
 - uid: Libplanet.Store.DefaultStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_
@@ -6830,15 +6554,15 @@ references:
   fullName.vb: Libplanet.Store.IStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: IStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: IStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name: SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_Libplanet_HashDigest_SHA256__Libplanet_Action_AddressStateMap_
-  commentId: M:Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},Libplanet.Action.AddressStateMap)
-  name.vb: SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
-  fullName: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest<SHA256>, Libplanet.Action.AddressStateMap)
-  fullName.vb: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), Libplanet.Action.AddressStateMap)
-  nameWithType: IStore.SetBlockStates(HashDigest<SHA256>, AddressStateMap)
-  nameWithType.vb: IStore.SetBlockStates(HashDigest(Of SHA256), AddressStateMap)
+- uid: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
+  commentId: M:Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+  fullName: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
+  fullName.vb: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
+  nameWithType: IStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
+  nameWithType.vb: IStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
 - uid: Libplanet.Store.IStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_
