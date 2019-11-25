@@ -105,6 +105,8 @@ subdirectories and a LiteDB file for indices.  [<a href="https://github.com/plan
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
+<li><code>Swarm&lt;T&gt;</code> became to compare only peer's addresses instead of public keys
+to determine if a peer is in routing table or not.  [<a href="https://github.com/planetarium/libplanet/pull/665">#665</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to send 100 blocks (instead of 500 blocks) for each
 reply during IDL, in order to stabilize connection in high latency
 environments.  [<a href="https://github.com/planetarium/libplanet/pull/679">#679</a>]</li>
@@ -1009,7 +1011,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/1f7cc1b42471574886e8450a24c3a61b8c233d39/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/3597c5a0d137e2e7d37e08be203747bf82ab5886/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
