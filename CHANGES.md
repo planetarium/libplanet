@@ -8,6 +8,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `FindSpecificPeer` method to find a specific peer given the address. [[#580]]
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
  -  Removed `BlockChain<T>.Contains(TxId)` method.
     Use `IStore.ContainsTransaction(TxId)` instead.  [[#676]]
@@ -111,6 +112,7 @@ To be released.
  -  Fixed a bug where the states became empty between the tip of the peer to
     receive the states and the tip of the downloaded block.  [[#736]]
 
+[#580]: https://github.com/planetarium/libplanet/pull/580
 [#604]: https://github.com/planetarium/libplanet/issues/604
 [#613]: https://github.com/planetarium/libplanet/issues/613
 [#662]: https://github.com/planetarium/libplanet/pull/662
