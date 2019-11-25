@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,10 +41,18 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                var kvs = _peers.
-                    ToImmutableList()
-                    .Sort((kv1, kv2) => (int)(kv1.Value - kv2.Value).Ticks);
-                return kvs.LastOrDefault();
+                var mru = default(KeyValuePair<BoundPeer, DateTimeOffset>);
+                DateTimeOffset max = DateTimeOffset.MinValue;
+                foreach (var kv in _peers)
+                {
+                    if (kv.Value > max)
+                    {
+                        mru = kv;
+                        max = kv.Value;
+                    }
+                }
+
+                return mru;
             }
         }
 
@@ -56,10 +63,18 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                var kvs = _peers.
-                    ToImmutableList()
-                    .Sort((kv1, kv2) => (int)(kv1.Value - kv2.Value).Ticks);
-                return kvs.FirstOrDefault();
+                var lru = default(KeyValuePair<BoundPeer, DateTimeOffset>);
+                DateTimeOffset min = DateTimeOffset.MaxValue;
+                foreach (var kv in _peers)
+                {
+                    if (kv.Value < min)
+                    {
+                        lru = kv;
+                        min = kv.Value;
+                    }
+                }
+
+                return lru;
             }
         }
 
@@ -127,9 +142,7 @@ namespace Libplanet.Net.Protocols
 
         public bool Contains(BoundPeer peer)
         {
-            return !(_peers.FirstOrDefault(
-                kv => kv.Key.PublicKey.Equals(peer.PublicKey)
-            ).Key is null);
+            return _peers.Any(kv => kv.Key.PublicKey.Equals(peer.PublicKey));
         }
 
         public void Clear()

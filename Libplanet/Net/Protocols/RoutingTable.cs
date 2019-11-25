@@ -49,19 +49,8 @@ namespace Libplanet.Net.Protocols
 
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
-        public IEnumerable<BoundPeer> Peers
-        {
-            get
-            {
-                var peers = new List<BoundPeer>();
-                foreach (KBucket bucket in NonEmptyBuckets)
-                {
-                    peers.AddRange(bucket.Peers);
-                }
-
-                return peers;
-            }
-        }
+        public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
+            .SelectMany((bucket, _) => bucket.Peers);
 
         public IEnumerable<BoundPeer> PeersToBroadcast
         {
