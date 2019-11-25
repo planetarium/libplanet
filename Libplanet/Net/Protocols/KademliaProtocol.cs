@@ -116,7 +116,7 @@ namespace Libplanet.Net.Protocols
                 {
                     _logger.Error(
                         e,
-                        "An unexpected exception occurred connecting to seed peer. {e}",
+                        "An unexpected exception occurred connecting to seed peer. {Exception}",
                         e);
                 }
             }
@@ -141,12 +141,14 @@ namespace Libplanet.Net.Protocols
                 if (findPeerTasks.All(findPeerTask => findPeerTask.IsFaulted))
                 {
                     throw new TimeoutException(
-                        "Timeout exception occurred during BootstrapAsync().");
+                        $"Timeout exception occurred during {nameof(BootstrapAsync)}().");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                _logger.Error("An unexpected exception occurred during BootstrapAsync().");
+                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()." +
+                          " {Exception}";
+                _logger.Error(e, msg, e);
                 throw;
             }
         }
@@ -163,7 +165,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table... total peers: {count}", Peers.Count);
+                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count);
                 List<Task> tasks = _routing.NonEmptyBuckets
                     .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
                     .Select(bucket =>
@@ -173,7 +175,7 @@ namespace Libplanet.Net.Protocols
                             cancellationToken)
                 ).ToList();
 
-                _logger.Debug("Refresh candidates: {count}", tasks.Count);
+                _logger.Debug("Refresh candidates: {Count}", tasks.Count);
 
                 await Task.WhenAll(tasks);
                 cancellationToken.ThrowIfCancellationRequested();
@@ -242,7 +244,7 @@ namespace Libplanet.Net.Protocols
                 {
                     try
                     {
-                        _logger.Debug("Check {peer}.", replacement);
+                        _logger.Debug("Check peer {Peer}.", replacement);
                         if (bucket.IsFull())
                         {
                             break;
@@ -253,7 +255,7 @@ namespace Libplanet.Net.Protocols
                     catch (TimeoutException)
                     {
                         _logger.Debug(
-                            "Remove stale peer [{peer}] from replacement cache.",
+                            "Remove stale peer {Peer} from replacement cache.",
                             replacement);
                         bucket.ReplacementCache.Remove(replacement);
                     }
@@ -365,12 +367,12 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Validating {Peer}", peer);
+                _logger.Debug("Validating peer {Peer}", peer);
                 await PingAsync(peer, timeout, cancellationToken);
             }
             catch (TimeoutException)
             {
-                _logger.Debug("{Peer} is invalid, removing...", peer);
+                _logger.Debug("Peer {Peer} is invalid, removing...", peer);
                 await RemovePeerAsync(peer, cancellationToken);
                 throw;
             }
@@ -406,7 +408,7 @@ namespace Libplanet.Net.Protocols
 
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
-            _logger.Debug("Removing peer [{peer}] from table.", peer);
+            _logger.Debug("Removing peer {Peer} from table.", peer);
             await _routing.RemovePeerAsync(peer, cancellationToken);
         }
 
@@ -434,8 +436,8 @@ namespace Libplanet.Net.Protocols
             CancellationToken cancellationToken)
         {
             _logger.Debug(
-                $"{nameof(FindPeerAsync)}() with {{target}} to {{viaPeer}}. " +
-                "(depth: {depth})",
+                $"{nameof(FindPeerAsync)}() with {{Target}} to {{Peer}}. " +
+                "(depth: {Depth})",
                 target,
                 viaPeer,
                 depth);
@@ -644,7 +646,7 @@ namespace Libplanet.Net.Protocols
                 if (findNeighboursTasks.All(findPeerTask => findPeerTask.IsFaulted))
                 {
                     throw new TimeoutException(
-                        "Timeout exception occurred during ProcessFoundAsync().");
+                        $"Timeout exception occurred during {nameof(ProcessFoundAsync)}().");
                 }
             }
         }
