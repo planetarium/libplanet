@@ -1,21 +1,20 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Action;
 using Libplanet.Net.Messages;
 using Serilog;
 using Random = System.Random;
 
 namespace Libplanet.Net.Protocols
 {
-    internal class KademliaProtocol<T> : IProtocol
-        where T : IAction, new()
+    internal class KademliaProtocol : IProtocol
     {
         private readonly TimeSpan _requestTimeout;
-        private readonly Swarm<T> _swarm;
+        private readonly ISwarm _swarm;
         private readonly Address _address;
         private readonly int _appProtocolVersion;
         private readonly Random _random;
@@ -26,7 +25,7 @@ namespace Libplanet.Net.Protocols
         private readonly ILogger _logger;
 
         public KademliaProtocol(
-            Swarm<T> swarm,
+            ISwarm swarm,
             Address address,
             int appProtocolVersion,
             ILogger logger,
@@ -78,6 +77,7 @@ namespace Libplanet.Net.Protocols
             ImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findPeerTimeout,
+            int depth,
             CancellationToken cancellationToken)
         {
             if (bootstrapPeers is null)
@@ -86,6 +86,7 @@ namespace Libplanet.Net.Protocols
             }
 
             var findPeerTasks = new List<Task>();
+            var history = new ConcurrentBag<BoundPeer>();
 
             foreach (BoundPeer peer in bootstrapPeers.Where(peer => !peer.Address.Equals(_address)))
             {
@@ -94,7 +95,13 @@ namespace Libplanet.Net.Protocols
                 {
                     await PingAsync(peer, pingSeedTimeout, cancellationToken);
                     findPeerTasks.Add(
-                        FindPeerAsync(_address, peer, 0, findPeerTimeout, cancellationToken));
+                        FindPeerAsync(
+                            history,
+                            _address,
+                            peer,
+                            depth,
+                            findPeerTimeout,
+                            cancellationToken));
                 }
                 catch (DifferentAppProtocolVersionException)
                 {
@@ -105,9 +112,12 @@ namespace Libplanet.Net.Protocols
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
                     await RemovePeerAsync(peer, cancellationToken);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    _logger.Error("An unexpected exception occurred connecting to seed peer.");
+                    _logger.Error(
+                        e,
+                        "An unexpected exception occurred connecting to seed peer. {Exception}",
+                        e);
                 }
             }
 
@@ -131,12 +141,14 @@ namespace Libplanet.Net.Protocols
                 if (findPeerTasks.All(findPeerTask => findPeerTask.IsFaulted))
                 {
                     throw new TimeoutException(
-                        "Timeout exception occurred during BootstrapAsync().");
+                        $"Timeout exception occurred during {nameof(BootstrapAsync)}().");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                _logger.Error("An unexpected exception occurred during BootstrapAsync().");
+                var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()." +
+                          " {Exception}";
+                _logger.Error(e, msg, e);
                 throw;
             }
         }
@@ -153,7 +165,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table... total peers: {count}", Peers.Count);
+                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count);
                 List<Task> tasks = _routing.NonEmptyBuckets
                     .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
                     .Select(bucket =>
@@ -163,7 +175,7 @@ namespace Libplanet.Net.Protocols
                             cancellationToken)
                 ).ToList();
 
-                _logger.Debug("Refresh candidates: {count}", tasks.Count);
+                _logger.Debug("Refresh candidates: {Count}", tasks.Count);
 
                 await Task.WhenAll(tasks);
                 cancellationToken.ThrowIfCancellationRequested();
@@ -188,6 +200,7 @@ namespace Libplanet.Net.Protocols
             {
                 _random.NextBytes(buffer);
                 tasks.Add(FindPeerAsync(
+                    new ConcurrentBag<BoundPeer>(),
                     new Address(buffer),
                     null,
                     -1,
@@ -195,7 +208,14 @@ namespace Libplanet.Net.Protocols
                     cancellationToken));
             }
 
-            tasks.Add(FindPeerAsync(_address, null, -1, _requestTimeout, cancellationToken));
+            tasks.Add(
+                FindPeerAsync(
+                    new ConcurrentBag<BoundPeer>(),
+                    _address,
+                    null,
+                    -1,
+                    _requestTimeout,
+                    cancellationToken));
             try
             {
                 await Task.WhenAll(tasks);
@@ -224,7 +244,7 @@ namespace Libplanet.Net.Protocols
                 {
                     try
                     {
-                        _logger.Debug("Check {peer}.", replacement);
+                        _logger.Debug("Check peer {Peer}.", replacement);
                         if (bucket.IsFull())
                         {
                             break;
@@ -235,7 +255,7 @@ namespace Libplanet.Net.Protocols
                     catch (TimeoutException)
                     {
                         _logger.Debug(
-                            "Remove stale peer [{peer}] from replacement cache.",
+                            "Remove stale peer {Peer} from replacement cache.",
                             replacement);
                         bucket.ReplacementCache.Remove(replacement);
                     }
@@ -317,15 +337,8 @@ namespace Libplanet.Net.Protocols
                         "Cannot receive pong from self");
                 }
 
-                _logger.Verbose(
-                    $"Trying to {nameof(UpdateAsync)}() with pong: {{Pong}}",
-                    pong);
-
                 // update process required
                 await UpdateAsync(pong.Remote, cancellationToken);
-                _logger.Verbose(
-                    $"{nameof(UpdateAsync)}() finished with pong: {{Pong}}",
-                    pong);
             }
             catch (TimeoutException)
             {
@@ -354,12 +367,12 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Validating {Peer}", peer);
+                _logger.Debug("Validating peer {Peer}", peer);
                 await PingAsync(peer, timeout, cancellationToken);
             }
             catch (TimeoutException)
             {
-                _logger.Debug("{Peer} is invalid, removing...", peer);
+                _logger.Debug("Peer {Peer} is invalid, removing...", peer);
                 await RemovePeerAsync(peer, cancellationToken);
                 throw;
             }
@@ -373,6 +386,7 @@ namespace Libplanet.Net.Protocols
             Peer rawPeer,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            _logger.Verbose($"Try to {nameof(UpdateAsync)}() {{Peer}}.", rawPeer);
             if (rawPeer is null)
             {
                 throw new ArgumentNullException(nameof(rawPeer));
@@ -389,19 +403,20 @@ namespace Libplanet.Net.Protocols
                 throw new TaskCanceledException();
             }
 
-            await _routing.AddPeerAsync(peer);
+            await _routing.AddPeerAsync(peer, cancellationToken);
         }
 
         private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
         {
-            _logger.Debug("Removing peer [{peer}] from table.", peer);
-            await _routing.RemovePeerAsync(peer);
+            _logger.Debug("Removing peer {Peer} from table.", peer);
+            await _routing.RemovePeerAsync(peer, cancellationToken);
         }
 
         /// <summary>
         /// Send <see cref="FindNeighbors"/> messages to <paramref name="viaPeer"/>
         /// to find <see cref="Peer"/>s near <paramref name="target"/>.
         /// </summary>
+        /// <param name="history">The <see cref="Peer"/> that searched.</param>
         /// <param name="target">The <see cref="Address"/> to find.</param>
         /// <param name="viaPeer">The target <see cref="Peer"/> to send <see cref="FindNeighbors"/>
         /// message. If null, selects 3 <see cref="Peer"/>s from <see cref="RoutingTable"/> of
@@ -413,47 +428,58 @@ namespace Libplanet.Net.Protocols
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
         private async Task FindPeerAsync(
+            ConcurrentBag<BoundPeer> history,
             Address target,
             BoundPeer viaPeer,
             int depth,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            if (depth >= Kademlia.MaxDepth)
+            _logger.Debug(
+                $"{nameof(FindPeerAsync)}() with {{Target}} to {{Peer}}. " +
+                "(depth: {Depth})",
+                target,
+                viaPeer,
+                depth);
+            if (depth == 0)
             {
                 return;
             }
 
-            ImmutableList<BoundPeer> found;
+            IEnumerable<BoundPeer> found;
             if (viaPeer is null)
             {
-                found = await QueryNeighborsAsync(target, timeout, cancellationToken);
+                found = await QueryNeighborsAsync(history, target, timeout, cancellationToken);
             }
             else
             {
                 found = await GetNeighbors(viaPeer, target, timeout, cancellationToken);
+                history.Add(viaPeer);
             }
 
-            await ProcessFoundAsync(found, target, depth, timeout, cancellationToken);
+            await ProcessFoundAsync(history, found, target, depth, timeout, cancellationToken);
         }
 
-        private async Task<ImmutableList<BoundPeer>> QueryNeighborsAsync(
+        private async Task<IEnumerable<BoundPeer>> QueryNeighborsAsync(
+            ConcurrentBag<BoundPeer> history,
             Address target,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             List<BoundPeer> neighbors = _routing.Neighbors(target, _bucketSize).ToList();
             var found = new List<BoundPeer>();
-            int count = (neighbors.Count < Kademlia.FindConcurrency)
+            int count = neighbors.Count < Kademlia.FindConcurrency
                 ? neighbors.Count
                 : Kademlia.FindConcurrency;
-            bool timeoutOccurred = true;
-            for (int i = 0; i < count; i++)
+            var timeoutOccurred = true;
+            for (var i = 0; i < count; i++)
             {
                 try
                 {
-                    found.AddRange(
-                        await GetNeighbors(neighbors[i], target, timeout, cancellationToken));
+                    var peers =
+                        await GetNeighbors(neighbors[i], target, timeout, cancellationToken);
+                    history.Add(neighbors[i]);
+                    found.AddRange(peers.Where(peer => !found.Contains(peer)));
                     timeoutOccurred = false;
                 }
                 catch (TimeoutException)
@@ -468,10 +494,10 @@ namespace Libplanet.Net.Protocols
                     $"Timeout occurred during {nameof(QueryNeighborsAsync)}.");
             }
 
-            return found.ToImmutableList();
+            return found;
         }
 
-        private async Task<ImmutableList<BoundPeer>> GetNeighbors(
+        private async Task<IEnumerable<BoundPeer>> GetNeighbors(
             BoundPeer addressee,
             Address target,
             TimeSpan? timeout,
@@ -489,7 +515,7 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException("Reply of FindNeighbors is invalid.");
                 }
 
-                return neighbors.Found.ToImmutableList();
+                return neighbors.Found;
             }
             catch (TimeoutException)
             {
@@ -519,6 +545,7 @@ namespace Libplanet.Net.Protocols
         /// Process <see cref="Peer"/>s that is replied by sending <see cref="FindNeighbors"/>
         /// request.
         /// </summary>
+        /// <param name="history"><see cref="Peer"/>s that already searched.</param>
         /// <param name="found"><see cref="Peer"/>s that found.</param>
         /// <param name="target">The target <see cref="Address"/> to search.</param>
         /// <param name="depth">Target depth of recursive operation. If -1 is given,
@@ -531,14 +558,18 @@ namespace Libplanet.Net.Protocols
         /// <exception cref="TimeoutException">Thrown when all peers that found are
         /// not online.</exception>
         private async Task ProcessFoundAsync(
-            ImmutableList<BoundPeer> found,
+            ConcurrentBag<BoundPeer> history,
+            IEnumerable<BoundPeer> found,
             Address target,
             int depth,
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
             List<BoundPeer> peers = found.Where(
-                peer => !peer.Address.Equals(_address) && !_routing.Contains(peer)).ToList();
+                peer =>
+                    !peer.Address.Equals(_address) &&
+                    !_routing.Contains(peer) &&
+                    !history.Contains(peer)).ToList();
 
             if (peers.Count == 0)
             {
@@ -576,20 +607,33 @@ namespace Libplanet.Net.Protocols
 
             var findNeighboursTasks = new List<Task>();
             Peer closestKnown = closestCandidate.Count == 0 ? null : closestCandidate[0];
-            for (int i = 0; i < Kademlia.FindConcurrency && i < peers.Count; i++)
+            var count = 0;
+            foreach (var peer in peers)
             {
-                if (closestKnown is null ||
-                    string.CompareOrdinal(
-                        Kademlia.CalculateDistance(peers[i].Address, target).ToHex(),
-                        Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
-                    ) < 1)
+                if (!(closestKnown is null) &&
+                   string.CompareOrdinal(
+                       Kademlia.CalculateDistance(peer.Address, target).ToHex(),
+                       Kademlia.CalculateDistance(closestKnown.Address, target).ToHex()
+                   ) >= 1)
                 {
-                    findNeighboursTasks.Add(FindPeerAsync(
-                        target,
-                        peers[i],
-                        (depth == -1) ? depth : depth + 1,
-                        timeout,
-                        cancellationToken));
+                    break;
+                }
+
+                if (history.Contains(peer))
+                {
+                    continue;
+                }
+
+                findNeighboursTasks.Add(FindPeerAsync(
+                    history,
+                    target,
+                    peer,
+                    depth == -1 ? depth : depth - 1,
+                    timeout,
+                    cancellationToken));
+                if (count++ >= Kademlia.FindConcurrency)
+                {
+                    break;
                 }
             }
 
@@ -602,7 +646,7 @@ namespace Libplanet.Net.Protocols
                 if (findNeighboursTasks.All(findPeerTask => findPeerTask.IsFaulted))
                 {
                     throw new TimeoutException(
-                        "Timeout exception occurred during ProcessFoundAsync().");
+                        $"Timeout exception occurred during {nameof(ProcessFoundAsync)}().");
                 }
             }
         }
@@ -611,7 +655,7 @@ namespace Libplanet.Net.Protocols
         // maybe ping/pong/ping/pong is required
         private void ReceiveFindPeer(FindNeighbors findNeighbors)
         {
-            List<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize).ToList();
+            IEnumerable<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize);
 
             Neighbors neighbors = new Neighbors(found)
             {

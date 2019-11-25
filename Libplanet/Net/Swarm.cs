@@ -30,7 +30,7 @@ using Serilog.Events;
 
 namespace Libplanet.Net
 {
-    public class Swarm<T> : IDisposable
+    public class Swarm<T> : ISwarm, IDisposable
         where T : IAction, new()
     {
         private static readonly TimeSpan TurnAllocationLifetime =
@@ -155,7 +155,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
-            Protocol = new KademliaProtocol<T>(
+            Protocol = new KademliaProtocol(
                 this,
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
@@ -437,6 +437,7 @@ namespace Libplanet.Net
             _broadcastQueue.ReceiveReady += DoBroadcast;
 
             _logger.Debug("Starting swarm...");
+            _logger.Debug("Peer information : {Peer}", AsPeer);
 
             using (await _runningMutex.LockAsync())
             {
@@ -496,12 +497,14 @@ namespace Libplanet.Net
            IEnumerable<Peer> seedPeers,
            double pingSeedTimeout,
            double findPeerTimeout,
+           int depth = Kademlia.MaxDepth,
            CancellationToken cancellationToken = default(CancellationToken))
         {
             await BootstrapAsync(
                 seedPeers,
                 TimeSpan.FromMilliseconds(pingSeedTimeout),
                 TimeSpan.FromMilliseconds(findPeerTimeout),
+                depth,
                 cancellationToken);
         }
 
@@ -511,6 +514,8 @@ namespace Libplanet.Net
         /// <param name="seedPeers">List of seed peers.</param>
         /// <param name="pingSeedTimeout">Timeout for connecting to seed peers.</param>
         /// <param name="findNeighborsTimeout">Timeout for requesting neighbors.</param>
+        /// <param name="depth">Depth to find neighbors of current <see cref="Peer"/>
+        /// from seed peers.</param>
         /// <param name="cancellationToken">A cancellation token used to propagate notification
         /// that this operation should be canceled.</param>
         /// <returns>An awaitable task without value.</returns>
@@ -520,6 +525,7 @@ namespace Libplanet.Net
             IEnumerable<Peer> seedPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findNeighborsTimeout,
+            int depth = Kademlia.MaxDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (seedPeers is null)
@@ -533,6 +539,7 @@ namespace Libplanet.Net
                 peers.ToImmutableList(),
                 pingSeedTimeout,
                 findNeighborsTimeout,
+                depth,
                 cancellationToken);
         }
 
@@ -552,6 +559,30 @@ namespace Libplanet.Net
             _logger.Debug("Broadcast Txs.");
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
             BroadcastTxIds(txIds);
+        }
+
+        public string TraceTable()
+        {
+            return Protocol is null ? string.Empty : Protocol.Trace();
+        }
+
+        async Task<Message> ISwarm.SendMessageWithReplyAsync(
+            BoundPeer peer,
+            Message message,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken)
+        {
+            IEnumerable<Message> replies =
+                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
+            Message reply = replies.First();
+            ValidateSender(reply.Remote);
+
+            return reply;
+        }
+
+        void ISwarm.ReplyMessage(Message message)
+        {
+            _replyQueue.Enqueue(message);
         }
 
         /// <summary>
@@ -799,14 +830,6 @@ namespace Libplanet.Net
             }
         }
 
-        // FIXME: This method became public just for testing
-#pragma warning disable SA1202
-        public string TraceTable()
-        {
-            return Protocol is null ? string.Empty : Protocol.Trace();
-        }
-#pragma warning restore SA1202
-
         internal async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,
@@ -824,7 +847,7 @@ namespace Libplanet.Net
 
             try
             {
-                KademliaProtocol<T> kp = (KademliaProtocol<T>)Protocol;
+                KademliaProtocol kp = (KademliaProtocol)Protocol;
 
                 var tasks = new List<Task>();
                 foreach (Peer peer in peers)
@@ -870,21 +893,7 @@ namespace Libplanet.Net
             await SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
         }
 
-        internal async Task<Message> SendMessageWithReplyAsync(
-            BoundPeer peer,
-            Message message,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            IEnumerable<Message> replies =
-                await SendMessageWithReplyAsync(peer, message, timeout, 1, cancellationToken);
-            Message reply = replies.First();
-            ValidateSender(reply.Remote);
-
-            return reply;
-        }
-
-        internal async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+        internal virtual async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -976,7 +985,7 @@ namespace Libplanet.Net
         {
             var request = new GetBlockHashes(locator, stop);
 
-            Message parsedMessage = await SendMessageWithReplyAsync(
+            Message parsedMessage = await (this as ISwarm).SendMessageWithReplyAsync(
                 peer,
                 request,
                 timeout: BlockHashRecvTimeout,
@@ -1089,11 +1098,6 @@ namespace Libplanet.Net
             });
         }
 
-        internal void ReplyMessage(Message message)
-        {
-            _replyQueue.Enqueue(message);
-        }
-
         private void BroadcastMessage(Message message)
         {
             _broadcastQueue.Enqueue(message);
@@ -1139,7 +1143,7 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        Message reply = await SendMessageWithReplyAsync(
+                        Message reply = await (this as ISwarm).SendMessageWithReplyAsync(
                             peer,
                             new Ping(),
                             dialTimeout,
@@ -1221,7 +1225,7 @@ namespace Libplanet.Net
                 Message reply;
                 try
                 {
-                    reply = await SendMessageWithReplyAsync(
+                    reply = await (this as ISwarm).SendMessageWithReplyAsync(
                         peer,
                         request,
                         timeout: TimeSpan.FromSeconds(30),
@@ -1449,7 +1453,7 @@ namespace Libplanet.Net
                         {
                             Identity = getBlockHashes.Identity,
                         };
-                        ReplyMessage(reply);
+                        (this as ISwarm).ReplyMessage(reply);
                         break;
                     }
 
@@ -1845,7 +1849,7 @@ namespace Libplanet.Net
                 {
                     Identity = getTxs.Identity,
                 };
-                ReplyMessage(response);
+                (this as ISwarm).ReplyMessage(response);
             }
         }
 
@@ -1927,7 +1931,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    ReplyMessage(response);
+                    (this as ISwarm).ReplyMessage(response);
                     blocks.Clear();
                 }
 
@@ -1946,7 +1950,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                ReplyMessage(response);
+                (this as ISwarm).ReplyMessage(response);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
@@ -2030,7 +2034,7 @@ namespace Libplanet.Net
             {
                 Identity = getRecentStates.Identity,
             };
-            ReplyMessage(reply);
+            (this as ISwarm).ReplyMessage(reply);
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
@@ -2177,9 +2181,9 @@ namespace Libplanet.Net
             {
                 dealer.Options.Linger = Timeout.InfiniteTimeSpan;
                 _logger.Debug(
-                    "Trying to send {Message} to {PeerAddress}...",
+                    "Trying to send {Message} to {Peer}...",
                     req.Message,
-                    req.Peer.Address
+                    req.Peer
                 );
                 var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
                 var result = new List<Message>();

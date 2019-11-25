@@ -34,6 +34,8 @@ To be released.
 
 ### Behavioral changes
 
+ -  `Swarm<T>` became to compare only peer's addresses instead of public keys
+    to determine if a peer is in routing table or not.  [[#665]]
  -  `Swarm<T>` became to send 100 blocks (instead of 500 blocks) for each
     reply during IDL, in order to stabilize connection in high latency
     environments.  [[#679]]
@@ -45,6 +47,7 @@ To be released.
  -  Fixed bug that re-download block from scratch in preloading.  [[#685]]
 
 [#662]: https://github.com/planetarium/libplanet/pull/662
+[#665]: https://github.com/planetarium/libplanet/pull/665
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
 [#678]: https://github.com/planetarium/libplanet/pull/678

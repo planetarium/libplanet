@@ -50,23 +50,23 @@ namespace Libplanet.Net.Protocols
         {
             _lastUpdated = DateTimeOffset.UtcNow;
             int exists =
-                _peers.FindIndex(p => p.Item2.PublicKey.Equals(peer.PublicKey));
+                _peers.FindIndex(p => p.Item2.Address.Equals(peer.Address));
 
             if (exists != -1)
             {
-                _logger.Verbose("Bucket already contains [{peer}]", peer);
+                _logger.Verbose("Bucket already contains peer {Peer}", peer);
                 _peers.RemoveAt(exists);
                 _peers.Add((DateTimeOffset.UtcNow, peer));
                 return null;
             }
             else if (IsFull())
             {
-                _logger.Verbose("Bucket is full to add [{peer}]", peer);
+                _logger.Verbose("Bucket is full to add peer {Peer}", peer);
                 if (!ReplacementCache.Contains(peer))
                 {
                     ReplacementCache.Add(peer);
                     _logger.Verbose(
-                        "Added [{peer}] to replacement cache. (total: {count})",
+                        "Added peer {Peer} to replacement cache. (total: {Count})",
                         peer,
                         ReplacementCache.Count);
                 }
@@ -75,11 +75,11 @@ namespace Libplanet.Net.Protocols
             }
             else
             {
-                _logger.Verbose("Bucket does not contains [{peer}]", peer);
+                _logger.Verbose("Adding peer {Peer} to bucket.", peer);
                 if (ReplacementCache.Remove(peer))
                 {
                     _logger.Verbose(
-                        "Removed [{peer}] from replacement cache. (total: {count})",
+                        "Removed peer {Peer} from replacement cache. (total: {Count})",
                         peer,
                         ReplacementCache.Count);
                 }
@@ -102,7 +102,7 @@ namespace Libplanet.Net.Protocols
 
         public bool RemovePeer(BoundPeer peer)
         {
-            int index = _peers.FindIndex(item => item.Item2.PublicKey.Equals(peer.PublicKey));
+            int index = _peers.FindIndex(item => item.Item2.Address.Equals(peer.Address));
             if (index == -1)
             {
                 return false;

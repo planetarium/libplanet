@@ -2352,7 +2352,7 @@ namespace Libplanet.Tests.Net
                 new[] { seed },
                 null,
                 TimeSpan.FromSeconds(3),
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
 
         private class Sleep : IAction

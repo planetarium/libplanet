@@ -16,6 +16,7 @@ namespace Libplanet.Net.Protocols
             ImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findPeerTimeout,
+            int depth,
             CancellationToken cancellationToken);
 
         Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
 using Serilog;
@@ -68,7 +69,9 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public async Task<BoundPeer> AddPeerAsync(BoundPeer peer)
+        public async Task<BoundPeer> AddPeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (peer is null)
             {
@@ -84,19 +87,17 @@ namespace Libplanet.Net.Protocols
             BoundPeer evicted;
 
             // lock required
-            using (await _bucketMutex.LockAsync())
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
                 evicted = _buckets[index].AddPeer(peer);
-                _logger.Debug(
-                    "Adding [{peer}] to routing table. (evicted : {evicted})",
-                    peer,
-                    evicted);
             }
 
             return evicted;
         }
 
-        public async Task<bool> RemovePeerAsync(BoundPeer peer)
+        public async Task<bool> RemovePeerAsync(
+            BoundPeer peer,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (peer is null)
             {
@@ -112,7 +113,7 @@ namespace Libplanet.Net.Protocols
             bool ret;
 
             // lock required
-            using (await _bucketMutex.LockAsync())
+            using (await _bucketMutex.LockAsync(cancellationToken))
             {
                 ret = _buckets[index].RemovePeer(peer);
             }
@@ -145,14 +146,14 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public ICollection<BoundPeer> Neighbors(Peer target, int k)
+        public IEnumerable<BoundPeer> Neighbors(Peer target, int k)
         {
             return Neighbors(target.Address, k);
         }
 
         // returns k nearest peers to given parameter peer from routing table.
         // return value is already sorted with respect to target.
-        public ICollection<BoundPeer> Neighbors(Address target, int k)
+        public IEnumerable<BoundPeer> Neighbors(Address target, int k)
         {
             var sorted = _buckets
                 .Where(b => !b.IsEmpty())

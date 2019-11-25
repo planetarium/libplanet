@@ -7,9 +7,9 @@ using Libplanet.Net.Protocols;
 using Serilog.Core;
 using Xunit;
 
-namespace Libplanet.Tests.Net
+namespace Libplanet.Tests.Net.Protocols
 {
-    public class ProtocolTest
+    public class RoutingTableTest
     {
         private const int BucketSize = 16;
         private const int TableSize = Address.Size * sizeof(byte) * 8;
@@ -129,19 +129,6 @@ namespace Libplanet.Tests.Net
             await table.AddPeerAsync(peer2);
             ret = await table.RemovePeerAsync(peer2);
             Assert.True(ret);
-        }
-
-        [Fact]
-        public void PrefixLength()
-        {
-            var addr1 = new Address("0000000000000000000000000000000000000000");
-            var addr2 = new Address("0000000000000000000000000000000000000001");
-            var addr3 = new Address("000000000000000000000000000000000000000c");
-            var addr4 = new Address("0000000001000001111110001000011001000001");
-
-            Assert.Equal(159, Kademlia.CommonPrefixLength(addr1, addr2));
-            Assert.Equal(156, Kademlia.CommonPrefixLength(addr1, addr3));
-            Assert.Equal(39, Kademlia.CommonPrefixLength(addr1, addr4));
         }
 
         private RoutingTable CreateTable(Address addr)
