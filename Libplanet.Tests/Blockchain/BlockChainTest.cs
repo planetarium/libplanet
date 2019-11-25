@@ -1259,7 +1259,7 @@ namespace Libplanet.Tests.Blockchain
                 chain.GetState(TestEvaluateAction.MinerKey).ToString(),
                 _fx.Address1.ToHex());
             var state = chain.GetState(TestEvaluateAction.BlockIndexKey);
-            Assert.Equal((long)((Integer)state).Value, blockIndex);
+            Assert.Equal((long)(Integer)state, blockIndex);
         }
 
         [Fact]
@@ -1541,8 +1541,8 @@ namespace Libplanet.Tests.Blockchain
             IValue miner2state = _blockChain.GetState(miner2);
             IValue rewardState = _blockChain.GetState(rewardRecordAddress);
 
-            int reward1 = (int)((Integer)miner1state).Value;
-            int reward2 = (int)((Integer)miner2state).Value;
+            int reward1 = (int)(Integer)miner1state;
+            int reward2 = (int)(Integer)miner2state;
             string rewardRecord = rewardState.ToString();
 
             Assert.Equal(2, reward1);
