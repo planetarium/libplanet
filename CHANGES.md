@@ -26,7 +26,7 @@ To be released.
      -  `IStore.SetBlockStates()` method became to take
         `IImmutableDictionary<Address, IValue>` instead of `AddressStateMap`.
  -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
-    to receive `preloadBlockDownloadFailed` event handler as a parameter.
+    to take `preloadBlockDownloadFailed` event handler as an argument.
     [[#693]]
 
 ### Backward-incompatible network protocol changes
@@ -49,9 +49,9 @@ To be released.
  -  `Swarm<T>` became to send 100 blocks (instead of 500 blocks) for each
     reply during IDL, in order to stabilize connection in high latency
     environments.  [[#679]]
- -  When the block downloading fails in `Swarm<T>.PreloadAsync()` method,
+ -  When `Swarm<T>.PreloadAsync()` method fails to download blocks,
     `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
-    received as a parameter. If the event handler doesn't exist, `Swarm<T>`
+    taken as an argument.  If the event handler is not present, `Swarm<T>`
     throws `SwarmException`.  [[#693]]
 
 ### Bug fixes
