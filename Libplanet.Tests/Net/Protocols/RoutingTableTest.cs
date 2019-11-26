@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Protocols;
@@ -47,8 +48,12 @@ namespace Libplanet.Tests.Net.Protocols
             Assert.False(bucket.Contains(peer2));
             Assert.False(bucket.IsEmpty());
             Assert.False(bucket.IsFull());
+            // This sleep statement is used to distinguish updated time of followings.
+            Thread.Sleep(100);
             bucket.AddPeer(peer2);
+            Thread.Sleep(100);
             bucket.AddPeer(peer3);
+            Thread.Sleep(100);
             bucket.AddPeer(peer4);
             Assert.True(bucket.IsFull());
             Assert.Equal(
@@ -59,11 +64,16 @@ namespace Libplanet.Tests.Net.Protocols
                 bucket.GetRandomPeer(),
                 new[] { peer1, peer2, peer3, peer4 }
             );
+            Thread.Sleep(100);
             bucket.AddPeer(peer5);
-            Assert.True(bucket.Contains(peer1));
+            Assert.Equal(
+                bucket.Peers.ToHashSet(),
+                new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
+            );
             Assert.False(bucket.Contains(peer5));
             Assert.Equal(peer4, bucket.Head.Key);
             Assert.Equal(peer1, bucket.Tail.Key);
+            Thread.Sleep(100);
             bucket.AddPeer(peer1);
             Assert.Equal(peer1, bucket.Head.Key);
             Assert.Equal(peer2, bucket.Tail.Key);

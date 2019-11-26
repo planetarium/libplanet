@@ -87,7 +87,7 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentNullException(nameof(peer));
             }
 
-            _lastUpdated = DateTimeOffset.UtcNow;
+            var updated = DateTimeOffset.UtcNow;
             BoundPeer hasPeer =
                 _peers.FirstOrDefault(kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
 
@@ -108,7 +108,8 @@ namespace Libplanet.Net.Protocols
                 else
                 {
                     _logger.Verbose("Bucket does not contains peer {Peer}", peer);
-                    _peers.TryAdd(peer, DateTimeOffset.UtcNow);
+                    _lastUpdated = updated;
+                    _peers.TryAdd(peer, updated);
                     if (ReplacementCache.Remove(peer))
                     {
                         _logger.Verbose(
@@ -125,7 +126,8 @@ namespace Libplanet.Net.Protocols
                 // This done because peer's other attribute except public key might be changed.
                 // (eg. public IP address, endpoint)
                 _peers.TryRemove(hasPeer, out var dateTimeOffset);
-                _peers[peer] = DateTimeOffset.UtcNow;
+                _lastUpdated = updated;
+                _peers.TryAdd(peer, updated);
             }
         }
 
