@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Serilog;
 
 namespace Libplanet.Net.Protocols
@@ -89,9 +87,7 @@ namespace Libplanet.Net.Protocols
                 .Select(bucket => bucket.Tail.Key);
         }
 
-        public Task AddPeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public void AddPeer(BoundPeer peer)
         {
             if (peer is null)
             {
@@ -106,12 +102,10 @@ namespace Libplanet.Net.Protocols
             int index = GetBucketIndexOf(peer);
 
             _logger.Debug("Adding peer {Peer} to routing table.", peer);
-            return _buckets[index].AddPeerAsync(peer, cancellationToken);
+            _buckets[index].AddPeer(peer);
         }
 
-        public Task<bool> RemovePeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public bool RemovePeer(BoundPeer peer)
         {
             if (peer is null)
             {
@@ -124,7 +118,7 @@ namespace Libplanet.Net.Protocols
             }
 
             int index = GetBucketIndexOf(peer);
-            return _buckets[index].RemovePeerAsync(peer, cancellationToken);
+            return _buckets[index].RemovePeer(peer);
         }
 
         public KBucket BucketOf(BoundPeer peer)

@@ -2,9 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Protocols
@@ -14,7 +11,6 @@ namespace Libplanet.Net.Protocols
         private readonly int _size;
         private readonly Random _random;
         private readonly ConcurrentDictionary<BoundPeer, DateTimeOffset> _peers;
-        private readonly AsyncLock _bucketMutex;
 
         private readonly ILogger _logger;
 
@@ -27,7 +23,6 @@ namespace Libplanet.Net.Protocols
             _logger = logger;
             _peers = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
             ReplacementCache = new List<BoundPeer>();
-            _bucketMutex = new AsyncLock();
 
             _lastUpdated = DateTimeOffset.UtcNow;
         }
@@ -85,58 +80,52 @@ namespace Libplanet.Net.Protocols
         public List<BoundPeer> ReplacementCache { get; }
 
         // returns head if the bucket is full and doest not containing target.
-        public async Task AddPeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public void AddPeer(BoundPeer peer)
         {
             if (peer is null)
             {
                 throw new ArgumentNullException(nameof(peer));
             }
 
-            using (await _bucketMutex.LockAsync(cancellationToken))
+            _lastUpdated = DateTimeOffset.UtcNow;
+            BoundPeer hasPeer =
+                _peers.FirstOrDefault(kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
+
+            if (hasPeer is null)
             {
-                _lastUpdated = DateTimeOffset.UtcNow;
-                BoundPeer hasPeer =
-                    _peers.FirstOrDefault(kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
-
-                if (hasPeer is null)
+                if (IsFull())
                 {
-                    if (IsFull())
+                    _logger.Verbose("Bucket is full to add peer {Peer}", peer);
+                    if (!ReplacementCache.Contains(peer))
                     {
-                        _logger.Verbose("Bucket is full to add peer {Peer}", peer);
-                        if (!ReplacementCache.Contains(peer))
-                        {
-                            ReplacementCache.Add(peer);
-                            _logger.Verbose(
-                                "Added {Peer} to replacement cache. (total: {Count})",
-                                peer,
-                                ReplacementCache.Count);
-                        }
-                    }
-                    else
-                    {
-                        _logger.Verbose("Bucket does not contains peer {Peer}", peer);
-                        if (ReplacementCache.Remove(peer))
-                        {
-                            _logger.Verbose(
-                                "Removed peer {Peer} from replacement cache. (total: {Count})",
-                                peer,
-                                ReplacementCache.Count);
-                        }
-
-                        _peers[peer] = DateTimeOffset.UtcNow;
+                        ReplacementCache.Add(peer);
+                        _logger.Verbose(
+                            "Added {Peer} to replacement cache. (total: {Count})",
+                            peer,
+                            ReplacementCache.Count);
                     }
                 }
                 else
                 {
-                    _logger.Verbose("Bucket already contains peer {Peer}", peer);
-
-                    // This done because peer's other attribute except public key might be changed.
-                    // (eg. public IP address, endpoint)
-                    _peers.TryRemove(hasPeer, out var dateTimeOffset);
-                    _peers[peer] = DateTimeOffset.UtcNow;
+                    _logger.Verbose("Bucket does not contains peer {Peer}", peer);
+                    _peers.TryAdd(peer, DateTimeOffset.UtcNow);
+                    if (ReplacementCache.Remove(peer))
+                    {
+                        _logger.Verbose(
+                            "Removed peer {Peer} from replacement cache. (total: {Count})",
+                            peer,
+                            ReplacementCache.Count);
+                    }
                 }
+            }
+            else
+            {
+                _logger.Verbose("Bucket already contains peer {Peer}", peer);
+
+                // This done because peer's other attribute except public key might be changed.
+                // (eg. public IP address, endpoint)
+                _peers.TryRemove(hasPeer, out var dateTimeOffset);
+                _peers[peer] = DateTimeOffset.UtcNow;
             }
         }
 
@@ -151,22 +140,17 @@ namespace Libplanet.Net.Protocols
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
-        public async Task<bool> RemovePeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public bool RemovePeer(BoundPeer peer)
         {
-            using (await _bucketMutex.LockAsync(cancellationToken))
+            BoundPeer hasPeer = _peers.FirstOrDefault(
+                kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
+            if (hasPeer is null)
             {
-                BoundPeer hasPeer = _peers.FirstOrDefault(
-                    kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
-                if (hasPeer is null)
-                {
-                    return false;
-                }
-
-                _peers.TryRemove(hasPeer, out var dateTimeOffset);
-                return true;
+                return false;
             }
+
+            _peers.TryRemove(hasPeer, out var dateTimeOffset);
+            return true;
         }
 
         public bool IsEmpty()

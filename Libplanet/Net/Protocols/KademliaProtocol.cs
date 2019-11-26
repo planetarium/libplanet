@@ -90,7 +90,7 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
-                    await RemovePeerAsync(peer, cancellationToken);
+                    RemovePeer(peer);
                 }
                 catch (Exception e)
                 {
@@ -313,7 +313,7 @@ namespace Libplanet.Net.Protocols
                 }
 
                 // update process required
-                await UpdateAsync(pong.Remote, cancellationToken);
+                UpdateAsync(pong.Remote);
             }
             catch (TimeoutException)
             {
@@ -348,7 +348,7 @@ namespace Libplanet.Net.Protocols
             catch (TimeoutException)
             {
                 _logger.Debug("Peer {Peer} is invalid, removing...", peer);
-                await RemovePeerAsync(peer, cancellationToken);
+                RemovePeer(peer);
                 throw;
             }
         }
@@ -357,9 +357,7 @@ namespace Libplanet.Net.Protocols
         // if corresponding bucket for remote peer is not full, just adds remote peer.
         // otherwise check whether if the least recently used (LRU) peer
         // is alive to determine evict LRU peer or discard remote peer.
-        private async Task UpdateAsync(
-            Peer rawPeer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private void UpdateAsync(Peer rawPeer)
         {
             _logger.Verbose($"Try to {nameof(UpdateAsync)}() {{Peer}}.", rawPeer);
             if (rawPeer is null)
@@ -373,18 +371,13 @@ namespace Libplanet.Net.Protocols
                 return;
             }
 
-            if (cancellationToken.IsCancellationRequested)
-            {
-                throw new TaskCanceledException();
-            }
-
-            await _routing.AddPeerAsync(peer, cancellationToken);
+            _routing.AddPeer(peer);
         }
 
-        private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
+        private void RemovePeer(BoundPeer peer)
         {
             _logger.Debug("Removing peer {Peer} from table.", peer);
-            await _routing.RemovePeerAsync(peer, cancellationToken);
+            _routing.RemovePeer(peer);
         }
 
         /// <summary>
@@ -494,7 +487,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException)
             {
-                await RemovePeerAsync(addressee, cancellationToken);
+                RemovePeer(addressee);
                 throw;
             }
         }
