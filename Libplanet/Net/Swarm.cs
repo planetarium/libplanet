@@ -342,7 +342,6 @@ namespace Libplanet.Net
             );
         }
 
-#pragma warning disable MEN002 // Line is too long
         /// <summary>
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
@@ -373,7 +372,6 @@ namespace Libplanet.Net
         /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
         /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
         /// /> method too.</remarks>
-#pragma warning restore MEN002 // Line is too long
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
