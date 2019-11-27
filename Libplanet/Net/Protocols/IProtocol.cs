@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace Libplanet.Net.Protocols
 {
     internal interface IProtocol
     {
-        ImmutableList<BoundPeer> Peers { get; }
+        IEnumerable<BoundPeer> Peers { get; }
 
-        ImmutableList<BoundPeer> PeersToBroadcast { get; }
+        IEnumerable<BoundPeer> PeersToBroadcast { get; }
 
         Task BootstrapAsync(
             ImmutableList<BoundPeer> bootstrapPeers,

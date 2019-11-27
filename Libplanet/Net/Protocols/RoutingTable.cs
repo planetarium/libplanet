@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net.Protocols
@@ -15,7 +12,6 @@ namespace Libplanet.Net.Protocols
         private readonly int _bucketSize;
         private readonly Random _random;
         private readonly KBucket[] _buckets;
-        private readonly AsyncLock _bucketMutex;
 
         private readonly ILogger _logger;
 
@@ -47,13 +43,35 @@ namespace Libplanet.Net.Protocols
             {
                 _buckets[i] = new KBucket(_bucketSize, _random, _logger);
             }
-
-            _bucketMutex = new AsyncLock();
         }
 
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
-        public IEnumerable<KBucket> NonFullBuckets
+        public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
+            .SelectMany((bucket, _) => bucket.Peers).ToList();
+
+        public IEnumerable<BoundPeer> PeersToBroadcast
+        {
+            get
+            {
+                return NonEmptyBuckets
+                    .Select(bucket => bucket.GetRandomPeer());
+            }
+        }
+
+        public IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
+        {
+            get
+            {
+                return NonFullBuckets.Select(
+                    bucket => bucket.ReplacementCache
+                        .OrderBy(kv => kv.Value)
+                        .Select(kv => kv.Key)
+                );
+            }
+        }
+
+        private IEnumerable<KBucket> NonFullBuckets
         {
             get
             {
@@ -61,7 +79,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public IEnumerable<KBucket> NonEmptyBuckets
+        private IEnumerable<KBucket> NonEmptyBuckets
         {
             get
             {
@@ -69,9 +87,14 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public async Task<BoundPeer> AddPeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge)
+        {
+            return NonEmptyBuckets
+                .Where(bucket => bucket.Tail.Value + maxAge < DateTimeOffset.UtcNow)
+                .Select(bucket => bucket.Tail.Key);
+        }
+
+        public void AddPeer(BoundPeer peer)
         {
             if (peer is null)
             {
@@ -83,21 +106,11 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException("Cannot add self to routing table.");
             }
 
-            int index = GetBucketIndexOf(peer);
-            BoundPeer evicted;
-
-            // lock required
-            using (await _bucketMutex.LockAsync(cancellationToken))
-            {
-                evicted = _buckets[index].AddPeer(peer);
-            }
-
-            return evicted;
+            _logger.Debug("Adding peer {Peer} to routing table.", peer);
+            BucketOf(peer).AddPeer(peer);
         }
 
-        public async Task<bool> RemovePeerAsync(
-            BoundPeer peer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public bool RemovePeer(BoundPeer peer)
         {
             if (peer is null)
             {
@@ -109,22 +122,19 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException("Cannot remove self from routing table.");
             }
 
-            int index = GetBucketIndexOf(peer);
-            bool ret;
+            return BucketOf(peer).RemovePeer(peer);
+        }
 
-            // lock required
-            using (await _bucketMutex.LockAsync(cancellationToken))
-            {
-                ret = _buckets[index].RemovePeer(peer);
-            }
-
-            return ret;
+        public bool RemoveCache(BoundPeer peer)
+        {
+            KBucket bucket = BucketOf(peer);
+            return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
         }
 
         public KBucket BucketOf(BoundPeer peer)
         {
             int index = GetBucketIndexOf(peer);
-            return BucketOf(index);
+            return _buckets[index];
         }
 
         public KBucket BucketOf(int level)
@@ -134,8 +144,7 @@ namespace Libplanet.Net.Protocols
 
         public bool Contains(BoundPeer peer)
         {
-            int index = GetBucketIndexOf(peer);
-            return _buckets[index].Contains(peer);
+            return BucketOf(peer).Contains(peer);
         }
 
         public void Clear()

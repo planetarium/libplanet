@@ -47,29 +47,9 @@ namespace Libplanet.Net.Protocols
                 TimeSpan.FromMilliseconds(Kademlia.IdleRequestTimeout);
         }
 
-        public ImmutableList<BoundPeer> Peers
-        {
-            get
-            {
-                var peers = new List<BoundPeer>();
-                foreach (KBucket bucket in _routing.NonEmptyBuckets)
-                {
-                    peers.AddRange(bucket.Peers);
-                }
+        public IEnumerable<BoundPeer> Peers => _routing.Peers;
 
-                return peers.ToImmutableList();
-            }
-        }
-
-        public ImmutableList<BoundPeer> PeersToBroadcast
-        {
-            get
-            {
-                return _routing.NonEmptyBuckets
-                    .Select(bucket => bucket.GetRandomPeer())
-                    .ToImmutableList();
-            }
-        }
+        public IEnumerable<BoundPeer> PeersToBroadcast => _routing.PeersToBroadcast;
 
         // FIXME: Currently bootstrap is done until it finds closest peer, but it should halt
         // when found neighbor's count is reached 2*k.
@@ -110,7 +90,7 @@ namespace Libplanet.Net.Protocols
                 catch (TimeoutException)
                 {
                     _logger.Error("A timeout exception occurred connecting to seed peer.");
-                    await RemovePeerAsync(peer, cancellationToken);
+                    RemovePeer(peer);
                 }
                 catch (Exception e)
                 {
@@ -121,7 +101,7 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            if (Peers.Count == 0)
+            if (!_routing.Peers.Any())
             {
                 // FIXME: Need more precise exception
                 throw new SwarmException("No seed available.");
@@ -165,12 +145,11 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count);
-                List<Task> tasks = _routing.NonEmptyBuckets
-                    .Where(bucket => bucket.Tail.Item1 + maxAge < DateTimeOffset.UtcNow)
-                    .Select(bucket =>
+                _logger.Debug("Refreshing table... total peers: {Count}", _routing.Peers.Count());
+                List<Task> tasks = _routing.PeersToRefresh(maxAge)
+                    .Select(peer =>
                         ValidateAsync(
-                            bucket.Tail.Item2,
+                            peer,
                             _requestTimeout,
                             cancellationToken)
                 ).ToList();
@@ -236,19 +215,13 @@ namespace Libplanet.Net.Protocols
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
             _logger.Debug("Checking replacement cache.");
-            foreach (var bucket in _routing.NonFullBuckets)
+            foreach (IEnumerable<BoundPeer> cache in _routing.CachesToCheck)
             {
-                var cachePeers = new BoundPeer[bucket.ReplacementCache.Count];
-                bucket.ReplacementCache.CopyTo(cachePeers);
-                foreach (BoundPeer replacement in cachePeers)
+                foreach (BoundPeer replacement in cache)
                 {
                     try
                     {
                         _logger.Debug("Check peer {Peer}.", replacement);
-                        if (bucket.IsFull())
-                        {
-                            break;
-                        }
 
                         await PingAsync(replacement, _requestTimeout, cancellationToken);
                     }
@@ -257,7 +230,7 @@ namespace Libplanet.Net.Protocols
                         _logger.Debug(
                             "Remove stale peer {Peer} from replacement cache.",
                             replacement);
-                        bucket.ReplacementCache.Remove(replacement);
+                        _routing.RemoveCache(replacement);
                     }
                 }
             }
@@ -338,7 +311,7 @@ namespace Libplanet.Net.Protocols
                 }
 
                 // update process required
-                await UpdateAsync(pong.Remote, cancellationToken);
+                UpdateAsync(pong.Remote);
             }
             catch (TimeoutException)
             {
@@ -373,7 +346,7 @@ namespace Libplanet.Net.Protocols
             catch (TimeoutException)
             {
                 _logger.Debug("Peer {Peer} is invalid, removing...", peer);
-                await RemovePeerAsync(peer, cancellationToken);
+                RemovePeer(peer);
                 throw;
             }
         }
@@ -382,9 +355,7 @@ namespace Libplanet.Net.Protocols
         // if corresponding bucket for remote peer is not full, just adds remote peer.
         // otherwise check whether if the least recently used (LRU) peer
         // is alive to determine evict LRU peer or discard remote peer.
-        private async Task UpdateAsync(
-            Peer rawPeer,
-            CancellationToken cancellationToken = default(CancellationToken))
+        private void UpdateAsync(Peer rawPeer)
         {
             _logger.Verbose($"Try to {nameof(UpdateAsync)}() {{Peer}}.", rawPeer);
             if (rawPeer is null)
@@ -398,18 +369,13 @@ namespace Libplanet.Net.Protocols
                 return;
             }
 
-            if (cancellationToken.IsCancellationRequested)
-            {
-                throw new TaskCanceledException();
-            }
-
-            await _routing.AddPeerAsync(peer, cancellationToken);
+            _routing.AddPeer(peer);
         }
 
-        private async Task RemovePeerAsync(BoundPeer peer, CancellationToken cancellationToken)
+        private void RemovePeer(BoundPeer peer)
         {
             _logger.Debug("Removing peer {Peer} from table.", peer);
-            await _routing.RemovePeerAsync(peer, cancellationToken);
+            _routing.RemovePeer(peer);
         }
 
         /// <summary>
@@ -519,7 +485,7 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException)
             {
-                await RemovePeerAsync(addressee, cancellationToken);
+                RemovePeer(addressee);
                 throw;
             }
         }

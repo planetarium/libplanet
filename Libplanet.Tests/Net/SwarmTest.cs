@@ -201,6 +201,7 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
                 await StopAsync(swarmA);
+                await seed.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarmB.AddPeersAsync(new[] { seed.AsPeer }, null);
 
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
@@ -286,7 +287,7 @@ namespace Libplanet.Tests.Net
                 await a.AddPeersAsync(new Peer[] { b.AsPeer }, null);
 
                 Assert.Contains(b.AsPeer, a.Peers);
-                Assert.Equal(0, b.Peers.Count);
+                Assert.Empty(b.Peers);
             }
             finally
             {
@@ -405,7 +406,7 @@ namespace Libplanet.Tests.Net
                 await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
 
-                Assert.Equal(1, swarmA.Peers.Count);
+                Assert.Single(swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
@@ -443,13 +444,14 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await Task.Delay(100);
+                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
 
                 Assert.Single(swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
 
                 await StopAsync(swarmA);
-                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
@@ -575,7 +577,7 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmA, swarmB.AsPeer);
 
                 Assert.Contains(swarmB.AsPeer, swarmA.Peers);
-                Assert.Equal(0, swarmB.Peers.Count);
+                Assert.Empty(swarmB.Peers);
 
                 await StartAsync(swarmA);
                 Assert.Contains(swarmA.AsPeer, swarmB.Peers);
