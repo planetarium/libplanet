@@ -101,7 +101,7 @@ namespace Libplanet.Net.Protocols
                 }
             }
 
-            if (!Peers.Any())
+            if (!_routing.Peers.Any())
             {
                 // FIXME: Need more precise exception
                 throw new SwarmException("No seed available.");
@@ -145,7 +145,7 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Refreshing table... total peers: {Count}", Peers.Count());
+                _logger.Debug("Refreshing table... total peers: {Count}", _routing.Peers.Count());
                 List<Task> tasks = _routing.PeersToRefresh(maxAge)
                     .Select(peer =>
                         ValidateAsync(
@@ -215,11 +215,9 @@ namespace Libplanet.Net.Protocols
         public async Task CheckReplacementCacheAsync(CancellationToken cancellationToken)
         {
             _logger.Debug("Checking replacement cache.");
-            foreach (var cache in _routing.CachesToCheck)
+            foreach (IEnumerable<BoundPeer> cache in _routing.CachesToCheck)
             {
-                var cachePeers = new BoundPeer[cache.Count];
-                cache.CopyTo(cachePeers);
-                foreach (BoundPeer replacement in cachePeers)
+                foreach (BoundPeer replacement in cache)
                 {
                     try
                     {
@@ -232,7 +230,7 @@ namespace Libplanet.Net.Protocols
                         _logger.Debug(
                             "Remove stale peer {Peer} from replacement cache.",
                             replacement);
-                        cache.Remove(replacement);
+                        _routing.RemoveCache(replacement);
                     }
                 }
             }

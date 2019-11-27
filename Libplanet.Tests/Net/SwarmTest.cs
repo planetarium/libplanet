@@ -444,13 +444,14 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+                await Task.Delay(100);
+                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
 
                 Assert.Single(swarmA.Peers);
                 Assert.Contains(swarmA.AsPeer, swarm.Peers);
                 Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
 
                 await StopAsync(swarmA);
-                await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
                 await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
                 await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 

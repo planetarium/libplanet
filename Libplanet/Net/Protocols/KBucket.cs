@@ -22,7 +22,7 @@ namespace Libplanet.Net.Protocols
             _random = random;
             _logger = logger;
             _peers = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
-            ReplacementCache = new List<BoundPeer>();
+            ReplacementCache = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
 
             _lastUpdated = DateTimeOffset.UtcNow;
         }
@@ -36,18 +36,13 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                var mru = default(KeyValuePair<BoundPeer, DateTimeOffset>);
-                DateTimeOffset max = DateTimeOffset.MinValue;
-                foreach (var kv in _peers)
-                {
-                    if (kv.Value > max)
-                    {
-                        mru = kv;
-                        max = kv.Value;
-                    }
-                }
-
-                return mru;
+                return _peers.Aggregate(
+                    new KeyValuePair<BoundPeer, DateTimeOffset>(
+                        null,
+                        DateTimeOffset.MinValue
+                    ),
+                    (l, r) => l.Value > r.Value ? l : r
+                );
             }
         }
 
@@ -58,18 +53,13 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                var lru = default(KeyValuePair<BoundPeer, DateTimeOffset>);
-                DateTimeOffset min = DateTimeOffset.MaxValue;
-                foreach (var kv in _peers)
-                {
-                    if (kv.Value < min)
-                    {
-                        lru = kv;
-                        min = kv.Value;
-                    }
-                }
-
-                return lru;
+                return _peers.Aggregate(
+                    new KeyValuePair<BoundPeer, DateTimeOffset>(
+                        null,
+                        DateTimeOffset.MaxValue
+                    ),
+                    (l, r) => l.Value < r.Value ? l : r
+                );
             }
         }
 
@@ -77,7 +67,7 @@ namespace Libplanet.Net.Protocols
 
         // replacement candidate stored in this cache when
         // the bucket is full and least recently used peer responds.
-        public List<BoundPeer> ReplacementCache { get; }
+        public ConcurrentDictionary<BoundPeer, DateTimeOffset> ReplacementCache { get; }
 
         // returns head if the bucket is full and doest not containing target.
         public void AddPeer(BoundPeer peer)
@@ -96,9 +86,8 @@ namespace Libplanet.Net.Protocols
                 if (IsFull())
                 {
                     _logger.Verbose("Bucket is full to add peer {Peer}", peer);
-                    if (!ReplacementCache.Contains(peer))
+                    if (ReplacementCache.TryAdd(peer, updated))
                     {
-                        ReplacementCache.Add(peer);
                         _logger.Verbose(
                             "Added {Peer} to replacement cache. (total: {Count})",
                             peer,
@@ -109,13 +98,22 @@ namespace Libplanet.Net.Protocols
                 {
                     _logger.Verbose("Bucket does not contains peer {Peer}", peer);
                     _lastUpdated = updated;
-                    _peers.TryAdd(peer, updated);
-                    if (ReplacementCache.Remove(peer))
+                    if (_peers.TryAdd(peer, updated))
                     {
-                        _logger.Verbose(
-                            "Removed peer {Peer} from replacement cache. (total: {Count})",
-                            peer,
-                            ReplacementCache.Count);
+                        _logger.Verbose("Peer {Peer} is added to bucket", peer);
+                        _lastUpdated = updated;
+
+                        if (ReplacementCache.TryRemove(peer, out var dateTimeOffset))
+                        {
+                            _logger.Verbose(
+                                "Removed peer {Peer} from replacement cache. (total: {Count})",
+                                peer,
+                                ReplacementCache.Count);
+                        }
+                    }
+                    else
+                    {
+                        _logger.Verbose("Failed to add peer {Peer} to bucket", peer);
                     }
                 }
             }
@@ -126,8 +124,10 @@ namespace Libplanet.Net.Protocols
                 // This done because peer's other attribute except public key might be changed.
                 // (eg. public IP address, endpoint)
                 _peers.TryRemove(hasPeer, out var dateTimeOffset);
-                _lastUpdated = updated;
-                _peers.TryAdd(peer, updated);
+                if (_peers.TryAdd(peer, updated))
+                {
+                    _lastUpdated = updated;
+                }
             }
         }
 
@@ -151,8 +151,16 @@ namespace Libplanet.Net.Protocols
                 return false;
             }
 
-            _peers.TryRemove(hasPeer, out var dateTimeOffset);
-            return true;
+            if (_peers.TryRemove(hasPeer, out var dateTimeOffset))
+            {
+                _logger.Verbose("Removed peer {Peer} from bucket.", peer);
+                return true;
+            }
+            else
+            {
+                _logger.Verbose("Failded to remove peer {Peer} from bucket.", peer);
+                return false;
+            }
         }
 
         public bool IsEmpty()
@@ -168,7 +176,7 @@ namespace Libplanet.Net.Protocols
         public BoundPeer GetRandomPeer()
         {
             var peers = _peers.Keys.ToArray();
-            int size = _peers.Count;
+            int size = peers.Length;
 
             return size == 0 ? null : peers[_random.Next(size)];
         }

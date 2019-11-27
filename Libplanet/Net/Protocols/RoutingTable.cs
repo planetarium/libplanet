@@ -48,7 +48,7 @@ namespace Libplanet.Net.Protocols
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
         public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
-            .SelectMany((bucket, _) => bucket.Peers);
+            .SelectMany((bucket, _) => bucket.Peers).ToList();
 
         public IEnumerable<BoundPeer> PeersToBroadcast
         {
@@ -59,9 +59,16 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public IEnumerable<List<BoundPeer>> CachesToCheck
+        public IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
-            get { return NonFullBuckets.Select(bucket => bucket.ReplacementCache); }
+            get
+            {
+                return NonFullBuckets.Select(
+                    bucket => bucket.ReplacementCache
+                        .OrderBy(kv => kv.Value)
+                        .Select(kv => kv.Key)
+                );
+            }
         }
 
         private IEnumerable<KBucket> NonFullBuckets
@@ -99,10 +106,8 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException("Cannot add self to routing table.");
             }
 
-            int index = GetBucketIndexOf(peer);
-
             _logger.Debug("Adding peer {Peer} to routing table.", peer);
-            _buckets[index].AddPeer(peer);
+            BucketOf(peer).AddPeer(peer);
         }
 
         public bool RemovePeer(BoundPeer peer)
@@ -117,14 +122,19 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException("Cannot remove self from routing table.");
             }
 
-            int index = GetBucketIndexOf(peer);
-            return _buckets[index].RemovePeer(peer);
+            return BucketOf(peer).RemovePeer(peer);
+        }
+
+        public bool RemoveCache(BoundPeer peer)
+        {
+            KBucket bucket = BucketOf(peer);
+            return bucket.ReplacementCache.TryRemove(peer, out var dateTimeOffset);
         }
 
         public KBucket BucketOf(BoundPeer peer)
         {
             int index = GetBucketIndexOf(peer);
-            return BucketOf(index);
+            return _buckets[index];
         }
 
         public KBucket BucketOf(int level)
@@ -134,8 +144,7 @@ namespace Libplanet.Net.Protocols
 
         public bool Contains(BoundPeer peer)
         {
-            int index = GetBucketIndexOf(peer);
-            return _buckets[index].Contains(peer);
+            return BucketOf(peer).Contains(peer);
         }
 
         public void Clear()
