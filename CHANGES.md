@@ -27,7 +27,7 @@ To be released.
         `IImmutableDictionary<Address, IValue>` instead of `AddressStateMap`.
  -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
     to take `preloadBlockDownloadFailed` event handler as an argument.
-    [[#693]]
+    [[#694]]
 
 ### Backward-incompatible network protocol changes
 
@@ -52,7 +52,7 @@ To be released.
  -  When `Swarm<T>.PreloadAsync()` method fails to download blocks,
     `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
     taken as an argument.  If the event handler is not present, `Swarm<T>`
-    throws `SwarmException`.  [[#693]]
+    throws `SwarmException`.  [[#694]]
 
 ### Bug fixes
 
@@ -69,7 +69,7 @@ To be released.
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
 [#692]: https://github.com/planetarium/libplanet/pull/692
-[#693]: https://github.com/planetarium/libplanet/pull/693
+[#694]: https://github.com/planetarium/libplanet/pull/694
 
 
 Version 0.7.0
