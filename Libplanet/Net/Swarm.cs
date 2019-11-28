@@ -613,7 +613,7 @@ namespace Libplanet.Net
         /// intended to be exposed to end users through a feasible user
         /// interface so that they can decide whom to trust for themselves.
         /// </param>
-        /// <param name="preloadBlockDownloadFailed">
+        /// <param name="blockDownloadFailed">
         /// The <see cref="EventHandler" /> triggered when block downloading fails.
         /// </param>
         /// <param name="cancellationToken">
@@ -630,13 +630,13 @@ namespace Libplanet.Net
         /// <see cref="StartAsync(TimeSpan, TimeSpan, EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"/>
         /// method instead.</remarks>
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
-        /// failed and if <paramref name="preloadBlockDownloadFailed "/> is <c>null</c>.</exception>
+        /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
 #pragma warning restore MEN002 // Line is too long
         public Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
+            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -645,7 +645,7 @@ namespace Libplanet.Net
                 dialTimeout: dialTimeout,
                 progress: progress,
                 trustedStateValidators: trustedStateValidators,
-                preloadBlockDownloadFailed: preloadBlockDownloadFailed,
+                blockDownloadFailed: blockDownloadFailed,
                 cancellationToken: cancellationToken
             );
         }
@@ -656,7 +656,7 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
+            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -733,7 +733,7 @@ namespace Libplanet.Net
 
                 if (!blockDownloadComplete)
                 {
-                    if (preloadBlockDownloadFailed is null)
+                    if (blockDownloadFailed is null)
                     {
                         throw new AggregateException(
                             "Failed to download blocks from peers.",
@@ -741,7 +741,7 @@ namespace Libplanet.Net
                     }
                     else
                     {
-                        preloadBlockDownloadFailed.Invoke(
+                        blockDownloadFailed.Invoke(
                             this,
                             new PreloadBlockDownloadFailEventArgs { InnerExceptions = exceptions });
                     }

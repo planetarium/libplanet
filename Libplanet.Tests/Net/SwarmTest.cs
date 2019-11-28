@@ -1667,7 +1667,7 @@ namespace Libplanet.Tests.Net
 
                 t = receiverSwarm.PreloadAsync(
                     TimeSpan.FromSeconds(15),
-                    preloadBlockDownloadFailed: Handler);
+                    blockDownloadFailed: Handler);
                 await receiverSwarm.PreloadStarted.WaitAsync();
                 await StopAsync(minerSwarm);
                 await t;
