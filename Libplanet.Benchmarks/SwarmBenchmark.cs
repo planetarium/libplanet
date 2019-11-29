@@ -49,6 +49,7 @@ namespace Libplanet.Benchmarks
             _blockChains = new BlockChain<DumbAction>[SwarmNumber];
             _swarms = new Swarm<DumbAction>[SwarmNumber];
 
+            // Private keys to make swarms broadcast blocks in relay.
             _keys[0] = new PrivateKey(new byte[]
             {
                 0x98, 0x66, 0x98, 0x50, 0x72, 0x8c, 0x6c, 0x41, 0x0b, 0xf4,
@@ -120,6 +121,7 @@ namespace Libplanet.Benchmarks
                 0x13, 0xf2,
             });
 
+            var tasks = new List<Task>();
             for (int i = 0; i < SwarmNumber; i++)
             {
                 _keys[i] = _keys[i] ?? new PrivateKey();
@@ -130,8 +132,10 @@ namespace Libplanet.Benchmarks
                     _keys[i],
                     0,
                     host: IPAddress.Loopback.ToString());
-                StartAsync(_swarms[i]).Wait(WaitTimeout);
+                tasks.Add(StartAsync(_swarms[i]));
             }
+
+            Task.WaitAll(tasks.ToArray());
 
             for (int i = 0; i < SwarmNumber - 1; i++)
             {
