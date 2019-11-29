@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -59,8 +60,9 @@ namespace Libplanet.Tests.Net.Protocols
 
             Assert.Throws<SwarmException>(() => swarmA.SendPing(swarmB.AsPeer));
             swarmA.Start();
-            swarmA.SendPing(swarmB.AsPeer);
-            await swarmB.MessageReceived.WaitAsync();
+            await Assert.ThrowsAsync<TimeoutException>(() =>
+                swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, TimeSpan.FromMilliseconds(500))
+            );
             Assert.Empty(swarmA.ReceivedMessages);
         }
 
@@ -76,6 +78,7 @@ namespace Libplanet.Tests.Net.Protocols
                 swarmB.Start();
                 swarmA.SendPing(swarmB.AsPeer);
                 await swarmA.MessageReceived.WaitAsync();
+                await Task.Delay(100);
 
                 Assert.Single(swarmA.ReceivedMessages);
                 Assert.Single(swarmB.ReceivedMessages);
@@ -116,6 +119,189 @@ namespace Libplanet.Tests.Net.Protocols
                 swarmA.Stop();
                 swarmB.Stop();
             }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PingToClosedPeer()
+        {
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+            var swarmC = CreateTestSwarm();
+
+            swarmA.Start();
+            swarmB.Start();
+            swarmC.Start();
+
+            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer, swarmC.AsPeer }, null);
+
+            Assert.Contains(swarmB.AsPeer, swarmA.Peers);
+            Assert.Contains(swarmC.AsPeer, swarmA.Peers);
+
+            swarmC.Stop();
+            await Assert.ThrowsAsync<TimeoutException>(
+                () => swarmA.AddPeersAsync(new[] { swarmC.AsPeer }, TimeSpan.FromSeconds(3)));
+            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+
+            Assert.Contains(swarmB.AsPeer, swarmA.Peers);
+
+            swarmA.Stop();
+            swarmB.Stop();
+            swarmC.Stop();
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BootstrapException()
+        {
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+
+            await Assert.ThrowsAsync<SwarmException>(
+                () => swarmB.BootstrapAsync(
+                    new[] { swarmA.AsPeer },
+                    TimeSpan.FromSeconds(3),
+                    TimeSpan.FromSeconds(3))
+            );
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task BootstrapAsyncTest()
+        {
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+            var swarmC = CreateTestSwarm();
+
+            swarmA.Start();
+            swarmB.Start();
+            swarmC.Start();
+
+            await swarmB.BootstrapAsync(new[] { swarmA.AsPeer });
+            await swarmC.BootstrapAsync(new[] { swarmA.AsPeer });
+
+            Assert.Contains(swarmB.AsPeer, swarmC.Peers);
+            Assert.Contains(swarmC.AsPeer, swarmB.Peers);
+
+            swarmA.Stop();
+            swarmB.Stop();
+            swarmC.Stop();
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RemoveStalePeers()
+        {
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+
+            swarmA.Start();
+            swarmB.Start();
+
+            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+            Assert.Single(swarmA.Peers);
+
+            swarmB.Stop();
+            await Task.Delay(100);
+            await swarmA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            Assert.Empty(swarmA.Peers);
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RoutingTableFull()
+        {
+            var swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+            var swarmC = CreateTestSwarm();
+
+            swarm.Start();
+            swarmA.Start();
+            swarmB.Start();
+            swarmC.Start();
+
+            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+            Assert.Single(swarmA.Peers);
+            Assert.Contains(swarmA.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+
+            swarm.Stop();
+            swarmA.Stop();
+            swarmB.Stop();
+            swarmC.Stop();
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ReplacementCache()
+        {
+            var swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
+            var swarmA = CreateTestSwarm();
+            var swarmB = CreateTestSwarm();
+            var swarmC = CreateTestSwarm();
+
+            swarm.Start();
+            swarmA.Start();
+            swarmB.Start();
+            swarmC.Start();
+
+            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await Task.Delay(100);
+            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+            Assert.Single(swarmA.Peers);
+            Assert.Contains(swarmA.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+
+            swarmA.Stop();
+            await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+
+            Assert.Single(swarm.Peers);
+            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+            Assert.Contains(swarmB.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+
+            swarm.Stop();
+            swarmB.Stop();
+            swarmC.Stop();
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task RemoveDeadReplacementCache()
+        {
+            TestSwarm swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
+            TestSwarm swarmA = CreateTestSwarm();
+            TestSwarm swarmB = CreateTestSwarm();
+            TestSwarm swarmC = CreateTestSwarm();
+
+            swarm.Start();
+            swarmA.Start();
+            swarmB.Start();
+            swarmC.Start();
+
+            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+
+            Assert.Single(swarm.Peers);
+            Assert.Contains(swarmA.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+
+            swarmA.Stop();
+            swarmB.Stop();
+
+            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+
+            Assert.Single(swarm.Peers);
+            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
+            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+            Assert.Contains(swarmC.AsPeer, swarm.Peers);
+
+            swarm.Stop();
+            swarmC.Stop();
+            swarm.Dispose();
         }
 
         [Theory(Timeout = Timeout)]

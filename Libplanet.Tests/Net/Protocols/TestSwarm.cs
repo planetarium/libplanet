@@ -53,6 +53,8 @@ namespace Libplanet.Tests.Net.Protocols
             _random = new Random();
         }
 
+        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
+
         public AsyncAutoResetEvent MessageReceived { get; }
 
         public Address Address => _privateKey.PublicKey.ToAddress();
@@ -80,6 +82,8 @@ namespace Libplanet.Tests.Net.Protocols
 
         public Task BootstrapAsync(
             IEnumerable<BoundPeer> peers,
+            TimeSpan? pingSeedTimeout = null,
+            TimeSpan? findPeerTimeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!Running)
@@ -96,13 +100,73 @@ namespace Libplanet.Tests.Net.Protocols
             {
                 await Protocol.BootstrapAsync(
                     peers.ToImmutableList(),
-                    null,
-                    null,
+                    pingSeedTimeout,
+                    findPeerTimeout,
                     Kademlia.MaxDepth,
                     cancellationToken);
             }
 
             return DoBootstrapAsync();
+        }
+
+        public Task AddPeersAsync(
+            IEnumerable<BoundPeer> peers,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (!Running)
+            {
+                throw new SwarmException("Start swarm before use.");
+            }
+
+            if (peers is null)
+            {
+                throw new ArgumentNullException(nameof(peers));
+            }
+
+            async Task DoAddPeersAsync()
+            {
+                try
+                {
+                    KademliaProtocol kp = (KademliaProtocol)Protocol;
+
+                    var tasks = new List<Task>();
+                    foreach (BoundPeer peer in peers)
+                    {
+                        tasks.Add(kp.PingAsync(
+                            peer,
+                            timeout: timeout,
+                            cancellationToken: cancellationToken));
+                    }
+
+                    _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
+                    await Task.WhenAll(tasks);
+                    _logger.Verbose("Update complete.");
+                }
+                catch (DifferentAppProtocolVersionException)
+                {
+                    _logger.Debug("Different version encountered during AddPeersAsync().");
+                }
+                catch (TimeoutException)
+                {
+                    _logger.Debug(
+                        $"Timeout occurred during {nameof(AddPeersAsync)}() after {timeout}.");
+                    throw;
+                }
+                catch (TaskCanceledException)
+                {
+                    _logger.Debug($"Task is cancelled during {nameof(AddPeersAsync)}().");
+                }
+                catch (Exception e)
+                {
+                    _logger.Error(
+                        e,
+                        $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
+                    throw;
+                }
+            }
+
+            return DoAddPeersAsync();
         }
 
         public void Stop()
@@ -273,6 +337,11 @@ namespace Libplanet.Tests.Net.Protocols
 
         private void ReceiveMessage(Message message)
         {
+            if (swarmCancellationTokenSource.IsCancellationRequested)
+            {
+                return;
+            }
+
             if (!(message.Remote is BoundPeer boundPeer))
             {
                 throw new ArgumentException("Sender of message is not a BoundPeer.");

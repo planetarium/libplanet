@@ -143,6 +143,7 @@ namespace Libplanet.Net.Protocols
         /// <returns>An awaitable task without value.</returns>
         public async Task RefreshTableAsync(TimeSpan maxAge, CancellationToken cancellationToken)
         {
+            // TODO: Add timeout parameter for this method
             try
             {
                 _logger.Debug("Refreshing table... total peers: {Count}", _routing.Peers.Count());
