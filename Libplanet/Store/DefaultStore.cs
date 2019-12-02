@@ -272,35 +272,31 @@ namespace Libplanet.Store
                 HashDigest<SHA256>? onlyAfter = null,
                 HashDigest<SHA256>? ignoreAfter = null)
         {
-            (HashDigest<SHA256>, long)? baseBlock =
+            long lowestIndex =
                 onlyAfter is HashDigest<SHA256> @base && GetBlockIndex(@base) is long baseIdx
-                    ? (@base, baseIdx)
-                    : null as (HashDigest<SHA256>, long)?;
-            (HashDigest<SHA256>, long)? targetBlock =
+                    ? baseIdx + 1
+                    : 0;
+            long highestIndex =
                 ignoreAfter is HashDigest<SHA256> tgt && GetBlockIndex(tgt) is long tgtIdx
-                    ? (tgt, tgtIdx)
-                    : null as (HashDigest<SHA256>, long)?;
-            return ListAddresses(chainId).Select(address =>
-            {
-                IEnumerable<Tuple<HashDigest<SHA256>, long>> refIndices =
-                    IterateStateReferences(chainId, address, null, null, null);
+                    ? tgtIdx
+                    : long.MaxValue;
 
-                if (targetBlock is ValueTuple<HashDigest<SHA256>, long> targetIndex)
-                {
-                    refIndices = refIndices.SkipWhile(p => p.Item2 > targetIndex.Item2);
-                }
+            string collId = StateRefId(chainId);
+            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
 
-                if (baseBlock is ValueTuple<HashDigest<SHA256>, long> baseIndex)
-                {
-                    refIndices = refIndices.TakeWhile(p => p.Item2 > baseIndex.Item2);
-                }
+            Query query = Query.And(
+                Query.All("BlockIndex"),
+                Query.Between("BlockIndex", lowestIndex, highestIndex)
+            );
 
-                ImmutableList<HashDigest<SHA256>> refs = refIndices
-                    .Select(p => p.Item1)
-                    .Reverse()
-                    .ToImmutableList();
-                return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(address, refs);
-            }).Where(pair => pair.Value.Any()).ToImmutableDictionary();
+            IEnumerable<StateRefDoc> stateRefs = coll.Find(query);
+            return stateRefs
+                .GroupBy(stateRef => stateRef.Address)
+                .Select(g =>
+                    new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
+                        g.Key,
+                        g.Select(r => r.BlockHash).ToImmutableList()))
+                .ToImmutableDictionary();
         }
 
         /// <inheritdoc/>
