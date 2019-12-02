@@ -1629,6 +1629,56 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task PreloadFailed()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            foreach (var unused in Enumerable.Range(0, 10))
+            {
+                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
+            }
+
+            receiverSwarm.BlockHashRecvTimeout = TimeSpan.FromMilliseconds(10);
+
+            var isCalled = false;
+            void Handler(object sender, PreloadBlockDownloadFailEventArgs e)
+            {
+                if (e.InnerExceptions.All(ex => ex is TimeoutException))
+                {
+                    isCalled = true;
+                }
+            }
+
+            try
+            {
+                // SwarmException should be thrown if event handler doesn't exist.
+                await StartAsync(minerSwarm);
+
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                var t = receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15));
+                await receiverSwarm.PreloadStarted.WaitAsync();
+                await StopAsync(minerSwarm);
+                await Assert.ThrowsAsync<AggregateException>(async () => await t);
+
+                // Event handler should be called if it exists.
+                await StartAsync(minerSwarm);
+
+                t = receiverSwarm.PreloadAsync(
+                    TimeSpan.FromSeconds(15),
+                    blockDownloadFailed: Handler);
+                await receiverSwarm.PreloadStarted.WaitAsync();
+                await StopAsync(minerSwarm);
+                await t;
+                Assert.True(isCalled);
+            }
+            finally
+            {
+                await StopAsync(minerSwarm);
+            }
+        }
+
         [Fact(Timeout = Timeout)]
         public async Task PreloadFromNominer()
         {
@@ -2324,7 +2374,7 @@ namespace Libplanet.Tests.Net
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, 200, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, null, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }

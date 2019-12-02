@@ -112,8 +112,7 @@ namespace Libplanet.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs>
-                differentVersionPeerEncountered = null)
+            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
         {
             Running = false;
 
@@ -201,7 +200,7 @@ namespace Libplanet.Net
         }
 
         /// <summary>
-        /// The <see cref="EventHandler" /> called when the different version of
+        /// The <see cref="EventHandler" /> triggered when the different version of
         /// <see cref="Peer" /> is discovered.
         /// </summary>
         public event EventHandler<DifferentProtocolVersionEventArgs>
@@ -268,6 +267,8 @@ namespace Libplanet.Net
 
         internal int FindNextHashesChunkSize { get; set; } = 100;
 
+        internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
+
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncFailed { get; } = new AsyncAutoResetEvent();
@@ -330,16 +331,17 @@ namespace Libplanet.Net
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
+            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
+                preloadBlockDownloadFailed: preloadBlockDownloadFailed,
                 cancellationToken
             );
         }
 
-#pragma warning disable MEN002 // Line is too long
         /// <summary>
         /// Starts to periodically synchronize the <see cref="BlockChain"/>.
         /// </summary>
@@ -347,6 +349,12 @@ namespace Libplanet.Net
         /// A timeout value for dialing.
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
+        /// </param>
+        /// <param name="preloadBlockDownloadFailed">
+        /// The <see cref="EventHandler" /> triggered when
+        /// <see cref="PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)" />
+        /// fails to download blocks.
         /// </param>
         /// /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
@@ -361,12 +369,13 @@ namespace Libplanet.Net
         /// so that there are a lot of calls to <see cref="IAction.Render"/> method in a short
         /// period of time.  This can lead a game startup slow.  If you want to omit rendering of
         /// these actions in the behind blocks use <see cref=
-        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address}, CancellationToken)"
+        /// "PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
+        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"
         /// /> method too.</remarks>
-#pragma warning restore MEN002 // Line is too long
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
+            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (Running)
@@ -585,6 +594,7 @@ namespace Libplanet.Net
             _replyQueue.Enqueue(message);
         }
 
+#pragma warning disable MEN002 // Line is too long
         /// <summary>
         /// Preemptively downloads blocks from registered <see cref="Peer"/>s.
         /// </summary>
@@ -603,6 +613,9 @@ namespace Libplanet.Net
         /// intended to be exposed to end users through a feasible user
         /// interface so that they can decide whom to trust for themselves.
         /// </param>
+        /// <param name="blockDownloadFailed">
+        /// The <see cref="EventHandler" /> triggered when block downloading fails.
+        /// </param>
         /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
@@ -613,12 +626,17 @@ namespace Libplanet.Net
         /// </returns>
         /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
         /// If you want to render all <see cref="IAction"/>s from the genesis block to the recent
-        /// blocks use <see cref="StartAsync(TimeSpan, TimeSpan, CancellationToken)"/> method
-        /// instead.</remarks>
+        /// blocks use
+        /// <see cref="StartAsync(TimeSpan, TimeSpan, EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"/>
+        /// method instead.</remarks>
+        /// <exception cref="AggregateException">Thrown when the given the block downloading is
+        /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
+#pragma warning restore MEN002 // Line is too long
         public Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
+            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
@@ -627,6 +645,7 @@ namespace Libplanet.Net
                 dialTimeout: dialTimeout,
                 progress: progress,
                 trustedStateValidators: trustedStateValidators,
+                blockDownloadFailed: blockDownloadFailed,
                 cancellationToken: cancellationToken
             );
         }
@@ -637,35 +656,29 @@ namespace Libplanet.Net
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
+            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (trustedStateValidators is null)
-            {
-                trustedStateValidators = ImmutableHashSet<Address>.Empty;
-            }
+            trustedStateValidators = trustedStateValidators ?? ImmutableHashSet<Address>.Empty;
 
             Block<T> initialTip = BlockChain.Tip;
             BlockLocator initialLocator = BlockChain.GetBlockLocator();
             _logger.Debug($"initialTip? : {BlockChain.Tip}");
 
             IList<(BoundPeer, long?)> peersWithHeight =
-                await DialToExistingPeers(
-                    dialTimeout,
-                    cancellationToken
-                )
-                .Where(
-                    pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1)
-                )
-                .Select(pp =>
-                    (pp.Item1, pp.Item2.TipIndex)
-                ).ToListAsync(cancellationToken);
+                await DialToExistingPeers(dialTimeout, cancellationToken)
+                .Where(pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1))
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex))
+                .ToListAsync(cancellationToken);
 
             if (!peersWithHeight.Any())
             {
                 _logger.Information("There is no appropriate peer for preloading.");
                 return;
             }
+
+            PreloadStarted.Set();
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
             // terminates during preloading is going on.  In order to make preloading done
@@ -680,6 +693,7 @@ namespace Libplanet.Net
 
             try
             {
+                var exceptions = new List<Exception>();
                 var blockDownloadComplete = false;
                 foreach ((BoundPeer Peer, long? Height) peerWithHeight in peersWithHeight)
                 {
@@ -705,6 +719,7 @@ namespace Libplanet.Net
                             peerWithHeight.Peer.EndPoint,
                             peerWithHeight.Peer.Address.ToHex(),
                             e);
+                        exceptions.Add(e);
                         continue;
                     }
 
@@ -718,8 +733,18 @@ namespace Libplanet.Net
 
                 if (!blockDownloadComplete)
                 {
-                    _logger.Information("Failed to download blocks from peers.");
-                    return;
+                    if (blockDownloadFailed is null)
+                    {
+                        throw new AggregateException(
+                            "Failed to download blocks from peers.",
+                            exceptions);
+                    }
+                    else
+                    {
+                        blockDownloadFailed.Invoke(
+                            this,
+                            new PreloadBlockDownloadFailEventArgs { InnerExceptions = exceptions });
+                    }
                 }
 
                 if (workspace.Tip is null)
@@ -743,12 +768,9 @@ namespace Libplanet.Net
                     peersWithHeight.Where(pair =>
                         trustedStateValidators.Contains(pair.Item1.Address) &&
                         !(pair.Item2 is null) &&
-                        pair.Item2 <= height
-                    ).OrderByDescending(pair =>
-                        pair.Item2
-                    ).Select(pair =>
-                        (pair.Item1, workspace[pair.Item2.Value].Hash)
-                    );
+                        pair.Item2 <= height)
+                        .OrderByDescending(pair => pair.Item2)
+                        .Select(pair => (pair.Item1, workspace[pair.Item2.Value].Hash));
 
                 bool received = await SyncRecentStatesFromTrustedPeersAsync(
                     workspace,

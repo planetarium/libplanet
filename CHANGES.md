@@ -25,6 +25,9 @@ To be released.
         `IImmutableDictionary<Address, IValue>` (was `AddressStateMap`).
      -  `IStore.SetBlockStates()` method became to take
         `IImmutableDictionary<Address, IValue>` instead of `AddressStateMap`.
+ -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
+    to take `preloadBlockDownloadFailed` event handler as an argument.
+    [[#694]]
 
 ### Backward-incompatible network protocol changes
 
@@ -46,6 +49,10 @@ To be released.
  -  `Swarm<T>` became to send 100 blocks (instead of 500 blocks) for each
     reply during IDL, in order to stabilize connection in high latency
     environments.  [[#679]]
+ -  When `Swarm<T>.PreloadAsync()` method fails to download blocks,
+    `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
+    taken as an argument.  If the event handler is not present, `Swarm<T>`
+    throws `SwarmException`.  [[#694]]
 
 ### Bug fixes
 
@@ -62,6 +69,7 @@ To be released.
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
 [#692]: https://github.com/planetarium/libplanet/pull/692
+[#694]: https://github.com/planetarium/libplanet/pull/694
 
 
 Version 0.7.0
