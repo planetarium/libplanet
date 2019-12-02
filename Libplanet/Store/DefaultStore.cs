@@ -266,6 +266,44 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                HashDigest<SHA256>? onlyAfter = null,
+                HashDigest<SHA256>? ignoreAfter = null)
+        {
+            (HashDigest<SHA256>, long)? baseBlock =
+                onlyAfter is HashDigest<SHA256> @base && GetBlockIndex(@base) is long baseIdx
+                    ? (@base, baseIdx)
+                    : null as (HashDigest<SHA256>, long)?;
+            (HashDigest<SHA256>, long)? targetBlock =
+                ignoreAfter is HashDigest<SHA256> tgt && GetBlockIndex(tgt) is long tgtIdx
+                    ? (tgt, tgtIdx)
+                    : null as (HashDigest<SHA256>, long)?;
+            return ListAddresses(chainId).Select(address =>
+            {
+                IEnumerable<Tuple<HashDigest<SHA256>, long>> refIndices =
+                    IterateStateReferences(chainId, address, null, null, null);
+
+                if (targetBlock is ValueTuple<HashDigest<SHA256>, long> targetIndex)
+                {
+                    refIndices = refIndices.SkipWhile(p => p.Item2 > targetIndex.Item2);
+                }
+
+                if (baseBlock is ValueTuple<HashDigest<SHA256>, long> baseIndex)
+                {
+                    refIndices = refIndices.TakeWhile(p => p.Item2 > baseIndex.Item2);
+                }
+
+                ImmutableList<HashDigest<SHA256>> refs = refIndices
+                    .Select(p => p.Item1)
+                    .Reverse()
+                    .ToImmutableList();
+                return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(address, refs);
+            }).Where(pair => pair.Value.Any()).ToImmutableDictionary();
+        }
+
+        /// <inheritdoc/>
         public override void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             StagedTxIds.InsertBulk(

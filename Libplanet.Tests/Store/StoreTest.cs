@@ -127,6 +127,64 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void ListAllStateReferences()
+        {
+            Address address1 = Fx.Address1;
+            Address address2 = Fx.Address2;
+            Address address3 = new PrivateKey().PublicKey.ToAddress();
+
+            Transaction<DumbAction> tx4 = Fx.MakeTransaction(
+                new[]
+                {
+                    new DumbAction(address1, "foo1"),
+                    new DumbAction(address2, "foo2"),
+                }
+            );
+            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
+
+            Transaction<DumbAction> tx5 = Fx.MakeTransaction(
+                new[]
+                {
+                    new DumbAction(address1, "bar1"),
+                    new DumbAction(address3, "bar3"),
+                }
+            );
+            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
+
+            Block<DumbAction> block6 = TestUtils.MineNext(block5, new Transaction<DumbAction>[0]);
+
+            var chain = new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), Fx.Store);
+            chain.Append(Fx.Block1);
+            chain.Append(Fx.Block2);
+            chain.Append(Fx.Block3);
+            chain.Append(block4);
+            chain.Append(block5);
+            chain.Append(block6);
+
+            Guid chainId = chain.Id;
+            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> refs;
+
+            refs = Fx.Store.ListAllStateReferences(chainId);
+            Assert.Equal(
+                new HashSet<Address> { address1, address2, address3 },
+                refs.Keys.ToHashSet()
+            );
+            Assert.Equal(new[] { block4.Hash, block5.Hash }, refs[address1]);
+            Assert.Equal(new[] { block4.Hash }, refs[address2]);
+            Assert.Equal(new[] { block5.Hash }, refs[address3]);
+
+            refs = Fx.Store.ListAllStateReferences(chainId, onlyAfter: block4.Hash);
+            Assert.Equal(new HashSet<Address> { address1, address3 }, refs.Keys.ToHashSet());
+            Assert.Equal(new[] { block5.Hash }, refs[address1]);
+            Assert.Equal(new[] { block5.Hash }, refs[address3]);
+
+            refs = Fx.Store.ListAllStateReferences(chainId, ignoreAfter: block4.Hash);
+            Assert.Equal(new HashSet<Address> { address1, address2, }, refs.Keys.ToHashSet());
+            Assert.Equal(new[] { block4.Hash }, refs[address1]);
+            Assert.Equal(new[] { block4.Hash }, refs[address2]);
+        }
+
+        [Fact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
