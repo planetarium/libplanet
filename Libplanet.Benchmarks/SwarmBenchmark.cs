@@ -185,7 +185,7 @@ namespace Libplanet.Benchmarks
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, 200, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, null, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }
