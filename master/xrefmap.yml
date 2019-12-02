@@ -5613,12 +5613,12 @@ references:
   commentId: T:Libplanet.Store.DefaultStore
   fullName: Libplanet.Store.DefaultStore
   nameWithType: DefaultStore
-- uid: Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
-  name: DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
-  fullName: Libplanet.Store.DefaultStore.DefaultStore(System.String, System.Boolean, System.Int32, System.Int32, System.Int32, System.Boolean, System.Boolean)
-  nameWithType: DefaultStore.DefaultStore(String, Boolean, Int32, Int32, Int32, Boolean, Boolean)
+- uid: Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
+  name: DefaultStore(String, Boolean, Int32, Int32, Int32, Int32, Boolean, Boolean)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Int32_System_Int32_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Store.DefaultStore.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)
+  fullName: Libplanet.Store.DefaultStore.DefaultStore(System.String, System.Boolean, System.Int32, System.Int32, System.Int32, System.Int32, System.Boolean, System.Boolean)
+  nameWithType: DefaultStore.DefaultStore(String, Boolean, Int32, Int32, Int32, Int32, Boolean, Boolean)
 - uid: Libplanet.Store.DefaultStore.#ctor*
   name: DefaultStore
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore__ctor_
