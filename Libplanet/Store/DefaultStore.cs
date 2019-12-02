@@ -44,6 +44,9 @@ namespace Libplanet.Store
 
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
+#pragma warning disable MEN002 // Line is too long
+        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>> _statesCache;
+#pragma warning restore MEN002 // Line is too long
 
         private readonly MemoryStream _memoryStream;
 
@@ -61,6 +64,7 @@ namespace Libplanet.Store
         /// <param name="indexCacheSize">Max number of pages in the index cache.</param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
+        /// <param name="statesCacheSize">The capacity of the states cache.</param>
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
@@ -70,6 +74,7 @@ namespace Libplanet.Store
             int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
+            int statesCacheSize = 10000,
             bool flush = true,
             bool readOnly = false
         )
@@ -140,6 +145,9 @@ namespace Libplanet.Store
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: blockCacheSize);
+            _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
+                capacity: statesCacheSize
+            );
 
             _codec = new Codec();
         }
@@ -470,6 +478,13 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash
         )
         {
+            if (_statesCache.TryGetValue(
+                blockHash,
+                out IImmutableDictionary<Address, IValue> cached))
+            {
+                return cached;
+            }
+
             LiteFileInfo file =
                 _db.FileStorage.FindById(BlockStateFileId(blockHash));
             if (file is null)
@@ -483,10 +498,12 @@ namespace Libplanet.Store
                 stream.Seek(0, SeekOrigin.Begin);
 
                 var deserialized = (Bencodex.Types.Dictionary)_codec.Decode(stream);
-                return deserialized.ToImmutableDictionary(
+                ImmutableDictionary<Address, IValue> states = deserialized.ToImmutableDictionary(
                     kv => new Address((Binary)kv.Key),
                     kv => kv.Value
                 );
+                _statesCache.AddOrUpdate(blockHash, states);
+                return states;
             }
         }
 
@@ -495,6 +512,7 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<Address, IValue> states)
         {
+            _statesCache.AddOrUpdate(blockHash, states);
             var serialized = new Bencodex.Types.Dictionary(
                 states.Select(kv =>
                     new KeyValuePair<IKey, IValue>(
