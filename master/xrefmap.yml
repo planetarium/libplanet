@@ -3892,6 +3892,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException
   nameWithType: PeerNotFoundException.PeerNotFoundException
+- uid: Libplanet.Net.PreloadBlockDownloadFailEventArgs
+  name: PreloadBlockDownloadFailEventArgs
+  href: api/Libplanet.Net.PreloadBlockDownloadFailEventArgs.html
+  commentId: T:Libplanet.Net.PreloadBlockDownloadFailEventArgs
+  fullName: Libplanet.Net.PreloadBlockDownloadFailEventArgs
+  nameWithType: PreloadBlockDownloadFailEventArgs
+- uid: Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions
+  name: InnerExceptions
+  href: api/Libplanet.Net.PreloadBlockDownloadFailEventArgs.html#Libplanet_Net_PreloadBlockDownloadFailEventArgs_InnerExceptions
+  commentId: P:Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions
+  fullName: Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions
+  nameWithType: PreloadBlockDownloadFailEventArgs.InnerExceptions
+- uid: Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions*
+  name: InnerExceptions
+  href: api/Libplanet.Net.PreloadBlockDownloadFailEventArgs.html#Libplanet_Net_PreloadBlockDownloadFailEventArgs_InnerExceptions_
+  commentId: Overload:Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions
+  isSpec: "True"
+  fullName: Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions
+  nameWithType: PreloadBlockDownloadFailEventArgs.InnerExceptions
 - uid: Libplanet.Net.PreloadState
   name: PreloadState
   href: api/Libplanet.Net.PreloadState.html
@@ -4213,15 +4232,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).LastSeenTimestamps
   nameWithType: Swarm<T>.LastSeenTimestamps
   nameWithType.vb: Swarm(Of T).LastSeenTimestamps
-- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},IImmutableSet{Libplanet.Address},CancellationToken)
-  name: PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, IImmutableSet<Address>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__IImmutableSet_Libplanet_Address__CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},IImmutableSet{Libplanet.Address},CancellationToken)
-  name.vb: PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), IImmutableSet(Of Address), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<TimeSpan>, IProgress<Libplanet.Net.PreloadState>, IImmutableSet<Libplanet.Address>, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of TimeSpan), IProgress(Of Libplanet.Net.PreloadState), IImmutableSet(Of Libplanet.Address), CancellationToken)
-  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, IImmutableSet<Address>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), IImmutableSet(Of Address), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},IImmutableSet{Libplanet.Address},EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name: PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, IImmutableSet<Address>, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__IImmutableSet_Libplanet_Address__EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},IImmutableSet{Libplanet.Address},EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name.vb: PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), IImmutableSet(Of Address), EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.PreloadAsync(System.Nullable<TimeSpan>, IProgress<Libplanet.Net.PreloadState>, IImmutableSet<Libplanet.Address>, EventHandler<Libplanet.Net.PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).PreloadAsync(System.Nullable(Of TimeSpan), IProgress(Of Libplanet.Net.PreloadState), IImmutableSet(Of Libplanet.Address), EventHandler(Of Libplanet.Net.PreloadBlockDownloadFailEventArgs), CancellationToken)
+  nameWithType: Swarm<T>.PreloadAsync(Nullable<TimeSpan>, IProgress<PreloadState>, IImmutableSet<Address>, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).PreloadAsync(Nullable(Of TimeSpan), IProgress(Of PreloadState), IImmutableSet(Of Address), EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.PreloadAsync*
   name: PreloadAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_PreloadAsync_
@@ -4248,22 +4267,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Running
   nameWithType: Swarm<T>.Running
   nameWithType.vb: Swarm(Of T).Running
-- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,CancellationToken)
-  name: StartAsync(Int32, Int32, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, CancellationToken)
-  nameWithType: Swarm<T>.StartAsync(Int32, Int32, CancellationToken)
-  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, CancellationToken)
-- uid: Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,CancellationToken)
-  name: StartAsync(TimeSpan, TimeSpan, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.StartAsync(TimeSpan, TimeSpan, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(TimeSpan, TimeSpan, CancellationToken)
-  nameWithType: Swarm<T>.StartAsync(TimeSpan, TimeSpan, CancellationToken)
-  nameWithType.vb: Swarm(Of T).StartAsync(TimeSpan, TimeSpan, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name: StartAsync(Int32, Int32, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name.vb: StartAsync(Int32, Int32, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, EventHandler<Libplanet.Net.PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, EventHandler(Of Libplanet.Net.PreloadBlockDownloadFailEventArgs), CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(Int32, Int32, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name: StartAsync(TimeSpan, TimeSpan, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
+  name.vb: StartAsync(TimeSpan, TimeSpan, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(TimeSpan, TimeSpan, EventHandler<Libplanet.Net.PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(TimeSpan, TimeSpan, EventHandler(Of Libplanet.Net.PreloadBlockDownloadFailEventArgs), CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(TimeSpan, TimeSpan, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(TimeSpan, TimeSpan, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
 - uid: Libplanet.Net.Swarm`1.StartAsync*
   name: StartAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_

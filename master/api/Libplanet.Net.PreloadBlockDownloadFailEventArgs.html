@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ChainIdNotFoundException
+    <title>Class PreloadBlockDownloadFailEventArgs
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ChainIdNotFoundException
+    <meta name="title" content="Class PreloadBlockDownloadFailEventArgs
    | Libplanet ">
     <meta name="generator" content="docfx 2.45.1.0">
     
@@ -329,8 +329,8 @@
                           <li class="">
                             <a href="Libplanet.Net.PeerNotFoundException.html" title="PeerNotFoundException" class="">PeerNotFoundException</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Net.PreloadBlockDownloadFailEventArgs.html" title="PreloadBlockDownloadFailEventArgs" class="">PreloadBlockDownloadFailEventArgs</a>
+                          <li class="active">
+                            <a href="Libplanet.Net.PreloadBlockDownloadFailEventArgs.html" title="PreloadBlockDownloadFailEventArgs" class="active">PreloadBlockDownloadFailEventArgs</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.PreloadState.html" title="PreloadState" class="">PreloadState</a>
@@ -371,8 +371,8 @@
                           <li class="">
                             <a href="Libplanet.Store.BlockSet-1.html" title="BlockSet&lt;T&gt;" class="">BlockSet&lt;T&gt;</a>
                           </li>
-                          <li class="active">
-                            <a href="Libplanet.Store.ChainIdNotFoundException.html" title="ChainIdNotFoundException" class="active">ChainIdNotFoundException</a>
+                          <li class="">
+                            <a href="Libplanet.Store.ChainIdNotFoundException.html" title="ChainIdNotFoundException" class="">ChainIdNotFoundException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Store.DefaultStore.html" title="DefaultStore" class="">DefaultStore</a>
@@ -424,85 +424,43 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Store.ChainIdNotFoundException">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.PreloadBlockDownloadFailEventArgs">
   
   
-  <h1 id="Libplanet_Store_ChainIdNotFoundException" data-uid="Libplanet.Store.ChainIdNotFoundException" class="text-break">Class ChainIdNotFoundException
+  <h1 id="Libplanet_Net_PreloadBlockDownloadFailEventArgs" data-uid="Libplanet.Net.PreloadBlockDownloadFailEventArgs" class="text-break">Class PreloadBlockDownloadFailEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>The exception that is thrown when a chain ID does not exist in
-an <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> object.</p>
+  <div class="markdown level0 summary"><p>The event data that provides value to the event handler which is triggered when the block
+downloading fails during preloading.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ChainIdNotFoundException</span></div>
+    <div class="level1"><span class="xref">PreloadBlockDownloadFailEventArgs</span></div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Store.html">Libplanet.Store</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Store_ChainIdNotFoundException_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_PreloadBlockDownloadFailEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ChainIdNotFoundException : Exception</code></pre>
+    <pre><code class="lang-csharp hljs">public class PreloadBlockDownloadFailEventArgs : object</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/apiSpec/new?filename=Libplanet_Store_ChainIdNotFoundException__ctor_Guid_System_String_.md&amp;value=---%0Auid%3A%20Libplanet.Store.ChainIdNotFoundException.%23ctor(Guid%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/Libplanet/Store/ChainIdNotFoundException.cs/#L17">View Source</a>
-  </span>
-  <a id="Libplanet_Store_ChainIdNotFoundException__ctor_" data-uid="Libplanet.Store.ChainIdNotFoundException.#ctor*"></a>
-  <h4 id="Libplanet_Store_ChainIdNotFoundException__ctor_Guid_System_String_" data-uid="Libplanet.Store.ChainIdNotFoundException.#ctor(Guid,System.String)">ChainIdNotFoundException(Guid, String)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Store.ChainIdNotFoundException.html">ChainIdNotFoundException</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ChainIdNotFoundException(Guid chainId, string message)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Guid</span></td>
-        <td><span class="parametername">chainId</span></td>
-        <td><p>The ID of the chain not found.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>The message that describes the error.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/apiSpec/new?filename=Libplanet_Store_ChainIdNotFoundException_ChainId.md&amp;value=---%0Auid%3A%20Libplanet.Store.ChainIdNotFoundException.ChainId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/apiSpec/new?filename=Libplanet_Net_PreloadBlockDownloadFailEventArgs_InnerExceptions.md&amp;value=---%0Auid%3A%20Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/Libplanet/Store/ChainIdNotFoundException.cs/#L26">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/Libplanet/Net/PreloadBlockDownloadFailEventArgs.cs/#L15">View Source</a>
   </span>
-  <a id="Libplanet_Store_ChainIdNotFoundException_ChainId_" data-uid="Libplanet.Store.ChainIdNotFoundException.ChainId*"></a>
-  <h4 id="Libplanet_Store_ChainIdNotFoundException_ChainId" data-uid="Libplanet.Store.ChainIdNotFoundException.ChainId">ChainId</h4>
-  <div class="markdown level1 summary"><p>Gets the ID of the chain not found.</p>
+  <a id="Libplanet_Net_PreloadBlockDownloadFailEventArgs_InnerExceptions_" data-uid="Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions*"></a>
+  <h4 id="Libplanet_Net_PreloadBlockDownloadFailEventArgs_InnerExceptions" data-uid="Libplanet.Net.PreloadBlockDownloadFailEventArgs.InnerExceptions">InnerExceptions</h4>
+  <div class="markdown level1 summary"><p>The exceptions thrown while the block downloading in preloading.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Guid ChainId { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Exception&gt; InnerExceptions { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -514,7 +472,7 @@ an <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> object.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Guid</span></td>
+        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">Exception</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -527,10 +485,10 @@ an <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> object.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/apiSpec/new?filename=Libplanet_Store_ChainIdNotFoundException.md&amp;value=---%0Auid%3A%20Libplanet.Store.ChainIdNotFoundException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/apiSpec/new?filename=Libplanet_Net_PreloadBlockDownloadFailEventArgs.md&amp;value=---%0Auid%3A%20Libplanet.Net.PreloadBlockDownloadFailEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/Libplanet/Store/ChainIdNotFoundException.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/Libplanet/Net/PreloadBlockDownloadFailEventArgs.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

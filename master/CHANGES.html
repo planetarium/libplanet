@@ -100,6 +100,9 @@ the current chain, not entire storage.  [<a href="https://github.com/planetarium
 <code>IImmutableDictionary&lt;Address, IValue&gt;</code> instead of <code>AddressStateMap</code>.</li>
 </ul>
 </li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method and <code>Swarm&lt;T&gt;.StartAsync()</code> method became
+to take <code>preloadBlockDownloadFailed</code> event handler as an argument.
+[<a href="https://github.com/planetarium/libplanet/pull/694">#694</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -120,6 +123,10 @@ to determine if a peer is in routing table or not.  [<a href="https://github.com
 <li><code>Swarm&lt;T&gt;</code> became to send 100 blocks (instead of 500 blocks) for each
 reply during IDL, in order to stabilize connection in high latency
 environments.  [<a href="https://github.com/planetarium/libplanet/pull/679">#679</a>]</li>
+<li>When <code>Swarm&lt;T&gt;.PreloadAsync()</code> method fails to download blocks,
+<code>Swarm&lt;T&gt;</code> became to call <code>preloadBlockDownloadFailed</code> event handler
+taken as an argument.  If the event handler is not present, <code>Swarm&lt;T&gt;</code>
+throws <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/694">#694</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -1021,7 +1028,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/50ecb5b3494b1e29aac1b5a83a26f50fb15d2e31/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/7daa2f6f0a7c14fb7ed4c09d76285b90d6a85c79/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
