@@ -2067,13 +2067,12 @@ namespace Libplanet.Net
                     // GetBlockStates may return null since swarm may not have deep states.
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
-                        .ToImmutableHashSet()
-                        .Where(bh => !(_store.GetBlockStates(bh) is null))
                         .Select(bh =>
                             new KeyValuePair<
                                 HashDigest<SHA256>,
                                 IImmutableDictionary<Address, IValue>
                             >(bh, _store.GetBlockStates(bh)))
+                        .Where(kv => !(kv.Value is null))
                         .ToImmutableDictionary();
                 }
                 finally
