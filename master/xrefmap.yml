@@ -5295,6 +5295,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListAddresses
   nameWithType: BaseStore.ListAddresses
+- uid: Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.BaseStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Store.BaseStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: BaseStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: BaseStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.BaseStore.ListAllStateReferences*
+  name: ListAllStateReferences
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_
+  commentId: Overload:Libplanet.Store.BaseStore.ListAllStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ListAllStateReferences
+  nameWithType: BaseStore.ListAllStateReferences
 - uid: Libplanet.Store.BaseStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListChainIds
@@ -6002,6 +6018,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ListAddresses
   nameWithType: DefaultStore.ListAddresses
+- uid: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: DefaultStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: DefaultStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.DefaultStore.ListAllStateReferences*
+  name: ListAllStateReferences
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_
+  commentId: Overload:Libplanet.Store.DefaultStore.ListAllStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ListAllStateReferences
+  nameWithType: DefaultStore.ListAllStateReferences
 - uid: Libplanet.Store.DefaultStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListChainIds
@@ -6517,6 +6549,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListAddresses
   nameWithType: IStore.ListAddresses
+- uid: Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
+  commentId: M:Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
+  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+  fullName: Libplanet.Store.IStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
+  fullName.vb: Libplanet.Store.IStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
+  nameWithType: IStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
+  nameWithType.vb: IStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.IStore.ListAllStateReferences*
+  name: ListAllStateReferences
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_
+  commentId: Overload:Libplanet.Store.IStore.ListAllStateReferences
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ListAllStateReferences
+  nameWithType: IStore.ListAllStateReferences
 - uid: Libplanet.Store.IStore.ListChainIds
   name: ListChainIds()
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListChainIds
@@ -6658,22 +6706,6 @@ references:
   commentId: T:Libplanet.Store.StoreExtension
   fullName: Libplanet.Store.StoreExtension
   nameWithType: StoreExtension
-- uid: Libplanet.Store.StoreExtension.ListAllStateReferences(Libplanet.Store.IStore,Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name: ListAllStateReferences(IStore, Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_ListAllStateReferences_Libplanet_Store_IStore_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
-  commentId: M:Libplanet.Store.StoreExtension.ListAllStateReferences(Libplanet.Store.IStore,Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name.vb: ListAllStateReferences(IStore, Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.StoreExtension.ListAllStateReferences(Libplanet.Store.IStore, Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
-  fullName.vb: Libplanet.Store.StoreExtension.ListAllStateReferences(Libplanet.Store.IStore, Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
-  nameWithType: StoreExtension.ListAllStateReferences(IStore, Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: StoreExtension.ListAllStateReferences(IStore, Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-- uid: Libplanet.Store.StoreExtension.ListAllStateReferences*
-  name: ListAllStateReferences
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_ListAllStateReferences_
-  commentId: Overload:Libplanet.Store.StoreExtension.ListAllStateReferences
-  isSpec: "True"
-  fullName: Libplanet.Store.StoreExtension.ListAllStateReferences
-  nameWithType: StoreExtension.ListAllStateReferences
 - uid: Libplanet.Store.StoreExtension.LookupStateReference*
   name: LookupStateReference
   href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_LookupStateReference_
