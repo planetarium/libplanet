@@ -94,6 +94,25 @@ namespace Libplanet.Store
         IEnumerable<Address> ListAddresses(Guid chainId);
 
         /// <summary>
+        /// Lists all accounts, that have any states, in the given <paramref name="chainId"/> and
+        /// their state references.
+        /// </summary>
+        /// <param name="chainId">The chain ID to look up state references.</param>
+        /// <param name="onlyAfter">Includes state references only made after the block
+        /// this argument refers to, if present.</param>
+        /// <param name="ignoreAfter">Excludes state references made after the block
+        /// this argument refers to, if present.</param>
+        /// <returns>A dictionary of account addresses to lists of their corresponding state
+        /// references.  Each list of state references is in ascending order, i.e., the block
+        /// closest to the genesis goes first and the block closest to the tip goes last.</returns>
+        IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                HashDigest<SHA256>? onlyAfter = null,
+                HashDigest<SHA256>? ignoreAfter = null
+            );
+
+        /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
         /// a next <see cref="Block{T}"/> to be mined contains the corresponding
         /// <see cref="Transaction{T}"/>s.

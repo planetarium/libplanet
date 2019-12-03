@@ -28,6 +28,7 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
     to take `preloadBlockDownloadFailed` event handler as an argument.
     [[#694]]
+ -  Removed `StoreExtension.ListAllStateReferences<T>()` method.  [[#701]]
 
 ### Backward-incompatible network protocol changes
 
@@ -41,6 +42,7 @@ To be released.
 ### Added APIs
 
  -  Added `DefaultStore` class to replace `LiteDBStore`.  [[#662]]
+ -  Added `IStore.ListAllStateReferences<T>()` method.  [[#701]]
 
 ### Behavioral changes
 
@@ -70,6 +72,7 @@ To be released.
 [#685]: https://github.com/planetarium/libplanet/pull/685
 [#692]: https://github.com/planetarium/libplanet/pull/692
 [#694]: https://github.com/planetarium/libplanet/pull/694
+[#701]: https://github.com/planetarium/libplanet/pull/701
 
 
 Version 0.7.0

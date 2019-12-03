@@ -46,6 +46,13 @@ namespace Libplanet.Store
         public abstract IEnumerable<Address> ListAddresses(Guid chainId);
 
         /// <inheritdoc />
+        public abstract IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                HashDigest<SHA256>? onlyAfter = null,
+                HashDigest<SHA256>? ignoreAfter = null);
+
+        /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
 
         public abstract void UnstageTransactionIds(

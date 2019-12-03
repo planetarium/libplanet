@@ -266,6 +266,40 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                HashDigest<SHA256>? onlyAfter = null,
+                HashDigest<SHA256>? ignoreAfter = null)
+        {
+            long lowestIndex =
+                onlyAfter is HashDigest<SHA256> @base && GetBlockIndex(@base) is long baseIdx
+                    ? baseIdx + 1
+                    : 0;
+            long highestIndex =
+                ignoreAfter is HashDigest<SHA256> tgt && GetBlockIndex(tgt) is long tgtIdx
+                    ? tgtIdx
+                    : long.MaxValue;
+
+            string collId = StateRefId(chainId);
+            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+
+            Query query = Query.And(
+                Query.All("BlockIndex"),
+                Query.Between("BlockIndex", lowestIndex, highestIndex)
+            );
+
+            IEnumerable<StateRefDoc> stateRefs = coll.Find(query);
+            return stateRefs
+                .GroupBy(stateRef => stateRef.Address)
+                .Select(g =>
+                    new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(
+                        g.Key,
+                        g.Select(r => r.BlockHash).ToImmutableList()))
+                .ToImmutableDictionary();
+        }
+
+        /// <inheritdoc/>
         public override void StageTransactionIds(IImmutableSet<TxId> txids)
         {
             StagedTxIds.InsertBulk(
