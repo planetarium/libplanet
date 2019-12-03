@@ -17,6 +17,7 @@ using Libplanet.Tx;
 using Serilog;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
+[assembly: InternalsVisibleTo("Libplanet.Benchmarks")]
 namespace Libplanet.Blockchain
 {
     /// <summary>
