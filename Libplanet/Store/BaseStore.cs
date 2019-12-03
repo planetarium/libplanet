@@ -52,6 +52,13 @@ namespace Libplanet.Store
                 HashDigest<SHA256>? onlyAfter = null,
                 HashDigest<SHA256>? ignoreAfter = null);
 
+        /// <inheritdoc/>
+        public abstract IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                long lowestIndex,
+                long highestIndex);
+
         /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);
 

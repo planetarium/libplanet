@@ -13,6 +13,7 @@ namespace Libplanet.Net.Messages
     {
         public RecentStates(
             HashDigest<SHA256> blockHash,
+            long offset,
             IImmutableDictionary<
                 HashDigest<SHA256>,
                 IImmutableDictionary<Address, IValue>
@@ -21,6 +22,7 @@ namespace Libplanet.Net.Messages
         )
         {
             BlockHash = blockHash;
+            Offset = offset;
 
             if (blockStates is null && stateReferences is null)
             {
@@ -48,6 +50,9 @@ namespace Libplanet.Net.Messages
 
             it.MoveNext();
             BlockHash = new HashDigest<SHA256>(it.Current.Buffer);
+
+            it.MoveNext();
+            Offset = it.Current.ConvertToInt64();
 
             it.MoveNext();
             int accountsCount = it.Current.ConvertToInt32();
@@ -118,6 +123,8 @@ namespace Libplanet.Net.Messages
 
         public HashDigest<SHA256> BlockHash { get; }
 
+        public long Offset { get; }
+
         public bool Missing => BlockStates is null;
 
         public IImmutableDictionary<
@@ -147,41 +154,46 @@ namespace Libplanet.Net.Messages
             |   The requested block hash which corresponds to
             |   the given GetRecentStates.BlockHash value.
             +
-            | 2. StateReferences.Count (4 bytes; 32-bit integer in big endian)
-            |   The number of the accounts of the following state references (3) in the payload.
+            | 2. Offset (64 bytes; long)
+            |   Indicates the latest block's offset that sender have
+            |   sent state references and block states.
+            +
+            | 3. StateReferences.Count (4 bytes; 32-bit integer in big endian)
+            |   The number of the accounts of the following state references (4) in the payload.
             |   When Missing = true, this contains -1 and no data frames follow at all.
             +
-            | 3. StateReferences [unordered]
-            | | 3.1. Key (20 bytes; account address)
-            | |   The account address of the following state references (3.3).
+            | 4. StateReferences [unordered]
+            | | 4.1. Key (20 bytes; account address)
+            | |   The account address of the following state references (4.3).
             | +
-            | | 3.2. Value.Count (4 bytes; 32-bit integer in big endian)
-            | |   The length of the following state references (3.3).
+            | | 4.2. Value.Count (4 bytes; 32-bit integer in big endian)
+            | |   The length of the following state references (4.3).
             | +
-            | | 3.3. Value [descending order; the recent block goes first & the oldest goes last]
-            | | | 3.3.1. (32 bytes; SHA-256 digest)
-            | | |   A state reference of the account (3.1).
+            | | 4.3. Value [descending order; the recent block goes first & the oldest goes last]
+            | | | 4.3.1. (32 bytes; SHA-256 digest)
+            | | |   A state reference of the account (4.1).
             +
-            | 4. BlockStates.Count (4 bytes; 32-bit integer in big endian)
-            |   The number of the following block states (7) in the payload.
+            | 5. BlockStates.Count (4 bytes; 32-bit integer in big endian)
+            |   The number of the following block states (6) in the payload.
             +
-            | 5. BlockStates [unordered]
-            | | 5.1. Key (32 bytes; SHA-256 digest)
-            | |   A block hash having the following states delta (7.3).
+            | 6. BlockStates [unordered]
+            | | 6.1. Key (32 bytes; SHA-256 digest)
+            | |   A block hash having the following states delta (6.3).
             | +
-            | | 5.2. Value.Count (4 bytes; 32-bit integer in big endian)
-            | |   The number of accounts whose states changed in the following delta (7.3).
+            | | 6.2. Value.Count (4 bytes; 32-bit integer in big endian)
+            | |   The number of accounts whose states changed in the following delta (6.3).
             | +
-            | | 5.3. Value [unordered]
-            | | | 5.3.1. Key (20 bytes; account address)
-            | | |   An account address having the following updated state (7.3.2).
+            | | 6.3. Value [unordered]
+            | | | 6.3.1. Key (20 bytes; account address)
+            | | |   An account address having the following updated state (6.3.2).
             | | +
-            | | | 5.3.2. Value (varying bytes; <a href="https://bencodex.org">Bencodex</a> format)
-            | | |   An updated state of the account (7.3.1).
+            | | | 6.3.2. Value (varying bytes; <a href="https://bencodex.org">Bencodex</a> format)
+            | | |   An updated state of the account (6.3.1).
             */
             get
             {
                 yield return new NetMQFrame(BlockHash.ToByteArray());
+                yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(Offset));
                 if (Missing)
                 {
                     yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(-1));

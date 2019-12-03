@@ -286,6 +286,16 @@ namespace Libplanet.Store
                     ? tgtIdx
                     : long.MaxValue;
 
+            return ListAllStateReferences(chainId, lowestIndex, highestIndex);
+        }
+
+        /// <inheritdoc/>
+        public override IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+                Guid chainId,
+                long lowestIndex,
+                long highestIndex)
+        {
             string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
 
