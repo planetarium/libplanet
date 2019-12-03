@@ -1420,6 +1420,9 @@ namespace Libplanet.Net
 
                             if (txIds.Any())
                             {
+                                _logger.Debug(
+                                    "Broadcast Staged Transactions: [{txIds}]",
+                                    string.Join(", ", txIds));
                                 BroadcastTxIds(txIds);
                             }
                         }, cancellationToken);
@@ -1888,6 +1891,9 @@ namespace Libplanet.Net
             }
 
             _logger.Debug("Trying to fetch txs...");
+            _logger.Debug(
+                "Received TxIds: [{txIds}]",
+                string.Join(", ", message.Ids));
 
             ImmutableHashSet<TxId> newTxIds = message.Ids
                 .Where(id => !_store.ContainsTransaction(id))
