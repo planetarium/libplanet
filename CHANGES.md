@@ -34,6 +34,9 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  Added long typed `offset` parameter to `RecentStates` and
+    `GetRecentStates` messages.  [[#703]]
+
 ### Backward-incompatible storage format changes
 
  -  The introduced `DefaultStore` is incompatible at the file-level with
@@ -44,7 +47,7 @@ To be released.
 ### Added APIs
 
  -  Added `DefaultStore` class to replace `LiteDBStore`.  [[#662]]
- -  Added `IStore.ListAllStateReferences<T>()` method.  [[#701]]
+ -  Added `IStore.ListAllStateReferences<T>()` method.  [[#701], [#703]]
  -  Added `BlockChain<T>.Genesis` property.  [[#688]]
  -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
@@ -60,6 +63,8 @@ To be released.
     `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
     taken as an argument.  If the event handler is not present, `Swarm<T>`
     throws `SwarmException`.  [[#694]]
+ -  `Swarm<T>.PreloadAsync()` became not to sync state references and block
+    states at once.  [[#703]]
  -  `Swarm<T>` became to print less logs on debug level during sending states.
     [[#706]]
 
@@ -83,6 +88,7 @@ To be released.
 [#692]: https://github.com/planetarium/libplanet/pull/692
 [#694]: https://github.com/planetarium/libplanet/pull/694
 [#701]: https://github.com/planetarium/libplanet/pull/701
+[#703]: https://github.com/planetarium/libplanet/pull/703
 [#704]: https://github.com/planetarium/libplanet/pull/704
 [#706]: https://github.com/planetarium/libplanet/pull/706
 
