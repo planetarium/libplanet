@@ -850,15 +850,15 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T)
   nameWithType: BlockChain<T>
   nameWithType.vb: BlockChain(Of T)
-- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore)
-  name: BlockChain(IBlockPolicy<T>, IStore)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_
-  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore)
-  name.vb: BlockChain(IBlockPolicy(Of T), IStore)
-  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Store.IStore)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Store.IStore)
-  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStore)
-  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStore)
+- uid: Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore,Libplanet.Blocks.Block{`0})
+  name: BlockChain(IBlockPolicy<T>, IStore, Block<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_Libplanet_Blockchain_Policies_IBlockPolicy__0__Libplanet_Store_IStore_Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.#ctor(Libplanet.Blockchain.Policies.IBlockPolicy{`0},Libplanet.Store.IStore,Libplanet.Blocks.Block{`0})
+  name.vb: BlockChain(IBlockPolicy(Of T), IStore, Block(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy<T>, Libplanet.Store.IStore, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).BlockChain(Libplanet.Blockchain.Policies.IBlockPolicy(Of T), Libplanet.Store.IStore, Libplanet.Blocks.Block(Of T))
+  nameWithType: BlockChain<T>.BlockChain(IBlockPolicy<T>, IStore, Block<T>)
+  nameWithType.vb: BlockChain(Of T).BlockChain(IBlockPolicy(Of T), IStore, Block(Of T))
 - uid: Libplanet.Blockchain.BlockChain`1.#ctor*
   name: BlockChain
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1__ctor_
@@ -964,6 +964,23 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Finalize
   nameWithType: BlockChain<T>.Finalize
   nameWithType.vb: BlockChain(Of T).Finalize
+- uid: Libplanet.Blockchain.BlockChain`1.Genesis
+  name: Genesis
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Genesis
+  commentId: P:Libplanet.Blockchain.BlockChain`1.Genesis
+  fullName: Libplanet.Blockchain.BlockChain<T>.Genesis
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Genesis
+  nameWithType: BlockChain<T>.Genesis
+  nameWithType.vb: BlockChain(Of T).Genesis
+- uid: Libplanet.Blockchain.BlockChain`1.Genesis*
+  name: Genesis
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Genesis_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.Genesis
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.Genesis
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Genesis
+  nameWithType: BlockChain<T>.Genesis
+  nameWithType.vb: BlockChain(Of T).Genesis
 - uid: Libplanet.Blockchain.BlockChain`1.GetNextTxNonce(Libplanet.Address)
   name: GetNextTxNonce(Address)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_GetNextTxNonce_Libplanet_Address_
@@ -1069,6 +1086,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Item
   nameWithType: BlockChain<T>.Item
   nameWithType.vb: BlockChain(Of T).Item
+- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset})
+  name: MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_IEnumerable__0__Libplanet_Crypto_PrivateKey_System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock(IEnumerable{`0},Libplanet.Crypto.PrivateKey,System.Nullable{DateTimeOffset})
+  name.vb: MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, Libplanet.Crypto.PrivateKey, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), Libplanet.Crypto.PrivateKey, System.Nullable(Of DateTimeOffset))
+  nameWithType: BlockChain<T>.MakeGenesisBlock(IEnumerable<T>, PrivateKey, Nullable<DateTimeOffset>)
+  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock(IEnumerable(Of T), PrivateKey, Nullable(Of DateTimeOffset))
+- uid: Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock*
+  name: MakeGenesisBlock
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeGenesisBlock_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.MakeGenesisBlock
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.BlockChain<T>.MakeGenesisBlock
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).MakeGenesisBlock
+  nameWithType: BlockChain<T>.MakeGenesisBlock
+  nameWithType.vb: BlockChain(Of T).MakeGenesisBlock
 - uid: Libplanet.Blockchain.BlockChain`1.MakeTransaction(Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
   name: MakeTransaction(PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_MakeTransaction_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
@@ -1949,6 +1984,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidBlockTimestampException.InvalidBlockTimestampException
   nameWithType: InvalidBlockTimestampException.InvalidBlockTimestampException
+- uid: Libplanet.Blocks.InvalidGenesisBlockException
+  name: InvalidGenesisBlockException
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html
+  commentId: T:Libplanet.Blocks.InvalidGenesisBlockException
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException
+  nameWithType: InvalidGenesisBlockException
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.HashDigest{SHA256},Libplanet.HashDigest{SHA256},System.String)
+  name: InvalidGenesisBlockException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException__ctor_Libplanet_HashDigest_SHA256__Libplanet_HashDigest_SHA256__System_String_
+  commentId: M:Libplanet.Blocks.InvalidGenesisBlockException.#ctor(Libplanet.HashDigest{SHA256},Libplanet.HashDigest{SHA256},System.String)
+  name.vb: InvalidGenesisBlockException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException(Libplanet.HashDigest<SHA256>, Libplanet.HashDigest<SHA256>, System.String)
+  fullName.vb: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException(Libplanet.HashDigest(Of SHA256), Libplanet.HashDigest(Of SHA256), System.String)
+  nameWithType: InvalidGenesisBlockException.InvalidGenesisBlockException(HashDigest<SHA256>, HashDigest<SHA256>, String)
+  nameWithType.vb: InvalidGenesisBlockException.InvalidGenesisBlockException(HashDigest(Of SHA256), HashDigest(Of SHA256), String)
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.#ctor*
+  name: InvalidGenesisBlockException
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException__ctor_
+  commentId: Overload:Libplanet.Blocks.InvalidGenesisBlockException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.InvalidGenesisBlockException
+  nameWithType: InvalidGenesisBlockException.InvalidGenesisBlockException
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected
+  name: NetworkExpected
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException_NetworkExpected
+  commentId: P:Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected
+  nameWithType: InvalidGenesisBlockException.NetworkExpected
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected*
+  name: NetworkExpected
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException_NetworkExpected_
+  commentId: Overload:Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.NetworkExpected
+  nameWithType: InvalidGenesisBlockException.NetworkExpected
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.Stored
+  name: Stored
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException_Stored
+  commentId: P:Libplanet.Blocks.InvalidGenesisBlockException.Stored
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.Stored
+  nameWithType: InvalidGenesisBlockException.Stored
+- uid: Libplanet.Blocks.InvalidGenesisBlockException.Stored*
+  name: Stored
+  href: api/Libplanet.Blocks.InvalidGenesisBlockException.html#Libplanet_Blocks_InvalidGenesisBlockException_Stored_
+  commentId: Overload:Libplanet.Blocks.InvalidGenesisBlockException.Stored
+  isSpec: "True"
+  fullName: Libplanet.Blocks.InvalidGenesisBlockException.Stored
+  nameWithType: InvalidGenesisBlockException.Stored
 - uid: Libplanet.ByteUtil
   name: ByteUtil
   href: api/Libplanet.ByteUtil.html

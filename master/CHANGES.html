@@ -104,6 +104,8 @@ the current chain, not entire storage.  [<a href="https://github.com/planetarium
 to take <code>preloadBlockDownloadFailed</code> event handler as an argument.
 [<a href="https://github.com/planetarium/libplanet/pull/694">#694</a>]</li>
 <li>Removed <code>StoreExtension.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>]</li>
+<li>Added the <code>genesisBlock</code> parameter to
+<code>BlockChain&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -117,6 +119,9 @@ subdirectories and a LiteDB file for indices.  [<a href="https://github.com/plan
 <ul>
 <li>Added <code>DefaultStore</code> class to replace <code>LiteDBStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
 <li>Added <code>IStore.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.Genesis</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
+<li>Added <code>InvalidGenesisBlockException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -1030,7 +1035,7 @@ to ignore peers if their version is different.  [<a href="https://github.com/pla
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/1de9fb488fc792635dce82747eed8b7017bc2753/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/CHANGES.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
