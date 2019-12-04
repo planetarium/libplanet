@@ -60,7 +60,7 @@ To be released.
     `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
     taken as an argument.  If the event handler is not present, `Swarm<T>`
     throws `SwarmException`.  [[#694]]
- -  `Swarm<T>` became prints less logs during transfer its states on debug level.
+ -  `Swarm<T>` became to print less logs on debug level during sending states.
     [[#706]]
 
 ### Bug fixes
