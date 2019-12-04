@@ -27,12 +27,14 @@ namespace Libplanet.Tests.Net.Messages
                 new RecentStates(
                     default,
                     default,
+                    default,
                     null,
                     ImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>.Empty
                 )
             );
             Assert.Throws<ArgumentNullException>(() =>
                 new RecentStates(
+                    default,
                     default,
                     default,
                     emptyBlockStates,
@@ -91,13 +93,14 @@ namespace Libplanet.Tests.Net.Messages
                     return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(a, states);
                 }).ToImmutableDictionary();
 
-            RecentStates reply = new RecentStates(blockHash, -1, compressedBlockStates, stateRefs);
+            RecentStates reply =
+                new RecentStates(blockHash, -1, 1, compressedBlockStates, stateRefs);
 
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), 0);
 
             NetMQMessage msg = reply.ToNetMQMessage(privKey, peer);
             const int headerSize = 3;  // type, peer, sig
-            int stateRefsOffset = headerSize + 2;  // blockHash, offsetHash
+            int stateRefsOffset = headerSize + 3;  // blockHash, offsetHash, iteration
             int blockStatesOffset = stateRefsOffset + 1 + (accountsCount * 4);
             Assert.Equal(
                blockStatesOffset + 1 + (compressedBlockStates.Count * 4),
@@ -154,7 +157,7 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(compressedBlockStates, parsed.BlockStates);
             Assert.Equal(stateRefs, parsed.StateReferences);
 
-            RecentStates missing = new RecentStates(blockHash, -1, null, null);
+            RecentStates missing = new RecentStates(blockHash, -1, 1, null, null);
             msg = missing.ToNetMQMessage(privKey, peer);
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
             Assert.Equal(-1, msg[stateRefsOffset].ConvertToInt32());

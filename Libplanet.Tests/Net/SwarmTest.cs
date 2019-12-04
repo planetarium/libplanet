@@ -1760,20 +1760,11 @@ namespace Libplanet.Tests.Net
             receiverChain.Append(bp);
             receiverChain.Append(b2recv);
 
-            var receivedBlockStates = new HashSet<HashDigest<SHA256>>();
-
             try
             {
                 await StartAsync(senderSwarm);
                 await receiverSwarm.AddPeersAsync(new[] { senderSwarm.AsPeer }, null);
                 await receiverSwarm.PreloadAsync(
-                    progress: new Progress<PreloadState>(state =>
-                    {
-                        if (state is BlockStateDownloadState s)
-                        {
-                            receivedBlockStates.Add(s.ReceivedBlockHash);
-                        }
-                    }),
                     trustedStateValidators: ImmutableHashSet<Address>.Empty.Add(senderSwarm.Address)
                 );
             }
@@ -1783,8 +1774,11 @@ namespace Libplanet.Tests.Net
             }
 
             Assert.Equal(senderChain.BlockHashes, receiverChain.BlockHashes);
-            Assert.DoesNotContain(g.Hash, receivedBlockStates);
-            Assert.DoesNotContain(bp.Hash, receivedBlockStates);
+            // FIXME: these should be tested via storage
+            /*
+            Assert.DoesNotContain(g.Hash, receivedBlockStates)
+            Assert.DoesNotContain(bp.Hash, receivedBlockStates)
+            */
         }
 
         [Fact(Timeout = Timeout)]
@@ -1869,7 +1863,16 @@ namespace Libplanet.Tests.Net
 
                 IImmutableSet<Address> trustedPeers =
                     new[] { minerSwarm.Address }.ToImmutableHashSet();
-                await receiverSwarm.PreloadAsync(trustedStateValidators: trustedPeers);
+                var downloadStates = new List<StateDownloadState>();
+                await receiverSwarm.PreloadAsync(
+                    progress: new Progress<PreloadState>(state =>
+                    {
+                        if (state is StateDownloadState srds)
+                        {
+                            downloadStates.Add(srds);
+                        }
+                    }),
+                    trustedStateValidators: trustedPeers);
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
@@ -1906,6 +1909,18 @@ namespace Libplanet.Tests.Net
                     Assert.NotNull(state);
                     Assert.Equal((Text)"Genesis", state);
                 }
+
+                int totalCount =
+                    (int)Math.Ceiling((double)minerChain.Count /
+                                       minerSwarm.FindNextStatesChunkSize);
+                Assert.Equal(totalCount, downloadStates.Count);
+                i = 1;
+                foreach (StateDownloadState state in downloadStates)
+                {
+                    Assert.Equal(2, state.CurrentPhase);
+                    Assert.Equal(totalCount, state.TotalIterationCount);
+                    Assert.Equal(i++, state.ReceivedIterationCount);
+                }
             }
             finally
             {
@@ -1938,7 +1953,7 @@ namespace Libplanet.Tests.Net
             swarm0.FindNextStatesChunkSize = 4;
             swarm1.FindNextStatesChunkSize = 3;
 
-            const int repeat = 10;
+            const int repeat = 15;
             for (int i = 0; i < repeat; i++)
             {
                 Block<DumbAction> block = await chain0.MineBlock(swarm0.Address);
