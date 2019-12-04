@@ -2029,7 +2029,7 @@ namespace Libplanet.Net
                 }
             }
 
-            if (_logger.IsEnabled(LogEventLevel.Debug))
+            if (_logger.IsEnabled(LogEventLevel.Verbose))
             {
                 if (_store.ContainsBlock(target))
                 {
@@ -2037,7 +2037,7 @@ namespace Libplanet.Net
                         ? $"{BlockChain[h].Index}:{h}"
                         : null;
                     var targetString = $"{BlockChain[target].Index}:{target}";
-                    _logger.Debug(
+                    _logger.Verbose(
                         "State references to send (preload): {StateReferences} ({Base}-{Target})",
                         stateRefs.Select(kv =>
                             (
@@ -2048,7 +2048,7 @@ namespace Libplanet.Net
                         baseString,
                         targetString
                     );
-                    _logger.Debug(
+                    _logger.Verbose(
                         "Block states to send (preload): {BlockStates} ({Base}-{Target})",
                         blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
                         baseString,
@@ -2057,7 +2057,7 @@ namespace Libplanet.Net
                 }
                 else
                 {
-                    _logger.Debug("Nothing to reply because {TargetHash} doesn't exist.", target);
+                    _logger.Verbose("Nothing to reply because {TargetHash} doesn't exist.", target);
                 }
             }
 
