@@ -31,11 +31,17 @@ To be released.
  -  Removed `StoreExtension.ListAllStateReferences<T>()` method.  [[#701]]
  -  Added the `genesisBlock` parameter to
     `BlockChain<T>()` constructor.  [[#688]]
+ -  Removed `StateReferenceDownloadState`.  [[#703]]
+ -  Removed `BlockStateDownloadState`.  [[#703]]
+ -  Added `StateDownloadState` which reports state preloading iteration
+    progress.  [[#703]]
 
 ### Backward-incompatible network protocol changes
 
  -  Added long typed `offset` parameter to `RecentStates` and
     `GetRecentStates` messages.  [[#703]]
+ -  Added int typed `iteration` parameter to `RecentStates` message.
+    [[#703]]
 
 ### Backward-incompatible storage format changes
 
