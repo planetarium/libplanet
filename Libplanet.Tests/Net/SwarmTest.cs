@@ -1791,9 +1791,9 @@ namespace Libplanet.Tests.Net
             var policy = new BlockPolicy<DumbAction>();
 
             BlockChain<DumbAction> minerChain =
-                new BlockChain<DumbAction>(policy, fx1.Store);
+                TestUtils.MakeBlockChain(policy, fx1.Store);
             BlockChain<DumbAction> receiverChain =
-                new BlockChain<DumbAction>(policy, fx2.Store);
+                TestUtils.MakeBlockChain(policy, fx2.Store);
 
             Swarm<DumbAction> minerSwarm = CreateSwarm(minerChain);
             Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain);
@@ -1953,7 +1953,8 @@ namespace Libplanet.Tests.Net
             swarm0.FindNextStatesChunkSize = 4;
             swarm1.FindNextStatesChunkSize = 3;
 
-            const int repeat = 15;
+            blockHashes.Add(chain0.Genesis.Hash);
+            const int repeat = 14;
             for (int i = 0; i < repeat; i++)
             {
                 Block<DumbAction> block = await chain0.MineBlock(swarm0.Address);
@@ -1979,9 +1980,9 @@ namespace Libplanet.Tests.Net
                     Assert.Equal((Integer)repeat, (Integer)blockActionState);
                 }
 
-                for (int i = 0; i < repeat; i++)
+                for (int i = 1; i <= repeat; i++)
                 {
-                    if (i == 3 || i == 7 || i == 11 || i == repeat - 1)
+                    if (i == 3 || i == 7 || i == 11 || i == repeat)
                     {
                         var state = chain1.GetState(
                             swarm0.Address,
@@ -1989,7 +1990,7 @@ namespace Libplanet.Tests.Net
                             completeStates: false
                         );
                         Assert.NotNull(state);
-                        Assert.Equal((Integer)(i + 1), (Integer)state);
+                        Assert.Equal((Integer)i, (Integer)state);
                     }
                     else
                     {
@@ -2017,9 +2018,9 @@ namespace Libplanet.Tests.Net
                     Assert.Equal((Integer)repeat, (Integer)blockActionState);
                 }
 
-                for (int i = 0; i < repeat; i++)
+                for (int i = 1; i <= repeat; i++)
                 {
-                    if (i == 11 || i == repeat - 1)
+                    if (i == 11 || i == repeat)
                     {
                         var state = chain2.GetState(
                             swarm0.Address,
@@ -2027,7 +2028,7 @@ namespace Libplanet.Tests.Net
                             completeStates: false
                         );
                         Assert.NotNull(state);
-                        Assert.Equal((Integer)(i + 1), (Integer)state);
+                        Assert.Equal((Integer)i, (Integer)state);
                     }
                     else
                     {
