@@ -634,6 +634,33 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task StateAfterForkingAndAddingExistingBlock()
+        {
+            var miner = _fx.Address1;
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+            var actions1 = new[] { new DumbAction(address, "foo") };
+            var actions2 = new[] { new DumbAction(address, "bar") };
+
+            _blockChain.MakeTransaction(privateKey, actions1);
+            var b1 = await _blockChain.MineBlock(miner);
+
+            _blockChain.MakeTransaction(privateKey, actions2);
+            var b2 = await _blockChain.MineBlock(miner);
+            var state = _blockChain.GetState(address);
+
+            Assert.Equal((Text)"foo,bar", state);
+
+            var forked = _blockChain.Fork(b1.Hash);
+            state = forked.GetState(address);
+            Assert.Equal((Text)"foo", state);
+
+            forked.Append(b2);
+            state = forked.GetState(address);
+            Assert.Equal((Text)"foo,bar", state);
+        }
+
+        [Fact]
         public void ForkStateReferences()
         {
             Address addr1 = new PrivateKey().PublicKey.ToAddress();
