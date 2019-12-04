@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -36,9 +37,9 @@ namespace Libplanet.Tests.Blockchain.Policies
                 TimeSpan.FromHours(3),
                 1024,
                 128);
-            _chain = new BlockChain<DumbAction>(_policy, _fx.Store);
+            _chain = new BlockChain<DumbAction>(_policy, _fx.Store, _fx.GenesisBlock);
             _emptyTransaction = new List<Transaction<DumbAction>>();
-            _genesis = TestUtils.MineGenesis<DumbAction>();
+            _genesis = _chain.Genesis;
             _validNext = Block<DumbAction>.Mine(
                 1,
                 1024,
@@ -84,62 +85,54 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public async Task GetNextBlockDifficulty()
         {
+            var store = new DefaultStore(null);
             var dateTimeOffset = FixtureEpoch;
+            var chain = TestUtils.MakeBlockChain(_policy, store, timestamp: dateTimeOffset);
             var address = _fx.Address1;
-
-            Assert.Equal(
-                0,
-                _policy.GetNextBlockDifficulty(_chain)
-            );
-            await _chain.MineBlock(address, dateTimeOffset);
-
             Assert.Equal(
                 1024,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(1);
-            await _chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(address, dateTimeOffset);
 
             Assert.Equal(
                 1032,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(3);
-            await _chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(address, dateTimeOffset);
 
             Assert.Equal(
                 1040,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(7);
-            await _chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(address, dateTimeOffset);
 
             Assert.Equal(
                 1040,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(9);
-            await _chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(address, dateTimeOffset);
 
             Assert.Equal(
                 1048,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
             dateTimeOffset = FixtureEpoch + TimeSpan.FromHours(13);
-            await _chain.MineBlock(address, dateTimeOffset);
+            await chain.MineBlock(address, dateTimeOffset);
 
             Assert.Equal(
                 1048,
-                _policy.GetNextBlockDifficulty(_chain)
+                _policy.GetNextBlockDifficulty(chain)
             );
         }
 
         [Fact]
         public void ValidateNextBlock()
         {
-            _policy.ValidateNextBlock(_chain, _genesis);
-            _chain.Append(_genesis);
-
             var validNextBlock = Block<DumbAction>.Mine(
                 1,
                 1,
@@ -151,34 +144,8 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void ValidateNextBlockGenesis()
-        {
-            var validGenesis = TestUtils.MineGenesis<DumbAction>();
-            Assert.Null(
-                _policy.ValidateNextBlock(_chain, validGenesis));
-
-            var invalidIndexGenesis = TestUtils.MineNext(validGenesis);
-            Assert.IsType<InvalidBlockIndexException>(
-                _policy.ValidateNextBlock(_chain, invalidIndexGenesis));
-
-            var invalidPreviousHashGenesis = new Block<DumbAction>(
-                 0,
-                 0,
-                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
-                 _genesis.Miner,
-                 new HashDigest<SHA256>(new byte[32]),
-                 _genesis.Timestamp,
-                 _emptyTransaction);
-            Assert.IsType<InvalidBlockPreviousHashException>(
-                _policy.ValidateNextBlock(
-                    _chain,
-                    invalidPreviousHashGenesis));
-        }
-
-        [Fact]
         public void ValidateNextBlockInvalidIndex()
         {
-            _chain.Append(_genesis);
             _chain.Append(_validNext);
 
             var invalidIndexBlock = Block<DumbAction>.Mine(
@@ -195,7 +162,6 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateNextBlockInvalidDifficulty()
         {
-            _chain.Append(_genesis);
             _chain.Append(_validNext);
 
             var invalidDifficultyBlock = Block<DumbAction>.Mine(
@@ -214,7 +180,6 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateNextBlockInvalidPreviousHash()
         {
-            _chain.Append(_genesis);
             _chain.Append(_validNext);
 
             var invalidPreviousHashBlock = Block<DumbAction>.Mine(
@@ -233,7 +198,6 @@ namespace Libplanet.Tests.Blockchain.Policies
         [Fact]
         public void ValidateNextBlockInvalidTimestamp()
         {
-            _chain.Append(_genesis);
             _chain.Append(_validNext);
 
             var invalidPreviousTimestamp = Block<DumbAction>.Mine(

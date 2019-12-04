@@ -24,6 +24,8 @@ namespace Libplanet.Blockchain
     /// A class have <see cref="Block{T}"/>s, <see cref="Transaction{T}"/>s, and the chain
     /// information.
     /// </summary>
+    /// <remarks>This object is guaranteed that it has at least one block, since it takes a genesis
+    /// block when it's instantiated.</remarks>
     /// <typeparam name="T">An <see cref="IAction"/> type.  It should match
     /// to <see cref="Block{T}"/>'s type parameter.</typeparam>
     /// <seealso cref="IAction"/>
@@ -64,16 +66,29 @@ namespace Libplanet.Blockchain
         /// <see cref="BlockChain{T}"/>.</param>
         /// <param name="store"><see cref="IStore"/> to store <see cref="Block{T}"/>s,
         /// <see cref="Transaction{T}"/>s, and <see cref="BlockChain{T}"/> information.</param>
-        public BlockChain(IBlockPolicy<T> policy, IStore store)
-            : this(
-                policy,
-                store,
-                store.GetCanonicalChainId() ?? Guid.NewGuid()
+        /// <param name="genesisBlock">The genesis <see cref="Block{T}"/> of
+        /// the <see cref="BlockChain{T}"/>, which is a part of the consensus.
+        /// If the given <paramref name="store"/> already contains the genesis block
+        /// it checks if the existing genesis block and this argument is the same.
+        /// If the <paramref name="store"/> has no genesis block yet this argument will
+        /// be used for that.</param>
+        /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
+        /// has a genesis block and it does not match to what the network expects
+        /// (i.e., <paramref name="genesisBlock"/>).</exception>
+        public BlockChain(
+            IBlockPolicy<T> policy,
+            IStore store,
+            Block<T> genesisBlock
             )
+            : this(policy, store, store.GetCanonicalChainId() ?? Guid.NewGuid(), genesisBlock)
         {
         }
 
-        internal BlockChain(IBlockPolicy<T> policy, IStore store, Guid id)
+        internal BlockChain(
+            IBlockPolicy<T> policy,
+            IStore store,
+            Guid id,
+            Block<T> genesisBlock)
         {
             Id = id;
             Policy = policy;
@@ -91,6 +106,25 @@ namespace Libplanet.Blockchain
 
             _logger = Log.ForContext<BlockChain<T>>()
                 .ForContext("CanonicalChainId", Id);
+
+            if (Count == 0)
+            {
+                Append(genesisBlock);
+            }
+            else if (!Genesis.Equals(genesisBlock))
+            {
+                string msg =
+                    $"The genesis block that the given {nameof(IStore)} contains does not match " +
+                    "to the genesis block that the network expects.  You might pass the wrong " +
+                    "store which is incompatible with this chain.  Or your network might " +
+                    "restarted the chain with a new genesis block so that it is incompatible " +
+                    "with your existing chain in the local store.";
+                throw new InvalidGenesisBlockException(
+                    networkExpected: genesisBlock.Hash,
+                    stored: Genesis.Hash,
+                    message: msg
+                );
+            }
         }
 
         ~BlockChain()
@@ -123,6 +157,11 @@ namespace Libplanet.Blockchain
                 }
             }
         }
+
+        /// <summary>
+        /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
+        /// </summary>
+        public Block<T> Genesis => this[0];
 
         public Guid Id { get; private set; }
 
@@ -208,6 +247,34 @@ namespace Libplanet.Blockchain
                     _rwlock.ExitReadLock();
                 }
             }
+        }
+
+        /// <summary>
+        /// Mine the genesis block of the blockchain.
+        /// </summary>
+        /// <param name="actions">List of actions will be included in the genesis block.
+        /// If it's null, it will be replaced with <see cref="ImmutableArray{T}.Empty"/>
+        /// as default.</param>
+        /// <param name="privateKey">A private key to sign the transaction in the genesis block.
+        /// If it's null, it will use new private key as default.</param>
+        /// <param name="timestamp">The timestamp of the genesis block. If it's null, it will
+        /// use <see cref="DateTimeOffset.UtcNow"/> as default.</param>
+        /// <returns>The genesis block mined with parameters.</returns>
+        public static Block<T> MakeGenesisBlock(
+            IEnumerable<T> actions = null,
+            PrivateKey privateKey = null,
+            DateTimeOffset? timestamp = null)
+        {
+            privateKey = privateKey ?? new PrivateKey();
+            actions = actions ?? ImmutableArray<T>.Empty;
+
+            return Block<T>.Mine(
+                0,
+                0,
+                privateKey.PublicKey.ToAddress(),
+                null,
+                timestamp ?? DateTimeOffset.UtcNow,
+                new[] { Transaction<T>.Create(0, privateKey, actions, timestamp: timestamp), });
         }
 
         /// <summary>
@@ -948,7 +1015,7 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
-            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid());
+            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +

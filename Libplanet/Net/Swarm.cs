@@ -126,6 +126,7 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow);
             LastReceived = now;
             TxReceived = new AsyncAutoResetEvent();
+            BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
             DifferentVersionPeerEncountered = differentVersionPeerEncountered;
 
@@ -258,6 +259,9 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        // FIXME: Should have a unit test.
+        internal AsyncAutoResetEvent BlockAppended { get; }
 
         internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
 
@@ -687,7 +691,7 @@ namespace Libplanet.Net
             // blockchain with it.
             BlockChain<T> workspace = initialTip is Block<T> tip
                 ? BlockChain.Fork(tip.Hash)
-                : new BlockChain<T>(BlockChain.Policy, _store, Guid.NewGuid());
+                : new BlockChain<T>(BlockChain.Policy, _store, Guid.NewGuid(), BlockChain.Genesis);
 
             var complete = false;
 
@@ -1559,6 +1563,9 @@ namespace Libplanet.Net
                 return;
             }
 
+            LastReceived = DateTimeOffset.UtcNow;
+            BlockReceived.Set();
+
             try
             {
                 using (await _blockSyncMutex.LockAsync(cancellationToken))
@@ -1701,6 +1708,8 @@ namespace Libplanet.Net
 
                 _logger.Debug("Sync is done.");
 
+                BlockAppended.Set();
+
                 var blockHashes =
                     blocks.Aggregate(string.Empty, (current, block) =>
                         current + $"[{block.Hash.ToString()}]");
@@ -1718,8 +1727,6 @@ namespace Libplanet.Net
                     "Received index is older than current chain's tip." +
                     " ignored.");
             }
-
-            BlockReceived.Set();
         }
 
         private async Task<BlockChain<T>> FillBlocksAsync(
@@ -1771,15 +1778,11 @@ namespace Libplanet.Net
                     // same genesis block...
                     else if (!BlockChain.ContainsBlock(branchPoint))
                     {
-                        // Create a whole new chain because the branch point doesn't exist on
-                        // the current chain.
-                        _logger.Debug("Create new chain...");
-                        workspace = new BlockChain<T>(
-                            workspace.Policy,
-                            workspace.Store,
-                            Guid.NewGuid()
-                        );
-                        scope.Add(workspace.Id);
+                        _logger.Debug(
+                            $"Since the genesis block is fixed to {BlockChain.Genesis} " +
+                            "protocol-wise, the blockchain which does not share " +
+                            "any mutual block is not acceptable.");
+                        break;
                     }
                     else
                     {
