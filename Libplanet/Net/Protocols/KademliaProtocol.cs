@@ -750,7 +750,7 @@ namespace Libplanet.Net.Protocols
                         history,
                         target,
                         peers[i],
-                        (depth == -1) ? depth : depth + 1,
+                        (depth == -1) ? depth : depth - 1,
                         searchAddress,
                         timeout,
                         cancellationToken));

@@ -8,7 +8,8 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added `FindSpecificPeer` method to find a specific peer given the address. [[#580]]
+ -  Added `Swarm<T>.FindSpecificPeer()` method to find a specific peer given
+    the address.  [[#580]]
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
  -  Removed `BlockChain<T>.Contains(TxId)` method.
     Use `IStore.ContainsTransaction(TxId)` instead.  [[#676]]
