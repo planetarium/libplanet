@@ -76,6 +76,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public async void Start()
         {
+            _logger.Debug("Starting swarm {Peer}.", AsPeer);
             swarmCancellationTokenSource = new CancellationTokenSource();
             await ProcessRuntime(swarmCancellationTokenSource.Token);
         }
@@ -171,6 +172,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         public void Stop()
         {
+            _logger.Debug("Stopping swarm {Peer}.", AsPeer);
             swarmCancellationTokenSource.Cancel();
         }
 
