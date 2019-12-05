@@ -646,7 +646,7 @@ namespace Libplanet.Net
 
             if (parsedMessage is BlockHashes blockHashes)
             {
-                return blockHashes.Hashes;
+                return blockHashes.Hashes.Select(b => b.Item2);
             }
 
             throw new InvalidMessageException(
@@ -1108,7 +1108,7 @@ namespace Libplanet.Net
 
                 case GetBlockHashes getBlockHashes:
                     {
-                        IEnumerable<HashDigest<SHA256>> hashes =
+                        IEnumerable<(long i, HashDigest<SHA256> hash)> hashes =
                             BlockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
@@ -1181,6 +1181,7 @@ namespace Libplanet.Net
             }
 
             ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
+                .Select(b => b.Item2)
                 .Where(hash => !_store.ContainsBlock(hash))
                 .ToImmutableList();
 

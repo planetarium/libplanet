@@ -10,6 +10,10 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  The existing `BlockHashes` message type (with the type number `0x05`) was
+    replaced by a new `BlockHashes` message type (with type number `0x0e`)
+    so that include block indices as well as block hashes.  [[#707]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
@@ -17,6 +21,8 @@ To be released.
 ### Behavioral changes
 
 ### Bug fixes
+
+[#707]: https://github.com/planetarium/libplanet/pull/707
 
 
 Version 0.8.0

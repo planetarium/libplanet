@@ -29,11 +29,6 @@ namespace Libplanet.Net.Messages
             GetBlockHashes = 0x04,
 
             /// <summary>
-            /// Inventory to transfer blocks.
-            /// </summary>
-            BlockHashes = 0x05,
-
-            /// <summary>
             /// Inventory to transfer transactions.
             /// </summary>
             TxIds = 0x06,
@@ -83,6 +78,11 @@ namespace Libplanet.Net.Messages
             /// Message containing a single <see cref="BlockHeader"/>.
             /// </summary>
             BlockHeaderMessage = 0x0d,
+
+            /// <summary>
+            /// Message containing demand block hashes with their index numbers.
+            /// </summary>
+            BlockHashes = 0x0e,
         }
 
         public byte[] Identity { get; set; }
