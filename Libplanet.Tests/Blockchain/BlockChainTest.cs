@@ -959,7 +959,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void CanGetBlockLocator()
+        public async void GetBlockLocator()
         {
             List<Block<DumbAction>> blocks = new List<Block<DumbAction>>();
             foreach (var i in Enumerable.Range(0, 10))
@@ -968,7 +968,7 @@ namespace Libplanet.Tests.Blockchain
                 blocks.Add(block);
             }
 
-            BlockLocator actual = _blockChain.GetBlockLocator(threshold: 2);
+            BlockLocator actual = _blockChain.GetBlockLocator(threshold: 3);
             BlockLocator expected = new BlockLocator(new[]
             {
                 blocks[9].Hash,

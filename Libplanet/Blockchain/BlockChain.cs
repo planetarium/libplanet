@@ -1134,30 +1134,11 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? current = Store.IndexBlockHash(Id, -1);
-                long step = 1;
-                var hashes = new List<HashDigest<SHA256>>();
-
-                while (current is HashDigest<SHA256> hash)
-                {
-                    hashes.Add(hash);
-                    Block<T> currentBlock = _blocks[hash];
-
-                    if (currentBlock.Index == 0)
-                    {
-                        break;
-                    }
-
-                    long nextIndex = Math.Max(currentBlock.Index - step, 0);
-                    current = Store.IndexBlockHash(Id, nextIndex);
-
-                    if (hashes.Count > threshold)
-                    {
-                        step *= 2;
-                    }
-                }
-
-                return new BlockLocator(hashes);
+                return new BlockLocator(
+                    indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
+                    blockHashByIndex: hash => _blocks[hash].Index,
+                    sampleAfter: threshold
+                );
             }
             finally
             {
