@@ -142,6 +142,8 @@ throws <code>SwarmException</code>.  [<a href="https://github.com/planetarium/li
 <li>Fixed a bug where the canonical chain could be deleted if <code>Swarm&lt;T&gt;</code> failed
 to download blocks due to network connection.  [<a href="https://github.com/planetarium/libplanet/pull/675">#675</a>]</li>
 <li>Fixed bug that re-download block from scratch in preloading.  [<a href="https://github.com/planetarium/libplanet/pull/685">#685</a>]</li>
+<li>Fixed a bug where state references become outdated if a chain is forked
+and then adding existing blocks into it.  [<a href="https://github.com/planetarium/libplanet/pull/704">#704</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
