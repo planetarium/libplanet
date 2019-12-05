@@ -640,7 +640,12 @@ namespace Libplanet.Store
             LiteCollection<StateRefDoc> srcColl = _db.GetCollection<StateRefDoc>(srcCollId),
                                         dstColl = _db.GetCollection<StateRefDoc>(dstCollId);
 
-            dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
+            Query srcQuery = Query.And(
+                Query.GT("BlockIndex", 0),
+                Query.LTE("BlockIndex", branchPoint.Index)
+            );
+            IEnumerable<StateRefDoc> srcStateRefs = srcColl.Find(srcQuery);
+            dstColl.InsertBulk(srcStateRefs);
 
             if (!dstColl.Exists(_ => true) && CountIndex(sourceChainId) < 1)
             {

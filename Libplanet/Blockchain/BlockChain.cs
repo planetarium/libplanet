@@ -835,18 +835,16 @@ namespace Libplanet.Blockchain
         {
             _logger.Debug("Execute action in block {blockIndex}: {block}", block?.Index, block);
             IReadOnlyList<ActionEvaluation> evaluations = null;
-            if (Store.GetBlockStates(block.Hash) is null)
+            evaluations = EvaluateActions(block);
+
+            _rwlock.EnterWriteLock();
+            try
             {
-                evaluations = EvaluateActions(block);
-                _rwlock.EnterWriteLock();
-                try
-                {
-                    SetStates(block, evaluations, buildStateReferences: true);
-                }
-                finally
-                {
-                    _rwlock.ExitWriteLock();
-                }
+                SetStates(block, evaluations, buildStateReferences: true);
+            }
+            finally
+            {
+                _rwlock.ExitWriteLock();
             }
 
             return evaluations;
@@ -1247,10 +1245,6 @@ namespace Libplanet.Blockchain
             bool buildStateReferences
         )
         {
-            HashDigest<SHA256> blockHash = block.Hash;
-            IAccountStateDelta lastStates = actionEvaluations.Count > 0
-                ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
-                : null;
             ImmutableHashSet<Address> updatedAddresses =
                 actionEvaluations.Select(
                     a => a.OutputStates.UpdatedAddresses
@@ -1258,15 +1252,23 @@ namespace Libplanet.Blockchain
                     ImmutableHashSet<Address>.Empty,
                     (a, b) => a.Union(b)
                 );
-            ImmutableDictionary<Address, IValue> totalDelta =
-                updatedAddresses.Select(
-                    a => new KeyValuePair<Address, IValue>(
-                        a,
-                        lastStates?.GetState(a)
-                    )
-                ).ToImmutableDictionary();
 
-            Store.SetBlockStates(blockHash, totalDelta);
+            if (Store.GetBlockStates(block.Hash) is null)
+            {
+                HashDigest<SHA256> blockHash = block.Hash;
+                IAccountStateDelta lastStates = actionEvaluations.Count > 0
+                    ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
+                    : null;
+                ImmutableDictionary<Address, IValue> totalDelta =
+                    updatedAddresses.Select(
+                        a => new KeyValuePair<Address, IValue>(
+                            a,
+                            lastStates?.GetState(a)
+                        )
+                    ).ToImmutableDictionary();
+
+                Store.SetBlockStates(blockHash, totalDelta);
+            }
 
             if (buildStateReferences)
             {
