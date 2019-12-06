@@ -45,12 +45,12 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract IEnumerable<Address> ListAddresses(Guid chainId);
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public abstract IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
-                HashDigest<SHA256>? onlyAfter = null,
-                HashDigest<SHA256>? ignoreAfter = null);
+                long lowestIndex = 0,
+                long highestIndex = long.MaxValue);
 
         /// <inheritdoc />
         public abstract void StageTransactionIds(IImmutableSet<TxId> txids);

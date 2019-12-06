@@ -187,12 +187,12 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { block4.Hash }, refs[address2]);
             Assert.Equal(new[] { block5.Hash }, refs[address3]);
 
-            refs = store.ListAllStateReferences(chainId, onlyAfter: block4.Hash);
+            refs = store.ListAllStateReferences(chainId, lowestIndex: block4.Index + 1);
             Assert.Equal(new HashSet<Address> { address1, address3 }, refs.Keys.ToHashSet());
             Assert.Equal(new[] { block5.Hash }, refs[address1]);
             Assert.Equal(new[] { block5.Hash }, refs[address3]);
 
-            refs = store.ListAllStateReferences(chainId, ignoreAfter: block4.Hash);
+            refs = store.ListAllStateReferences(chainId, highestIndex: block4.Index);
             Assert.Equal(new HashSet<Address> { address1, address2, }, refs.Keys.ToHashSet());
             Assert.Equal(new[] { block4.Hash }, refs[address1]);
             Assert.Equal(new[] { block4.Hash }, refs[address2]);

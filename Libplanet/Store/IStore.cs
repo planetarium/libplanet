@@ -98,18 +98,18 @@ namespace Libplanet.Store
         /// their state references.
         /// </summary>
         /// <param name="chainId">The chain ID to look up state references.</param>
-        /// <param name="onlyAfter">Includes state references only made after the block
-        /// this argument refers to, if present.</param>
-        /// <param name="ignoreAfter">Excludes state references made after the block
-        /// this argument refers to, if present.</param>
+        /// <param name="lowestIndex">Includes state references only made after the block
+        /// this argument refers to.</param>
+        /// <param name="highestIndex">Excludes state references made after the block
+        /// this argument refers to.</param>
         /// <returns>A dictionary of account addresses to lists of their corresponding state
         /// references.  Each list of state references is in ascending order, i.e., the block
         /// closest to the genesis goes first and the block closest to the tip goes last.</returns>
         IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
-                HashDigest<SHA256>? onlyAfter = null,
-                HashDigest<SHA256>? ignoreAfter = null
+                long lowestIndex = 0,
+                long highestIndex = long.MaxValue
             );
 
         /// <summary>

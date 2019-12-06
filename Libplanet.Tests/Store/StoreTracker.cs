@@ -78,12 +78,12 @@ namespace Libplanet.Tests.Store
         public IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
-                HashDigest<SHA256>? onlyAfter = null,
-                HashDigest<SHA256>? ignoreAfter = null)
+                long lowestIndex,
+                long highestIndex)
         {
             // FIXME: Log arguments properly
-            _logs.Add((nameof(ListAllStateReferences), chainId, onlyAfter));
-            return _store.ListAllStateReferences(chainId, onlyAfter, ignoreAfter);
+            _logs.Add((nameof(ListAllStateReferences), chainId, lowestIndex));
+            return _store.ListAllStateReferences(chainId, lowestIndex, highestIndex);
         }
 
         public void DeleteChainId(Guid chainId)

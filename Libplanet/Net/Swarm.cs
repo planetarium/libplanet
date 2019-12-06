@@ -271,6 +271,8 @@ namespace Libplanet.Net
 
         internal int FindNextHashesChunkSize { get; set; } = 100;
 
+        internal int FindNextStatesChunkSize { get; set; } = 100;
+
         internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
 
         internal AsyncAutoResetEvent FillBlocksAsyncStarted { get; } = new AsyncAutoResetEvent();
@@ -1242,111 +1244,132 @@ namespace Libplanet.Net
                 "Starts to find a peer to request recent states (candidates: {0} trusted peers).",
                 trustedPeersWithTip.Count
             );
+
+            long offset = 0;
+            int count = 0;
             foreach ((BoundPeer peer, var blockHash) in trustedPeersWithTip)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var request = new GetRecentStates(baseLocator, blockHash);
-
-                _logger.Debug("Requests recent states to a peer ({Peer}).", peer);
-                Message reply;
-                try
+                long topIndex = blockChain[blockHash].Index;
+                while (!cancellationToken.IsCancellationRequested && offset != -1)
                 {
-                    reply = await (this as ISwarm).SendMessageWithReplyAsync(
-                        peer,
-                        request,
-                        timeout: TimeSpan.FromSeconds(30),
-                        cancellationToken: cancellationToken
-                    );
-
-                    // Do not call Protocol.ReceiveMessage since swarm is not started
-                    // when synchronizing previous states.
-                    _logger.Debug("Received recent states from a peer ({Peer}).", peer);
-                }
-                catch (TimeoutException e)
-                {
-                    _logger.Error(
-                        "Failed to receive recent states from a peer ({Peer}): " + e,
-                        peer
-                    );
-                    continue;
-                }
-
-                ValidateSender(reply.Remote);
-
-                if (reply is RecentStates recentStates && !recentStates.Missing)
-                {
-                    ReaderWriterLockSlim rwlock = blockChain._rwlock;
-                    rwlock.EnterWriteLock();
-                    try
-                    {
-                        Guid chainId = blockChain.Id;
-
-                        int count = 0, totalCount = recentStates.StateReferences.Count;
-                        _logger.Debug("Starts to store state refs received from {Peer}.", peer);
-
-                        var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
-                        foreach (var pair in recentStates.StateReferences)
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
-                            IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
-                            foreach (HashDigest<SHA256> bHash in pair.Value)
-                            {
-                                if (!d.ContainsKey(bHash))
-                                {
-                                    d[bHash] = new HashSet<Address>();
-                                }
-
-                                d[bHash].UnionWith(address);
-                            }
-                        }
-
-                        totalCount = d.Count;
-                        foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
-                        {
-                            HashDigest<SHA256> hash = pair.Key;
-                            IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
-                            if (_store.GetBlockIndex(hash) is long index)
-                            {
-                                _store.StoreStateReference(chainId, addresses, hash, index);
-
-                                progress?.Report(new StateReferenceDownloadState()
-                                {
-                                    TotalStateReferenceCount = totalCount,
-                                    ReceivedStateReferenceCount = ++count,
-                                });
-                            }
-                        }
-
-                        count = 0;
-                        totalCount = recentStates.BlockStates.Count;
-                        _logger.Debug("Starts to store block states received from {Peer}.", peer);
-                        foreach (var pair in recentStates.BlockStates)
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
-                            _store.SetBlockStates(pair.Key, pair.Value);
-                            progress?.Report(new BlockStateDownloadState()
-                            {
-                                TotalBlockStateCount = totalCount,
-                                ReceivedBlockStateCount = ++count,
-                                ReceivedBlockHash = pair.Key,
-                            });
-                        }
-                    }
-                    finally
-                    {
-                        rwlock.ExitWriteLock();
-                    }
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var request = new GetRecentStates(baseLocator, blockHash, offset);
 
                     _logger.Debug(
-                        "Finished to store received state refs and block states.");
-                    return true;
+                        "Requests recent states to a peer ({Peer}) {Offset}.",
+                        peer,
+                        offset);
+                    Message reply;
+                    try
+                    {
+                        reply = await (this as ISwarm).SendMessageWithReplyAsync(
+                            peer,
+                            request,
+                            timeout: TimeSpan.FromSeconds(30),
+                            cancellationToken: cancellationToken
+                        );
+
+                        // Do not call Protocol.ReceiveMessage since swarm is not started
+                        // when synchronizing previous states.
+                        _logger.Debug("Received recent states from a peer ({Peer}).", peer);
+                    }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            "Failed to receive recent states from a peer ({Peer}): " + e,
+                            peer
+                        );
+                        break;
+                    }
+
+                    ValidateSender(reply.Remote);
+
+                    if (reply is RecentStates recentStates && !recentStates.Missing)
+                    {
+                        int totalCount = recentStates.Iteration;
+                        _logger.Debug(
+                            "Received {StateRefCount} state refs and {BlockStateCount} block" +
+                            " states.",
+                            recentStates.StateReferences.Count,
+                            recentStates.BlockStates.Count);
+                        count++;
+
+                        ReaderWriterLockSlim rwlock = blockChain._rwlock;
+                        rwlock.EnterWriteLock();
+                        try
+                        {
+                            Guid chainId = blockChain.Id;
+
+                            _logger.Debug("Starts to store state refs received from {Peer}.", peer);
+
+                            var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
+                            foreach (var pair in recentStates.StateReferences)
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+                                IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
+                                foreach (HashDigest<SHA256> bHash in pair.Value)
+                                {
+                                    if (!d.ContainsKey(bHash))
+                                    {
+                                        d[bHash] = new HashSet<Address>();
+                                    }
+
+                                    d[bHash].UnionWith(address);
+                                }
+                            }
+
+                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
+                            {
+                                HashDigest<SHA256> hash = pair.Key;
+                                IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
+                                if (_store.GetBlockIndex(hash) is long index)
+                                {
+                                    _store.StoreStateReference(chainId, addresses, hash, index);
+                                }
+                            }
+
+                            _logger.Debug(
+                                "Starts to store block states received from {Peer}.",
+                                peer);
+                            foreach (var pair in recentStates.BlockStates)
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+                                _store.SetBlockStates(pair.Key, pair.Value);
+                            }
+
+                            progress?.Report(new StateDownloadState()
+                            {
+                                TotalIterationCount = totalCount,
+                                ReceivedIterationCount = count,
+                            });
+                        }
+                        finally
+                        {
+                            rwlock.ExitWriteLock();
+                        }
+
+                        _logger.Debug(
+                            "Stored state refs and block states. {Offset}",
+                            offset);
+
+                        offset = recentStates.Offset;
+                    }
+                    else
+                    {
+                        _logger.Debug(
+                            "A message received from {Peer} is not a RecentStates but {Reply}.",
+                            peer,
+                            reply
+                        );
+                        break;
+                    }
                 }
 
-                _logger.Debug(
-                    "A message received from {Peer} is not a RecentStates but {Reply}.",
-                    peer,
-                    reply
-                );
+                if (offset == -1)
+                {
+                    _logger.Debug("Received states from trusted peers.");
+                    return true;
+                }
             }
 
             _logger.Warning("Failed to receive states from trusted peers.");
@@ -1997,6 +2020,8 @@ namespace Libplanet.Net
             > blockStates = null;
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
                 stateRefs = null;
+            long nextOffset = -1;
+            int iteration = 0;
 
             if (BlockChain.ContainsBlock(target))
             {
@@ -2006,21 +2031,54 @@ namespace Libplanet.Net
                 {
                     Guid chainId = BlockChain.Id;
 
+                    _logger.Debug(
+                        "Getting state references from {Offset}",
+                        getRecentStates.Offset);
+
+                    long baseIndex =
+                        (@base is HashDigest<SHA256> bbh &&
+                         _store.GetBlockIndex(bbh) is long bbIdx)
+                            ? bbIdx
+                            : 0;
+                    long lowestIndex = baseIndex + getRecentStates.Offset;
+                    long targetIndex =
+                        (target is HashDigest<SHA256> tgt &&
+                         _store.GetBlockIndex(tgt) is long tgtIdx)
+                            ? tgtIdx
+                            : long.MaxValue;
+
+                    iteration =
+                        (int)Math.Ceiling(
+                            (double)(targetIndex - baseIndex + 1) / FindNextStatesChunkSize);
+                    _logger.Verbose("Iteration is : {Iteration}", iteration);
+
+                    long highestIndex = lowestIndex + FindNextStatesChunkSize - 1 > targetIndex
+                        ? targetIndex
+                        : lowestIndex + FindNextStatesChunkSize - 1;
+
+                    nextOffset = highestIndex == targetIndex
+                        ? -1
+                        : getRecentStates.Offset + FindNextStatesChunkSize;
+
                     stateRefs = _store.ListAllStateReferences(
                         chainId,
-                        onlyAfter: @base,
-                        ignoreAfter: target
+                        lowestIndex: lowestIndex,
+                        highestIndex: highestIndex
                     );
+                    _logger.Verbose(
+                        "List state references from {From} to {To}.",
+                        lowestIndex,
+                        highestIndex);
 
+                    // GetBlockStates may return null since swarm may not have deep states.
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
-                        .ToImmutableHashSet()
                         .Select(bh =>
                             new KeyValuePair<
                                 HashDigest<SHA256>,
                                 IImmutableDictionary<Address, IValue>
-                            >(bh, _store.GetBlockStates(bh))
-                        )
+                            >(bh, _store.GetBlockStates(bh)))
+                        .Where(kv => !(kv.Value is null))
                         .ToImmutableDictionary();
                 }
                 finally
@@ -2061,7 +2119,7 @@ namespace Libplanet.Net
                 }
             }
 
-            var reply = new RecentStates(target, blockStates, stateRefs)
+            var reply = new RecentStates(target, nextOffset, iteration, blockStates, stateRefs)
             {
                 Identity = getRecentStates.Identity,
             };

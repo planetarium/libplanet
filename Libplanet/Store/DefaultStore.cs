@@ -274,18 +274,9 @@ namespace Libplanet.Store
         public override IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
-                HashDigest<SHA256>? onlyAfter = null,
-                HashDigest<SHA256>? ignoreAfter = null)
+                long lowestIndex = 0,
+                long highestIndex = long.MaxValue)
         {
-            long lowestIndex =
-                onlyAfter is HashDigest<SHA256> @base && GetBlockIndex(@base) is long baseIdx
-                    ? baseIdx + 1
-                    : 0;
-            long highestIndex =
-                ignoreAfter is HashDigest<SHA256> tgt && GetBlockIndex(tgt) is long tgtIdx
-                    ? tgtIdx
-                    : long.MaxValue;
-
             string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
 
