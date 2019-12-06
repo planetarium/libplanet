@@ -41,8 +41,9 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnPermissionLifetime =
             TimeSpan.FromMinutes(5);
 
-        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
-        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(150);
+        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(150);
         private readonly PrivateKey _privateKey;
         private readonly int _appProtocolVersion;
 
@@ -263,7 +264,7 @@ namespace Libplanet.Net
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
 
-        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
+        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         internal IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
@@ -1265,7 +1266,7 @@ namespace Libplanet.Net
                         reply = await (this as ISwarm).SendMessageWithReplyAsync(
                             peer,
                             request,
-                            timeout: TimeSpan.FromSeconds(30),
+                            timeout: RecentStateRecvTimeout,
                             cancellationToken: cancellationToken
                         );
 
@@ -2248,17 +2249,29 @@ namespace Libplanet.Net
                 {
                     await ProcessRequest(req, cancellationToken);
                 }
+                catch (OperationCanceledException)
+                {
+                    _logger.Information("Cancellation requsted; shutdown runtime...");
+                    throw;
+                }
                 catch (Exception e)
                 {
-                    const int retryAfter = 100;
-                    _logger.Debug(
-                        $"Unexpected exception occurred during {nameof(ProcessRuntime)}(): " +
-                        "{Exception}; retry after {DelayMs} ms...",
-                        e,
-                        retryAfter
-                    );
-                    await _requests.AddAsync(req, cancellationToken);
-                    await Task.Delay(retryAfter, cancellationToken);
+                    if (req.Retryable)
+                    {
+                        const int retryAfter = 100;
+                        _logger.Debug(
+                            $"Unexpected exception occurred during {nameof(ProcessRuntime)}(): " +
+                            "{Exception}; retry after {DelayMs} ms...",
+                            e,
+                            retryAfter
+                        );
+                        await _requests.AddAsync(req.Retry(), cancellationToken);
+                        await Task.Delay(retryAfter, cancellationToken);
+                    }
+                    else
+                    {
+                        _logger.Error("Failed to process request[{req}]; discard it.", req);
+                    }
                 }
             }
         }
@@ -2269,7 +2282,11 @@ namespace Libplanet.Net
 
             using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
             {
-                dealer.Options.Linger = Timeout.InfiniteTimeSpan;
+                // FIXME 1 min is an arbitrary value.
+                // See also https://github.com/planetarium/libplanet/pull/599 and
+                // https://github.com/planetarium/libplanet/pull/709
+                dealer.Options.Linger = TimeSpan.FromMinutes(1);
+
                 _logger.Debug(
                     "Trying to send {Message} to {Peer}...",
                     req.Message,
@@ -2430,6 +2447,8 @@ namespace Libplanet.Net
 
         private readonly struct MessageRequest
         {
+            private readonly int _retried;
+
             public MessageRequest(
                 in Guid id,
                 Message message,
@@ -2437,6 +2456,26 @@ namespace Libplanet.Net
                 in TimeSpan? timeout,
                 in int expectedResponses,
                 TaskCompletionSource<IEnumerable<Message>> taskCompletionSource)
+                : this(
+                      id,
+                      message,
+                      peer,
+                      timeout,
+                      expectedResponses,
+                      taskCompletionSource,
+                      0
+                    )
+            {
+            }
+
+            internal MessageRequest(
+                in Guid id,
+                Message message,
+                BoundPeer peer,
+                in TimeSpan? timeout,
+                in int expectedResponses,
+                TaskCompletionSource<IEnumerable<Message>> taskCompletionSource,
+                int retried)
             {
                 Id = id;
                 Message = message;
@@ -2444,6 +2483,7 @@ namespace Libplanet.Net
                 Timeout = timeout;
                 ExpectedResponses = expectedResponses;
                 TaskCompletionSource = taskCompletionSource;
+                _retried = retried;
             }
 
             public Guid Id { get; }
@@ -2457,6 +2497,21 @@ namespace Libplanet.Net
             public int ExpectedResponses { get; }
 
             public TaskCompletionSource<IEnumerable<Message>> TaskCompletionSource { get; }
+
+            public bool Retryable => _retried < 10;
+
+            public MessageRequest Retry()
+            {
+                return new MessageRequest(
+                    Id,
+                    Message,
+                    Peer,
+                    Timeout,
+                    ExpectedResponses,
+                    TaskCompletionSource,
+                    _retried + 1
+                );
+            }
         }
     }
 }
