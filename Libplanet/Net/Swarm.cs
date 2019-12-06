@@ -2269,7 +2269,11 @@ namespace Libplanet.Net
 
             using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
             {
-                dealer.Options.Linger = Timeout.InfiniteTimeSpan;
+                // FIXME 1 min is an arbitrary value.
+                // See also https://github.com/planetarium/libplanet/pull/599 and
+                // https://github.com/planetarium/libplanet/pull/709
+                dealer.Options.Linger = TimeSpan.FromMinutes(1);
+
                 _logger.Debug(
                     "Trying to send {Message} to {Peer}...",
                     req.Message,
