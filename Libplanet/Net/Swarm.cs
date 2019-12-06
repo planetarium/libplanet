@@ -1246,10 +1246,10 @@ namespace Libplanet.Net
             );
 
             long offset = 0;
+            int count = 0;
             foreach ((BoundPeer peer, var blockHash) in trustedPeersWithTip)
             {
                 long topIndex = blockChain[blockHash].Index;
-                int count = 0, totalCount = 0;
                 while (!cancellationToken.IsCancellationRequested && offset != -1)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -1279,14 +1279,14 @@ namespace Libplanet.Net
                             "Failed to receive recent states from a peer ({Peer}): " + e,
                             peer
                         );
-                        continue;
+                        break;
                     }
 
                     ValidateSender(reply.Remote);
 
                     if (reply is RecentStates recentStates && !recentStates.Missing)
                     {
-                        totalCount = recentStates.Iteration;
+                        int totalCount = recentStates.Iteration;
                         _logger.Debug(
                             "Received {StateRefCount} state refs and {BlockStateCount} block" +
                             " states.",
