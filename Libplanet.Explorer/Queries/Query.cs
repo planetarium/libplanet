@@ -127,19 +127,18 @@ namespace Libplanet.Explorer.Queries
             Address? signer,
             Address? involved)
         {
-            if (involved is null && !(signer is null) &&
-                tx.Signer.Equals(signer.Value))
+            if (involved is null && signer is null)
             {
                 return true;
             }
-            else if (!(involved is null) &&
-                (tx.Signer.Equals(involved.Value) ||
-                tx.UpdatedAddresses.Contains(involved.Value)))
+            else if (!(signer is null))
             {
-                return true;
+                return tx.Signer.Equals(signer.Value);
             }
-
-            return false;
+            else
+            {
+                return tx.UpdatedAddresses.Contains(involved.Value);
+            }
         }
     }
 }

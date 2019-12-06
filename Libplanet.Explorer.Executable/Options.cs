@@ -58,7 +58,7 @@ If omitted (default) explorer only the local blockchain store.")]
 
             set
             {
-                if (value is null)
+                if (!value.Any())
                 {
                     Seeds = null;
                     return;

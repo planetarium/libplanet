@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using System;
+using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Tx;
@@ -37,11 +38,13 @@ namespace Libplanet.Explorer.Queries
                 ),
                 resolve: context =>
                 {
-                    var signer = context.GetArgument<Address>("signer");
-                    var involved = context.GetArgument<Address>("involvedAddress");
+                    var signer = context.GetArgument<Address?>("signer");
+                    var involved = context.GetArgument<Address?>("involvedAddress");
                     bool desc = context.GetArgument<bool>("desc");
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
+
+                    Console.WriteLine($"Queries are: {signer}, {involved}");
 
                     return Query<T>.ListTransactions(signer, involved, desc, offset, limit);
                 }
