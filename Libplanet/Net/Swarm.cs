@@ -41,8 +41,9 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnPermissionLifetime =
             TimeSpan.FromMinutes(5);
 
-        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
-        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(150);
+        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(150);
         private readonly PrivateKey _privateKey;
         private readonly int _appProtocolVersion;
 
@@ -263,7 +264,7 @@ namespace Libplanet.Net
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
 
-        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(3);
+        internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
 
         internal IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
@@ -1265,7 +1266,7 @@ namespace Libplanet.Net
                         reply = await (this as ISwarm).SendMessageWithReplyAsync(
                             peer,
                             request,
-                            timeout: TimeSpan.FromSeconds(30),
+                            timeout: RecentStateRecvTimeout,
                             cancellationToken: cancellationToken
                         );
 
