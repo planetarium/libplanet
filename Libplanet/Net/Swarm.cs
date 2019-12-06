@@ -1108,12 +1108,12 @@ namespace Libplanet.Net
 
                 case GetBlockHashes getBlockHashes:
                     {
-                        IEnumerable<(long i, HashDigest<SHA256> hash)> hashes =
+                        (long? offset, IReadOnlyList<HashDigest<SHA256>> hashes) =
                             BlockChain.FindNextHashes(
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 FindNextHashesChunkSize);
-                        var reply = new BlockHashes(hashes)
+                        var reply = new BlockHashes(offset, hashes)
                         {
                             Identity = getBlockHashes.Identity,
                         };
@@ -1181,7 +1181,6 @@ namespace Libplanet.Net
             }
 
             ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
-                .Select(b => b.Item2)
                 .Where(hash => !_store.ContainsBlock(hash))
                 .ToImmutableList();
 
@@ -1451,9 +1450,10 @@ namespace Libplanet.Net
                     _logger.Debug("Trying to find branchpoint...");
                     BlockLocator locator = workspace.GetBlockLocator();
                     _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
-                    IEnumerable<HashDigest<SHA256>> hashes = (
-                        await GetBlockHashesAsync(peer, locator, stop, cancellationToken)
-                    ).ToArray();
+                    System.Collections.Async.IAsyncEnumerable<(long, HashDigest<SHA256>)>
+                        hashesAsync = GetBlockHashes(peer, locator, stop, cancellationToken);
+                    IEnumerable<(long, HashDigest<SHA256>)> hashes =
+                        await hashesAsync.ToArrayAsync();
 
                     if (!hashes.Any())
                     {
@@ -1464,9 +1464,13 @@ namespace Libplanet.Net
                         return workspace;
                     }
 
-                    HashDigest<SHA256> branchPoint = hashes.First();
+                    (long branchIndex, HashDigest<SHA256> branchPoint) = hashes.First();
 
-                    _logger.Debug("Branchpoint is {0}.", ByteUtil.Hex(branchPoint.ToByteArray()));
+                    _logger.Debug(
+                        "Branch point is #{BranchIndex} {BranchHash}.",
+                        branchIndex,
+                        branchPoint
+                    );
 
                     if (tip is null || branchPoint.Equals(tip.Hash))
                     {
@@ -1503,7 +1507,7 @@ namespace Libplanet.Net
                     _logger.Debug("Trying to fill up previous blocks...");
 
                     var hashesAsArray =
-                        hashes as HashDigest<SHA256>[] ?? hashes.ToArray();
+                        hashes as (long, HashDigest<SHA256>)[] ?? hashes.ToArray();
                     if (!hashesAsArray.Any())
                     {
                         break;
@@ -1517,7 +1521,7 @@ namespace Libplanet.Net
 
                     totalBlockCount = Math.Max(totalBlockCount, receivedBlockCount + hashCount);
 
-                    await GetBlocksAsync(peer, hashesAsArray)
+                    await GetBlocksAsync(peer, hashesAsArray.Select(pair => pair.Item2))
                         .ForEachAsync(
                             block =>
                             {

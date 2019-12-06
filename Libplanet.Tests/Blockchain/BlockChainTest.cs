@@ -598,33 +598,43 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void FindNextHashes()
         {
-            Assert.Single(_blockChain.FindNextHashes(
-                new BlockLocator(new HashDigest<SHA256>[] { })
-            ));
+            (long? OffsetIndex, IReadOnlyList<HashDigest<SHA256>> Hashes) hashes;
+
+            hashes = _blockChain.FindNextHashes(new BlockLocator(new HashDigest<SHA256>[] { }));
+            Assert.Single(hashes.Hashes);
             var block0 = _blockChain.Genesis;
             var block1 = await _blockChain.MineBlock(_fx.Address1);
             var block2 = await _blockChain.MineBlock(_fx.Address1);
             var block3 = await _blockChain.MineBlock(_fx.Address1);
 
+            hashes = _blockChain.FindNextHashes(new BlockLocator(new[] { block0.Hash }));
+            Assert.Equal(0, hashes.OffsetIndex);
             Assert.Equal(
-                new[] { (0L, block0.Hash), (1, block1.Hash), (2, block2.Hash), (3, block3.Hash), },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash })));
-            Assert.Equal(
-                new[] { (1L, block1.Hash), (2L, block2.Hash), (3L, block3.Hash) },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block1.Hash, block0.Hash })));
-            Assert.Equal(
-                new[] { (0L, block0.Hash), (1L, block1.Hash), (2L, block2.Hash) },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash }),
-                    stop: block2.Hash));
+                new[] { block0.Hash, block1.Hash, block2.Hash, block3.Hash },
+                hashes.Hashes);
 
+            hashes = _blockChain.FindNextHashes(
+                new BlockLocator(new[] { block1.Hash, block0.Hash }));
+            Assert.Equal(1, hashes.OffsetIndex);
             Assert.Equal(
-                new[] { (0L, block0.Hash), (1L, block1.Hash) },
-                _blockChain.FindNextHashes(
-                    new BlockLocator(new[] { block0.Hash }),
-                    count: 2));
+                new[] { block1.Hash, block2.Hash, block3.Hash },
+                hashes.Hashes);
+
+            hashes = _blockChain.FindNextHashes(
+                new BlockLocator(new[] { block0.Hash }),
+                stop: block2.Hash);
+            Assert.Equal(0, hashes.OffsetIndex);
+            Assert.Equal(
+                new[] { block0.Hash, block1.Hash, block2.Hash },
+                hashes.Hashes);
+
+            hashes = _blockChain.FindNextHashes(
+                new BlockLocator(new[] { block0.Hash }),
+                count: 2);
+            Assert.Equal(0, hashes.OffsetIndex);
+            Assert.Equal(
+                new[] { block0.Hash, block1.Hash },
+                hashes.Hashes);
         }
 
         [Fact]
@@ -638,12 +648,10 @@ namespace Libplanet.Tests.Blockchain
             await forked.MineBlock(_fx.Address1);
 
             BlockLocator locator = _blockChain.GetBlockLocator();
-            IEnumerable<(long, HashDigest<SHA256>)> hashes = forked.FindNextHashes(locator);
+            (long? offset, IEnumerable<HashDigest<SHA256>> hashes) = forked.FindNextHashes(locator);
 
-            Assert.Equal(
-                new[] { (forked[0].Index, forked[0].Hash), (forked[1].Index, forked[1].Hash) },
-                hashes
-            );
+            Assert.Equal(forked[0].Index, offset);
+            Assert.Equal(new[] { forked[0].Hash, forked[1].Hash }, hashes);
         }
 
         [Fact]

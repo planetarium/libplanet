@@ -38,6 +38,7 @@ namespace Libplanet.Tests.Net
         private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
 
         private readonly ITestOutputHelper _output;
+        private readonly ILogger _logger;
         private readonly StoreFixture _fx1;
         private readonly StoreFixture _fx2;
         private readonly StoreFixture _fx3;
@@ -59,6 +60,7 @@ namespace Libplanet.Tests.Net
 
             Log.Logger.Debug($"Started to initialize a {nameof(SwarmTest)} instance.");
 
+            _logger = Log.ForContext<SwarmTest>();
             _output = output;
 
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -577,7 +579,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task CanGetBlock()
+        public async Task GetBlocks()
         {
             Swarm<DumbAction> swarmA = _swarms[0];
             Swarm<DumbAction> swarmB = _swarms[1];
@@ -585,6 +587,8 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainA = _blockchains[0];
             BlockChain<DumbAction> chainB = _blockchains[1];
 
+            // FIXME: Rename the following variables or reuse the real genesis block which
+            // already exists in chainA.  These are misleading as genesis.Index is not 0 but 1.
             Block<DumbAction> genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis); // chainA and chainB shares genesis block.
             Block<DumbAction> block1 = await chainA.MineBlock(_fx1.Address1);
@@ -597,32 +601,37 @@ namespace Libplanet.Tests.Net
 
                 await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
 
-                IEnumerable<HashDigest<SHA256>> inventories1 =
-                    await swarmB.GetBlockHashesAsync(
+                (long, HashDigest<SHA256>)[] inventories1 =
+                    await swarmB.GetBlockHashes(
                         swarmA.AsPeer as BoundPeer,
                         new BlockLocator(new[] { genesis.Hash }),
-                        null);
+                        null
+                    ).ToArrayAsync();
                 Assert.Equal(
-                    new[] { genesis.Hash, block1.Hash, block2.Hash },
+                    new[]
+                    {
+                        (genesis.Index, genesis.Hash),
+                        (block1.Index, block1.Hash),
+                        (block2.Index, block2.Hash),
+                    },
                     inventories1);
 
-                IEnumerable<HashDigest<SHA256>> inventories2 =
-                    await swarmB.GetBlockHashesAsync(
+                (long, HashDigest<SHA256>)[] inventories2 =
+                    await swarmB.GetBlockHashes(
                         swarmA.AsPeer as BoundPeer,
                         new BlockLocator(new[] { genesis.Hash }),
-                        block1.Hash);
+                        block1.Hash
+                    ).ToArrayAsync();
                 Assert.Equal(
-                    new[] { genesis.Hash, block1.Hash },
+                    new[] { (genesis.Index, genesis.Hash), (block1.Index, block1.Hash) },
                     inventories2);
 
-                List<Block<DumbAction>> receivedBlocks =
+                Block<DumbAction>[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
-                        swarmA.AsPeer as BoundPeer, inventories1
-                    ).ToListAsync();
-
-                Assert.Equal(
-                    new[] { genesis, block1, block2 },
-                    receivedBlocks);
+                        swarmA.AsPeer as BoundPeer,
+                        inventories1.Select(pair => pair.Item2)
+                    ).ToArrayAsync();
+                Assert.Equal(new[] { genesis, block1, block2 }, receivedBlocks);
             }
             finally
             {
@@ -656,16 +665,17 @@ namespace Libplanet.Tests.Net
 
                 await swarmB.AddPeersAsync(new[] { peer }, null);
 
-                IEnumerable<HashDigest<SHA256>> hashes =
-                    await swarmB.GetBlockHashesAsync(
+                (long Index, HashDigest<SHA256> Hash)[] hashes =
+                    await swarmB.GetBlockHashes(
                         peer,
                         new BlockLocator(new[] { genesis.Hash }),
-                        null);
+                        null
+                    ).ToArrayAsync();
 
                 var netMQAddress = $"tcp://{peer.EndPoint.Host}:{peer.EndPoint.Port}";
                 using (var socket = new DealerSocket(netMQAddress))
                 {
-                    var request = new GetBlocks(hashes, 2);
+                    var request = new GetBlocks(hashes.Select(pair => pair.Hash), 2);
                     socket.SendMultipartMessage(
                         request.ToNetMQMessage(privateKey, swarmB.AsPeer)
                     );

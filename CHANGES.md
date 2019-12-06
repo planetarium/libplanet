@@ -12,7 +12,8 @@ To be released.
 
  -  The existing `BlockHashes` message type (with the type number `0x05`) was
     replaced by a new `BlockHashes` message type (with type number `0x0e`)
-    so that include block indices as well as block hashes.  [[#707]]
+    in order to include an offset block index besides block hashes
+    so that a receiver is able to determine their block indices too.  [[#707]]
 
 ### Backward-incompatible storage format changes
 

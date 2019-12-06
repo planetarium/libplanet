@@ -14,16 +14,28 @@ namespace Libplanet.Tests.Net.Messages
     public class BlockHashesTest
     {
         [Fact]
+        public void Constructor()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+                new BlockHashes(null, new[] { default(HashDigest<SHA256>) })
+            );
+            Assert.Throws<ArgumentException>(() =>
+                new BlockHashes(123, new HashDigest<SHA256>[0])
+            );
+        }
+
+        [Fact]
         public void DataFrames()
         {
-            (long, HashDigest<SHA256> hash)[] blockHashes =
-                GenerateRandomBlockHashes(100L).Select((hash, i) => ((long)i, hash)).ToArray();
-            var msg = new BlockHashes(blockHashes);
+            HashDigest<SHA256>[] blockHashes = GenerateRandomBlockHashes(100L).ToArray();
+            var msg = new BlockHashes(123, blockHashes);
+            Assert.Equal(123, msg.StartIndex);
             Assert.Equal(blockHashes, msg.Hashes);
             var privKey = new PrivateKey();
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), 0);
             NetMQFrame[] frames = msg.ToNetMQMessage(privKey, peer).Skip(3).ToArray();
             var restored = new BlockHashes(frames);
+            Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);
         }
 
