@@ -151,6 +151,8 @@ throws <code>SwarmException</code>.  [<a href="https://github.com/planetarium/li
 states at once.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to print less logs on debug level during sending states.
 [<a href="https://github.com/planetarium/libplanet/pull/706">#706</a>]</li>
+<li>Increased <code>Swarm&lt;T&gt;</code>'s network timeout value, in order to be stable
+a high latency internet connection.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -159,6 +161,10 @@ to download blocks due to network connection.  [<a href="https://github.com/plan
 <li>Fixed bug that re-download block from scratch in preloading.  [<a href="https://github.com/planetarium/libplanet/pull/685">#685</a>]</li>
 <li>Fixed a bug where state references become outdated if a chain is forked
 and then adding existing blocks into it.  [<a href="https://github.com/planetarium/libplanet/pull/704">#704</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had exhausted all available sockets.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had infinitely repeated failed requests.
+[<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> hadn't stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
