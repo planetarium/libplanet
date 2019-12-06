@@ -73,6 +73,8 @@ To be released.
     states at once.  [[#703]]
  -  `Swarm<T>` became to print less logs on debug level during sending states.
     [[#706]]
+ -  Increased `Swarm<T>`'s network timeout value, in order to be stable
+    a high latency internet connection.  [[#709]]
 
 ### Bug fixes
 
@@ -81,6 +83,10 @@ To be released.
  -  Fixed bug that re-download block from scratch in preloading.  [[#685]]
  -  Fixed a bug where state references become outdated if a chain is forked
     and then adding existing blocks into it.  [[#704]]
+ -  Fixed a bug where `Swarm<T>` had exhausted all available sockets.  [[#709]]
+ -  Fixed a bug where `Swarm<T>` had infinitely repeated failed requests.
+    [[#709]]
+ -  Fixed a bug where `Swarm<T>` hadn't stopped properly.  [[#709]]
 
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#665]: https://github.com/planetarium/libplanet/pull/665
@@ -97,6 +103,7 @@ To be released.
 [#703]: https://github.com/planetarium/libplanet/pull/703
 [#704]: https://github.com/planetarium/libplanet/pull/704
 [#706]: https://github.com/planetarium/libplanet/pull/706
+[#709]: https://github.com/planetarium/libplanet/pull/709
 
 
 Version 0.7.0
