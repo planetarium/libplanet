@@ -1,17 +1,17 @@
 namespace Libplanet.Net
 {
     /// <summary>
-    /// Indicates a progress of downloading state references.
+    /// Indicates a progress of downloading states.
     /// </summary>
     public class StateDownloadState : PreloadState
     {
         /// <summary>
-        /// Total number of state references to receive in the current batch.
+        /// Total number of messages to receive in the current batch.
         /// </summary>
         public int TotalIterationCount { get; internal set; }
 
         /// <summary>
-        /// The number of received state references until now.
+        /// The number of received messages until now.
         /// </summary>
         public int ReceivedIterationCount { get; internal set; }
 
