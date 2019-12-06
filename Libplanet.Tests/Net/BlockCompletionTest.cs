@@ -250,33 +250,37 @@ namespace Libplanet.Tests.Net
                 .ToImmutableArray();
             bc.Demand(initialDemands);
             _logger.Verbose("Initial demands: {0}", initialDemands);
-            System.Collections.Async.IAsyncEnumerable<Block<DumbAction>> result = bc.Complete(
-                new[] { 'A', 'B', 'C', 'D' },
-                (peer, hashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
-                {
-                    var blocksPeerHas = peerBlocks[peer];
-                    var sent = new HashSet<HashDigest<SHA256>>();
-                    foreach (HashDigest<SHA256> hash in hashes)
+            System.Collections.Async.IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv =
+                bc.Complete(
+                    new[] { 'A', 'B', 'C', 'D' },
+                    (peer, hashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                     {
-                        if (blocksPeerHas.ContainsKey(hash))
+                        var blocksPeerHas = peerBlocks[peer];
+                        var sent = new HashSet<HashDigest<SHA256>>();
+                        foreach (HashDigest<SHA256> hash in hashes)
                         {
-                            Block<DumbAction> block = blocksPeerHas[hash];
-                            await yield.ReturnAsync(block);
-                            sent.Add(block.Hash);
+                            if (blocksPeerHas.ContainsKey(hash))
+                            {
+                                Block<DumbAction> block = blocksPeerHas[hash];
+                                await yield.ReturnAsync(block);
+                                sent.Add(block.Hash);
+                            }
                         }
-                    }
 
-                    _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}.", peer, sent);
-                })
-            );
+                        _logger.Verbose("Peer {Peer} sent blocks: {SentBlockHashes}.", peer, sent);
+                    })
+                );
 
             var downloadedBlocks = new HashSet<Block<DumbAction>>();
-            await result.ForEachAsync(block =>
+            var sourcePeers = new HashSet<char>();
+            await rv.ForEachAsync(pair =>
             {
-                downloadedBlocks.Add(block);
+                downloadedBlocks.Add(pair.Item1);
+                sourcePeers.Add(pair.Item2);
             });
 
             Assert.Equal(fixture.Skip(2).ToHashSet(), downloadedBlocks);
+            Assert.Subset(peers.ToHashSet(), sourcePeers);
         }
 
         private IEnumerable<Block<T>> GenerateBlocks<T>(int count)

@@ -156,7 +156,7 @@ namespace Libplanet.Net
             return false;
         }
 
-        public System.Collections.Async.IAsyncEnumerable<Block<TAction>> Complete(
+        public System.Collections.Async.IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher
         )
@@ -167,7 +167,7 @@ namespace Libplanet.Net
             }
 
             PeerPool pool = new PeerPool(peers);
-            return new AsyncEnumerable<Block<TAction>>(async yield =>
+            return new AsyncEnumerable<Tuple<Block<TAction>, TPeer>>(async yield =>
             {
                 await EnumerateChunks().ForEachAsync(
                     async hashes =>
@@ -198,7 +198,9 @@ namespace Libplanet.Net
                                                 block.Hash,
                                                 peer
                                             );
-                                            await yield.ReturnAsync(block);
+                                            await yield.ReturnAsync(
+                                                new Tuple<Block<TAction>, TPeer>(block, peer)
+                                            );
                                             Satisfy(block);
                                             demands.Remove(block.Hash);
                                         },
