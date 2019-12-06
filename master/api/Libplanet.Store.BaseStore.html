@@ -306,9 +306,6 @@
                             <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.BlockStateDownloadState.html" title="BlockStateDownloadState" class="">BlockStateDownloadState</a>
-                          </li>
-                          <li class="">
                             <a href="Libplanet.Net.BoundPeer.html" title="BoundPeer" class="">BoundPeer</a>
                           </li>
                           <li class="">
@@ -342,7 +339,7 @@
                             <a href="Libplanet.Net.PreloadState.html" title="PreloadState" class="">PreloadState</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.StateReferenceDownloadState.html" title="StateReferenceDownloadState" class="">StateReferenceDownloadState</a>
+                            <a href="Libplanet.Net.StateDownloadState.html" title="StateDownloadState" class="">StateDownloadState</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.Swarm-1.html" title="Swarm&lt;T&gt;" class="">Swarm&lt;T&gt;</a>
@@ -1763,20 +1760,20 @@ be vary for each call.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListAllStateReferences(Guid%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D%2CSystem.Nullable%7BLibplanet.HashDigest%7BSHA256%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ListAllStateReferences(Guid%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L49">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ListAllStateReferences_" data-uid="Libplanet.Store.BaseStore.ListAllStateReferences*"></a>
-  <h4 id="Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___" data-uid="Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})">ListAllStateReferences(Guid, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;, Nullable&lt;HashDigest&lt;SHA256&gt;&gt;)</h4>
+  <h4 id="Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Int64_System_Int64_" data-uid="Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Int64,System.Int64)">ListAllStateReferences(Guid, Int64, Int64)</h4>
   <div class="markdown level1 summary"><p>Lists all accounts, that have any states, in the given <code data-dev-comment-type="paramref" class="paramref">chainId</code> and
 their state references.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IImmutableDictionary&lt;Address, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt; ListAllStateReferences(Guid chainId, HashDigest&lt;SHA256&gt;? onlyAfter = null, HashDigest&lt;SHA256&gt;? ignoreAfter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IImmutableDictionary&lt;Address, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt; ListAllStateReferences(Guid chainId, long lowestIndex = null, long highestIndex = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1795,17 +1792,17 @@ their state references.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
-        <td><span class="parametername">onlyAfter</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">lowestIndex</span></td>
         <td><p>Includes state references only made after the block
-this argument refers to, if present.</p>
+this argument refers to.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;&gt;</td>
-        <td><span class="parametername">ignoreAfter</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">Int64</a></td>
+        <td><span class="parametername">highestIndex</span></td>
         <td><p>Excludes state references made after the block
-this argument refers to, if present.</p>
+this argument refers to.</p>
 </td>
       </tr>
     </tbody>

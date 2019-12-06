@@ -109,8 +109,16 @@ to take <code>preloadBlockDownloadFailed</code> event handler as an argument.
 <li>Removed <code>StoreExtension.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>]</li>
 <li>Added the <code>genesisBlock</code> parameter to
 <code>BlockChain&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
+<li>Removed <code>StateReferenceDownloadState</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Removed <code>BlockStateDownloadState</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>Added <code>long</code>-typed <code>offset</code> parameter to <code>RecentStates</code> and
+<code>GetRecentStates</code> messages.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Added <code>int</code>-typed <code>iteration</code> parameter to <code>RecentStates</code> message.
+[<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
 <li>The introduced <code>DefaultStore</code> is incompatible at the file-level with
@@ -121,10 +129,12 @@ subdirectories and a LiteDB file for indices.  [<a href="https://github.com/plan
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>DefaultStore</code> class to replace <code>LiteDBStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
-<li>Added <code>IStore.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>]</li>
+<li>Added <code>IStore.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>, <a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Genesis</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>InvalidGenesisBlockException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
+<li>Added <code>StateDownloadState</code> class which reports state preloading iteration
+progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -137,6 +147,8 @@ environments.  [<a href="https://github.com/planetarium/libplanet/pull/679">#679
 <code>Swarm&lt;T&gt;</code> became to call <code>preloadBlockDownloadFailed</code> event handler
 taken as an argument.  If the event handler is not present, <code>Swarm&lt;T&gt;</code>
 throws <code>SwarmException</code>.  [<a href="https://github.com/planetarium/libplanet/pull/694">#694</a>]</li>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became not to sync state references and block
+states at once.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to print less logs on debug level during sending states.
 [<a href="https://github.com/planetarium/libplanet/pull/706">#706</a>]</li>
 </ul>

@@ -3479,64 +3479,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDownloadState.TotalBlockCount
   nameWithType: BlockDownloadState.TotalBlockCount
-- uid: Libplanet.Net.BlockStateDownloadState
-  name: BlockStateDownloadState
-  href: api/Libplanet.Net.BlockStateDownloadState.html
-  commentId: T:Libplanet.Net.BlockStateDownloadState
-  fullName: Libplanet.Net.BlockStateDownloadState
-  nameWithType: BlockStateDownloadState
-- uid: Libplanet.Net.BlockStateDownloadState.CurrentPhase
-  name: CurrentPhase
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_CurrentPhase
-  commentId: P:Libplanet.Net.BlockStateDownloadState.CurrentPhase
-  fullName: Libplanet.Net.BlockStateDownloadState.CurrentPhase
-  nameWithType: BlockStateDownloadState.CurrentPhase
-- uid: Libplanet.Net.BlockStateDownloadState.CurrentPhase*
-  name: CurrentPhase
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_CurrentPhase_
-  commentId: Overload:Libplanet.Net.BlockStateDownloadState.CurrentPhase
-  isSpec: "True"
-  fullName: Libplanet.Net.BlockStateDownloadState.CurrentPhase
-  nameWithType: BlockStateDownloadState.CurrentPhase
-- uid: Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash
-  name: ReceivedBlockHash
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_ReceivedBlockHash
-  commentId: P:Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash
-  fullName: Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash
-  nameWithType: BlockStateDownloadState.ReceivedBlockHash
-- uid: Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash*
-  name: ReceivedBlockHash
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_ReceivedBlockHash_
-  commentId: Overload:Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash
-  isSpec: "True"
-  fullName: Libplanet.Net.BlockStateDownloadState.ReceivedBlockHash
-  nameWithType: BlockStateDownloadState.ReceivedBlockHash
-- uid: Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount
-  name: ReceivedBlockStateCount
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_ReceivedBlockStateCount
-  commentId: P:Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount
-  fullName: Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount
-  nameWithType: BlockStateDownloadState.ReceivedBlockStateCount
-- uid: Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount*
-  name: ReceivedBlockStateCount
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_ReceivedBlockStateCount_
-  commentId: Overload:Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount
-  isSpec: "True"
-  fullName: Libplanet.Net.BlockStateDownloadState.ReceivedBlockStateCount
-  nameWithType: BlockStateDownloadState.ReceivedBlockStateCount
-- uid: Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount
-  name: TotalBlockStateCount
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_TotalBlockStateCount
-  commentId: P:Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount
-  fullName: Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount
-  nameWithType: BlockStateDownloadState.TotalBlockStateCount
-- uid: Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount*
-  name: TotalBlockStateCount
-  href: api/Libplanet.Net.BlockStateDownloadState.html#Libplanet_Net_BlockStateDownloadState_TotalBlockStateCount_
-  commentId: Overload:Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount
-  isSpec: "True"
-  fullName: Libplanet.Net.BlockStateDownloadState.TotalBlockStateCount
-  nameWithType: BlockStateDownloadState.TotalBlockStateCount
 - uid: Libplanet.Net.BoundPeer
   name: BoundPeer
   href: api/Libplanet.Net.BoundPeer.html
@@ -4019,51 +3961,51 @@ references:
   commentId: F:Libplanet.Net.PreloadState.TotalPhase
   fullName: Libplanet.Net.PreloadState.TotalPhase
   nameWithType: PreloadState.TotalPhase
-- uid: Libplanet.Net.StateReferenceDownloadState
-  name: StateReferenceDownloadState
-  href: api/Libplanet.Net.StateReferenceDownloadState.html
-  commentId: T:Libplanet.Net.StateReferenceDownloadState
-  fullName: Libplanet.Net.StateReferenceDownloadState
-  nameWithType: StateReferenceDownloadState
-- uid: Libplanet.Net.StateReferenceDownloadState.CurrentPhase
+- uid: Libplanet.Net.StateDownloadState
+  name: StateDownloadState
+  href: api/Libplanet.Net.StateDownloadState.html
+  commentId: T:Libplanet.Net.StateDownloadState
+  fullName: Libplanet.Net.StateDownloadState
+  nameWithType: StateDownloadState
+- uid: Libplanet.Net.StateDownloadState.CurrentPhase
   name: CurrentPhase
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_CurrentPhase
-  commentId: P:Libplanet.Net.StateReferenceDownloadState.CurrentPhase
-  fullName: Libplanet.Net.StateReferenceDownloadState.CurrentPhase
-  nameWithType: StateReferenceDownloadState.CurrentPhase
-- uid: Libplanet.Net.StateReferenceDownloadState.CurrentPhase*
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_CurrentPhase
+  commentId: P:Libplanet.Net.StateDownloadState.CurrentPhase
+  fullName: Libplanet.Net.StateDownloadState.CurrentPhase
+  nameWithType: StateDownloadState.CurrentPhase
+- uid: Libplanet.Net.StateDownloadState.CurrentPhase*
   name: CurrentPhase
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_CurrentPhase_
-  commentId: Overload:Libplanet.Net.StateReferenceDownloadState.CurrentPhase
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_CurrentPhase_
+  commentId: Overload:Libplanet.Net.StateDownloadState.CurrentPhase
   isSpec: "True"
-  fullName: Libplanet.Net.StateReferenceDownloadState.CurrentPhase
-  nameWithType: StateReferenceDownloadState.CurrentPhase
-- uid: Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount
-  name: ReceivedStateReferenceCount
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_ReceivedStateReferenceCount
-  commentId: P:Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount
-  fullName: Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount
-  nameWithType: StateReferenceDownloadState.ReceivedStateReferenceCount
-- uid: Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount*
-  name: ReceivedStateReferenceCount
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_ReceivedStateReferenceCount_
-  commentId: Overload:Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount
+  fullName: Libplanet.Net.StateDownloadState.CurrentPhase
+  nameWithType: StateDownloadState.CurrentPhase
+- uid: Libplanet.Net.StateDownloadState.ReceivedIterationCount
+  name: ReceivedIterationCount
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_ReceivedIterationCount
+  commentId: P:Libplanet.Net.StateDownloadState.ReceivedIterationCount
+  fullName: Libplanet.Net.StateDownloadState.ReceivedIterationCount
+  nameWithType: StateDownloadState.ReceivedIterationCount
+- uid: Libplanet.Net.StateDownloadState.ReceivedIterationCount*
+  name: ReceivedIterationCount
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_ReceivedIterationCount_
+  commentId: Overload:Libplanet.Net.StateDownloadState.ReceivedIterationCount
   isSpec: "True"
-  fullName: Libplanet.Net.StateReferenceDownloadState.ReceivedStateReferenceCount
-  nameWithType: StateReferenceDownloadState.ReceivedStateReferenceCount
-- uid: Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount
-  name: TotalStateReferenceCount
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_TotalStateReferenceCount
-  commentId: P:Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount
-  fullName: Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount
-  nameWithType: StateReferenceDownloadState.TotalStateReferenceCount
-- uid: Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount*
-  name: TotalStateReferenceCount
-  href: api/Libplanet.Net.StateReferenceDownloadState.html#Libplanet_Net_StateReferenceDownloadState_TotalStateReferenceCount_
-  commentId: Overload:Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount
+  fullName: Libplanet.Net.StateDownloadState.ReceivedIterationCount
+  nameWithType: StateDownloadState.ReceivedIterationCount
+- uid: Libplanet.Net.StateDownloadState.TotalIterationCount
+  name: TotalIterationCount
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_TotalIterationCount
+  commentId: P:Libplanet.Net.StateDownloadState.TotalIterationCount
+  fullName: Libplanet.Net.StateDownloadState.TotalIterationCount
+  nameWithType: StateDownloadState.TotalIterationCount
+- uid: Libplanet.Net.StateDownloadState.TotalIterationCount*
+  name: TotalIterationCount
+  href: api/Libplanet.Net.StateDownloadState.html#Libplanet_Net_StateDownloadState_TotalIterationCount_
+  commentId: Overload:Libplanet.Net.StateDownloadState.TotalIterationCount
   isSpec: "True"
-  fullName: Libplanet.Net.StateReferenceDownloadState.TotalStateReferenceCount
-  nameWithType: StateReferenceDownloadState.TotalStateReferenceCount
+  fullName: Libplanet.Net.StateDownloadState.TotalIterationCount
+  nameWithType: StateDownloadState.TotalIterationCount
 - uid: Libplanet.Net.Swarm`1
   name: Swarm<T>
   href: api/Libplanet.Net.Swarm-1.html
@@ -5378,15 +5320,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListAddresses
   nameWithType: BaseStore.ListAddresses
-- uid: Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
-  commentId: M:Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.BaseStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
-  fullName.vb: Libplanet.Store.BaseStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
-  nameWithType: BaseStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: BaseStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  name: ListAllStateReferences(Guid, Int64, Int64)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
+  commentId: M:Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  fullName: Libplanet.Store.BaseStore.ListAllStateReferences(Guid, System.Int64, System.Int64)
+  nameWithType: BaseStore.ListAllStateReferences(Guid, Int64, Int64)
 - uid: Libplanet.Store.BaseStore.ListAllStateReferences*
   name: ListAllStateReferences
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_
@@ -6101,15 +6040,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ListAddresses
   nameWithType: DefaultStore.ListAddresses
-- uid: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
-  commentId: M:Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
-  fullName.vb: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
-  nameWithType: DefaultStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: DefaultStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  name: ListAllStateReferences(Guid, Int64, Int64)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
+  commentId: M:Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  fullName: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid, System.Int64, System.Int64)
+  nameWithType: DefaultStore.ListAllStateReferences(Guid, Int64, Int64)
 - uid: Libplanet.Store.DefaultStore.ListAllStateReferences*
   name: ListAllStateReferences
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_
@@ -6632,15 +6568,12 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListAddresses
   nameWithType: IStore.ListAddresses
-- uid: Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name: ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_Guid_System_Nullable_Libplanet_HashDigest_SHA256___System_Nullable_Libplanet_HashDigest_SHA256___
-  commentId: M:Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Nullable{Libplanet.HashDigest{SHA256}},System.Nullable{Libplanet.HashDigest{SHA256}})
-  name.vb: ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
-  fullName: Libplanet.Store.IStore.ListAllStateReferences(Guid, System.Nullable<Libplanet.HashDigest<SHA256>>, System.Nullable<Libplanet.HashDigest<SHA256>>)
-  fullName.vb: Libplanet.Store.IStore.ListAllStateReferences(Guid, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.Nullable(Of Libplanet.HashDigest(Of SHA256)))
-  nameWithType: IStore.ListAllStateReferences(Guid, Nullable<HashDigest<SHA256>>, Nullable<HashDigest<SHA256>>)
-  nameWithType.vb: IStore.ListAllStateReferences(Guid, Nullable(Of HashDigest(Of SHA256)), Nullable(Of HashDigest(Of SHA256)))
+- uid: Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  name: ListAllStateReferences(Guid, Int64, Int64)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
+  commentId: M:Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
+  fullName: Libplanet.Store.IStore.ListAllStateReferences(Guid, System.Int64, System.Int64)
+  nameWithType: IStore.ListAllStateReferences(Guid, Int64, Int64)
 - uid: Libplanet.Store.IStore.ListAllStateReferences*
   name: ListAllStateReferences
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_
