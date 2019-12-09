@@ -62,9 +62,6 @@ To be released.
 
  -  `Swarm<T>` became to compare only peer's addresses instead of public keys
     to determine if a peer is in routing table or not.  [[#665]]
- -  `Swarm<T>` became to send 100 blocks (instead of 500 blocks) for each
-    reply during IDL, in order to stabilize connection in high latency
-    environments.  [[#679]]
  -  When `Swarm<T>.PreloadAsync()` method fails to download blocks,
     `Swarm<T>` became to call `preloadBlockDownloadFailed` event handler
     taken as an argument.  If the event handler is not present, `Swarm<T>`
@@ -93,7 +90,6 @@ To be released.
 [#675]: https://github.com/planetarium/libplanet/pull/675
 [#676]: https://github.com/planetarium/libplanet/pull/676
 [#678]: https://github.com/planetarium/libplanet/pull/678
-[#679]: https://github.com/planetarium/libplanet/pull/679
 [#680]: https://github.com/planetarium/libplanet/pull/680
 [#685]: https://github.com/planetarium/libplanet/pull/685
 [#688]: https://github.com/planetarium/libplanet/pull/688

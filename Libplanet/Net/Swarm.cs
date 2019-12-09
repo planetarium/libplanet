@@ -270,9 +270,10 @@ namespace Libplanet.Net
 
         internal IProtocol Protocol { get; private set; }
 
-        internal int FindNextHashesChunkSize { get; set; } = 100;
+        // FIXME: We need some sort of configuration method for it.
+        internal int FindNextHashesChunkSize { get; set; } = 500;
 
-        internal int FindNextStatesChunkSize { get; set; } = 100;
+        internal int FindNextStatesChunkSize { get; set; } = 1000;
 
         internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
 
