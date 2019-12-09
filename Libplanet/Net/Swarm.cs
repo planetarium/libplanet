@@ -57,7 +57,7 @@ namespace Libplanet.Net
 
         private RouterSocket _router;
         private NetMQQueue<Message> _replyQueue;
-        private NetMQQueue<Message> _broadcastQueue;
+        private NetMQQueue<(Address?, Message)> _broadcastQueue;
         private AsyncCollection<MessageRequest> _requests;
         private NetMQPoller _poller;
 
@@ -451,7 +451,7 @@ namespace Libplanet.Net
             }
 
             _replyQueue = new NetMQQueue<Message>();
-            _broadcastQueue = new NetMQQueue<Message>();
+            _broadcastQueue = new NetMQQueue<(Address?, Message)>();
             _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
             _router.ReceiveReady += ReceiveMessage;
@@ -569,13 +569,7 @@ namespace Libplanet.Net
 
         public void BroadcastBlocks(IEnumerable<Block<T>> blocks)
         {
-            _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHashes(
-                Address,
-                blocks.Select(b => b.Hash)
-            );
-            BroadcastMessage(message);
-            _logger.Debug("Block broadcasting complete.");
+            BroadcastBlocks(null, blocks);
         }
 
         public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
@@ -1146,9 +1140,20 @@ namespace Libplanet.Net
             });
         }
 
-        private void BroadcastMessage(Message message)
+        private void BroadcastBlocks(Address? except, IEnumerable<Block<T>> blocks)
         {
-            _broadcastQueue.Enqueue(message);
+            _logger.Debug("Trying to broadcast blocks...");
+            var message = new BlockHashes(
+                Address,
+                blocks.Select(b => b.Hash)
+            );
+            BroadcastMessage(except, message);
+            _logger.Debug("Block broadcasting complete.");
+        }
+
+        private void BroadcastMessage(Address? except, Message message)
+        {
+            _broadcastQueue.Enqueue((except, message));
         }
 
         private async Task BindingProxies(CancellationToken cancellationToken)
@@ -1537,7 +1542,7 @@ namespace Libplanet.Net
         private void BroadcastTxIds(IEnumerable<TxId> txIds)
         {
             var message = new TxIds(Address, txIds);
-            BroadcastMessage(message);
+            BroadcastMessage(null, message);
         }
 
         private async Task ProcessMessageAsync(
@@ -1658,7 +1663,11 @@ namespace Libplanet.Net
             {
                 using (await _blockSyncMutex.LockAsync(cancellationToken))
                 {
-                    await AppendBlocksAsync(peer, blocks, cancellationToken);
+                    if (await AppendBlocksAsync(peer, blocks, cancellationToken))
+                    {
+                        BroadcastBlocks(message.Remote.Address, blocks);
+                    }
+
                     _logger.Debug("Append complete.");
                 }
             }
@@ -1757,7 +1766,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task AppendBlocksAsync(
+        private async Task<bool> AppendBlocksAsync(
             BoundPeer peer,
             List<Block<T>> blocks,
             CancellationToken cancellationToken
@@ -1805,15 +1814,14 @@ namespace Libplanet.Net
                     $"Re-broadcast {nameof(BlockHashes)} with {{0}} blocks, which are {{1}}.",
                     blocks.Count,
                     blockHashes);
-
-                // FIXME: Moved to more appropriate place
-                BroadcastBlocks(blocks);
+                return true;
             }
             else
             {
                 _logger.Information(
                     "Received index is older than current chain's tip." +
                     " ignored.");
+                return false;
             }
         }
 
@@ -2244,14 +2252,14 @@ namespace Libplanet.Net
             }
         }
 
-        private void DoBroadcast(object sender, NetMQQueueEventArgs<Message> e)
+        private void DoBroadcast(object sender, NetMQQueueEventArgs<(Address?, Message)> e)
         {
-            Message msg = e.Queue.Dequeue();
+            (Address? except, Message msg) = e.Queue.Dequeue();
 
             // FIXME Should replace with PUB/SUB model.
             try
             {
-                var peers = Protocol.PeersToBroadcast.ToList();
+                var peers = Protocol.PeersToBroadcast(except).ToList();
                 _logger.Debug($"Broadcasting message [{msg}]");
                 _logger.Debug($"Peers to broadcast : {peers.Count}");
                 peers.ParallelForEachAsync(async peer =>

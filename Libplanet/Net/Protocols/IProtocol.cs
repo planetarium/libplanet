@@ -11,7 +11,7 @@ namespace Libplanet.Net.Protocols
     {
         IEnumerable<BoundPeer> Peers { get; }
 
-        IEnumerable<BoundPeer> PeersToBroadcast { get; }
+        IEnumerable<BoundPeer> PeersToBroadcast(Address? except);
 
         Task BootstrapAsync(
             ImmutableList<BoundPeer> bootstrapPeers,

@@ -329,10 +329,10 @@ namespace Libplanet.Tests.Net.Protocols
 
                 Log.Debug("Bootstrap completed.");
 
-                seed.BroadcastTestMessage("foo");
-                Log.Debug("Broadcast completed.");
-
                 var tasks = swarms.Select(swarm => swarm.WaitForTestMessageWithData("foo"));
+
+                seed.BroadcastTestMessage(null, "foo");
+                Log.Debug("Broadcast completed.");
 
                 await Task.WhenAll(tasks);
             }
