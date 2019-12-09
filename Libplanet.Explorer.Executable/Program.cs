@@ -59,7 +59,7 @@ namespace Libplanet.Explorer.Executable
                 .Build();
 
             Swarm<AppAgnosticAction> swarm = null;
-            if (!(options.Seeds is null))
+            if (options.Seeds.Any())
             {
                 Console.WriteLine(
                     $"Seeds are {options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1)}");

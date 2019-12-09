@@ -58,12 +58,6 @@ If omitted (default) explorer only the local blockchain store.")]
 
             set
             {
-                if (!value.Any())
-                {
-                    Seeds = null;
-                    return;
-                }
-
                 Seeds = value.Select(str =>
                 {
                     string[] parts = str.Split(',');

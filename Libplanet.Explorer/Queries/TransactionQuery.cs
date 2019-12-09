@@ -44,8 +44,6 @@ namespace Libplanet.Explorer.Queries
                     long offset = context.GetArgument<long>("offset");
                     int? limit = context.GetArgument<int?>("limit", null);
 
-                    Console.WriteLine($"Queries are: {signer}, {involved}");
-
                     return Query<T>.ListTransactions(signer, involved, desc, offset, limit);
                 }
             );
