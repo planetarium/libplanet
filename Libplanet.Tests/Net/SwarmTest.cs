@@ -2481,13 +2481,18 @@ namespace Libplanet.Tests.Net
             EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
             where T : IAction, new()
         {
+            if (host is null && !(iceServers?.Any() ?? false))
+            {
+                host = IPAddress.Loopback.ToString();
+            }
+
             return new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
                 appProtocolVersion,
                 tableSize,
                 bucketSize,
-                host ?? IPAddress.Loopback.ToString(),
+                host,
                 listenPort,
                 createdAt,
                 iceServers,
