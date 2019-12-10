@@ -140,9 +140,6 @@ progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>
 <ul>
 <li><code>Swarm&lt;T&gt;</code> became to compare only peer's addresses instead of public keys
 to determine if a peer is in routing table or not.  [<a href="https://github.com/planetarium/libplanet/pull/665">#665</a>]</li>
-<li><code>Swarm&lt;T&gt;</code> became to send 100 blocks (instead of 500 blocks) for each
-reply during IDL, in order to stabilize connection in high latency
-environments.  [<a href="https://github.com/planetarium/libplanet/pull/679">#679</a>]</li>
 <li>When <code>Swarm&lt;T&gt;.PreloadAsync()</code> method fails to download blocks,
 <code>Swarm&lt;T&gt;</code> became to call <code>preloadBlockDownloadFailed</code> event handler
 taken as an argument.  If the event handler is not present, <code>Swarm&lt;T&gt;</code>
