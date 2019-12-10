@@ -59,7 +59,7 @@ namespace Libplanet.Explorer.Executable
                 .Build();
 
             Swarm<AppAgnosticAction> swarm = null;
-            if (!(options.Seeds is null))
+            if (options.Seeds.Any())
             {
                 Console.WriteLine(
                     $"Seeds are {options.SeedStrings.Aggregate(string.Empty, (s, s1) => s + s1)}");
@@ -77,6 +77,7 @@ namespace Libplanet.Explorer.Executable
                     return;
                 }
 
+                Console.WriteLine("Creating Swarm.");
                 swarm = new Swarm<AppAgnosticAction>(
                     blockChain,
                     new PrivateKey(),
@@ -121,6 +122,7 @@ namespace Libplanet.Explorer.Executable
 
             try
             {
+                Console.WriteLine("Bootstrapping.");
                 await swarm.BootstrapAsync(
                     seeds,
                     5000,
@@ -135,13 +137,13 @@ namespace Libplanet.Explorer.Executable
 
             // Since explorer does not require states, turn off trustedPeer option.
             var trustedPeers = ImmutableHashSet<Address>.Empty;
-            Console.Error.WriteLine("Starts preloading.");
+            Console.WriteLine("Starts preloading.");
             await swarm.PreloadAsync(
                 dialTimeout: TimeSpan.FromSeconds(15),
                 trustedStateValidators: trustedPeers,
                 cancellationToken: cancellationToken
             );
-            Console.Error.WriteLine("Finished preloading.");
+            Console.WriteLine("Finished preloading.");
 
             await swarm.StartAsync(cancellationToken: cancellationToken);
         }
