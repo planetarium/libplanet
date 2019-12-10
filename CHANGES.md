@@ -99,6 +99,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>` had infinitely repeated failed requests.
     [[#709]]
  -  Fixed a bug where `Swarm<T>` hadn't stopped properly.  [[#709]]
+ -  Fixed a bug where `Swarm<T>.BootstrapAsync()` had reported invalid timeout.
+    [[#715], [#716]]
  -  Fixed a bug where `BlockChain<T>.GetNextTxNonce()` had returned invalid tx
     nonce.  [[#718]]
  -  Fixed a bug where mined transactions were staged again.  [[#719]]
@@ -133,6 +135,8 @@ To be released.
 [#705]: https://github.com/planetarium/libplanet/issues/705
 [#706]: https://github.com/planetarium/libplanet/pull/706
 [#709]: https://github.com/planetarium/libplanet/pull/709
+[#715]: https://github.com/planetarium/libplanet/issues/715
+[#716]: https://github.com/planetarium/libplanet/pull/716
 [#718]: https://github.com/planetarium/libplanet/pull/718
 [#719]: https://github.com/planetarium/libplanet/pull/719
 [#721]: https://github.com/planetarium/libplanet/issues/721
