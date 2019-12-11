@@ -84,6 +84,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>` had infinitely repeated failed requests.
     [[#709]]
  -  Fixed a bug where `Swarm<T>` hadn't stopped properly.  [[#709]]
+ -  Fixed a bug where `BlockChain<T>.GetNextTxNonce()` had returned invalid tx
+    nonce.  [[#718]]
 
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#665]: https://github.com/planetarium/libplanet/pull/665
@@ -100,6 +102,7 @@ To be released.
 [#704]: https://github.com/planetarium/libplanet/pull/704
 [#706]: https://github.com/planetarium/libplanet/pull/706
 [#709]: https://github.com/planetarium/libplanet/pull/709
+[#718]: https://github.com/planetarium/libplanet/pull/718
 
 
 Version 0.7.0
