@@ -770,6 +770,57 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task BroadcastTxWhileMining()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmC = _swarms[2];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainC = _blockchains[2];
+
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+
+            var txs = Enumerable.Range(0, 10).Select(_ =>
+                chainA.MakeTransaction(new PrivateKey(), new[] { new DumbAction(address, "foo") }))
+                .ToArray();
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmC);
+
+                await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
+
+                for (var i = 0; i < 100; i++)
+                {
+                    swarmA.BroadcastTxs(txs);
+                }
+
+                var t = Task.Run(async () =>
+                {
+                    for (var i = 0; i < 10; i++)
+                    {
+                        await chainC.MineBlock(_fx1.Address1);
+                    }
+                });
+
+                await swarmC.TxReceived.WaitAsync();
+                await t;
+
+                for (var i = 0; i < 10; i++)
+                {
+                    Assert.True(chainC.Store.ContainsTransaction(txs[i].Id));
+                }
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmC);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastTxAsync()
         {
             Swarm<DumbAction> swarmA = _swarms[0];

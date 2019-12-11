@@ -499,6 +499,11 @@ namespace Libplanet.Blockchain
 
             try
             {
+                // FIXME: We need to create a separate pool to handle transactions.
+                transactions = transactions
+                    .Where(tx => !_transactions.ContainsKey(tx.Id))
+                    .ToImmutableHashSet();
+
                 foreach (Transaction<T> tx in transactions)
                 {
                     _transactions[tx.Id] = tx;
