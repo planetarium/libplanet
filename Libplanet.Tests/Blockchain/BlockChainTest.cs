@@ -1422,8 +1422,12 @@ namespace Libplanet.Tests.Blockchain
             _blockChain.StageTransactions(txs.ToImmutableHashSet());
             await _blockChain.MineBlock(address);
 
-            var staleTx = _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0);
-            _blockChain.StageTransactions(new[] { staleTx }.ToImmutableHashSet());
+            Transaction<DumbAction>[] staleTxs =
+            {
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+                _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
+            };
+            _blockChain.StageTransactions(staleTxs.ToImmutableHashSet());
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
 

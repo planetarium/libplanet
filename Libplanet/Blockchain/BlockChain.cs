@@ -550,7 +550,7 @@ namespace Libplanet.Blockchain
                 var prevNonce = nonce - 1;
                 var stagedTxNonces = Store.IterateStagedTransactionIds()
                     .Select(Store.GetTransaction<T>)
-                    .Where(tx => tx.Signer.Equals(address) && tx.Nonce >= prevNonce)
+                    .Where(tx => tx.Signer.Equals(address) && tx.Nonce > prevNonce)
                     .Select(tx => tx.Nonce)
                     .OrderBy(n => n);
 
