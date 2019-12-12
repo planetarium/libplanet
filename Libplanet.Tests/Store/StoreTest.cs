@@ -432,6 +432,70 @@ namespace Libplanet.Tests.Store
         }
 
         [Fact]
+        public void LookupStateReference()
+        {
+            Address address = Fx.Address1;
+
+            Transaction<DumbAction> tx4 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "foo") }
+            );
+            Block<DumbAction> block4 = TestUtils.MineNext(Fx.Block3, new[] { tx4 });
+
+            Transaction<DumbAction> tx5 = Fx.MakeTransaction(
+                new DumbAction[] { new DumbAction(address, "bar") }
+            );
+            Block<DumbAction> block5 = TestUtils.MineNext(block4, new[] { tx5 });
+
+            Block<DumbAction> block6 = TestUtils.MineNext(block5, new Transaction<DumbAction>[0]);
+
+            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreChainId, address, Fx.Block3));
+            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreChainId, address, block4));
+            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreChainId, address, block5));
+            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreChainId, address, block6));
+
+            Fx.Store.StoreStateReference(
+                Fx.StoreChainId,
+                tx4.UpdatedAddresses,
+                block4.Hash,
+                block4.Index
+            );
+            Assert.Null(Fx.Store.LookupStateReference(Fx.StoreChainId, address, Fx.Block3));
+            Assert.Equal(
+                Tuple.Create(block4.Hash, block4.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block4)
+            );
+            Assert.Equal(
+                Tuple.Create(block4.Hash, block4.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block5)
+            );
+            Assert.Equal(
+                Tuple.Create(block4.Hash, block4.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block6)
+            );
+
+            Fx.Store.StoreStateReference(
+                Fx.StoreChainId,
+                tx5.UpdatedAddresses,
+                block5.Hash,
+                block5.Index
+            );
+            Assert.Null(Fx.Store.LookupStateReference(
+                Fx.StoreChainId, address, Fx.Block3));
+            Assert.Equal(
+                Tuple.Create(block4.Hash, block4.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block4)
+            );
+            Assert.Equal(
+                Tuple.Create(block5.Hash, block5.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block5)
+            );
+            Assert.Equal(
+                Tuple.Create(block5.Hash, block5.Index),
+                Fx.Store.LookupStateReference(Fx.StoreChainId, address, block6)
+            );
+        }
+
+        [Fact]
         public void IterateStateReferences()
         {
             Address address = Fx.Address1;
