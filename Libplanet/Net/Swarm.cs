@@ -41,8 +41,9 @@ namespace Libplanet.Net
         private static readonly TimeSpan TurnPermissionLifetime =
             TimeSpan.FromMinutes(5);
 
-        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(150);
-        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan MaxTimeout = TimeSpan.FromSeconds(150);
+        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
+        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
         private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(150);
         private readonly PrivateKey _privateKey;
         private readonly int _appProtocolVersion;
@@ -486,9 +487,11 @@ namespace Libplanet.Net
                         }
                         catch (TerminatingException)
                         {
+                            _logger.Error($"TerminatingException occurred in {nameof(_poller)}");
                         }
                         catch (ObjectDisposedException)
                         {
+                            _logger.Error($"ObjectDisposedException occurred in {nameof(_poller)}");
                         }
                     }));
                 _logger.Debug("Swarm started.");
@@ -1053,10 +1056,16 @@ namespace Libplanet.Net
                     yield.Break();
                 }
 
+                TimeSpan blockRecvTimeout = BlockRecvTimeout + TimeSpan.FromSeconds(hashCount);
+                if (blockRecvTimeout > MaxTimeout)
+                {
+                    blockRecvTimeout = MaxTimeout;
+                }
+
                 IEnumerable<Message> replies = await SendMessageWithReplyAsync(
                     peer,
                     request,
-                    BlockRecvTimeout,
+                    blockRecvTimeout,
                     ((hashCount - 1) / request.ChunkSize) + 1,
                     yieldToken
                 );
@@ -1101,10 +1110,16 @@ namespace Libplanet.Net
 
                 _logger.Debug("Required tx count: {Count}.", txCount);
 
+                var txRecvTimeout = TxRecvTimeout + TimeSpan.FromSeconds(txCount);
+                if (txRecvTimeout > MaxTimeout)
+                {
+                    txRecvTimeout = MaxTimeout;
+                }
+
                 IEnumerable<Message> replies = await SendMessageWithReplyAsync(
                     peer,
                     request,
-                    TxRecvTimeout,
+                    txRecvTimeout,
                     txCount,
                     cancellationToken
                 );
