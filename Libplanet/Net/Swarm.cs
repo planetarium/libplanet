@@ -174,13 +174,15 @@ namespace Libplanet.Net
                 {
                     using (var runtime = new NetMQRuntime())
                     {
-                        runtime.Run(
-                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
-                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
-                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
-                            ProcessRuntime(_runtimeCancellationTokenSource.Token),
-                            ProcessRuntime(_runtimeCancellationTokenSource.Token)
-                        );
+                        const int workers = 5;
+                        Task[] workerTasks = new Task[workers];
+
+                        for (int i = 0; i < workers; i++)
+                        {
+                            workerTasks[i] = ProcessRuntime(_runtimeCancellationTokenSource.Token);
+                        }
+
+                        runtime.Run(workerTasks);
                     }
                 }
                 catch (NetMQException)
