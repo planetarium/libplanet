@@ -2543,6 +2543,7 @@ namespace Libplanet.Tests.Net
                 appProtocolVersion,
                 tableSize,
                 bucketSize,
+                5,
                 host,
                 listenPort,
                 createdAt,
