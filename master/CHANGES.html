@@ -139,6 +139,8 @@ subdirectories and a LiteDB file for indices.  [<a href="https://github.com/plan
 <li>Added <code>InvalidGenesisBlockException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>StateDownloadState</code> class which reports state preloading iteration
 progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Added <code>PeerDiscoveryException</code> class which inherits <code>SwarmException</code>
+class. [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>, <a href="https://github.com/planetarium/libplanet/pull/726">#726</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -154,6 +156,8 @@ states at once.  [<a href="https://github.com/planetarium/libplanet/pull/703">#7
 [<a href="https://github.com/planetarium/libplanet/pull/706">#706</a>]</li>
 <li>Increased <code>Swarm&lt;T&gt;</code>'s network timeout value, in order to be stable
 a high latency internet connection.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
+<li><code>Swarm&lt;T&gt;.BootstrapAsync()</code> became to report <code>PeerDiscoveryException</code>
+instead of <code>SwarmException</code> directly. [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>, <a href="https://github.com/planetarium/libplanet/pull/726">#726</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>

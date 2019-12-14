@@ -3961,6 +3961,49 @@ references:
   commentId: F:Libplanet.Net.PreloadState.TotalPhase
   fullName: Libplanet.Net.PreloadState.TotalPhase
   nameWithType: PreloadState.TotalPhase
+- uid: Libplanet.Net.Protocols
+  name: Libplanet.Net.Protocols
+  href: api/Libplanet.Net.Protocols.html
+  commentId: N:Libplanet.Net.Protocols
+  fullName: Libplanet.Net.Protocols
+  nameWithType: Libplanet.Net.Protocols
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException
+  name: PeerDiscoveryException
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html
+  commentId: T:Libplanet.Net.Protocols.PeerDiscoveryException
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException
+  nameWithType: PeerDiscoveryException
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor
+  name: PeerDiscoveryException()
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor
+  commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException()
+  nameWithType: PeerDiscoveryException.PeerDiscoveryException()
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(SerializationInfo,StreamingContext)
+  name: PeerDiscoveryException(SerializationInfo, StreamingContext)
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(SerializationInfo,StreamingContext)
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException(SerializationInfo, StreamingContext)
+  nameWithType: PeerDiscoveryException.PeerDiscoveryException(SerializationInfo, StreamingContext)
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(System.String)
+  name: PeerDiscoveryException(String)
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_System_String_
+  commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(System.String)
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException(System.String)
+  nameWithType: PeerDiscoveryException.PeerDiscoveryException(String)
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(System.String,Exception)
+  name: PeerDiscoveryException(String, Exception)
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_System_String_Exception_
+  commentId: M:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor(System.String,Exception)
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException(System.String, Exception)
+  nameWithType: PeerDiscoveryException.PeerDiscoveryException(String, Exception)
+- uid: Libplanet.Net.Protocols.PeerDiscoveryException.#ctor*
+  name: PeerDiscoveryException
+  href: api/Libplanet.Net.Protocols.PeerDiscoveryException.html#Libplanet_Net_Protocols_PeerDiscoveryException__ctor_
+  commentId: Overload:Libplanet.Net.Protocols.PeerDiscoveryException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.Protocols.PeerDiscoveryException.PeerDiscoveryException
+  nameWithType: PeerDiscoveryException.PeerDiscoveryException
 - uid: Libplanet.Net.StateDownloadState
   name: StateDownloadState
   href: api/Libplanet.Net.StateDownloadState.html
