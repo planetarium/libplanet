@@ -767,12 +767,26 @@ namespace Libplanet.Blockchain
                         Hash = block.Hash,
                     };
                     TipChanged?.Invoke(this, tipChangedEventArgs);
-                    ISet<TxId> txIds = block.Transactions
-                        .Select(t => t.Id)
-                        .ToImmutableHashSet();
 
                     _logger.Debug("Unstaging transactions...");
 
+                    ImmutableDictionary<Address, long> maxNonces = block.Transactions
+                        .GroupBy(
+                            t => t.Signer,
+                            t => t.Nonce,
+                            (signer, nonces) => new
+                            {
+                                signer = signer,
+                                maxNonce = nonces.Max(),
+                            }
+                        )
+                        .ToImmutableDictionary(t => t.signer, t => t.maxNonce);
+                    ISet<TxId> txIds = Store.IterateStagedTransactionIds()
+                        .Select(Store.GetTransaction<T>)
+                        .Where(tx => maxNonces.TryGetValue(tx.Signer, out long nonce) &&
+                            tx.Nonce <= nonce)
+                        .Select(tx => tx.Id)
+                        .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }

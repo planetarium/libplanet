@@ -80,6 +80,9 @@ To be released.
     a high latency internet connection.  [[#709]]
  -  `Swarm<T>.BootstrapAsync()` became to report `PeerDiscoveryException`
     instead of `SwarmException` directly. [[#604], [#726]]
+ -  `BlockChain<T>.Append()` became to unstage the staged `Transaction<T>`s
+    that have lower nonce than the highest nonce of the same signer's transactions
+    in the same chain, since these virtually never become valid.  [[#721], [#728]]
 
 ### Bug fixes
 
@@ -116,9 +119,11 @@ To be released.
 [#709]: https://github.com/planetarium/libplanet/pull/709
 [#718]: https://github.com/planetarium/libplanet/pull/718
 [#719]: https://github.com/planetarium/libplanet/pull/719
+[#721]: https://github.com/planetarium/libplanet/issues/721
 [#725]: https://github.com/planetarium/libplanet/pull/725
 [#726]: https://github.com/planetarium/libplanet/pull/726
 [#727]: https://github.com/planetarium/libplanet/pull/727
+[#728]: https://github.com/planetarium/libplanet/pull/728
 
 
 Version 0.7.0
