@@ -224,10 +224,6 @@ namespace Libplanet.Net
                 _appProtocolVersion,
                 _publicIPAddress);
 
-        public AsyncAutoResetEvent TxReceived { get; }
-
-        public AsyncAutoResetEvent BlockReceived { get; }
-
         public DateTimeOffset LastReceived { get; private set; }
 
         public IDictionary<Peer, DateTimeOffset> LastSeenTimestamps
@@ -261,6 +257,10 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        internal AsyncAutoResetEvent TxReceived { get; }
+
+        internal AsyncAutoResetEvent BlockReceived { get; }
 
         // FIXME: Should have a unit test.
         internal AsyncAutoResetEvent BlockAppended { get; }
