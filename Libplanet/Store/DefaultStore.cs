@@ -660,12 +660,9 @@ namespace Libplanet.Store
                 if (doc.TryGetValue("_id", out BsonValue id) && id.IsBinary)
                 {
                     var address = new Address(id.AsBinary);
-                    if (doc.TryGetValue("v", out BsonValue v) && v.IsInt64)
+                    if (doc.TryGetValue("v", out BsonValue v) && v.IsInt64 && v.AsInt64 > 0)
                     {
-                        if (v.AsInt64 > 0)
-                        {
-                            yield return new KeyValuePair<Address, long>(address, v.AsInt64);
-                        }
+                        yield return new KeyValuePair<Address, long>(address, v.AsInt64);
                     }
                 }
             }
