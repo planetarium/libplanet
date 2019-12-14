@@ -103,13 +103,12 @@ namespace Libplanet.Net.Protocols
 
             if (!_routing.Peers.Any())
             {
-                // FIXME: Need more precise exception
-                throw new SwarmException("No seed available.");
+                throw new PeerDiscoveryException("All seeds are unreachable.");
             }
 
             if (findPeerTasks.Count == 0)
             {
-                throw new SwarmException("Bootstrap failed.");
+                throw new PeerDiscoveryException("Bootstrap failed.");
             }
 
             try
