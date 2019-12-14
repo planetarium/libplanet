@@ -33,6 +33,8 @@ To be released.
     `BlockChain<T>()` constructor.  [[#688]]
  -  Removed `StateReferenceDownloadState` class.  [[#703]]
  -  Removed `BlockStateDownloadState` class.  [[#703]]
+ -  Removed `TxReceived`, `BlockReceived` `AsyncAutoResetEvent`
+    from `Swarm<T>`.  [[#705], [#725]]
 
 ### Backward-incompatible network protocol changes
 
@@ -101,10 +103,12 @@ To be released.
 [#701]: https://github.com/planetarium/libplanet/pull/701
 [#703]: https://github.com/planetarium/libplanet/pull/703
 [#704]: https://github.com/planetarium/libplanet/pull/704
+[#705]: https://github.com/planetarium/libplanet/issues/705
 [#706]: https://github.com/planetarium/libplanet/pull/706
 [#709]: https://github.com/planetarium/libplanet/pull/709
 [#718]: https://github.com/planetarium/libplanet/pull/718
 [#719]: https://github.com/planetarium/libplanet/pull/719
+[#725]: https://github.com/planetarium/libplanet/pull/725
 
 
 Version 0.7.0
