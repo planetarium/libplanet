@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Libplanet.Stun
 {
-    public class Crc32
+    public static class Crc32
     {
         private const uint _generator = 0xEDB88320;
         private static readonly uint[] _checksumTable;
