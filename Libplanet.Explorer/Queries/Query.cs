@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -5,6 +6,7 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.Queries
@@ -13,13 +15,15 @@ namespace Libplanet.Explorer.Queries
         where T : IAction, new()
     {
         private static BlockChain<T> _chain;
+        private static IStore _store;
 
-        public Query(BlockChain<T> chain)
+        public Query(BlockChain<T> chain, IStore store)
         {
             Field<BlockQuery<T>>("blockQuery", resolve: context => new { });
             Field<TransactionQuery<T>>("transactionQuery", resolve: context => new { });
 
             _chain = chain;
+            _store = store;
             Name = "Query";
         }
 
@@ -96,6 +100,29 @@ namespace Libplanet.Explorer.Queries
 
                 block = GetNextBlock(block, desc);
             }
+        }
+
+        internal static IEnumerable<Transaction<T>> ListStagedTransactions(
+            Address? signer, Address? involved, bool desc, int offset, int? limit)
+        {
+            if (offset < 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(offset),
+                    $"{nameof(ListStagedTransactions)} doesn't support negative offset.");
+            }
+
+            var stagedTxs = _store.IterateStagedTransactionIds()
+                .Select(txId => _chain.GetTransaction(txId))
+                .Where(tx => IsValidTransacion(tx, signer, involved))
+                .Skip(offset);
+
+            stagedTxs = desc ? stagedTxs.OrderByDescending(tx => tx.Timestamp)
+                : stagedTxs.OrderBy(tx => tx.Timestamp);
+
+            stagedTxs = stagedTxs.TakeWhile((tx, index) => limit is null || index < limit);
+
+            return stagedTxs;
         }
 
         internal static Block<T> GetBlock(HashDigest<SHA256> hash)
