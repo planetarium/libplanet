@@ -4084,23 +4084,6 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BlockChain
   nameWithType: Swarm<T>.BlockChain
   nameWithType.vb: Swarm(Of T).BlockChain
-- uid: Libplanet.Net.Swarm`1.BlockReceived
-  name: BlockReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockReceived
-  commentId: P:Libplanet.Net.Swarm`1.BlockReceived
-  fullName: Libplanet.Net.Swarm<T>.BlockReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).BlockReceived
-  nameWithType: Swarm<T>.BlockReceived
-  nameWithType.vb: Swarm(Of T).BlockReceived
-- uid: Libplanet.Net.Swarm`1.BlockReceived*
-  name: BlockReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BlockReceived_
-  commentId: Overload:Libplanet.Net.Swarm`1.BlockReceived
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.BlockReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).BlockReceived
-  nameWithType: Swarm<T>.BlockReceived
-  nameWithType.vb: Swarm(Of T).BlockReceived
 - uid: Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,CancellationToken)
   name: BootstrapAsync(IEnumerable<Peer>, Double, Double, Int32, CancellationToken)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_CancellationToken_
@@ -4361,23 +4344,6 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).TraceTable
   nameWithType: Swarm<T>.TraceTable
   nameWithType.vb: Swarm(Of T).TraceTable
-- uid: Libplanet.Net.Swarm`1.TxReceived
-  name: TxReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TxReceived
-  commentId: P:Libplanet.Net.Swarm`1.TxReceived
-  fullName: Libplanet.Net.Swarm<T>.TxReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).TxReceived
-  nameWithType: Swarm<T>.TxReceived
-  nameWithType.vb: Swarm(Of T).TxReceived
-- uid: Libplanet.Net.Swarm`1.TxReceived*
-  name: TxReceived
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TxReceived_
-  commentId: Overload:Libplanet.Net.Swarm`1.TxReceived
-  isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.TxReceived
-  fullName.vb: Libplanet.Net.Swarm(Of T).TxReceived
-  nameWithType: Swarm<T>.TxReceived
-  nameWithType.vb: Swarm(Of T).TxReceived
 - uid: Libplanet.Net.Swarm`1.WaitForRunningAsync
   name: WaitForRunningAsync()
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_WaitForRunningAsync
