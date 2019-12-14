@@ -15,6 +15,7 @@ using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Libplanet.Net.Messages;
+using Libplanet.Net.Protocols;
 using Libplanet.Store;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
@@ -334,7 +335,7 @@ namespace Libplanet.Tests.Net
 
             try
             {
-                await Assert.ThrowsAsync<SwarmException>(
+                await Assert.ThrowsAsync<PeerDiscoveryException>(
                     () => swarmB.BootstrapAsync(new[] { swarmA.AsPeer }, 3000, 3000));
 
                 await StartAsync(swarmA);
@@ -530,7 +531,7 @@ namespace Libplanet.Tests.Net
             {
                 await StartAsync(b);
 
-                await Assert.ThrowsAsync<SwarmException>(() => BootstrapAsync(a, b.AsPeer));
+                await Assert.ThrowsAsync<PeerDiscoveryException>(() => BootstrapAsync(a, b.AsPeer));
 
                 Assert.True(isCalled);
             }
