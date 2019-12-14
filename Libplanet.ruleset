@@ -101,9 +101,6 @@
     <!-- Initialize all 'static fields' inline and remove the
     'static constructor'. -->
     <Rule Id="S3963" Action="None" />
-    <!-- Update this implementation of 'ISerializable' to conform to the
-    recommended serialization pattern. -->
-    <Rule Id="S3925" Action="None" />
     <!-- Split this method into two, one handling parameters check and the
     other handling the asynchronous code. -->
     <Rule Id="S4457" Action="None" />
