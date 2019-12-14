@@ -51,6 +51,7 @@ namespace Libplanet.Explorer.Executable
                 difficultyBoundDivisor: options.DifficultyBoundDivisor);
             var blockChain = new BlockChain<AppAgnosticAction>(policy, store);
             Startup.BlockChainSingleton = blockChain;
+            Startup.StoreSingleton = store;
 
             IWebHost webHost = WebHost.CreateDefaultBuilder()
                 .UseStartup<ExplorerStartup<AppAgnosticAction, Startup>>()
@@ -184,7 +185,11 @@ namespace Libplanet.Explorer.Executable
         {
             public BlockChain<AppAgnosticAction> BlockChain => BlockChainSingleton;
 
+            public IStore Store => StoreSingleton;
+
             internal static BlockChain<AppAgnosticAction> BlockChainSingleton { get; set; }
+
+            internal static IStore StoreSingleton { get; set; }
         }
     }
 }

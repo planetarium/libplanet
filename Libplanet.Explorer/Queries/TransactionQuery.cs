@@ -48,6 +48,43 @@ namespace Libplanet.Explorer.Queries
                 }
             );
 
+            Field<NonNullGraphType<ListGraphType<NonNullGraphType<TransactionType<T>>>>>(
+                "stagedTransactions",
+                arguments: new QueryArguments(
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "signer",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<AddressType>
+                    {
+                        Name = "involvedAddress",
+                        DefaultValue = null,
+                    },
+                    new QueryArgument<BooleanGraphType>
+                    {
+                        Name = "desc",
+                        DefaultValue = false,
+                    },
+                    new QueryArgument<IntGraphType>
+                    {
+                        Name = "offset",
+                        DefaultValue = 0,
+                    },
+                    new QueryArgument<IntGraphType> { Name = "limit" }
+                ),
+                resolve: context =>
+                {
+                    var signer = context.GetArgument<Address?>("signer");
+                    var involved = context.GetArgument<Address?>("involvedAddress");
+                    bool desc = context.GetArgument<bool>("desc");
+                    int offset = context.GetArgument<int>("offset");
+                    int? limit = context.GetArgument<int?>("limit", null);
+
+                    return Query<T>.ListStagedTransactions(signer, involved, desc, offset, limit);
+                }
+            );
+
             Field<TransactionType<T>>(
                 "transaction",
                 arguments: new QueryArguments(

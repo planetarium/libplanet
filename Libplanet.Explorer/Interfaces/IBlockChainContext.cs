@@ -4,6 +4,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Queries;
+using Libplanet.Store;
 
 namespace Libplanet.Explorer.Interfaces
 {
@@ -11,6 +12,8 @@ namespace Libplanet.Explorer.Interfaces
         where T : IAction, new()
     {
         BlockChain<T> BlockChain { get; }
+
+        IStore Store { get; }
     }
 
     public static class BlockChainContext
@@ -25,7 +28,7 @@ namespace Libplanet.Explorer.Interfaces
                 context,
                 (_) =>
                 {
-                    var s = new Schema { Query = new Query<T>(context.BlockChain) };
+                    var s = new Schema { Query = new Query<T>(context.BlockChain, context.Store) };
                     return s;
                 }
             );
