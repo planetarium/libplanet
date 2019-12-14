@@ -105,8 +105,6 @@
     other handling the asynchronous code. -->
     <Rule Id="S4457" Action="None" />
 
-    <!-- Merge this if statement with the enclosing one. -->
-    <Rule Id="S1066" Action="None" />
     <!-- Remove the unnecessary Boolean literal(s). -->
     <Rule Id="S1125" Action="None" />
     <!-- Remove the field '_bucketSize' and declare it as a local variable
