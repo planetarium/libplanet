@@ -468,18 +468,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.%23ctor(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BDateTimeOffset%7D%2CIEnumerable%7BLibplanet.Net.IceServer%7D%2CEventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.%23ctor(Libplanet.Blockchain.BlockChain%7B%600%7D%2CLibplanet.Crypto.PrivateKey%2CSystem.Int32%2CSystem.Int32%2CSystem.String%2CSystem.Nullable%7BSystem.Int32%7D%2CSystem.Nullable%7BDateTimeOffset%7D%2CIEnumerable%7BLibplanet.Net.IceServer%7D%2CEventHandler%7BLibplanet.Net.DifferentProtocolVersionEventArgs%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L83">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1__ctor_" data-uid="Libplanet.Net.Swarm`1.#ctor*"></a>
-  <h4 id="Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(BlockChain&lt;T&gt;, PrivateKey, Int32, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
+  <h4 id="Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__" data-uid="Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})">Swarm(BlockChain&lt;T&gt;, PrivateKey, Int32, Int32, String, Nullable&lt;Int32&gt;, Nullable&lt;DateTimeOffset&gt;, IEnumerable&lt;IceServer&gt;, EventHandler&lt;DifferentProtocolVersionEventArgs&gt;)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, int appProtocolVersion, string host = null, int? listenPort = null, DateTimeOffset? createdAt = null, IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public Swarm(BlockChain&lt;T&gt; blockChain, PrivateKey privateKey, int appProtocolVersion, int workers = 5, string host = null, int? listenPort = null, DateTimeOffset? createdAt = null, IEnumerable&lt;IceServer&gt; iceServers = null, EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -504,6 +504,11 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">appProtocolVersion</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">workers</span></td>
         <td></td>
       </tr>
       <tr>
@@ -540,7 +545,7 @@
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_Address.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Address%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L214">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L218">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_Address_" data-uid="Libplanet.Net.Swarm`1.Address*"></a>
   <h4 id="Libplanet_Net_Swarm_1_Address" data-uid="Libplanet.Net.Swarm`1.Address">Address</h4>
@@ -570,7 +575,7 @@
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_AsPeer.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.AsPeer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L216">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L220">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_AsPeer_" data-uid="Libplanet.Net.Swarm`1.AsPeer*"></a>
   <h4 id="Libplanet_Net_Swarm_1_AsPeer" data-uid="Libplanet.Net.Swarm`1.AsPeer">AsPeer</h4>
@@ -600,7 +605,7 @@
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_BlockChain.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BlockChain%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L239">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L243">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BlockChain_" data-uid="Libplanet.Net.Swarm`1.BlockChain*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BlockChain" data-uid="Libplanet.Net.Swarm`1.BlockChain">BlockChain</h4>
@@ -632,7 +637,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_EndPoint.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.EndPoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L212">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L216">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_EndPoint_" data-uid="Libplanet.Net.Swarm`1.EndPoint*"></a>
   <h4 id="Libplanet_Net_Swarm_1_EndPoint" data-uid="Libplanet.Net.Swarm`1.EndPoint">EndPoint</h4>
@@ -662,7 +667,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastReceived.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastReceived%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L227">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L231">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_LastReceived_" data-uid="Libplanet.Net.Swarm`1.LastReceived*"></a>
   <h4 id="Libplanet_Net_Swarm_1_LastReceived" data-uid="Libplanet.Net.Swarm`1.LastReceived">LastReceived</h4>
@@ -692,7 +697,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_LastSeenTimestamps.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.LastSeenTimestamps%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L229">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L233">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_LastSeenTimestamps_" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps*"></a>
   <h4 id="Libplanet_Net_Swarm_1_LastSeenTimestamps" data-uid="Libplanet.Net.Swarm`1.LastSeenTimestamps">LastSeenTimestamps</h4>
@@ -722,7 +727,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_Running.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Running%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L244">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L248">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_Running_" data-uid="Libplanet.Net.Swarm`1.Running*"></a>
   <h4 id="Libplanet_Net_Swarm_1_Running" data-uid="Libplanet.Net.Swarm`1.Running">Running</h4>
@@ -755,7 +760,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Double%2CSystem.Double%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L516">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L520">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BootstrapAsync_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Double_System_Double_System_Int32_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Double,System.Double,System.Int32,CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Double, Double, Int32, CancellationToken)</h4>
@@ -822,7 +827,7 @@ synchronizes with.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BootstrapAsync(IEnumerable%7BLibplanet.Net.Peer%7D%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Nullable%7BTimeSpan%7D%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L544">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L548">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BootstrapAsync_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BootstrapAsync_IEnumerable_Libplanet_Net_Peer__System_Nullable_TimeSpan__System_Nullable_TimeSpan__System_Int32_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.BootstrapAsync(IEnumerable{Libplanet.Net.Peer},System.Nullable{TimeSpan},System.Nullable{TimeSpan},System.Int32,CancellationToken)">BootstrapAsync(IEnumerable&lt;Peer&gt;, Nullable&lt;TimeSpan&gt;, Nullable&lt;TimeSpan&gt;, Int32, CancellationToken)</h4>
@@ -915,7 +920,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastBlocks_IEnumerable_Libplanet_Blocks_Block__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastBlocks(IEnumerable%7BLibplanet.Blocks.Block%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L566">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L570">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BroadcastBlocks_" data-uid="Libplanet.Net.Swarm`1.BroadcastBlocks*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BroadcastBlocks_IEnumerable_Libplanet_Blocks_Block__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastBlocks(IEnumerable{Libplanet.Blocks.Block{`0}})">BroadcastBlocks(IEnumerable&lt;Block&lt;T&gt;&gt;)</h4>
@@ -947,7 +952,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_BroadcastTxs_IEnumerable_Libplanet_Tx_Transaction__0___.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.BroadcastTxs(IEnumerable%7BLibplanet.Tx.Transaction%7B%600%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L577">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L581">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_BroadcastTxs_" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs*"></a>
   <h4 id="Libplanet_Net_Swarm_1_BroadcastTxs_IEnumerable_Libplanet_Tx_Transaction__0___" data-uid="Libplanet.Net.Swarm`1.BroadcastTxs(IEnumerable{Libplanet.Tx.Transaction{`0}})">BroadcastTxs(IEnumerable&lt;Transaction&lt;T&gt;&gt;)</h4>
@@ -979,7 +984,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L292">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L296">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_Dispose_" data-uid="Libplanet.Net.Swarm`1.Dispose*"></a>
   <h4 id="Libplanet_Net_Swarm_1_Dispose" data-uid="Libplanet.Net.Swarm`1.Dispose">Dispose()</h4>
@@ -994,7 +999,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_Finalize.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L195">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L199">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_Finalize_" data-uid="Libplanet.Net.Swarm`1.Finalize*"></a>
   <h4 id="Libplanet_Net_Swarm_1_Finalize" data-uid="Libplanet.Net.Swarm`1.Finalize">Finalize()</h4>
@@ -1009,7 +1014,7 @@ not <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Runni
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__IImmutableSet_Libplanet_Address__EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.PreloadAsync(System.Nullable%7BTimeSpan%7D%2CIProgress%7BLibplanet.Net.PreloadState%7D%2CIImmutableSet%7BLibplanet.Address%7D%2CEventHandler%7BLibplanet.Net.PreloadBlockDownloadFailEventArgs%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L646">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L650">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_PreloadAsync_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_PreloadAsync_System_Nullable_TimeSpan__IProgress_Libplanet_Net_PreloadState__IImmutableSet_Libplanet_Address__EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.PreloadAsync(System.Nullable{TimeSpan},IProgress{Libplanet.Net.PreloadState},IImmutableSet{Libplanet.Address},EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)">PreloadAsync(Nullable&lt;TimeSpan&gt;, IProgress&lt;PreloadState&gt;, IImmutableSet&lt;Address&gt;, EventHandler&lt;PreloadBlockDownloadFailEventArgs&gt;, CancellationToken)</h4>
@@ -1098,7 +1103,7 @@ method instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(System.Int32%2CSystem.Int32%2CEventHandler%7BLibplanet.Net.PreloadBlockDownloadFailEventArgs%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L340">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L344">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)">StartAsync(Int32, Int32, EventHandler&lt;PreloadBlockDownloadFailEventArgs&gt;, CancellationToken)</h4>
@@ -1160,7 +1165,7 @@ method instead.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StartAsync(TimeSpan%2CTimeSpan%2CEventHandler%7BLibplanet.Net.PreloadBlockDownloadFailEventArgs%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L384">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L388">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_StartAsync_" data-uid="Libplanet.Net.Swarm`1.StartAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)">StartAsync(TimeSpan, TimeSpan, EventHandler&lt;PreloadBlockDownloadFailEventArgs&gt;, CancellationToken)</h4>
@@ -1256,7 +1261,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_StopAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StopAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L299">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L303">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_StopAsync_" data-uid="Libplanet.Net.Swarm`1.StopAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_StopAsync_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StopAsync(CancellationToken)">StopAsync(CancellationToken)</h4>
@@ -1303,7 +1308,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_StopAsync_TimeSpan_CancellationToken_.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.StopAsync(TimeSpan%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L306">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L310">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_StopAsync_" data-uid="Libplanet.Net.Swarm`1.StopAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_StopAsync_TimeSpan_CancellationToken_" data-uid="Libplanet.Net.Swarm`1.StopAsync(TimeSpan,CancellationToken)">StopAsync(TimeSpan, CancellationToken)</h4>
@@ -1355,7 +1360,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_TraceTable.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.TraceTable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L584">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L588">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_TraceTable_" data-uid="Libplanet.Net.Swarm`1.TraceTable*"></a>
   <h4 id="Libplanet_Net_Swarm_1_TraceTable" data-uid="Libplanet.Net.Swarm`1.TraceTable">TraceTable()</h4>
@@ -1385,7 +1390,7 @@ already <a class="xref" href="Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_R
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_WaitForRunningAsync.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.WaitForRunningAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L290">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L294">View Source</a>
   </span>
   <a id="Libplanet_Net_Swarm_1_WaitForRunningAsync_" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync*"></a>
   <h4 id="Libplanet_Net_Swarm_1_WaitForRunningAsync" data-uid="Libplanet.Net.Swarm`1.WaitForRunningAsync">WaitForRunningAsync()</h4>
@@ -1420,7 +1425,7 @@ property becomes <code>true</code>.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered.md&amp;value=---%0Auid%3A%20Libplanet.Net.Swarm%601.DifferentVersionPeerEncountered%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L210">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/Swarm.cs/#L214">View Source</a>
   </span>
   <h4 id="Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered" data-uid="Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered">DifferentVersionPeerEncountered</h4>
   <div class="markdown level1 summary"><p>The <see cref="!:EventHandler"></see> triggered when the different version of
