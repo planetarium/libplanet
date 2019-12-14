@@ -61,6 +61,8 @@ To be released.
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
  -  Added `StateDownloadState` class which reports state preloading iteration
     progress.  [[#703]]
+ -  Added `PeerDiscoveryException` class which inherits `SwarmException`
+    class. [[#604], [#726]]
 
 ### Behavioral changes
 
@@ -76,6 +78,8 @@ To be released.
     [[#706]]
  -  Increased `Swarm<T>`'s network timeout value, in order to be stable
     a high latency internet connection.  [[#709]]
+ -  `Swarm<T>.BootstrapAsync()` became to report `PeerDiscoveryException`
+    instead of `SwarmException` directly. [[#604], [#726]]
 
 ### Bug fixes
 
@@ -92,6 +96,7 @@ To be released.
     nonce.  [[#718]]
  -  Fixed a bug where mined transactions were staged again.  [[#719]]
 
+[#604]: https://github.com/planetarium/libplanet/issues/604
 [#613]: https://github.com/planetarium/libplanet/issues/613
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#665]: https://github.com/planetarium/libplanet/pull/665
@@ -112,6 +117,7 @@ To be released.
 [#718]: https://github.com/planetarium/libplanet/pull/718
 [#719]: https://github.com/planetarium/libplanet/pull/719
 [#725]: https://github.com/planetarium/libplanet/pull/725
+[#726]: https://github.com/planetarium/libplanet/pull/726
 [#727]: https://github.com/planetarium/libplanet/pull/727
 
 
