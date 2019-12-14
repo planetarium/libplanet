@@ -84,6 +84,7 @@ namespace Libplanet.Net
             BlockChain<T> blockChain,
             PrivateKey privateKey,
             int appProtocolVersion,
+            int workers = 5,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -96,6 +97,7 @@ namespace Libplanet.Net
                 appProtocolVersion,
                 null,
                 null,
+                workers,
                 host,
                 listenPort,
                 createdAt,
@@ -110,6 +112,7 @@ namespace Libplanet.Net
             int appProtocolVersion,
             int? tableSize,
             int? bucketSize,
+            int workers = 5,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
@@ -174,7 +177,6 @@ namespace Libplanet.Net
                 {
                     using (var runtime = new NetMQRuntime())
                     {
-                        const int workers = 5;
                         Task[] workerTasks = new Task[workers];
 
                         for (int i = 0; i < workers; i++)

@@ -33,8 +33,10 @@ To be released.
     `BlockChain<T>()` constructor.  [[#688]]
  -  Removed `StateReferenceDownloadState` class.  [[#703]]
  -  Removed `BlockStateDownloadState` class.  [[#703]]
- -  Removed `TxReceived`, `BlockReceived` `AsyncAutoResetEvent`
+ -  Removed `TxReceived` and `BlockReceived` `AsyncAutoResetEvent`s
     from `Swarm<T>`.  [[#705], [#725]]
+ -  Added `workers` optional parameter into `Swarm<T>()` constructor.
+    [[#613], [#727]]
 
 ### Backward-incompatible network protocol changes
 
@@ -90,6 +92,7 @@ To be released.
     nonce.  [[#718]]
  -  Fixed a bug where mined transactions were staged again.  [[#719]]
 
+[#613]: https://github.com/planetarium/libplanet/issues/613
 [#662]: https://github.com/planetarium/libplanet/pull/662
 [#665]: https://github.com/planetarium/libplanet/pull/665
 [#675]: https://github.com/planetarium/libplanet/pull/675
@@ -109,6 +112,7 @@ To be released.
 [#718]: https://github.com/planetarium/libplanet/pull/718
 [#719]: https://github.com/planetarium/libplanet/pull/719
 [#725]: https://github.com/planetarium/libplanet/pull/725
+[#727]: https://github.com/planetarium/libplanet/pull/727
 
 
 Version 0.7.0
