@@ -48,9 +48,6 @@
     <Rule Id="S112" Action="None" />
     <!-- Add the default parameter value defined in the overridden method. -->
     <Rule Id="S1006" Action="None" />
-    <!-- Add a 'protected' constructor or the 'static' keyword to the class
-    declaration. -->
-    <Rule Id="S1118" Action="None" />
     <!-- Add an explanation -->
     <Rule Id="S1123" Action="None" />
     <!-- Take the required action to fix the issue indicated by this
