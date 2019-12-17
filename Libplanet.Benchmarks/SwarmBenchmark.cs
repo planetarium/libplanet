@@ -41,7 +41,7 @@ namespace Libplanet.Benchmarks
             _blocks.Add(TestUtils.MineNext(_blocks[3]));
         }
 
-        [IterationSetup(Target = "BroadcastBlock")]
+        [IterationSetup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
         public void InitializeSwarms()
         {
             _keys = new PrivateKey[SwarmNumber];
@@ -150,7 +150,7 @@ namespace Libplanet.Benchmarks
             _blockChains[0].Append(_blocks[4]);
         }
 
-        [IterationCleanup(Target = "BroadcastBlock")]
+        [IterationCleanup(Targets = new[] {"BroadcastBlock", "BroadcastBlockWithoutFill"})]
         public void FinalizeSwarmas()
         {
             try
@@ -175,8 +175,17 @@ namespace Libplanet.Benchmarks
         [Benchmark]
         public async Task BroadcastBlock()
         {
+            Task t = _swarms[SwarmNumber - 1].BlockAppended.WaitAsync();
             _swarms[0].BroadcastBlocks(new [] { _blockChains[0][-1] });
-            await _swarms[SwarmNumber - 1].BlockReceived.WaitAsync();
+            await t;
+        }
+
+        [Benchmark]
+        public async Task BroadcastBlockWithoutFill()
+        {
+            Task t = _swarms[SwarmNumber - 1].BlockAppended.WaitAsync();
+            _swarms[0].BroadcastBlocks(new [] { _blockChains[0][1] });
+            await t;
         }
 
         private async Task<Task> StartAsync<T>(
