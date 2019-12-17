@@ -2489,7 +2489,11 @@ namespace Libplanet.Net
                     ep = await _turnClient.GetMappedAddressAsync();
                 }
 
-                await _turnClient.CreatePermissionAsync(ep);
+                // FIXME Can we really ignore IPv6 case?
+                if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
+                {
+                    await _turnClient.CreatePermissionAsync(ep);
+                }
             }
         }
 

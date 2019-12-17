@@ -122,6 +122,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>.StartAsync()` had thrown
     `NullReferenceException` when without using NAT and `host` parameter.
     [[#744]]
+ -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
+    an IPv6 address.  [[#744]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
