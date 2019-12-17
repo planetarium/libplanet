@@ -135,6 +135,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      altLocale: ar_SA.UTF8
   timeoutInMinutes: 30
 
 - job: macOS_NETCore
@@ -145,6 +146,7 @@ jobs:
     parameters:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
+      altLocale: he_IL.UTF8
   timeoutInMinutes: 30
 
 - job: Windows_NETCore
@@ -156,6 +158,7 @@ jobs:
       configuration: $(configuration)
       turnServerUrl: $(turnServerUrl)
       testArguments: '-v n'
+      altLocale: fr_FR.UTF8
   timeoutInMinutes: 30
 
 - job: Windows_NETFramework
