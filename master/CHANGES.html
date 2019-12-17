@@ -158,6 +158,9 @@ states at once.  [<a href="https://github.com/planetarium/libplanet/pull/703">#7
 a high latency internet connection.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
 <li><code>Swarm&lt;T&gt;.BootstrapAsync()</code> became to report <code>PeerDiscoveryException</code>
 instead of <code>SwarmException</code> directly. [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>, <a href="https://github.com/planetarium/libplanet/pull/726">#726</a>]</li>
+<li><code>BlockChain&lt;T&gt;.Append()</code> became to unstage the staged <code>Transaction&lt;T&gt;</code>s
+that have lower nonce than the highest nonce of the same signer's transactions
+in the same chain, since these virtually never become valid.  [<a href="https://github.com/planetarium/libplanet/issues/721">#721</a>, <a href="https://github.com/planetarium/libplanet/pull/728">#728</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
