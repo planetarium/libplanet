@@ -234,11 +234,11 @@ Consensus
 
 ### Perspective
 
-Libplanet is a library that enables game developers to create central serverless multiplay-able games. “central serverless” means that not only one entity is responsible for the state of the game, but every node in the network has the state of the game and synchronizes it accordingly. To synchronize, it should maintain a consistent state even in the event of a failure or tampering. It's a matter of choosing which state is canonical, is also called [consensus] in distributed computing and multi-agent environments.
+Libplanet is a library that enables game developers to create "centralized server"-less multiplayer games. “Centralized server-less” means that not only one entity is responsible for the state of the game, but every node in the network has the state of the game and synchronizes it accordingly. To synchronize, it should maintain a consistent state even in the event of a failure or tampering. The way of choosing which state is canonical is also called [consensus] in distributed computing and multi-agent environments.
 
-The algorithms used for consensus are various, with many different characteristics and pros and cons. For example, [Proof of Work (PoW)][PoW] allows anyone with computing power to participate in the network, but that cannot guarantee the state of the game at a specific time. In contrast, [Proof of Authority (PoA)][PoA] can guarantee that a game's state is established after a certain time, but only authorized users can join the network. These charateristics can be a sort of fun factor in some games, but they can't be used in some games, making the consensus algorithm also unusable.
+The algorithms used for consensus are various, with many different characteristics and pros and cons. For example, [Proof of Work (PoW)][PoW] allows anyone with computing power to participate in the network, but that cannot guarantee the state of the game at a specific time. In contrast, [Proof of Authority (PoA)][PoA] can guarantee that a game's state is established after a certain time, but only authorized users can join the network. These charateristics may work for some games, but won't for others, making the consensus algorithm also unusable for a general purpose network.
 
-Libplanet isn't a tool for creating games of any particular genre, but rather a tool for creating general games. also it assumes that each game has a different network and consensus algorithm. Nor is Libplanet itself a project that focuses on developing and testing any particular consensus algorithm or mechanism. That's why Libplanet aims to allow game developers to choose a consensus algorithm at implementation time to suit their game's characteristics.
+Libplanet isn't a tool for creating games of any particular genre, but rather a tool for creating varied types of games. Also it assumes that each game has a different network and consensus algorithm. Nor is Libplanet itself a project that focuses on developing and testing any particular consensus algorithm or mechanism. That's why Libplanet aims to allow game developers to choose a consensus algorithm at implementation time to suit their game's characteristics.
 
 [Consensus]: https://en.wikipedia.org/wiki/Consensus_(computer_science)
 [PoW]: https://en.wikipedia.org/wiki/Proof_of_work
@@ -251,11 +251,11 @@ Currently, the only consensus algorithm currently implemented in Libplanet is a 
 
 - Anyone with hash power (= computing power) can join the network
 - Simple to implement, robust
-- All blocks aren't finalized and can be re-organized
+- Blocks aren't finalized and can be re-organized
 - Can't decrease block creation (≒ state transition) time below a certain amount (network propagation and validation time)
 
-The main reason Libplanet chose PoW as its first consensus algorithm is its simple implementation. As mentioned earlier, Libplanet is not a library that aims to implement certain functions of the blockchain, but a library that allows the game to run without a central server. That's why we chose PoW as our first consensus algorithm, which allows us to create and run a complete game, even with a relatively simple implementation (although genre or feature limitation).
+The main reason Libplanet chose PoW as its first consensus algorithm is its simple architecture. As mentioned earlier, Libplanet is not a library that aims to implement certain functions of the blockchain, but a library that allows the game to run without a centralized server. That's why we chose PoW as our first consensus algorithm, which allows us to create and run a complete game, even with a relatively simple implementation (although it does limit genre or features).
 
-Also, PoW is not Libplanet's only or last consensus algorithm. since some games can't use it because of some of the characteristics of PoW. To this end, Libplanet will add consensus algorithms that the community believes are needed later.
+Also, PoW is not Libplanet's last or only consensus algorithm, as some games can't use it due to some of the characteristics of PoW. To Libplanet will add consensus algorithms that the community believes are needed later.
 
 [Hashcash]: https://en.wikipedia.org/wiki/Hashcash
