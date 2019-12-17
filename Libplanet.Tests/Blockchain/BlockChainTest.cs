@@ -461,6 +461,64 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void UnstageAfterAppendComplete()
+        {
+            DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+
+            PrivateKey privateKey = new PrivateKey();
+            (Address[] addresses, Transaction<DumbAction>[] txs) =
+                MakeFixturesForAppendTests(privateKey);
+            var genesis = _blockChain.Genesis;
+
+            try
+            {
+                Block<DumbAction> block1 = TestUtils.MineNext(
+                    genesis,
+                    miner: addresses[4],
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10));
+                _blockChain.Append(block1);
+                Assert.Empty(_blockChain.GetStagedTransactionIds());
+                _blockChain.StageTransactions(txs.ToImmutableHashSet());
+                Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
+
+                Block<DumbAction> block2 = TestUtils.MineNext(
+                    block1,
+                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[0]),
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10)
+                );
+                _blockChain.Append(block2);
+                Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+                _blockChain.StageTransactions(txs.ToImmutableHashSet());
+                Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+
+                var actions = new[] { new DumbAction(addresses[0], "foobar") };
+                Transaction<DumbAction>[] txs2 =
+                {
+                    _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
+                };
+                _blockChain.StageTransactions(txs2.ToImmutableHashSet());
+                Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
+
+                Block<DumbAction> block3 = TestUtils.MineNext(
+                    block2,
+                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txs[1]),
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10)
+                );
+                _blockChain.Append(block3);
+                Assert.Empty(_blockChain.GetStagedTransactionIds());
+            }
+            finally
+            {
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+                MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            }
+        }
+
+        [Fact]
         public async Task RenderAfterAppendComplete()
         {
              var policy = new NullPolicy<ThrowException>();
@@ -1750,7 +1808,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         private (Address[], Transaction<DumbAction>[])
-            MakeFixturesForAppendTests()
+            MakeFixturesForAppendTests(PrivateKey privateKey = null)
         {
             Address[] addresses =
             {
@@ -1761,7 +1819,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.Address5,
             };
 
-            PrivateKey privateKey = new PrivateKey(new byte[]
+            privateKey = privateKey ?? new PrivateKey(new byte[]
             {
                 0xa8, 0x21, 0xc7, 0xc2, 0x08, 0xa9, 0x1e, 0x53, 0xbb, 0xb2,
                 0x71, 0x15, 0xf4, 0x23, 0x5d, 0x82, 0x33, 0x44, 0xd1, 0x16,
