@@ -485,7 +485,7 @@ namespace Libplanet.Blocks
                 );
             var rawBlock = new RawBlock(
                 index: Index,
-                timestamp: Timestamp.ToString(TimestampFormat),
+                timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 nonce: Nonce.ToByteArray(),
                 miner: Miner?.ToByteArray(),
                 difficulty: Difficulty,

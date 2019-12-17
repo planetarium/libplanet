@@ -269,10 +269,21 @@ namespace Libplanet.Action
         /// or networking.  These bring an action indeterministic.  You maybe
         /// fine to log messages for debugging purpose, but equivalent messages
         /// could be logged multiple times.</para>
-        /// <para>Lastly, although it might be surprising, <a
+        /// <para>Although it might be surprising, <a
         /// href="https://wp.me/p1fTCO-kT">floating-point arithmetics are
         /// underspecified so that it can make different results on different
         /// machines, platforms, runtimes, compilers, and builds</a>.</para>
+        /// <para>Lastly, you need to be aware and keep in mind that there
+        /// is a global state named <see
+        /// cref="System.Globalization.CultureInfo.CurrentCulture"/> on .NET;
+        /// if you format numbers, dates and times, currencies, or other such
+        /// things into strings and parse these strings back these can rely on
+        /// <see cref="System.Globalization.CultureInfo.CurrentCulture"/>,
+        /// so that the same action make different results on two differently
+        /// configured systems like Thai language and French language.
+        /// In order to make these types of conversions deterministic,
+        /// you have to explicitly pass <see
+        /// cref="System.Globalization.CultureInfo.InvariantCulture"/>.</para>
         /// <para>For more on determinism in general, please read also <a
         /// href="https://tendermint.com/docs/spec/abci/abci.html#determinism"
         /// >Tendermint ABCI's docs on determinism</a>.</para>

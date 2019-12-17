@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Bencodex.Types;
@@ -112,7 +113,16 @@ namespace Libplanet.Tests.Common.Action
             if (Idempotent)
             {
                 var splitedItems = items is null ? new[] { item } : (items + "," + item).Split(',');
-                items = string.Join(",", splitedItems.OrderBy(x => float.Parse(x.Substring(4))));
+                items = string.Join(
+                    ",",
+                    splitedItems.OrderBy(x =>
+                        float.Parse(
+                            x.Substring(4),
+                            NumberStyles.Float,
+                            CultureInfo.InvariantCulture
+                        )
+                    )
+                );
             }
             else
             {
