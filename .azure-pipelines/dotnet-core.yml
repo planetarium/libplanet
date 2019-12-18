@@ -1,6 +1,7 @@
 parameters:
   configuration: Debug
   testArguments: ""
+  altLocale: ""
 
 steps:
 
@@ -43,6 +44,23 @@ steps:
       ${{ parameters.testArguments }}
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+  timeoutInMinutes: 10
+
+# Run tests with an alternative locale configuration
+- task: DotNetCoreCLI@2
+  displayName: dotnet test (${{ parameters.altLocale }})
+  condition: ne('${{ parameters.altLocale }}', '')
+  inputs:
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: >-
+      --configuration ${{ parameters.configuration }}
+      ${{ parameters.testArguments }}
+  env:
+    TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
+    LANG: ${{ parameters.altLocale }}
+    LANGUAGE: ${{ parameters.altLocale }}
+    LC_ALL: ${{ parameters.altLocale }}
   timeoutInMinutes: 10
 
 - task: PublishTestResults@2

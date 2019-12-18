@@ -665,7 +665,7 @@ namespace Libplanet.Tx
                 updatedAddresses: UpdatedAddresses.Select(a =>
                     a.ByteArray).ToImmutableArray(),
                 publicKey: PublicKey.Format(false).ToImmutableArray(),
-                timestamp: Timestamp.ToString(TimestampFormat),
+                timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
                 actions: Actions.Select(a => a.PlainValue)
             );
 
