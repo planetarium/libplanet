@@ -176,6 +176,14 @@ and then adding existing blocks into it.  [<a href="https://github.com/planetari
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> had returned invalid tx
 nonce.  [<a href="https://github.com/planetarium/libplanet/pull/718">#718</a>]</li>
 <li>Fixed a bug where mined transactions were staged again.  [<a href="https://github.com/planetarium/libplanet/pull/719">#719</a>]</li>
+<li>Fixed a bug where <code>Block&lt;T&gt;.Hash</code> property, <code>Block&lt;T&gt;.Mine()</code> method,
+<code>Block&lt;T&gt;.FromBencodex()</code> method, <code>Block&lt;T&gt;.ToBencodex()</code> method,
+<code>Transaction&lt;T&gt;.Id</code> property, <code>Transaction&lt;T&gt;.Signature</code> property,
+<code>Transaction&lt;T&gt;.Create()</code> method, <code>Transaction&lt;T&gt;.FromBencodex()</code> method,
+and <code>Transaction&lt;T&gt;.ToBencodex()</code> method had been non-deterministic on
+some <code>CultureInfo.CurrentCulture</code> (e.g., <code>ar_SA</code>, <code>fr_FR</code>, <code>th_TH</code>)
+so that it had caused network protocol incompatibilities.
+[<a href="https://github.com/planetarium/libplanet/pull/734">#734</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
