@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -365,8 +366,11 @@ namespace Libplanet.KeyStore
         {
             writer.WriteStartObject();
             writer.WriteNumber("version", 3);
-            writer.WriteString("id", (id ?? Guid.NewGuid()).ToString().ToLower());
-            writer.WriteString("address", Address.ToHex().ToLower());
+            writer.WriteString(
+                "id",
+                (id ?? Guid.NewGuid()).ToString().ToLower(CultureInfo.InvariantCulture)
+            );
+            writer.WriteString("address", Address.ToHex().ToLower(CultureInfo.InvariantCulture));
             writer.WriteStartObject("crypto");
             writer.WriteString("ciphertext", ByteUtil.Hex(Ciphertext));
             writer.WritePropertyName("cipherparams");

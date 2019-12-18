@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 
 namespace Libplanet
@@ -74,7 +75,7 @@ namespace Libplanet
 
             string s = BitConverter.ToString(bytes);
 
-            return s.Replace("-", string.Empty).ToLower();
+            return s.Replace("-", string.Empty).ToLower(CultureInfo.InvariantCulture);
         }
 
         /// <summary>

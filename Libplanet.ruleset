@@ -42,6 +42,14 @@
   </Rules>
 
   <Rules AnalyzerId="SonarAnalyzer" RuleNamespace="SonarAnalyzer">
+    <!-- These warn about leaving parameters taking ICultureInfo default,
+    which implicitly follows the system's locale settings so that code is
+    non-deterministic. -->
+    <Rule Id="S1449" Action="Warning" />
+    <Rule Id="S4026" Action="Warning" />
+    <Rule Id="S4056" Action="Warning" />
+    <Rule Id="S4057" Action="Warning" />
+
     <!-- Either remove or fill this block of code. -->
     <Rule Id="S108" Action="None" />
     <!-- 'System.NullReferenceException' should not be thrown by user code. -->

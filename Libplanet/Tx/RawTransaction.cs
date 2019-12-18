@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -162,7 +163,7 @@ namespace Libplanet.Tx
                 UpdatedAddresses.Select(a => "\n    " + ByteUtil.Hex(a.ToArray()))
             );
             return $@"{nameof(RawTransaction)}
-  {nameof(Nonce)} = {Nonce.ToString()}
+  {nameof(Nonce)} = {Nonce.ToString(CultureInfo.InvariantCulture)}
   {nameof(Signer)} = {ByteUtil.Hex(Signer.ToArray())}
   {nameof(PublicKey)} = {ByteUtil.Hex(PublicKey.ToArray())}
   {nameof(UpdatedAddresses)} = {updatedAddresses}
