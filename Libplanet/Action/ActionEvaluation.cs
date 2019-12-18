@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
-#pragma warning disable S1128 // Remove this unnecessary 'using'
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
-#pragma warning restore S1128 // Remove this unnecessary 'using'
 using Libplanet.Tx;
 
 namespace Libplanet.Action

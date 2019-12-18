@@ -1,6 +1,4 @@
-#pragma warning disable S1128 // Remove this unnecessary 'using'
 using System;
-#pragma warning restore S1128 // Remove this unnecessary 'using'
 
 namespace Libplanet.Action
 {

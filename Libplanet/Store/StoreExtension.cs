@@ -1,7 +1,5 @@
 using System;
-#pragma warning disable S1128 // Remove this unnecessary 'using'
 using System.Collections.Immutable;
-#pragma warning restore S1128 // Remove this unnecessary 'using'
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
