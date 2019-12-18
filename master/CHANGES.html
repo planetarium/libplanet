@@ -184,6 +184,8 @@ and <code>Transaction&lt;T&gt;.ToBencodex()</code> method had been non-determini
 some <code>CultureInfo.CurrentCulture</code> (e.g., <code>ar_SA</code>, <code>fr_FR</code>, <code>th_TH</code>)
 so that it had caused network protocol incompatibilities.
 [<a href="https://github.com/planetarium/libplanet/pull/734">#734</a>]</li>
+<li>Fixed a bug where the states became empty between the tip of the peer to
+receive the states and the tip of the downloaded block.  [<a href="https://github.com/planetarium/libplanet/pull/736">#736</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
