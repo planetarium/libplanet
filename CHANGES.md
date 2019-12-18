@@ -117,6 +117,9 @@ To be released.
     [[#734]]
  -  Fixed a bug where the states became empty between the tip of the peer to
     receive the states and the tip of the downloaded block.  [[#736]]
+ -  Fixed a bug where `Swarm<T>.StartAsync()` had thrown
+    `NullReferenceException` when without using NAT and `host` parameter.
+    [[#744]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
@@ -152,6 +155,7 @@ To be released.
 [#734]: https://github.com/planetarium/libplanet/pull/734
 [#736]: https://github.com/planetarium/libplanet/pull/736
 [#739]: https://github.com/planetarium/libplanet/pull/739
+[#744]: https://github.com/planetarium/libplanet/pull/744
 
 
 Version 0.7.0
