@@ -106,6 +106,8 @@ To be released.
     some `CultureInfo.CurrentCulture` (e.g., `ar_SA`, `fr_FR`, `th_TH`)
     so that it had caused network protocol incompatibilities.
     [[#734]]
+ -  Fixed a bug where the states became empty between the tip of the peer to
+    receive the states and the tip of the downloaded block.  [[#736]]
 
 [#604]: https://github.com/planetarium/libplanet/issues/604
 [#613]: https://github.com/planetarium/libplanet/issues/613
@@ -133,6 +135,7 @@ To be released.
 [#727]: https://github.com/planetarium/libplanet/pull/727
 [#728]: https://github.com/planetarium/libplanet/pull/728
 [#734]: https://github.com/planetarium/libplanet/pull/734
+[#736]: https://github.com/planetarium/libplanet/pull/736
 
 
 Version 0.7.0

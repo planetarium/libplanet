@@ -787,7 +787,7 @@ namespace Libplanet.Net
                         .OrderByDescending(pair => pair.Item2)
                         .Select(pair => (pair.Item1, workspace[pair.Item2.Value].Hash));
 
-                bool received = await SyncRecentStatesFromTrustedPeersAsync(
+                long? receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
                     workspace,
                     progress,
                     trustedPeersWithTip.ToImmutableList(),
@@ -795,36 +795,14 @@ namespace Libplanet.Net
                     cancellationToken
                 );
 
-                if (!received)
+                if (receivedStateHeight is null || receivedStateHeight < height)
                 {
-                    long initHeight =
-                        initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
-                        ? 0
-                        : initialTip.Index + 1;
-                    int count = 0, totalCount = (int)(workspace.Count - initHeight);
-                    _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
-                    var blockHashes = workspace.IterateBlockHashes((int)initHeight);
-                    foreach (HashDigest<SHA256> hash in blockHashes)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        Block<T> block = workspace[hash];
-                        if (block.Index < initHeight)
-                        {
-                            continue;
-                        }
-
-                        workspace.ExecuteActions(block);
-                        _logger.Debug("Executed actions in the block {0}.", block.Hash);
-                        progress?.Report(new ActionExecutionState()
-                        {
-                            TotalBlockCount = totalCount,
-                            ExecutedBlockCount = ++count,
-                            ExecutedBlockHash = block.Hash,
-                        });
-                    }
-
-                    _logger.Debug("Finished to execute actions.");
+                    PreloadExecuteActions(
+                        workspace,
+                        initialTip,
+                        receivedStateHeight,
+                        progress,
+                        cancellationToken);
                 }
 
                 complete = true;
@@ -1254,7 +1232,7 @@ namespace Libplanet.Net
             }
         }
 
-        private async Task<bool> SyncRecentStatesFromTrustedPeersAsync(
+        private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
             IReadOnlyList<(BoundPeer, HashDigest<SHA256>)> trustedPeersWithTip,
@@ -1389,12 +1367,57 @@ namespace Libplanet.Net
                 if (offset == -1)
                 {
                     _logger.Debug("Received states from trusted peers.");
-                    return true;
+                    return topIndex;
                 }
             }
 
             _logger.Warning("Failed to receive states from trusted peers.");
-            return false;
+            return null;
+        }
+
+        private void PreloadExecuteActions(
+            BlockChain<T> workspace,
+            Block<T> initialTip,
+            long? receivedStateHeight,
+            IProgress<PreloadState> progress,
+            CancellationToken cancellationToken)
+        {
+            long initHeight;
+            if (receivedStateHeight is null)
+            {
+                initHeight = initialTip is null || !workspace[initialTip.Index].Equals(initialTip)
+                    ? 0
+                    : initialTip.Index + 1;
+            }
+            else
+            {
+                initHeight = receivedStateHeight.Value + 1;
+            }
+
+            int count = 0, totalCount = (int)(workspace.Count - initHeight);
+            _logger.Debug("Starts to execute actions of {0} blocks.", totalCount);
+            var blockHashes = workspace.IterateBlockHashes((int)initHeight);
+            foreach (HashDigest<SHA256> hash in blockHashes)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Block<T> block = workspace[hash];
+                if (block.Index < initHeight)
+                {
+                    continue;
+                }
+
+                workspace.ExecuteActions(block);
+                _logger.Debug("Executed actions in the block {0}.", block.Hash);
+                progress?.Report(new ActionExecutionState()
+                {
+                    TotalBlockCount = totalCount,
+                    ExecutedBlockCount = ++count,
+                    ExecutedBlockHash = block.Hash,
+                });
+            }
+
+            _logger.Debug("Finished to execute actions.");
         }
 
         private async Task RefreshAllocate(CancellationToken cancellationToken)
