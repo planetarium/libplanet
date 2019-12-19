@@ -99,8 +99,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>` had infinitely repeated failed requests.
     [[#709]]
  -  Fixed a bug where `Swarm<T>` hadn't stopped properly.  [[#709]]
- -  Fixed a bug where `Swarm<T>.BootstrapAsync()` had reported invalid timeout.
-    [[#715], [#716]]
+ -  Fixed a bug where `Swarm<T>.BootstrapAsync()` had stopped due to trivial
+    (recoverable) `TimeoutException`s.  [[#715], [#716]]
  -  Fixed a bug where `BlockChain<T>.GetNextTxNonce()` had returned invalid tx
     nonce.  [[#718]]
  -  Fixed a bug where mined transactions were staged again.  [[#719]]
