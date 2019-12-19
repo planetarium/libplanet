@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using Org.BouncyCastle.Crypto;
@@ -88,9 +89,10 @@ namespace Libplanet.KeyStore.Kdfs
             writer.WriteStartObject();
             writer.WriteNumber("c", Iterations);
             writer.WriteNumber("dklen", KeyLength);
+            string alg = new T().AlgorithmName;
             writer.WriteString(
                 "prf",
-                "hmac-" + new T().AlgorithmName.ToLower().Replace("-", string.Empty)
+                "hmac-" + alg.ToLower(CultureInfo.InvariantCulture).Replace("-", string.Empty)
             );
             writer.WriteString("salt", ByteUtil.Hex(Salt));
             writer.WriteEndObject();

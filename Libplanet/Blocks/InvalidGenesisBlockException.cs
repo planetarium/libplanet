@@ -1,9 +1,7 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-#pragma warning disable S1128 // Remove this unnecessary 'using'
 using Libplanet.Blockchain;
 using Libplanet.Store;
-#pragma warning restore S1128 // Remove this unnecessary 'using'
 
 namespace Libplanet.Blocks
 {

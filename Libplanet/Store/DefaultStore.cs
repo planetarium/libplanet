@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -586,7 +587,7 @@ namespace Libplanet.Store
 
             string collId = StateRefId(chainId);
             LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
-            string addressString = address.ToHex().ToLower();
+            string addressString = address.ToHex().ToLower(CultureInfo.InvariantCulture);
             IEnumerable<StateRefDoc> stateRefs = coll.Find(
                 Query.And(
                     Query.All("BlockIndex", Query.Descending),
@@ -876,7 +877,7 @@ namespace Libplanet.Store
 
                 set
                 {
-                    AddressString = value.ToHex().ToLower();
+                    AddressString = value.ToHex().ToLower(CultureInfo.InvariantCulture);
                 }
             }
 

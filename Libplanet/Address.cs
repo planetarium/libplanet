@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -266,7 +267,7 @@ namespace Libplanet
             for (var i = 0; i < hex.Length; i++)
             {
                 char c = hex[i];
-                address += (hashHex[i] >= '8') ? char.ToUpper(c) : c;
+                address += (hashHex[i] >= '8') ? char.ToUpper(c, CultureInfo.InvariantCulture) : c;
             }
 
             return address;
@@ -305,7 +306,8 @@ namespace Libplanet
                 );
             }
 
-            if (hex.ToLower() != hex && ToChecksumAddress(hex.ToLower()) != hex)
+            if (hex.ToLower(CultureInfo.InvariantCulture) != hex &&
+                ToChecksumAddress(hex.ToLower(CultureInfo.InvariantCulture)) != hex)
             {
                 throw new ArgumentException(
                     "address checksum is invalid",

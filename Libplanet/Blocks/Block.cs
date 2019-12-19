@@ -206,7 +206,8 @@ namespace Libplanet.Blocks
                 n =>
                 {
                     int nLen = n.ByteArray.Length;
-                    byte[] nLenStr = Encoding.ASCII.GetBytes(nLen.ToString());
+                    byte[] nLenStr = Encoding.ASCII.GetBytes(
+                        nLen.ToString(CultureInfo.InvariantCulture));
                     int totalLen =
                         stampPrefix.Length + nLenStr.Length + 1 + nLen + stampSuffix.Length;
                     byte[] stamp = new byte[totalLen];
