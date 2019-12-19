@@ -693,6 +693,8 @@ namespace Libplanet.Net
                 return;
             }
 
+            peersWithHeight = peersWithHeight.OrderByDescending(p => p.Item2).ToList();
+
             PreloadStarted.Set();
 
             // As preloading takes long, the blockchain data can corrupt if a program suddenly
