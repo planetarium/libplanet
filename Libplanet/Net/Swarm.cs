@@ -171,30 +171,38 @@ namespace Libplanet.Net
 
             _requests = new AsyncCollection<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
-            _runtimeProcessor = Task.Run(() =>
-            {
-                // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize tests
-                try
+            _runtimeProcessor = Task.Factory.StartNew(
+                () =>
                 {
-                    using (var runtime = new NetMQRuntime())
+                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
+                    // tests
+                    try
                     {
-                        Task[] workerTasks = new Task[workers];
-
-                        for (int i = 0; i < workers; i++)
+                        using (var runtime = new NetMQRuntime())
                         {
-                            workerTasks[i] = ProcessRuntime(_runtimeCancellationTokenSource.Token);
-                        }
+                            var workerTasks = new Task[workers];
 
-                        runtime.Run(workerTasks);
+                            for (int i = 0; i < workers; i++)
+                            {
+                                workerTasks[i] = ProcessRuntime(
+                                    _runtimeCancellationTokenSource.Token
+                                );
+                            }
+
+                            runtime.Run(workerTasks);
+                        }
                     }
-                }
-                catch (NetMQException)
-                {
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-            });
+                    catch (NetMQException)
+                    {
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                    }
+                },
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
         }
 
         ~Swarm()
