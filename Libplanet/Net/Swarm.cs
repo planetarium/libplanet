@@ -262,6 +262,8 @@ namespace Libplanet.Net
             }
         }
 
+        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
+
         internal AsyncAutoResetEvent TxReceived { get; }
 
         internal AsyncAutoResetEvent BlockReceived { get; }
@@ -270,8 +272,6 @@ namespace Libplanet.Net
         internal AsyncAutoResetEvent BlockAppended { get; }
 
         internal TimeSpan BlockHashRecvTimeout { get; set; } = TimeSpan.FromSeconds(30);
-
-        internal IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         internal IProtocol Protocol { get; private set; }
 
