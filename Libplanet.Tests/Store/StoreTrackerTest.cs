@@ -25,12 +25,14 @@ namespace Libplanet.Tests.Store
         {
             _tracker.ListChainIds();
             Assert.Equal(1, _tracker.Logs.Count);
-            Assert.Equal(("ListChainIds", null, null), _tracker.Logs[0]);
+            Assert.Equal(
+                StoreTrackLog.Create("ListChainIds"),
+                _tracker.Logs[0]);
 
             var chainId = Guid.NewGuid();
             _tracker.CountIndex(chainId);
             Assert.Equal(2, _tracker.Logs.Count);
-            Assert.Equal(("CountIndex", chainId, null), _tracker.Logs[1]);
+            Assert.Equal(StoreTrackLog.Create("CountIndex", chainId), _tracker.Logs[1]);
         }
 
         [Fact]

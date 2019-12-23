@@ -1161,8 +1161,8 @@ namespace Libplanet.Tests.Blockchain
             }
 
             var callCount = tracker.Logs.Where(
-                triple => triple.Item1.Equals("GetBlockStates")
-            ).Select(triple => triple.Item2).Count();
+                trackLog => trackLog.Method == "GetBlockStates"
+            ).Select(trackLog => trackLog.Params).Count();
             Assert.True(testingDepth >= callCount);
         }
 
@@ -1188,8 +1188,8 @@ namespace Libplanet.Tests.Blockchain
             IValue result = chain.GetState(nonexistent);
             Assert.Null(result);
             var callCount = tracker.Logs.Where(
-                triple => triple.Item1.Equals("GetBlockStates")
-            ).Select(triple => triple.Item2).Count();
+                trackLog => trackLog.Method == "GetBlockStates"
+            ).Select(trackLog => trackLog.Params).Count();
             Assert.True(
                 callCount <= 1,
                 $"GetBlocksStates() was called {callCount} times"
@@ -1265,7 +1265,7 @@ namespace Libplanet.Tests.Blockchain
             chain.GetState(addresses.Last(), completeStates: true);
 
             Assert.Empty(
-                store.Logs.Where(l => l.Item1 == "StoreStateReference")
+                store.Logs.Where(l => l.Method == "StoreStateReference")
             );
 
             // except the genesis block, only blocks made by MakeIncompleteBlockStates.
