@@ -62,7 +62,9 @@ To be released.
  -  Added `StateDownloadState` class which reports state preloading iteration
     progress.  [[#703]]
  -  Added `PeerDiscoveryException` class which inherits `SwarmException`
-    class. [[#604], [#726]]
+    class.  [[#604], [#726]]
+ -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
+    `Swarm<T>`'s routing table.  [[#739]]
 
 ### Behavioral changes
 
@@ -136,6 +138,7 @@ To be released.
 [#728]: https://github.com/planetarium/libplanet/pull/728
 [#734]: https://github.com/planetarium/libplanet/pull/734
 [#736]: https://github.com/planetarium/libplanet/pull/736
+[#739]: https://github.com/planetarium/libplanet/pull/739
 
 
 Version 0.7.0
