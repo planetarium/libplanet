@@ -83,6 +83,8 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>Added <code>Swarm&lt;T&gt;.FindSpecificPeer()</code> method to find a specific peer given
+the address.  [<a href="https://github.com/planetarium/libplanet/issues/570">#570</a>, <a href="https://github.com/planetarium/libplanet/pull/580">#580</a>]</li>
 <li>Removed <code>LiteDBStore</code> class.  Use <code>DefaultStore</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
 <li>Removed <code>BlockChain&lt;T&gt;.Contains(TxId)</code> method.
 Use <code>IStore.ContainsTransaction(TxId)</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/676">#676</a>]</li>

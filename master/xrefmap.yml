@@ -4249,6 +4249,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Finalize
   nameWithType: Swarm<T>.Finalize
   nameWithType.vb: Swarm(Of T).Finalize
+- uid: Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,Libplanet.Address,System.Int32,Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
+  name: FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_FindSpecificPeerAsync_Libplanet_Address_Libplanet_Address_System_Int32_Libplanet_Net_BoundPeer_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.FindSpecificPeerAsync(Libplanet.Address,Libplanet.Address,System.Int32,Libplanet.Net.BoundPeer,System.Nullable{TimeSpan},CancellationToken)
+  name.vb: FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.FindSpecificPeerAsync(Libplanet.Address, Libplanet.Address, System.Int32, Libplanet.Net.BoundPeer, System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).FindSpecificPeerAsync(Libplanet.Address, Libplanet.Address, System.Int32, Libplanet.Net.BoundPeer, System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: Swarm<T>.FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).FindSpecificPeerAsync(Address, Address, Int32, BoundPeer, Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.FindSpecificPeerAsync*
+  name: FindSpecificPeerAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_FindSpecificPeerAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.FindSpecificPeerAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.FindSpecificPeerAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).FindSpecificPeerAsync
+  nameWithType: Swarm<T>.FindSpecificPeerAsync
+  nameWithType.vb: Swarm(Of T).FindSpecificPeerAsync
 - uid: Libplanet.Net.Swarm`1.LastReceived
   name: LastReceived
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_LastReceived
