@@ -726,13 +726,10 @@ namespace Libplanet.Net.Protocols
                 if (string.CompareOrdinal(
                         closestNeighbors[i].Address.ToHex(),
                         searchAddress.ToHex()
-                   ) == 0)
+                   ) == 0 && _routing.Contains(closestNeighbors[i]))
                 {
-                    if (_routing.Contains(closestNeighbors[i]))
-                    {
-                        peerFound = closestNeighbors[i];
-                        return peerFound;
-                    }
+                    peerFound = closestNeighbors[i];
+                    return peerFound;
                 }
             }
 
@@ -777,13 +774,10 @@ namespace Libplanet.Net.Protocols
                 if (string.CompareOrdinal(
                         foundSpecificPeer[i].Address.ToHex(),
                         searchAddress.ToHex()
-                   ) == 0)
+                   ) == 0 && _routing.Contains(foundSpecificPeer[i]))
                 {
-                    if (_routing.Contains(foundSpecificPeer[i]))
-                    {
-                        peerFound = foundSpecificPeer[i];
-                        return peerFound;
-                    }
+                    peerFound = foundSpecificPeer[i];
+                    return peerFound;
                 }
             }
 
