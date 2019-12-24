@@ -197,7 +197,7 @@ namespace Libplanet.Tests.Net.Protocols
             });
         }
 
-        public void BroadcastTestMessage(string data)
+        public void BroadcastTestMessage(Address? except, string data)
         {
             if (!Running)
             {
@@ -205,7 +205,7 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             var message = new TestMessage(data) { Remote = AsPeer };
-            var peers = Protocol.PeersToBroadcast.ToList();
+            var peers = Protocol.PeersToBroadcast(except).ToList();
             _ignoreTestMessageWithData.Add(data);
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers.",
@@ -360,7 +360,7 @@ namespace Libplanet.Tests.Net.Protocols
                 {
                     _logger.Debug("Received test message with {Data}.", testMessage.Data);
                     _ignoreTestMessageWithData.Add(testMessage.Data);
-                    BroadcastTestMessage(testMessage.Data);
+                    BroadcastTestMessage(testMessage.Remote.Address, testMessage.Data);
                 }
             }
             else

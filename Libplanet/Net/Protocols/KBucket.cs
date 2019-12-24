@@ -173,9 +173,20 @@ namespace Libplanet.Net.Protocols
             return _peers.Count >= _size;
         }
 
-        public BoundPeer GetRandomPeer()
+        public BoundPeer GetRandomPeer(Address? except)
         {
-            var peers = _peers.Keys.ToArray();
+            BoundPeer[] peers;
+            if (except is null)
+            {
+                peers = _peers.Keys.ToArray();
+            }
+            else
+            {
+                peers = _peers.Keys
+                    .Where(peer => !peer.Address.Equals(except.Value))
+                    .ToArray();
+            }
+
             int size = peers.Length;
 
             return size == 0 ? null : peers[_random.Next(size)];

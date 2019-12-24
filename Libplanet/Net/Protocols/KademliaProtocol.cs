@@ -49,7 +49,8 @@ namespace Libplanet.Net.Protocols
 
         public IEnumerable<BoundPeer> Peers => _routing.Peers;
 
-        public IEnumerable<BoundPeer> PeersToBroadcast => _routing.PeersToBroadcast;
+        public IEnumerable<BoundPeer> PeersToBroadcast(Address? except) =>
+            _routing.PeersToBroadcast(except);
 
         // FIXME: Currently bootstrap is done until it finds closest peer, but it should halt
         // when found neighbor's count is reached 2*k.

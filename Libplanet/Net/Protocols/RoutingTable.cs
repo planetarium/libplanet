@@ -50,15 +50,6 @@ namespace Libplanet.Net.Protocols
         public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
             .SelectMany((bucket, _) => bucket.Peers).ToList();
 
-        public IEnumerable<BoundPeer> PeersToBroadcast
-        {
-            get
-            {
-                return NonEmptyBuckets
-                    .Select(bucket => bucket.GetRandomPeer());
-            }
-        }
-
         public IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
             get
@@ -85,6 +76,13 @@ namespace Libplanet.Net.Protocols
             {
                 return _buckets.Where(bucket => !bucket.IsEmpty());
             }
+        }
+
+        public IEnumerable<BoundPeer> PeersToBroadcast(Address? except)
+        {
+            return NonEmptyBuckets
+                .Select(bucket => bucket.GetRandomPeer(except))
+                .Where(peer => !(peer is null));
         }
 
         public IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge)
