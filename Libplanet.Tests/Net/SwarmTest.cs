@@ -40,6 +40,7 @@ namespace Libplanet.Tests.Net
         private readonly StoreFixture _fx1;
         private readonly StoreFixture _fx2;
         private readonly StoreFixture _fx3;
+        private readonly StoreFixture _fx4;
 
         private readonly List<BlockChain<DumbAction>> _blockchains;
         private readonly List<Swarm<DumbAction>> _swarms;
@@ -63,12 +64,14 @@ namespace Libplanet.Tests.Net
             _fx1 = new DefaultStoreFixture(memory: true);
             _fx2 = new DefaultStoreFixture(memory: true);
             _fx3 = new DefaultStoreFixture(memory: true);
+            _fx4 = new DefaultStoreFixture(memory: true);
 
             _blockchains = new List<BlockChain<DumbAction>>
             {
                 TestUtils.MakeBlockChain(policy, _fx1.Store),
                 TestUtils.MakeBlockChain(policy, _fx2.Store),
                 TestUtils.MakeBlockChain(policy, _fx3.Store),
+                TestUtils.MakeBlockChain(policy, _fx4.Store),
             };
 
             _swarms = new List<Swarm<DumbAction>>
@@ -76,6 +79,7 @@ namespace Libplanet.Tests.Net
                 CreateSwarm(_blockchains[0]),
                 CreateSwarm(_blockchains[1]),
                 CreateSwarm(_blockchains[2]),
+                CreateSwarm(_blockchains[3]),
             };
 
             Log.Logger.Debug($"Finished to initialize a {nameof(SwarmTest)} instance.");
@@ -2538,6 +2542,54 @@ namespace Libplanet.Tests.Net
                 swarmA.Dispose();
                 swarmB.Dispose();
                 swarmC.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task FindSpecificPeerAsync()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+            Swarm<DumbAction> swarmC = _swarms[2];
+            Swarm<DumbAction> swarmD = _swarms[3];
+            BoundPeer foundPeer;
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+                await StartAsync(swarmC);
+                await StartAsync(swarmD);
+
+                await swarmA.AddPeersAsync(new Peer[] { swarmB.AsPeer }, null);
+                await swarmB.AddPeersAsync(new Peer[] { swarmC.AsPeer }, null);
+                await swarmC.AddPeersAsync(new Peer[] { swarmD.AsPeer }, null);
+
+                foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmA.AsPeer.Address,
+                    swarmB.AsPeer.Address,
+                    -1,
+                    null,
+                    TimeSpan.FromMilliseconds(3000),
+                    default(CancellationToken));
+
+                Assert.Equal(swarmB.AsPeer.Address, foundPeer.Address);
+
+                foundPeer = await swarmA.FindSpecificPeerAsync(
+                    swarmA.AsPeer.Address,
+                    swarmD.AsPeer.Address,
+                    -1,
+                    null,
+                    TimeSpan.FromMilliseconds(3000),
+                    default(CancellationToken));
+
+                Assert.Equal(swarmD.AsPeer.Address, foundPeer.Address);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+                await StopAsync(swarmC);
+                await StopAsync(swarmD);
             }
         }
 

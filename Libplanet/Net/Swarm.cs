@@ -665,6 +665,25 @@ namespace Libplanet.Net
             );
         }
 
+        public async Task<BoundPeer> FindSpecificPeerAsync(
+            Address target,
+            Address searchAddress,
+            int depth,
+            BoundPeer viaPeer,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken)
+        {
+            KademliaProtocol kp = (KademliaProtocol)Protocol;
+            return await kp.FindSpecificPeerAsync(
+                new ConcurrentBag<BoundPeer>(),
+                target,
+                viaPeer,
+                depth,
+                searchAddress,
+                timeout,
+                cancellationToken);
+        }
+
         // FIXME: It is not guaranteed that states will be reported in order. see issue #436, #430
         internal async Task PreloadAsync(
             bool render,
