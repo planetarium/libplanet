@@ -14,64 +14,64 @@ namespace Libplanet.Tests.Store
     {
         private readonly IStore _store;
 
-        private readonly List<(string, object, object)> _logs;
+        private readonly List<StoreTrackLog> _logs;
 
         public StoreTracker(IStore store)
         {
             _store = store;
-            _logs = new List<(string, object, object)>();
+            _logs = new List<StoreTrackLog>();
         }
 
-        public IImmutableList<(string, object, object)> Logs =>
+        public IImmutableList<StoreTrackLog> Logs =>
             _logs.ToImmutableList();
 
         public void ClearLogs() => _logs.Clear();
 
         public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            _logs.Add((nameof(AppendIndex), chainId, hash));
+            Log(nameof(AppendIndex), chainId, hash);
             return _store.AppendIndex(chainId, hash);
         }
 
         public long CountBlocks()
         {
-            _logs.Add((nameof(CountBlocks), null, null));
+            Log(nameof(CountBlocks));
             return _store.CountBlocks();
         }
 
         public long CountIndex(Guid chainId)
         {
-            _logs.Add((nameof(CountIndex), chainId, null));
+            Log(nameof(CountIndex), chainId);
             return _store.CountIndex(chainId);
         }
 
         public long CountTransactions()
         {
-            _logs.Add((nameof(CountTransactions), null, null));
+            Log(nameof(CountTransactions));
             return _store.CountTransactions();
         }
 
         public bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            _logs.Add((nameof(DeleteBlock), blockHash, null));
+            Log(nameof(DeleteBlock), blockHash);
             return _store.DeleteBlock(blockHash);
         }
 
         public bool ContainsBlock(HashDigest<SHA256> blockHash)
         {
-            _logs.Add((nameof(ContainsBlock), blockHash, null));
+            Log(nameof(ContainsBlock), blockHash);
             return _store.ContainsBlock(blockHash);
         }
 
         public bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
         {
-            _logs.Add((nameof(DeleteIndex), chainId, hash));
+            Log(nameof(DeleteIndex), chainId, hash);
             return _store.DeleteIndex(chainId, hash);
         }
 
         public IEnumerable<Address> ListAddresses(Guid chainId)
         {
-            _logs.Add((nameof(ListAddresses), chainId, null));
+            Log(nameof(ListAddresses), chainId);
             return _store.ListAddresses(chainId);
         }
 
@@ -81,102 +81,101 @@ namespace Libplanet.Tests.Store
                 long lowestIndex,
                 long highestIndex)
         {
-            // FIXME: Log arguments properly
-            _logs.Add((nameof(ListAllStateReferences), chainId, lowestIndex));
+            Log(nameof(ListAllStateReferences), chainId, lowestIndex, highestIndex);
             return _store.ListAllStateReferences(chainId, lowestIndex, highestIndex);
         }
 
         public void DeleteChainId(Guid chainId)
         {
-            _logs.Add((nameof(DeleteChainId), chainId, null));
+            Log(nameof(DeleteChainId), chainId);
             _store.DeleteChainId(chainId);
         }
 
         public bool DeleteTransaction(TxId txid)
         {
-            _logs.Add((nameof(DeleteTransaction), txid, null));
+            Log(nameof(DeleteTransaction), txid);
             return _store.DeleteTransaction(txid);
         }
 
         public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction, new()
         {
-            _logs.Add((nameof(GetBlock), blockHash, null));
+            Log(nameof(GetBlock), blockHash);
             return _store.GetBlock<T>(blockHash);
         }
 
         public long? GetBlockIndex(HashDigest<SHA256> blockHash)
         {
-            _logs.Add((nameof(GetBlockIndex), blockHash, null));
+            Log(nameof(GetBlockIndex), blockHash);
             return _store.GetBlockIndex(blockHash);
         }
 
         public IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
         {
-            _logs.Add((nameof(GetBlockStates), blockHash, null));
+            Log(nameof(GetBlockStates), blockHash);
             return _store.GetBlockStates(blockHash);
         }
 
         public Transaction<T> GetTransaction<T>(TxId txid)
             where T : IAction, new()
         {
-            _logs.Add((nameof(GetTransaction), txid, null));
+            Log(nameof(GetTransaction), txid);
             return _store.GetTransaction<T>(txid);
         }
 
         public HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
         {
-            _logs.Add((nameof(IndexBlockHash), chainId, index));
+            Log(nameof(IndexBlockHash), chainId, index);
             return _store.IndexBlockHash(chainId, index);
         }
 
         public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            _logs.Add((nameof(IterateBlockHashes), null, null));
+            Log(nameof(IterateBlockHashes));
             return _store.IterateBlockHashes();
         }
 
         public IEnumerable<HashDigest<SHA256>> IterateIndexes(Guid chainId, int offset, int? limit)
         {
-             _logs.Add((nameof(IterateIndexes), chainId, (offset, limit)));
+             Log(nameof(IterateIndexes), chainId, offset, limit);
              return _store.IterateIndexes(chainId, offset, limit);
         }
 
         public IEnumerable<TxId> IterateStagedTransactionIds()
         {
-            _logs.Add((nameof(IterateStagedTransactionIds), null, null));
+            Log(nameof(IterateStagedTransactionIds));
             return _store.IterateStagedTransactionIds();
         }
 
         public IEnumerable<TxId> IterateTransactionIds()
         {
-            _logs.Add((nameof(IterateTransactionIds), null, null));
+            Log(nameof(IterateTransactionIds));
             return _store.IterateTransactionIds();
         }
 
         public IEnumerable<Guid> ListChainIds()
         {
-            _logs.Add((nameof(ListChainIds), null, null));
+            Log(nameof(ListChainIds));
             return _store.ListChainIds();
         }
 
         public void PutBlock<T>(Block<T> block)
             where T : IAction, new()
         {
-            _logs.Add((nameof(PutBlock), block, null));
+            Log(nameof(PutBlock), block);
             _store.PutBlock<T>(block);
         }
 
         public void PutTransaction<T>(Transaction<T> tx)
             where T : IAction, new()
         {
-            _logs.Add((nameof(PutTransaction), tx, null));
+            Log(nameof(PutTransaction), tx);
             _store.PutTransaction<T>(tx);
         }
 
         public bool ContainsTransaction(TxId txId)
         {
-            _logs.Add((nameof(ContainsTransaction), txId, null));
+            Log(nameof(ContainsTransaction), txId);
             return _store.ContainsTransaction(txId);
         }
 
@@ -185,7 +184,7 @@ namespace Libplanet.Tests.Store
             IImmutableDictionary<Address, IValue> states
         )
         {
-            _logs.Add((nameof(SetBlockStates), blockHash, states));
+            Log(nameof(SetBlockStates), blockHash, states);
             _store.SetBlockStates(blockHash, states);
         }
 
@@ -196,8 +195,13 @@ namespace Libplanet.Tests.Store
             long? lowestIndex,
             int? limit)
         {
-            // FIXME: Log arguments properly
-            _logs.Add((nameof(IterateStateReferences), chainId, address));
+            Log(
+                nameof(IterateStateReferences),
+                chainId,
+                address,
+                highestIndex,
+                lowestIndex,
+                limit);
             return _store.IterateStateReferences(
                 chainId, address, highestIndex, lowestIndex, limit);
         }
@@ -208,8 +212,7 @@ namespace Libplanet.Tests.Store
             HashDigest<SHA256> blockHash,
             long blockIndex)
         {
-            // FIXME: Log arguments properly (including chainId).
-            _logs.Add((nameof(StoreStateReference), blockHash, null));
+            Log(nameof(StoreStateReference), chainId, addresses, blockHash, blockIndex);
             _store.StoreStateReference(chainId, addresses, blockHash, blockIndex);
         }
 
@@ -219,8 +222,7 @@ namespace Libplanet.Tests.Store
             Block<T> branchPoint)
             where T : IAction, new()
         {
-            // FIXME: Log arguments properly.
-            _logs.Add((nameof(ForkStateReferences), null, null));
+            Log(nameof(ForkStateReferences), sourceChainId, destinationChainId, branchPoint);
             _store.ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
         }
 
@@ -229,51 +231,55 @@ namespace Libplanet.Tests.Store
             Guid destinationChainId,
             HashDigest<SHA256> branchPoint)
         {
-            _logs.Add((nameof(ForkBlockIndexes), null, null));
+            Log(nameof(ForkBlockIndexes), sourceChainId, destinationChainId, branchPoint);
             _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
         }
 
         public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            _logs.Add((nameof(ListTxNonces), chainId, null));
+            Log(nameof(ListTxNonces), chainId);
             return _store.ListTxNonces(chainId);
         }
 
         public long GetTxNonce(Guid chainId, Address address)
         {
-            _logs.Add((nameof(GetTxNonce), chainId, address));
+            Log(nameof(GetTxNonce), chainId, address);
             return _store.GetTxNonce(chainId, address);
         }
 
         public void IncreaseTxNonce(Guid chainId, Address address, long delta = 1)
         {
-            // FIXME: Log arguments properly (including chainId).
-            _logs.Add((nameof(IncreaseTxNonce), address, delta));
+            Log(nameof(IncreaseTxNonce), chainId, address, delta);
             _store.IncreaseTxNonce(chainId, address, delta);
         }
 
         public void StageTransactionIds(IImmutableSet<TxId> txids)
         {
-            _logs.Add((nameof(StageTransactionIds), txids, null));
+            Log(nameof(StageTransactionIds), txids);
             _store.StageTransactionIds(txids);
         }
 
         public void UnstageTransactionIds(ISet<TxId> txids)
         {
-            _logs.Add((nameof(UnstageTransactionIds), txids, null));
+            Log(nameof(UnstageTransactionIds), txids);
             _store.UnstageTransactionIds(txids);
         }
 
         public Guid? GetCanonicalChainId()
         {
-            _logs.Add((nameof(GetCanonicalChainId), null, null));
+            Log(nameof(GetCanonicalChainId));
             return _store.GetCanonicalChainId();
         }
 
         public void SetCanonicalChainId(Guid chainId)
         {
-            _logs.Add((nameof(SetCanonicalChainId), chainId, null));
+            Log(nameof(SetCanonicalChainId), chainId);
             _store.SetCanonicalChainId(chainId);
+        }
+
+        private void Log(string method, params object[] @params)
+        {
+            _logs.Add(StoreTrackLog.Create(method, @params));
         }
     }
 }
