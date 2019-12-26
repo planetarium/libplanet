@@ -116,16 +116,17 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(findPeerTasks);
             }
-            catch (TimeoutException)
+            catch (Exception e)
             {
-                if (findPeerTasks.All(findPeerTask => findPeerTask.IsFaulted))
+                if (findPeerTasks.All(task =>
+                    task.IsFaulted &&
+                    !(task.Exception is null) &&
+                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
                 {
                     throw new TimeoutException(
                         $"Timeout exception occurred during {nameof(BootstrapAsync)}().");
                 }
-            }
-            catch (Exception e)
-            {
+
                 var msg = $"An unexpected exception occurred during {nameof(BootstrapAsync)}()." +
                           " {Exception}";
                 _logger.Error(e, msg, e);
@@ -612,10 +613,12 @@ namespace Libplanet.Net.Protocols
             {
                 await Task.WhenAll(awaitables);
             }
-            catch (AggregateException e)
+            catch (Exception e)
             {
-                if (e.InnerExceptions.All(ie => ie is TimeoutException) &&
-                    e.InnerExceptions.Count == awaitables.Length)
+                if (awaitables.All(task =>
+                    task.IsFaulted &&
+                    !(task.Exception is null) &&
+                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
                 {
                     throw new TimeoutException(
                         $"All neighbors found do not respond in {_requestTimeout}."
@@ -629,7 +632,7 @@ namespace Libplanet.Net.Protocols
                 );
             }
 
-            var findNeighboursTasks = new List<Task>();
+            var findPeerTasks = new List<Task>();
             Peer closestKnown = closestCandidate.Count == 0 ? null : closestCandidate[0];
             var count = 0;
             foreach (var peer in peers)
@@ -648,7 +651,7 @@ namespace Libplanet.Net.Protocols
                     continue;
                 }
 
-                findNeighboursTasks.Add(FindPeerAsync(
+                findPeerTasks.Add(FindPeerAsync(
                     history,
                     target,
                     peer,
@@ -663,15 +666,25 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                await Task.WhenAll(findNeighboursTasks);
+                await Task.WhenAll(findPeerTasks);
             }
-            catch (TimeoutException)
+            catch (Exception e)
             {
-                if (findNeighboursTasks.All(findPeerTask => findPeerTask.IsFaulted))
+                if (findPeerTasks.All(task =>
+                    task.IsFaulted &&
+                    !(task.Exception is null) &&
+                    task.Exception.InnerExceptions.All(ex => ex is TimeoutException)))
                 {
                     throw new TimeoutException(
-                        $"Timeout exception occurred during {nameof(ProcessFoundAsync)}().");
+                        "All FindPeer tasks caused timeout during " +
+                        $"{nameof(ProcessFoundAsync)}().");
                 }
+
+                _logger.Error(
+                    e,
+                    "Some FindPeer tasks were unexpectedly terminated: {Exception}",
+                    e
+                );
             }
         }
 
