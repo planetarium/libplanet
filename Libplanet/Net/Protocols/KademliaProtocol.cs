@@ -14,7 +14,7 @@ namespace Libplanet.Net.Protocols
     internal class KademliaProtocol : IProtocol
     {
         private readonly TimeSpan _requestTimeout;
-        private readonly ISwarm _swarm;
+        private readonly ITransport _transport;
         private readonly Address _address;
         private readonly int _appProtocolVersion;
         private readonly Random _random;
@@ -25,7 +25,7 @@ namespace Libplanet.Net.Protocols
         private readonly ILogger _logger;
 
         public KademliaProtocol(
-            ISwarm swarm,
+            ITransport transport,
             Address address,
             int appProtocolVersion,
             ILogger logger,
@@ -33,7 +33,7 @@ namespace Libplanet.Net.Protocols
             int? bucketSize,
             TimeSpan? requestTimeout = null)
         {
-            _swarm = swarm;
+            _transport = transport;
             _appProtocolVersion = appProtocolVersion;
             _logger = logger;
 
@@ -55,7 +55,7 @@ namespace Libplanet.Net.Protocols
         // FIXME: Currently bootstrap is done until it finds closest peer, but it should halt
         // when found neighbor's count is reached 2*k.
         public async Task BootstrapAsync(
-            ImmutableList<BoundPeer> bootstrapPeers,
+            IImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findPeerTimeout,
             int depth,
@@ -243,15 +243,9 @@ namespace Libplanet.Net.Protocols
 #pragma warning disable CS4014 // To run UpdateAsync() without await.
         public void ReceiveMessage(Message message)
         {
-            switch (message)
+            if (message is FindNeighbors findPeer)
             {
-                case Ping ping:
-                    ReceivePing(ping);
-                    break;
-
-                case FindNeighbors findPeer:
-                    ReceiveFindPeer(findPeer);
-                    break;
+                ReceiveFindPeer(findPeer);
             }
 
             UpdateAsync(message?.Remote);
@@ -312,6 +306,11 @@ namespace Libplanet.Net.Protocols
                 viaPeer,
                 depth);
 
+            if (history is null)
+            {
+                history = new ConcurrentBag<BoundPeer>();
+            }
+
             IEnumerable<BoundPeer> found;
             if (viaPeer is null)
             {
@@ -353,7 +352,8 @@ namespace Libplanet.Net.Protocols
 
             try
             {
-                if (!(await _swarm.SendMessageWithReplyAsync(
+                _logger.Debug("Trying to ping async to {Peer}.", target);
+                if (!(await _transport.SendMessageWithReplyAsync(
                     target,
                     new Ping(),
                     timeout,
@@ -368,9 +368,6 @@ namespace Libplanet.Net.Protocols
                     throw new InvalidMessageException(
                         "Cannot receive pong from self");
                 }
-
-                // update process required
-                UpdateAsync(pong.Remote);
             }
             catch (TimeoutException)
             {
@@ -531,7 +528,7 @@ namespace Libplanet.Net.Protocols
             var findPeer = new FindNeighbors(target);
             try
             {
-                if (!(await _swarm.SendMessageWithReplyAsync(
+                if (!(await _transport.SendMessageWithReplyAsync(
                     addressee,
                     findPeer,
                     timeout,
@@ -557,13 +554,6 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentException(
                     "Cannot receive ping from self");
             }
-
-            Pong pong = new Pong((long?)null)
-            {
-                Identity = ping.Identity,
-            };
-
-            _swarm.ReplyMessage(pong);
         }
 
         /// <summary>
@@ -809,7 +799,7 @@ namespace Libplanet.Net.Protocols
                 Identity = findNeighbors.Identity,
             };
 
-            _swarm.ReplyMessage(neighbors);
+            _transport.ReplyMessage(neighbors);
         }
     }
 }

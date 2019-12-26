@@ -15,9 +15,9 @@ using Serilog;
 
 namespace Libplanet.Tests.Net.Protocols
 {
-    public class TestSwarm : ISwarm
+    internal class TestTransport : ITransport
     {
-        private readonly Dictionary<Address, TestSwarm> _swarms;
+        private readonly Dictionary<Address, TestTransport> _transports;
         private readonly ILogger _logger;
         private readonly ConcurrentDictionary<byte[], Address> _peersToReply;
         private readonly ConcurrentDictionary<byte[], Message> _replyToReceive;
@@ -26,11 +26,11 @@ namespace Libplanet.Tests.Net.Protocols
         private readonly PrivateKey _privateKey;
         private readonly Random _random;
 
-        private CancellationTokenSource swarmCancellationTokenSource;
+        private CancellationTokenSource _swarmCancellationTokenSource;
         private TimeSpan _networkDelay;
 
-        public TestSwarm(
-            Dictionary<Address, TestSwarm> swarms,
+        public TestTransport(
+            Dictionary<Address, TestTransport> transports,
             PrivateKey privateKey,
             int? tableSize,
             int? bucketSize,
@@ -38,22 +38,21 @@ namespace Libplanet.Tests.Net.Protocols
         {
             _privateKey = privateKey;
             var loggerId = _privateKey.PublicKey.ToAddress().ToHex();
-            _logger = Log.ForContext<TestSwarm>()
+            _logger = Log.ForContext<TestTransport>()
                 .ForContext("Address", loggerId);
-            Protocol = new KademliaProtocol(this, Address, 0, _logger, tableSize, bucketSize);
+
             _peersToReply = new ConcurrentDictionary<byte[], Address>();
             _replyToReceive = new ConcurrentDictionary<byte[], Message>();
             ReceivedMessages = new ConcurrentBag<Message>();
             MessageReceived = new AsyncAutoResetEvent();
-            _swarms = swarms;
-            _swarms[privateKey.PublicKey.ToAddress()] = this;
+            _transports = transports;
+            _transports[privateKey.PublicKey.ToAddress()] = this;
             _networkDelay = networkDelay ?? TimeSpan.Zero;
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
+            Protocol = new KademliaProtocol(this, Address, 0, _logger, tableSize, bucketSize);
         }
-
-        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         public AsyncAutoResetEvent MessageReceived { get; }
 
@@ -68,23 +67,41 @@ namespace Libplanet.Tests.Net.Protocols
 
         internal IProtocol Protocol { get; }
 
-        internal bool Running => !(swarmCancellationTokenSource is null);
+        internal bool Running => !(_swarmCancellationTokenSource is null);
 
         public void Dispose()
         {
         }
 
-        public async void Start()
+        public async Task StartAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            _logger.Debug("Starting swarm {Peer}.", AsPeer);
-            swarmCancellationTokenSource = new CancellationTokenSource();
-            await ProcessRuntime(swarmCancellationTokenSource.Token);
+            _logger.Debug("Starting transport of {Peer}.", AsPeer);
+            _swarmCancellationTokenSource = new CancellationTokenSource();
+            await Task.Delay(10, cancellationToken);
         }
 
-        public Task BootstrapAsync(
-            IEnumerable<BoundPeer> peers,
+        public async Task RunAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await ProcessRuntime(_swarmCancellationTokenSource.Token);
+        }
+
+        public async Task StopAsync(
+            TimeSpan waitFor,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            _logger.Debug("Stopping transport of {Peer}.", AsPeer);
+            _swarmCancellationTokenSource.Cancel();
+            await Task.Delay(waitFor, cancellationToken);
+        }
+
+#pragma warning disable S4457 // Cannot split the method since method is in interface
+        public async Task BootstrapAsync(
+            IImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
             TimeSpan? findPeerTimeout = null,
+            int depth = 3,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!Running)
@@ -92,23 +109,21 @@ namespace Libplanet.Tests.Net.Protocols
                 throw new SwarmException("Start swarm before use.");
             }
 
-            if (peers is null)
+            if (bootstrapPeers is null)
             {
-                throw new ArgumentNullException(nameof(peers));
+                throw new ArgumentNullException(nameof(bootstrapPeers));
             }
 
-            async Task DoBootstrapAsync()
-            {
-                await Protocol.BootstrapAsync(
-                    peers.ToImmutableList(),
-                    pingSeedTimeout,
-                    findPeerTimeout,
-                    Kademlia.MaxDepth,
-                    cancellationToken);
-            }
-
-            return DoBootstrapAsync();
+            await Protocol.BootstrapAsync(
+                bootstrapPeers.ToImmutableList(),
+                pingSeedTimeout,
+                findPeerTimeout,
+                Kademlia.MaxDepth,
+                cancellationToken);
         }
+#pragma warning restore S4457 // Cannot split the method since method is in interface
+
+        public IEnumerable<BoundPeer> Peers() => Protocol.Peers;
 
         public Task AddPeersAsync(
             IEnumerable<BoundPeer> peers,
@@ -170,12 +185,6 @@ namespace Libplanet.Tests.Net.Protocols
             return DoAddPeersAsync();
         }
 
-        public void Stop()
-        {
-            _logger.Debug("Stopping swarm {Peer}.", AsPeer);
-            swarmCancellationTokenSource.Cancel();
-        }
-
         public void SendPing(Peer target, TimeSpan? timeSpan = null)
         {
             if (!Running)
@@ -205,11 +214,16 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             var message = new TestMessage(data) { Remote = AsPeer };
-            var peers = Protocol.PeersToBroadcast(except).ToList();
             _ignoreTestMessageWithData.Add(data);
+            BroadcastMessage(except, message);
+        }
+
+        public void BroadcastMessage(Address? except, Message message)
+        {
+            var peers = Protocol.PeersToBroadcast(except).ToList();
             _logger.Debug(
                 "Broadcasting test message {Data} to {Count} peers.",
-                data,
+                ((TestMessage)message).Data,
                 peers.Count);
             foreach (var peer in peers)
             {
@@ -222,8 +236,8 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
-#pragma warning disable 4014, S4457
-        async Task<Message> ISwarm.SendMessageWithReplyAsync(
+#pragma warning disable S4457 // Cannot split the method since method is in interface
+        public async Task<Message> SendMessageWithReplyAsync(
             BoundPeer peer,
             Message message,
             TimeSpan? timeout,
@@ -265,7 +279,7 @@ namespace Libplanet.Tests.Net.Protocols
                         message.Identity,
                         timeout ?? TimeSpan.MaxValue);
                     throw new TimeoutException(
-                        $"Timeout occurred during {nameof(ISwarm.SendMessageWithReplyAsync)}().");
+                        $"Timeout occurred during {nameof(SendMessageWithReplyAsync)}().");
                 }
 
                 await Task.Delay(10, cancellationToken);
@@ -274,7 +288,7 @@ namespace Libplanet.Tests.Net.Protocols
             if (cancellationToken.IsCancellationRequested)
             {
                 throw new OperationCanceledException(
-                    $"Operation is canceled during {nameof(ISwarm.SendMessageWithReplyAsync)}().");
+                    $"Operation is canceled during {nameof(SendMessageWithReplyAsync)}().");
             }
 
             if (_replyToReceive.TryRemove(message.Identity, out Message reply))
@@ -284,6 +298,7 @@ namespace Libplanet.Tests.Net.Protocols
                     reply,
                     message.Identity);
                 ReceivedMessages.Add(reply);
+                Protocol.ReceiveMessage(reply);
                 MessageReceived.Set();
                 return reply;
             }
@@ -291,13 +306,26 @@ namespace Libplanet.Tests.Net.Protocols
             {
                 _logger.Error(
                     "Unexpected error occurred during " +
-                    $"{nameof(ISwarm.SendMessageWithReplyAsync)}()");
+                    $"{nameof(SendMessageWithReplyAsync)}()");
                 throw new SwarmException();
             }
         }
-#pragma warning restore 4014, S4457
+#pragma warning restore S4457 // Cannot split the method since method is in interface
 
-        void ISwarm.ReplyMessage(Message message)
+        public async Task<IEnumerable<Message>> SendMessageWithReplyAsync(
+            BoundPeer peer,
+            Message message,
+            TimeSpan? timeout,
+            int expectedResponses,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return new[]
+            {
+                await SendMessageWithReplyAsync(peer, message, timeout, cancellationToken),
+            };
+        }
+
+        public void ReplyMessage(Message message)
         {
             if (!Running)
             {
@@ -309,7 +337,7 @@ namespace Libplanet.Tests.Net.Protocols
             Task.Run(async () =>
             {
                 await Task.Delay(_networkDelay);
-                _swarms[_peersToReply[message.Identity]].ReceiveReply(message);
+                _transports[_peersToReply[message.Identity]].ReceiveReply(message);
                 _peersToReply.TryRemove(message.Identity, out Address addr);
             });
         }
@@ -339,7 +367,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         private void ReceiveMessage(Message message)
         {
-            if (swarmCancellationTokenSource.IsCancellationRequested)
+            if (_swarmCancellationTokenSource.IsCancellationRequested)
             {
                 return;
             }
@@ -368,10 +396,18 @@ namespace Libplanet.Tests.Net.Protocols
                 _peersToReply[message.Identity] = boundPeer.Address;
             }
 
-            ReceivedMessages.Add(message);
-            MessageReceived.Set();
+            if (message is Ping)
+            {
+                ReplyMessage(new Pong((long?)null)
+                {
+                    Identity = message.Identity,
+                    Remote = AsPeer,
+                });
+            }
 
+            ReceivedMessages.Add(message);
             Protocol.ReceiveMessage(message);
+            MessageReceived.Set();
         }
 
         private void ReceiveReply(Message message)
@@ -392,7 +428,7 @@ namespace Libplanet.Tests.Net.Protocols
                         req.Message,
                         req.Message.Identity,
                         req.Target);
-                    _swarms[req.Target.Address].ReceiveMessage(req.Message);
+                    _transports[req.Target.Address].ReceiveMessage(req.Message);
                 }
                 else
                 {

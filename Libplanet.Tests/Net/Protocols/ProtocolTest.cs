@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace Libplanet.Tests.Net.Protocols
     public class ProtocolTest
     {
         private const int Timeout = 60 * 1000;
-        private readonly Dictionary<Address, TestSwarm> _swarms;
+        private readonly Dictionary<Address, TestTransport> _transports;
 
         public ProtocolTest(ITestOutputHelper output)
         {
@@ -28,7 +29,7 @@ namespace Libplanet.Tests.Net.Protocols
                 .CreateLogger()
                 .ForContext<ProtocolTest>();
 
-            _swarms = new Dictionary<Address, TestSwarm>();
+            _transports = new Dictionary<Address, TestTransport>();
         }
 
         [Fact]
@@ -55,109 +56,113 @@ namespace Libplanet.Tests.Net.Protocols
         [Fact(Timeout = Timeout)]
         public async Task Start()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
 
-            Assert.Throws<SwarmException>(() => swarmA.SendPing(swarmB.AsPeer));
-            swarmA.Start();
+            Assert.Throws<SwarmException>(() => transportA.SendPing(transportB.AsPeer));
+            await StartTestTransport(transportA);
             await Assert.ThrowsAsync<TimeoutException>(() =>
-                swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, TimeSpan.FromMilliseconds(500))
+                transportA.AddPeersAsync(
+                    new[] { transportB.AsPeer },
+                    TimeSpan.FromMilliseconds(500))
             );
-            Assert.Empty(swarmA.ReceivedMessages);
+            Assert.Empty(transportA.ReceivedMessages);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task Ping()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
 
             try
             {
-                swarmA.Start();
-                swarmB.Start();
-                swarmA.SendPing(swarmB.AsPeer);
-                await swarmA.MessageReceived.WaitAsync();
+                await StartTestTransport(transportA);
+                await StartTestTransport(transportB);
+                transportA.SendPing(transportB.AsPeer);
+                await transportA.MessageReceived.WaitAsync();
                 await Task.Delay(100);
 
-                Assert.Single(swarmA.ReceivedMessages);
-                Assert.Single(swarmB.ReceivedMessages);
-                Assert.Contains(swarmA.AsPeer, swarmB.Protocol.Peers);
+                Assert.Single(transportA.ReceivedMessages);
+                Assert.Single(transportB.ReceivedMessages);
+                Assert.Contains(transportA.AsPeer, transportB.Protocol.Peers);
             }
             finally
             {
-                swarmA.Stop();
-                swarmB.Stop();
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
             }
         }
 
         [Fact(Timeout = Timeout)]
         public async Task PingTwice()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
 
             try
             {
-                swarmA.Start();
-                swarmB.Start();
+                await StartTestTransport(transportA);
+                await StartTestTransport(transportB);
 
-                swarmA.SendPing(swarmB.AsPeer);
-                await swarmA.MessageReceived.WaitAsync();
-                await swarmB.MessageReceived.WaitAsync();
-                swarmB.SendPing(swarmA.AsPeer);
-                await swarmA.MessageReceived.WaitAsync();
-                await swarmB.MessageReceived.WaitAsync();
+                transportA.SendPing(transportB.AsPeer);
+                await transportA.MessageReceived.WaitAsync();
+                await transportB.MessageReceived.WaitAsync();
+                transportB.SendPing(transportA.AsPeer);
+                await transportA.MessageReceived.WaitAsync();
+                await transportB.MessageReceived.WaitAsync();
 
-                Assert.Equal(2, swarmA.ReceivedMessages.Count);
-                Assert.Equal(2, swarmB.ReceivedMessages.Count);
-                Assert.Contains(swarmA.AsPeer, swarmB.Protocol.Peers);
-                Assert.Contains(swarmB.AsPeer, swarmA.Protocol.Peers);
+                Assert.Equal(2, transportA.ReceivedMessages.Count);
+                Assert.Equal(2, transportB.ReceivedMessages.Count);
+                Assert.Contains(transportA.AsPeer, transportB.Protocol.Peers);
+                Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
             }
             finally
             {
-                swarmA.Stop();
-                swarmB.Stop();
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
             }
         }
 
         [Fact(Timeout = Timeout)]
         public async Task PingToClosedPeer()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
-            var swarmC = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+            var transportC = CreateTestTransport();
 
-            swarmA.Start();
-            swarmB.Start();
-            swarmC.Start();
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
+            await StartTestTransport(transportC);
 
-            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer, swarmC.AsPeer }, null);
+            await transportA.AddPeersAsync(new[] { transportB.AsPeer, transportC.AsPeer }, null);
 
-            Assert.Contains(swarmB.AsPeer, swarmA.Peers);
-            Assert.Contains(swarmC.AsPeer, swarmA.Peers);
+            Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
+            Assert.Contains(transportC.AsPeer, transportA.Protocol.Peers);
 
-            swarmC.Stop();
+            await transportC.StopAsync(TimeSpan.Zero);
             await Assert.ThrowsAsync<TimeoutException>(
-                () => swarmA.AddPeersAsync(new[] { swarmC.AsPeer }, TimeSpan.FromSeconds(3)));
-            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+                () => transportA.AddPeersAsync(
+                    new[] { transportC.AsPeer },
+                    TimeSpan.FromSeconds(3)));
+            await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
 
-            Assert.Contains(swarmB.AsPeer, swarmA.Peers);
+            Assert.Contains(transportB.AsPeer, transportA.Protocol.Peers);
 
-            swarmA.Stop();
-            swarmB.Stop();
-            swarmC.Stop();
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task BootstrapException()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
 
             await Assert.ThrowsAsync<SwarmException>(
-                () => swarmB.BootstrapAsync(
-                    new[] { swarmA.AsPeer },
+                () => transportB.BootstrapAsync(
+                    ImmutableList.Create(transportA.AsPeer),
                     TimeSpan.FromSeconds(3),
                     TimeSpan.FromSeconds(3))
             );
@@ -166,142 +171,142 @@ namespace Libplanet.Tests.Net.Protocols
         [Fact(Timeout = Timeout)]
         public async Task BootstrapAsyncTest()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
-            var swarmC = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+            var transportC = CreateTestTransport();
 
-            swarmA.Start();
-            swarmB.Start();
-            swarmC.Start();
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
+            await StartTestTransport(transportC);
 
-            await swarmB.BootstrapAsync(new[] { swarmA.AsPeer });
-            await swarmC.BootstrapAsync(new[] { swarmA.AsPeer });
+            await transportB.BootstrapAsync(ImmutableList.Create(transportA.AsPeer));
+            await transportC.BootstrapAsync(ImmutableList.Create(transportA.AsPeer));
 
-            Assert.Contains(swarmB.AsPeer, swarmC.Peers);
-            Assert.Contains(swarmC.AsPeer, swarmB.Peers);
+            Assert.Contains(transportB.AsPeer, transportC.Protocol.Peers);
+            Assert.Contains(transportC.AsPeer, transportB.Protocol.Peers);
 
-            swarmA.Stop();
-            swarmB.Stop();
-            swarmC.Stop();
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task RemoveStalePeers()
         {
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
 
-            swarmA.Start();
-            swarmB.Start();
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
 
-            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
-            Assert.Single(swarmA.Peers);
+            await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
+            Assert.Single(transportA.Protocol.Peers);
 
-            swarmB.Stop();
+            await transportB.StopAsync(TimeSpan.Zero);
             await Task.Delay(100);
-            await swarmA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            Assert.Empty(swarmA.Peers);
+            await transportA.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            Assert.Empty(transportA.Protocol.Peers);
+            await transportA.StopAsync(TimeSpan.Zero);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task RoutingTableFull()
         {
-            var swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
-            var swarmC = CreateTestSwarm();
+            var transport = CreateTestTransport(tableSize: 1, bucketSize: 1);
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+            var transportC = CreateTestTransport();
 
-            swarm.Start();
-            swarmA.Start();
-            swarmB.Start();
-            swarmC.Start();
+            await StartTestTransport(transport);
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
+            await StartTestTransport(transportC);
 
-            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
-            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
-            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(swarmA.Peers);
-            Assert.Contains(swarmA.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+            Assert.Single(transportA.Protocol.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportC.AsPeer, transport.Protocol.Peers);
 
-            swarm.Stop();
-            swarmA.Stop();
-            swarmB.Stop();
-            swarmC.Stop();
+            await transport.StopAsync(TimeSpan.Zero);
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task ReplacementCache()
         {
-            var swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
-            var swarmA = CreateTestSwarm();
-            var swarmB = CreateTestSwarm();
-            var swarmC = CreateTestSwarm();
+            var transport = CreateTestTransport(tableSize: 1, bucketSize: 1);
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+            var transportC = CreateTestTransport();
 
-            swarm.Start();
-            swarmA.Start();
-            swarmB.Start();
-            swarmC.Start();
+            await StartTestTransport(transport);
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
+            await StartTestTransport(transportC);
 
-            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
-            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
             await Task.Delay(100);
-            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(swarmA.Peers);
-            Assert.Contains(swarmA.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+            Assert.Single(transportA.Protocol.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
 
-            swarmA.Stop();
-            await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-            Assert.Single(swarm.Peers);
-            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
-            Assert.Contains(swarmB.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmC.AsPeer, swarm.Peers);
+            Assert.Single(transport.Protocol.Peers);
+            Assert.DoesNotContain(transportA.AsPeer, transport.Protocol.Peers);
+            Assert.Contains(transportB.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportC.AsPeer, transport.Protocol.Peers);
 
-            swarm.Stop();
-            swarmB.Stop();
-            swarmC.Stop();
+            await transport.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
         }
 
         [Fact(Timeout = Timeout)]
         public async Task RemoveDeadReplacementCache()
         {
-            TestSwarm swarm = CreateTestSwarm(tableSize: 1, bucketSize: 1);
-            TestSwarm swarmA = CreateTestSwarm();
-            TestSwarm swarmB = CreateTestSwarm();
-            TestSwarm swarmC = CreateTestSwarm();
+            var transport = CreateTestTransport(tableSize: 1, bucketSize: 1);
+            var transportA = CreateTestTransport();
+            var transportB = CreateTestTransport();
+            var transportC = CreateTestTransport();
 
-            swarm.Start();
-            swarmA.Start();
-            swarmB.Start();
-            swarmC.Start();
+            await StartTestTransport(transport);
+            await StartTestTransport(transportA);
+            await StartTestTransport(transportB);
+            await StartTestTransport(transportC);
 
-            await swarmA.AddPeersAsync(new[] { swarm.AsPeer }, null);
-            await swarmB.AddPeersAsync(new[] { swarm.AsPeer }, null);
+            await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
 
-            Assert.Single(swarm.Peers);
-            Assert.Contains(swarmA.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
+            Assert.Single(transport.Protocol.Peers);
+            Assert.Contains(transportA.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
 
-            swarmA.Stop();
-            swarmB.Stop();
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
 
-            await swarmC.AddPeersAsync(new[] { swarm.AsPeer }, null);
-            await swarm.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
-            await swarm.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
+            await transportC.AddPeersAsync(new[] { transport.AsPeer }, null);
+            await transport.Protocol.RefreshTableAsync(TimeSpan.Zero, default(CancellationToken));
+            await transport.Protocol.CheckReplacementCacheAsync(default(CancellationToken));
 
-            Assert.Single(swarm.Peers);
-            Assert.DoesNotContain(swarmA.AsPeer, swarm.Peers);
-            Assert.DoesNotContain(swarmB.AsPeer, swarm.Peers);
-            Assert.Contains(swarmC.AsPeer, swarm.Peers);
+            Assert.Single(transport.Protocol.Peers);
+            Assert.DoesNotContain(transportA.AsPeer, transport.Protocol.Peers);
+            Assert.DoesNotContain(transportB.AsPeer, transport.Protocol.Peers);
+            Assert.Contains(transportC.AsPeer, transport.Protocol.Peers);
 
-            swarm.Stop();
-            swarmC.Stop();
-            swarm.Dispose();
+            await transport.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
         }
 
         [Theory(Timeout = Timeout)]
@@ -311,25 +316,26 @@ namespace Libplanet.Tests.Net.Protocols
         [InlineData(50)]
         public async Task BroadcastMessage(int count)
         {
-            var seed = CreateTestSwarm();
-            seed.Start();
-            var swarms = new TestSwarm[count];
+            var seed = CreateTestTransport();
+            await StartTestTransport(seed);
+            var transports = new TestTransport[count];
             for (var i = 0; i < count; i++)
             {
-                swarms[i] = CreateTestSwarm();
-                swarms[i].Start();
+                transports[i] = CreateTestTransport();
+                await StartTestTransport(transports[i]);
             }
 
             try
             {
-                foreach (var swarm in swarms)
+                foreach (var transport in transports)
                 {
-                    await swarm.BootstrapAsync(new[] { seed.AsPeer });
+                    await transport.BootstrapAsync(ImmutableList.Create(seed.AsPeer));
                 }
 
                 Log.Debug("Bootstrap completed.");
 
-                var tasks = swarms.Select(swarm => swarm.WaitForTestMessageWithData("foo"));
+                var tasks =
+                    transports.Select(transport => transport.WaitForTestMessageWithData("foo"));
 
                 seed.BroadcastTestMessage(null, "foo");
                 Log.Debug("Broadcast completed.");
@@ -338,26 +344,34 @@ namespace Libplanet.Tests.Net.Protocols
             }
             finally
             {
-                foreach (var swarm in swarms)
+                foreach (var transport in transports)
                 {
-                    Assert.True(swarm.ReceivedTestMessageOfData("foo"));
-                    swarm.Stop();
+                    Assert.True(transport.ReceivedTestMessageOfData("foo"));
+                    await transport.StopAsync(TimeSpan.Zero);
                 }
             }
         }
 
-        private TestSwarm CreateTestSwarm(
+        private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             int? tableSize = null,
             int? bucketSize = null,
             TimeSpan? networkDelay = null)
         {
-            return new TestSwarm(
-                _swarms,
+            return new TestTransport(
+                _transports,
                 privateKey ?? new PrivateKey(),
                 tableSize,
                 bucketSize,
                 networkDelay);
+        }
+
+        private async Task<Task> StartTestTransport(
+            TestTransport transport,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await transport.StartAsync(cancellationToken);
+            return transport.RunAsync(cancellationToken);
         }
     }
 }
