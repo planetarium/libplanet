@@ -579,10 +579,14 @@ namespace Libplanet.Store
                 throw new ArgumentNullException(nameof(lookupUntil));
             }
 
-            if (_lastStateRefCaches.TryGetValue(chainId, out var stateRefCache)
-                && stateRefCache.TryGetValue(address, out var cache))
+            if (_lastStateRefCaches.TryGetValue(
+                    chainId,
+                    out LruCache<Address, Tuple<HashDigest<SHA256>, long>> stateRefCache)
+                && stateRefCache.TryGetValue(
+                    address,
+                    out Tuple<HashDigest<SHA256>, long> cache))
             {
-                var cachedIndex = cache.Item2;
+                long cachedIndex = cache.Item2;
 
                 if (cachedIndex <= lookupUntil.Index)
                 {
@@ -590,7 +594,7 @@ namespace Libplanet.Store
                 }
             }
 
-            var stateRef =
+            Tuple<HashDigest<SHA256>, long> stateRef =
                 IterateStateReferences(chainId, address, lookupUntil.Index, null, limit: 1)
                 .FirstOrDefault();
 
@@ -679,12 +683,14 @@ namespace Libplanet.Store
                     new LruCache<Address, Tuple<HashDigest<SHA256>, long>>();
             }
 
-            var stateRefCache = _lastStateRefCaches[chainId];
+            LruCache<Address, Tuple<HashDigest<SHA256>, long>> stateRefCache =
+                _lastStateRefCaches[chainId];
 
-            foreach (var address in addresses)
+            foreach (Address address in addresses)
             {
                 _logger.Debug($"Try to set cache {address}");
-                if (!stateRefCache.TryGetValue(address, out var cache) || cache.Item2 < blockIndex)
+                if (!stateRefCache.TryGetValue(address, out Tuple<HashDigest<SHA256>, long> cache)
+                    || cache.Item2 < blockIndex)
                 {
                     stateRefCache[address] =
                         new Tuple<HashDigest<SHA256>, long>(blockHash, blockIndex);
