@@ -1009,6 +1009,50 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task PreventFillBlockWhenReceivedContinuousBlocks()
+        {
+            Swarm<DumbAction> swarmA = _swarms[0];
+            Swarm<DumbAction> swarmB = _swarms[1];
+
+            BlockChain<DumbAction> chainA = _blockchains[0];
+            BlockChain<DumbAction> chainB = _blockchains[1];
+
+            Block<DumbAction> block1 = await _blockchains[0].MineBlock(_fx1.Address1);
+            await _blockchains[0].MineBlock(_fx1.Address1);
+            Block<DumbAction> block2 = await _blockchains[0].MineBlock(_fx1.Address1);
+
+            try
+            {
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await BootstrapAsync(swarmA, swarmB.AsPeer);
+
+                Task t = swarmB.BlockAppended.WaitAsync();
+                swarmA.BroadcastBlocks(new[] { block1 });
+                await t;
+                // Make sure that FillBlocksAsync did not run.
+                Assert.False(swarmB.FillBlocksAsyncStarted.IsSet);
+                Assert.Equal(chainB.BlockHashes, new[] { chainA[0].Hash, chainA[1].Hash });
+
+                t = swarmB.BlockAppended.WaitAsync();
+                swarmA.BroadcastBlocks(new[] { block2 });
+                await t;
+                // Make sure that FillBlocksAsync is ran.
+                Assert.True(swarmB.FillBlocksAsyncStarted.IsSet);
+                Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -2453,6 +2497,7 @@ namespace Libplanet.Tests.Net
             var genesis = await chainA.MineBlock(_fx1.Address1);
             chainB.Append(genesis);
 
+            await chainA.MineBlock(_fx1.Address1);
             var block = await chainA.MineBlock(_fx1.Address1);
 
             try

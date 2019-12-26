@@ -1784,9 +1784,18 @@ namespace Libplanet.Net
 
             if (tip is null || latest.Index > tip.Index)
             {
+                List<Block<T>> blocksToAppend;
                 if (oldest.PreviousHash is null)
                 {
                     _logger.Debug("The oldest block[{block}] seems to be genesis.", oldest);
+                    blocksToAppend = blocks;
+                }
+                else if (!(tip is null) &&
+                         blocks.Any(block => block.PreviousHash.Equals(tip.Hash)))
+                {
+                    // FIXME: This may not work as expected in multi-miner environment.
+                    _logger.Debug("Does not need to fill.");
+                    blocksToAppend = blocks.Where(block => block.Index > tip.Index).ToList();
                 }
                 else
                 {
@@ -1801,9 +1810,10 @@ namespace Libplanet.Net
                         cancellationToken: cancellationToken
                     );
                     _logger.Debug("Filled up; trying to concatenation...");
+                    blocksToAppend = blocks;
                 }
 
-                foreach (Block<T> block in blocks)
+                foreach (Block<T> block in blocksToAppend)
                 {
                     BlockChain.Append(block);
                 }

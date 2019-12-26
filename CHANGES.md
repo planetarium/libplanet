@@ -87,6 +87,8 @@ To be released.
  -  `BlockChain<T>.Append()` became to unstage the staged `Transaction<T>`s
     that have lower nonce than the highest nonce of the same signer's transactions
     in the same chain, since these virtually never become valid.  [[#721], [#728]]
+ -  `Swarm<T>` became not to fill blocks if received block hashes are
+    continuous.  [[#732]]
 
 ### Bug fixes
 
@@ -144,6 +146,7 @@ To be released.
 [#726]: https://github.com/planetarium/libplanet/pull/726
 [#727]: https://github.com/planetarium/libplanet/pull/727
 [#728]: https://github.com/planetarium/libplanet/pull/728
+[#732]: https://github.com/planetarium/libplanet/pull/732
 [#734]: https://github.com/planetarium/libplanet/pull/734
 [#736]: https://github.com/planetarium/libplanet/pull/736
 [#739]: https://github.com/planetarium/libplanet/pull/739
