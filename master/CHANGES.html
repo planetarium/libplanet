@@ -177,6 +177,8 @@ and then adding existing blocks into it.  [<a href="https://github.com/planetari
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had infinitely repeated failed requests.
 [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> hadn't stopped properly.  [<a href="https://github.com/planetarium/libplanet/pull/709">#709</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.BootstrapAsync()</code> had stopped due to trivial
+(recoverable) <code>TimeoutException</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/715">#715</a>, <a href="https://github.com/planetarium/libplanet/pull/716">#716</a>]</li>
 <li>Fixed a bug where <code>BlockChain&lt;T&gt;.GetNextTxNonce()</code> had returned invalid tx
 nonce.  [<a href="https://github.com/planetarium/libplanet/pull/718">#718</a>]</li>
 <li>Fixed a bug where mined transactions were staged again.  [<a href="https://github.com/planetarium/libplanet/pull/719">#719</a>]</li>
