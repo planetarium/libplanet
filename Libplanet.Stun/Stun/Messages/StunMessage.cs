@@ -25,6 +25,7 @@ namespace Libplanet.Stun.Messages
         }
 
         // TODO Should document following STUN / TURN RFC
+        // https://www.iana.org/assignments/stun-parameters/stun-parameters.xhtml
         #pragma warning disable SA1602
         public enum MessageClass : byte
         {
@@ -49,19 +50,42 @@ namespace Libplanet.Stun.Messages
         }
         #pragma warning restore SA1602
 
+        /// <summary>
+        /// A <see cref="MessageClass"/> of STUN packet.
+        /// </summary>
         public abstract MessageClass Class { get; }
 
+        /// <summary>
+        /// A <see cref="MessageMethod"/> of STUN packet.
+        /// </summary>
         public abstract MessageMethod Method { get; }
 
+        /// <summary>
+        /// A 96-bit length identifier, used to uniquely identify STUN transactions.
+        /// </summary>
         public byte[] TransactionId { get; internal set; }
 
+        /// <summary>
+        /// A fixed value to distinguish STUN packets from packets of another protocol.
+        /// </summary>
+        /// <remarks>It should be always 0x2112A442 in network byte order.</remarks>
         internal static byte[] MagicCookie => new byte[]
         {
             0x21, 0x12, 0xa4, 0x42,
         };
 
+        /// <summary>
+        /// A list of <see cref="Attribute"/> of STUN packet.
+        /// </summary>
         protected IEnumerable<Attribute> Attributes { get; set; }
 
+        /// <summary>
+        /// Parse <see cref="StunMessage"/> from <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">A view of a sequence of STUN packet's bytes.</param>
+        /// <returns>A <see cref="StunMessage"/> derived on
+        /// bytes read from <paramref name="stream"/>.
+        /// </returns>
         public static async Task<StunMessage> Parse(Stream stream)
         {
             var header = new byte[20];
