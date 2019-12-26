@@ -2063,6 +2063,9 @@ namespace Libplanet.Tests.Net
                     }),
                     trustedStateValidators: trustedPeers);
 
+                // Await 1 second to make sure all progresses is reported.
+                await Task.Delay(1000);
+
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
                 int i = 0;
