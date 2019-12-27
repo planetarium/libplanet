@@ -128,6 +128,13 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
+        public abstract Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+            Guid chainId,
+            Address address,
+            Block<T> lookupUntil)
+            where T : IAction, new();
+
+        /// <inheritdoc />
         public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
             Address address,

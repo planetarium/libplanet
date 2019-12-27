@@ -48,6 +48,8 @@ namespace Libplanet.Store
 #pragma warning disable MEN002 // Line is too long
         private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>> _statesCache;
 #pragma warning restore MEN002 // Line is too long
+        private readonly Dictionary<Guid, LruCache<Address, Tuple<HashDigest<SHA256>, long>>>
+            _lastStateRefCaches;
 
         private readonly MemoryStream _memoryStream;
 
@@ -149,6 +151,8 @@ namespace Libplanet.Store
             _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
                 capacity: statesCacheSize
             );
+            _lastStateRefCaches =
+                new Dictionary<Guid, LruCache<Address, Tuple<HashDigest<SHA256>, long>>>();
 
             _codec = new Codec();
         }
@@ -170,6 +174,7 @@ namespace Libplanet.Store
             _db.DropCollection(IndexCollection(chainId).Name);
             _db.DropCollection(TxNonceId(chainId));
             _db.DropCollection(StateRefId(chainId));
+            _lastStateRefCaches.Remove(chainId);
         }
 
         /// <inheritdoc />
@@ -564,6 +569,58 @@ namespace Libplanet.Store
             }
         }
 
+        public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+            Guid chainId,
+            Address address,
+            Block<T> lookupUntil)
+        {
+            if (lookupUntil is null)
+            {
+                throw new ArgumentNullException(nameof(lookupUntil));
+            }
+
+            if (_lastStateRefCaches.TryGetValue(
+                    chainId,
+                    out LruCache<Address, Tuple<HashDigest<SHA256>, long>> stateRefCache)
+                && stateRefCache.TryGetValue(
+                    address,
+                    out Tuple<HashDigest<SHA256>, long> cache))
+            {
+                long cachedIndex = cache.Item2;
+
+                if (cachedIndex <= lookupUntil.Index)
+                {
+                    return cache;
+                }
+            }
+
+            Tuple<HashDigest<SHA256>, long> stateRef =
+                IterateStateReferences(chainId, address, lookupUntil.Index, null, limit: 1)
+                .FirstOrDefault();
+
+            if (stateRef is null)
+            {
+                return null;
+            }
+
+            if (!_lastStateRefCaches.ContainsKey(chainId))
+            {
+                _lastStateRefCaches[chainId] =
+                    new LruCache<Address, Tuple<HashDigest<SHA256>, long>>();
+            }
+
+            stateRefCache = _lastStateRefCaches[chainId];
+
+            if (!stateRefCache.TryGetValue(address, out cache) || cache.Item2 < stateRef.Item2)
+            {
+                stateRefCache[address] = new Tuple<HashDigest<SHA256>, long>(
+                    stateRef.Item1,
+                    stateRef.Item2);
+            }
+
+            return stateRef;
+        }
+
         /// <inheritdoc/>
         public override IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
@@ -619,6 +676,26 @@ namespace Libplanet.Store
             coll.InsertBulk(stateRefDocs);
             coll.EnsureIndex("AddressString");
             coll.EnsureIndex("BlockIndex");
+
+            if (!_lastStateRefCaches.ContainsKey(chainId))
+            {
+                _lastStateRefCaches[chainId] =
+                    new LruCache<Address, Tuple<HashDigest<SHA256>, long>>();
+            }
+
+            LruCache<Address, Tuple<HashDigest<SHA256>, long>> stateRefCache =
+                _lastStateRefCaches[chainId];
+
+            foreach (Address address in addresses)
+            {
+                _logger.Debug($"Try to set cache {address}");
+                if (!stateRefCache.TryGetValue(address, out Tuple<HashDigest<SHA256>, long> cache)
+                    || cache.Item2 < blockIndex)
+                {
+                    stateRefCache[address] =
+                        new Tuple<HashDigest<SHA256>, long>(blockHash, blockIndex);
+                }
+            }
         }
 
         /// <inheritdoc/>
