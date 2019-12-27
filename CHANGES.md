@@ -120,7 +120,7 @@ To be released.
  -  Fixed a bug where the states became empty between the tip of the peer to
     receive the states and the tip of the downloaded block.  [[#736]]
  -  Fixed a bug where `Swarm<T>.StartAsync()` had thrown
-    `NullReferenceException` when without using NAT and `host` parameter.
+    `NullReferenceException` when `host` parameter is present on the outside of NAT.
     [[#744]]
  -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
     an IPv6 address.  [[#744]]
