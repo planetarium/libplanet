@@ -90,6 +90,8 @@ To be released.
     in the same chain, since these virtually never become valid.  [[#721], [#728]]
  -  `Swarm<T>` became not to fill blocks if received block hashes are
     continuous.  [[#732]]
+ -  `Swarm<T>` became to can process more requests at once by creating TURN
+    relaying proxy concurrently.  [[#744]]
 
 ### Bug fixes
 
@@ -117,6 +119,11 @@ To be released.
     [[#734]]
  -  Fixed a bug where the states became empty between the tip of the peer to
     receive the states and the tip of the downloaded block.  [[#736]]
+ -  Fixed a bug where `Swarm<T>.StartAsync()` had thrown
+    `NullReferenceException` when `host` parameter is present on the outside of NAT.
+    [[#744]]
+ -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
+    an IPv6 address.  [[#744]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
@@ -152,6 +159,7 @@ To be released.
 [#734]: https://github.com/planetarium/libplanet/pull/734
 [#736]: https://github.com/planetarium/libplanet/pull/736
 [#739]: https://github.com/planetarium/libplanet/pull/739
+[#744]: https://github.com/planetarium/libplanet/pull/744
 
 
 Version 0.7.0

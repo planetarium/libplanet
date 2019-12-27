@@ -3,7 +3,6 @@ using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -64,6 +63,7 @@ namespace Libplanet.Net
         private TaskCompletionSource<object> _runningEvent;
         private int? _listenPort;
         private TurnClient _turnClient;
+        private bool _behindNAT;
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationTokenSource _runtimeCancellationTokenSource;
         private CancellationToken _cancellationToken;
@@ -170,30 +170,46 @@ namespace Libplanet.Net
 
             _requests = new AsyncCollection<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
-            _runtimeProcessor = Task.Run(() =>
-            {
-                // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize tests
-                try
+            _runtimeProcessor = Task.Factory.StartNew(
+                () =>
                 {
-                    using (var runtime = new NetMQRuntime())
+                    // Ignore NetMQ related exceptions during NetMQRuntime.Dispose() to stabilize
+                    // tests
+                    try
                     {
-                        Task[] workerTasks = new Task[workers];
-
-                        for (int i = 0; i < workers; i++)
+                        using (var runtime = new NetMQRuntime())
                         {
-                            workerTasks[i] = ProcessRuntime(_runtimeCancellationTokenSource.Token);
-                        }
+                            var workerTasks = new Task[workers];
 
-                        runtime.Run(workerTasks);
+                            for (int i = 0; i < workers; i++)
+                            {
+                                workerTasks[i] = ProcessRuntime(
+                                    _runtimeCancellationTokenSource.Token
+                                );
+                            }
+
+                            runtime.Run(workerTasks);
+                        }
                     }
-                }
-                catch (NetMQException)
-                {
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-            });
+                    catch (NetMQException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"NetMQException occurred in {nameof(_runtimeProcessor)}."
+                        );
+                    }
+                    catch (ObjectDisposedException e)
+                    {
+                        _logger.Error(
+                            e,
+                            $"ObjectDisposedException occurred in {nameof(_runtimeProcessor)}."
+                        );
+                    }
+                },
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
         }
 
         ~Swarm()
@@ -422,7 +438,6 @@ namespace Libplanet.Net
                 ).Token;
             _cancellationToken = workerCancellationToken;
             var tasks = new List<Task>();
-            var behindNAT = false;
 
             if (!(_turnClient is null))
             {
@@ -430,20 +445,27 @@ namespace Libplanet.Net
 
                 if (await _turnClient.IsBehindNAT())
                 {
-                    behindNAT = true;
+                    _behindNAT = true;
                 }
             }
 
-            if (behindNAT)
+            if (_behindNAT)
             {
                 IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
                     TurnAllocationLifetime
                 );
                 EndPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
+                // FIXME should be parameterized
+                tasks.Add(BindingProxies(_cancellationToken));
+                tasks.Add(BindingProxies(_cancellationToken));
                 tasks.Add(BindingProxies(_cancellationToken));
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
+            }
+            else if (_host is null)
+            {
+                EndPoint = new DnsEndPoint(_publicIPAddress.ToString(), _listenPort.Value);
             }
             else
             {
@@ -929,7 +951,7 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            if (!(_turnClient is null))
+            if (_behindNAT)
             {
                 await CreatePermission(peer);
             }
@@ -1178,7 +1200,6 @@ namespace Libplanet.Net
                     {
                         using (var proxy = new NetworkStreamProxy(stream))
                         {
-                            Debug.Assert(_listenPort != null, nameof(_listenPort) + " != null");
                             await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
                         }
                     }).ContinueWith(_ => stream.Dispose());
@@ -2468,7 +2489,11 @@ namespace Libplanet.Net
                     ep = await _turnClient.GetMappedAddressAsync();
                 }
 
-                await _turnClient.CreatePermissionAsync(ep);
+                // FIXME Can we really ignore IPv6 case?
+                if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
+                {
+                    await _turnClient.CreatePermissionAsync(ep);
+                }
             }
         }
 
