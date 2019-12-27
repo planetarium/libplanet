@@ -168,6 +168,8 @@ that have lower nonce than the highest nonce of the same signer's transactions
 in the same chain, since these virtually never become valid.  [<a href="https://github.com/planetarium/libplanet/issues/721">#721</a>, <a href="https://github.com/planetarium/libplanet/pull/728">#728</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became not to fill blocks if received block hashes are
 continuous.  [<a href="https://github.com/planetarium/libplanet/pull/732">#732</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to can process more requests at once by creating TURN
+relaying proxy concurrently.  [<a href="https://github.com/planetarium/libplanet/pull/744">#744</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
@@ -195,6 +197,11 @@ so that it had caused network protocol incompatibilities.
 [<a href="https://github.com/planetarium/libplanet/pull/734">#734</a>]</li>
 <li>Fixed a bug where the states became empty between the tip of the peer to
 receive the states and the tip of the downloaded block.  [<a href="https://github.com/planetarium/libplanet/pull/736">#736</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;.StartAsync()</code> had thrown
+<code>NullReferenceException</code> when <code>host</code> parameter is present on the outside of NAT.
+[<a href="https://github.com/planetarium/libplanet/pull/744">#744</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had failed to request a TURN relay when it has
+an IPv6 address.  [<a href="https://github.com/planetarium/libplanet/pull/744">#744</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
