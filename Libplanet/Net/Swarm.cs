@@ -191,11 +191,19 @@ namespace Libplanet.Net
                             runtime.Run(workerTasks);
                         }
                     }
-                    catch (NetMQException)
+                    catch (NetMQException e)
                     {
+                        _logger.Error(
+                            e,
+                            $"NetMQException occurred in {nameof(_runtimeProcessor)}."
+                        );
                     }
-                    catch (ObjectDisposedException)
+                    catch (ObjectDisposedException e)
                     {
+                        _logger.Error(
+                            e,
+                            $"ObjectDisposedException occurred in {nameof(_runtimeProcessor)}."
+                        );
                     }
                 },
                 CancellationToken.None,
