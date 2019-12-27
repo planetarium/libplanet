@@ -5403,6 +5403,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListTxNonces
   nameWithType: BaseStore.ListTxNonces
+- uid: Libplanet.Store.BaseStore.LookupStateReference*
+  name: LookupStateReference
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_LookupStateReference_
+  commentId: Overload:Libplanet.Store.BaseStore.LookupStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.LookupStateReference
+  nameWithType: BaseStore.LookupStateReference
+- uid: Libplanet.Store.BaseStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, Address, Block<T>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.BaseStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
+  fullName: Libplanet.Store.BaseStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.BaseStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
+  nameWithType: BaseStore.LookupStateReference<T>(Guid, Address, Block<T>)
+  nameWithType.vb: BaseStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
 - uid: Libplanet.Store.BaseStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock_
@@ -6123,6 +6139,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ListTxNonces
   nameWithType: DefaultStore.ListTxNonces
+- uid: Libplanet.Store.DefaultStore.LookupStateReference*
+  name: LookupStateReference
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_LookupStateReference_
+  commentId: Overload:Libplanet.Store.DefaultStore.LookupStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.LookupStateReference
+  nameWithType: DefaultStore.LookupStateReference
+- uid: Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, Address, Block<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
+  fullName: Libplanet.Store.DefaultStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
+  nameWithType: DefaultStore.LookupStateReference<T>(Guid, Address, Block<T>)
+  nameWithType.vb: DefaultStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
 - uid: Libplanet.Store.DefaultStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock_
@@ -6651,6 +6683,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListTxNonces
   nameWithType: IStore.ListTxNonces
+- uid: Libplanet.Store.IStore.LookupStateReference*
+  name: LookupStateReference
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_LookupStateReference_
+  commentId: Overload:Libplanet.Store.IStore.LookupStateReference
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.LookupStateReference
+  nameWithType: IStore.LookupStateReference
+- uid: Libplanet.Store.IStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, Address, Block<T>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.IStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
+  fullName: Libplanet.Store.IStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.IStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
+  nameWithType: IStore.LookupStateReference<T>(Guid, Address, Block<T>)
+  nameWithType.vb: IStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
 - uid: Libplanet.Store.IStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock_
