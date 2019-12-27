@@ -90,6 +90,8 @@ To be released.
     in the same chain, since these virtually never become valid.  [[#721], [#728]]
  -  `Swarm<T>` became not to fill blocks if received block hashes are
     continuous.  [[#732]]
+ -  `Swarm<T>` became to can process more requests at once by creating TURN
+    relaying proxy concurrently.  [[#744]]
 
 ### Bug fixes
 

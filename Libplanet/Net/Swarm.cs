@@ -3,7 +3,6 @@ using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -449,6 +448,9 @@ namespace Libplanet.Net
                 );
                 EndPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
+                // FIXME should be parameterized
+                tasks.Add(BindingProxies(_cancellationToken));
+                tasks.Add(BindingProxies(_cancellationToken));
                 tasks.Add(BindingProxies(_cancellationToken));
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
@@ -1190,7 +1192,6 @@ namespace Libplanet.Net
                     {
                         using (var proxy = new NetworkStreamProxy(stream))
                         {
-                            Debug.Assert(_listenPort != null, nameof(_listenPort) + " != null");
                             await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
                         }
                     }).ContinueWith(_ => stream.Dispose());
