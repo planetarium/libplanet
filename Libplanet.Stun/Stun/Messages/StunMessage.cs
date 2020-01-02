@@ -80,7 +80,7 @@ namespace Libplanet.Stun.Messages
         protected IEnumerable<Attribute> Attributes { get; set; }
 
         /// <summary>
-        /// Parse <see cref="StunMessage"/> from <paramref name="stream"/>.
+        /// Parses <see cref="StunMessage"/> from <paramref name="stream"/>.
         /// </summary>
         /// <param name="stream">A view of a sequence of STUN packet's bytes.</param>
         /// <returns>A <see cref="StunMessage"/> derived on
