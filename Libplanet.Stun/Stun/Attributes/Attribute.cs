@@ -8,7 +8,7 @@ namespace Libplanet.Stun.Attributes
         /// Enum values that correspond to <see cref="Attribute"/> subclasses.
         /// </summary>
         /// <remarks>
-        /// This document is from
+        /// See also
         /// <a href="https://www.iana.org/assignments/stun-parameters/stun-parameters.xhtml">
         /// IANA STUN Attributes</a>.
         /// </remarks>
@@ -19,7 +19,7 @@ namespace Libplanet.Stun.Attributes
             /// of username and password.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.3">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.3">RFC 5389</a>.
             /// </remarks>
             Username = 0x0006,
 
@@ -27,7 +27,7 @@ namespace Libplanet.Stun.Attributes
             /// An <see cref="Attribute"/> which contains an HMAC-SHA1 of the STUN message.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.4">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.4">RFC 5389</a>.
             /// </remarks>
             MessageIntegrity = 0x0008,
 
@@ -36,7 +36,7 @@ namespace Libplanet.Stun.Attributes
             /// 300 to 699 and a textual reason phrase encoded in UTF-8.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.6">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.6">RFC 5389</a>.
             /// </remarks>
             ErrorCode = 0x0009,
 
@@ -45,7 +45,7 @@ namespace Libplanet.Stun.Attributes
             /// from the TURN server, obfuscated through the XOR function.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5766#section-14.3">RFC5766</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5766#section-14.3">RFC 5766</a>.
             /// </remarks>
             XorPeerAddress = 0x0012,
 
@@ -57,7 +57,7 @@ namespace Libplanet.Stun.Attributes
             /// in certain error-response.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.7">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.7">RFC 5389</a>.
             /// </remarks>
             Realm = 0x0014,
 
@@ -66,7 +66,7 @@ namespace Libplanet.Stun.Attributes
             /// protects replay attacks.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.8">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.8">RFC 5389</a>.
             /// </remarks>
             Nonce = 0x0015,
 
@@ -75,7 +75,7 @@ namespace Libplanet.Stun.Attributes
             /// port than the server allocated to the client, obfuscated through the XOR function.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5766#section-14.5">RFC5766</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5766#section-14.5">RFC 5766</a>.
             /// </remarks>
             XorRelayedAddress = 0x0016,
 
@@ -84,7 +84,7 @@ namespace Libplanet.Stun.Attributes
             /// protocol for the allocated transport address.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5766#section-14.7">RFC5766</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5766#section-14.7">RFC 5766</a>.
             /// </remarks>
             RequestedTransport = 0x0019,
 
@@ -93,7 +93,7 @@ namespace Libplanet.Stun.Attributes
             /// through the XOR function.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.2">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.2">RFC 5389</a>.
             /// </remarks>
             XorMappedAddress = 0x0020,
 
@@ -101,7 +101,7 @@ namespace Libplanet.Stun.Attributes
             /// An <see cref="Attribute"/> which uniquely identifies a peer data connection.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc6062#section-6.2.1">RFC6062</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc6062#section-6.2.1">RFC 6062</a>.
             /// </remarks>
             ConnectionId = 0x002a,
 
@@ -110,7 +110,7 @@ namespace Libplanet.Stun.Attributes
             /// maintain an allocation in the absence of a refresh.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5766#section-14.2">RFC5766</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5766#section-14.2">RFC 5766</a>.
             /// </remarks>
             Lifetime = 0x000d,
 
@@ -121,7 +121,7 @@ namespace Libplanet.Stun.Attributes
             /// as a tool for diagnostic and debugging purposes.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.10">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.10">RFC 5389</a>.
             /// </remarks>
             Software = 0x8022,
 
@@ -131,7 +131,7 @@ namespace Libplanet.Stun.Attributes
             /// Also it aids in distinguishing STUN packets from packets of other protocols.
             /// </summary>
             /// <remarks>
-            /// <a href="https://tools.ietf.org/html/rfc5389#section-15.5">RFC5389</a>
+            /// See also <a href="https://tools.ietf.org/html/rfc5389#section-15.5">RFC 5389</a>.
             /// </remarks>
             Fingerprint = 0x8028,
         }
