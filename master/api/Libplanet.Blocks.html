@@ -464,7 +464,9 @@
       <h4><a class="xref" href="Libplanet.Blocks.InvalidGenesisBlockException.html">InvalidGenesisBlockException</a></h4>
       <section><p>The exception that is thrown when the genesis block the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> contains
 mismatches to the genesis block the <a class="xref" href="Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> constructor (i.e., network)
-expects.</p>
+expects or the first block of <span class="xref">Libplanet.Blockchain.BlockLocator</span> which the <a class="xref" href="Libplanet.Store.IStore.html">IStore</a>
+doesn't contain, because the block which <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> doesn't means
+the genesis block in other network.</p>
 </section>
 </article>
           </div>
