@@ -2612,15 +2612,15 @@ namespace Libplanet.Tests.Net
 
             await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
             Assert.NotEqual(chainA.Genesis, chainB.Genesis);
-            try
-            {
-                await swarmA.PreloadAsync();
-            }
-            catch (AggregateException exception)
-            {
-                var exceptions = exception.InnerExceptions.OfType<InvalidGenesisBlockException>();
-                Assert.True(exceptions.Any());
-            }
+            Task t = swarmA.PreloadAsync();
+            await Assert.ThrowsAsync<AggregateException>(async () => await t);
+            var exception = t.Exception.InnerException?.InnerException;
+            Assert.IsType<InvalidGenesisBlockException>(exception);
+
+            await StopAsync(swarmA);
+            await StopAsync(swarmB);
+            swarmA.Dispose();
+            swarmB.Dispose();
         }
 
         [Fact(Timeout = Timeout)]

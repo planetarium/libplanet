@@ -92,8 +92,8 @@ To be released.
     continuous.  [[#732]]
  -  `Swarm<T>` became to can process more requests at once by creating TURN
     relaying proxy concurrently.  [[#744]]
- -  `Swarm<T>` became to throw `InvalidGenesisBlockException` when receiving the
-    genesis block of other network chain.  [[#746]]
+ -  `Swarm<T>` became to throw `InvalidGenesisBlockException` when receiving
+    block from the nodes that have a different genesis block.  [[#746]]
 
 ### Bug fixes
 
