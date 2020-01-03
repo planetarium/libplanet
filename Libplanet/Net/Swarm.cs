@@ -1910,11 +1910,15 @@ namespace Libplanet.Net
                     // same genesis block...
                     else if (!BlockChain.ContainsBlock(branchPoint))
                     {
-                        _logger.Debug(
+                        var msg =
                             $"Since the genesis block is fixed to {BlockChain.Genesis} " +
                             "protocol-wise, the blockchain which does not share " +
-                            "any mutual block is not acceptable.");
-                        break;
+                            "any mutual block is not acceptable.";
+                        _logger.Debug(msg);
+                        throw new InvalidGenesisBlockException(
+                            branchPoint,
+                            workspace.Genesis.Hash,
+                            msg);
                     }
                     else
                     {

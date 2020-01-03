@@ -8,7 +8,9 @@ namespace Libplanet.Blocks
     /// <summary>
     /// The exception that is thrown when the genesis block the <see cref="IStore"/> contains
     /// mismatches to the genesis block the <see cref="BlockChain{T}"/> constructor (i.e., network)
-    /// expects.
+    /// expects or the first block of <see cref="BlockLocator"/> which the <see cref="IStore"/>
+    /// doesn't contain, because the block which <see cref="IStore"/> doesn't means
+    /// the genesis block in other network.
     /// </summary>
     public class InvalidGenesisBlockException : InvalidBlockException
     {

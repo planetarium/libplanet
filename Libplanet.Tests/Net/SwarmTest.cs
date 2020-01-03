@@ -2591,6 +2591,39 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task ThrowInvalidGenesisException()
+        {
+            var policy = new BlockPolicy<DumbAction>();
+            BlockChain<DumbAction> MakeBlockChain() => TestUtils.MakeBlockChain(
+                policy,
+                new DefaultStore(path: null),
+                null,
+                new PrivateKey());
+
+            var chainA = MakeBlockChain();
+            var chainB = MakeBlockChain();
+            var swarmA = CreateSwarm(chainA);
+            var swarmB = CreateSwarm(chainB);
+
+            await chainB.MineBlock(_fx1.Address1);
+
+            await StartAsync(swarmA);
+            await StartAsync(swarmB);
+
+            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
+            Assert.NotEqual(chainA.Genesis, chainB.Genesis);
+            Task t = swarmA.PreloadAsync();
+            await Assert.ThrowsAsync<AggregateException>(async () => await t);
+            var exception = t.Exception.InnerException?.InnerException;
+            Assert.IsType<InvalidGenesisBlockException>(exception);
+
+            await StopAsync(swarmA);
+            await StopAsync(swarmB);
+            swarmA.Dispose();
+            swarmB.Dispose();
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task FindSpecificPeerAsync()
         {
             Swarm<DumbAction> swarmA = _swarms[0];

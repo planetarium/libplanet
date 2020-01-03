@@ -92,6 +92,8 @@ To be released.
     continuous.  [[#732]]
  -  `Swarm<T>` became to can process more requests at once by creating TURN
     relaying proxy concurrently.  [[#744]]
+ -  `Swarm<T>` became to throw `InvalidGenesisBlockException` when receiving
+    block from the nodes that have a different genesis block.  [[#746]]
 
 ### Bug fixes
 
@@ -160,6 +162,7 @@ To be released.
 [#736]: https://github.com/planetarium/libplanet/pull/736
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
+[#746]: https://github.com/planetarium/libplanet/pull/746
 
 
 Version 0.7.0
