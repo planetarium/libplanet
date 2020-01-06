@@ -19,7 +19,14 @@ To be released.
 
 ### Added APIs
 
+ -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
+    [[#707]]
+
 ### Behavioral changes
+
+ -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
+    only a list of block hashes first and then download blocks from
+    simultaneously multiple peers.  [[#707]]
 
 ### Bug fixes
 
@@ -117,8 +124,8 @@ Released on February 4, 2020.
  -  Added `BlockChain<T>.Genesis` property.  [[#688]]
  -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
- -  Added `StateDownloadState` class which reports state preloading iteration
-    progress.  [[#703]]
+ -  Added `StateDownloadState` class, a subclass of `PreloadState`,
+    which reports state preloading iteration progress.  [[#703]]
  -  Added `PeerDiscoveryException` class which inherits `SwarmException`
     class.  [[#604], [#726]]
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in

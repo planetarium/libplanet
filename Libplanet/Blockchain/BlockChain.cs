@@ -982,7 +982,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal (long? OffsetIndex, IReadOnlyList<HashDigest<SHA256>> Hashes) FindNextHashes(
+        internal Tuple<long?, IReadOnlyList<HashDigest<SHA256>>> FindNextHashes(
             BlockLocator locator,
             HashDigest<SHA256>? stop = null,
             int count = 500)
@@ -994,7 +994,10 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
                 if (tip is null)
                 {
-                    return (null, new HashDigest<SHA256>[0]);
+                    return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
+                        null,
+                        new HashDigest<SHA256>[0]
+                    );
                 }
 
                 HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
@@ -1033,7 +1036,10 @@ namespace Libplanet.Blockchain
                     count--;
                 }
 
-                return (branchPointIndex, result);
+                return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
+                    branchPointIndex,
+                    result
+                );
             }
             finally
             {

@@ -16,6 +16,6 @@ namespace Libplanet.Net
         public int ReceivedIterationCount { get; internal set; }
 
         /// <inheritdoc />
-        public override int CurrentPhase => 2;
+        public override int CurrentPhase => 3;
     }
 }
