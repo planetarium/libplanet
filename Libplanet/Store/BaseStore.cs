@@ -95,7 +95,6 @@ namespace Libplanet.Store
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
                     transactions: rawBlock.Transactions
-                        .Cast<byte[]>()
                         .Select(bytes => GetTransaction<T>(new TxId(bytes)))
                 );
             }

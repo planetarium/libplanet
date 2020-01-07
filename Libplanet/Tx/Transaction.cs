@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
-using Libplanet.Serialization;
 
 namespace Libplanet.Tx
 {
@@ -27,7 +24,7 @@ namespace Libplanet.Tx
     /// </typeparam>
     /// <seealso cref="IAction"/>
     /// <seealso cref="PolymorphicAction{T}"/>
-    public class Transaction<T> : ISerializable, IEquatable<Transaction<T>>
+    public class Transaction<T> : IEquatable<Transaction<T>>
         where T : IAction, new()
     {
         private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
@@ -156,11 +153,6 @@ namespace Libplanet.Tx
             }
         }
 
-        private Transaction(SerializationInfo info, StreamingContext context)
-            : this(new RawTransaction(info, context))
-        {
-        }
-
         private Transaction(
             long nonce,
             Address signer,
@@ -258,15 +250,8 @@ namespace Libplanet.Tx
         /// representation of a transaction.</param>
         /// <returns>A decoded <see cref="Transaction{T}"/> object.</returns>
         /// <seealso cref="ToBencodex(bool)"/>
-        public static Transaction<T> FromBencodex(byte[] bytes)
-        {
-            var serializer = new BencodexFormatter<Transaction<T>>();
-            using (var stream = new MemoryStream(bytes))
-            {
-                // FIXME: Shouldn't it call Validate() here?
-                return (Transaction<T>)serializer.Deserialize(stream);
-            }
-        }
+        public static Transaction<T> FromBencodex(byte[] bytes) =>
+            new Transaction<T>(new RawTransaction(bytes));
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
@@ -456,21 +441,7 @@ namespace Libplanet.Tx
         /// <returns>A <a href="https://bencodex.org/">Bencodex</a>
         /// representation of this <see cref="Transaction{T}"/>.</returns>
         /// <seealso cref="FromBencodex(byte[])"/>
-        public byte[] ToBencodex(bool sign)
-        {
-            var serializer = new BencodexFormatter<Transaction<T>>
-            {
-                Context = new StreamingContext(
-                    StreamingContextStates.All,
-                    new TransactionSerializationContext(sign)
-                ),
-            };
-            using (var stream = new MemoryStream())
-            {
-                serializer.Serialize(stream, this);
-                return stream.ToArray();
-            }
-        }
+        public byte[] ToBencodex(bool sign) => ToRawTransaction(sign).ToBencodex();
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits
@@ -620,18 +591,6 @@ namespace Libplanet.Tx
                     $"is not matched to the address ({Signer}).";
                 throw new InvalidTxPublicKeyException(Id, message);
             }
-        }
-
-        /// <inheritdoc />
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context)
-        {
-            bool includeSignature =
-                context.Context is TransactionSerializationContext txContext &&
-                txContext.IncludeSignature;
-            RawTransaction rawTx = ToRawTransaction(includeSignature);
-            rawTx.GetObjectData(info, context);
         }
 
         /// <inheritdoc />

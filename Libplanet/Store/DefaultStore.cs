@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
-using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
@@ -821,12 +820,7 @@ namespace Libplanet.Store
             RawBlock rawBlock;
             try
             {
-                var formatter = new BencodexFormatter<RawBlock>();
-                using (Stream stream = _blocks.OpenFile(
-                    path, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    rawBlock = (RawBlock)formatter.Deserialize(stream);
-                }
+                rawBlock = new RawBlock(_blocks.ReadAllBytes(path));
             }
             catch (FileNotFoundException)
             {

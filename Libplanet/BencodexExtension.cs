@@ -9,5 +9,11 @@ namespace Libplanet
         {
             return (T)dictionary[name];
         }
+
+        public static T GetValue<T>(this Dictionary dictionary, byte[] name)
+            where T : IValue
+        {
+            return (T)dictionary[name];
+        }
     }
 }
