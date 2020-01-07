@@ -34,7 +34,7 @@ namespace Libplanet.Action
         {
             try
             {
-                return _updatedStates[(Text)address.ToHex()];
+                return _updatedStates[address.ToHex()];
             }
             catch (KeyNotFoundException)
             {
@@ -50,8 +50,8 @@ namespace Libplanet.Action
         {
             return new AccountStateDeltaImpl(_accountStateGetter)
             {
-                _updatedStates = (Dictionary)_updatedStates.SetItem(
-                    (Text)address.ToHex(), state),
+                _updatedStates = _updatedStates.SetItem(
+                    address.ToHex(), state),
             };
         }
     }

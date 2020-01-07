@@ -7,7 +7,7 @@ namespace Libplanet
         public static T GetValue<T>(this Dictionary dictionary, string name)
             where T : IValue
         {
-            return (T)dictionary[(Text)name];
+            return (T)dictionary[name];
         }
     }
 }

@@ -69,17 +69,17 @@ namespace Libplanet.Tests.Common.Action
                     // In order to avoid changing tx signatures in many test
                     // fixtures, adds field only if RecordRandom = true.
                     plainValue =
-                        (Dictionary)plainValue.Add(
-                            (Text)"record_random",
-                            new Bencodex.Types.Boolean(true));
+                        plainValue.Add(
+                            "record_random",
+                            (IValue)new Bencodex.Types.Boolean(true));
                 }
 
                 if (Idempotent)
                 {
                     plainValue =
-                        (Dictionary)plainValue.Add(
-                            (Text)"idempotent",
-                            new Bencodex.Types.Boolean(Idempotent));
+                        plainValue.Add(
+                            "idempotent",
+                            (IValue)new Bencodex.Types.Boolean(Idempotent));
                 }
 
                 return plainValue;
@@ -192,7 +192,7 @@ namespace Libplanet.Tests.Common.Action
             RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
                 plainValue.ContainsKey((Text)"record_random") &&
-                plainValue[(Text)"record_random"] is Boolean r &&
+                plainValue["record_random"] is Boolean r &&
                 r.Value;
 
             if (plainValue.ContainsKey((Text)"idempotent"))
