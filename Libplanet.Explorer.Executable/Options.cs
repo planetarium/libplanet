@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using CommandLine;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Net;
 
@@ -119,9 +120,29 @@ If omitted (default) explorer only the local blockchain store.")]
             'P',
             "store-path",
             Default = null,
-            HelpText = @"The path of the blockchain store. If omitted (default) 
+            HelpText = @"The path of the blockchain store. If omitted (default)
 in memory version is used.")]
         public string StorePath { get; set; }
+
+        [Option(
+            'G',
+            "genesis-block",
+            HelpText = "The path of the genesis block. It should be absolute or http url.",
+            Required = true)]
+        public string GenesisBlockPath { get; set; }
+
+        internal Block<Program.AppAgnosticAction> GenesisBlock
+        {
+            get
+            {
+                var uri = new Uri(GenesisBlockPath);
+                using (var client = new WebClient())
+                {
+                    var serialized = client.DownloadData(uri);
+                    return Block<Program.AppAgnosticAction>.Deserialize(serialized);
+                }
+            }
+        }
 
         public static Options Parse(string[] args, TextWriter errorWriter)
         {
