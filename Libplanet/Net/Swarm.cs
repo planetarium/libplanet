@@ -132,7 +132,7 @@ namespace Libplanet.Net
         ~Swarm()
         {
             // FIXME If possible, we should stop Swarm appropriately here.
-            if (_transport is NetMQTransport p && p.Running)
+            if (Running)
             {
                 _logger.Warning(
                     "Swarm is scheduled to destruct, but NetMQTransport progress is still running."

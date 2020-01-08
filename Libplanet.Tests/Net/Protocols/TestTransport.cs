@@ -84,7 +84,13 @@ namespace Libplanet.Tests.Net.Protocols
         public async Task RunAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await ProcessRuntime(_swarmCancellationTokenSource.Token);
+            CancellationToken token = cancellationToken.Equals(CancellationToken.None)
+                ? _swarmCancellationTokenSource.Token
+                : CancellationTokenSource
+                    .CreateLinkedTokenSource(
+                        _swarmCancellationTokenSource.Token, cancellationToken)
+                    .Token;
+            await ProcessRuntime(token);
         }
 
         public async Task StopAsync(
@@ -115,7 +121,7 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             await Protocol.BootstrapAsync(
-                bootstrapPeers.ToImmutableList(),
+                bootstrapPeers,
                 pingSeedTimeout,
                 findPeerTimeout,
                 Kademlia.MaxDepth,
