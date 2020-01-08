@@ -385,7 +385,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            Transaction<T> tx = Transaction<T>.FromBencodex(bytes);
+            Transaction<T> tx = new Transaction<T>(bytes);
             _txCache.AddOrUpdate(txid, tx);
             return tx;
         }
@@ -398,7 +398,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
+            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
@@ -482,7 +482,7 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(_blocks, path, block.ToBencodex(true, false));
+            WriteContentAddressableFile(_blocks, path, block.Serialize(true, false));
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
@@ -820,7 +820,7 @@ namespace Libplanet.Store
             RawBlock rawBlock;
             try
             {
-                rawBlock = new RawBlock(_blocks.ReadAllBytes(path));
+                rawBlock = new RawBlock(new Codec().Decode(_blocks.ReadAllBytes(path)));
             }
             catch (FileNotFoundException)
             {

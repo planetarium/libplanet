@@ -348,7 +348,7 @@ namespace Libplanet.Tests.Tx
                 0x30, 0x3a, 0x65,
             };
 
-            AssertBytesEqual(expected, _fx.Tx.ToBencodex(true));
+            AssertBytesEqual(expected, _fx.Tx.Serialize(true));
         }
 
         [Fact]
@@ -404,7 +404,7 @@ namespace Libplanet.Tests.Tx
                 0x5c, 0xbc, 0x65,
             };
 
-            AssertBytesEqual(expected, _fx.TxWithActions.ToBencodex(true));
+            AssertBytesEqual(expected, _fx.TxWithActions.Serialize(true));
         }
 
         [Fact]
@@ -451,7 +451,7 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<DumbAction> tx = Transaction<DumbAction>.FromBencodex(bytes);
+            Transaction<DumbAction> tx = new Transaction<DumbAction>(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
@@ -546,7 +546,7 @@ namespace Libplanet.Tests.Tx
                 }
             ).PublicKey;
             Transaction<PolymorphicAction<BaseAction>> tx =
-                Transaction<PolymorphicAction<BaseAction>>.FromBencodex(bytes);
+                new Transaction<PolymorphicAction<BaseAction>>(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(

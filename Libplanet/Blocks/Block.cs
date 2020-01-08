@@ -9,6 +9,8 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using Bencodex;
+using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Tx;
 
@@ -61,7 +63,7 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
-            Hash = Hashcash.Hash(ToBencodex(false, false));
+            Hash = Hashcash.Hash(Serialize(false, false));
 
             // As the order of transactions should be unpredictable until a block is mined,
             // the sorter key should be derived from both a block hash and a txid.
@@ -98,6 +100,16 @@ namespace Libplanet.Blocks
                 .ToImmutableArray();
         }
 
+        /// <summary>
+        /// Creates a <see cref="Block{T}"/> instance from its serialization.
+        /// </summary>
+        /// <param name="bytes">The serialization of block instance.
+        /// </param>
+        public Block(byte[] bytes)
+            : this(new RawBlock(new Codec().Decode(bytes)))
+        {
+        }
+
         private Block(RawBlock rb)
             : this(
                 rb.Index,
@@ -112,7 +124,7 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
-                    .Select(bytes => new Transaction<T>(new RawTransaction(bytes)))
+                    .Select(bytes => new Transaction<T>(bytes))
                     .ToList()
                 )
         {
@@ -179,8 +191,8 @@ namespace Libplanet.Blocks
 
             // Poor man' way to optimize stamp...
             // FIXME: We need to rather reorganize the serialization layout.
-            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).ToBencodex(false, false);
-            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).ToBencodex(false, false);
+            byte[] emptyNonce = MakeBlock(new Nonce(new byte[0])).Serialize(false, false);
+            byte[] oneByteNonce = MakeBlock(new Nonce(new byte[1])).Serialize(false, false);
             int offset = 0;
             while (offset < emptyNonce.Length && emptyNonce[offset].Equals(oneByteNonce[offset]))
             {
@@ -220,9 +232,15 @@ namespace Libplanet.Blocks
             return MakeBlock(nonce);
         }
 
-        public static Block<T> FromBencodex(byte[] encoded) => new Block<T>(new RawBlock(encoded));
+        public static Block<T> FromBencodex(IValue dict) => new Block<T>(new RawBlock(dict));
 
-        public byte[] ToBencodex(bool hash, bool transactionData) =>
+        public byte[] Serialize(bool hash, bool transactionData)
+        {
+            var codec = new Codec();
+            return codec.Encode(ToBencodex(hash, transactionData));
+        }
+
+        public IValue ToBencodex(bool hash, bool transactionData) =>
             ToRawBlock(hash, transactionData).ToBencodex();
 
         /// <summary>
@@ -451,7 +469,7 @@ namespace Libplanet.Blocks
             IEnumerable<byte[]> transactions =
                 Transactions.OrderBy(tx => tx.Id).Select(
                     tx => includeTransactionData
-                        ? tx.ToRawTransaction(true).ToBencodex()
+                        ? tx.Serialize(true)
                         : tx.Id.ToByteArray()
                 );
             var rawBlock = new RawBlock(

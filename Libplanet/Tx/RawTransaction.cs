@@ -53,10 +53,8 @@ namespace Libplanet.Tx
             Signature = signature;
         }
 
-        public RawTransaction(byte[] bytes)
+        public RawTransaction(IValue value)
         {
-            var codec = new Codec();
-            var value = codec.Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException("Bencodex.Types.Dictionary expected");
@@ -104,7 +102,7 @@ namespace Libplanet.Tx
             );
         }
 
-        public byte[] ToBencodex()
+        public IValue ToBencodex()
         {
             var updatedAddresses = new byte[UpdatedAddresses.Length * Address.Size];
             var i = 0;
@@ -128,8 +126,7 @@ namespace Libplanet.Tx
                 dict = dict.Add(b("signature"), Signature.ToArray());
             }
 
-            var codec = new Codec();
-            return codec.Encode(dict);
+            return dict;
         }
 
         public override int GetHashCode()

@@ -126,7 +126,7 @@ namespace Libplanet.Tests.Blocks
                 0x6e, 0x73, 0x6c, 0x65, 0x65,
             };
 
-            AssertBytesEqual(expected, _fx.Genesis.ToBencodex(true, true));
+            AssertBytesEqual(expected, _fx.Genesis.Serialize(true, true));
         }
 
         [Fact]
@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blocks
                 0x54, 0x26, 0x3d, 0xfa, 0x4f, 0x5c, 0xbc, 0x65, 0x65, 0x65,
             };
             Block<PolymorphicAction<BaseAction>> actual =
-                Block<PolymorphicAction<BaseAction>>.FromBencodex(encoded);
+                new Block<PolymorphicAction<BaseAction>>(encoded);
             Assert.Equal(_fx.HasTx, actual);
         }
 
@@ -424,7 +424,7 @@ namespace Libplanet.Tests.Blocks
                 ImmutableArray<byte>.Empty
             );
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
-                new Transaction<DumbAction>(rawTxWithoutSig).ToBencodex(false)
+                new Transaction<DumbAction>(rawTxWithoutSig).Serialize(false)
             );
             var invalidTx = new Transaction<DumbAction>(
                 new RawTransaction(
@@ -464,7 +464,7 @@ namespace Libplanet.Tests.Blocks
             byte[] sig = _fx.TxFixture.PrivateKey1.Sign(
                 new Transaction<PolymorphicAction<BaseAction>>(
                     rawTxWithoutSig
-                ).ToBencodex(false)
+                ).Serialize(false)
             );
             var invalidTx = new Transaction<PolymorphicAction<BaseAction>>(
                 new RawTransaction(

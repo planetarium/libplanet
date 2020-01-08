@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
@@ -101,6 +102,11 @@ namespace Libplanet.Tx
         {
         }
 
+        public Transaction(byte[] bytes)
+            : this(new RawTransaction(new Codec().Decode(bytes)))
+        {
+        }
+
         internal Transaction(RawTransaction rawTx)
             : this(
                 rawTx.Nonce,
@@ -143,7 +149,7 @@ namespace Libplanet.Tx
 
             using (var hasher = SHA256.Create())
             {
-                byte[] payload = ToBencodex(true);
+                byte[] payload = Serialize(true);
                 Id = new TxId(hasher.ComputeHash(payload));
             }
 
@@ -246,12 +252,13 @@ namespace Libplanet.Tx
         /// Decodes a transaction's
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
-        /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
+        /// <param name="dict">A <see cref="IValue"/> typed
+        /// <a href="https://bencodex.org/">Bencodex</a>
         /// representation of a transaction.</param>
         /// <returns>A decoded <see cref="Transaction{T}"/> object.</returns>
         /// <seealso cref="ToBencodex(bool)"/>
-        public static Transaction<T> FromBencodex(byte[] bytes) =>
-            new Transaction<T>(new RawTransaction(bytes));
+        public static Transaction<T> FromBencodex(IValue dict) =>
+            new Transaction<T>(new RawTransaction(dict));
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
@@ -382,7 +389,7 @@ namespace Libplanet.Tx
                 updatedAddresses,
                 ts,
                 actionsArray
-            ).ToBencodex(false);
+            ).Serialize(false);
 
             if (!actionsArray.IsEmpty)
             {
@@ -411,7 +418,7 @@ namespace Libplanet.Tx
                         updatedAddresses,
                         ts,
                         actionsArray
-                    ).ToBencodex(false);
+                    ).Serialize(false);
                 }
             }
 
@@ -428,20 +435,32 @@ namespace Libplanet.Tx
         }
 
         /// <summary>
-        /// Encodes this <see cref="Transaction{T}"/> into a <see cref="byte"/>
-        /// array.
+        /// Encodes this <see cref="Transaction{T}"/> into a <see cref="byte"/> array.
+        /// </summary>
+        /// <param name="sign">Whether to include its <see cref="Signature"/>.
+        /// </param>
+        /// <returns>A <a href="https://bencodex.org/">Bencodex</a>
+        /// representation of this <see cref="Transaction{T}"/>.</returns>
+        public byte[] Serialize(bool sign)
+        {
+            var codec = new Codec();
+            return codec.Encode(ToBencodex(sign));
+        }
+
+        /// <summary>
+        /// Encodes this <see cref="Transaction{T}"/> into a <see cref="IValue"/>.
         /// <para>This is an inverse function of
-        /// <see cref="FromBencodex(byte[])"/> method
+        /// <see cref="FromBencodex(IValue)"/> method
         /// where <paramref name="sign"/> is <c>true</c>.</para>
         /// </summary>
         /// <param name="sign">Whether to include its <see cref="Signature"/>.
         /// Note that an encoding without signature cannot be decoded using
-        /// <see cref="FromBencodex(byte[])"/> method.
+        /// <see cref="FromBencodex(IValue)"/> method.
         /// </param>
-        /// <returns>A <a href="https://bencodex.org/">Bencodex</a>
+        /// <returns>A <see cref="IValue"/> typed <a href="https://bencodex.org/">Bencodex</a>
         /// representation of this <see cref="Transaction{T}"/>.</returns>
-        /// <seealso cref="FromBencodex(byte[])"/>
-        public byte[] ToBencodex(bool sign) => ToRawTransaction(sign).ToBencodex();
+        /// <seealso cref="FromBencodex(IValue)"/>
+        public IValue ToBencodex(bool sign) => ToRawTransaction(sign).ToBencodex();
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits
@@ -576,7 +595,7 @@ namespace Libplanet.Tx
         /// <see cref="Transaction{T}.PublicKey"/>.</exception>
         public void Validate()
         {
-            if (!PublicKey.Verify(ToBencodex(false), Signature))
+            if (!PublicKey.Verify(Serialize(false), Signature))
             {
                 string message =
                     $"The signature ({ByteUtil.Hex(Signature)}) is failed " +

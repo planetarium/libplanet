@@ -50,10 +50,8 @@ namespace Libplanet.Blocks
             Hash = hash;
         }
 
-        public RawBlock(byte[] bytes)
+        public RawBlock(IValue value)
         {
-            var codec = new Codec();
-            var value = codec.Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException("Bencodex.Types.Dictionary expected");
@@ -110,7 +108,7 @@ namespace Libplanet.Blocks
             );
         }
 
-        public byte[] ToBencodex()
+        public IValue ToBencodex()
         {
             var transactions = new Bencodex.Types.List(
                 Transactions.Select(tx => (IValue)(Binary)tx));
@@ -137,8 +135,7 @@ namespace Libplanet.Blocks
                 dict = dict.Add(b("hash"), Hash.ToArray());
             }
 
-            var codec = new Codec();
-            return codec.Encode(dict);
+            return dict;
         }
     }
 }
