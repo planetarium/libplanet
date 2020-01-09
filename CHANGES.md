@@ -126,6 +126,7 @@ To be released.
     [[#744]]
  -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
     an IPv6 address.  [[#744]]
+-  Fix incorrect logging in Swarm.DoReply. [[#740]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
@@ -163,6 +164,7 @@ To be released.
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
 [#746]: https://github.com/planetarium/libplanet/pull/746
+[#755]: https://github.com/planetarium/libplanet/pull/755
 
 
 Version 0.7.0
