@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Bencodex.Types;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
@@ -13,26 +12,19 @@ namespace Libplanet.Tx
     [Equals]
     internal readonly struct RawTransaction
     {
-        public static readonly byte[] NonceKey =
-            Encoding.ASCII.GetBytes("nonce");
+        public const string NonceKey = "nonce";
 
-        public static readonly byte[] SignerKey =
-            Encoding.ASCII.GetBytes("signer");
+        public const string SignerKey = "signer";
 
-        public static readonly byte[] UpdatedAddressesKey =
-            Encoding.ASCII.GetBytes("updated_addresses");
+        public const string UpdatedAddressesKey = "updated_addresses";
 
-        public static readonly byte[] PublicKeyKey =
-            Encoding.ASCII.GetBytes("public_key");
+        public const string PublicKeyKey = "public_key";
 
-        public static readonly byte[] TimestampKey =
-            Encoding.ASCII.GetBytes("timestamp");
+        public const string TimestampKey = "timestamp";
 
-        public static readonly byte[] ActionsKey =
-            Encoding.ASCII.GetBytes("actions");
+        public const string ActionsKey = "actions";
 
-        public static readonly byte[] SignatureKey =
-            Encoding.ASCII.GetBytes("signature");
+        public const string SignatureKey = "signature";
 
         public RawTransaction(
             long nonce,
@@ -84,7 +76,7 @@ namespace Libplanet.Tx
             Timestamp = dict.GetValue<Text>(TimestampKey);
             Actions = dict.GetValue<Bencodex.Types.List>(ActionsKey);
 
-            Signature = dict.ContainsKey((Binary)SignatureKey)
+            Signature = dict.ContainsKey((Text)SignatureKey)
                 ? ((byte[])dict.GetValue<Binary>(SignatureKey)).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }

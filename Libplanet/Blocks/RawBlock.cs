@@ -1,35 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Bencodex.Types;
 
 namespace Libplanet.Blocks
 {
     internal readonly struct RawBlock
     {
-        public static readonly byte[] IndexKey =
-            Encoding.ASCII.GetBytes("index");
+        public const string IndexKey = "index";
 
-        public static readonly byte[] TimestampKey =
-            Encoding.ASCII.GetBytes("timestamp");
+        public const string TimestampKey = "timestamp";
 
-        public static readonly byte[] DifficultyKey =
-            Encoding.ASCII.GetBytes("difficulty");
+        public const string DifficultyKey = "difficulty";
 
-        public static readonly byte[] TransactionsKey =
-            Encoding.ASCII.GetBytes("transactions");
+        public const string TransactionsKey = "transactions";
 
-        public static readonly byte[] NonceKey =
-            Encoding.ASCII.GetBytes("nonce");
+        public const string NonceKey = "nonce";
 
-        public static readonly byte[] PreviousHashKey =
-            Encoding.ASCII.GetBytes("previous_hash");
+        public const string PreviousHashKey = "previous_hash";
 
-        public static readonly byte[] HashKey =
-            Encoding.ASCII.GetBytes("hash");
+        public const string HashKey = "hash";
 
-        public static readonly byte[] RewardBeneficiaryKey =
-            Encoding.ASCII.GetBytes("reward_beneficiary");
+        public const string RewardBeneficiaryKey = "reward_beneficiary";
 
         public RawBlock(
             long index,
@@ -81,15 +72,15 @@ namespace Libplanet.Blocks
                 .Select(tx => (byte[])(Binary)tx);
             Nonce = dict.GetValue<Binary>(NonceKey);
 
-            Miner = dict.ContainsKey((Binary)RewardBeneficiaryKey)
+            Miner = dict.ContainsKey((Text)RewardBeneficiaryKey)
                 ? dict.GetValue<Binary>(RewardBeneficiaryKey)
                 : null;
 
-            PreviousHash = dict.ContainsKey((Binary)PreviousHashKey)
+            PreviousHash = dict.ContainsKey((Text)PreviousHashKey)
                 ? (byte[])dict.GetValue<Binary>(PreviousHashKey)
                 : null;
 
-            Hash = dict.ContainsKey((Binary)HashKey)
+            Hash = dict.ContainsKey((Text)HashKey)
                 ? (byte[])dict.GetValue<Binary>(HashKey)
                 : null;
         }
