@@ -2341,11 +2341,11 @@ namespace Libplanet.Net
             // We should make this configurable or fix it to an unneeded structure.
             if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
             {
-                _logger.Debug("A reply sent to {Identity}: {Message}", msg, identityHex);
+                _logger.Debug("A reply sent to {Identity}: {Message}", identityHex, msg);
             }
             else
             {
-                _logger.Debug("Failed to reply to {Identity}: {Message}", msg, identityHex);
+                _logger.Debug("Failed to reply to {Identity}: {Message}", identityHex, msg);
             }
         }
 
