@@ -63,6 +63,13 @@ namespace Libplanet.Blocks
             PreviousHash = previousHash;
             Timestamp = timestamp;
             Transactions = transactions.OrderBy(tx => tx.Id).ToArray();
+            var codec = new Codec();
+            TxHash = Transactions.Any()
+                ? Hashcash.Hash(
+                    codec.Encode(
+                        new Bencodex.Types.List(Transactions.Select(tx =>
+                            (IValue)tx.ToBencodex(true)))))
+                : (HashDigest<SHA256>?)null;
             Hash = Hashcash.Hash(Serialize(false, false));
 
             // As the order of transactions should be unpredictable until a block is mined,
@@ -150,6 +157,9 @@ namespace Libplanet.Blocks
 
         [IgnoreDuringEquals]
         public DateTimeOffset Timestamp { get; }
+
+        [IgnoreDuringEquals]
+        public HashDigest<SHA256>? TxHash { get; }
 
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
@@ -498,8 +508,9 @@ namespace Libplanet.Blocks
                 nonce: Nonce.ToByteArray(),
                 miner: Miner?.ToByteArray(),
                 difficulty: Difficulty,
-                transactions: transactions,
-                previousHash: PreviousHash?.ToByteArray()
+                previousHash: PreviousHash?.ToByteArray(),
+                txHash: TxHash?.ToByteArray(),
+                transactions: transactions
             );
 
             if (includeHash)

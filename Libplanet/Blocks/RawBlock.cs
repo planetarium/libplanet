@@ -18,6 +18,8 @@ namespace Libplanet.Blocks
 
         public const string PreviousHashKey = "previous_hash";
 
+        public const string TransactionFingerprintKey = "transaction_fingerprint";
+
         public const string HashKey = "hash";
 
         public const string RewardBeneficiaryKey = "reward_beneficiary";
@@ -29,6 +31,7 @@ namespace Libplanet.Blocks
             byte[] miner,
             long difficulty,
             byte[] previousHash,
+            byte[] txHash,
             IEnumerable<byte[]> transactions)
             : this(
                 index,
@@ -37,6 +40,7 @@ namespace Libplanet.Blocks
                 miner,
                 difficulty,
                 previousHash,
+                txHash,
                 transactions,
                 null
             )
@@ -50,6 +54,7 @@ namespace Libplanet.Blocks
             byte[] miner,
             long difficulty,
             byte[] previousHash,
+            byte[] txHash,
             IEnumerable<byte[]> transactions,
             byte[] hash)
         {
@@ -59,6 +64,7 @@ namespace Libplanet.Blocks
             Miner = miner;
             Difficulty = difficulty;
             PreviousHash = previousHash;
+            TxHash = txHash;
             Transactions = transactions;
             Hash = hash;
         }
@@ -80,6 +86,10 @@ namespace Libplanet.Blocks
                 ? (byte[])dict.GetValue<Binary>(PreviousHashKey)
                 : null;
 
+            TxHash = dict.ContainsKey((Text)TransactionFingerprintKey)
+                ? (byte[])dict.GetValue<Binary>(TransactionFingerprintKey)
+                : null;
+
             Hash = dict.ContainsKey((Text)HashKey)
                 ? (byte[])dict.GetValue<Binary>(HashKey)
                 : null;
@@ -97,6 +107,8 @@ namespace Libplanet.Blocks
 
         public byte[] PreviousHash { get; }
 
+        public byte[] TxHash { get; }
+
         public byte[] Hash { get; }
 
         public IEnumerable<byte[]> Transactions { get; }
@@ -111,6 +123,7 @@ namespace Libplanet.Blocks
                 nonce: Nonce,
                 previousHash: PreviousHash,
                 transactions: Transactions,
+                txHash: TxHash,
                 hash: hash
             );
         }
@@ -134,6 +147,11 @@ namespace Libplanet.Blocks
             if (!(PreviousHash is null))
             {
                 dict = dict.Add(PreviousHashKey, PreviousHash);
+            }
+
+            if (!(TxHash is null))
+            {
+                dict = dict.Add(TransactionFingerprintKey, TxHash.ToArray());
             }
 
             if (!(Hash is null))
