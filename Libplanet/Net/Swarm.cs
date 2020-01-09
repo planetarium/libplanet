@@ -142,11 +142,11 @@ namespace Libplanet.Net
 
         public bool Running => _transport is NetMQTransport p && p.Running;
 
-        public DnsEndPoint EndPoint => (_transport as NetMQTransport)?.EndPoint;
+        public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
         public Address Address => _privateKey.PublicKey.ToAddress();
 
-        public Peer AsPeer => (_transport as NetMQTransport)?.AsPeer;
+        public Peer AsPeer => _transport.AsPeer;
 
         public DateTimeOffset LastReceived { get; private set; }
 
@@ -156,7 +156,7 @@ namespace Libplanet.Net
             private set;
         }
 
-        public IEnumerable<BoundPeer> Peers => _transport.Peers();
+        public IEnumerable<BoundPeer> Peers => _transport.Peers;
 
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
@@ -195,7 +195,7 @@ namespace Libplanet.Net
 
         public void Dispose()
         {
-            (_transport as NetMQTransport)?.Dispose();
+            _transport.Dispose();
         }
 
         public async Task StopAsync(
@@ -270,7 +270,7 @@ namespace Libplanet.Net
             EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            List<Task> tasks = new List<Task>();
+            var tasks = new List<Task>();
             _workerCancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
@@ -355,7 +355,7 @@ namespace Libplanet.Net
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
 
             await _transport.BootstrapAsync(
-                peers.ToImmutableList(),
+                peers,
                 pingSeedTimeout,
                 findNeighborsTimeout,
                 depth,
@@ -1617,7 +1617,7 @@ namespace Libplanet.Net
             int total = hashes.Count;
             const string logMsg =
                 "Fetching a block #{Index}/{Total} ({Hash}) to include to " +
-                "a reply 1to {Identity}...";
+                "a reply to {Identity}...";
             foreach (HashDigest<SHA256> hash in hashes)
             {
                 _logger.Verbose(logMsg, i, total, hash, identityHex);

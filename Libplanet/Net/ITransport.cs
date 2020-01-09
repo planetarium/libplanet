@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Net.Messages;
 
 namespace Libplanet.Net
 {
-    internal interface ITransport
+    internal interface ITransport : IDisposable
     {
+        Peer AsPeer { get; }
+
+        IEnumerable<BoundPeer> Peers { get; }
+
         Task StartAsync(CancellationToken cancellationToken = default(CancellationToken));
 
         Task RunAsync(CancellationToken cancellationToken = default(CancellationToken));
@@ -18,13 +21,11 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken));
 
         Task BootstrapAsync(
-            IImmutableList<BoundPeer> bootstrapPeers,
+            IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findNeighborsTimeout,
             int depth,
             CancellationToken cancellationToken);
-
-        IEnumerable<BoundPeer> Peers();
 
         Task<Message> SendMessageWithReplyAsync(
             BoundPeer peer,

@@ -18,7 +18,7 @@ using Serilog;
 
 namespace Libplanet.Net
 {
-    internal class NetMQTransport : ITransport, IDisposable
+    internal class NetMQTransport : ITransport
     {
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
@@ -43,6 +43,7 @@ namespace Libplanet.Net
         private int? _listenPort;
         private TurnClient _turnClient;
         private bool _behindNAT;
+        private DnsEndPoint _endPoint;
         private IPAddress _publicIPAddress;
 
         private AsyncCollection<MessageRequest> _requests;
@@ -76,7 +77,7 @@ namespace Libplanet.Net
 
             if (_host != null && _listenPort is int listenPortAsInt)
             {
-                EndPoint = new DnsEndPoint(_host, listenPortAsInt);
+                _endPoint = new DnsEndPoint(_host, listenPortAsInt);
             }
 
             _iceServers = iceServers?.ToList();
@@ -155,18 +156,18 @@ namespace Libplanet.Net
         /// </summary>
         private event EventHandler<Message> ProcessMessageHandler;
 
-        public Peer AsPeer => EndPoint is null
+        public Peer AsPeer => _endPoint is null
             ? new Peer(
                 _privateKey.PublicKey,
                 _appProtocolVersion,
                 _publicIPAddress)
             : new BoundPeer(
                 _privateKey.PublicKey,
-                EndPoint,
+                _endPoint,
                 _appProtocolVersion,
                 _publicIPAddress);
 
-        public DnsEndPoint EndPoint { get; private set; }
+        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         /// <summary>
         /// Whether this <see cref="NetMQTransport"/> instance is running.
@@ -234,7 +235,7 @@ namespace Libplanet.Net
                 IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
                     TurnAllocationLifetime
                 );
-                EndPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
+                _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
                 // FIXME should be parameterized
                 tasks.Add(BindingProxies(_cancellationToken));
@@ -245,11 +246,11 @@ namespace Libplanet.Net
             }
             else if (_host is null)
             {
-                EndPoint = new DnsEndPoint(_publicIPAddress.ToString(), _listenPort.Value);
+                _endPoint = new DnsEndPoint(_publicIPAddress.ToString(), _listenPort.Value);
             }
             else
             {
-                EndPoint = new DnsEndPoint(_host, _listenPort.Value);
+                _endPoint = new DnsEndPoint(_host, _listenPort.Value);
             }
 
             _replyQueue = new NetMQQueue<Message>();
@@ -272,8 +273,14 @@ namespace Libplanet.Net
 
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(Task.Run(
-                () =>
+            tasks.Add(
+                RefreshTableAsync(
+                    TimeSpan.FromSeconds(10),
+                    TimeSpan.FromSeconds(10),
+                    _cancellationToken));
+            tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+            tasks.Add(
+                Task.Run(() =>
                 {
                     // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
                     // tests.
@@ -283,17 +290,13 @@ namespace Libplanet.Net
                     }
                     catch (TerminatingException)
                     {
+                        _logger.Error($"TerminatingException occurred in {nameof(_poller)}");
                     }
                     catch (ObjectDisposedException)
                     {
+                        _logger.Error($"ObjectDisposedException occurred in {nameof(_poller)}");
                     }
-                }, _cancellationToken));
-            tasks.Add(
-                RefreshTableAsync(
-                    TimeSpan.FromSeconds(10),
-                    TimeSpan.FromSeconds(10),
-                    _cancellationToken));
-            tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
+                }));
 
             await await Task.WhenAny(tasks);
         }
@@ -327,14 +330,14 @@ namespace Libplanet.Net
         }
 
         public async Task BootstrapAsync(
-            IImmutableList<BoundPeer> bootstrapPeers,
+            IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findNeighborsTimeout,
             int depth = Kademlia.MaxDepth,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await Protocol.BootstrapAsync(
-                bootstrapPeers,
+                bootstrapPeers.ToImmutableList(),
                 pingSeedTimeout,
                 findNeighborsTimeout,
                 depth,
@@ -412,8 +415,6 @@ namespace Libplanet.Net
                 timeout,
                 cancellationToken);
         }
-
-        public IEnumerable<BoundPeer> Peers() => Protocol.Peers;
 
         public string Trace() => Protocol is null ? string.Empty : Protocol.Trace();
 
@@ -795,6 +796,7 @@ namespace Libplanet.Net
             }
         }
 
+        // FIXME: Separate turn related features outside of Transport if possible.
         private async Task BindingProxies(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)

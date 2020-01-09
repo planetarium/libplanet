@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -162,7 +161,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             await Assert.ThrowsAsync<SwarmException>(
                 () => transportB.BootstrapAsync(
-                    ImmutableList.Create(transportA.AsPeer),
+                    new[] { transportA.AsPeer },
                     TimeSpan.FromSeconds(3),
                     TimeSpan.FromSeconds(3))
             );
@@ -179,8 +178,8 @@ namespace Libplanet.Tests.Net.Protocols
             await StartTestTransport(transportB);
             await StartTestTransport(transportC);
 
-            await transportB.BootstrapAsync(ImmutableList.Create(transportA.AsPeer));
-            await transportC.BootstrapAsync(ImmutableList.Create(transportA.AsPeer));
+            await transportB.BootstrapAsync(new[] { transportA.AsPeer });
+            await transportC.BootstrapAsync(new[] { transportA.AsPeer });
 
             Assert.Contains(transportB.AsPeer, transportC.Protocol.Peers);
             Assert.Contains(transportC.AsPeer, transportB.Protocol.Peers);
@@ -329,7 +328,7 @@ namespace Libplanet.Tests.Net.Protocols
             {
                 foreach (var transport in transports)
                 {
-                    await transport.BootstrapAsync(ImmutableList.Create(seed.AsPeer));
+                    await transport.BootstrapAsync(new[] { seed.AsPeer });
                 }
 
                 Log.Debug("Bootstrap completed.");

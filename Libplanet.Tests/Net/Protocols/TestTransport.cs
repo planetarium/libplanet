@@ -58,10 +58,12 @@ namespace Libplanet.Tests.Net.Protocols
 
         public Address Address => _privateKey.PublicKey.ToAddress();
 
-        public BoundPeer AsPeer => new BoundPeer(
+        public Peer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234),
             0);
+
+        public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 
         internal ConcurrentBag<Message> ReceivedMessages { get; }
 
@@ -102,9 +104,26 @@ namespace Libplanet.Tests.Net.Protocols
             await Task.Delay(waitFor, cancellationToken);
         }
 
+        public async Task BootstrapAsync(
+            IEnumerable<Peer> bootstrapPeers,
+            TimeSpan? pingSeedTimeout = null,
+            TimeSpan? findPeerTimeout = null,
+            int depth = 3,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            IEnumerable<BoundPeer> peers = bootstrapPeers.OfType<BoundPeer>();
+
+            await BootstrapAsync(
+                peers,
+                pingSeedTimeout,
+                findPeerTimeout,
+                depth,
+                cancellationToken);
+        }
+
 #pragma warning disable S4457 // Cannot split the method since method is in interface
         public async Task BootstrapAsync(
-            IImmutableList<BoundPeer> bootstrapPeers,
+            IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout = null,
             TimeSpan? findPeerTimeout = null,
             int depth = 3,
@@ -121,7 +140,7 @@ namespace Libplanet.Tests.Net.Protocols
             }
 
             await Protocol.BootstrapAsync(
-                bootstrapPeers,
+                bootstrapPeers.ToImmutableList(),
                 pingSeedTimeout,
                 findPeerTimeout,
                 Kademlia.MaxDepth,
@@ -129,10 +148,8 @@ namespace Libplanet.Tests.Net.Protocols
         }
 #pragma warning restore S4457 // Cannot split the method since method is in interface
 
-        public IEnumerable<BoundPeer> Peers() => Protocol.Peers;
-
         public Task AddPeersAsync(
-            IEnumerable<BoundPeer> peers,
+            IEnumerable<Peer> peers,
             TimeSpan? timeout,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -153,12 +170,15 @@ namespace Libplanet.Tests.Net.Protocols
                     KademliaProtocol kp = (KademliaProtocol)Protocol;
 
                     var tasks = new List<Task>();
-                    foreach (BoundPeer peer in peers)
+                    foreach (var peer in peers)
                     {
-                        tasks.Add(kp.PingAsync(
-                            peer,
-                            timeout: timeout,
-                            cancellationToken: cancellationToken));
+                        if (peer is BoundPeer boundPeer)
+                        {
+                            tasks.Add(kp.PingAsync(
+                                boundPeer,
+                                timeout: timeout,
+                                cancellationToken: cancellationToken));
+                        }
                     }
 
                     _logger.Verbose("Trying to ping all {PeersNumber} peers.", tasks.Count);
