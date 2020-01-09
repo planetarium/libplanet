@@ -584,7 +584,7 @@ namespace Libplanet.Net
             {
                 _logger.Error(
                     ex,
-                    $"An unexpected exception occurred during ReceiveMessage(): {ex}"
+                    $"An unexpected exception occurred during {nameof(ReceiveMessage)}(): {ex}"
                 );
             }
         }

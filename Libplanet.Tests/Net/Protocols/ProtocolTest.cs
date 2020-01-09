@@ -59,7 +59,7 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
 
             Assert.Throws<SwarmException>(() => transportA.SendPing(transportB.AsPeer));
-            await StartTestTransport(transportA);
+            await StartTestTransportAsync(transportA);
             await Assert.ThrowsAsync<TimeoutException>(() =>
                 transportA.AddPeersAsync(
                     new[] { transportB.AsPeer },
@@ -76,8 +76,8 @@ namespace Libplanet.Tests.Net.Protocols
 
             try
             {
-                await StartTestTransport(transportA);
-                await StartTestTransport(transportB);
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
                 transportA.SendPing(transportB.AsPeer);
                 await transportA.MessageReceived.WaitAsync();
                 await Task.Delay(100);
@@ -101,8 +101,8 @@ namespace Libplanet.Tests.Net.Protocols
 
             try
             {
-                await StartTestTransport(transportA);
-                await StartTestTransport(transportB);
+                await StartTestTransportAsync(transportA);
+                await StartTestTransportAsync(transportB);
 
                 transportA.SendPing(transportB.AsPeer);
                 await transportA.MessageReceived.WaitAsync();
@@ -130,9 +130,9 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
-            await StartTestTransport(transportC);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
 
             await transportA.AddPeersAsync(new[] { transportB.AsPeer, transportC.AsPeer }, null);
 
@@ -174,9 +174,9 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
-            await StartTestTransport(transportC);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
 
             await transportB.BootstrapAsync(new[] { transportA.AsPeer });
             await transportC.BootstrapAsync(new[] { transportA.AsPeer });
@@ -195,8 +195,8 @@ namespace Libplanet.Tests.Net.Protocols
             var transportA = CreateTestTransport();
             var transportB = CreateTestTransport();
 
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
 
             await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
             Assert.Single(transportA.Protocol.Peers);
@@ -216,10 +216,10 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransport(transport);
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
-            await StartTestTransport(transportC);
+            await StartTestTransportAsync(transport);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
 
             await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
@@ -244,10 +244,10 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransport(transport);
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
-            await StartTestTransport(transportC);
+            await StartTestTransportAsync(transport);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
 
             await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
@@ -280,10 +280,10 @@ namespace Libplanet.Tests.Net.Protocols
             var transportB = CreateTestTransport();
             var transportC = CreateTestTransport();
 
-            await StartTestTransport(transport);
-            await StartTestTransport(transportA);
-            await StartTestTransport(transportB);
-            await StartTestTransport(transportC);
+            await StartTestTransportAsync(transport);
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
 
             await transportA.AddPeersAsync(new[] { transport.AsPeer }, null);
             await transportB.AddPeersAsync(new[] { transport.AsPeer }, null);
@@ -316,12 +316,12 @@ namespace Libplanet.Tests.Net.Protocols
         public async Task BroadcastMessage(int count)
         {
             var seed = CreateTestTransport();
-            await StartTestTransport(seed);
+            await StartTestTransportAsync(seed);
             var transports = new TestTransport[count];
             for (var i = 0; i < count; i++)
             {
                 transports[i] = CreateTestTransport();
-                await StartTestTransport(transports[i]);
+                await StartTestTransportAsync(transports[i]);
             }
 
             try
@@ -365,7 +365,7 @@ namespace Libplanet.Tests.Net.Protocols
                 networkDelay);
         }
 
-        private async Task<Task> StartTestTransport(
+        private async Task<Task> StartTestTransportAsync(
             TestTransport transport,
             CancellationToken cancellationToken = default(CancellationToken))
         {

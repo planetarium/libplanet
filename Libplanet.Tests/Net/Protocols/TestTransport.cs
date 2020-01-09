@@ -75,13 +75,14 @@ namespace Libplanet.Tests.Net.Protocols
         {
         }
 
+#pragma warning disable CS1998 // Method need to implement ITransport but it isn't be async
         public async Task StartAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
             _logger.Debug("Starting transport of {Peer}.", AsPeer);
             _swarmCancellationTokenSource = new CancellationTokenSource();
-            await Task.Delay(10, cancellationToken);
         }
+#pragma warning restore CS1998
 
         public async Task RunAsync(
             CancellationToken cancellationToken = default(CancellationToken))
