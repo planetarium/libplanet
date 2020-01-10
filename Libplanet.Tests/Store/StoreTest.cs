@@ -964,6 +964,55 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [Fact]
+        public void Copy()
+        {
+            using (DefaultStoreFixture fx = new DefaultStoreFixture(memory: true))
+            using (DefaultStoreFixture fx2 = new DefaultStoreFixture(memory: true))
+            {
+                IStore s1 = fx.Store, s2 = fx2.Store;
+                var blocks = new BlockChain<DumbAction>(
+                    new NullPolicy<DumbAction>(),
+                    s1,
+                    Fx.GenesisBlock
+                );
+
+                // FIXME: Need to add more complex blocks/transactions.
+                blocks.Append(Fx.Block1);
+                blocks.Append(Fx.Block2);
+                blocks.Append(Fx.Block3);
+
+                s1.Copy(to: Fx.Store);
+                Fx.Store.Copy(to: s2);
+
+                Assert.Equal(s1.ListChainIds().ToHashSet(), s2.ListChainIds().ToHashSet());
+                Assert.Equal(s1.GetCanonicalChainId(), s2.GetCanonicalChainId());
+                foreach (Guid chainId in s1.ListChainIds())
+                {
+                    Assert.Equal(s1.IterateIndexes(chainId), s2.IterateIndexes(chainId));
+                    foreach (HashDigest<SHA256> blockHash in s1.IterateIndexes(chainId))
+                    {
+                        Assert.Equal(
+                            s1.GetBlock<DumbAction>(blockHash),
+                            s2.GetBlock<DumbAction>(blockHash)
+                        );
+                        Assert.Equal(
+                            s1.GetBlockStates(blockHash),
+                            s2.GetBlockStates(blockHash)
+                        );
+                    }
+
+                    Assert.Equal(
+                        s1.ListAllStateReferences(chainId),
+                        s2.ListAllStateReferences(chainId)
+                    );
+                }
+
+                // ArgumentException is thrown if the destination store is not empty.
+                Assert.Throws<ArgumentException>(() => Fx.Store.Copy(fx2.Store));
+            }
+        }
+
         private class AtomicityTestAction : IAction
         {
             public ImmutableArray<byte> ArbitraryBytes { get; set; }
