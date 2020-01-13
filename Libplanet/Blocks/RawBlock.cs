@@ -1,14 +1,36 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Bencodex;
 using Bencodex.Types;
 
 namespace Libplanet.Blocks
 {
     internal readonly struct RawBlock
     {
+        public static readonly byte[] IndexKey =
+            Encoding.ASCII.GetBytes("index");
+
+        public static readonly byte[] TimestampKey =
+            Encoding.ASCII.GetBytes("timestamp");
+
+        public static readonly byte[] DifficultyKey =
+            Encoding.ASCII.GetBytes("difficulty");
+
+        public static readonly byte[] TransactionsKey =
+            Encoding.ASCII.GetBytes("transactions");
+
+        public static readonly byte[] NonceKey =
+            Encoding.ASCII.GetBytes("nonce");
+
+        public static readonly byte[] PreviousHashKey =
+            Encoding.ASCII.GetBytes("previous_hash");
+
+        public static readonly byte[] HashKey =
+            Encoding.ASCII.GetBytes("hash");
+
+        public static readonly byte[] RewardBeneficiaryKey =
+            Encoding.ASCII.GetBytes("reward_beneficiary");
+
         public RawBlock(
             long index,
             string timestamp,
@@ -52,24 +74,23 @@ namespace Libplanet.Blocks
 
         public RawBlock(Bencodex.Types.Dictionary dict)
         {
-            Func<string, byte[]> b = Encoding.ASCII.GetBytes;
-            Index = dict.GetValue<Integer>(b("index"));
-            Timestamp = dict.GetValue<Text>(b("timestamp"));
-            Difficulty = dict.GetValue<Integer>(b("difficulty"));
-            Transactions = dict.GetValue<Bencodex.Types.List>(b("transactions"))
+            Index = dict.GetValue<Integer>(IndexKey);
+            Timestamp = dict.GetValue<Text>(TimestampKey);
+            Difficulty = dict.GetValue<Integer>(DifficultyKey);
+            Transactions = dict.GetValue<Bencodex.Types.List>(TransactionsKey)
                 .Select(tx => (byte[])(Binary)tx);
-            Nonce = dict.GetValue<Binary>(b("nonce"));
+            Nonce = dict.GetValue<Binary>(NonceKey);
 
-            Miner = dict.ContainsKey((Binary)b("reward_beneficiary"))
-                ? dict.GetValue<Binary>(b("reward_beneficiary"))
+            Miner = dict.ContainsKey((Binary)RewardBeneficiaryKey)
+                ? dict.GetValue<Binary>(RewardBeneficiaryKey)
                 : null;
 
-            PreviousHash = dict.ContainsKey((Binary)b("previous_hash"))
-                ? (byte[])dict.GetValue<Binary>(b("previous_hash"))
+            PreviousHash = dict.ContainsKey((Binary)PreviousHashKey)
+                ? (byte[])dict.GetValue<Binary>(PreviousHashKey)
                 : null;
 
-            Hash = dict.ContainsKey((Binary)b("hash"))
-                ? (byte[])dict.GetValue<Binary>(b("hash"))
+            Hash = dict.ContainsKey((Binary)HashKey)
+                ? (byte[])dict.GetValue<Binary>(HashKey)
                 : null;
         }
 
@@ -107,27 +128,26 @@ namespace Libplanet.Blocks
         {
             var transactions = new Bencodex.Types.List(
                 Transactions.Select(tx => (IValue)(Binary)tx));
-            Func<string, byte[]> b = Encoding.ASCII.GetBytes;
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add(b("index"), Index)
-                .Add(b("timestamp"), Timestamp)
-                .Add(b("difficulty"), Difficulty)
-                .Add(b("transactions"), (IValue)transactions)
-                .Add(b("nonce"), Nonce);
+                .Add(IndexKey, Index)
+                .Add(TimestampKey, Timestamp)
+                .Add(DifficultyKey, Difficulty)
+                .Add(TransactionsKey, (IValue)transactions)
+                .Add(NonceKey, Nonce);
 
             if (!(Miner is null))
             {
-                dict = dict.Add(b("reward_beneficiary"), Miner);
+                dict = dict.Add(RewardBeneficiaryKey, Miner);
             }
 
             if (!(PreviousHash is null))
             {
-                dict = dict.Add(b("previous_hash"), PreviousHash);
+                dict = dict.Add(PreviousHashKey, PreviousHash);
             }
 
             if (!(Hash is null))
             {
-                dict = dict.Add(b("hash"), Hash.ToArray());
+                dict = dict.Add(HashKey, Hash.ToArray());
             }
 
             return dict;

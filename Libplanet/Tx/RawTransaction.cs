@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Bencodex;
 using Bencodex.Types;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
@@ -14,6 +13,27 @@ namespace Libplanet.Tx
     [Equals]
     internal readonly struct RawTransaction
     {
+        public static readonly byte[] NonceKey =
+            Encoding.ASCII.GetBytes("nonce");
+
+        public static readonly byte[] SignerKey =
+            Encoding.ASCII.GetBytes("signer");
+
+        public static readonly byte[] UpdatedAddressesKey =
+            Encoding.ASCII.GetBytes("updated_addresses");
+
+        public static readonly byte[] PublicKeyKey =
+            Encoding.ASCII.GetBytes("public_key");
+
+        public static readonly byte[] TimestampKey =
+            Encoding.ASCII.GetBytes("timestamp");
+
+        public static readonly byte[] ActionsKey =
+            Encoding.ASCII.GetBytes("actions");
+
+        public static readonly byte[] SignatureKey =
+            Encoding.ASCII.GetBytes("signature");
+
         public RawTransaction(
             long nonce,
             ImmutableArray<byte> signer,
@@ -55,18 +75,17 @@ namespace Libplanet.Tx
 
         public RawTransaction(Bencodex.Types.Dictionary dict)
         {
-            Func<string, byte[]> b = Encoding.ASCII.GetBytes;
-            Nonce = dict.GetValue<Integer>(b("nonce"));
-            Signer = ((byte[])dict.GetValue<Binary>(b("signer"))).ToImmutableArray();
+            Nonce = dict.GetValue<Integer>(NonceKey);
+            Signer = ((byte[])dict.GetValue<Binary>(SignerKey)).ToImmutableArray();
             UpdatedAddresses = To2dArray(
-                (byte[])dict.GetValue<Binary>(b("updated_addresses")),
+                (byte[])dict.GetValue<Binary>(UpdatedAddressesKey),
                 Address.Size);
-            PublicKey = ((byte[])dict.GetValue<Binary>(b("public_key"))).ToImmutableArray();
-            Timestamp = dict.GetValue<Text>(b("timestamp"));
-            Actions = dict.GetValue<Bencodex.Types.List>(b("actions"));
+            PublicKey = ((byte[])dict.GetValue<Binary>(PublicKeyKey)).ToImmutableArray();
+            Timestamp = dict.GetValue<Text>(TimestampKey);
+            Actions = dict.GetValue<Bencodex.Types.List>(ActionsKey);
 
-            Signature = dict.ContainsKey((Binary)b("signature"))
-                ? ((byte[])dict.GetValue<Binary>(b("signature"))).ToImmutableArray()
+            Signature = dict.ContainsKey((Binary)SignatureKey)
+                ? ((byte[])dict.GetValue<Binary>(SignatureKey)).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -107,18 +126,17 @@ namespace Libplanet.Tx
                 i += Address.Size;
             }
 
-            Func<string, byte[]> b = Encoding.ASCII.GetBytes;
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add(b("nonce"), Nonce)
-                .Add(b("signer"), Signer.ToArray())
-                .Add(b("updated_addresses"), updatedAddresses)
-                .Add(b("public_key"), PublicKey.ToArray())
-                .Add(b("timestamp"), Timestamp)
-                .Add(b("actions"), (IValue)new Bencodex.Types.List(Actions));
+                .Add(NonceKey, Nonce)
+                .Add(SignerKey, Signer.ToArray())
+                .Add(UpdatedAddressesKey, updatedAddresses)
+                .Add(PublicKeyKey, PublicKey.ToArray())
+                .Add(TimestampKey, Timestamp)
+                .Add(ActionsKey, (IValue)new Bencodex.Types.List(Actions));
 
             if (Signature != ImmutableArray<byte>.Empty)
             {
-                dict = dict.Add(b("signature"), Signature.ToArray());
+                dict = dict.Add(SignatureKey, Signature.ToArray());
             }
 
             return dict;
