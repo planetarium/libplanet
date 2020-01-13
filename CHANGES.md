@@ -30,7 +30,6 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
     to take `preloadBlockDownloadFailed` event handler as an argument.
     [[#694]]
- -  Removed `StoreExtension` class.  [[#701], [#722]]
  -  Added the `genesisBlock` parameter to
     `BlockChain<T>()` constructor.  [[#688]]
  -  Removed `StateReferenceDownloadState` class.  [[#703]]
@@ -68,6 +67,7 @@ To be released.
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
     `Swarm<T>`'s routing table.  [[#739]]
  -  Added `IStore.LookupStateReference<T>()` method.  [[#722]]
+ -  Added `StoreExtension.Copy(this IStore, IStore)` extension method.  [[#753]]
 
 ### Behavioral changes
 
@@ -163,6 +163,7 @@ To be released.
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
 [#746]: https://github.com/planetarium/libplanet/pull/746
+[#753]: https://github.com/planetarium/libplanet/pull/753
 
 
 Version 0.7.0

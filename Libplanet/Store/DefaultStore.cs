@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -42,12 +43,12 @@ namespace Libplanet.Store
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
-
+        private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
-#pragma warning disable MEN002 // Line is too long
-        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>> _statesCache;
-#pragma warning restore MEN002 // Line is too long
+        private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>
+            _statesCache;
+
         private readonly Dictionary<Guid, LruCache<Address, Tuple<HashDigest<SHA256>, long>>>
             _lastStateRefCaches;
 
@@ -61,6 +62,7 @@ namespace Libplanet.Store
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
         /// If the path is <c>null</c>, the database is created in memory.</param>
+        /// <param name="compress">Whether to compress data.  Does not compress by default.</param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
@@ -73,6 +75,7 @@ namespace Libplanet.Store
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public DefaultStore(
             string path,
+            bool compress = false,
             bool journal = true,
             int indexCacheSize = 50000,
             int blockCacheSize = 512,
@@ -146,6 +149,7 @@ namespace Libplanet.Store
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
 
+            _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: blockCacheSize);
             _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
@@ -561,7 +565,7 @@ namespace Libplanet.Store
             {
                 _codec.Encode(serialized, stream);
                 stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(
+                UploadFile(
                     BlockStateFileId(blockHash),
                     ByteUtil.Hex(blockHash.ToByteArray()),
                     stream
@@ -909,22 +913,56 @@ namespace Libplanet.Store
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
         }
 
+        private void UploadFile(string fileId, string filename, Stream inStream)
+        {
+            if (_compress)
+            {
+                using (var buffer = new MemoryStream())
+                {
+                    using (var deflate = new DeflateStream(buffer, CompressionLevel.Fastest, true))
+                    {
+                        inStream.CopyTo(deflate);
+                    }
+
+                    buffer.Seek(0, SeekOrigin.Begin);
+                    _db.FileStorage.Upload(fileId, filename, buffer);
+                }
+            }
+            else
+            {
+                _db.FileStorage.Upload(fileId, filename, inStream);
+            }
+        }
+
         private void UploadFile(string fileId, string filename, byte[] bytes)
         {
             using (var stream = new MemoryStream(bytes))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                _db.FileStorage.Upload(fileId, filename, stream);
+                UploadFile(fileId, filename, stream);
             }
         }
 
-        private void DownloadFile(LiteFileInfo file, Stream stream)
+        private void DownloadFile(LiteFileInfo file, Stream outStream)
         {
-            file.CopyTo(stream);
-
-            if (stream.Length > file.Length)
+            using (var fileStream = file.OpenRead())
             {
-                stream.SetLength(file.Length);
+                if (fileStream.Length > file.Length)
+                {
+                    fileStream.SetLength(file.Length);
+                }
+
+                if (_compress)
+                {
+                    using (var deflate = new DeflateStream(outStream, CompressionMode.Decompress))
+                    {
+                        deflate.CopyTo(outStream);
+                    }
+                }
+                else
+                {
+                    fileStream.CopyTo(outStream);
+                }
             }
         }
 
