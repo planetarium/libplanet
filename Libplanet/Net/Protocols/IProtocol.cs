@@ -14,7 +14,7 @@ namespace Libplanet.Net.Protocols
         IEnumerable<BoundPeer> PeersToBroadcast(Address? except);
 
         Task BootstrapAsync(
-            ImmutableList<BoundPeer> bootstrapPeers,
+            IImmutableList<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findPeerTimeout,
             int depth,

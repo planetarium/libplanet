@@ -54,7 +54,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The corresponding application protocol version of this peer.
         /// </summary>
-        /// <seealso cref="Swarm{T}.DifferentVersionPeerEncountered"/>
+        /// <seealso cref="NetMQTransport.DifferentVersionPeerEncountered"/>
         [IgnoreDuringEquals]
         [Pure]
         public int AppProtocolVersion { get; }

@@ -23,6 +23,7 @@ using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
+using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -2053,15 +2054,28 @@ namespace Libplanet.Tests.Net
                 IImmutableSet<Address> trustedPeers =
                     new[] { minerSwarm.Address }.ToImmutableHashSet();
                 var downloadStates = new List<StateDownloadState>();
+                int totalCount =
+                    (int)Math.Ceiling((double)minerChain.Count /
+                                      minerSwarm.FindNextStatesChunkSize);
+                int currentCount = 0;
+                var allProgressesReported = new AsyncAutoResetEvent();
                 await receiverSwarm.PreloadAsync(
                     progress: new Progress<PreloadState>(state =>
                     {
                         if (state is StateDownloadState srds)
                         {
                             downloadStates.Add(srds);
+                            currentCount++;
+
+                            if (currentCount == totalCount)
+                            {
+                                allProgressesReported.Set();
+                            }
                         }
                     }),
                     trustedStateValidators: trustedPeers);
+
+                await allProgressesReported.WaitAsync();
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
@@ -2099,9 +2113,6 @@ namespace Libplanet.Tests.Net
                     Assert.Equal((Text)"Genesis", state);
                 }
 
-                int totalCount =
-                    (int)Math.Ceiling((double)minerChain.Count /
-                                       minerSwarm.FindNextStatesChunkSize);
                 Assert.Equal(totalCount, downloadStates.Count);
                 i = 1;
                 foreach (StateDownloadState state in downloadStates)
