@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "YyAEu6NykdLbYi2OgfRn4A=="
+          "hash": "qy9NtfIYhQuKg7XRu05Cow=="
         }
       },
       "is_incremental": false,
@@ -1041,7 +1041,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.DefaultStore.html",
-          "hash": "GX+/+WXNDYSzcATKwzcOjA=="
+          "hash": "VJrwpkdflQIXxhiE8jEi9g=="
         }
       },
       "is_incremental": false,
@@ -1053,7 +1053,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.IStore.html",
-          "hash": "RI2/AUmHv84ahKl0EXhRdg=="
+          "hash": "JbGbz47Thipyy4Qk6ITPwA=="
         }
       },
       "is_incremental": false,
@@ -1065,7 +1065,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.StoreExtension.html",
-          "hash": "O8wC7q4K9/HsIKm5cKboeQ=="
+          "hash": "odmsIPJDTqi8UuEPFjvKFA=="
         }
       },
       "is_incremental": false,
@@ -1307,16 +1307,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 99,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 6,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 99,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

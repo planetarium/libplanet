@@ -108,7 +108,6 @@ the current chain, not entire storage.  [<a href="https://github.com/planetarium
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method and <code>Swarm&lt;T&gt;.StartAsync()</code> method became
 to take <code>preloadBlockDownloadFailed</code> event handler as an argument.
 [<a href="https://github.com/planetarium/libplanet/pull/694">#694</a>]</li>
-<li>Removed <code>StoreExtension</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>, <a href="https://github.com/planetarium/libplanet/pull/722">#722</a>]</li>
 <li>Added the <code>genesisBlock</code> parameter to
 <code>BlockChain&lt;T&gt;()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Removed <code>StateReferenceDownloadState</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
@@ -146,6 +145,7 @@ class.  [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>,
 <li>Added <code>Swarm&lt;T&gt;.Peers</code> property which returns an enumerable of peers in
 <code>Swarm&lt;T&gt;</code>'s routing table.  [<a href="https://github.com/planetarium/libplanet/pull/739">#739</a>]</li>
 <li>Added <code>IStore.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/722">#722</a>]</li>
+<li>Added <code>StoreExtension.Copy(this IStore, IStore)</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/753">#753</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

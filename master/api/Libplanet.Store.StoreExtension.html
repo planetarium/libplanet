@@ -458,10 +458,53 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_StoreExtension_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtension.Copy(Libplanet.Store.IStore%2CLibplanet.Store.IStore)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/StoreExtension.cs/#L59">View Source</a>
+  </span>
+  <a id="Libplanet_Store_StoreExtension_Copy_" data-uid="Libplanet.Store.StoreExtension.Copy*"></a>
+  <h4 id="Libplanet_Store_StoreExtension_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_" data-uid="Libplanet.Store.StoreExtension.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)">Copy(IStore, IStore)</h4>
+  <div class="markdown level1 summary"><p>Makes a store, <code data-dev-comment-type="paramref" class="paramref">to</code>, logically (but not necessarily physically)
+identical to another store, <code data-dev-comment-type="paramref" class="paramref">from</code>.  As this copies the contents
+of the store, instead of its physicall data, this can be used for migrating
+between two different types of <a class="xref" href="Libplanet.Store.IStore.html">IStore</a> implementations.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Copy(this IStore from, IStore to)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">from</span></td>
+        <td><p>The store containing the source contents.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Store.IStore.html">IStore</a></td>
+        <td><span class="parametername">to</span></td>
+        <td><p>The store to contain the copied contents. Expected to be empty.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtension.LookupStateReference%60%601(Libplanet.Store.IStore%2CGuid%2CLibplanet.Address%2CLibplanet.Blocks.Block%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/StoreExtension.cs/#L30">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/StoreExtension.cs/#L33">View Source</a>
   </span>
   <a id="Libplanet_Store_StoreExtension_LookupStateReference_" data-uid="Libplanet.Store.StoreExtension.LookupStateReference*"></a>
   <h4 id="Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__" data-uid="Libplanet.Store.StoreExtension.LookupStateReference``1(Libplanet.Store.IStore,Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})">LookupStateReference&lt;T&gt;(IStore, Guid, Address, Block&lt;T&gt;)</h4>
@@ -562,7 +605,7 @@ address.</p>
                     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_StoreExtension.md&amp;value=---%0Auid%3A%20Libplanet.Store.StoreExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/StoreExtension.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/StoreExtension.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
