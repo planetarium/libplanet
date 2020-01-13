@@ -451,7 +451,7 @@ namespace Libplanet.Tests.Tx
                     0x7b, 0x76,
                 }
             ).PublicKey;
-            Transaction<DumbAction> tx = new Transaction<DumbAction>(bytes);
+            Transaction<DumbAction> tx = Transaction<DumbAction>.Deserialize(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(ImmutableHashSet<Address>.Empty, tx.UpdatedAddresses);
@@ -546,7 +546,7 @@ namespace Libplanet.Tests.Tx
                 }
             ).PublicKey;
             Transaction<PolymorphicAction<BaseAction>> tx =
-                new Transaction<PolymorphicAction<BaseAction>>(bytes);
+                Transaction<PolymorphicAction<BaseAction>>.Deserialize(bytes);
 
             Assert.Equal(publicKey, tx.PublicKey);
             Assert.Equal(

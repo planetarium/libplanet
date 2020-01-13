@@ -385,7 +385,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            Transaction<T> tx = new Transaction<T>(bytes);
+            Transaction<T> tx = Transaction<T>.Deserialize(bytes);
             _txCache.AddOrUpdate(txid, tx);
             return tx;
         }
@@ -820,7 +820,15 @@ namespace Libplanet.Store
             RawBlock rawBlock;
             try
             {
-                rawBlock = new RawBlock(new Codec().Decode(_blocks.ReadAllBytes(path)));
+                var value = new Codec().Decode(_blocks.ReadAllBytes(path));
+                if (!(value is Bencodex.Types.Dictionary dict))
+                {
+                    throw new DecodingException(
+                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                        $"{value.GetType()}");
+                }
+
+                rawBlock = new RawBlock(dict);
             }
             catch (FileNotFoundException)
             {

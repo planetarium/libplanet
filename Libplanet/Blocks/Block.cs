@@ -103,10 +103,11 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance from its serialization.
         /// </summary>
-        /// <param name="bytes">The serialization of block instance.
+        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
+        /// representation of <see cref="Block{T}"/> instance.
         /// </param>
-        public Block(byte[] bytes)
-            : this(new RawBlock(new Codec().Decode(bytes)))
+        public Block(Bencodex.Types.Dictionary dict)
+            : this(new RawBlock(dict))
         {
         }
 
@@ -124,7 +125,7 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
-                    .Select(bytes => new Transaction<T>(bytes))
+                    .Select(Transaction<T>.Deserialize)
                     .ToList()
                 )
         {
@@ -232,7 +233,26 @@ namespace Libplanet.Blocks
             return MakeBlock(nonce);
         }
 
-        public static Block<T> FromBencodex(IValue dict) => new Block<T>(new RawBlock(dict));
+        /// <summary>
+        /// Decodes a <see cref="Block{T}"/>'s
+        /// <a href="https://bencodex.org/">Bencodex</a> representation.
+        /// </summary>
+        /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
+        /// representation of a <see cref="Block{T}"/>.</param>
+        /// <returns>A decoded <see cref="Block{T}"/> object.</returns>
+        /// <seealso cref="Serialize(bool, bool)"/>
+        public static Block<T> Deserialize(byte[] bytes)
+        {
+            var value = new Codec().Decode(bytes);
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
+            }
+
+            return new Block<T>(dict);
+        }
 
         public byte[] Serialize(bool hash, bool transactionData)
         {
@@ -240,7 +260,7 @@ namespace Libplanet.Blocks
             return codec.Encode(ToBencodex(hash, transactionData));
         }
 
-        public IValue ToBencodex(bool hash, bool transactionData) =>
+        public Bencodex.Types.Dictionary ToBencodex(bool hash, bool transactionData) =>
             ToRawBlock(hash, transactionData).ToBencodex();
 
         /// <summary>

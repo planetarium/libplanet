@@ -206,7 +206,7 @@ namespace Libplanet.Tests.Blocks
                 0x54, 0x26, 0x3d, 0xfa, 0x4f, 0x5c, 0xbc, 0x65, 0x65, 0x65,
             };
             Block<PolymorphicAction<BaseAction>> actual =
-                new Block<PolymorphicAction<BaseAction>>(encoded);
+                Block<PolymorphicAction<BaseAction>>.Deserialize(encoded);
             Assert.Equal(_fx.HasTx, actual);
         }
 

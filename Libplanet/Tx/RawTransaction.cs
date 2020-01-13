@@ -53,13 +53,8 @@ namespace Libplanet.Tx
             Signature = signature;
         }
 
-        public RawTransaction(IValue value)
+        public RawTransaction(Bencodex.Types.Dictionary dict)
         {
-            if (!(value is Bencodex.Types.Dictionary dict))
-            {
-                throw new DecodingException("Bencodex.Types.Dictionary expected");
-            }
-
             Func<string, byte[]> b = Encoding.ASCII.GetBytes;
             Nonce = dict.GetValue<Integer>(b("nonce"));
             Signer = ((byte[])dict.GetValue<Binary>(b("signer"))).ToImmutableArray();
@@ -102,7 +97,7 @@ namespace Libplanet.Tx
             );
         }
 
-        public IValue ToBencodex()
+        public Bencodex.Types.Dictionary ToBencodex()
         {
             var updatedAddresses = new byte[UpdatedAddresses.Length * Address.Size];
             var i = 0;

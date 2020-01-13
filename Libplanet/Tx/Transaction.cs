@@ -102,8 +102,14 @@ namespace Libplanet.Tx
         {
         }
 
-        public Transaction(byte[] bytes)
-            : this(new RawTransaction(new Codec().Decode(bytes)))
+        /// <summary>
+        /// Creates a <see cref="Transaction{T}"/> instance from its serialization.
+        /// </summary>
+        /// <param name="dict">The <see cref="Bencodex.Types.Dictionary"/>
+        /// representation of <see cref="Transaction{T}"/> instance.
+        /// </param>
+        public Transaction(Bencodex.Types.Dictionary dict)
+            : this(new RawTransaction(dict))
         {
         }
 
@@ -249,16 +255,25 @@ namespace Libplanet.Tx
         public PublicKey PublicKey { get; }
 
         /// <summary>
-        /// Decodes a transaction's
+        /// Decodes a <see cref="Transaction{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
-        /// <param name="dict">A <see cref="IValue"/> typed
-        /// <a href="https://bencodex.org/">Bencodex</a>
-        /// representation of a transaction.</param>
+        /// <param name="bytes">A <a href="https://bencodex.org/">Bencodex</a>
+        /// representation of a <see cref="Transaction{T}"/>.</param>
         /// <returns>A decoded <see cref="Transaction{T}"/> object.</returns>
-        /// <seealso cref="ToBencodex(bool)"/>
-        public static Transaction<T> FromBencodex(IValue dict) =>
-            new Transaction<T>(new RawTransaction(dict));
+        /// <seealso cref="Serialize(bool)"/>
+        public static Transaction<T> Deserialize(byte[] bytes)
+        {
+            var value = new Codec().Decode(bytes);
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
+            }
+
+            return new Transaction<T>(dict);
+        }
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
@@ -449,18 +464,15 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// Encodes this <see cref="Transaction{T}"/> into a <see cref="IValue"/>.
-        /// <para>This is an inverse function of
-        /// <see cref="FromBencodex(IValue)"/> method
-        /// where <paramref name="sign"/> is <c>true</c>.</para>
         /// </summary>
         /// <param name="sign">Whether to include its <see cref="Signature"/>.
-        /// Note that an encoding without signature cannot be decoded using
-        /// <see cref="FromBencodex(IValue)"/> method.
+        /// Note that an encoding without signature cannot be decoded.
         /// </param>
-        /// <returns>A <see cref="IValue"/> typed <a href="https://bencodex.org/">Bencodex</a>
+        /// <returns>A <see cref="Bencodex.Types.Dictionary"/> typed
+        /// <a href="https://bencodex.org/">Bencodex</a>
         /// representation of this <see cref="Transaction{T}"/>.</returns>
-        /// <seealso cref="FromBencodex(IValue)"/>
-        public IValue ToBencodex(bool sign) => ToRawTransaction(sign).ToBencodex();
+        public Bencodex.Types.Dictionary ToBencodex(bool sign) =>
+            ToRawTransaction(sign).ToBencodex();
 
         /// <summary>
         /// Executes the <see cref="Actions"/> step by step, and emits

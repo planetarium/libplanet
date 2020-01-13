@@ -721,7 +721,7 @@ namespace Libplanet.Net
                             message.Remote.PublicKey.ToAddress().ToHex());
                         foreach (byte[] payload in payloads)
                         {
-                            Block<T> block = new Block<T>(payload);
+                            Block<T> block = Block<T>.Deserialize(payload);
                             await yield.ReturnAsync(block);
                         }
                     }
@@ -766,7 +766,7 @@ namespace Libplanet.Net
                 {
                     if (message is Messages.Tx parsed)
                     {
-                        Transaction<T> tx = new Transaction<T>(parsed.Payload);
+                        Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
                         await yield.ReturnAsync(tx);
                     }
                     else

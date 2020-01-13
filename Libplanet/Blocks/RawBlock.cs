@@ -50,13 +50,8 @@ namespace Libplanet.Blocks
             Hash = hash;
         }
 
-        public RawBlock(IValue value)
+        public RawBlock(Bencodex.Types.Dictionary dict)
         {
-            if (!(value is Bencodex.Types.Dictionary dict))
-            {
-                throw new DecodingException("Bencodex.Types.Dictionary expected");
-            }
-
             Func<string, byte[]> b = Encoding.ASCII.GetBytes;
             Index = dict.GetValue<Integer>(b("index"));
             Timestamp = dict.GetValue<Text>(b("timestamp"));
@@ -108,7 +103,7 @@ namespace Libplanet.Blocks
             );
         }
 
-        public IValue ToBencodex()
+        public Bencodex.Types.Dictionary ToBencodex()
         {
             var transactions = new Bencodex.Types.List(
                 Transactions.Select(tx => (IValue)(Binary)tx));
