@@ -116,6 +116,12 @@ to take <code>preloadBlockDownloadFailed</code> event handler as an argument.
 from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/705">#705</a>, <a href="https://github.com/planetarium/libplanet/pull/725">#725</a>]</li>
 <li>Added <code>workers</code> optional parameter into <code>Swarm&lt;T&gt;()</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/issues/613">#613</a>, <a href="https://github.com/planetarium/libplanet/pull/727">#727</a>]</li>
+<li><code>Block&lt;T&gt;</code> class became not to implement <code>ISerializable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li><code>Transaction&lt;T&gt;</code> class became not to implement <code>ISerializable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li><code>Block&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li><code>Transaction&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Removed <code>Block&lt;T&gt;.FromBencodex(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Removed <code>Transaction&lt;T&gt;.FromBencodex(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -145,6 +151,12 @@ class.  [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>,
 <li>Added <code>Swarm&lt;T&gt;.Peers</code> property which returns an enumerable of peers in
 <code>Swarm&lt;T&gt;</code>'s routing table.  [<a href="https://github.com/planetarium/libplanet/pull/739">#739</a>]</li>
 <li>Added <code>IStore.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/722">#722</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Serialize()</code> method which returns <code>byte[]</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.Serialize()</code> method which returns <code>byte[]</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Added <code>Block&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Added <code>Block&lt;T&gt;.Deserialize(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.Deserialize(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li>Added <code>StoreExtension.Copy(this IStore, IStore)</code> extension method.  [<a href="https://github.com/planetarium/libplanet/pull/753">#753</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>

@@ -826,6 +826,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.BencodexExtension.GetValue
   nameWithType: BencodexExtension.GetValue
+- uid: Libplanet.BencodexExtension.GetValue``1(Dictionary,System.Byte[])
+  name: GetValue<T>(Dictionary, Byte[])
+  href: api/Libplanet.BencodexExtension.html#Libplanet_BencodexExtension_GetValue__1_Dictionary_System_Byte___
+  commentId: M:Libplanet.BencodexExtension.GetValue``1(Dictionary,System.Byte[])
+  name.vb: GetValue(Of T)(Dictionary, Byte())
+  fullName: Libplanet.BencodexExtension.GetValue<T>(Dictionary, System.Byte[])
+  fullName.vb: Libplanet.BencodexExtension.GetValue(Of T)(Dictionary, System.Byte())
+  nameWithType: BencodexExtension.GetValue<T>(Dictionary, Byte[])
+  nameWithType.vb: BencodexExtension.GetValue(Of T)(Dictionary, Byte())
 - uid: Libplanet.BencodexExtension.GetValue``1(Dictionary,System.String)
   name: GetValue<T>(Dictionary, String)
   href: api/Libplanet.BencodexExtension.html#Libplanet_BencodexExtension_GetValue__1_Dictionary_System_String_
@@ -1568,14 +1577,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T)
   nameWithType: Block<T>
   nameWithType.vb: Block(Of T)
-- uid: Libplanet.Blocks.Block`1.#ctor(SerializationInfo,StreamingContext)
-  name: Block(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Blocks.Block`1.#ctor(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Blocks.Block<T>.Block(SerializationInfo, StreamingContext)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Block(SerializationInfo, StreamingContext)
-  nameWithType: Block<T>.Block(SerializationInfo, StreamingContext)
-  nameWithType.vb: Block(Of T).Block(SerializationInfo, StreamingContext)
+- uid: Libplanet.Blocks.Block`1.#ctor(Bencodex.Types.Dictionary)
+  name: Block(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Blocks.Block`1.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Blocks.Block<T>.Block(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Block(Bencodex.Types.Dictionary)
+  nameWithType: Block<T>.Block(Bencodex.Types.Dictionary)
+  nameWithType.vb: Block(Of T).Block(Bencodex.Types.Dictionary)
 - uid: Libplanet.Blocks.Block`1.#ctor(System.Int64,System.Int64,Libplanet.Nonce,System.Nullable{Libplanet.Address},System.Nullable{Libplanet.HashDigest{SHA256}},DateTimeOffset,IEnumerable{Libplanet.Tx.Transaction{`0}})
   name: Block(Int64, Int64, Nonce, Nullable<Address>, Nullable<HashDigest<SHA256>>, DateTimeOffset, IEnumerable<Transaction<T>>)
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1__ctor_System_Int64_System_Int64_Libplanet_Nonce_System_Nullable_Libplanet_Address__System_Nullable_Libplanet_HashDigest_SHA256___DateTimeOffset_IEnumerable_Libplanet_Tx_Transaction__0___
@@ -1594,6 +1603,24 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Block
   nameWithType: Block<T>.Block
   nameWithType.vb: Block(Of T).Block
+- uid: Libplanet.Blocks.Block`1.Deserialize(System.Byte[])
+  name: Deserialize(Byte[])
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Deserialize_System_Byte___
+  commentId: M:Libplanet.Blocks.Block`1.Deserialize(System.Byte[])
+  name.vb: Deserialize(Byte())
+  fullName: Libplanet.Blocks.Block<T>.Deserialize(System.Byte[])
+  fullName.vb: Libplanet.Blocks.Block(Of T).Deserialize(System.Byte())
+  nameWithType: Block<T>.Deserialize(Byte[])
+  nameWithType.vb: Block(Of T).Deserialize(Byte())
+- uid: Libplanet.Blocks.Block`1.Deserialize*
+  name: Deserialize
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Deserialize_
+  commentId: Overload:Libplanet.Blocks.Block`1.Deserialize
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Deserialize
+  fullName.vb: Libplanet.Blocks.Block(Of T).Deserialize
+  nameWithType: Block<T>.Deserialize
+  nameWithType.vb: Block(Of T).Deserialize
 - uid: Libplanet.Blocks.Block`1.Difficulty
   name: Difficulty
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Difficulty
@@ -1645,24 +1672,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx
   nameWithType: Block<T>.EvaluateActionsPerTx
   nameWithType.vb: Block(Of T).EvaluateActionsPerTx
-- uid: Libplanet.Blocks.Block`1.FromBencodex(System.Byte[])
-  name: FromBencodex(Byte[])
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencodex_System_Byte___
-  commentId: M:Libplanet.Blocks.Block`1.FromBencodex(System.Byte[])
-  name.vb: FromBencodex(Byte())
-  fullName: Libplanet.Blocks.Block<T>.FromBencodex(System.Byte[])
-  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencodex(System.Byte())
-  nameWithType: Block<T>.FromBencodex(Byte[])
-  nameWithType.vb: Block(Of T).FromBencodex(Byte())
-- uid: Libplanet.Blocks.Block`1.FromBencodex*
-  name: FromBencodex
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_FromBencodex_
-  commentId: Overload:Libplanet.Blocks.Block`1.FromBencodex
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.FromBencodex
-  fullName.vb: Libplanet.Blocks.Block(Of T).FromBencodex
-  nameWithType: Block<T>.FromBencodex
-  nameWithType.vb: Block(Of T).FromBencodex
 - uid: Libplanet.Blocks.Block`1.GetObjectData(SerializationInfo,StreamingContext)
   name: GetObjectData(SerializationInfo, StreamingContext)
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_GetObjectData_SerializationInfo_StreamingContext_
@@ -1783,6 +1792,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).PreviousHash
   nameWithType: Block<T>.PreviousHash
   nameWithType.vb: Block(Of T).PreviousHash
+- uid: Libplanet.Blocks.Block`1.Serialize(System.Boolean,System.Boolean)
+  name: Serialize(Boolean, Boolean)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Serialize_System_Boolean_System_Boolean_
+  commentId: M:Libplanet.Blocks.Block`1.Serialize(System.Boolean,System.Boolean)
+  fullName: Libplanet.Blocks.Block<T>.Serialize(System.Boolean, System.Boolean)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Serialize(System.Boolean, System.Boolean)
+  nameWithType: Block<T>.Serialize(Boolean, Boolean)
+  nameWithType.vb: Block(Of T).Serialize(Boolean, Boolean)
+- uid: Libplanet.Blocks.Block`1.Serialize*
+  name: Serialize
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Serialize_
+  commentId: Overload:Libplanet.Blocks.Block`1.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Serialize
+  fullName.vb: Libplanet.Blocks.Block(Of T).Serialize
+  nameWithType: Block<T>.Serialize
+  nameWithType.vb: Block(Of T).Serialize
 - uid: Libplanet.Blocks.Block`1.Timestamp
   name: Timestamp
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Timestamp
@@ -4535,117 +4561,6 @@ references:
   commentId: N:Libplanet.Serialization
   fullName: Libplanet.Serialization
   nameWithType: Libplanet.Serialization
-- uid: Libplanet.Serialization.BencodexFormatter`1
-  name: BencodexFormatter<T>
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html
-  commentId: T:Libplanet.Serialization.BencodexFormatter`1
-  name.vb: BencodexFormatter(Of T)
-  fullName: Libplanet.Serialization.BencodexFormatter<T>
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T)
-  nameWithType: BencodexFormatter<T>
-  nameWithType.vb: BencodexFormatter(Of T)
-- uid: Libplanet.Serialization.BencodexFormatter`1.#ctor
-  name: BencodexFormatter()
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1__ctor
-  commentId: M:Libplanet.Serialization.BencodexFormatter`1.#ctor
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.BencodexFormatter()
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).BencodexFormatter()
-  nameWithType: BencodexFormatter<T>.BencodexFormatter()
-  nameWithType.vb: BencodexFormatter(Of T).BencodexFormatter()
-- uid: Libplanet.Serialization.BencodexFormatter`1.#ctor*
-  name: BencodexFormatter
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1__ctor_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.#ctor
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.BencodexFormatter
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).BencodexFormatter
-  nameWithType: BencodexFormatter<T>.BencodexFormatter
-  nameWithType.vb: BencodexFormatter(Of T).BencodexFormatter
-- uid: Libplanet.Serialization.BencodexFormatter`1.Binder
-  name: Binder
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Binder
-  commentId: P:Libplanet.Serialization.BencodexFormatter`1.Binder
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Binder
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Binder
-  nameWithType: BencodexFormatter<T>.Binder
-  nameWithType.vb: BencodexFormatter(Of T).Binder
-- uid: Libplanet.Serialization.BencodexFormatter`1.Binder*
-  name: Binder
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Binder_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.Binder
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Binder
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Binder
-  nameWithType: BencodexFormatter<T>.Binder
-  nameWithType.vb: BencodexFormatter(Of T).Binder
-- uid: Libplanet.Serialization.BencodexFormatter`1.Context
-  name: Context
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Context
-  commentId: P:Libplanet.Serialization.BencodexFormatter`1.Context
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Context
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Context
-  nameWithType: BencodexFormatter<T>.Context
-  nameWithType.vb: BencodexFormatter(Of T).Context
-- uid: Libplanet.Serialization.BencodexFormatter`1.Context*
-  name: Context
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Context_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.Context
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Context
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Context
-  nameWithType: BencodexFormatter<T>.Context
-  nameWithType.vb: BencodexFormatter(Of T).Context
-- uid: Libplanet.Serialization.BencodexFormatter`1.Deserialize(Stream)
-  name: Deserialize(Stream)
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Deserialize_Stream_
-  commentId: M:Libplanet.Serialization.BencodexFormatter`1.Deserialize(Stream)
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Deserialize(Stream)
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Deserialize(Stream)
-  nameWithType: BencodexFormatter<T>.Deserialize(Stream)
-  nameWithType.vb: BencodexFormatter(Of T).Deserialize(Stream)
-- uid: Libplanet.Serialization.BencodexFormatter`1.Deserialize*
-  name: Deserialize
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Deserialize_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.Deserialize
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Deserialize
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Deserialize
-  nameWithType: BencodexFormatter<T>.Deserialize
-  nameWithType.vb: BencodexFormatter(Of T).Deserialize
-- uid: Libplanet.Serialization.BencodexFormatter`1.Serialize(Stream,System.Object)
-  name: Serialize(Stream, Object)
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Serialize_Stream_System_Object_
-  commentId: M:Libplanet.Serialization.BencodexFormatter`1.Serialize(Stream,System.Object)
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Serialize(Stream, System.Object)
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Serialize(Stream, System.Object)
-  nameWithType: BencodexFormatter<T>.Serialize(Stream, Object)
-  nameWithType.vb: BencodexFormatter(Of T).Serialize(Stream, Object)
-- uid: Libplanet.Serialization.BencodexFormatter`1.Serialize*
-  name: Serialize
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_Serialize_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.Serialize
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.Serialize
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).Serialize
-  nameWithType: BencodexFormatter<T>.Serialize
-  nameWithType.vb: BencodexFormatter(Of T).Serialize
-- uid: Libplanet.Serialization.BencodexFormatter`1.SurrogateSelector
-  name: SurrogateSelector
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_SurrogateSelector
-  commentId: P:Libplanet.Serialization.BencodexFormatter`1.SurrogateSelector
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.SurrogateSelector
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).SurrogateSelector
-  nameWithType: BencodexFormatter<T>.SurrogateSelector
-  nameWithType.vb: BencodexFormatter(Of T).SurrogateSelector
-- uid: Libplanet.Serialization.BencodexFormatter`1.SurrogateSelector*
-  name: SurrogateSelector
-  href: api/Libplanet.Serialization.BencodexFormatter-1.html#Libplanet_Serialization_BencodexFormatter_1_SurrogateSelector_
-  commentId: Overload:Libplanet.Serialization.BencodexFormatter`1.SurrogateSelector
-  isSpec: "True"
-  fullName: Libplanet.Serialization.BencodexFormatter<T>.SurrogateSelector
-  fullName.vb: Libplanet.Serialization.BencodexFormatter(Of T).SurrogateSelector
-  nameWithType: BencodexFormatter<T>.SurrogateSelector
-  nameWithType.vb: BencodexFormatter(Of T).SurrogateSelector
 - uid: Libplanet.Serialization.SerializationInfoExtension
   name: SerializationInfoExtension
   href: api/Libplanet.Serialization.SerializationInfoExtension.html
@@ -7196,6 +7111,14 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T)
   nameWithType: Transaction<T>
   nameWithType.vb: Transaction(Of T)
+- uid: Libplanet.Tx.Transaction`1.#ctor(Bencodex.Types.Dictionary)
+  name: Transaction(Bencodex.Types.Dictionary)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_Bencodex_Types_Dictionary_
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(Bencodex.Types.Dictionary)
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(Bencodex.Types.Dictionary)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
+  nameWithType: Transaction<T>.Transaction(Bencodex.Types.Dictionary)
+  nameWithType.vb: Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
 - uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
   name: Transaction(Int64, Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
@@ -7249,6 +7172,24 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Create
   nameWithType: Transaction<T>.Create
   nameWithType.vb: Transaction(Of T).Create
+- uid: Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
+  name: Deserialize(Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.Deserialize(System.Byte[])
+  name.vb: Deserialize(Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Deserialize(System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize(System.Byte())
+  nameWithType: Transaction<T>.Deserialize(Byte[])
+  nameWithType.vb: Transaction(Of T).Deserialize(Byte())
+- uid: Libplanet.Tx.Transaction`1.Deserialize*
+  name: Deserialize
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Deserialize_
+  commentId: Overload:Libplanet.Tx.Transaction`1.Deserialize
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.Deserialize
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Deserialize
+  nameWithType: Transaction<T>.Deserialize
+  nameWithType.vb: Transaction(Of T).Deserialize
 - uid: Libplanet.Tx.Transaction`1.Equals(Libplanet.Tx.Transaction{`0})
   name: Equals(Transaction<T>)
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Equals_Libplanet_Tx_Transaction__0__
@@ -7311,24 +7252,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually
   nameWithType: Transaction<T>.EvaluateActionsGradually
   nameWithType.vb: Transaction(Of T).EvaluateActionsGradually
-- uid: Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])
-  name: FromBencodex(Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencodex_System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.FromBencodex(System.Byte[])
-  name.vb: FromBencodex(Byte())
-  fullName: Libplanet.Tx.Transaction<T>.FromBencodex(System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencodex(System.Byte())
-  nameWithType: Transaction<T>.FromBencodex(Byte[])
-  nameWithType.vb: Transaction(Of T).FromBencodex(Byte())
-- uid: Libplanet.Tx.Transaction`1.FromBencodex*
-  name: FromBencodex
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_FromBencodex_
-  commentId: Overload:Libplanet.Tx.Transaction`1.FromBencodex
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.FromBencodex
-  fullName.vb: Libplanet.Tx.Transaction(Of T).FromBencodex
-  nameWithType: Transaction<T>.FromBencodex
-  nameWithType.vb: Transaction(Of T).FromBencodex
 - uid: Libplanet.Tx.Transaction`1.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GetHashCode
@@ -7346,23 +7269,6 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).GetHashCode
   nameWithType: Transaction<T>.GetHashCode
   nameWithType.vb: Transaction(Of T).GetHashCode
-- uid: Libplanet.Tx.Transaction`1.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Tx.Transaction`1.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Tx.Transaction<T>.GetObjectData(SerializationInfo, StreamingContext)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: Transaction<T>.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType.vb: Transaction(Of T).GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Tx.Transaction`1.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GetObjectData_
-  commentId: Overload:Libplanet.Tx.Transaction`1.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Tx.Transaction<T>.GetObjectData
-  fullName.vb: Libplanet.Tx.Transaction(Of T).GetObjectData
-  nameWithType: Transaction<T>.GetObjectData
-  nameWithType.vb: Transaction(Of T).GetObjectData
 - uid: Libplanet.Tx.Transaction`1.Id
   name: Id
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Id
@@ -7414,6 +7320,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).PublicKey
   nameWithType: Transaction<T>.PublicKey
   nameWithType.vb: Transaction(Of T).PublicKey
+- uid: Libplanet.Tx.Transaction`1.Serialize(System.Boolean)
+  name: Serialize(Boolean)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Serialize_System_Boolean_
+  commentId: M:Libplanet.Tx.Transaction`1.Serialize(System.Boolean)
+  fullName: Libplanet.Tx.Transaction<T>.Serialize(System.Boolean)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Serialize(System.Boolean)
+  nameWithType: Transaction<T>.Serialize(Boolean)
+  nameWithType.vb: Transaction(Of T).Serialize(Boolean)
+- uid: Libplanet.Tx.Transaction`1.Serialize*
+  name: Serialize
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Serialize_
+  commentId: Overload:Libplanet.Tx.Transaction`1.Serialize
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.Serialize
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Serialize
+  nameWithType: Transaction<T>.Serialize
+  nameWithType.vb: Transaction(Of T).Serialize
 - uid: Libplanet.Tx.Transaction`1.Signature
   name: Signature
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Signature
