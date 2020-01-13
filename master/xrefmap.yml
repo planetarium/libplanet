@@ -4190,14 +4190,6 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastTxs
   nameWithType: Swarm<T>.BroadcastTxs
   nameWithType.vb: Swarm(Of T).BroadcastTxs
-- uid: Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered
-  name: DifferentVersionPeerEncountered
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_DifferentVersionPeerEncountered
-  commentId: E:Libplanet.Net.Swarm`1.DifferentVersionPeerEncountered
-  fullName: Libplanet.Net.Swarm<T>.DifferentVersionPeerEncountered
-  fullName.vb: Libplanet.Net.Swarm(Of T).DifferentVersionPeerEncountered
-  nameWithType: Swarm<T>.DifferentVersionPeerEncountered
-  nameWithType.vb: Swarm(Of T).DifferentVersionPeerEncountered
 - uid: Libplanet.Net.Swarm`1.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Dispose
