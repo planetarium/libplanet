@@ -30,9 +30,9 @@ namespace Libplanet.Tests.Common.Action
 
         public void LoadPlainValue(Bencodex.Types.Dictionary plainValue)
         {
-            Weapon = (Text)plainValue[(Text)"weapon"];
-            Target = (Text)plainValue[(Text)"target"];
-            TargetAddress = new Address((Binary)plainValue[(Text)"target_address"]);
+            Weapon = (Text)plainValue["weapon"];
+            Target = (Text)plainValue["target"];
+            TargetAddress = new Address((Binary)plainValue["target_address"]);
         }
 
         public override IAccountStateDelta Execute(IActionContext context)

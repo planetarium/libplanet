@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
-using Libplanet.Serialization;
 using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
@@ -386,7 +385,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            Transaction<T> tx = Transaction<T>.FromBencodex(bytes);
+            Transaction<T> tx = Transaction<T>.Deserialize(bytes);
             _txCache.AddOrUpdate(txid, tx);
             return tx;
         }
@@ -399,7 +398,7 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.ToBencodex(true));
+            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
@@ -483,7 +482,7 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(_blocks, path, block.ToBencodex(true, false));
+            WriteContentAddressableFile(_blocks, path, block.Serialize(true, false));
             _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
         }
 
@@ -821,12 +820,15 @@ namespace Libplanet.Store
             RawBlock rawBlock;
             try
             {
-                var formatter = new BencodexFormatter<RawBlock>();
-                using (Stream stream = _blocks.OpenFile(
-                    path, System.IO.FileMode.Open, FileAccess.Read, FileShare.Read))
+                var value = new Codec().Decode(_blocks.ReadAllBytes(path));
+                if (!(value is Bencodex.Types.Dictionary dict))
                 {
-                    rawBlock = (RawBlock)formatter.Deserialize(stream);
+                    throw new DecodingException(
+                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                        $"{value.GetType()}");
                 }
+
+                rawBlock = new RawBlock(dict);
             }
             catch (FileNotFoundException)
             {

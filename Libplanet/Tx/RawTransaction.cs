@@ -3,33 +3,36 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
+using System.Text;
 using Bencodex.Types;
-using Libplanet.Serialization;
 
 [assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
 {
     [Equals]
-    internal readonly struct RawTransaction : ISerializable
+    internal readonly struct RawTransaction
     {
-        public RawTransaction(SerializationInfo info, StreamingContext context)
-            : this(
-                nonce: info.GetInt64("nonce"),
-                signer: info.GetValue<byte[]>("signer").ToImmutableArray(),
-                publicKey: info.GetValue<byte[]>("public_key").ToImmutableArray(),
-                updatedAddresses: To2dArray(
-                    info.GetValue<byte[]>("updated_addresses"),
-                    Address.Size),
-                timestamp: info.GetString("timestamp"),
-                signature: info.GetValue<byte[]>("signature").ToImmutableArray(),
-                actions: info.GetValue<List>(
-                    "actions")
-            )
-        {
-        }
+        public static readonly byte[] NonceKey =
+            Encoding.ASCII.GetBytes("nonce");
+
+        public static readonly byte[] SignerKey =
+            Encoding.ASCII.GetBytes("signer");
+
+        public static readonly byte[] UpdatedAddressesKey =
+            Encoding.ASCII.GetBytes("updated_addresses");
+
+        public static readonly byte[] PublicKeyKey =
+            Encoding.ASCII.GetBytes("public_key");
+
+        public static readonly byte[] TimestampKey =
+            Encoding.ASCII.GetBytes("timestamp");
+
+        public static readonly byte[] ActionsKey =
+            Encoding.ASCII.GetBytes("actions");
+
+        public static readonly byte[] SignatureKey =
+            Encoding.ASCII.GetBytes("signature");
 
         public RawTransaction(
             long nonce,
@@ -70,26 +73,20 @@ namespace Libplanet.Tx
             Signature = signature;
         }
 
-        public RawTransaction(Dictionary<string, object> dict)
+        public RawTransaction(Bencodex.Types.Dictionary dict)
         {
-            Nonce = (long)(BigInteger)dict["nonce"];
-            Signer = ((byte[])dict["signer"]).ToImmutableArray();
+            Nonce = dict.GetValue<Integer>(NonceKey);
+            Signer = ((byte[])dict.GetValue<Binary>(SignerKey)).ToImmutableArray();
             UpdatedAddresses = To2dArray(
-                (byte[])dict["updated_addresses"],
+                (byte[])dict.GetValue<Binary>(UpdatedAddressesKey),
                 Address.Size);
-            PublicKey = ((byte[])dict["public_key"]).ToImmutableArray();
-            Timestamp = (string)dict["timestamp"];
+            PublicKey = ((byte[])dict.GetValue<Binary>(PublicKeyKey)).ToImmutableArray();
+            Timestamp = dict.GetValue<Text>(TimestampKey);
+            Actions = dict.GetValue<Bencodex.Types.List>(ActionsKey);
 
-            Actions = ((List)dict["actions"]).Value;
-
-            if (dict.TryGetValue("signature", out object signature))
-            {
-                Signature = ((byte[])signature).ToImmutableArray();
-            }
-            else
-            {
-                Signature = ImmutableArray<byte>.Empty;
-            }
+            Signature = dict.ContainsKey((Binary)SignatureKey)
+                ? ((byte[])dict.GetValue<Binary>(SignatureKey)).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
         }
 
         public long Nonce { get; }
@@ -106,38 +103,6 @@ namespace Libplanet.Tx
 
         public IEnumerable<IValue> Actions { get; }
 
-        public void GetObjectData(
-            SerializationInfo info,
-            StreamingContext context
-        )
-        {
-            info.AddValue("nonce", Nonce);
-            info.AddValue("signer", Signer.ToArray());
-
-            // SerializationInfo.AddValue() doesn't seem to work well with
-            // 2d arrays.  Concat addresses before encode them (fortunately,
-            // addresses all have 20 bytes, fixed-length).
-            var updatedAddresses =
-                new byte[UpdatedAddresses.Length * Address.Size];
-            int i = 0;
-            foreach (ImmutableArray<byte> address in UpdatedAddresses)
-            {
-                address.CopyTo(updatedAddresses, i);
-                i += Address.Size;
-            }
-
-            info.AddValue("updated_addresses", updatedAddresses);
-
-            info.AddValue("public_key", PublicKey.ToArray());
-            info.AddValue("timestamp", Timestamp);
-            info.AddValue("actions", Actions.ToImmutableList());
-
-            if (Signature != ImmutableArray<byte>.Empty)
-            {
-                info.AddValue("signature", Signature.ToArray());
-            }
-        }
-
         public RawTransaction AddSignature(byte[] signature)
         {
             return new RawTransaction(
@@ -149,6 +114,32 @@ namespace Libplanet.Tx
                 Actions,
                 signature.ToImmutableArray()
             );
+        }
+
+        public Bencodex.Types.Dictionary ToBencodex()
+        {
+            var updatedAddresses = new byte[UpdatedAddresses.Length * Address.Size];
+            var i = 0;
+            foreach (var address in UpdatedAddresses)
+            {
+                address.CopyTo(updatedAddresses, i);
+                i += Address.Size;
+            }
+
+            var dict = Bencodex.Types.Dictionary.Empty
+                .Add(NonceKey, Nonce)
+                .Add(SignerKey, Signer.ToArray())
+                .Add(UpdatedAddressesKey, updatedAddresses)
+                .Add(PublicKeyKey, PublicKey.ToArray())
+                .Add(TimestampKey, Timestamp)
+                .Add(ActionsKey, (IValue)new Bencodex.Types.List(Actions));
+
+            if (Signature != ImmutableArray<byte>.Empty)
+            {
+                dict = dict.Add(SignatureKey, Signature.ToArray());
+            }
+
+            return dict;
         }
 
         public override int GetHashCode()

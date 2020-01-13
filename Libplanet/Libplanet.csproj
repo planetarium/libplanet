@@ -65,7 +65,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="2.2.2" />
-    <PackageReference Include="Bencodex" Version="0.2.0" />
+    <PackageReference Include="Bencodex" Version="0.3.0-dev.9194831fe6481148973562e6fd9fc06caf76c52b" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
     <PackageReference Include="Equals.Fody" Version="1.9.6" />
     <PackageReference Include="Fody" Version="5.0.1">

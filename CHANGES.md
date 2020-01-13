@@ -38,6 +38,12 @@ To be released.
     from `Swarm<T>`.  [[#705], [#725]]
  -  Added `workers` optional parameter into `Swarm<T>()` constructor.
     [[#613], [#727]]
+ -  `Block<T>` class became not to implement `ISerializable`.  [[#751]]
+ -  `Transaction<T>` class became not to implement `ISerializable`.  [[#751]]
+ -  `Block<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
+ -  `Transaction<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
+ -  Removed `Block<T>.FromBencodex(byte[])` method.  [[#751]]
+ -  Removed `Transaction<T>.FromBencodex(byte[])` method.  [[#751]]
 
 ### Backward-incompatible network protocol changes
 
@@ -67,6 +73,12 @@ To be released.
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
     `Swarm<T>`'s routing table.  [[#739]]
  -  Added `IStore.LookupStateReference<T>()` method.  [[#722]]
+ -  Added `Block<T>.Serialize()` method which returns `byte[]`.  [[#751]]
+ -  Added `Transaction<T>.Serialize()` method which returns `byte[]`.  [[#751]]
+ -  Added `Block<T>(Bencodex.Types.Dictionary)` constructor.  [[#751]]
+ -  Added `Transaction<T>(Bencodex.Types.Dictionary)` constructor.  [[#751]]
+ -  Added `Block<T>.Deserialize(byte[])` method.  [[#751]]
+ -  Added `Transaction<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `StoreExtension.Copy(this IStore, IStore)` extension method.  [[#753]]
 
 ### Behavioral changes
@@ -163,6 +175,7 @@ To be released.
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
 [#746]: https://github.com/planetarium/libplanet/pull/746
+[#751]: https://github.com/planetarium/libplanet/pull/751
 [#753]: https://github.com/planetarium/libplanet/pull/753
 
 

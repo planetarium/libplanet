@@ -721,7 +721,7 @@ namespace Libplanet.Net
                             message.Remote.PublicKey.ToAddress().ToHex());
                         foreach (byte[] payload in payloads)
                         {
-                            Block<T> block = Block<T>.FromBencodex(payload);
+                            Block<T> block = Block<T>.Deserialize(payload);
                             await yield.ReturnAsync(block);
                         }
                     }
@@ -766,8 +766,7 @@ namespace Libplanet.Net
                 {
                     if (message is Messages.Tx parsed)
                     {
-                        Transaction<T> tx = Transaction<T>.FromBencodex(
-                            parsed.Payload);
+                        Transaction<T> tx = Transaction<T>.Deserialize(parsed.Payload);
                         await yield.ReturnAsync(tx);
                     }
                     else
@@ -1550,7 +1549,7 @@ namespace Libplanet.Net
 
             foreach (Transaction<T> tx in txs)
             {
-                Message response = new Messages.Tx(tx.ToBencodex(true))
+                Message response = new Messages.Tx(tx.Serialize(true))
                 {
                     Identity = getTxs.Identity,
                 };
@@ -1624,7 +1623,7 @@ namespace Libplanet.Net
                 if (_store.ContainsBlock(hash))
                 {
                     Block<T> block = _store.GetBlock<T>(hash);
-                    byte[] payload = block.ToBencodex(true, true);
+                    byte[] payload = block.Serialize(true, true);
                     blocks.Add(payload);
                 }
 
