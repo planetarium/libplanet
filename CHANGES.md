@@ -44,6 +44,7 @@ To be released.
  -  `Transaction<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
  -  Removed `Block<T>.FromBencodex(byte[])` method.  [[#751]]
  -  Removed `Transaction<T>.FromBencodex(byte[])` method.  [[#751]]
+ -  `Block<T>.ToBencodex()` now does not take any arguments.  [[#749], [#757]]
 
 ### Backward-incompatible network protocol changes
 
@@ -80,6 +81,8 @@ To be released.
  -  Added `Block<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `Transaction<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `StoreExtension.Copy(this IStore, IStore)` extension method.  [[#753]]
+ -  Added a nullable `HashDigest<SHA256>`-typed `TxHash` property which describes
+    all transactions in the block to `Block<T>` class.  [[#749], [#757]]
  -  Added `CryptoConfig` class.  [[#758]]
  -  Added `ICryptoBackend` class.  [[#758]]
  -  Added `DefaultCryptoBackend` class.  [[#758]]
@@ -180,8 +183,10 @@ To be released.
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
 [#746]: https://github.com/planetarium/libplanet/pull/746
+[#749]: https://github.com/planetarium/libplanet/issues/749
 [#751]: https://github.com/planetarium/libplanet/pull/751
 [#753]: https://github.com/planetarium/libplanet/pull/753
+[#757]: https://github.com/planetarium/libplanet/pull/757
 [#758]: https://github.com/planetarium/libplanet/pull/758
 [#759]: https://github.com/planetarium/libplanet/pull/759
 
