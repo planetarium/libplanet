@@ -2124,6 +2124,69 @@ references:
   commentId: N:Libplanet.Crypto
   fullName: Libplanet.Crypto
   nameWithType: Libplanet.Crypto
+- uid: Libplanet.Crypto.CryptoConfig
+  name: CryptoConfig
+  href: api/Libplanet.Crypto.CryptoConfig.html
+  commentId: T:Libplanet.Crypto.CryptoConfig
+  fullName: Libplanet.Crypto.CryptoConfig
+  nameWithType: CryptoConfig
+- uid: Libplanet.Crypto.CryptoConfig.CryptoBackend
+  name: CryptoBackend
+  href: api/Libplanet.Crypto.CryptoConfig.html#Libplanet_Crypto_CryptoConfig_CryptoBackend
+  commentId: P:Libplanet.Crypto.CryptoConfig.CryptoBackend
+  fullName: Libplanet.Crypto.CryptoConfig.CryptoBackend
+  nameWithType: CryptoConfig.CryptoBackend
+- uid: Libplanet.Crypto.CryptoConfig.CryptoBackend*
+  name: CryptoBackend
+  href: api/Libplanet.Crypto.CryptoConfig.html#Libplanet_Crypto_CryptoConfig_CryptoBackend_
+  commentId: Overload:Libplanet.Crypto.CryptoConfig.CryptoBackend
+  isSpec: "True"
+  fullName: Libplanet.Crypto.CryptoConfig.CryptoBackend
+  nameWithType: CryptoConfig.CryptoBackend
+- uid: Libplanet.Crypto.DefaultCryptoBackend
+  name: DefaultCryptoBackend
+  href: api/Libplanet.Crypto.DefaultCryptoBackend.html
+  commentId: T:Libplanet.Crypto.DefaultCryptoBackend
+  fullName: Libplanet.Crypto.DefaultCryptoBackend
+  nameWithType: DefaultCryptoBackend
+- uid: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
+  name: Verify(HashDigest<SHA256>, Byte[], PublicKey)
+  href: api/Libplanet.Crypto.DefaultCryptoBackend.html#Libplanet_Crypto_DefaultCryptoBackend_Verify_Libplanet_HashDigest_SHA256__System_Byte___Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
+  name.vb: Verify(HashDigest(Of SHA256), Byte(), PublicKey)
+  fullName: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest<SHA256>, System.Byte[], Libplanet.Crypto.PublicKey)
+  fullName.vb: Libplanet.Crypto.DefaultCryptoBackend.Verify(Libplanet.HashDigest(Of SHA256), System.Byte(), Libplanet.Crypto.PublicKey)
+  nameWithType: DefaultCryptoBackend.Verify(HashDigest<SHA256>, Byte[], PublicKey)
+  nameWithType.vb: DefaultCryptoBackend.Verify(HashDigest(Of SHA256), Byte(), PublicKey)
+- uid: Libplanet.Crypto.DefaultCryptoBackend.Verify*
+  name: Verify
+  href: api/Libplanet.Crypto.DefaultCryptoBackend.html#Libplanet_Crypto_DefaultCryptoBackend_Verify_
+  commentId: Overload:Libplanet.Crypto.DefaultCryptoBackend.Verify
+  isSpec: "True"
+  fullName: Libplanet.Crypto.DefaultCryptoBackend.Verify
+  nameWithType: DefaultCryptoBackend.Verify
+- uid: Libplanet.Crypto.ICryptoBackend
+  name: ICryptoBackend
+  href: api/Libplanet.Crypto.ICryptoBackend.html
+  commentId: T:Libplanet.Crypto.ICryptoBackend
+  fullName: Libplanet.Crypto.ICryptoBackend
+  nameWithType: ICryptoBackend
+- uid: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
+  name: Verify(HashDigest<SHA256>, Byte[], PublicKey)
+  href: api/Libplanet.Crypto.ICryptoBackend.html#Libplanet_Crypto_ICryptoBackend_Verify_Libplanet_HashDigest_SHA256__System_Byte___Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest{SHA256},System.Byte[],Libplanet.Crypto.PublicKey)
+  name.vb: Verify(HashDigest(Of SHA256), Byte(), PublicKey)
+  fullName: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest<SHA256>, System.Byte[], Libplanet.Crypto.PublicKey)
+  fullName.vb: Libplanet.Crypto.ICryptoBackend.Verify(Libplanet.HashDigest(Of SHA256), System.Byte(), Libplanet.Crypto.PublicKey)
+  nameWithType: ICryptoBackend.Verify(HashDigest<SHA256>, Byte[], PublicKey)
+  nameWithType.vb: ICryptoBackend.Verify(HashDigest(Of SHA256), Byte(), PublicKey)
+- uid: Libplanet.Crypto.ICryptoBackend.Verify*
+  name: Verify
+  href: api/Libplanet.Crypto.ICryptoBackend.html#Libplanet_Crypto_ICryptoBackend_Verify_
+  commentId: Overload:Libplanet.Crypto.ICryptoBackend.Verify
+  isSpec: "True"
+  fullName: Libplanet.Crypto.ICryptoBackend.Verify
+  nameWithType: ICryptoBackend.Verify
 - uid: Libplanet.Crypto.InvalidCiphertextException
   name: InvalidCiphertextException
   href: api/Libplanet.Crypto.InvalidCiphertextException.html
