@@ -1220,6 +1220,33 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async void GetStateReturnsValidStateAfterFork()
+        {
+            var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock(
+                new[]
+                {
+                    new DumbAction(_fx.Address1, "item0.0", idempotent: true),
+                });
+            var privateKey = new PrivateKey();
+            var store = new DefaultStore(path: null);
+
+            var chain =
+                new BlockChain<DumbAction>(new NullPolicy<DumbAction>(), store, genesisBlock);
+            Assert.Equal("item0.0", (Text)chain.GetState(_fx.Address1));
+
+            chain.MakeTransaction(
+                privateKey,
+                new[] { new DumbAction(_fx.Address1, "item1.0"), }
+            );
+            await chain.MineBlock(_fx.Address1);
+            Assert.Equal("item0.0,item1.0", (Text)chain.GetState(_fx.Address1));
+
+            var forked = chain.Fork(chain.Tip.Hash);
+            Assert.Equal(2, forked.Count);
+            Assert.Equal("item0.0,item1.0", (Text)forked.GetState(_fx.Address1));
+        }
+
+        [Fact]
         public void GetStateWithCompletingStates()
         {
             (Address signer, Address[] addresses, BlockChain<DumbAction> chain)
