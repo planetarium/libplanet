@@ -223,13 +223,11 @@ namespace Libplanet.Net
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
-                preloadBlockDownloadFailed: preloadBlockDownloadFailed,
                 cancellationToken
             );
         }
@@ -242,13 +240,7 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
-        /// <param name="preloadBlockDownloadFailed">
-        /// The <see cref="EventHandler" /> triggered when
-        /// <see cref="PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
-        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)" />
-        /// fails to download blocks.
-        /// </param>
-        /// /// <param name="cancellationToken">
+        /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
         /// </param>
@@ -267,7 +259,6 @@ namespace Libplanet.Net
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tasks = new List<Task>();
@@ -279,15 +270,6 @@ namespace Libplanet.Net
 
             _logger.Debug("Starting swarm...");
             _logger.Debug("Peer information : {Peer}", AsPeer);
-
-            using (await _runningMutex.LockAsync())
-            {
-                await PreloadAsync(
-                    dialTimeout: dialTimeout,
-                    render: true,
-                    cancellationToken: _cancellationToken
-                );
-            }
 
             try
             {
@@ -407,11 +389,6 @@ namespace Libplanet.Net
         /// A task without value.
         /// You only can <c>await</c> until the method is completed.
         /// </returns>
-        /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
-        /// If you want to render all <see cref="IAction"/>s from the genesis block to the recent
-        /// blocks use
-        /// <see cref="StartAsync(TimeSpan, TimeSpan, EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"/>
-        /// method instead.</remarks>
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
 #pragma warning restore MEN002 // Line is too long

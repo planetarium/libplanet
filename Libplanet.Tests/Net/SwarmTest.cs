@@ -394,6 +394,7 @@ namespace Libplanet.Tests.Net
                 Assert.Empty(swarmB.Peers);
 
                 await StartAsync(swarmA);
+                await Task.Delay(100);
                 Assert.Contains(swarmA.AsPeer, swarmB.Peers);
             }
             finally
@@ -2765,7 +2766,7 @@ namespace Libplanet.Tests.Net
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, 200, null, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }
