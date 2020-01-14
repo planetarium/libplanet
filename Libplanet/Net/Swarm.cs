@@ -1623,7 +1623,7 @@ namespace Libplanet.Net
                 if (_store.ContainsBlock(hash))
                 {
                     Block<T> block = _store.GetBlock<T>(hash);
-                    byte[] payload = block.Serialize(true, true);
+                    byte[] payload = block.Serialize();
                     blocks.Add(payload);
                 }
 

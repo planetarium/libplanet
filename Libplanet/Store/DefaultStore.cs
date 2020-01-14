@@ -44,7 +44,7 @@ namespace Libplanet.Store
         private readonly SubFileSystem _blocks;
         private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
-        private readonly LruCache<HashDigest<SHA256>, RawBlock> _blockCache;
+        private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
         private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>
             _statesCache;
 
@@ -150,7 +150,7 @@ namespace Libplanet.Store
 
             _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
-            _blockCache = new LruCache<HashDigest<SHA256>, RawBlock>(capacity: blockCacheSize);
+            _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
             _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
                 capacity: statesCacheSize
             );
@@ -482,8 +482,8 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(_blocks, path, block.Serialize(true, false));
-            _blockCache.AddOrUpdate(block.Hash, block.ToRawBlock(false, false));
+            WriteContentAddressableFile(_blocks, path, block.ToBlockDigest().Serialize());
+            _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
         /// <inheritdoc/>
@@ -806,11 +806,11 @@ namespace Libplanet.Store
         internal static string FormatChainId(Guid chainId) =>
             ByteUtil.Hex(chainId.ToByteArray());
 
-        internal override RawBlock? GetRawBlock(HashDigest<SHA256> blockHash)
+        internal override BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
         {
-            if (_blockCache.TryGetValue(blockHash, out RawBlock cahcedBlock))
+            if (_blockCache.TryGetValue(blockHash, out BlockDigest cahcedDigest))
             {
-                return cahcedBlock;
+                return cahcedDigest;
             }
 
             UPath path = BlockPath(blockHash);
@@ -819,7 +819,7 @@ namespace Libplanet.Store
                 return null;
             }
 
-            RawBlock rawBlock;
+            BlockDigest blockDigest;
             try
             {
                 var value = new Codec().Decode(_blocks.ReadAllBytes(path));
@@ -830,15 +830,15 @@ namespace Libplanet.Store
                         $"{value.GetType()}");
                 }
 
-                rawBlock = new RawBlock(dict);
+                blockDigest = new BlockDigest(dict);
             }
             catch (FileNotFoundException)
             {
                 return null;
             }
 
-            _blockCache.AddOrUpdate(blockHash, rawBlock);
-            return rawBlock;
+            _blockCache.AddOrUpdate(blockHash, blockDigest);
+            return blockDigest;
         }
 
         private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
