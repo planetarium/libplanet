@@ -80,6 +80,9 @@ To be released.
  -  Added `Block<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `Transaction<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `StoreExtension.Copy(this IStore, IStore)` extension method.  [[#753]]
+ -  Added `CryptoConfig` class.  [[#758]]
+ -  Added `ICryptoBackend` class.  [[#758]]
+ -  Added `DefaultCryptoBackend` class.  [[#758]]
 
 ### Behavioral changes
 
@@ -177,6 +180,7 @@ To be released.
 [#746]: https://github.com/planetarium/libplanet/pull/746
 [#751]: https://github.com/planetarium/libplanet/pull/751
 [#753]: https://github.com/planetarium/libplanet/pull/753
+[#758]: https://github.com/planetarium/libplanet/pull/758
 
 
 Version 0.7.0

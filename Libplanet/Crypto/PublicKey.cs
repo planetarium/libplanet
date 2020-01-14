@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics.Contracts;
-using Org.BouncyCastle.Crypto;
+using System.Security.Cryptography;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
 
 namespace Libplanet.Crypto
 {
@@ -112,23 +112,7 @@ namespace Libplanet.Crypto
         /// from the <paramref name="message"/> with the corresponding
         /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
         [Pure]
-        public bool Verify(byte[] message, byte[] signature) =>
-            Verify(message, signature, "SHA256withECDSA");
-
-        private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
-        {
-            var ecParams = PrivateKey.GetECParameters();
-            return new ECPublicKeyParameters(
-                "ECDSA",
-                ecParams.Curve.DecodePoint(bs),
-                ecParams
-            );
-        }
-
-        private bool Verify(
-            byte[] message,
-            byte[] signature,
-            string algorithm)
+        public bool Verify(byte[] message, byte[] signature)
         {
             if (message == null)
             {
@@ -140,11 +124,26 @@ namespace Libplanet.Crypto
                 throw new ArgumentNullException(nameof(signature));
             }
 
-            ISigner verifier = SignerUtilities.GetSigner(algorithm);
-            verifier.Init(false, KeyParam);
-            verifier.BlockUpdate(message, 0, message.Length);
+            var h = new Sha256Digest();
+            var hashed = new byte[h.GetDigestSize()];
+            h.BlockUpdate(message, 0, message.Length);
+            h.DoFinal(hashed, 0);
+            h.Reset();
 
-            return verifier.VerifySignature(signature);
+            return CryptoConfig.CryptoBackend.Verify(
+                new HashDigest<SHA256>(hashed),
+                signature,
+                this);
+        }
+
+        private static ECPublicKeyParameters GetECPublicKeyParameters(byte[] bs)
+        {
+            var ecParams = PrivateKey.GetECParameters();
+            return new ECPublicKeyParameters(
+                "ECDSA",
+                ecParams.Curve.DecodePoint(bs),
+                ecParams
+            );
         }
     }
 }
