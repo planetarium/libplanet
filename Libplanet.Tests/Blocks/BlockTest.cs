@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
+using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -671,6 +672,29 @@ namespace Libplanet.Tests.Blocks
 
             Assert.True(sameBlock1.Equals(sameBlock2));
             Assert.False(sameBlock2.Equals(differentBlock));
+        }
+
+        [Fact]
+        public void BlockStructureSize()
+        {
+            var emptyBlock = _fx.Next;
+            var txBlock = _fx.HasTx;
+            var codec = new Codec();
+            // Case of a block with no any txs.
+            // Size of RawBlock
+            Assert.Equal(255, emptyBlock.Serialize().Length);
+            // Size of BlockDigest
+            Assert.Equal(258, emptyBlock.ToBlockDigest().Serialize().Length);
+            // Size of BlockHeader
+            Assert.Equal(226, codec.Encode(emptyBlock.GetBlockHeader().ToBencodex()).Length);
+
+            // Case of a block with txs.
+            // Size of RawBlock
+            Assert.Equal(791, txBlock.Serialize().Length);
+            // Size of BlockDigest
+            Assert.Equal(362, txBlock.ToBlockDigest().Serialize().Length);
+            // Size of BlockHeader
+            Assert.Equal(295, codec.Encode(txBlock.GetBlockHeader().ToBencodex()).Length);
         }
     }
 }
