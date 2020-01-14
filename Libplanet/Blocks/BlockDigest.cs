@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Bencodex;
 using Bencodex.Types;
@@ -9,9 +9,9 @@ namespace Libplanet.Blocks
     /// Class that store uses to save blocks. This contains:
     /// <see cref="BlockHeader"/>, and list of <see cref="Libplanet.Tx.TxId"/>s.
     /// </summary>
-    internal struct BlockDigest
+    internal readonly struct BlockDigest
     {
-        public BlockDigest(BlockHeader header, IEnumerable<byte[]> txIds)
+        public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
             Header = header;
             TxIds = txIds;
@@ -21,12 +21,12 @@ namespace Libplanet.Blocks
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>("header"));
             TxIds = dict.GetValue<Bencodex.Types.List>("transaction_ids")
-                .Select(txId => (byte[])(Binary)txId);
+                .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray();
         }
 
         public BlockHeader Header { get; }
 
-        public IEnumerable<byte[]> TxIds { get; }
+        public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
         public static BlockDigest Deserialize(byte[] bytes)
         {
@@ -50,7 +50,7 @@ namespace Libplanet.Blocks
         {
             var dict = Bencodex.Types.Dictionary.Empty
                 .Add("header", Header.ToBencodex())
-                .Add("transaction_ids", TxIds.Select(txId => (IValue)(Binary)txId));
+                .Add("transaction_ids", TxIds.Select(txId => (IValue)(Binary)txId.ToArray()));
 
             return dict;
         }

@@ -1,19 +1,20 @@
-using Bencodex;
+using System.Collections.Immutable;
+using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Blocks
 {
-    internal struct BlockHeader
+    internal readonly struct BlockHeader
     {
         public BlockHeader(
             long index,
             string timestamp,
-            byte[] nonce,
-            byte[] miner,
+            ImmutableArray<byte> nonce,
+            ImmutableArray<byte> miner,
             long difficulty,
-            byte[] previousHash,
-            byte[] txHash,
-            byte[] hash)
+            ImmutableArray<byte> previousHash,
+            ImmutableArray<byte> txHash,
+            ImmutableArray<byte> hash)
         {
             Index = index;
             Timestamp = timestamp;
@@ -30,40 +31,40 @@ namespace Libplanet.Blocks
             Index = dict.GetValue<Integer>("index");
             Timestamp = dict.GetValue<Text>("timestamp");
             Difficulty = dict.GetValue<Integer>("difficulty");
-            Nonce = dict.GetValue<Binary>("nonce");
+            Nonce = dict.GetValue<Binary>("nonce").ToImmutableArray();
 
             Miner = dict.ContainsKey((Text)"reward_beneficiary")
-                ? (byte[])dict.GetValue<Binary>("reward_beneficiary")
-                : null;
+                ? dict.GetValue<Binary>("reward_beneficiary").ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
 
             PreviousHash = dict.ContainsKey((Text)"previous_hash")
-                ? (byte[])dict.GetValue<Binary>("previous_hash")
-                : null;
+                ? dict.GetValue<Binary>("previous_hash").ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
 
             TxHash = dict.ContainsKey((Text)"transaction_fingerprint")
-                ? (byte[])dict.GetValue<Binary>("transaction_fingerprint")
-                : null;
+                ? dict.GetValue<Binary>("transaction_fingerprint").ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
 
             Hash = dict.ContainsKey((Text)"hash")
-                ? (byte[])dict.GetValue<Binary>("hash")
-                : null;
+                ? dict.GetValue<Binary>("hash").ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
         }
 
         public long Index { get; }
 
         public string Timestamp { get; }
 
-        public byte[] Nonce { get; }
+        public ImmutableArray<byte> Nonce { get; }
 
-        public byte[] Miner { get; }
+        public ImmutableArray<byte> Miner { get; }
 
         public long Difficulty { get; }
 
-        public byte[] PreviousHash { get; }
+        public ImmutableArray<byte> PreviousHash { get; }
 
-        public byte[] TxHash { get; }
+        public ImmutableArray<byte> TxHash { get; }
 
-        public byte[] Hash { get; }
+        public ImmutableArray<byte> Hash { get; }
 
         public Bencodex.Types.Dictionary ToBencodex()
         {
@@ -71,26 +72,22 @@ namespace Libplanet.Blocks
                 .Add("index", Index)
                 .Add("timestamp", Timestamp)
                 .Add("difficulty", Difficulty)
-                .Add("nonce", Nonce);
+                .Add("nonce", Nonce.ToArray())
+                .Add("hash", Hash.ToArray());
 
-            if (!(Miner is null))
+            if (Miner.Any())
             {
-                dict = dict.Add("reward_beneficiary", Miner);
+                dict = dict.Add("reward_beneficiary", Miner.ToArray());
             }
 
-            if (!(PreviousHash is null))
+            if (PreviousHash.Any())
             {
-                dict = dict.Add("previous_hash", PreviousHash);
+                dict = dict.Add("previous_hash", PreviousHash.ToArray());
             }
 
-            if (!(TxHash is null))
+            if (TxHash.Any())
             {
-                dict = dict.Add("transaction_fingerprint", TxHash);
-            }
-
-            if (!(Hash is null))
-            {
-                dict = dict.Add("hash", Hash);
+                dict = dict.Add("transaction_fingerprint", TxHash.ToArray());
             }
 
             return dict;

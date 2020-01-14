@@ -80,13 +80,13 @@ namespace Libplanet.Store
         {
             if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash is byte[] h
-                    ? new HashDigest<SHA256>(h)
+                HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash.ToArray())
                     : (HashDigest<SHA256>?)null;
                 return new Block<T>(
                     index: blockDigest.Header.Index,
                     difficulty: blockDigest.Header.Difficulty,
-                    nonce: new Nonce(blockDigest.Header.Nonce),
+                    nonce: new Nonce(blockDigest.Header.Nonce.ToArray()),
                     miner: new Address(blockDigest.Header.Miner),
                     previousHash: prevHash,
                     timestamp: DateTimeOffset.ParseExact(
@@ -95,7 +95,7 @@ namespace Libplanet.Store
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
                     transactions: blockDigest.TxIds
-                        .Select(bytes => GetTransaction<T>(new TxId(bytes)))
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                 );
             }
 

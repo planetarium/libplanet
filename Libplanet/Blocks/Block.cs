@@ -123,10 +123,10 @@ namespace Libplanet.Blocks
             : this(
                 rb.Header.Index,
                 rb.Header.Difficulty,
-                new Nonce(rb.Header.Nonce),
-                rb.Header.Miner is null ? (Address?)null : new Address(rb.Header.Miner),
+                new Nonce(rb.Header.Nonce.ToArray()),
+                rb.Header.Miner.Any() ? new Address(rb.Header.Miner) : (Address?)null,
 #pragma warning disable MEN002 // Line is too long
-                rb.Header.PreviousHash is null ? (HashDigest<SHA256>?)null : new HashDigest<SHA256>(rb.Header.PreviousHash),
+                rb.Header.PreviousHash.Any() ? new HashDigest<SHA256>(rb.Header.PreviousHash.ToArray()) : (HashDigest<SHA256>?)null,
 #pragma warning restore MEN002 // Line is too long
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
@@ -412,12 +412,14 @@ namespace Libplanet.Blocks
             return new BlockHeader(
                 index: Index,
                 timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                nonce: Nonce.ToByteArray(),
-                miner: Miner?.ToByteArray(),
+                nonce: Nonce.ToByteArray().ToImmutableArray(),
+                miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 difficulty: Difficulty,
-                previousHash: PreviousHash?.ToByteArray(),
-                txHash: TxHash?.ToByteArray(),
-                hash: Hash.ToByteArray()
+#pragma warning disable MEN002 // line is too long
+                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+#pragma warning restore MEN002 // line is too long
+                txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
+                hash: Hash.ToByteArray().ToImmutableArray()
             );
         }
 
@@ -494,7 +496,9 @@ namespace Libplanet.Blocks
         {
             return new BlockDigest(
                 header: GetBlockHeader(),
-                txIds: Transactions.Select(tx => tx.Id.ToByteArray()));
+                txIds: Transactions
+                    .Select(tx => tx.Id.ToByteArray().ToImmutableArray())
+                    .ToImmutableArray());
         }
 
         internal RawBlock ToRawBlock()

@@ -656,7 +656,7 @@ namespace Libplanet.Tx
                     a.ByteArray).ToImmutableArray(),
                 publicKey: PublicKey.Format(false).ToImmutableArray(),
                 timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                actions: Actions.Select(a => a.PlainValue)
+                actions: Actions.Select(a => a.PlainValue).ToImmutableArray()
             );
 
             if (includeSign)
