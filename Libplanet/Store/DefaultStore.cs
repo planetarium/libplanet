@@ -822,7 +822,7 @@ namespace Libplanet.Store
             BlockDigest blockDigest;
             try
             {
-                var value = new Codec().Decode(_blocks.ReadAllBytes(path));
+                IValue value = new Codec().Decode(_blocks.ReadAllBytes(path));
                 if (!(value is Bencodex.Types.Dictionary dict))
                 {
                     throw new DecodingException(

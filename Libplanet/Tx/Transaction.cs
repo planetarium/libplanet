@@ -264,7 +264,7 @@ namespace Libplanet.Tx
         /// <seealso cref="Serialize(bool)"/>
         public static Transaction<T> Deserialize(byte[] bytes)
         {
-            var value = new Codec().Decode(bytes);
+            IValue value = new Codec().Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException(

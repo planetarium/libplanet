@@ -254,7 +254,7 @@ namespace Libplanet.Blocks
         /// <seealso cref="Serialize()"/>
         public static Block<T> Deserialize(byte[] bytes)
         {
-            var value = new Codec().Decode(bytes);
+            IValue value = new Codec().Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException(
