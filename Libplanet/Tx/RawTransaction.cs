@@ -10,19 +10,19 @@ namespace Libplanet.Tx
     [Equals]
     internal readonly struct RawTransaction
     {
-        public const string NonceKey = "nonce";
+        public static readonly byte[] NonceKey = { 0x6e }; // 'n'
 
-        public const string SignerKey = "signer";
+        public static readonly byte[] SignerKey = { 0x73 }; // 's'
 
-        public const string UpdatedAddressesKey = "updated_addresses";
+        public static readonly byte[] UpdatedAddressesKey = { 0x75 }; // 'u'
 
-        public const string PublicKeyKey = "public_key";
+        public static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
 
-        public const string TimestampKey = "timestamp";
+        public static readonly byte[] TimestampKey = { 0x74 }; // 't'
 
-        public const string ActionsKey = "actions";
+        public static readonly byte[] ActionsKey = { 0x61 }; // 'a'
 
-        public const string SignatureKey = "signature";
+        public static readonly byte[] SignatureKey = { 0x53 }; // 'S'
 
         public RawTransaction(
             long nonce,
@@ -73,7 +73,7 @@ namespace Libplanet.Tx
             Timestamp = dict.GetValue<Text>(TimestampKey);
             Actions = dict.GetValue<Bencodex.Types.List>(ActionsKey).ToImmutableArray();
 
-            Signature = dict.ContainsKey((Text)SignatureKey)
+            Signature = dict.ContainsKey((Binary)SignatureKey)
                 ? dict.GetValue<Binary>(SignatureKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }

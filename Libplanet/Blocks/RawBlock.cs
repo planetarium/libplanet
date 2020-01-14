@@ -6,9 +6,9 @@ namespace Libplanet.Blocks
 {
     internal readonly struct RawBlock
     {
-        public const string HeaderKey = "header";
+        public static readonly byte[] HeaderKey = { 0x48 }; // 'H'
 
-        public const string TransactionsKey = "transactions";
+        public static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
 
         public RawBlock(
             BlockHeader header,
@@ -21,7 +21,7 @@ namespace Libplanet.Blocks
         public RawBlock(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
-            Transactions = dict.ContainsKey((Text)TransactionsKey)
+            Transactions = dict.ContainsKey((Binary)TransactionsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
                     .Select(tx => ((Binary)tx).ToImmutableArray()).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;
