@@ -20,8 +20,10 @@ namespace Libplanet.Blocks
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>("header"));
-            TxIds = dict.GetValue<Bencodex.Types.List>("transaction_ids")
-                .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray();
+            TxIds = dict.ContainsKey((Text)"transaction_ids")
+                ? dict.GetValue<Bencodex.Types.List>("transaction_ids")
+                    .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()
+                : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
         public BlockHeader Header { get; }
@@ -49,8 +51,14 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add("header", Header.ToBencodex())
-                .Add("transaction_ids", TxIds.Select(txId => (IValue)(Binary)txId.ToArray()));
+                .Add("header", Header.ToBencodex());
+
+            if (TxIds.Any())
+            {
+                dict = dict.Add(
+                    "transaction_ids",
+                    TxIds.Select(txId => (IValue)(Binary)txId.ToArray()));
+            }
 
             return dict;
         }
