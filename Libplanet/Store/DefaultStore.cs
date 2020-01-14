@@ -729,6 +729,8 @@ namespace Libplanet.Store
 
             dstColl.EnsureIndex("AddressString");
             dstColl.EnsureIndex("BlockIndex");
+
+            _lastStateRefCaches.Remove(destinationChainId);
         }
 
         /// <inheritdoc/>

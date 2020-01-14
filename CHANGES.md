@@ -141,6 +141,8 @@ To be released.
     [[#744]]
  -  Fixed a bug where `Swarm<T>` had failed to request a TURN relay when it has
     an IPv6 address.  [[#744]]
+ -  Fixed a bug where `DefaultStore` had invalid state references cache after fork.
+    [[#759]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
@@ -181,6 +183,7 @@ To be released.
 [#751]: https://github.com/planetarium/libplanet/pull/751
 [#753]: https://github.com/planetarium/libplanet/pull/753
 [#758]: https://github.com/planetarium/libplanet/pull/758
+[#759]: https://github.com/planetarium/libplanet/pull/759
 
 
 Version 0.7.0
