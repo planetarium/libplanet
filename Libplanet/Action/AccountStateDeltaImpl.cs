@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -11,7 +10,7 @@ namespace Libplanet.Action
     internal class AccountStateDeltaImpl : IAccountStateDelta
     {
         private readonly AccountStateGetter _accountStateGetter;
-        private Dictionary _updatedStates;
+        private IImmutableDictionary<Address, IValue> _updatedStates;
 
         /// <summary>
         /// Creates a null delta from the given
@@ -22,19 +21,19 @@ namespace Libplanet.Action
         internal AccountStateDeltaImpl(AccountStateGetter accountStateGetter)
         {
             _accountStateGetter = accountStateGetter;
-            _updatedStates = default(Dictionary);
+            _updatedStates = ImmutableDictionary<Address, IValue>.Empty;
         }
 
         /// <inheritdoc/>
         IImmutableSet<Address> IAccountStateDelta.UpdatedAddresses =>
-            _updatedStates.Keys.Select(key => new Address(key.ToString())).ToImmutableHashSet();
+            _updatedStates.Keys.ToImmutableHashSet();
 
         /// <inheritdoc/>
         IValue IAccountStateDelta.GetState(Address address)
         {
             try
             {
-                return _updatedStates[address.ToHex()];
+                return _updatedStates[address];
             }
             catch (KeyNotFoundException)
             {
@@ -43,15 +42,11 @@ namespace Libplanet.Action
         }
 
         /// <inheritdoc/>
-        IAccountStateDelta IAccountStateDelta.SetState(
-            Address address,
-            IValue state
-        )
+        IAccountStateDelta IAccountStateDelta.SetState(Address address, IValue state)
         {
             return new AccountStateDeltaImpl(_accountStateGetter)
             {
-                _updatedStates = _updatedStates.SetItem(
-                    address.ToHex(), state),
+                _updatedStates = _updatedStates.SetItem(address, state),
             };
         }
     }

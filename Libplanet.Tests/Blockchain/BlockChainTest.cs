@@ -1455,12 +1455,12 @@ namespace Libplanet.Tests.Blockchain
             await chain.MineBlock(_fx.Address1);
 
             Assert.Equal(
-                chain.GetState(TestEvaluateAction.SignerKey).ToString(),
-                fromAddress.ToHex()
+                chain.GetState(TestEvaluateAction.SignerKey),
+                (Text)fromAddress.ToHex()
             );
             Assert.Equal(
-                chain.GetState(TestEvaluateAction.MinerKey).ToString(),
-                _fx.Address1.ToHex());
+                chain.GetState(TestEvaluateAction.MinerKey),
+                (Text)_fx.Address1.ToHex());
             var state = chain.GetState(TestEvaluateAction.BlockIndexKey);
             Assert.Equal((long)(Integer)state, blockIndex);
         }
@@ -1684,8 +1684,8 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(0, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal("foo", state1.ToString());
-            Assert.Equal("baz", state2.ToString());
+            Assert.Equal((Text)"foo", state1);
+            Assert.Equal((Text)"baz", state2);
 
             blockChain.MakeTransaction(privateKey1, new[] { new DumbAction(address1, "bar") });
             await blockChain.MineBlock(address1);
@@ -1695,8 +1695,8 @@ namespace Libplanet.Tests.Blockchain
 
             Assert.Equal(1, blockChain.GetNextTxNonce(address1));
             Assert.Equal(1, blockChain.GetNextTxNonce(address2));
-            Assert.Equal("foo,bar,foo", state1.ToString());
-            Assert.Equal("baz", state2.ToString());
+            Assert.Equal((Text)"foo,bar,foo", state1);
+            Assert.Equal((Text)"baz", state2);
         }
 
         [Fact]
@@ -1751,14 +1751,13 @@ namespace Libplanet.Tests.Blockchain
             IValue miner2state = _blockChain.GetState(miner2);
             IValue rewardState = _blockChain.GetState(rewardRecordAddress);
 
-            int reward1 = (int)(Integer)miner1state;
-            int reward2 = (int)(Integer)miner2state;
-            string rewardRecord = rewardState.ToString();
+            int reward1 = (Integer)miner1state;
+            int reward2 = (Integer)miner2state;
 
             Assert.Equal(2, reward1);
             Assert.Equal(1, reward2);
 
-            Assert.Equal($"{miner0},{miner1},{miner1},{miner2}", rewardRecord);
+            Assert.Equal((Text)$"{miner0},{miner1},{miner1},{miner2}", rewardState);
         }
 
         /// <summary>
@@ -2034,7 +2033,7 @@ namespace Libplanet.Tests.Blockchain
                 .ToArray();
             for (int i = 0; i < states.Length; ++i)
             {
-                Assert.Equal(states[i].ToString(), i.ToString());
+                Assert.Equal((Text)states[i], i.ToString());
             }
         }
 

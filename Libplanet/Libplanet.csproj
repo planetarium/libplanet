@@ -65,7 +65,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <PackageReference Include="AsyncEnumerator" Version="2.2.2" />
-    <PackageReference Include="Bencodex" Version="0.3.0-dev.9194831fe6481148973562e6fd9fc06caf76c52b" />
+    <PackageReference Include="Bencodex" Version="0.3.0-dev.1b62adcbf3bf91d1a96787f4447dc6cc518d9734" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
     <PackageReference Include="Equals.Fody" Version="1.9.6" />
     <PackageReference Include="Fody" Version="5.0.1">
@@ -98,7 +98,7 @@ https://docs.libplanet.io/</Description>
         runtime; build; native; contentfiles; analyzers
       </IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.*" />
     <PackageReference Include="System.Text.Json" Version="4.6.0" />
     <PackageReference Include="Zio" Version="0.7.4" />
   </ItemGroup>
