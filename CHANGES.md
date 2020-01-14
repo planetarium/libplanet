@@ -112,6 +112,8 @@ To be released.
     relaying proxy concurrently.  [[#744]]
  -  `Swarm<T>` became to throw `InvalidGenesisBlockException` when receiving
     block from the nodes that have a different genesis block.  [[#746]]
+ -  `Swarm<T>` became to distinguish the starting stages clearly.  In other words,
+    `Swarm<T>.StartAsync()` became not to call `Swarm<T>.PreloadAsync()`.  [[#735], [#760]]
 
 ### Bug fixes
 
@@ -179,6 +181,7 @@ To be released.
 [#728]: https://github.com/planetarium/libplanet/pull/728
 [#732]: https://github.com/planetarium/libplanet/pull/732
 [#734]: https://github.com/planetarium/libplanet/pull/734
+[#735]: https://github.com/planetarium/libplanet/issues/735
 [#736]: https://github.com/planetarium/libplanet/pull/736
 [#739]: https://github.com/planetarium/libplanet/pull/739
 [#744]: https://github.com/planetarium/libplanet/pull/744
@@ -189,6 +192,7 @@ To be released.
 [#757]: https://github.com/planetarium/libplanet/pull/757
 [#758]: https://github.com/planetarium/libplanet/pull/758
 [#759]: https://github.com/planetarium/libplanet/pull/759
+[#760]: https://github.com/planetarium/libplanet/pull/760
 
 
 Version 0.7.0
