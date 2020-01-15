@@ -114,6 +114,8 @@ To be released.
     block from the nodes that have a different genesis block.  [[#746]]
  -  `Swarm<T>` became to distinguish the starting stages clearly.  In other words,
     `Swarm<T>.StartAsync()` became not to call `Swarm<T>.PreloadAsync()`.  [[#735], [#760]]
+ -  The hash of `Block<T>` has changed due to the change in the method of
+    serialization.  [[#762]]
 
 ### Bug fixes
 
@@ -195,6 +197,7 @@ To be released.
 [#758]: https://github.com/planetarium/libplanet/pull/758
 [#759]: https://github.com/planetarium/libplanet/pull/759
 [#760]: https://github.com/planetarium/libplanet/pull/760
+[#762]: https://github.com/planetarium/libplanet/pull/762
 [#763]: https://github.com/planetarium/libplanet/pull/763
 
 
