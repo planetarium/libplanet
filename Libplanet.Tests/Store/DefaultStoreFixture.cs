@@ -6,7 +6,7 @@ namespace Libplanet.Tests.Store
 {
     public class DefaultStoreFixture : StoreFixture, IDisposable
     {
-        public DefaultStoreFixture(bool memory = false)
+        public DefaultStoreFixture(bool memory = false, bool compress = false)
         {
             if (memory)
             {
@@ -20,7 +20,12 @@ namespace Libplanet.Tests.Store
                 );
             }
 
-            Store = new DefaultStore(Path, blockCacheSize: 2, txCacheSize: 2);
+            Store = new DefaultStore(
+                Path,
+                compress: compress,
+                blockCacheSize: 2,
+                txCacheSize: 2
+            );
         }
 
         public string Path { get; }

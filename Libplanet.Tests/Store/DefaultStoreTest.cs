@@ -13,10 +13,10 @@ namespace Libplanet.Tests.Store
     {
         private readonly DefaultStoreFixture _fx;
 
-        public DefaultStoreTest(ITestOutputHelper testOutputHelper)
+        public DefaultStoreTest(ITestOutputHelper testOutputHelper, bool compress = false)
         {
             TestOutputHelper = testOutputHelper;
-            Fx = _fx = new DefaultStoreFixture();
+            Fx = _fx = new DefaultStoreFixture(compress: compress);
         }
 
         public void Dispose()
