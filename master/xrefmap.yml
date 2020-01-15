@@ -813,37 +813,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.AddressExtension.ToAddress
   nameWithType: AddressExtension.ToAddress
-- uid: Libplanet.BencodexExtension
-  name: BencodexExtension
-  href: api/Libplanet.BencodexExtension.html
-  commentId: T:Libplanet.BencodexExtension
-  fullName: Libplanet.BencodexExtension
-  nameWithType: BencodexExtension
-- uid: Libplanet.BencodexExtension.GetValue*
-  name: GetValue
-  href: api/Libplanet.BencodexExtension.html#Libplanet_BencodexExtension_GetValue_
-  commentId: Overload:Libplanet.BencodexExtension.GetValue
-  isSpec: "True"
-  fullName: Libplanet.BencodexExtension.GetValue
-  nameWithType: BencodexExtension.GetValue
-- uid: Libplanet.BencodexExtension.GetValue``1(Dictionary,System.Byte[])
-  name: GetValue<T>(Dictionary, Byte[])
-  href: api/Libplanet.BencodexExtension.html#Libplanet_BencodexExtension_GetValue__1_Dictionary_System_Byte___
-  commentId: M:Libplanet.BencodexExtension.GetValue``1(Dictionary,System.Byte[])
-  name.vb: GetValue(Of T)(Dictionary, Byte())
-  fullName: Libplanet.BencodexExtension.GetValue<T>(Dictionary, System.Byte[])
-  fullName.vb: Libplanet.BencodexExtension.GetValue(Of T)(Dictionary, System.Byte())
-  nameWithType: BencodexExtension.GetValue<T>(Dictionary, Byte[])
-  nameWithType.vb: BencodexExtension.GetValue(Of T)(Dictionary, Byte())
-- uid: Libplanet.BencodexExtension.GetValue``1(Dictionary,System.String)
-  name: GetValue<T>(Dictionary, String)
-  href: api/Libplanet.BencodexExtension.html#Libplanet_BencodexExtension_GetValue__1_Dictionary_System_String_
-  commentId: M:Libplanet.BencodexExtension.GetValue``1(Dictionary,System.String)
-  name.vb: GetValue(Of T)(Dictionary, String)
-  fullName: Libplanet.BencodexExtension.GetValue<T>(Dictionary, System.String)
-  fullName.vb: Libplanet.BencodexExtension.GetValue(Of T)(Dictionary, System.String)
-  nameWithType: BencodexExtension.GetValue<T>(Dictionary, String)
-  nameWithType.vb: BencodexExtension.GetValue(Of T)(Dictionary, String)
 - uid: Libplanet.Blockchain
   name: Libplanet.Blockchain
   href: api/Libplanet.Blockchain.html
@@ -1672,23 +1641,6 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).EvaluateActionsPerTx
   nameWithType: Block<T>.EvaluateActionsPerTx
   nameWithType.vb: Block(Of T).EvaluateActionsPerTx
-- uid: Libplanet.Blocks.Block`1.GetObjectData(SerializationInfo,StreamingContext)
-  name: GetObjectData(SerializationInfo, StreamingContext)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_GetObjectData_SerializationInfo_StreamingContext_
-  commentId: M:Libplanet.Blocks.Block`1.GetObjectData(SerializationInfo,StreamingContext)
-  fullName: Libplanet.Blocks.Block<T>.GetObjectData(SerializationInfo, StreamingContext)
-  fullName.vb: Libplanet.Blocks.Block(Of T).GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType: Block<T>.GetObjectData(SerializationInfo, StreamingContext)
-  nameWithType.vb: Block(Of T).GetObjectData(SerializationInfo, StreamingContext)
-- uid: Libplanet.Blocks.Block`1.GetObjectData*
-  name: GetObjectData
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_GetObjectData_
-  commentId: Overload:Libplanet.Blocks.Block`1.GetObjectData
-  isSpec: "True"
-  fullName: Libplanet.Blocks.Block<T>.GetObjectData
-  fullName.vb: Libplanet.Blocks.Block(Of T).GetObjectData
-  nameWithType: Block<T>.GetObjectData
-  nameWithType.vb: Block(Of T).GetObjectData
 - uid: Libplanet.Blocks.Block`1.Hash
   name: Hash
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Hash
@@ -1792,14 +1744,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).PreviousHash
   nameWithType: Block<T>.PreviousHash
   nameWithType.vb: Block(Of T).PreviousHash
-- uid: Libplanet.Blocks.Block`1.Serialize(System.Boolean,System.Boolean)
-  name: Serialize(Boolean, Boolean)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Serialize_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Blocks.Block`1.Serialize(System.Boolean,System.Boolean)
-  fullName: Libplanet.Blocks.Block<T>.Serialize(System.Boolean, System.Boolean)
-  fullName.vb: Libplanet.Blocks.Block(Of T).Serialize(System.Boolean, System.Boolean)
-  nameWithType: Block<T>.Serialize(Boolean, Boolean)
-  nameWithType.vb: Block(Of T).Serialize(Boolean, Boolean)
+- uid: Libplanet.Blocks.Block`1.Serialize
+  name: Serialize()
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Serialize
+  commentId: M:Libplanet.Blocks.Block`1.Serialize
+  fullName: Libplanet.Blocks.Block<T>.Serialize()
+  fullName.vb: Libplanet.Blocks.Block(Of T).Serialize()
+  nameWithType: Block<T>.Serialize()
+  nameWithType.vb: Block(Of T).Serialize()
 - uid: Libplanet.Blocks.Block`1.Serialize*
   name: Serialize
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Serialize_
@@ -1826,14 +1778,14 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Timestamp
   nameWithType: Block<T>.Timestamp
   nameWithType.vb: Block(Of T).Timestamp
-- uid: Libplanet.Blocks.Block`1.ToBencodex(System.Boolean,System.Boolean)
-  name: ToBencodex(Boolean, Boolean)
-  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToBencodex_System_Boolean_System_Boolean_
-  commentId: M:Libplanet.Blocks.Block`1.ToBencodex(System.Boolean,System.Boolean)
-  fullName: Libplanet.Blocks.Block<T>.ToBencodex(System.Boolean, System.Boolean)
-  fullName.vb: Libplanet.Blocks.Block(Of T).ToBencodex(System.Boolean, System.Boolean)
-  nameWithType: Block<T>.ToBencodex(Boolean, Boolean)
-  nameWithType.vb: Block(Of T).ToBencodex(Boolean, Boolean)
+- uid: Libplanet.Blocks.Block`1.ToBencodex
+  name: ToBencodex()
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToBencodex
+  commentId: M:Libplanet.Blocks.Block`1.ToBencodex
+  fullName: Libplanet.Blocks.Block<T>.ToBencodex()
+  fullName.vb: Libplanet.Blocks.Block(Of T).ToBencodex()
+  nameWithType: Block<T>.ToBencodex()
+  nameWithType.vb: Block(Of T).ToBencodex()
 - uid: Libplanet.Blocks.Block`1.ToBencodex*
   name: ToBencodex
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_ToBencodex_
@@ -1877,6 +1829,23 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Transactions
   nameWithType: Block<T>.Transactions
   nameWithType.vb: Block(Of T).Transactions
+- uid: Libplanet.Blocks.Block`1.TxHash
+  name: TxHash
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_TxHash
+  commentId: P:Libplanet.Blocks.Block`1.TxHash
+  fullName: Libplanet.Blocks.Block<T>.TxHash
+  fullName.vb: Libplanet.Blocks.Block(Of T).TxHash
+  nameWithType: Block<T>.TxHash
+  nameWithType.vb: Block(Of T).TxHash
+- uid: Libplanet.Blocks.Block`1.TxHash*
+  name: TxHash
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_TxHash_
+  commentId: Overload:Libplanet.Blocks.Block`1.TxHash
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.TxHash
+  fullName.vb: Libplanet.Blocks.Block(Of T).TxHash
+  nameWithType: Block<T>.TxHash
+  nameWithType.vb: Block(Of T).TxHash
 - uid: Libplanet.Blocks.InvalidBlockDifficultyException
   name: InvalidBlockDifficultyException
   href: api/Libplanet.Blocks.InvalidBlockDifficultyException.html
