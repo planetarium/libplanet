@@ -78,24 +78,24 @@ namespace Libplanet.Store
         public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
             where T : IAction, new()
         {
-            if (GetRawBlock(blockHash) is RawBlock rawBlock)
+            if (GetBlockDigest(blockHash) is BlockDigest blockDigest)
             {
-                HashDigest<SHA256>? prevHash = rawBlock.PreviousHash is byte[] h
-                    ? new HashDigest<SHA256>(h)
+                HashDigest<SHA256>? prevHash = blockDigest.Header.PreviousHash.Any()
+                    ? new HashDigest<SHA256>(blockDigest.Header.PreviousHash.ToArray())
                     : (HashDigest<SHA256>?)null;
                 return new Block<T>(
-                    index: rawBlock.Index,
-                    difficulty: rawBlock.Difficulty,
-                    nonce: new Nonce(rawBlock.Nonce),
-                    miner: new Address(rawBlock.Miner),
+                    index: blockDigest.Header.Index,
+                    difficulty: blockDigest.Header.Difficulty,
+                    nonce: new Nonce(blockDigest.Header.Nonce.ToArray()),
+                    miner: new Address(blockDigest.Header.Miner),
                     previousHash: prevHash,
                     timestamp: DateTimeOffset.ParseExact(
-                        rawBlock.Timestamp,
+                        blockDigest.Header.Timestamp,
                         Block<T>.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
-                    transactions: rawBlock.Transactions
-                        .Select(bytes => GetTransaction<T>(new TxId(bytes)))
+                    transactions: blockDigest.TxIds
+                        .Select(bytes => GetTransaction<T>(new TxId(bytes.ToArray())))
                 );
             }
 
@@ -105,7 +105,7 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public long? GetBlockIndex(HashDigest<SHA256> blockHash)
         {
-            return GetRawBlock(blockHash)?.Index;
+            return GetBlockDigest(blockHash)?.Header.Index;
         }
 
         /// <inheritdoc />
@@ -181,6 +181,6 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public abstract void DeleteChainId(Guid chainId);
 
-        internal abstract RawBlock? GetRawBlock(HashDigest<SHA256> blockHash);
+        internal abstract BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
     }
 }

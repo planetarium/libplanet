@@ -264,7 +264,7 @@ namespace Libplanet.Tx
         /// <seealso cref="Serialize(bool)"/>
         public static Transaction<T> Deserialize(byte[] bytes)
         {
-            var value = new Codec().Decode(bytes);
+            IValue value = new Codec().Decode(bytes);
             if (!(value is Bencodex.Types.Dictionary dict))
             {
                 throw new DecodingException(
@@ -656,7 +656,7 @@ namespace Libplanet.Tx
                     a.ByteArray).ToImmutableArray(),
                 publicKey: PublicKey.Format(false).ToImmutableArray(),
                 timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
-                actions: Actions.Select(a => a.PlainValue)
+                actions: Actions.Select(a => a.PlainValue).ToImmutableArray()
             );
 
             if (includeSign)
