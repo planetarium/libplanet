@@ -392,45 +392,7 @@ namespace Libplanet.Net
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
 #pragma warning restore MEN002 // Line is too long
-        public Task PreloadAsync(
-            TimeSpan? dialTimeout = null,
-            IProgress<PreloadState> progress = null,
-            IImmutableSet<Address> trustedStateValidators = null,
-            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
-            CancellationToken cancellationToken = default(CancellationToken)
-        )
-        {
-            return PreloadAsync(
-                render: false,
-                dialTimeout: dialTimeout,
-                progress: progress,
-                trustedStateValidators: trustedStateValidators,
-                blockDownloadFailed: blockDownloadFailed,
-                cancellationToken: cancellationToken
-            );
-        }
-
-        public async Task<BoundPeer> FindSpecificPeerAsync(
-            Address target,
-            Address searchAddress,
-            int depth,
-            BoundPeer viaPeer,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            NetMQTransport netMQTransport = (NetMQTransport)_transport;
-            return await netMQTransport.FindSpecificPeerAsync(
-                target,
-                searchAddress,
-                depth,
-                viaPeer,
-                timeout,
-                cancellationToken);
-        }
-
-        // FIXME: It is not guaranteed that states will be reported in order. see issue #436, #430
-        internal async Task PreloadAsync(
-            bool render,
+        public async Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
@@ -483,12 +445,15 @@ namespace Libplanet.Net
                             "Try to download blocks from {EndPoint}@{Address}.",
                             peerWithHeight.Peer.EndPoint,
                             peerWithHeight.Peer.Address.ToHex());
+
+                        // FIXME: It is not guaranteed that states will be reported in order.
+                        // see issue #436, #430
                         await SyncBehindsBlocksFromPeerAsync(
                             workspace,
                             peerWithHeight,
                             progress,
                             cancellationToken,
-                            render
+                            false
                         );
                     }
                     catch (Exception e)
@@ -533,14 +498,6 @@ namespace Libplanet.Net
                     // it doesn't need to receive states from other peers at all.
                     return;
                 }
-                else if (render)
-                {
-                    // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
-                    // it means states are already calculated so that it does not need to receive
-                    // calculated states from trusted peers.
-                    complete = true;
-                    return;
-                }
 
                 long height = workspace.Tip.Index;
 
@@ -552,6 +509,8 @@ namespace Libplanet.Net
                         .OrderByDescending(pair => pair.Item2)
                         .Select(pair => (pair.Item1, workspace[pair.Item2.Value].Hash));
 
+                // FIXME: It is not guaranteed that states will be reported in order.
+                // see issue #436, #430
                 long? receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
                     workspace,
                     progress,
@@ -608,6 +567,24 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        public async Task<BoundPeer> FindSpecificPeerAsync(
+            Address target,
+            Address searchAddress,
+            int depth,
+            BoundPeer viaPeer,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken)
+        {
+            NetMQTransport netMQTransport = (NetMQTransport)_transport;
+            return await netMQTransport.FindSpecificPeerAsync(
+                target,
+                searchAddress,
+                depth,
+                viaPeer,
+                timeout,
+                cancellationToken);
         }
 
         internal async Task AddPeersAsync(
