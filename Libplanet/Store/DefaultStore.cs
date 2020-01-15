@@ -385,6 +385,14 @@ namespace Libplanet.Store
                 return null;
             }
 
+            if (_compress)
+            {
+                using (var inputBuffer = new MemoryStream(bytes))
+                {
+                    bytes = Decompress(inputBuffer);
+                }
+            }
+
             Transaction<T> tx = Transaction<T>.Deserialize(bytes);
             _txCache.AddOrUpdate(txid, tx);
             return tx;
@@ -819,26 +827,71 @@ namespace Libplanet.Store
                 return null;
             }
 
-            RawBlock rawBlock;
+            IValue value;
             try
             {
-                var value = new Codec().Decode(_blocks.ReadAllBytes(path));
-                if (!(value is Bencodex.Types.Dictionary dict))
+                byte[] bytes;
+                if (_compress)
                 {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
+                    using (var f = _blocks.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read))
+                    {
+                        bytes = Decompress(f);
+                    }
+                }
+                else
+                {
+                    bytes = _blocks.ReadAllBytes(path);
                 }
 
-                rawBlock = new RawBlock(dict);
+                value = new Codec().Decode(bytes);
             }
             catch (FileNotFoundException)
             {
                 return null;
             }
 
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
+            }
+
+            RawBlock rawBlock = new RawBlock(dict);
             _blockCache.AddOrUpdate(blockHash, rawBlock);
             return rawBlock;
+        }
+
+        private static byte[] CompressBytes(byte[] input)
+        {
+            using (var buffer = new MemoryStream())
+            using (var deflate = new DeflateStream(buffer, CompressionLevel.Fastest, true))
+            {
+                deflate.Write(input, 0, input.Length);
+                deflate.Flush();
+                buffer.Flush();
+                int length = (int)buffer.Position;
+                var output = new byte[length];
+                buffer.Seek(0, SeekOrigin.Begin);
+                buffer.Read(output, 0, output.Length);
+                return output;
+            }
+        }
+
+        private static byte[] Decompress(Stream inputBuffer)
+        {
+            using (var outputBuffer = new MemoryStream())
+            using (var deflate = new DeflateStream(inputBuffer, CompressionMode.Decompress))
+            {
+                deflate.CopyTo(outputBuffer);
+                deflate.Flush();
+                outputBuffer.Flush();
+                int length = (int)outputBuffer.Position;
+                var output = new byte[length];
+                outputBuffer.Seek(0, SeekOrigin.Begin);
+                outputBuffer.Read(output, 0, output.Length);
+                return output;
+            }
         }
 
         private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
@@ -860,6 +913,11 @@ namespace Libplanet.Store
             if (fs.FileExists(path))
             {
                 return;
+            }
+
+            if (_compress)
+            {
+                contents = CompressBytes(contents);
             }
 
             // For atomicity, writes bytes into an intermediate temp file,
