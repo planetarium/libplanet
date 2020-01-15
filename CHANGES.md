@@ -44,7 +44,7 @@ To be released.
  -  `Transaction<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
  -  Removed `Block<T>.FromBencodex(byte[])` method.  [[#751]]
  -  Removed `Transaction<T>.FromBencodex(byte[])` method.  [[#751]]
- -  `Block<T>.ToBencodex()` now does not take any arguments.  [[#749], [#757]]
+ -  `Block<T>.ToBencodex()` became to take no arguments.  [[#749], [#757]]
 
 ### Backward-incompatible network protocol changes
 
@@ -81,7 +81,7 @@ To be released.
  -  Added `Block<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `Transaction<T>.Deserialize(byte[])` method.  [[#751]]
  -  Added `StoreExtension.Copy(this IStore, IStore)` extension method.  [[#753]]
- -  Added a nullable `HashDigest<SHA256>`-typed `TxHash` property which describes
+ -  Added a `HashDigest<SHA256>?`-typed `TxHash` property which digests
     all transactions in the block to `Block<T>` class.  [[#749], [#757]]
  -  Added `CryptoConfig` class.  [[#758]]
  -  Added `ICryptoBackend` class.  [[#758]]
