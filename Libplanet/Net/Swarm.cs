@@ -103,6 +103,7 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow);
             LastReceived = now;
             TxReceived = new AsyncAutoResetEvent();
+            BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
 
@@ -167,6 +168,8 @@ namespace Libplanet.Net
         internal IProtocol Protocol => (_transport as NetMQTransport)?.Protocol;
 
         internal AsyncAutoResetEvent TxReceived { get; }
+
+        internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
         internal AsyncAutoResetEvent BlockReceived { get; }
 
@@ -1177,7 +1180,10 @@ namespace Libplanet.Net
                 return;
             }
 
+            BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
+
+            // FIXME: this should be changed into total difficulty.
             if (header.Index > BlockChain.Tip.Index)
             {
                 await FetchBlocks(

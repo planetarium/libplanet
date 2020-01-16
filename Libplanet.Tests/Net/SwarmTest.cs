@@ -981,7 +981,10 @@ namespace Libplanet.Tests.Net
 
                 swarmB.BroadcastBlock(chainB[-1]);
 
+                // chainA ignores block header received because its index is shorter.
+                await swarmA.BlockHeaderReceived.WaitAsync();
                 await swarmC.BlockAppended.WaitAsync();
+                Assert.False(swarmA.BlockAppended.IsSet);
 
                 // chainB doesn't applied to chainA since chainB is shorter
                 // than chainA
