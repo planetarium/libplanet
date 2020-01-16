@@ -738,7 +738,7 @@ namespace Libplanet.Net
         private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHeaderMessage(Address, block.GetBlockHeader());
+            var message = new BlockHeaderMessage(block.GetBlockHeader());
             BroadcastMessage(except, message);
             _logger.Debug("Block broadcasting complete.");
         }
@@ -1087,7 +1087,7 @@ namespace Libplanet.Net
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 FindNextHashesChunkSize);
-                        var reply = new BlockHashes(Address, hashes)
+                        var reply = new BlockHashes(hashes)
                         {
                             Identity = getBlockHashes.Identity,
                         };
@@ -1193,7 +1193,7 @@ namespace Libplanet.Net
             }
             else
             {
-                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHeader)}.");
+                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHeaderMessage)}.");
             }
         }
 

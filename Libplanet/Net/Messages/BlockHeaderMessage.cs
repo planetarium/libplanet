@@ -6,8 +6,7 @@ namespace Libplanet.Net.Messages
 {
     internal class BlockHeaderMessage : Message
     {
-        public BlockHeaderMessage(
-            Address sender, BlockHeader header)
+        public BlockHeaderMessage(BlockHeader header)
         {
             Header = header;
         }
