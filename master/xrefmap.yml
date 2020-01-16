@@ -4403,24 +4403,22 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).Running
   nameWithType: Swarm<T>.Running
   nameWithType.vb: Swarm(Of T).Running
-- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
-  name: StartAsync(Int32, Int32, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
-  name.vb: StartAsync(Int32, Int32, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, EventHandler<Libplanet.Net.PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, EventHandler(Of Libplanet.Net.PreloadBlockDownloadFailEventArgs), CancellationToken)
-  nameWithType: Swarm<T>.StartAsync(Int32, Int32, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
-- uid: Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
-  name: StartAsync(TimeSpan, TimeSpan, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_EventHandler_Libplanet_Net_PreloadBlockDownloadFailEventArgs__CancellationToken_
-  commentId: M:Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,EventHandler{Libplanet.Net.PreloadBlockDownloadFailEventArgs},CancellationToken)
-  name.vb: StartAsync(TimeSpan, TimeSpan, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
-  fullName: Libplanet.Net.Swarm<T>.StartAsync(TimeSpan, TimeSpan, EventHandler<Libplanet.Net.PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(TimeSpan, TimeSpan, EventHandler(Of Libplanet.Net.PreloadBlockDownloadFailEventArgs), CancellationToken)
-  nameWithType: Swarm<T>.StartAsync(TimeSpan, TimeSpan, EventHandler<PreloadBlockDownloadFailEventArgs>, CancellationToken)
-  nameWithType.vb: Swarm(Of T).StartAsync(TimeSpan, TimeSpan, EventHandler(Of PreloadBlockDownloadFailEventArgs), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,CancellationToken)
+  name: StartAsync(Int32, Int32, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_System_Int32_System_Int32_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(System.Int32,System.Int32,CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(System.Int32, System.Int32, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(System.Int32, System.Int32, CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(Int32, Int32, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(Int32, Int32, CancellationToken)
+- uid: Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,CancellationToken)
+  name: StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_TimeSpan_TimeSpan_CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.StartAsync(TimeSpan,TimeSpan,CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  nameWithType: Swarm<T>.StartAsync(TimeSpan, TimeSpan, CancellationToken)
+  nameWithType.vb: Swarm(Of T).StartAsync(TimeSpan, TimeSpan, CancellationToken)
 - uid: Libplanet.Net.Swarm`1.StartAsync*
   name: StartAsync
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_StartAsync_

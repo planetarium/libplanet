@@ -190,6 +190,8 @@ continuous.  [<a href="https://github.com/planetarium/libplanet/pull/732">#732</
 relaying proxy concurrently.  [<a href="https://github.com/planetarium/libplanet/pull/744">#744</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to throw <code>InvalidGenesisBlockException</code> when receiving
 block from the nodes that have a different genesis block.  [<a href="https://github.com/planetarium/libplanet/pull/746">#746</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to distinguish the starting stages clearly.  In other words,
+<code>Swarm&lt;T&gt;.StartAsync()</code> became not to call <code>Swarm&lt;T&gt;.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/735">#735</a>, <a href="https://github.com/planetarium/libplanet/pull/760">#760</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
