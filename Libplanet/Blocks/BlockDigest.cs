@@ -11,6 +11,10 @@ namespace Libplanet.Blocks
     /// </summary>
     internal readonly struct BlockDigest
     {
+        public static readonly byte[] HeaderKey = { 0x48 }; // 'H'
+
+        public static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
+
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
             Header = header;
@@ -19,9 +23,11 @@ namespace Libplanet.Blocks
 
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
-            Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>("header"));
-            TxIds = dict.GetValue<Bencodex.Types.List>("transaction_ids")
-                .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray();
+            Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
+            TxIds = dict.ContainsKey((Binary)TransactionIdsKey)
+                ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
+                    .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()
+                : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
         public BlockHeader Header { get; }
@@ -49,8 +55,14 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add("header", Header.ToBencodex())
-                .Add("transaction_ids", TxIds.Select(txId => (IValue)(Binary)txId.ToArray()));
+                .Add(HeaderKey, Header.ToBencodex());
+
+            if (TxIds.Any())
+            {
+                dict = dict.Add(
+                    TransactionIdsKey,
+                    TxIds.Select(txId => (IValue)(Binary)txId.ToArray()));
+            }
 
             return dict;
         }

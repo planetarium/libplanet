@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Bencodex.Types;
 
@@ -6,13 +6,13 @@ namespace Libplanet.Blocks
 {
     internal readonly struct RawBlock
     {
-        public const string HeaderKey = "header";
+        public static readonly byte[] HeaderKey = { 0x48 }; // 'H'
 
-        public const string TransactionsKey = "transactions";
+        public static readonly byte[] TransactionsKey = { 0x54 }; // 'T'
 
         public RawBlock(
             BlockHeader header,
-            IEnumerable<byte[]> transactions)
+            ImmutableArray<ImmutableArray<byte>> transactions)
         {
             Header = header;
             Transactions = transactions;
@@ -21,21 +21,27 @@ namespace Libplanet.Blocks
         public RawBlock(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
-            Transactions = dict.GetValue<Bencodex.Types.List>(TransactionsKey)
-                .Select(tx => (byte[])(Binary)tx);
+            Transactions = dict.ContainsKey((Binary)TransactionsKey)
+                ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
+                    .Select(tx => ((Binary)tx).ToImmutableArray()).ToImmutableArray()
+                : ImmutableArray<ImmutableArray<byte>>.Empty;
         }
 
         public BlockHeader Header { get; }
 
-        public IEnumerable<byte[]> Transactions { get; }
+        public ImmutableArray<ImmutableArray<byte>> Transactions { get; }
 
         public Bencodex.Types.Dictionary ToBencodex()
         {
-            var transactions = new Bencodex.Types.List(
-                Transactions.Select(tx => (IValue)(Binary)tx));
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add(HeaderKey, Header.ToBencodex())
-                .Add(TransactionsKey, (IValue)transactions);
+                .Add(HeaderKey, Header.ToBencodex());
+
+            if (Transactions.Any())
+            {
+                var transactions = new Bencodex.Types.List(
+                        Transactions.Select(tx => (IValue)(Binary)tx.ToArray()));
+                dict = dict.Add(TransactionsKey, (IValue)transactions);
+            }
 
             return dict;
         }

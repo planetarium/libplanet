@@ -6,6 +6,22 @@ namespace Libplanet.Blocks
 {
     internal readonly struct BlockHeader
     {
+        public static readonly byte[] IndexKey = { 0x69 }; // 'i'
+
+        public static readonly byte[] TimestampKey = { 0x74 }; // 't'
+
+        public static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
+
+        public static readonly byte[] NonceKey = { 0x6e }; // 'n'
+
+        public static readonly byte[] MinerKey = { 0x6d }; // 'm'
+
+        public static readonly byte[] PreviousHashKey = { 0x70 }; // 'p'
+
+        public static readonly byte[] TxHashKey = { 0x78 }; // 'x'
+
+        public static readonly byte[] HashKey = { 0x68 }; // 'h'
+
         public BlockHeader(
             long index,
             string timestamp,
@@ -28,25 +44,25 @@ namespace Libplanet.Blocks
 
         public BlockHeader(Bencodex.Types.Dictionary dict)
         {
-            Index = dict.GetValue<Integer>("index");
-            Timestamp = dict.GetValue<Text>("timestamp");
-            Difficulty = dict.GetValue<Integer>("difficulty");
-            Nonce = dict.GetValue<Binary>("nonce").ToImmutableArray();
+            Index = dict.GetValue<Integer>(IndexKey);
+            Timestamp = dict.GetValue<Text>(TimestampKey);
+            Difficulty = dict.GetValue<Integer>(DifficultyKey);
+            Nonce = dict.GetValue<Binary>(NonceKey).ToImmutableArray();
 
-            Miner = dict.ContainsKey((Text)"reward_beneficiary")
-                ? dict.GetValue<Binary>("reward_beneficiary").ToImmutableArray()
+            Miner = dict.ContainsKey((Binary)MinerKey)
+                ? dict.GetValue<Binary>(MinerKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            PreviousHash = dict.ContainsKey((Text)"previous_hash")
-                ? dict.GetValue<Binary>("previous_hash").ToImmutableArray()
+            PreviousHash = dict.ContainsKey((Binary)PreviousHashKey)
+                ? dict.GetValue<Binary>(PreviousHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            TxHash = dict.ContainsKey((Text)"transaction_fingerprint")
-                ? dict.GetValue<Binary>("transaction_fingerprint").ToImmutableArray()
+            TxHash = dict.ContainsKey((Binary)TxHashKey)
+                ? dict.GetValue<Binary>(TxHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            Hash = dict.ContainsKey((Text)"hash")
-                ? dict.GetValue<Binary>("hash").ToImmutableArray()
+            Hash = dict.ContainsKey((Binary)HashKey)
+                ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }
 
@@ -69,25 +85,25 @@ namespace Libplanet.Blocks
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty
-                .Add("index", Index)
-                .Add("timestamp", Timestamp)
-                .Add("difficulty", Difficulty)
-                .Add("nonce", Nonce.ToArray())
-                .Add("hash", Hash.ToArray());
+                .Add(IndexKey, Index)
+                .Add(TimestampKey, Timestamp)
+                .Add(DifficultyKey, Difficulty)
+                .Add(NonceKey, Nonce.ToArray())
+                .Add(HashKey, Hash.ToArray());
 
             if (Miner.Any())
             {
-                dict = dict.Add("reward_beneficiary", Miner.ToArray());
+                dict = dict.Add(MinerKey, Miner.ToArray());
             }
 
             if (PreviousHash.Any())
             {
-                dict = dict.Add("previous_hash", PreviousHash.ToArray());
+                dict = dict.Add(PreviousHashKey, PreviousHash.ToArray());
             }
 
             if (TxHash.Any())
             {
-                dict = dict.Add("transaction_fingerprint", TxHash.ToArray());
+                dict = dict.Add(TxHashKey, TxHash.ToArray());
             }
 
             return dict;

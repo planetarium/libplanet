@@ -133,7 +133,7 @@ namespace Libplanet.Blocks
                     TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
-                    .Select(Transaction<T>.Deserialize)
+                    .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
                     .ToList()
             )
         {
@@ -506,7 +506,8 @@ namespace Libplanet.Blocks
             // For consistency, order transactions by its id.
             return new RawBlock(
                 header: GetBlockHeader(),
-                transactions: Transactions.OrderBy(tx => tx.Id).Select(tx => tx.Serialize(true)));
+                transactions: Transactions.OrderBy(tx => tx.Id)
+                    .Select(tx => tx.Serialize(true).ToImmutableArray()).ToImmutableArray());
         }
 
         private byte[] SerializeForHash()

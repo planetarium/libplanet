@@ -1802,7 +1802,7 @@ namespace Libplanet.Tests.Net
                         Assert.NotNull(state);
                         Assert.Equal(
                             $"({chainType}) Item0.{i},Item1.{i},Item2.{i}",
-                            $"({chainType}) {state}"
+                            $"({chainType}) {((Text)state).Value}"
                         );
                     }
 
@@ -2090,7 +2090,7 @@ namespace Libplanet.Tests.Net
                         Assert.NotNull(state);
                         Assert.Equal(
                             $"({chainType}) Item0.{i},Item1.{i},Item2.{i},Item3.{i},Item9.{i}",
-                            $"({chainType}) {state}"
+                            $"({chainType}) {((Text)state).Value}"
                         );
                     }
 
@@ -2314,8 +2314,8 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(receiverChainId, receiverChain.Id);
                 Assert.Equal(blockArray[0], receiverChain.Tip);
                 Assert.Equal(
-                    string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
-                    receiverChain.GetState(address)?.ToString()
+                    (Text)string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item0.{j}")),
+                    receiverChain.GetState(address)
                 );
             }
             else
@@ -2323,13 +2323,13 @@ namespace Libplanet.Tests.Net
                 Assert.NotEqual(receiverChainId, receiverChain.Id);
                 Assert.Equal(minerChain.Tip, receiverChain.Tip);
                 Assert.Equal(
-                    string.Join(
+                    (Text)string.Join(
                         ",",
                         Enumerable.Range(0, 20).Select(i =>
                             string.Join(",", Enumerable.Range(0, 5).Select(j => $"Item{i}.{j}"))
                         )
                     ),
-                    receiverChain.GetState(address).ToString()
+                    receiverChain.GetState(address)
                 );
             }
         }
