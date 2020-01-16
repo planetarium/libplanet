@@ -92,10 +92,18 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return bytes;
         }
 
-        public static Block<T> MineGenesis<T>(Address? miner = null)
+        public static Block<T> MineGenesis<T>(
+            Address? miner = null,
+            IEnumerable<Transaction<T>> transactions = null
+        )
             where T : IAction, new()
         {
             var timestamp = new DateTimeOffset(2018, 11, 29, 0, 0, 0, TimeSpan.Zero);
+            if (transactions is null)
+            {
+                transactions = new List<Transaction<T>>();
+            }
+
             return new Block<T>(
                 index: 0,
                 difficulty: 0,
@@ -103,7 +111,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 miner: miner ?? GenesisMinerAddress,
                 previousHash: null,
                 timestamp: timestamp,
-                transactions: new List<Transaction<T>>()
+                transactions: transactions
             );
         }
 

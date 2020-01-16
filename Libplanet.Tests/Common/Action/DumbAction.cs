@@ -40,6 +40,9 @@ namespace Libplanet.Tests.Common.Action
             RenderRecords { get; } =
                 new AsyncLocal<ImmutableList<RenderRecord>>();
 
+        public static AsyncLocal<ImmutableList<ExecuteRecord>>
+            ExecuteRecords { get; } = new AsyncLocal<ImmutableList<ExecuteRecord>>();
+
         public static AsyncLocal<ImmutableList<(Address, string)>>
             RehearsalRecords { get; } =
                 new AsyncLocal<ImmutableList<(Address, string)>>();
@@ -131,7 +134,21 @@ namespace Libplanet.Tests.Common.Action
                 );
             }
 
-            return states.SetState(TargetAddress, (Text)items);
+            IAccountStateDelta nextState = states.SetState(TargetAddress, (Text)items);
+
+            if (ExecuteRecords.Value is null)
+            {
+                ExecuteRecords.Value = ImmutableList<ExecuteRecord>.Empty;
+            }
+
+            ExecuteRecords.Value = ExecuteRecords.Value.Add(new ExecuteRecord()
+            {
+                Action = this,
+                NextState = nextState,
+                Rehearsal = context.Rehearsal,
+            });
+
+            return nextState;
         }
 
         public void Render(

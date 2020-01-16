@@ -88,7 +88,25 @@ namespace Libplanet.Blockchain
             IBlockPolicy<T> policy,
             IStore store,
             Guid id,
-            Block<T> genesisBlock)
+            Block<T> genesisBlock
+        )
+            : this(
+                policy,
+                store,
+                id,
+                genesisBlock,
+                false
+            )
+        {
+        }
+
+        private BlockChain(
+            IBlockPolicy<T> policy,
+            IStore store,
+            Guid id,
+            Block<T> genesisBlock,
+            bool inFork
+        )
         {
             Id = id;
             Policy = policy;
@@ -109,7 +127,12 @@ namespace Libplanet.Blockchain
 
             if (Count == 0)
             {
-                Append(genesisBlock);
+                Append(
+                    genesisBlock,
+                    currentTime: genesisBlock.Timestamp,
+                    renderActions: !inFork,
+                    evaluateActions: !inFork
+                );
             }
             else if (!Genesis.Equals(genesisBlock))
             {
@@ -1032,7 +1055,7 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
-            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis);
+            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis, true);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +

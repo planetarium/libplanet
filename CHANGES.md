@@ -148,6 +148,8 @@ To be released.
     an IPv6 address.  [[#744]]
  -  Fixed a bug where `DefaultStore` had invalid state references cache after fork.
     [[#759]]
+ -  Fixed a bug where `BlockChain<T>` had rendered and evaluated actions in
+    the genesis block during forking.  [[#763]]
 
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
@@ -193,6 +195,7 @@ To be released.
 [#758]: https://github.com/planetarium/libplanet/pull/758
 [#759]: https://github.com/planetarium/libplanet/pull/759
 [#760]: https://github.com/planetarium/libplanet/pull/760
+[#763]: https://github.com/planetarium/libplanet/pull/763
 
 
 Version 0.7.0
