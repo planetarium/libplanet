@@ -394,6 +394,7 @@ namespace Libplanet.Tests.Net
                 Assert.Empty(swarmB.Peers);
 
                 await StartAsync(swarmA);
+                await Task.Delay(100);
                 Assert.Contains(swarmA.AsPeer, swarmB.Peers);
             }
             finally
@@ -1403,7 +1404,7 @@ namespace Libplanet.Tests.Net
                 var trustedStateValidators = new[] { minerSwarm.Address }.ToImmutableHashSet();
 
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedStateValidators);
-                await receiverSwarm.PreloadAsync(true);
+                await receiverSwarm.PreloadAsync();
                 var state = receiverChain.GetState(address);
 
                 Assert.Equal((Text)"foo,bar,baz", state);
@@ -2412,7 +2413,7 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(miner2, miner1.AsPeer);
                 await BootstrapAsync(receiver, miner1.AsPeer);
 
-                var t = receiver.PreloadAsync(render: true);
+                var t = receiver.PreloadAsync();
                 await miner1.BlockChain.MineBlock(miner1.Address);
                 await miner2.BlockChain.MineBlock(miner2.Address);
                 Block<Sleep> latest = await miner2.BlockChain.MineBlock(miner2.Address);
@@ -2765,7 +2766,7 @@ namespace Libplanet.Tests.Net
         )
             where T : IAction, new()
         {
-            Task task = swarm.StartAsync(200, 200, null, cancellationToken);
+            Task task = swarm.StartAsync(200, 200, cancellationToken);
             await swarm.WaitForRunningAsync();
             return task;
         }

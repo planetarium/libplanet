@@ -223,13 +223,11 @@ namespace Libplanet.Net
         public async Task StartAsync(
             int millisecondsDialTimeout = 15000,
             int millisecondsBroadcastTxInterval = 5000,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await StartAsync(
                 TimeSpan.FromMilliseconds(millisecondsDialTimeout),
                 TimeSpan.FromMilliseconds(millisecondsBroadcastTxInterval),
-                preloadBlockDownloadFailed: preloadBlockDownloadFailed,
                 cancellationToken
             );
         }
@@ -242,13 +240,7 @@ namespace Libplanet.Net
         /// </param>
         /// <param name="broadcastTxInterval">The time period of exchange of staged transactions.
         /// </param>
-        /// <param name="preloadBlockDownloadFailed">
-        /// The <see cref="EventHandler" /> triggered when
-        /// <see cref="PreloadAsync(TimeSpan?, IProgress{PreloadState}, IImmutableSet{Address},
-        /// EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)" />
-        /// fails to download blocks.
-        /// </param>
-        /// /// <param name="cancellationToken">
+        /// <param name="cancellationToken">
         /// A cancellation token used to propagate notification that this
         /// operation should be canceled.
         /// </param>
@@ -267,7 +259,6 @@ namespace Libplanet.Net
         public async Task StartAsync(
             TimeSpan dialTimeout,
             TimeSpan broadcastTxInterval,
-            EventHandler<PreloadBlockDownloadFailEventArgs> preloadBlockDownloadFailed = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var tasks = new List<Task>();
@@ -279,15 +270,6 @@ namespace Libplanet.Net
 
             _logger.Debug("Starting swarm...");
             _logger.Debug("Peer information : {Peer}", AsPeer);
-
-            using (await _runningMutex.LockAsync())
-            {
-                await PreloadAsync(
-                    dialTimeout: dialTimeout,
-                    render: true,
-                    cancellationToken: _cancellationToken
-                );
-            }
 
             try
             {
@@ -407,53 +389,10 @@ namespace Libplanet.Net
         /// A task without value.
         /// You only can <c>await</c> until the method is completed.
         /// </returns>
-        /// <remarks>This does not render downloaded <see cref="IAction"/>s, but fills states only.
-        /// If you want to render all <see cref="IAction"/>s from the genesis block to the recent
-        /// blocks use
-        /// <see cref="StartAsync(TimeSpan, TimeSpan, EventHandler{PreloadBlockDownloadFailEventArgs}, CancellationToken)"/>
-        /// method instead.</remarks>
         /// <exception cref="AggregateException">Thrown when the given the block downloading is
         /// failed and if <paramref name="blockDownloadFailed "/> is <c>null</c>.</exception>
 #pragma warning restore MEN002 // Line is too long
-        public Task PreloadAsync(
-            TimeSpan? dialTimeout = null,
-            IProgress<PreloadState> progress = null,
-            IImmutableSet<Address> trustedStateValidators = null,
-            EventHandler<PreloadBlockDownloadFailEventArgs> blockDownloadFailed = null,
-            CancellationToken cancellationToken = default(CancellationToken)
-        )
-        {
-            return PreloadAsync(
-                render: false,
-                dialTimeout: dialTimeout,
-                progress: progress,
-                trustedStateValidators: trustedStateValidators,
-                blockDownloadFailed: blockDownloadFailed,
-                cancellationToken: cancellationToken
-            );
-        }
-
-        public async Task<BoundPeer> FindSpecificPeerAsync(
-            Address target,
-            Address searchAddress,
-            int depth,
-            BoundPeer viaPeer,
-            TimeSpan? timeout,
-            CancellationToken cancellationToken)
-        {
-            NetMQTransport netMQTransport = (NetMQTransport)_transport;
-            return await netMQTransport.FindSpecificPeerAsync(
-                target,
-                searchAddress,
-                depth,
-                viaPeer,
-                timeout,
-                cancellationToken);
-        }
-
-        // FIXME: It is not guaranteed that states will be reported in order. see issue #436, #430
-        internal async Task PreloadAsync(
-            bool render,
+        public async Task PreloadAsync(
             TimeSpan? dialTimeout = null,
             IProgress<PreloadState> progress = null,
             IImmutableSet<Address> trustedStateValidators = null,
@@ -506,12 +445,15 @@ namespace Libplanet.Net
                             "Try to download blocks from {EndPoint}@{Address}.",
                             peerWithHeight.Peer.EndPoint,
                             peerWithHeight.Peer.Address.ToHex());
+
+                        // FIXME: It is not guaranteed that states will be reported in order.
+                        // see issue #436, #430
                         await SyncBehindsBlocksFromPeerAsync(
                             workspace,
                             peerWithHeight,
                             progress,
                             cancellationToken,
-                            render
+                            false
                         );
                     }
                     catch (Exception e)
@@ -556,14 +498,6 @@ namespace Libplanet.Net
                     // it doesn't need to receive states from other peers at all.
                     return;
                 }
-                else if (render)
-                {
-                    // If it's already rendered by SyncBehindsBlocksFromPeersAsync() method
-                    // it means states are already calculated so that it does not need to receive
-                    // calculated states from trusted peers.
-                    complete = true;
-                    return;
-                }
 
                 long height = workspace.Tip.Index;
 
@@ -575,6 +509,8 @@ namespace Libplanet.Net
                         .OrderByDescending(pair => pair.Item2)
                         .Select(pair => (pair.Item1, workspace[pair.Item2.Value].Hash));
 
+                // FIXME: It is not guaranteed that states will be reported in order.
+                // see issue #436, #430
                 long? receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
                     workspace,
                     progress,
@@ -631,6 +567,24 @@ namespace Libplanet.Net
 
                 cancellationToken.ThrowIfCancellationRequested();
             }
+        }
+
+        public async Task<BoundPeer> FindSpecificPeerAsync(
+            Address target,
+            Address searchAddress,
+            int depth,
+            BoundPeer viaPeer,
+            TimeSpan? timeout,
+            CancellationToken cancellationToken)
+        {
+            NetMQTransport netMQTransport = (NetMQTransport)_transport;
+            return await netMQTransport.FindSpecificPeerAsync(
+                target,
+                searchAddress,
+                depth,
+                viaPeer,
+                timeout,
+                cancellationToken);
         }
 
         internal async Task AddPeersAsync(
