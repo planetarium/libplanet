@@ -220,7 +220,7 @@ namespace Libplanet.Tests.Net
                 Assert.Contains(swarmB.AsPeer, seed.Peers);
                 Assert.Contains(seed.AsPeer, swarmB.Peers);
 
-                seed.BroadcastBlocks(new[] { chainWithBlocks.Tip });
+                seed.BroadcastBlock(chainWithBlocks.Tip);
 
                 await swarmB.BlockAppended.WaitAsync();
 
@@ -432,7 +432,7 @@ namespace Libplanet.Tests.Net
                                 "Block mined. [Node: {0}, Block: {1}]",
                                 swarm.Address,
                                 block.Hash);
-                            swarm.BroadcastBlocks(new[] { block });
+                            swarm.BroadcastBlock(block);
                         }
                         catch (OperationCanceledException)
                         {
@@ -444,7 +444,7 @@ namespace Libplanet.Tests.Net
                         }
                     }
 
-                    swarm.BroadcastBlocks(new[] { chain[-1] });
+                    swarm.BroadcastBlock(chain[-1]);
                     Log.Debug("Mining complete.");
                 });
             }
@@ -979,16 +979,15 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
                 await BootstrapAsync(swarmC, swarmA.AsPeer);
 
-                swarmB.BroadcastBlocks(new[] { chainB[-1] });
+                swarmB.BroadcastBlock(chainB[-1]);
 
-                await swarmA.BlockReceived.WaitAsync();
                 await swarmC.BlockAppended.WaitAsync();
 
                 // chainB doesn't applied to chainA since chainB is shorter
                 // than chainA
                 Assert.NotEqual(chainB, chainA);
 
-                swarmA.BroadcastBlocks(new[] { chainA[-1] });
+                swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
                 await swarmC.BlockAppended.WaitAsync();
@@ -1031,14 +1030,14 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmA, swarmB.AsPeer);
 
                 Task t = swarmB.BlockAppended.WaitAsync();
-                swarmA.BroadcastBlocks(new[] { block1 });
+                swarmA.BroadcastBlock(block1);
                 await t;
                 // Make sure that FillBlocksAsync did not run.
                 Assert.False(swarmB.FillBlocksAsyncStarted.IsSet);
                 Assert.Equal(chainB.BlockHashes, new[] { chainA[0].Hash, chainA[1].Hash });
 
                 t = swarmB.BlockAppended.WaitAsync();
-                swarmA.BroadcastBlocks(new[] { block2 });
+                swarmA.BroadcastBlock(block2);
                 await t;
                 // Make sure that FillBlocksAsync is ran.
                 Assert.True(swarmB.FillBlocksAsyncStarted.IsSet);
@@ -1118,7 +1117,7 @@ namespace Libplanet.Tests.Net
                     policy.GetNextBlockDifficulty(blockChain));
                 blockChain.Append(block2, DateTimeOffset.MinValue.AddSeconds(8), true, false);
                 Log.Debug("Ready to broadcast blocks.");
-                minerSwarm.BroadcastBlocks(new[] { block2 });
+                minerSwarm.BroadcastBlock(block2);
                 await receiverSwarm.BlockAppended.WaitAsync();
 
                 Assert.Equal(3, _blockchains[0].Count);
@@ -1150,14 +1149,14 @@ namespace Libplanet.Tests.Net
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
 
                 await chainA.MineBlock(_fx1.Address1);
-                swarmA.BroadcastBlocks(new[] { chainA[-1] });
+                swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
 
                 Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
 
                 await chainA.MineBlock(_fx1.Address1);
-                swarmA.BroadcastBlocks(new[] { chainA[-1] });
+                swarmA.BroadcastBlock(chainA[-1]);
 
                 await swarmB.BlockAppended.WaitAsync();
 
@@ -1193,13 +1192,13 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
 
                 await BootstrapAsync(swarmB, swarmA.AsPeer);
-                swarmA.BroadcastBlocks(new[] { chainA[-1] });
+                swarmA.BroadcastBlock(chainA[-1]);
                 await swarmB.BlockAppended.WaitAsync();
 
                 Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
 
                 CancellationTokenSource cts = new CancellationTokenSource();
-                swarmA.BroadcastBlocks(new[] { chainA[-1] });
+                swarmA.BroadcastBlock(chainA[-1]);
                 Task t = swarmB.BlockAppended.WaitAsync(cts.Token);
 
                 // Actually, previous code may pass this test if message is
@@ -2362,7 +2361,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarm2);
                 await swarm1.AddPeersAsync(new[] { swarm2.AsPeer }, null);
 
-                swarm2.BroadcastBlocks(new[] { block3 });
+                swarm2.BroadcastBlock(block3);
                 await swarm1.FillBlocksAsyncFailed.WaitAsync();
 
                 List<Guid> chainIds = fx1.Store.ListChainIds().ToList();
@@ -2417,7 +2416,7 @@ namespace Libplanet.Tests.Net
                 await miner1.BlockChain.MineBlock(miner1.Address);
                 await miner2.BlockChain.MineBlock(miner2.Address);
                 Block<Sleep> latest = await miner2.BlockChain.MineBlock(miner2.Address);
-                miner2.BroadcastBlocks(new[] { latest });
+                miner2.BroadcastBlock(latest);
                 await t;
 
                 Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
@@ -2467,21 +2466,21 @@ namespace Libplanet.Tests.Net
                 // Broadcast SwarmA's first block.
                 var b1 = await minerChainA.MineBlock(_fx1.Address1);
                 await minerChainB.MineBlock(_fx1.Address1);
-                minerSwarmA.BroadcastBlocks(new[] { b1 });
+                minerSwarmA.BroadcastBlock(b1);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 Assert.Equal(receiverChain.Tip, minerChainA.Tip);
 
                 // Broadcast SwarmB's second block.
                 await minerChainA.MineBlock(_fx1.Address1);
                 var b2 = await minerChainB.MineBlock(_fx1.Address1);
-                minerSwarmB.BroadcastBlocks(new[] { b2 });
+                minerSwarmB.BroadcastBlock(b2);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 Assert.Equal(receiverChain.Tip, minerChainB.Tip);
 
                 // Broadcast SwarmA's third block.
                 var b3 = await minerChainA.MineBlock(_fx1.Address1);
                 await minerChainB.MineBlock(_fx1.Address1);
-                minerSwarmA.BroadcastBlocks(new[] { b3 });
+                minerSwarmA.BroadcastBlock(b3);
                 await receiverSwarm.BlockAppended.WaitAsync();
                 Assert.Equal(receiverChain.Tip, minerChainA.Tip);
             }
@@ -2518,7 +2517,7 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarmB);
                 await BootstrapAsync(swarmA, swarmB.AsPeer);
 
-                swarmA.BroadcastBlocks(new[] { block });
+                swarmA.BroadcastBlock(block);
                 await swarmB.FillBlocksAsyncStarted.WaitAsync();
                 await StopAsync(swarmA);
                 await swarmB.FillBlocksAsyncFailed.WaitAsync();
@@ -2577,7 +2576,7 @@ namespace Libplanet.Tests.Net
                 Task.WaitAll(new[]
                 {
                     Task.Run(() => swarmC.BlockAppended.Wait()),
-                    Task.Run(() => swarmA.BroadcastBlocks(new[] { block })),
+                    Task.Run(() => swarmA.BroadcastBlock(block)),
                 });
 
                 Assert.NotEqual(genesisChainA.Genesis, genesisChainB.Genesis);

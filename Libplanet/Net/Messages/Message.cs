@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using NetMQ;
 
@@ -77,6 +78,11 @@ namespace Libplanet.Net.Messages
             /// Contains the calculated recent states and state references.
             /// </summary>
             RecentStates = 0x0c,
+
+            /// <summary>
+            /// Message containing a single <see cref="BlockHeader"/>.
+            /// </summary>
+            BlockHeaderMessage = 0x0d,
         }
 
         public byte[] Identity { get; set; }
@@ -118,6 +124,7 @@ namespace Libplanet.Net.Messages
                 { MessageType.Neighbors, typeof(Neighbors) },
                 { MessageType.GetRecentStates, typeof(GetRecentStates) },
                 { MessageType.RecentStates, typeof(RecentStates) },
+                { MessageType.BlockHeaderMessage, typeof(BlockHeaderMessage) },
             };
 
             if (!types.TryGetValue(rawType, out Type type))

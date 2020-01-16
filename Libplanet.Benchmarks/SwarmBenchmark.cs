@@ -176,7 +176,7 @@ namespace Libplanet.Benchmarks
         public async Task BroadcastBlock()
         {
             Task t = _swarms[SwarmNumber - 1].BlockAppended.WaitAsync();
-            _swarms[0].BroadcastBlocks(new [] { _blockChains[0][-1] });
+            _swarms[0].BroadcastBlock(_blockChains[0][-1]);
             await t;
         }
 
@@ -184,7 +184,7 @@ namespace Libplanet.Benchmarks
         public async Task BroadcastBlockWithoutFill()
         {
             Task t = _swarms[SwarmNumber - 1].BlockAppended.WaitAsync();
-            _swarms[0].BroadcastBlocks(new [] { _blockChains[0][1] });
+            _swarms[0].BroadcastBlock(_blockChains[0][1]);
             await t;
         }
 
