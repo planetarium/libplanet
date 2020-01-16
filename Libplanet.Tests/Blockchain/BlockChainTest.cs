@@ -810,6 +810,43 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async Task ForkShouldSkipExecuteAndRenderGenesis()
+        {
+            Address stateKey = _fx.Address1;
+            Address miner = _fx.Address2;
+            var action = new DumbAction(stateKey, "genesis");
+            var genesis = TestUtils.MineGenesis(
+                transactions: new[]
+                {
+                    _fx.MakeTransaction(
+                        new[] { action }
+                    ),
+                }
+            );
+
+            using (var store = new DefaultStore(null))
+            {
+                store.PutBlock(genesis);
+                var blockChain = new BlockChain<DumbAction>(
+                    _blockChain.Policy,
+                    store,
+                    genesis
+                );
+
+                Assert.Single(DumbAction.RenderRecords.Value);
+                Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
+
+                await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
+                await blockChain.MineBlock(miner, DateTimeOffset.UtcNow);
+
+                blockChain.Fork(blockChain.Tip.Hash);
+
+                Assert.Single(DumbAction.RenderRecords.Value);
+                Assert.Single(DumbAction.ExecuteRecords.Value.Where(r => !r.Rehearsal));
+            }
+        }
+
+        [Fact]
         public void DetectInvalidTxNonce()
         {
             var privateKey = new PrivateKey();
