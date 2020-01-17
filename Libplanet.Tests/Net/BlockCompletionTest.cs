@@ -11,6 +11,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Net;
 using Libplanet.Tests.Common.Action;
+using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
@@ -117,7 +118,7 @@ namespace Libplanet.Tests.Net
                 window
             );
             var logs = new ConcurrentBag<(int, ImmutableArray<HashDigest<SHA256>>)>();
-            var ev = new AutoResetEvent(false);
+            var ev = new AsyncAutoResetEvent(false);
             var bg = Task.Run(async () =>
             {
                 int i = 0;
@@ -151,7 +152,7 @@ namespace Libplanet.Tests.Net
 
             // Chunk: 2, 3, 4, 5, 6
             _logger.Verbose("Waiting demand #2-6...");
-            ev.WaitOne();
+            await ev.WaitAsync();
             _logger.Verbose("Demand #2-6 processed.");
             Assert.Single(logs);
             Assert.True(logs.TryTake(out var log));
@@ -169,7 +170,7 @@ namespace Libplanet.Tests.Net
 
             // Chunk: 7, 8, 9, 10, 11
             _logger.Verbose("Waiting demand #7-11...");
-            ev.WaitOne();
+            await ev.WaitAsync();
             _logger.Verbose("Demand #7-11 processed.");
             Assert.Single(logs);
             Assert.True(logs.TryTake(out log));
@@ -187,7 +188,7 @@ namespace Libplanet.Tests.Net
 
             // Chunk: 12, 13, 14
             _logger.Verbose("Waiting demand #12-14...");
-            ev.WaitOne();
+            await ev.WaitAsync();
             _logger.Verbose("Demand #12-14 processed.");
             Assert.Single(logs);
             Assert.True(logs.TryTake(out log));
