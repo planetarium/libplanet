@@ -79,8 +79,15 @@ namespace Libplanet.Net
                             _started && _demands.IsEmpty && _satisfiedBlocks.All(kv =>
                                 kv.Value || chunk.Contains(kv.Key))))
                     {
+                        _logger.Verbose("_satisfiedBlocks.Keys @{keys}", _satisfiedBlocks.Keys);
+                        _logger.Verbose(
+                            "_satisfiedBlocks.Values @{values}",
+                            _satisfiedBlocks.Values
+                        );
+                        _logger.Verbose("chunks: @{chunk}", chunk);
                         await yield.ReturnAsync(chunk.ToImmutableArray());
                         _logger.Verbose("A chunk of {Window} demands made.", _window);
+
                         chunk.Clear();
                     }
                     else
