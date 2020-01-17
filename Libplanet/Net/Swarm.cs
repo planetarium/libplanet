@@ -694,6 +694,7 @@ namespace Libplanet.Net
                         }
 
                         workspace.Swap(fork, render: false);
+                        wId = fork.Id;
                     }
                     else
                     {
