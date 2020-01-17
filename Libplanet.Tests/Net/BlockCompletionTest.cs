@@ -38,7 +38,7 @@ namespace Libplanet.Tests.Net
             _output = output;
         }
 
-        [Fact(Timeout = Timeout)]
+        [Fact(Timeout = Timeout * 3)]
         public async Task PeerPool()
         {
             const int tasks = 50;
@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Net
             var random = new System.Random();
             Task[] spawns = Enumerable.Range(0, tasks).Select(i =>
             {
-                int sleep = random.Next(50, 500);
+                int sleep = random.Next(5, 50);
                 return pool.SpawnAsync(async peerId =>
                 {
                     try
@@ -121,6 +121,7 @@ namespace Libplanet.Tests.Net
             var ev = new AsyncAutoResetEvent(false);
             var bg = Task.Run(async () =>
             {
+                await Task.Delay(100);
                 int i = 0;
                 await bc.EnumerateChunks().ForEachAsync(hashes =>
                 {
@@ -141,23 +142,22 @@ namespace Libplanet.Tests.Net
                 });
             });
 
-            // Demand: 2, 3, 4, 5
-            for (int i = initialHeight; i < initialHeight + window - 1; ++i)
-            {
-                bc.Demand(fixture[i].Hash);
-            }
-
-            // Demand: 6
-            bc.Demand(fixture[initialHeight + window - 1].Hash);
+            // Demand: 2, 3, 4, 5, 6
+            bc.Demand(fixture.Skip(initialHeight).Take(5).Select(b => b.Hash));
 
             // Chunk: 2, 3, 4, 5, 6
             _logger.Verbose("Waiting demand #2-6...");
-            await ev.WaitAsync();
+
+            // TODO change waiting condition
+            await Task.Delay(1000);
             _logger.Verbose("Demand #2-6 processed.");
-            Assert.Single(logs);
-            Assert.True(logs.TryTake(out var log));
-            Assert.Equal(0, log.Item1);
-            Assert.Equal(fixture.Skip(initialHeight).Take(window).Select(b => b.Hash), log.Item2);
+            var actual = new List<HashDigest<SHA256>>();
+            while (logs.TryTake(out var log))
+            {
+                actual.AddRange(log.Item2);
+            }
+
+            Assert.Equal(fixture.Skip(initialHeight).Take(window).Select(b => b.Hash), actual);
 
             // Complete: 2, 3, 4, 5 (and no 6)
             for (int i = initialHeight; i < initialHeight + window - 1; i++)
@@ -170,14 +170,19 @@ namespace Libplanet.Tests.Net
 
             // Chunk: 7, 8, 9, 10, 11
             _logger.Verbose("Waiting demand #7-11...");
-            await ev.WaitAsync();
+            // TODO change waiting condition
+            await Task.Delay(1000);
             _logger.Verbose("Demand #7-11 processed.");
-            Assert.Single(logs);
-            Assert.True(logs.TryTake(out log));
-            Assert.Equal(1, log.Item1);
+
+            actual = new List<HashDigest<SHA256>>();
+            while (logs.TryTake(out var log))
+            {
+                actual.AddRange(log.Item2);
+            }
+
             Assert.Equal(
                 fixture.Skip(initialHeight + window).Take(window).Select(b => b.Hash),
-                log.Item2
+                actual
             );
 
             // Complete: 6, 7, 8, 9, 10, 11
@@ -188,14 +193,18 @@ namespace Libplanet.Tests.Net
 
             // Chunk: 12, 13, 14
             _logger.Verbose("Waiting demand #12-14...");
-            await ev.WaitAsync();
+            // TODO change waiting condition
+            await Task.Delay(1000);
             _logger.Verbose("Demand #12-14 processed.");
-            Assert.Single(logs);
-            Assert.True(logs.TryTake(out log));
-            Assert.Equal(2, log.Item1);
+            actual = new List<HashDigest<SHA256>>();
+            while (logs.TryTake(out var log))
+            {
+                actual.AddRange(log.Item2);
+            }
+
             Assert.Equal(
                 fixture.Skip(initialHeight + window * 2).Select(b => b.Hash).ToImmutableHashSet(),
-                log.Item2.ToImmutableHashSet()
+                actual.ToImmutableHashSet()
             );
 
             // Complete: 12, 13, 14
