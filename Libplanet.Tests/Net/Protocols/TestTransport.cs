@@ -25,6 +25,7 @@ namespace Libplanet.Tests.Net.Protocols
         private readonly List<string> _ignoreTestMessageWithData;
         private readonly PrivateKey _privateKey;
         private readonly Random _random;
+        private readonly bool _blockBroadcast;
 
         private CancellationTokenSource _swarmCancellationTokenSource;
         private TimeSpan _networkDelay;
@@ -32,11 +33,13 @@ namespace Libplanet.Tests.Net.Protocols
         public TestTransport(
             Dictionary<Address, TestTransport> transports,
             PrivateKey privateKey,
+            bool blockBroadcast,
             int? tableSize,
             int? bucketSize,
             TimeSpan? networkDelay)
         {
             _privateKey = privateKey;
+            _blockBroadcast = blockBroadcast;
             var loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<TestTransport>()
                 .ForContext("Address", loggerId);
@@ -369,16 +372,18 @@ namespace Libplanet.Tests.Net.Protocols
             });
         }
 
-        public async Task WaitForTestMessageWithData(string data)
+        public async Task WaitForTestMessageWithData(
+            string data,
+            CancellationToken token = default(CancellationToken))
         {
             if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
 
-            while (!ReceivedTestMessageOfData(data))
+            while (!token.IsCancellationRequested && !ReceivedTestMessageOfData(data))
             {
-                await Task.Delay(10);
+                await Task.Delay(10, token);
             }
         }
 
@@ -415,7 +420,11 @@ namespace Libplanet.Tests.Net.Protocols
                 {
                     _logger.Debug("Received test message with {Data}.", testMessage.Data);
                     _ignoreTestMessageWithData.Add(testMessage.Data);
-                    BroadcastTestMessage(testMessage.Remote.Address, testMessage.Data);
+                    // If this transport is blocked for testing, do not broadcast.
+                    if (!_blockBroadcast)
+                    {
+                        BroadcastTestMessage(testMessage.Remote.Address, testMessage.Data);
+                    }
                 }
             }
             else

@@ -351,8 +351,100 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task BroadcastGuarantee()
+        {
+            // Make sure t1 and t2 is in same bucket of seed's routing table.
+            var privateKey0 = new PrivateKey(new byte[]
+            {
+                0x1a, 0x55, 0x30, 0x84, 0xe8, 0x9e, 0xee, 0x1e, 0x9f, 0xe2, 0xd1, 0x49, 0xe7, 0xa9,
+                0x53, 0xa9, 0xb4, 0xe4, 0xfe, 0x5a, 0xc1, 0x6c, 0x61, 0x9f, 0x54, 0x8f, 0x5e, 0xd9,
+                0x7f, 0xa3, 0xa0, 0x79,
+            });
+            var privateKey1 = new PrivateKey(new byte[]
+            {
+                0x8e, 0x26, 0x31, 0x4a, 0xee, 0x84, 0xd, 0x8a, 0xea, 0x7b, 0x6, 0xf8, 0x81, 0x5f,
+                0x69, 0xb3, 0x44, 0x46, 0xe0, 0x27, 0x65, 0x17, 0x1, 0x16, 0x58, 0x26, 0x69, 0x93,
+                0x48, 0xbb, 0xf, 0xb4,
+            });
+            var privateKey2 = new PrivateKey(new byte[]
+            {
+                0xd4, 0x6b, 0x4b, 0x38, 0xde, 0x39, 0x25, 0x3b, 0xd8, 0x1, 0x9d, 0x2, 0x2, 0x7a,
+                0x90, 0x9, 0x46, 0x2f, 0xc1, 0xd3, 0xd9, 0xa, 0xa6, 0xf4, 0xfa, 0x9a, 0x6, 0xa3,
+                0x60, 0xed, 0xf3, 0xd7,
+            });
+
+            var seed = CreateTestTransport(privateKey0);
+            var t1 = CreateTestTransport(privateKey1, true);
+            var t2 = CreateTestTransport(privateKey2);
+            await StartTestTransportAsync(seed);
+            await StartTestTransportAsync(t1);
+            await StartTestTransportAsync(t2);
+
+            try
+            {
+                await t1.BootstrapAsync(new[] { seed.AsPeer });
+                await t2.BootstrapAsync(new[] { seed.AsPeer });
+
+                Log.Debug(seed.Protocol.Trace());
+
+                Log.Debug("Bootstrap completed.");
+
+                var tcs = new CancellationTokenSource();
+                var task = t2.WaitForTestMessageWithData("foo", tcs.Token);
+
+                seed.BroadcastTestMessage(null, "foo");
+                Log.Debug("Broadcast \"foo\" completed.");
+
+                tcs.CancelAfter(TimeSpan.FromSeconds(5));
+                await task;
+
+                Assert.True(t2.ReceivedTestMessageOfData("foo"));
+
+                tcs = new CancellationTokenSource();
+                task = t2.WaitForTestMessageWithData("bar", tcs.Token);
+
+                seed.BroadcastTestMessage(null, "bar");
+                Log.Debug("Broadcast \"bar\" completed.");
+
+                tcs.CancelAfter(TimeSpan.FromSeconds(5));
+                await task;
+
+                Assert.True(t2.ReceivedTestMessageOfData("bar"));
+
+                tcs = new CancellationTokenSource();
+                task = t2.WaitForTestMessageWithData("baz", tcs.Token);
+
+                seed.BroadcastTestMessage(null, "baz");
+                Log.Debug("Broadcast \"baz\" completed.");
+
+                tcs.CancelAfter(TimeSpan.FromSeconds(5));
+                await task;
+
+                Assert.True(t2.ReceivedTestMessageOfData("baz"));
+
+                tcs = new CancellationTokenSource();
+                task = t2.WaitForTestMessageWithData("qux", tcs.Token);
+
+                seed.BroadcastTestMessage(null, "qux");
+                Log.Debug("Broadcast \"qux\" completed.");
+
+                tcs.CancelAfter(TimeSpan.FromSeconds(5));
+                await task;
+
+                Assert.True(t2.ReceivedTestMessageOfData("qux"));
+            }
+            finally
+            {
+                await seed.StopAsync(TimeSpan.Zero);
+                await t1.StopAsync(TimeSpan.Zero);
+                await t2.StopAsync(TimeSpan.Zero);
+            }
+        }
+
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
+            bool blockBroadcast = false,
             int? tableSize = null,
             int? bucketSize = null,
             TimeSpan? networkDelay = null)
@@ -360,6 +452,7 @@ namespace Libplanet.Tests.Net.Protocols
             return new TestTransport(
                 _transports,
                 privateKey ?? new PrivateKey(),
+                blockBroadcast,
                 tableSize,
                 bucketSize,
                 networkDelay);
