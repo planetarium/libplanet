@@ -13,6 +13,20 @@ peer-to-peer network among equal nodes rather than an authorized central
 server.  Under the hood, it incorporates many features (e.g.,
 [digital signature], [BFT] consensus, data replication) of a [blockchain].
 
+It has competitive advantages over other solutions for decentralized gaming:
+
+ -  *Embeddable*: A game app does not have to communicate with another process
+    behind, hence no marshaling or maintaining more than one process.
+    You can think of it more like SQLite than MySQL or PostgreSQL.
+
+ -  *Isomorphic*: It is just a .NET library, so every logic of game can be
+    written in the same language, C#.  No glue code or "smart contracts" are
+    needed.
+
+ -  *Token-free*: Unlike almost every "blockchain" system, it does not force
+    you to deal with any yet-another-cryptocurrencies.  Your game can be
+    free to play.
+
 [Discord]: https://discord.gg/planetarium
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&branchName=master
 [Codecov]: https://codecov.io/gh/planetarium/libplanet
@@ -56,10 +70,11 @@ To use Libplanet on Unity, you need to manually extract *Libplanet.dll*
 from *Libplanet.\*.nupkg* file and place it inside of your Unity project.
 We are acknowledging the fact Libplanet is currently not very usable together
 with Unity, and promise to make it better in the next few minor releases.
-In the near future, we are going to submit it to [Unity Asset Store] too.
+Until then, you could try [MSBuildForUnity] which is experimental as of
+January 2020.
 
 [releases]: https://github.com/planetarium/libplanet/releases
-[Unity Asset Store]: https://assetstore.unity.com/
+[MSBuildForUnity]: https://github.com/microsoft/MSBuildForUnity
 [1]: https://docs.microsoft.com/nuget/consume-packages/ways-to-install-a-package
 
 
