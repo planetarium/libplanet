@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -251,10 +252,14 @@ namespace Libplanet.Tests.Net.Protocols
         public void BroadcastMessage(Address? except, Message message)
         {
             var peers = Protocol.PeersToBroadcast(except).ToList();
+            var peersString = peers.Aggregate(
+                new StringBuilder(),
+                (builder, peer) => builder.Append($"{peer.Address.ToHex()}, ")).ToString();
             _logger.Debug(
-                "Broadcasting test message {Data} to {Count} peers.",
+                "Broadcasting test message {Data} to {Count} peers which are: {Peers}.",
                 ((TestMessage)message).Data,
-                peers.Count);
+                peers.Count,
+                peersString);
             foreach (var peer in peers)
             {
                 _requests.Add(new Request()
@@ -394,7 +399,7 @@ namespace Libplanet.Tests.Net.Protocols
                 throw new SwarmException("Start swarm before use.");
             }
 
-            return ReceivedMessages.OfType<TestMessage>().Select(msg => msg.Data == data).Any();
+            return ReceivedMessages.OfType<TestMessage>().Any(msg => msg.Data == data);
         }
 
         private void ReceiveMessage(Message message)
