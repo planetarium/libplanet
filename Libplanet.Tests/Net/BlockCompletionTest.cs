@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Net
                     finally
                     {
                         Interlocked.Increment(ref done);
-                        _output.WriteLine(i.ToString());
+                        _output.WriteLine($"Task {i} finished.");
                     }
                 });
             }).ToArray();
