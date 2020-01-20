@@ -247,7 +247,8 @@ Libplanet isn't a tool for creating games of any particular genre, but rather a 
 
 ### About PoW
 
-Currently, the only consensus algorithm currently implemented in Libplanet is a PoW([Hashcash]). It has the following characteristics.
+Currently, the only consensus algorithm currently implemented in Libplanet is
+a PoW ([Hashcash]). It has the following characteristics:
 
 - Anyone with hash power (= computing power) can join the network
 - Simple to implement, robust
