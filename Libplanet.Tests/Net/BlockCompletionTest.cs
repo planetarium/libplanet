@@ -145,7 +145,7 @@ namespace Libplanet.Tests.Net
             {
                 var message = "There should be no logs recorded, but:\n" + string.Join(
                     "\n",
-                    logs.Select(t => $"- {t.Item1:02d}, {t.Item2}")
+                    logs.Select(t => $"- {t.Item1}, {t.Item2}")
                 );
                 Assert.True(logs.IsEmpty, message);
                 bc.Demand(fixture[i].Hash);
