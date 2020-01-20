@@ -50,7 +50,7 @@ function Download-File ($From, $To) {
 # Download docfx if not exist yet.
 if (-not (Test-Path "$BaseDir/docfx")) {
   Download-File `
-    "https://github.com/dotnet/docfx/releases/download/v2.45.1/docfx.zip" `
+    "https://github.com/dotnet/docfx/releases/download/v2.48.1/docfx.zip" `
     -To "$BaseDir/docfx.zip"
   New-Item -ItemType directory -Path "$BaseDir/docfx"
   [System.IO.Compression.ZipFile]::ExtractToDirectory(
