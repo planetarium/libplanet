@@ -1,0 +1,144 @@
+#wrapper {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 17px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wrapper header > nav {
+  background-color: #20232a;
+}
+
+#wrapper header > .subnav {
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #ececec;
+}
+
+#wrapper footer {
+  position: static;
+}
+
+#wrapper footer > .grad-bottom {
+  display: none;
+}
+
+#wrapper footer > .footer {
+  position: relative;
+  z-index: 2;
+  border-top: none;
+  background-color: #282c34;
+  color: #999;
+  padding: 45px;
+}
+
+#wrapper footer > .footer a {
+  color: white;
+}
+
+#wrapper .sidetoc.shiftup {
+  bottom: 0;
+}
+
+#wrapper > .container > .article {
+  margin-bottom: 45px;
+}
+
+#wrapper article a {
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  color: #1a1a1a;
+  background-color: rgba(51, 122, 183, 0.2);
+}
+
+#wrapper article a:hover {
+  border-bottom-color: #1a1a1a;
+}
+
+#wrapper article h1 a,
+#wrapper article h2 a,
+#wrapper article h3 a,
+#wrapper article h4 a,
+#wrapper article h5 a,
+#wrapper article h6 a {
+  color: #337ab7;
+  border-bottom: none;
+  background-color: transparent;
+}
+
+#wrapper article h1 a:hover,
+#wrapper article h2 a:hover,
+#wrapper article h3 a:hover,
+#wrapper article h4 a:hover,
+#wrapper article h5 a:hover,
+#wrapper article h6 a:hover {
+  color: #23527c;
+  background-color: transparent;
+}
+
+#wrapper article a img {
+  /* https://stackoverflow.com/a/21167963/383405 */
+  vertical-align: top;
+  box-shadow: 0 .333em 0 0 white;
+}
+
+#wrapper article h1 a img,
+#wrapper article h2 a img,
+#wrapper article h3 a img,
+#wrapper article h4 a img,
+#wrapper article h5 a img,
+#wrapper article h6 a img {
+  vertical-align: middle;
+}
+
+#wrapper code, #wrapper a.xref {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#wrapper p > code {
+  background-color: rgba(255, 229, 100, .2);
+  color: #1a1a1a;
+  border-radius: 0;
+  padding: 0 3px;
+  word-break: break-word;
+}
+
+#wrapper pre {
+  border: none;
+  border-radius: 10px;
+  background-color: #2b303b;
+  font-size: 14px;
+  color: white;
+}
+
+/* highlight.js ocean style */
+#wrapper .hljs-comment, #wrapper .hljs-quote { color: #65737e; }
+#wrapper .hljs-variable, #wrapper .hljs-template-variable, #wrapper .hljs-tag,
+#wrapper .hljs-name, #wrapper .hljs-selector-id, #wrapper .hljs-selector-class,
+#wrapper .hljs-regexp, #wrapper .hljs-deletion {
+  color:#bf616a;
+}
+#wrapper .hljs-number, #wrapper .hljs-built_in, #wrapper .hljs-builtin-name,
+#wrapper .hljs-literal, #wrapper .hljs-type, #wrapper .hljs-params,
+#wrapper .hljs-meta, #wrapper .hljs-link {
+  color: #d08770;
+}
+#wrapper .hljs-attribute { color: #ebcb8b; }
+#wrapper .hljs-string, #wrapper .hljs-symbol, #wrapper .hljs-bullet,
+#wrapper .hljs-addition {
+  color: #a3be8c;
+}
+#wrapper .hljs-title, #wrapper .hljs-section { color: #8fa1b3; }
+#wrapper .hljs-keyword, #wrapper .hljs-selector-tag { color: #b48ead; }
+#wrapper .hljs {
+  display: block;
+  overflow-x: auto;
+  background: #2b303b;
+  color: #c0c5ce;
+  padding: .5em;
+}
+#wrapper .hljs-emphasis { font-style: italic; }
+#wrapper .hljs-strong { font-weight: bold; }
+
+
