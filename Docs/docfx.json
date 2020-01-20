@@ -72,6 +72,7 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": ["statictoc"],
+    "theme": ["theme"],
     "postProcessors": [],
     "markdownEngineName": "markdig",
     "noLangKeyword": false,
