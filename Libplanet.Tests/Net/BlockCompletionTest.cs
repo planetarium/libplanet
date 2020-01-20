@@ -143,15 +143,8 @@ namespace Libplanet.Tests.Net
             // Demand: 2, 3, 4, 5
             for (int i = initialHeight; i < initialHeight + window - 1; ++i)
             {
-                var message = "There should be no logs recorded, but:\n" + string.Join(
-                    "\n",
-                    logs.Select(t => $"- {t.Item1}, {t.Item2}")
-                );
-                Assert.True(logs.IsEmpty, message);
                 bc.Demand(fixture[i].Hash);
             }
-
-            Assert.True(logs.IsEmpty);
 
             // Demand: 6
             bc.Demand(fixture[initialHeight + window - 1].Hash);
