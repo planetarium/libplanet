@@ -841,7 +841,6 @@ namespace Libplanet.Tests.Blockchain
 
             using (var store = new DefaultStore(null))
             {
-                store.PutBlock(genesis);
                 var blockChain = new BlockChain<DumbAction>(
                     _blockChain.Policy,
                     store,

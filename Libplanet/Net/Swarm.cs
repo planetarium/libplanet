@@ -460,7 +460,12 @@ namespace Libplanet.Net
             // blockchain with it.
             BlockChain<T> workspace = initialTip is Block<T> tip
                 ? BlockChain.Fork(tip.Hash)
-                : new BlockChain<T>(BlockChain.Policy, _store, Guid.NewGuid(), BlockChain.Genesis);
+                : new BlockChain<T>(
+                    BlockChain.Policy,
+                    _store,
+                    Guid.NewGuid(),
+                    BlockChain.Genesis.Hash);
+
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;
 

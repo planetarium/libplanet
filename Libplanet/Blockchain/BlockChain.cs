@@ -44,6 +44,11 @@ namespace Libplanet.Blockchain
         private readonly ILogger _logger;
 
         /// <summary>
+        /// The hash of the genesis block.
+        /// </summary>
+        private readonly HashDigest<SHA256> _genesisHash;
+
+        /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
         /// storage, including orphan <see cref="Block{T}"/>s.
         /// Keys are <see cref="Block{T}.Hash"/>es and values are
@@ -84,49 +89,26 @@ namespace Libplanet.Blockchain
         {
         }
 
+        public BlockChain(
+            IBlockPolicy<T> policy,
+            IStore store,
+            HashDigest<SHA256> genesisHash
+        )
+            : this(policy, store, store.GetCanonicalChainId() ?? Guid.NewGuid(), genesisHash)
+        {
+        }
+
         internal BlockChain(
             IBlockPolicy<T> policy,
             IStore store,
             Guid id,
             Block<T> genesisBlock
         )
-            : this(
-                policy,
-                store,
-                id,
-                genesisBlock,
-                false
-            )
+            : this(policy, store, id, genesisBlock.Hash)
         {
-        }
-
-        private BlockChain(
-            IBlockPolicy<T> policy,
-            IStore store,
-            Guid id,
-            Block<T> genesisBlock,
-            bool inFork
-        )
-        {
-            Id = id;
-            Policy = policy;
-            Store = store;
-
-            _blocks = new BlockSet<T>(store);
-            _transactions = new TransactionSet<T>(store);
-            _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-            _txLock = new object();
-
-            if (Store.GetCanonicalChainId() is null)
-            {
-                Store.SetCanonicalChainId(Id);
-            }
-
-            _logger = Log.ForContext<BlockChain<T>>()
-                .ForContext("CanonicalChainId", Id);
-
             if (Count == 0)
             {
+                bool inFork = Store.ContainsBlock(genesisBlock.Hash);
                 Append(
                     genesisBlock,
                     currentTime: genesisBlock.Timestamp,
@@ -134,7 +116,32 @@ namespace Libplanet.Blockchain
                     evaluateActions: !inFork
                 );
             }
-            else if (!Genesis.Equals(genesisBlock))
+        }
+
+        internal BlockChain(
+            IBlockPolicy<T> policy,
+            IStore store,
+            Guid id,
+            HashDigest<SHA256> genesisHash
+        )
+        {
+            Id = id;
+            Policy = policy;
+            Store = store;
+
+            _genesisHash = genesisHash;
+            _blocks = new BlockSet<T>(store);
+            _transactions = new TransactionSet<T>(store);
+            _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+            _txLock = new object();
+
+            var canonicalId = Store.GetCanonicalChainId();
+            if (canonicalId is null)
+            {
+                Store.SetCanonicalChainId(Id);
+            }
+            else if (Store.CountBlocks() > 0
+                     && !Store.IterateIndexes((Guid)canonicalId).First().Equals(_genesisHash))
             {
                 string msg =
                     $"The genesis block that the given {nameof(IStore)} contains does not match " +
@@ -143,11 +150,14 @@ namespace Libplanet.Blockchain
                     "restarted the chain with a new genesis block so that it is incompatible " +
                     "with your existing chain in the local store.";
                 throw new InvalidGenesisBlockException(
-                    networkExpected: genesisBlock.Hash,
+                    networkExpected: _genesisHash,
                     stored: Genesis.Hash,
                     message: msg
                 );
             }
+
+            _logger = Log.ForContext<BlockChain<T>>()
+                .ForContext("CanonicalChainId", Id);
         }
 
         ~BlockChain()
@@ -184,7 +194,20 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
         /// </summary>
-        public Block<T> Genesis => this[0];
+        public Block<T> Genesis
+        {
+            get
+            {
+                try
+                {
+                    return this[0];
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return null;
+                }
+            }
+        }
 
         public Guid Id { get; private set; }
 
@@ -727,6 +750,21 @@ namespace Libplanet.Blockchain
                 );
             }
 
+            if (block.Index == 0 && !block.Hash.Equals(_genesisHash))
+            {
+                string msg =
+                    $"The genesis block that the given {nameof(IStore)} contains does not match " +
+                    "to the genesis block that the network expects.  You might pass the wrong " +
+                    "store which is incompatible with this chain.  Or your network might " +
+                    "restarted the chain with a new genesis block so that it is incompatible " +
+                    "with your existing chain in the local store.";
+                throw new InvalidGenesisBlockException(
+                    networkExpected: _genesisHash,
+                    stored: Genesis.Hash,
+                    message: msg
+                );
+            }
+
             _logger.Debug("Trying to append block {blockIndex}: {block}", block?.Index, block);
 
             IReadOnlyList<ActionEvaluation> evaluations = null;
@@ -1065,7 +1103,7 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
-            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis, true);
+            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis.Hash);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +

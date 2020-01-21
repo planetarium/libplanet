@@ -256,13 +256,8 @@ namespace Libplanet.Store
             LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
             LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
-            var genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
-            destColl.InsertBulk(srcColl.FindAll()
-                .TakeWhile(i => !i.Hash.Equals(branchPoint)).Skip(1));
-            if (!branchPoint.Equals(genesisHash))
-            {
-                AppendIndex(destinationChainId, branchPoint);
-            }
+            destColl.InsertBulk(srcColl.FindAll().TakeWhile(i => !i.Hash.Equals(branchPoint)));
+            AppendIndex(destinationChainId, branchPoint);
         }
 
         /// <inheritdoc/>
