@@ -1164,7 +1164,7 @@ namespace Libplanet.Net
             }
             else
             {
-                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHashes)}.");
+               _logger.Debug($"No blocks are required; {nameof(BlockHashes)} is ignored.");
             }
         }
 
@@ -1193,7 +1193,7 @@ namespace Libplanet.Net
             }
             else
             {
-                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHeaderMessage)}.");
+                _logger.Debug($"No blocks are required; {nameof(BlockHeaderMessage)} is ignored.");
             }
         }
 
