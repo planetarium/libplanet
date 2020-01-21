@@ -64,6 +64,10 @@ To be released.
 
 ### Backward-incompatible storage format changes
 
+ -  Added `BlockChain<T>(IBlockPolicy<T>, IStore, HashDigest<SHA256>)` constructor.
+    It became available to receive also `genesisHash` instead `genesisBlock`.
+    [[#750], [#769]]
+
 ### Added APIs
 
  -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
@@ -76,6 +80,9 @@ To be released.
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
  -  Added `ByteArrayExtensions` class.  [[#803]]
+ -  Added `BlockChain<T>(IBlockPolicy<T>, IStore, HashDigest<SHA256>)` constructor.
+    It became available to receive also `genesisHash` instead `genesisBlock`.
+    [[#750], [#769]]
  -  Added `IStore.PruneBlockStates<T>(Guid, Block<T>)` method.  [[#790]]
  -  Added `DifferentAppProtocolVersionEncountered` delegate.  [[#266], [#815]]
  -  Added `Swarm<T>.TrustedAppProtocolVersionSigners` property.
@@ -109,6 +116,8 @@ To be released.
 
 [#266]: https://github.com/planetarium/libplanet/issues/266
 [#707]: https://github.com/planetarium/libplanet/pull/707
+[#750]: https://github.com/planetarium/libplanet/issues/750
+[#769]: https://github.com/planetarium/libplanet/pull/769
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
