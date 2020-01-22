@@ -264,8 +264,12 @@ namespace Libplanet.Net.Protocols
                 }
 
                 trace += $"**Bucket {i}**\n";
-                trace = _routing.BucketOf(i).Peers.Aggregate(trace, (current, peer) =>
-                    current + $"{++count} : [{peer.Address.ToHex()}]\n");
+                trace = _routing.BucketOf(i).PeerStates.Aggregate(trace, (current, state) =>
+                    current +
+                    $"| {++count}: [{state.Address.ToHex()}]\n" +
+                    $"| - LastUpdated: {state.LastUpdated}\n" +
+                    $"| - LastChecked: {state.LastChecked}\n" +
+                    $"| - Latency: {state.Latency?.Milliseconds}ms\n");
 
                 trace = trace.TrimEnd(' ', ',');
             }
@@ -397,7 +401,9 @@ namespace Libplanet.Net.Protocols
             try
             {
                 _logger.Debug("Validating peer {Peer}", peer);
+                var check = DateTimeOffset.UtcNow;
                 await PingAsync(peer, timeout, cancellationToken);
+                _routing.Check(peer, check, DateTimeOffset.UtcNow);
             }
             catch (TimeoutException)
             {

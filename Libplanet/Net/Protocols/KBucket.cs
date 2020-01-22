@@ -10,7 +10,7 @@ namespace Libplanet.Net.Protocols
     {
         private readonly int _size;
         private readonly Random _random;
-        private readonly ConcurrentDictionary<BoundPeer, DateTimeOffset> _peers;
+        private readonly ConcurrentDictionary<Address, PeerState> _peerStates;
 
         private readonly ILogger _logger;
 
@@ -21,49 +21,45 @@ namespace Libplanet.Net.Protocols
             _size = size;
             _random = random;
             _logger = logger;
-            _peers = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
+            _peerStates = new ConcurrentDictionary<Address, PeerState>();
             ReplacementCache = new ConcurrentDictionary<BoundPeer, DateTimeOffset>();
 
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
-        public int Count => _peers.Count;
+        public int Count => _peerStates.Count;
 
         /// <summary>
         /// Most recently used peer.
         /// </summary>
-        public KeyValuePair<BoundPeer, DateTimeOffset> Head
+        public PeerState Head
         {
             get
             {
-                return _peers.Aggregate(
-                    new KeyValuePair<BoundPeer, DateTimeOffset>(
-                        null,
-                        DateTimeOffset.MinValue
-                    ),
-                    (l, r) => l.Value > r.Value ? l : r
-                );
+                return _peerStates.Aggregate(
+                    (x, y) =>
+                        x.Value.LastUpdated > y.Value.LastUpdated ? x : y
+                ).Value;
             }
         }
 
         /// <summary>
         /// Least recently used peer.
         /// </summary>
-        public KeyValuePair<BoundPeer, DateTimeOffset> Tail
+        public PeerState Tail
         {
             get
             {
-                return _peers.Aggregate(
-                    new KeyValuePair<BoundPeer, DateTimeOffset>(
-                        null,
-                        DateTimeOffset.MaxValue
-                    ),
-                    (l, r) => l.Value < r.Value ? l : r
-                );
+                return _peerStates.Aggregate(
+                    (x, y) =>
+                        x.Value.LastUpdated < y.Value.LastUpdated ? x : y
+                ).Value;
             }
         }
 
-        public IEnumerable<BoundPeer> Peers => _peers.Keys;
+        public IEnumerable<BoundPeer> Peers => _peerStates.Values.Select(state => state.Peer);
+
+        public IEnumerable<PeerState> PeerStates => _peerStates.Values;
 
         // replacement candidate stored in this cache when
         // the bucket is full and least recently used peer responds.
@@ -78,10 +74,18 @@ namespace Libplanet.Net.Protocols
             }
 
             var updated = DateTimeOffset.UtcNow;
-            BoundPeer hasPeer =
-                _peers.FirstOrDefault(kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
 
-            if (hasPeer is null)
+            if (_peerStates.ContainsKey(peer.Address))
+            {
+                _logger.Verbose("Bucket already contains peer {Peer}", peer);
+
+                // This done because peer's other attribute except public key might be changed.
+                // (eg. public IP address, endpoint)
+                var peerDigest = _peerStates[peer.Address];
+                peerDigest.Peer = peer;
+                peerDigest.LastUpdated = updated;
+            }
+            else
             {
                 if (IsFull())
                 {
@@ -98,7 +102,7 @@ namespace Libplanet.Net.Protocols
                 {
                     _logger.Verbose("Bucket does not contains peer {Peer}", peer);
                     _lastUpdated = updated;
-                    if (_peers.TryAdd(peer, updated))
+                    if (_peerStates.TryAdd(peer.Address, new PeerState(peer, updated)))
                     {
                         _logger.Verbose("Peer {Peer} is added to bucket", peer);
                         _lastUpdated = updated;
@@ -117,60 +121,48 @@ namespace Libplanet.Net.Protocols
                     }
                 }
             }
-            else
-            {
-                _logger.Verbose("Bucket already contains peer {Peer}", peer);
-
-                // This done because peer's other attribute except public key might be changed.
-                // (eg. public IP address, endpoint)
-                _peers.TryRemove(hasPeer, out var dateTimeOffset);
-                if (_peers.TryAdd(peer, updated))
-                {
-                    _lastUpdated = updated;
-                }
-            }
         }
 
         public bool Contains(BoundPeer peer)
         {
-            return _peers.Any(kv => kv.Key.PublicKey.Equals(peer.PublicKey));
+            return _peerStates.ContainsKey(peer.Address);
         }
 
         public void Clear()
         {
-            _peers.Clear();
+            _peerStates.Clear();
             _lastUpdated = DateTimeOffset.UtcNow;
         }
 
         public bool RemovePeer(BoundPeer peer)
         {
-            BoundPeer hasPeer = _peers.FirstOrDefault(
-                kv => kv.Key.PublicKey.Equals(peer.PublicKey)).Key;
-            if (hasPeer is null)
+            if (_peerStates.ContainsKey(peer.Address))
             {
-                return false;
-            }
-
-            if (_peers.TryRemove(hasPeer, out var dateTimeOffset))
-            {
-                _logger.Verbose("Removed peer {Peer} from bucket.", peer);
-                return true;
+                if (_peerStates.TryRemove(peer.Address, out var digest))
+                {
+                    _logger.Verbose("Removed peer {Peer} from bucket.", peer);
+                    return true;
+                }
+                else
+                {
+                    _logger.Verbose("Failed to remove peer {Peer} from bucket.", peer);
+                    return false;
+                }
             }
             else
             {
-                _logger.Verbose("Failded to remove peer {Peer} from bucket.", peer);
                 return false;
             }
         }
 
         public bool IsEmpty()
         {
-            return _peers.Count == 0;
+            return _peerStates.Count == 0;
         }
 
         public bool IsFull()
         {
-            return _peers.Count >= _size;
+            return _peerStates.Count >= _size;
         }
 
         public BoundPeer GetRandomPeer(Address? except)
@@ -178,18 +170,29 @@ namespace Libplanet.Net.Protocols
             BoundPeer[] peers;
             if (except is null)
             {
-                peers = _peers.Keys.ToArray();
+                peers = _peerStates.Values.Select(d => d.Peer).ToArray();
             }
             else
             {
-                peers = _peers.Keys
-                    .Where(peer => !peer.Address.Equals(except.Value))
+                peers = _peerStates
+                    .Where(kv => !kv.Key.Equals(except.Value))
+                    .Select(kv => kv.Value.Peer)
                     .ToArray();
             }
 
             int size = peers.Length;
 
             return size == 0 ? null : peers[_random.Next(size)];
+        }
+
+        public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
+        {
+            if (_peerStates.ContainsKey(peer.Address))
+            {
+                var state = _peerStates[peer.Address];
+                state.LastChecked = start;
+                state.Latency = end - start;
+            }
         }
     }
 }

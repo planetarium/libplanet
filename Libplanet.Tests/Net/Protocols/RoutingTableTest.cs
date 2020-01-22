@@ -79,12 +79,12 @@ namespace Libplanet.Tests.Net.Protocols
                 new HashSet<BoundPeer> { peer1, peer2, peer3, peer4 }
             );
             Assert.False(bucket.Contains(peer5));
-            Assert.Equal(peer4, bucket.Head.Key);
-            Assert.Equal(peer1, bucket.Tail.Key);
+            Assert.Equal(peer4, bucket.Head.Peer);
+            Assert.Equal(peer1, bucket.Tail.Peer);
             Thread.Sleep(100);
             bucket.AddPeer(peer1);
-            Assert.Equal(peer1, bucket.Head.Key);
-            Assert.Equal(peer2, bucket.Tail.Key);
+            Assert.Equal(peer1, bucket.Head.Peer);
+            Assert.Equal(peer2, bucket.Tail.Peer);
 
             Assert.False(bucket.RemovePeer(peer5));
             Assert.True(bucket.RemovePeer(peer1));
