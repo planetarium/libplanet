@@ -69,17 +69,16 @@ namespace Libplanet.Tests.Store
             var hashDigest = new HashDigest<SHA256>(bytes);
             var stateRef = new DefaultStore.StateRefDoc
             {
-                Address = address,
+                StateKey = address.ToHex().ToLowerInvariant(),
                 BlockIndex = 123,
                 BlockHash = hashDigest,
             };
             var stateRef2 = new DefaultStore.StateRefDoc
             {
-                AddressString = stateRef.AddressString,
+                StateKey = stateRef.StateKey,
                 BlockIndex = 123,
                 BlockHashString = stateRef.BlockHashString,
             };
-            Assert.Equal(stateRef.Address, stateRef2.Address);
             Assert.Equal(stateRef.BlockHash, stateRef2.BlockHash);
         }
     }

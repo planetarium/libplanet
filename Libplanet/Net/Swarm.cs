@@ -910,10 +910,12 @@ namespace Libplanet.Net
                             foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
                             {
                                 HashDigest<SHA256> hash = pair.Key;
-                                IImmutableSet<Address> addresses = pair.Value.ToImmutableHashSet();
+                                IImmutableSet<string> stateKeys = pair.Value
+                                    .Select(a => a.ToHex().ToLowerInvariant())
+                                    .ToImmutableHashSet();
                                 if (_store.GetBlockIndex(hash) is long index)
                                 {
-                                    _store.StoreStateReference(chainId, addresses, hash, index);
+                                    _store.StoreStateReference(chainId, stateKeys, hash, index);
                                 }
                             }
 
@@ -923,7 +925,12 @@ namespace Libplanet.Net
                             foreach (var pair in recentStates.BlockStates)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
-                                _store.SetBlockStates(pair.Key, pair.Value);
+                                IImmutableDictionary<string, IValue> states =
+                                    pair.Value.ToImmutableDictionary(
+                                        kv => kv.Key.ToHex().ToLowerInvariant(),
+                                        kv => kv.Value
+                                    );
+                                _store.SetBlockStates(pair.Key, states);
                             }
 
                             progress?.Report(new StateDownloadState()
@@ -1671,8 +1678,7 @@ namespace Libplanet.Net
             IImmutableDictionary<HashDigest<SHA256>,
                 IImmutableDictionary<Address, IValue>
             > blockStates = null;
-            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
-                stateRefs = null;
+            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs = null;
             long nextOffset = -1;
             int iteration = 0;
 
@@ -1718,21 +1724,30 @@ namespace Libplanet.Net
                         lowestIndex: lowestIndex,
                         highestIndex: highestIndex
                     );
-                    _logger.Verbose(
-                        "List state references from {From} to {To}.",
-                        lowestIndex,
-                        highestIndex);
+                    if (_logger.IsEnabled(LogEventLevel.Verbose))
+                    {
+                        _logger.Verbose(
+                            "List state references from {From} to {To}:\n{StateReferences}",
+                            lowestIndex,
+                            highestIndex,
+                            string.Join(
+                                "\n",
+                                stateRefs.Select(kv => $"{kv.Key}: {string.Join(", ", kv.Value)}")
+                            )
+                        );
+                    }
 
                     // GetBlockStates may return null since swarm may not have deep states.
                     blockStates = stateRefs.Values
                         .Select(refs => refs.Last())
-                        .Select(bh =>
-                            new KeyValuePair<
-                                HashDigest<SHA256>,
-                                IImmutableDictionary<Address, IValue>
-                            >(bh, _store.GetBlockStates(bh)))
-                        .Where(kv => !(kv.Value is null))
-                        .ToImmutableDictionary();
+                        .ToImmutableHashSet()
+                        .Select(bh => (bh, _store.GetBlockStates(bh)))
+                        .Where(pair => !(pair.Item2 is null))
+                        .ToImmutableDictionary(
+                            pair => pair.Item1,
+                            pair => (IImmutableDictionary<Address, IValue>)pair.Item2
+                                .ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value)
+                        );
                 }
                 finally
                 {
@@ -1752,7 +1767,7 @@ namespace Libplanet.Net
                         "State references to send (preload): {StateReferences} ({Base}-{Target})",
                         stateRefs.Select(kv =>
                             (
-                                kv.Key.ToString(),
+                                kv.Key,
                                 string.Join(", ", kv.Value.Select(v => v.ToString()))
                             )
                         ).ToArray(),
@@ -1761,7 +1776,7 @@ namespace Libplanet.Net
                     );
                     _logger.Verbose(
                         "Block states to send (preload): {BlockStates} ({Base}-{Target})",
-                        blockStates.Select(kv => (kv.Key.ToString(), kv.Value)).ToArray(),
+                        blockStates.Select(kv => (kv.Key, kv.Value)).ToArray(),
                         baseString,
                         targetString
                     );
@@ -1772,7 +1787,12 @@ namespace Libplanet.Net
                 }
             }
 
-            var reply = new RecentStates(target, nextOffset, iteration, blockStates, stateRefs)
+            var reply = new RecentStates(
+                target,
+                nextOffset,
+                iteration,
+                blockStates,
+                stateRefs.ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value))
             {
                 Identity = getRecentStates.Identity,
             };
