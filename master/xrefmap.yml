@@ -4212,24 +4212,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BootstrapAsync
   nameWithType: Swarm<T>.BootstrapAsync
   nameWithType.vb: Swarm(Of T).BootstrapAsync
-- uid: Libplanet.Net.Swarm`1.BroadcastBlocks(IEnumerable{Libplanet.Blocks.Block{`0}})
-  name: BroadcastBlocks(IEnumerable<Block<T>>)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlocks_IEnumerable_Libplanet_Blocks_Block__0___
-  commentId: M:Libplanet.Net.Swarm`1.BroadcastBlocks(IEnumerable{Libplanet.Blocks.Block{`0}})
-  name.vb: BroadcastBlocks(IEnumerable(Of Block(Of T)))
-  fullName: Libplanet.Net.Swarm<T>.BroadcastBlocks(IEnumerable<Libplanet.Blocks.Block<T>>)
-  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlocks(IEnumerable(Of Libplanet.Blocks.Block(Of T)))
-  nameWithType: Swarm<T>.BroadcastBlocks(IEnumerable<Block<T>>)
-  nameWithType.vb: Swarm(Of T).BroadcastBlocks(IEnumerable(Of Block(Of T)))
-- uid: Libplanet.Net.Swarm`1.BroadcastBlocks*
-  name: BroadcastBlocks
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlocks_
-  commentId: Overload:Libplanet.Net.Swarm`1.BroadcastBlocks
+- uid: Libplanet.Net.Swarm`1.BroadcastBlock(Libplanet.Blocks.Block{`0})
+  name: BroadcastBlock(Block<T>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlock_Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Net.Swarm`1.BroadcastBlock(Libplanet.Blocks.Block{`0})
+  name.vb: BroadcastBlock(Block(Of T))
+  fullName: Libplanet.Net.Swarm<T>.BroadcastBlock(Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlock(Libplanet.Blocks.Block(Of T))
+  nameWithType: Swarm<T>.BroadcastBlock(Block<T>)
+  nameWithType.vb: Swarm(Of T).BroadcastBlock(Block(Of T))
+- uid: Libplanet.Net.Swarm`1.BroadcastBlock*
+  name: BroadcastBlock
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastBlock_
+  commentId: Overload:Libplanet.Net.Swarm`1.BroadcastBlock
   isSpec: "True"
-  fullName: Libplanet.Net.Swarm<T>.BroadcastBlocks
-  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlocks
-  nameWithType: Swarm<T>.BroadcastBlocks
-  nameWithType.vb: Swarm(Of T).BroadcastBlocks
+  fullName: Libplanet.Net.Swarm<T>.BroadcastBlock
+  fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastBlock
+  nameWithType: Swarm<T>.BroadcastBlock
+  nameWithType.vb: Swarm(Of T).BroadcastBlock
 - uid: Libplanet.Net.Swarm`1.BroadcastTxs(IEnumerable{Libplanet.Tx.Transaction{`0}})
   name: BroadcastTxs(IEnumerable<Transaction<T>>)
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_BroadcastTxs_IEnumerable_Libplanet_Tx_Transaction__0___

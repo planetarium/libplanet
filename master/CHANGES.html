@@ -118,11 +118,14 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 [<a href="https://github.com/planetarium/libplanet/issues/613">#613</a>, <a href="https://github.com/planetarium/libplanet/pull/727">#727</a>]</li>
 <li><code>Block&lt;T&gt;</code> class became not to implement <code>ISerializable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li><code>Transaction&lt;T&gt;</code> class became not to implement <code>ISerializable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
-<li><code>Block&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
-<li><code>Transaction&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li><code>Block&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
+<li><code>Transaction&lt;T&gt;.ToBencodex()</code> became to return <code>Bencodex.Types.Dictionary</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li>Removed <code>Block&lt;T&gt;.FromBencodex(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li>Removed <code>Transaction&lt;T&gt;.FromBencodex(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li><code>Block&lt;T&gt;.ToBencodex()</code> became to take no arguments.  [<a href="https://github.com/planetarium/libplanet/issues/749">#749</a>, <a href="https://github.com/planetarium/libplanet/pull/757">#757</a>]</li>
+<li>Removed <code>Swarm&lt;T&gt;.BroadcastBlocks(IEnumerable&lt;Block&lt;T&gt;&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -130,6 +133,7 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 <code>GetRecentStates</code> messages.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li>Added <code>int</code>-typed <code>iteration</code> parameter to <code>RecentStates</code> message.
 [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Added <code>BlockHeaderMessage</code> message.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
@@ -164,6 +168,7 @@ all transactions in the block to <code>Block&lt;T&gt;</code> class.  [<a href="h
 <li>Added <code>CryptoConfig</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/758">#758</a>]</li>
 <li>Added <code>ICryptoBackend</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/758">#758</a>]</li>
 <li>Added <code>DefaultCryptoBackend</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/758">#758</a>]</li>
+<li>Added <code>Swarm&lt;T&gt;.BroadcastBlock(Block&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -194,6 +199,8 @@ block from the nodes that have a different genesis block.  [<a href="https://git
 <code>Swarm&lt;T&gt;.StartAsync()</code> became not to call <code>Swarm&lt;T&gt;.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/issues/735">#735</a>, <a href="https://github.com/planetarium/libplanet/pull/760">#760</a>]</li>
 <li>The hash of <code>Block&lt;T&gt;</code> has changed due to the change in the method of
 serialization.  [<a href="https://github.com/planetarium/libplanet/pull/762">#762</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to ignore broadcasted block that has lower index than
+the current tip.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
