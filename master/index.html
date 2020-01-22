@@ -91,19 +91,21 @@ server.  Under the hood, it incorporates many features (e.g.,
 <a href="https://en.wikipedia.org/wiki/Digital_signature">digital signature</a>, <a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance">BFT</a> consensus, data replication) of a <a href="https://en.wikipedia.org/wiki/Blockchain">blockchain</a>.</p>
 <p>It has competitive advantages over other solutions for decentralized gaming:</p>
 <ul>
-<li><p><em>Embeddable</em>: A game app does not have to communicate with another process
-behind, hence no marshaling or maintaining more than one process.
-You can think of it more like SQLite than MySQL or PostgreSQL.</p>
+<li><p><em>Embeddable</em>: A game app does not have to communicate with another running
+process, hence it doesn't require extra marshaling or processes management.
+To draw a parallel, Libplanet is closer to SQLite than MySQL or PostgreSQL.</p>
 </li>
-<li><p><em>Isomorphic</em>: It is just a .NET library, so every logic of game can be
-written in the same language, C#.  No glue code or &quot;smart contracts&quot; are
-needed.</p>
+<li><p><em>Isomorphic</em>: Libplanet is a .NET library, so every game logic can be
+written in the same language, C#, and run on the blockchain. No glue
+code or &quot;smart contracts&quot; are needed.</p>
 </li>
-<li><p><em>Token-free</em>: Unlike almost every &quot;blockchain&quot; system, it does not force
-you to deal with any yet-another-cryptocurrencies.  Your game can be
-free to play.</p>
+<li><p><em>Token-independent</em>: Unlike almost every blockchain system, it does not
+force users to create and deal with yet-another-cryptocurrency. Your
+game can be free to play, and enjoyed by regular gamers.</p>
 </li>
 </ul>
+<p>To learn more about why Planetarium is creating technology for fully
+decentralized games, please refer to our <a href="https://medium.com/planetarium/introducing-planetarium-powering-games-with-freedom-22ab1ab70e0e">blog post</a>.</p>
 <h2 id="nuget">NuGet</h2>
 <p>For every stable release, we pack Libplanet into a <em>.nupkg</em> and
 upload it to <a href="https://www.nuget.org/packages/Libplanet/">NuGet</a> and GitHub <a href="https://github.com/planetarium/libplanet/releases">releases</a> page.
