@@ -15,17 +15,20 @@ server.  Under the hood, it incorporates many features (e.g.,
 
 It has competitive advantages over other solutions for decentralized gaming:
 
- -  *Embeddable*: A game app does not have to communicate with another process
-    behind, hence no marshaling or maintaining more than one process.
-    You can think of it more like SQLite than MySQL or PostgreSQL.
+ -  *Embeddable*: A game app does not have to communicate with another running
+    process, hence it doesn't require extra marshaling or processes management.
+    To draw a parallel, Libplanet is closer to SQLite than MySQL or PostgreSQL.
 
- -  *Isomorphic*: It is just a .NET library, so every logic of game can be
-    written in the same language, C#.  No glue code or "smart contracts" are
-    needed.
+ -  *Isomorphic*: Libplanet is a .NET library, so every game logic can be
+    written in the same language, C#, and run on the blockchain. No glue
+    code or "smart contracts" are needed.
 
- -  *Token-free*: Unlike almost every "blockchain" system, it does not force
-    you to deal with any yet-another-cryptocurrencies.  Your game can be
-    free to play.
+ -  *Token-independent*: Unlike almost every blockchain system, it does not
+    force users to create and deal with yet-another-cryptocurrency. Your
+    game can be free to play, and enjoyed by regular gamers.
+    
+To learn more about why Planetarium is creating technology for fully
+decentralized games, please refer to our [blog post].
 
 [Discord]: https://discord.gg/planetarium
 [Azure Pipelines]: https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&branchName=master
@@ -34,6 +37,7 @@ It has competitive advantages over other solutions for decentralized gaming:
 [digital signature]: https://en.wikipedia.org/wiki/Digital_signature
 [BFT]: https://en.wikipedia.org/wiki/Byzantine_fault_tolerance
 [blockchain]: https://en.wikipedia.org/wiki/Blockchain
+[blog post]: https://medium.com/planetarium/introducing-planetarium-powering-games-with-freedom-22ab1ab70e0e
 
 
 NuGet
