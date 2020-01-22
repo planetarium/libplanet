@@ -40,11 +40,14 @@ To be released.
     [[#613], [#727]]
  -  `Block<T>` class became not to implement `ISerializable`.  [[#751]]
  -  `Transaction<T>` class became not to implement `ISerializable`.  [[#751]]
- -  `Block<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
- -  `Transaction<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.  [[#751]]
+ -  `Block<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.
+    [[#751]]
+ -  `Transaction<T>.ToBencodex()` became to return `Bencodex.Types.Dictionary`.
+    [[#751]]
  -  Removed `Block<T>.FromBencodex(byte[])` method.  [[#751]]
  -  Removed `Transaction<T>.FromBencodex(byte[])` method.  [[#751]]
  -  `Block<T>.ToBencodex()` became to take no arguments.  [[#749], [#757]]
+ -  Removed `Swarm<T>.BroadcastBlocks(IEnumerable<Block<T>>)` method.  [[#764]]
 
 ### Backward-incompatible network protocol changes
 
@@ -52,6 +55,7 @@ To be released.
     `GetRecentStates` messages.  [[#703]]
  -  Added `int`-typed `iteration` parameter to `RecentStates` message.
     [[#703]]
+ -  Added `BlockHeaderMessage` message.  [[#764]]
 
 ### Backward-incompatible storage format changes
 
@@ -86,6 +90,7 @@ To be released.
  -  Added `CryptoConfig` class.  [[#758]]
  -  Added `ICryptoBackend` class.  [[#758]]
  -  Added `DefaultCryptoBackend` class.  [[#758]]
+ -  Added `Swarm<T>.BroadcastBlock(Block<T>)` method.  [[#764]]
 
 ### Behavioral changes
 
@@ -116,6 +121,8 @@ To be released.
     `Swarm<T>.StartAsync()` became not to call `Swarm<T>.PreloadAsync()`.  [[#735], [#760]]
  -  The hash of `Block<T>` has changed due to the change in the method of
     serialization.  [[#762]]
+ -  `Swarm<T>` became to ignore broadcasted block that has lower index than
+    the current tip.  [[#764]]
 
 ### Bug fixes
 
@@ -199,6 +206,7 @@ To be released.
 [#760]: https://github.com/planetarium/libplanet/pull/760
 [#762]: https://github.com/planetarium/libplanet/pull/762
 [#763]: https://github.com/planetarium/libplanet/pull/763
+[#764]: https://github.com/planetarium/libplanet/pull/764
 
 
 Version 0.7.0

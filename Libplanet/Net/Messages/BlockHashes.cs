@@ -7,8 +7,7 @@ namespace Libplanet.Net.Messages
 {
     internal class BlockHashes : Message
     {
-        public BlockHashes(
-            Address sender, IEnumerable<HashDigest<SHA256>> hashes)
+        public BlockHashes(IEnumerable<HashDigest<SHA256>> hashes)
         {
             Hashes = hashes.ToList();
         }

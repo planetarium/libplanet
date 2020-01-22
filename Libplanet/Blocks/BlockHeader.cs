@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Linq;
+using Bencodex;
 using Bencodex.Types;
 
 namespace Libplanet.Blocks
@@ -81,6 +82,24 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> TxHash { get; }
 
         public ImmutableArray<byte> Hash { get; }
+
+        public static BlockHeader Deserialize(byte[] bytes)
+        {
+            IValue value = new Codec().Decode(bytes);
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
+            }
+
+            return new BlockHeader(dict);
+        }
+
+        public byte[] Serialize()
+        {
+            return new Codec().Encode(ToBencodex());
+        }
 
         public Bencodex.Types.Dictionary ToBencodex()
         {

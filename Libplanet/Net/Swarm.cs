@@ -103,6 +103,7 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow);
             LastReceived = now;
             TxReceived = new AsyncAutoResetEvent();
+            BlockHeaderReceived = new AsyncAutoResetEvent();
             BlockAppended = new AsyncAutoResetEvent();
             BlockReceived = new AsyncAutoResetEvent();
 
@@ -167,6 +168,8 @@ namespace Libplanet.Net
         internal IProtocol Protocol => (_transport as NetMQTransport)?.Protocol;
 
         internal AsyncAutoResetEvent TxReceived { get; }
+
+        internal AsyncAutoResetEvent BlockHeaderReceived { get; }
 
         internal AsyncAutoResetEvent BlockReceived { get; }
 
@@ -344,9 +347,9 @@ namespace Libplanet.Net
                 cancellationToken);
         }
 
-        public void BroadcastBlocks(IEnumerable<Block<T>> blocks)
+        public void BroadcastBlock(Block<T> block)
         {
-            BroadcastBlocks(null, blocks);
+            BroadcastBlock(null, block);
         }
 
         public void BroadcastTxs(IEnumerable<Transaction<T>> txs)
@@ -732,13 +735,10 @@ namespace Libplanet.Net
             });
         }
 
-        private void BroadcastBlocks(Address? except, IEnumerable<Block<T>> blocks)
+        private void BroadcastBlock(Address? except, Block<T> block)
         {
             _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHashes(
-                Address,
-                blocks.Select(b => b.Hash)
-            );
+            var message = new BlockHeaderMessage(block.GetBlockHeader());
             BroadcastMessage(except, message);
             _logger.Debug("Block broadcasting complete.");
         }
@@ -1087,7 +1087,7 @@ namespace Libplanet.Net
                                 getBlockHashes.Locator,
                                 getBlockHashes.Stop,
                                 FindNextHashesChunkSize);
-                        var reply = new BlockHashes(Address, hashes)
+                        var reply = new BlockHashes(hashes)
                         {
                             Identity = getBlockHashes.Identity,
                         };
@@ -1129,6 +1129,14 @@ namespace Libplanet.Net
                         break;
                     }
 
+                case BlockHeaderMessage blockHeader:
+                    {
+                        Task.Run(
+                            async () => await ProcessBlockHeader(blockHeader, _cancellationToken),
+                            _cancellationToken);
+                        break;
+                    }
+
                 default:
                     throw new InvalidMessageException($"Can't handle message: {message}", message);
             }
@@ -1150,19 +1158,57 @@ namespace Libplanet.Net
                 .Where(hash => !_store.ContainsBlock(hash))
                 .ToImmutableList();
 
-            if (!newHashes.Any())
+            if (newHashes.Any())
             {
-                _logger.Debug($"No blocks to require. Ignore {nameof(BlockHashes)}.");
+                await FetchBlocks(peer, newHashes, cancellationToken);
+            }
+            else
+            {
+               _logger.Debug($"No blocks are required; {nameof(BlockHashes)} is ignored.");
+            }
+        }
+
+        private async Task ProcessBlockHeader(
+            BlockHeaderMessage message,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (!(message.Remote is BoundPeer peer))
+            {
+                _logger.Information(
+                    "BlockHashes was sent from invalid peer " +
+                    $"[{message.Remote.Address.ToHex()}]. ignored.");
                 return;
             }
 
+            BlockHeaderReceived.Set();
+            BlockHeader header = message.Header;
+
+            // FIXME: this should be changed into total difficulty.
+            if (header.Index > BlockChain.Tip.Index)
+            {
+                await FetchBlocks(
+                    peer,
+                    new[] { new HashDigest<SHA256>(header.Hash.ToArray()) },
+                    cancellationToken);
+            }
+            else
+            {
+                _logger.Debug($"No blocks are required; {nameof(BlockHeaderMessage)} is ignored.");
+            }
+        }
+
+        private async Task FetchBlocks(
+            BoundPeer peer,
+            IReadOnlyCollection<HashDigest<SHA256>> hashes,
+            CancellationToken cancellationToken)
+        {
             _logger.Debug(
                 $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
-                newHashes.Count);
+                hashes.Count);
 
             System.Collections.Async.IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
                 peer,
-                newHashes
+                hashes
             );
 
             List<Block<T>> blocks = await fetched.ToListAsync(
@@ -1185,7 +1231,7 @@ namespace Libplanet.Net
                 {
                     if (await AppendBlocksAsync(peer, blocks, cancellationToken))
                     {
-                        BroadcastBlocks(message.Remote.Address, blocks);
+                        BroadcastBlock(peer.Address, blocks.Last());
                     }
 
                     _logger.Debug("Append complete.");
