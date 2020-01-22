@@ -590,6 +590,18 @@ namespace Libplanet.Net
                 cancellationToken);
         }
 
+        public async Task CheckAllPeersAsync(
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (cancellationToken == default(CancellationToken))
+            {
+                cancellationToken = _cancellationToken;
+            }
+
+            NetMQTransport netMQTransport = (NetMQTransport)_transport;
+            await netMQTransport.CheckAllPeersAsync(cancellationToken);
+        }
+
         internal async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,

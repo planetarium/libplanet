@@ -154,9 +154,30 @@ namespace Libplanet.Net.Protocols
                             peer,
                             _requestTimeout,
                             cancellationToken)
-                ).ToList();
+                    ).ToList();
 
                 _logger.Debug("Refresh candidates: {Count}", tasks.Count);
+
+                await Task.WhenAll(tasks);
+                cancellationToken.ThrowIfCancellationRequested();
+            }
+            catch (TimeoutException)
+            {
+            }
+        }
+
+        public async Task CheckAllPeersAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.Debug("Validating all peers: {Count}", _routing.Peers.Count());
+                List<Task> tasks = _routing.Peers
+                    .Select(peer =>
+                        ValidateAsync(
+                            peer,
+                            _requestTimeout,
+                            cancellationToken)
+                    ).ToList();
 
                 await Task.WhenAll(tasks);
                 cancellationToken.ThrowIfCancellationRequested();

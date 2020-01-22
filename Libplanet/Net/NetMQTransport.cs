@@ -536,6 +536,12 @@ namespace Libplanet.Net
             _replyQueue.Enqueue(message);
         }
 
+        public async Task CheckAllPeersAsync(CancellationToken cancellationToken)
+        {
+            KademliaProtocol kp = (KademliaProtocol)Protocol;
+            await kp.CheckAllPeersAsync(cancellationToken);
+        }
+
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
             try
