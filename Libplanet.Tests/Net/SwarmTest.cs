@@ -2271,7 +2271,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> minerChain = _blockchains[0];
             BlockChain<DumbAction> receiverChain = _blockchains[1];
 
-            Guid receiverChainId = _blockchains[1].Id;
+            Guid receiverChainId = receiverChain.Id;
 
             (Address address, IEnumerable<Block<DumbAction>> blocks) =
                 await MakeFixtureBlocksForPreloadAsyncCancellationTest();
@@ -2434,6 +2434,72 @@ namespace Libplanet.Tests.Net
                 miner1.Dispose();
                 miner2.Dispose();
                 receiver.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async void RestageTransactionsAfterReorg()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var minerA = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+            var minerB = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+
+            var privateKeyA = new PrivateKey();
+            var privateKeyB = new PrivateKey();
+
+            try
+            {
+                await StartAsync(minerA);
+                await StartAsync(minerB);
+
+                const string dumbItem = "item0.0";
+                var txA = minerA.BlockChain.MakeTransaction(
+                    privateKeyA,
+                    new[] { new DumbAction(_fx1.Address1, dumbItem), });
+                var txB = minerB.BlockChain.MakeTransaction(
+                    privateKeyB,
+                    new[] { new DumbAction(_fx1.Address2, dumbItem), });
+
+                // Make minerB's chain longer than minerA's chain.
+                var blockA = await minerA.BlockChain.MineBlock(minerA.Address);
+                var blockB = await minerB.BlockChain.MineBlock(minerB.Address);
+                var blockC = await minerB.BlockChain.MineBlock(minerB.Address);
+
+                // Check each states.
+                await BootstrapAsync(minerA, minerB.AsPeer);
+
+                Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(_fx1.Address1));
+                Assert.Equal((Text)dumbItem, minerB.BlockChain.GetState(_fx1.Address2));
+
+                // Occur reorg.
+                minerB.BroadcastBlock(blockC);
+                minerA.BlockAppended.Wait();
+
+                // Check sync.
+                Assert.Equal(minerA.BlockChain.Tip, minerB.BlockChain.Tip);
+                Assert.Equal(3, minerA.BlockChain.Count);
+                Assert.Null(minerA.BlockChain.GetState(_fx1.Address1));
+                Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(_fx1.Address2));
+
+                // Expect stage txs in unrendered blocks.
+                Assert.Contains(txA.Id, minerA.BlockChain.GetStagedTransactionIds());
+
+                await minerA.BlockChain.MineBlock(minerA.Address);
+                minerA.BroadcastBlock(minerA.BlockChain.Tip);
+                minerB.BlockAppended.Wait();
+
+                // Check sync.
+                Assert.Equal(minerA.BlockChain.Tip, minerB.BlockChain.Tip);
+                Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(_fx1.Address1));
+                Assert.Equal((Text)dumbItem, minerA.BlockChain.GetState(_fx1.Address2));
+            }
+            finally
+            {
+                await StopAsync(minerA);
+                await StopAsync(minerB);
+
+                minerA.Dispose();
+                minerB.Dispose();
             }
         }
 
