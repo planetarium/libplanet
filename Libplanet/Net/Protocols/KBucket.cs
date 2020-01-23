@@ -36,10 +36,10 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                return _peerStates.Aggregate(
+                return _peerStates.Values.Aggregate(
                     (x, y) =>
-                        x.Value.LastUpdated > y.Value.LastUpdated ? x : y
-                ).Value;
+                        x.LastUpdated > y.LastUpdated ? x : y
+                );
             }
         }
 
@@ -50,10 +50,10 @@ namespace Libplanet.Net.Protocols
         {
             get
             {
-                return _peerStates.Aggregate(
+                return _peerStates.Values.Aggregate(
                     (x, y) =>
-                        x.Value.LastUpdated < y.Value.LastUpdated ? x : y
-                ).Value;
+                        x.LastUpdated < y.LastUpdated ? x : y
+                );
             }
         }
 
@@ -81,9 +81,9 @@ namespace Libplanet.Net.Protocols
 
                 // This done because peer's other attribute except public key might be changed.
                 // (eg. public IP address, endpoint)
-                var peerDigest = _peerStates[peer.Address];
-                peerDigest.Peer = peer;
-                peerDigest.LastUpdated = updated;
+                PeerState state = _peerStates[peer.Address];
+                state.Peer = peer;
+                state.LastUpdated = updated;
             }
             else
             {
@@ -189,7 +189,7 @@ namespace Libplanet.Net.Protocols
         {
             if (_peerStates.ContainsKey(peer.Address))
             {
-                var state = _peerStates[peer.Address];
+                PeerState state = _peerStates[peer.Address];
                 state.LastChecked = start;
                 state.Latency = end - start;
             }

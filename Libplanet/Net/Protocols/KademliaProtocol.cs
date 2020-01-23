@@ -166,7 +166,7 @@ namespace Libplanet.Net.Protocols
             }
         }
 
-        public async Task CheckAllPeersAsync(CancellationToken cancellationToken)
+        public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
         {
             try
             {
@@ -175,15 +175,16 @@ namespace Libplanet.Net.Protocols
                     .Select(peer =>
                         ValidateAsync(
                             peer,
-                            _requestTimeout,
+                            timeout ?? _requestTimeout,
                             cancellationToken)
                     ).ToList();
 
                 await Task.WhenAll(tasks);
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            catch (TimeoutException)
+            catch (TimeoutException e)
             {
+                _logger.Error(e, "Timeout occurred checking some peers: {e}", e);
             }
         }
 
