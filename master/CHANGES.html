@@ -201,6 +201,14 @@ block from the nodes that have a different genesis block.  [<a href="https://git
 serialization.  [<a href="https://github.com/planetarium/libplanet/pull/762">#762</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to ignore broadcasted block that has lower index than
 the current tip.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
+<li>The way <code>Swarm&lt;T&gt;</code> chose peers to spread messages has changed.  [<a href="https://github.com/planetarium/libplanet/issues/765">#765</a>, <a href="https://github.com/planetarium/libplanet/pull/767">#767</a>]
+<ul>
+<li>If there are less than 10 peers in the routing table, select all peers.</li>
+<li>If there are more than 10 peers in the routing table,
+choose one from each bucket, and if the number is less than 10,
+then select an additional peers so that the total is 10.</li>
+</ul>
+</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
