@@ -83,7 +83,7 @@ namespace Libplanet.Net.Protocols
 
         public IEnumerable<BoundPeer> PeersToBroadcast(Address? except)
         {
-            var peers = NonEmptyBuckets
+            List<BoundPeer> peers = NonEmptyBuckets
                 .Select(bucket => bucket.GetRandomPeer(except))
                 .Where(peer => !(peer is null)).ToList();
             var count = peers.Count;
