@@ -123,6 +123,11 @@ To be released.
     serialization.  [[#762]]
  -  `Swarm<T>` became to ignore broadcasted block that has lower index than
     the current tip.  [[#764]]
+ -  The way `Swarm<T>` chose peers to spread messages has changed.  [[#765], [#767]]
+     -  If there are less than 10 peers in the routing table, select all peers.
+     -  If there are more than 10 peers in the routing table,
+        choose one from each bucket, and if the number is less than 10,
+        then select an additional peers so that the total is 10.
 
 ### Bug fixes
 
@@ -207,6 +212,8 @@ To be released.
 [#762]: https://github.com/planetarium/libplanet/pull/762
 [#763]: https://github.com/planetarium/libplanet/pull/763
 [#764]: https://github.com/planetarium/libplanet/pull/764
+[#765]: https://github.com/planetarium/libplanet/issues/765
+[#767]: https://github.com/planetarium/libplanet/pull/767
 
 
 Version 0.7.0
