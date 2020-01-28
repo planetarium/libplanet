@@ -401,11 +401,12 @@ namespace Libplanet.Blockchain
 
             Block<T> block = this[offset.Value];
             Tuple<HashDigest<SHA256>, long> stateReference;
+            string stateKey = address.ToHex().ToLowerInvariant();
 
             _rwlock.EnterReadLock();
             try
             {
-                stateReference = Store.LookupStateReference(Id, address, block);
+                stateReference = Store.LookupStateReference(Id, stateKey, block);
             }
             finally
             {
@@ -419,7 +420,7 @@ namespace Libplanet.Blockchain
 
             HashDigest<SHA256> hashValue = stateReference.Item1;
 
-            IImmutableDictionary<Address, IValue> blockStates = Store.GetBlockStates(hashValue);
+            IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
             if (blockStates is null)
             {
                 if (completeStates)
@@ -460,7 +461,7 @@ namespace Libplanet.Blockchain
                 }
             }
 
-            if (blockStates.TryGetValue(address, out IValue state))
+            if (blockStates.TryGetValue(stateKey, out IValue state))
             {
                 return state;
             }
@@ -1287,11 +1288,11 @@ namespace Libplanet.Blockchain
             bool buildStateReferences
         )
         {
-            ImmutableHashSet<Address> updatedAddresses =
+            ImmutableHashSet<string> updatedAddresses =
                 actionEvaluations.Select(
-                    a => a.OutputStates.UpdatedAddresses
+                    a => a.OutputStates.UpdatedAddresses.Select(ad => ad.ToHex().ToLowerInvariant())
                 ).Aggregate(
-                    ImmutableHashSet<Address>.Empty,
+                    ImmutableHashSet<string>.Empty,
                     (a, b) => a.Union(b)
                 );
 
@@ -1301,13 +1302,11 @@ namespace Libplanet.Blockchain
                 IAccountStateDelta lastStates = actionEvaluations.Count > 0
                     ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
                     : null;
-                ImmutableDictionary<Address, IValue> totalDelta =
-                    updatedAddresses.Select(
-                        a => new KeyValuePair<Address, IValue>(
-                            a,
-                            lastStates?.GetState(a)
-                        )
-                    ).ToImmutableDictionary();
+                ImmutableDictionary<string, IValue> totalDelta =
+                    updatedAddresses.ToImmutableDictionary(
+                        a => a,
+                        a => lastStates?.GetState(new Address(a))
+                    );
 
                 Store.SetBlockStates(blockHash, totalDelta);
             }

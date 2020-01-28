@@ -86,12 +86,12 @@ namespace Libplanet.Store
             HashDigest<SHA256> branchPoint);
 
         /// <summary>
-        /// Lists all addresses that have ever had states.
+        /// Lists all keys that have ever had states.
         /// </summary>
-        /// <param name="chainId">The ID of the chain to list addresses.</param>
-        /// <returns>All addresses in an arbitrary order.  The order might
+        /// <param name="chainId">The ID of the chain to list state keys.</param>
+        /// <returns>All state keys in an arbitrary order.  The order might
         /// be vary for each call.</returns>
-        IEnumerable<Address> ListAddresses(Guid chainId);
+        IEnumerable<string> ListStateKeys(Guid chainId);
 
         /// <summary>
         /// Lists all accounts, that have any states, in the given <paramref name="chainId"/> and
@@ -105,12 +105,11 @@ namespace Libplanet.Store
         /// <returns>A dictionary of account addresses to lists of their corresponding state
         /// references.  Each list of state references is in ascending order, i.e., the block
         /// closest to the genesis goes first and the block closest to the tip goes last.</returns>
-        IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
-            ListAllStateReferences(
-                Guid chainId,
-                long lowestIndex = 0,
-                long highestIndex = long.MaxValue
-            );
+        IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> ListAllStateReferences(
+            Guid chainId,
+            long lowestIndex = 0,
+            long highestIndex = long.MaxValue
+        );
 
         /// <summary>
         /// Adds <see cref="TxId"/>s to the pending list so that
@@ -217,20 +216,30 @@ namespace Libplanet.Store
         /// <c>a = 1; b = 2; c = 1</c> (all states) nor
         /// <c>b = 1; c = 1</c> (delta).</para>
         /// </remarks>
-        IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash);
+        /// <seealso cref="SetBlockStates"/>
+        IImmutableDictionary<string, IValue> GetBlockStates(HashDigest<SHA256> blockHash);
 
+        /// <summary>
+        /// Sets the states updated by actions in the specified block
+        /// (i.e., <paramref name="blockHash"/>).
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to update states.
+        /// </param>
+        /// <param name="states">The states updated by actions in the specified block
+        /// (i.e., <paramref name="blockHash"/>).
+        /// </param>
+        /// <seealso cref="GetBlockStates"/>
         void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            IImmutableDictionary<Address, IValue> states
+            IImmutableDictionary<string, IValue> states
         );
 
-#pragma warning disable MEN002
         /// <summary>
         /// Looks up a state reference, which is a block's <see cref="Block{T}.Hash"/> that contains
-        /// an action mutating the <paramref name="address"/>' state.
+        /// an action mutating the <paramref name="key"/>'s tate.
         /// </summary>
         /// <param name="chainId">The chain ID to look up a state reference.</param>
-        /// <param name="address">The <see cref="Address"/> to look up.</param>
+        /// <param name="key">The state key to look up.</param>
         /// <param name="lookupUntil">The upper bound (i.e., the latest block) of the search range.
         /// <see cref="Block{T}"/>s after <paramref name="lookupUntil"/> are ignored.</param>
         /// <returns>Returns a nullable tuple consisting of <see cref="Block{T}.Hash"/> and
@@ -238,21 +247,22 @@ namespace Libplanet.Store
         /// address.</returns>
         /// <typeparam name="T">An <see cref="IAction"/> class used with
         /// <paramref name="lookupUntil"/>.</typeparam>
-        /// <seealso cref="IStore.StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
-        /// <seealso cref="IStore.IterateStateReferences(Guid, Address, long?, long?, int?)"/>
-#pragma warning restore MEN002
+        /// <seealso
+        /// cref="IStore.StoreStateReference(Guid, IImmutableSet{string}, HashDigest{SHA256}, long)"
+        /// />
+        /// <seealso cref="IStore.IterateStateReferences(Guid, string, long?, long?, int?)"/>
         Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
-            Address address,
+            string key,
             Block<T> lookupUntil)
             where T : IAction, new();
 
         /// <summary>
         /// Gets pairs of a state reference and a corresponding <see cref="Block{T}.Index"/> of
-        /// the requested <paramref name="address"/> in the specified <paramref name="chainId"/>.
+        /// the requested <paramref name="key"/> in the specified <paramref name="chainId"/>.
         /// </summary>
         /// <param name="chainId">The chain ID.</param>
-        /// <param name="address">The <see cref="Address"/> to get state references.</param>
+        /// <param name="key">The key to get state references.</param>
         /// <param name="highestIndex">The highest index of state references to get. If it is
         /// <c>null</c>, it will be the highest index possible.</param>
         /// <param name="lowestIndex">The lowest index of state references to get.  If it is
@@ -265,31 +275,27 @@ namespace Libplanet.Store
         /// <exception cref="ArgumentException">Thrown when the given
         /// <paramref name="highestIndex"/> is less than <paramref name="lowestIndex"/>.</exception>
         /// <seealso
-        /// cref="StoreStateReference(Guid , IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
+        /// cref="StoreStateReference(Guid , IImmutableSet{string}, HashDigest{SHA256}, long)"/>
         IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address,
+            string key,
             long? highestIndex = null,
             long? lowestIndex = null,
             int? limit = null);
 
         /// <summary>
-        /// Stores a state reference, which is a <see cref="Block{T}.Hash"/>
-        /// that has the state of the <see cref="Address"/> for each updated
-        /// <see cref="Address"/>es by the <see cref="Transaction{T}"/>s in the
-        /// <see cref="Block{T}" />.</summary>
+        /// Marks the specified <paramref name="keys"/> updated by any action in the specified block
+        /// (i.e., <paramref name="blockHash"/>).
+        /// </summary>
         /// <param name="chainId">The ID of the chain to store a state reference.</param>
-        /// <param name="addresses">The <see cref="Address"/>es to store state
-        /// reference.</param>
-        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> which has the state
-        /// of the <see cref="Address"/>.</param>
-        /// <param name="blockIndex">The <see cref="Block{T}.Index"/> which has the state
-        /// of the <see cref="Address"/>. This must refer to the same block
-        /// that <paramref name="blockHash"/> refers to.</param>
-        /// <seealso cref="IterateStateReferences(Guid, Address, long?, long?, int?)"/>
+        /// <param name="keys">The keys updated by the block.</param>
+        /// <param name="blockHash">The <see cref="Block{T}.Hash"/> of the block which changes
+        /// the <paramref name="keys"/>' states.</param>
+        /// <param name="blockIndex">The block index.</param>
+        /// <seealso cref="IterateStateReferences(Guid, string, long?, long?, int?)"/>
         void StoreStateReference(
             Guid chainId,
-            IImmutableSet<Address> addresses,
+            IImmutableSet<string> keys,
             HashDigest<SHA256> blockHash,
             long blockIndex);
 
@@ -309,9 +315,9 @@ namespace Libplanet.Store
         /// <paramref name="branchPoint"/>.</typeparam>
         /// <exception cref="ChainIdNotFoundException">Thrown when the given
         /// <paramref name="sourceChainId"/> does not exist.</exception>
-        /// <seealso cref="IterateStateReferences(Guid, Address, long?, long?, int?)"/>
+        /// <seealso cref="IterateStateReferences(Guid, string, long?, long?, int?)"/>
         /// <seealso
-        /// cref="StoreStateReference(Guid, IImmutableSet{Address}, HashDigest{SHA256}, long)"/>
+        /// cref="StoreStateReference(Guid, IImmutableSet{string}, HashDigest{SHA256}, long)"/>
         void ForkStateReferences<T>(
             Guid sourceChainId,
             Guid destinationChainId,

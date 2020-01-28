@@ -43,10 +43,10 @@ namespace Libplanet.Store
             HashDigest<SHA256> branchPoint);
 
         /// <inheritdoc />
-        public abstract IEnumerable<Address> ListAddresses(Guid chainId);
+        public abstract IEnumerable<string> ListStateKeys(Guid chainId);
 
         /// <inheritdoc/>
-        public abstract IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+        public abstract IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
                 Guid chainId,
                 long lowestIndex = 0,
@@ -117,33 +117,33 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public abstract bool ContainsBlock(HashDigest<SHA256> blockHash);
 
-        public abstract IImmutableDictionary<Address, IValue> GetBlockStates(
+        public abstract IImmutableDictionary<string, IValue> GetBlockStates(
             HashDigest<SHA256> blockHash
         );
 
         public abstract void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            IImmutableDictionary<Address, IValue> states
+            IImmutableDictionary<string, IValue> states
         );
 
         /// <inheritdoc />
         public abstract Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
-            Address address,
+            string key,
             Block<T> lookupUntil)
             where T : IAction, new();
 
         /// <inheritdoc />
         public abstract IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address,
+            string key,
             long? highestIndex,
             long? lowestIndex,
             int? limit);
 
         public abstract void StoreStateReference(
             Guid chainId,
-            IImmutableSet<Address> addresses,
+            IImmutableSet<string> keys,
             HashDigest<SHA256> blockHash,
             long blockIndex);
 

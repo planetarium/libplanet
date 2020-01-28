@@ -8,6 +8,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  The internal representation for state keys became `string` (was `Address`).
+    [[#368], [#774]]
+     -  The return type of `IStore.GetBlockStates()` method became
+        `IImmutableDictionary<string, IValue>` (was `AddressStateMap`,
+        which was removed too).  [[#368], [#774]]
+     -  The type of the second parameter of `IStore.SetBlockStates()` method
+        became `IImmutableDictionary<string, IValue>` (was `AddressStateMap`,
+        which was removed too).  [[#368], [#774]]
+     -  The second parameter of `IStore.IterateStateReferences()` method became
+        `string key` (was `Address address`).  [[#368], [#774]]
+     -  The second parameter of `IStore.StoreStateReference()` method became
+        `IImmutableSet<string> keys` (was `IImmutableSet<Address> addresses`).
+        [[#368], [#774]]
+     -  `IStore.ListAddresses()` method was replaced by `IStore.ListStateKeys()`
+        method. [[#368], [#774]]
  -  Added `Swarm<T>.FindSpecificPeer()` method to find a specific peer given
     the address.  [[#570], [#580]]
  -  Removed `LiteDBStore` class.  Use `DefaultStore` instead.  [[#662]]
@@ -20,13 +35,13 @@ To be released.
     method and `BlockChain<T>[HashDigest<SHA256>]` indexer as lookups only
     the current chain, not entire storage.  [[#678]]
  -  Added `IStore.ContainsBlock(HashDigest<SHA256>)` method.  [[#678]]
- -  Removed `AddressStateMap` class.  [[#98], [#692]]
+ -  Removed `AddressStateMap` class.  [[#98], [#368], [#692], [#774]]
      -  The return type of `BlockChain<T>.GetState()` method became `IValue`
         (was `AddressStateMap`).
      -  The return type of `IStore.GetBlockStates()` method became
-        `IImmutableDictionary<Address, IValue>` (was `AddressStateMap`).
+        `IImmutableDictionary<string, IValue>` (was `AddressStateMap`).
      -  `IStore.SetBlockStates()` method became to take
-        `IImmutableDictionary<Address, IValue>` instead of `AddressStateMap`.
+        `IImmutableDictionary<string, IValue>` instead of `AddressStateMap`.
  -  `Swarm<T>.PreloadAsync()` method and `Swarm<T>.StartAsync()` method became
     to take `preloadBlockDownloadFailed` event handler as an argument.
     [[#694]]
@@ -48,6 +63,8 @@ To be released.
  -  Removed `Transaction<T>.FromBencodex(byte[])` method.  [[#751]]
  -  `Block<T>.ToBencodex()` became to take no arguments.  [[#749], [#757]]
  -  Removed `Swarm<T>.BroadcastBlocks(IEnumerable<Block<T>>)` method.  [[#764]]
+ -  `StoreExtension.LookupStateReference<T>()` method was replaced by
+    `IStore.LookupStateReference<T>()` method.  [[#722], [#774]]
 
 ### Backward-incompatible network protocol changes
 
@@ -68,6 +85,10 @@ To be released.
 
  -  Added `DefaultStore` class to replace `LiteDBStore`.  [[#662]]
  -  Added `IStore.ListAllStateReferences<T>()` method.  [[#701], [#703]]
+ -  Added `IStore.ListStateKeys()` method to replace `IStore.ListAddresses()`
+    method.  [[#368], [#774]]
+ -  Added `IStore.LookupStateReference<T>()` method to replace
+    `StoreExtension.LookupStateReference<T>()` method.  [[#368], [#722], [#774]]
  -  Added `BlockChain<T>.Genesis` property.  [[#688]]
  -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
@@ -77,7 +98,6 @@ To be released.
     class.  [[#604], [#726]]
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
     `Swarm<T>`'s routing table.  [[#739]]
- -  Added `IStore.LookupStateReference<T>()` method.  [[#722]]
  -  Added `Block<T>.Serialize()` method which returns `byte[]`.  [[#751]]
  -  Added `Transaction<T>.Serialize()` method which returns `byte[]`.  [[#751]]
  -  Added `Block<T>(Bencodex.Types.Dictionary)` constructor.  [[#751]]
@@ -165,6 +185,7 @@ To be released.
  -  Fixed a bug where `BlockChain<T>` had rendered and evaluated actions in
     the genesis block during forking.  [[#763]]
 
+[#368]: https://github.com/planetarium/libplanet/issues/368
 [#570]: https://github.com/planetarium/libplanet/issues/570
 [#580]: https://github.com/planetarium/libplanet/pull/580
 [#604]: https://github.com/planetarium/libplanet/issues/604
@@ -214,6 +235,7 @@ To be released.
 [#764]: https://github.com/planetarium/libplanet/pull/764
 [#765]: https://github.com/planetarium/libplanet/issues/765
 [#767]: https://github.com/planetarium/libplanet/pull/767
+[#774]: https://github.com/planetarium/libplanet/pull/774
 
 
 Version 0.7.0
@@ -255,9 +277,9 @@ Released on November 8, 2019.
      -  Removed `BlockChain<T>.GetEnumerate()` method.  [[#630]]
      -  Removed `BlockPolicyExtension.ValidateBlocks()` method.  [[#630]]
      -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
-        `BlockChain<T>` instead of `IReadOnlyList<Block<<T>>`.  [[#630]]
+        `BlockChain<T>` instead of `IReadOnlyList<Block<T>>`.  [[#630]]
      -  `IBlockPolicy<T>.ValidateNextBlock()` method became to receive
-        `BlockChain<T>` instead of `IReadOnlyList<Block<<T>>`.  [[#630]]
+        `BlockChain<T>` instead of `IReadOnlyList<Block<T>>`.  [[#630]]
 
 ### Added interfaces
 
@@ -945,9 +967,9 @@ Released on May 31, 2019.
  -  Added `IAction.Unrender(IActionContext, IAccountStateDelta)` method.
     [[#31], [#212]]
  -  `BlockChain<T>.Validate()` method became to receive
-    `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
+    `IReadOnlyList<Block<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
  -  `IBlockPolicy<T>.GetNextBlockDifficulty()` method became to receive
-    `IReadOnlyList<Block<<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
+    `IReadOnlyList<Block<T>>` instead of `IEnumerable<Block<T>>`.  [[#205]]
  -  Added
     `IBlockPolicy<T>.ValidateNextBlock(IReadOnlyList<Block<T>>, Block<T>)`
     method.  [[#210]]
