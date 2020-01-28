@@ -12,6 +12,7 @@ namespace Libplanet.Net.Messages
             BlockLocator baseLocator,
             HashDigest<SHA256> target,
             long offset)
+            : base(LeaveTrail)
         {
             BaseLocator = baseLocator;
             TargetBlockHash = target;
@@ -19,12 +20,11 @@ namespace Libplanet.Net.Messages
         }
 
         public GetRecentStates(NetMQFrame[] frames)
-            : this(
-                new BlockLocator(frames.Skip(2).Select(f => new HashDigest<SHA256>(f.Buffer))),
-                new HashDigest<SHA256>(frames[1].Buffer),
-                frames[0].ConvertToInt64()
-            )
         {
+            BaseLocator =
+                new BlockLocator(frames.Skip(2).Select(f => new HashDigest<SHA256>(f.Buffer)));
+            TargetBlockHash = new HashDigest<SHA256>(frames[1].Buffer);
+            Offset = frames[0].ConvertToInt64();
         }
 
         public BlockLocator BaseLocator { get; }

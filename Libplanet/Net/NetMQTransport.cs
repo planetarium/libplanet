@@ -558,6 +558,14 @@ namespace Libplanet.Net
                     raw.FrameCount
                 );
                 Message message = Message.Parse(raw, reply: false);
+                if (message.Trail.Record)
+                {
+                    message.Trail.Add(
+                        BreadcrumbTrail.TrailType.Received,
+                        AsPeer.Address,
+                        DateTimeOffset.UtcNow);
+                }
+
                 _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
                 if (!(message is Ping))
                 {
@@ -631,6 +639,14 @@ namespace Libplanet.Net
 
             string identityHex = ByteUtil.Hex(msg.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", msg, identityHex);
+            if (msg.Trail.Record)
+            {
+                msg.Trail.Add(
+                    BreadcrumbTrail.TrailType.Sent,
+                    AsPeer.Address,
+                    DateTimeOffset.UtcNow);
+            }
+
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
@@ -752,7 +768,17 @@ namespace Libplanet.Net
                     req.Message,
                     req.Peer
                 );
-                var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+                var msg = req.Message;
+                if (msg.Trail.Record)
+                {
+                    _logger.Debug("Adding sent trail to message.");
+                    msg.Trail.Add(
+                        BreadcrumbTrail.TrailType.Sent,
+                        AsPeer.Address,
+                        DateTimeOffset.UtcNow);
+                }
+
+                var message = msg.ToNetMQMessage(_privateKey, AsPeer);
                 var result = new List<Message>();
                 TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
                 try
@@ -776,6 +802,14 @@ namespace Libplanet.Net
                             raw.FrameCount
                         );
                         Message reply = Message.Parse(raw, true);
+                        if (reply.Trail.Record)
+                        {
+                            reply.Trail.Add(
+                                BreadcrumbTrail.TrailType.Received,
+                                AsPeer.Address,
+                                DateTimeOffset.UtcNow);
+                        }
+
                         _logger.Debug(
                             "A reply has parsed: {Reply} from {ReplyRemote}",
                             reply,

@@ -11,6 +11,19 @@ namespace Libplanet.Net.Messages
 {
     internal abstract class Message
     {
+        internal const int HeaderSize = 4;
+
+        protected const bool LeaveTrail = true;
+
+        protected Message()
+        {
+        }
+
+        protected Message(bool trail)
+        {
+            Trail = new BreadcrumbTrail(trail);
+        }
+
         internal enum MessageType : byte
         {
             /// <summary>
@@ -89,6 +102,8 @@ namespace Libplanet.Net.Messages
 
         public Peer Remote { get; set; }
 
+        public BreadcrumbTrail Trail { get; set; }
+
         protected abstract MessageType Type { get; }
 
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
@@ -100,11 +115,12 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [type, sign, peer, frames...]
-            // (reply == false) [identity, type, sign, peer, frames...]
-            int headerCount = reply ? 3 : 4;
+            // (reply == true)  [trail, type, peer, sign, frames...]
+            // (reply == false) [identity, trail, type, peer, sign, frames...]
+            int headerCount = reply ? HeaderSize : HeaderSize + 1;
+            byte[] trail = raw[headerCount - 4].ToByteArray();
             var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
-            var peer = raw[headerCount - 2].ToByteArray();
+            byte[] peer = raw[headerCount - 2].ToByteArray();
             byte[] signature = raw[headerCount - 1].ToByteArray();
 
             NetMQFrame[] body = raw.Skip(headerCount).ToArray();
@@ -136,6 +152,7 @@ namespace Libplanet.Net.Messages
             var message = (Message)Activator.CreateInstance(
                 type, new[] { body });
             message.Remote = DeserializePeer(peer);
+            message.Trail = DeserializeTrail(trail);
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {
@@ -171,6 +188,7 @@ namespace Libplanet.Net.Messages
             message.Push(key.Sign(message.ToByteArray()));
             message.Push(SerializePeer(peer));
             message.Push((byte)Type);
+            message.Push(SerializeTrail(Trail));
 
             if (Identity is byte[] to)
             {
@@ -189,12 +207,31 @@ namespace Libplanet.Net.Messages
             }
         }
 
-        protected byte[] SerializePeer(Peer peer)
+        protected static byte[] SerializePeer(Peer peer)
         {
             var formatter = new BinaryFormatter();
             using (MemoryStream stream = new MemoryStream())
             {
                 formatter.Serialize(stream, peer);
+                return stream.ToArray();
+            }
+        }
+
+        private static BreadcrumbTrail DeserializeTrail(byte[] bytes)
+        {
+            var formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream(bytes))
+            {
+                return (BreadcrumbTrail)formatter.Deserialize(stream);
+            }
+        }
+
+        private static byte[] SerializeTrail(BreadcrumbTrail trail)
+        {
+            var formatter = new BinaryFormatter();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                formatter.Serialize(stream, trail);
                 return stream.ToArray();
             }
         }

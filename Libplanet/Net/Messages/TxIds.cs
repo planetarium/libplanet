@@ -8,6 +8,7 @@ namespace Libplanet.Net.Messages
     internal class TxIds : Message
     {
         public TxIds(Address sender, IEnumerable<TxId> txIds)
+            : base(LeaveTrail)
         {
             Sender = sender;
             Ids = txIds;

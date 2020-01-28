@@ -21,6 +21,7 @@ namespace Libplanet.Net.Messages
             > blockStates,
             IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateReferences
         )
+            : base(LeaveTrail)
         {
             BlockHash = blockHash;
             Offset = offset;

@@ -8,8 +8,8 @@ namespace Libplanet.Net.Messages
 {
     internal class GetBlockHashes : Message
     {
-        public GetBlockHashes(
-            BlockLocator locator, HashDigest<SHA256>? stop)
+        public GetBlockHashes(BlockLocator locator, HashDigest<SHA256>? stop)
+            : base(LeaveTrail)
         {
             Locator = locator;
             Stop = stop;

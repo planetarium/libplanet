@@ -33,7 +33,8 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(blockHashes, msg.Hashes);
             var privKey = new PrivateKey();
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), 0);
-            NetMQFrame[] frames = msg.ToNetMQMessage(privKey, peer).Skip(3).ToArray();
+            NetMQFrame[] frames =
+                msg.ToNetMQMessage(privKey, peer).Skip(Message.HeaderSize).ToArray();
             var restored = new BlockHashes(frames);
             Assert.Equal(msg.StartIndex, restored.StartIndex);
             Assert.Equal(msg.Hashes, restored.Hashes);

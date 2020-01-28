@@ -8,6 +8,7 @@ namespace Libplanet.Net.Messages
     internal class GetTxs : Message
     {
         public GetTxs(IEnumerable<TxId> txIds)
+            : base(LeaveTrail)
         {
             TxIds = txIds;
         }

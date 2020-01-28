@@ -9,6 +9,7 @@ namespace Libplanet.Net.Messages
     internal class BlockHashes : Message
     {
         public BlockHashes(long? startIndex, IEnumerable<HashDigest<SHA256>> hashes)
+            : base(LeaveTrail)
         {
             StartIndex = startIndex;
             Hashes = hashes.ToList();

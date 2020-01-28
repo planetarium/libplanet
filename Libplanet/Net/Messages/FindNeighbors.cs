@@ -7,6 +7,7 @@ namespace Libplanet.Net.Messages
     {
         // TODO: This message may request exact peer instead of its neighbors.
         public FindNeighbors(Address target)
+            : base(LeaveTrail)
         {
             Target = target;
         }
