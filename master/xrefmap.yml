@@ -5259,15 +5259,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateStagedTransactionIds
   nameWithType: BaseStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.BaseStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
-  fullName: Libplanet.Store.BaseStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.BaseStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
-  nameWithType: BaseStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  nameWithType.vb: BaseStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+- uid: Libplanet.Store.BaseStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.BaseStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.BaseStore.IterateStateReferences(Guid, System.String, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.BaseStore.IterateStateReferences(Guid, System.String, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: BaseStore.IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: BaseStore.IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.BaseStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_IterateStateReferences_
@@ -5288,19 +5288,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.IterateTransactionIds
   nameWithType: BaseStore.IterateTransactionIds
-- uid: Libplanet.Store.BaseStore.ListAddresses(Guid)
-  name: ListAddresses(Guid)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAddresses_Guid_
-  commentId: M:Libplanet.Store.BaseStore.ListAddresses(Guid)
-  fullName: Libplanet.Store.BaseStore.ListAddresses(Guid)
-  nameWithType: BaseStore.ListAddresses(Guid)
-- uid: Libplanet.Store.BaseStore.ListAddresses*
-  name: ListAddresses
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAddresses_
-  commentId: Overload:Libplanet.Store.BaseStore.ListAddresses
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.ListAddresses
-  nameWithType: BaseStore.ListAddresses
 - uid: Libplanet.Store.BaseStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
   name: ListAllStateReferences(Guid, Int64, Int64)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
@@ -5327,6 +5314,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.ListChainIds
   nameWithType: BaseStore.ListChainIds
+- uid: Libplanet.Store.BaseStore.ListStateKeys(Guid)
+  name: ListStateKeys(Guid)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListStateKeys_Guid_
+  commentId: M:Libplanet.Store.BaseStore.ListStateKeys(Guid)
+  fullName: Libplanet.Store.BaseStore.ListStateKeys(Guid)
+  nameWithType: BaseStore.ListStateKeys(Guid)
+- uid: Libplanet.Store.BaseStore.ListStateKeys*
+  name: ListStateKeys
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListStateKeys_
+  commentId: Overload:Libplanet.Store.BaseStore.ListStateKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.ListStateKeys
+  nameWithType: BaseStore.ListStateKeys
 - uid: Libplanet.Store.BaseStore.ListTxNonces(Guid)
   name: ListTxNonces(Guid)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ListTxNonces_Guid_
@@ -5347,15 +5347,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.LookupStateReference
   nameWithType: BaseStore.LookupStateReference
-- uid: Libplanet.Store.BaseStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name: LookupStateReference<T>(Guid, Address, Block<T>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.BaseStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
-  fullName: Libplanet.Store.BaseStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.BaseStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
-  nameWithType: BaseStore.LookupStateReference<T>(Guid, Address, Block<T>)
-  nameWithType.vb: BaseStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
+- uid: Libplanet.Store.BaseStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, String, Block<T>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_LookupStateReference__1_Guid_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.BaseStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, String, Block(Of T))
+  fullName: Libplanet.Store.BaseStore.LookupStateReference<T>(Guid, System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.BaseStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: BaseStore.LookupStateReference<T>(Guid, String, Block<T>)
+  nameWithType.vb: BaseStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
 - uid: Libplanet.Store.BaseStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock_
@@ -5388,15 +5388,15 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: BaseStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: BaseStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
-  fullName: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
-  fullName.vb: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
-  nameWithType: BaseStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  nameWithType.vb: BaseStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+- uid: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.BaseStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: BaseStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: BaseStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.BaseStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_SetBlockStates_
@@ -5433,15 +5433,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.StageTransactionIds
   nameWithType: BaseStore.StageTransactionIds
-- uid: Libplanet.Store.BaseStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name: StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_
-  commentId: M:Libplanet.Store.BaseStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name.vb: StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
-  fullName: Libplanet.Store.BaseStore.StoreStateReference(Guid, IImmutableSet<Libplanet.Address>, Libplanet.HashDigest<SHA256>, System.Int64)
-  fullName.vb: Libplanet.Store.BaseStore.StoreStateReference(Guid, IImmutableSet(Of Libplanet.Address), Libplanet.HashDigest(Of SHA256), System.Int64)
-  nameWithType: BaseStore.StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  nameWithType.vb: BaseStore.StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
+- uid: Libplanet.Store.BaseStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name: StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_
+  commentId: M:Libplanet.Store.BaseStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name.vb: StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
+  fullName: Libplanet.Store.BaseStore.StoreStateReference(Guid, IImmutableSet<System.String>, Libplanet.HashDigest<SHA256>, System.Int64)
+  fullName.vb: Libplanet.Store.BaseStore.StoreStateReference(Guid, IImmutableSet(Of System.String), Libplanet.HashDigest(Of SHA256), System.Int64)
+  nameWithType: BaseStore.StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  nameWithType.vb: BaseStore.StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
 - uid: Libplanet.Store.BaseStore.StoreStateReference*
   name: StoreStateReference
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_StoreStateReference_
@@ -5995,15 +5995,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.IterateStagedTransactionIds
   nameWithType: DefaultStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.DefaultStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.DefaultStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
-  fullName: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
-  nameWithType: DefaultStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  nameWithType.vb: DefaultStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+- uid: Libplanet.Store.DefaultStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.DefaultStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, System.String, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.DefaultStore.IterateStateReferences(Guid, System.String, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: DefaultStore.IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: DefaultStore.IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.DefaultStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_IterateStateReferences_
@@ -6024,19 +6024,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.IterateTransactionIds
   nameWithType: DefaultStore.IterateTransactionIds
-- uid: Libplanet.Store.DefaultStore.ListAddresses(Guid)
-  name: ListAddresses(Guid)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAddresses_Guid_
-  commentId: M:Libplanet.Store.DefaultStore.ListAddresses(Guid)
-  fullName: Libplanet.Store.DefaultStore.ListAddresses(Guid)
-  nameWithType: DefaultStore.ListAddresses(Guid)
-- uid: Libplanet.Store.DefaultStore.ListAddresses*
-  name: ListAddresses
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAddresses_
-  commentId: Overload:Libplanet.Store.DefaultStore.ListAddresses
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.ListAddresses
-  nameWithType: DefaultStore.ListAddresses
 - uid: Libplanet.Store.DefaultStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
   name: ListAllStateReferences(Guid, Int64, Int64)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
@@ -6063,6 +6050,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.ListChainIds
   nameWithType: DefaultStore.ListChainIds
+- uid: Libplanet.Store.DefaultStore.ListStateKeys(Guid)
+  name: ListStateKeys(Guid)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListStateKeys_Guid_
+  commentId: M:Libplanet.Store.DefaultStore.ListStateKeys(Guid)
+  fullName: Libplanet.Store.DefaultStore.ListStateKeys(Guid)
+  nameWithType: DefaultStore.ListStateKeys(Guid)
+- uid: Libplanet.Store.DefaultStore.ListStateKeys*
+  name: ListStateKeys
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListStateKeys_
+  commentId: Overload:Libplanet.Store.DefaultStore.ListStateKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.ListStateKeys
+  nameWithType: DefaultStore.ListStateKeys
 - uid: Libplanet.Store.DefaultStore.ListTxNonces(Guid)
   name: ListTxNonces(Guid)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_ListTxNonces_Guid_
@@ -6083,15 +6083,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.LookupStateReference
   nameWithType: DefaultStore.LookupStateReference
-- uid: Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name: LookupStateReference<T>(Guid, Address, Block<T>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
-  fullName: Libplanet.Store.DefaultStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.DefaultStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
-  nameWithType: DefaultStore.LookupStateReference<T>(Guid, Address, Block<T>)
-  nameWithType.vb: DefaultStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
+- uid: Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, String, Block<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_LookupStateReference__1_Guid_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.DefaultStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, String, Block(Of T))
+  fullName: Libplanet.Store.DefaultStore.LookupStateReference<T>(Guid, System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: DefaultStore.LookupStateReference<T>(Guid, String, Block<T>)
+  nameWithType.vb: DefaultStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
 - uid: Libplanet.Store.DefaultStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock_
@@ -6124,15 +6124,15 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: DefaultStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: DefaultStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
-  fullName: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
-  fullName.vb: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
-  nameWithType: DefaultStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  nameWithType.vb: DefaultStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+- uid: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.DefaultStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: DefaultStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: DefaultStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.DefaultStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_SetBlockStates_
@@ -6169,15 +6169,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.StageTransactionIds
   nameWithType: DefaultStore.StageTransactionIds
-- uid: Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name: StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_
-  commentId: M:Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name.vb: StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
-  fullName: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet<Libplanet.Address>, Libplanet.HashDigest<SHA256>, System.Int64)
-  fullName.vb: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet(Of Libplanet.Address), Libplanet.HashDigest(Of SHA256), System.Int64)
-  nameWithType: DefaultStore.StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  nameWithType.vb: DefaultStore.StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
+- uid: Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name: StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_
+  commentId: M:Libplanet.Store.DefaultStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name.vb: StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
+  fullName: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet<System.String>, Libplanet.HashDigest<SHA256>, System.Int64)
+  fullName.vb: Libplanet.Store.DefaultStore.StoreStateReference(Guid, IImmutableSet(Of System.String), Libplanet.HashDigest(Of SHA256), System.Int64)
+  nameWithType: DefaultStore.StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  nameWithType.vb: DefaultStore.StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
 - uid: Libplanet.Store.DefaultStore.StoreStateReference*
   name: StoreStateReference
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_StoreStateReference_
@@ -6539,15 +6539,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateStagedTransactionIds
   nameWithType: IStore.IterateStagedTransactionIds
-- uid: Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name: IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_Guid_Libplanet_Address_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
-  commentId: M:Libplanet.Store.IStore.IterateStateReferences(Guid,Libplanet.Address,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
-  name.vb: IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
-  fullName: Libplanet.Store.IStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
-  fullName.vb: Libplanet.Store.IStore.IterateStateReferences(Guid, Libplanet.Address, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
-  nameWithType: IStore.IterateStateReferences(Guid, Address, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
-  nameWithType.vb: IStore.IterateStateReferences(Guid, Address, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+- uid: Libplanet.Store.IStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name: IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_Guid_System_String_System_Nullable_System_Int64__System_Nullable_System_Int64__System_Nullable_System_Int32__
+  commentId: M:Libplanet.Store.IStore.IterateStateReferences(Guid,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int32})
+  name.vb: IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
+  fullName: Libplanet.Store.IStore.IterateStateReferences(Guid, System.String, System.Nullable<System.Int64>, System.Nullable<System.Int64>, System.Nullable<System.Int32>)
+  fullName.vb: Libplanet.Store.IStore.IterateStateReferences(Guid, System.String, System.Nullable(Of System.Int64), System.Nullable(Of System.Int64), System.Nullable(Of System.Int32))
+  nameWithType: IStore.IterateStateReferences(Guid, String, Nullable<Int64>, Nullable<Int64>, Nullable<Int32>)
+  nameWithType.vb: IStore.IterateStateReferences(Guid, String, Nullable(Of Int64), Nullable(Of Int64), Nullable(Of Int32))
 - uid: Libplanet.Store.IStore.IterateStateReferences*
   name: IterateStateReferences
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_IterateStateReferences_
@@ -6568,19 +6568,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.IterateTransactionIds
   nameWithType: IStore.IterateTransactionIds
-- uid: Libplanet.Store.IStore.ListAddresses(Guid)
-  name: ListAddresses(Guid)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAddresses_Guid_
-  commentId: M:Libplanet.Store.IStore.ListAddresses(Guid)
-  fullName: Libplanet.Store.IStore.ListAddresses(Guid)
-  nameWithType: IStore.ListAddresses(Guid)
-- uid: Libplanet.Store.IStore.ListAddresses*
-  name: ListAddresses
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAddresses_
-  commentId: Overload:Libplanet.Store.IStore.ListAddresses
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.ListAddresses
-  nameWithType: IStore.ListAddresses
 - uid: Libplanet.Store.IStore.ListAllStateReferences(Guid,System.Int64,System.Int64)
   name: ListAllStateReferences(Guid, Int64, Int64)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListAllStateReferences_Guid_System_Int64_System_Int64_
@@ -6607,6 +6594,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.ListChainIds
   nameWithType: IStore.ListChainIds
+- uid: Libplanet.Store.IStore.ListStateKeys(Guid)
+  name: ListStateKeys(Guid)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListStateKeys_Guid_
+  commentId: M:Libplanet.Store.IStore.ListStateKeys(Guid)
+  fullName: Libplanet.Store.IStore.ListStateKeys(Guid)
+  nameWithType: IStore.ListStateKeys(Guid)
+- uid: Libplanet.Store.IStore.ListStateKeys*
+  name: ListStateKeys
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListStateKeys_
+  commentId: Overload:Libplanet.Store.IStore.ListStateKeys
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.ListStateKeys
+  nameWithType: IStore.ListStateKeys
 - uid: Libplanet.Store.IStore.ListTxNonces(Guid)
   name: ListTxNonces(Guid)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_ListTxNonces_Guid_
@@ -6627,15 +6627,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.LookupStateReference
   nameWithType: IStore.LookupStateReference
-- uid: Libplanet.Store.IStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name: LookupStateReference<T>(Guid, Address, Block<T>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_LookupStateReference__1_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.IStore.LookupStateReference``1(Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name.vb: LookupStateReference(Of T)(Guid, Address, Block(Of T))
-  fullName: Libplanet.Store.IStore.LookupStateReference<T>(Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.IStore.LookupStateReference(Of T)(Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
-  nameWithType: IStore.LookupStateReference<T>(Guid, Address, Block<T>)
-  nameWithType.vb: IStore.LookupStateReference(Of T)(Guid, Address, Block(Of T))
+- uid: Libplanet.Store.IStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name: LookupStateReference<T>(Guid, String, Block<T>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_LookupStateReference__1_Guid_System_String_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.IStore.LookupStateReference``1(Guid,System.String,Libplanet.Blocks.Block{``0})
+  name.vb: LookupStateReference(Of T)(Guid, String, Block(Of T))
+  fullName: Libplanet.Store.IStore.LookupStateReference<T>(Guid, System.String, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.IStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
+  nameWithType: IStore.LookupStateReference<T>(Guid, String, Block<T>)
+  nameWithType.vb: IStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
 - uid: Libplanet.Store.IStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock_
@@ -6668,15 +6668,15 @@ references:
   fullName.vb: Libplanet.Store.IStore.PutTransaction(Of T)(Libplanet.Tx.Transaction(Of T))
   nameWithType: IStore.PutTransaction<T>(Transaction<T>)
   nameWithType.vb: IStore.PutTransaction(Of T)(Transaction(Of T))
-- uid: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_Libplanet_Address_IValue__
-  commentId: M:Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{Libplanet.Address,IValue})
-  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
-  fullName: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<Libplanet.Address, IValue>)
-  fullName.vb: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of Libplanet.Address, IValue))
-  nameWithType: IStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)
-  nameWithType.vb: IStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of Address, IValue))
+- uid: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name: SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_Libplanet_HashDigest_SHA256__IImmutableDictionary_System_String_IValue__
+  commentId: M:Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest{SHA256},IImmutableDictionary{System.String,IValue})
+  name.vb: SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
+  fullName: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest<SHA256>, IImmutableDictionary<System.String, IValue>)
+  fullName.vb: Libplanet.Store.IStore.SetBlockStates(Libplanet.HashDigest(Of SHA256), IImmutableDictionary(Of System.String, IValue))
+  nameWithType: IStore.SetBlockStates(HashDigest<SHA256>, IImmutableDictionary<String, IValue>)
+  nameWithType.vb: IStore.SetBlockStates(HashDigest(Of SHA256), IImmutableDictionary(Of String, IValue))
 - uid: Libplanet.Store.IStore.SetBlockStates*
   name: SetBlockStates
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_SetBlockStates_
@@ -6713,15 +6713,15 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.StageTransactionIds
   nameWithType: IStore.StageTransactionIds
-- uid: Libplanet.Store.IStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name: StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StoreStateReference_Guid_IImmutableSet_Libplanet_Address__Libplanet_HashDigest_SHA256__System_Int64_
-  commentId: M:Libplanet.Store.IStore.StoreStateReference(Guid,IImmutableSet{Libplanet.Address},Libplanet.HashDigest{SHA256},System.Int64)
-  name.vb: StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
-  fullName: Libplanet.Store.IStore.StoreStateReference(Guid, IImmutableSet<Libplanet.Address>, Libplanet.HashDigest<SHA256>, System.Int64)
-  fullName.vb: Libplanet.Store.IStore.StoreStateReference(Guid, IImmutableSet(Of Libplanet.Address), Libplanet.HashDigest(Of SHA256), System.Int64)
-  nameWithType: IStore.StoreStateReference(Guid, IImmutableSet<Address>, HashDigest<SHA256>, Int64)
-  nameWithType.vb: IStore.StoreStateReference(Guid, IImmutableSet(Of Address), HashDigest(Of SHA256), Int64)
+- uid: Libplanet.Store.IStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name: StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StoreStateReference_Guid_IImmutableSet_System_String__Libplanet_HashDigest_SHA256__System_Int64_
+  commentId: M:Libplanet.Store.IStore.StoreStateReference(Guid,IImmutableSet{System.String},Libplanet.HashDigest{SHA256},System.Int64)
+  name.vb: StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
+  fullName: Libplanet.Store.IStore.StoreStateReference(Guid, IImmutableSet<System.String>, Libplanet.HashDigest<SHA256>, System.Int64)
+  fullName.vb: Libplanet.Store.IStore.StoreStateReference(Guid, IImmutableSet(Of System.String), Libplanet.HashDigest(Of SHA256), System.Int64)
+  nameWithType: IStore.StoreStateReference(Guid, IImmutableSet<String>, HashDigest<SHA256>, Int64)
+  nameWithType.vb: IStore.StoreStateReference(Guid, IImmutableSet(Of String), HashDigest(Of SHA256), Int64)
 - uid: Libplanet.Store.IStore.StoreStateReference*
   name: StoreStateReference
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_StoreStateReference_
@@ -6764,22 +6764,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.StoreExtension.Copy
   nameWithType: StoreExtension.Copy
-- uid: Libplanet.Store.StoreExtension.LookupStateReference*
-  name: LookupStateReference
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_LookupStateReference_
-  commentId: Overload:Libplanet.Store.StoreExtension.LookupStateReference
-  isSpec: "True"
-  fullName: Libplanet.Store.StoreExtension.LookupStateReference
-  nameWithType: StoreExtension.LookupStateReference
-- uid: Libplanet.Store.StoreExtension.LookupStateReference``1(Libplanet.Store.IStore,Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name: LookupStateReference<T>(IStore, Guid, Address, Block<T>)
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_LookupStateReference__1_Libplanet_Store_IStore_Guid_Libplanet_Address_Libplanet_Blocks_Block___0__
-  commentId: M:Libplanet.Store.StoreExtension.LookupStateReference``1(Libplanet.Store.IStore,Guid,Libplanet.Address,Libplanet.Blocks.Block{``0})
-  name.vb: LookupStateReference(Of T)(IStore, Guid, Address, Block(Of T))
-  fullName: Libplanet.Store.StoreExtension.LookupStateReference<T>(Libplanet.Store.IStore, Guid, Libplanet.Address, Libplanet.Blocks.Block<T>)
-  fullName.vb: Libplanet.Store.StoreExtension.LookupStateReference(Of T)(Libplanet.Store.IStore, Guid, Libplanet.Address, Libplanet.Blocks.Block(Of T))
-  nameWithType: StoreExtension.LookupStateReference<T>(IStore, Guid, Address, Block<T>)
-  nameWithType.vb: StoreExtension.LookupStateReference(Of T)(IStore, Guid, Address, Block(Of T))
 - uid: Libplanet.Store.TransactionSet`1
   name: TransactionSet<T>
   href: api/Libplanet.Store.TransactionSet-1.html

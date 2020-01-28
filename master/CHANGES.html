@@ -83,6 +83,24 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <ul>
+<li>The internal representation for state keys became <code>string</code> (was <code>Address</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]
+<ul>
+<li>The return type of <code>IStore.GetBlockStates()</code> method became
+<code>IImmutableDictionary&lt;string, IValue&gt;</code> (was <code>AddressStateMap</code>,
+which was removed too).  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+<li>The type of the second parameter of <code>IStore.SetBlockStates()</code> method
+became <code>IImmutableDictionary&lt;string, IValue&gt;</code> (was <code>AddressStateMap</code>,
+which was removed too).  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+<li>The second parameter of <code>IStore.IterateStateReferences()</code> method became
+<code>string key</code> (was <code>Address address</code>).  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+<li>The second parameter of <code>IStore.StoreStateReference()</code> method became
+<code>IImmutableSet&lt;string&gt; keys</code> (was <code>IImmutableSet&lt;Address&gt; addresses</code>).
+[<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+<li><code>IStore.ListAddresses()</code> method was replaced by <code>IStore.ListStateKeys()</code>
+method. [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+</ul>
+</li>
 <li>Added <code>Swarm&lt;T&gt;.FindSpecificPeer()</code> method to find a specific peer given
 the address.  [<a href="https://github.com/planetarium/libplanet/issues/570">#570</a>, <a href="https://github.com/planetarium/libplanet/pull/580">#580</a>]</li>
 <li>Removed <code>LiteDBStore</code> class.  Use <code>DefaultStore</code> instead.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
@@ -95,14 +113,14 @@ Use <code>IStore.ContainsTransaction(TxId)</code> instead.  [<a href="https://gi
 method and <code>BlockChain&lt;T&gt;[HashDigest&lt;SHA256&gt;]</code> indexer as lookups only
 the current chain, not entire storage.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
 <li>Added <code>IStore.ContainsBlock(HashDigest&lt;SHA256&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/678">#678</a>]</li>
-<li>Removed <code>AddressStateMap</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/98">#98</a>, <a href="https://github.com/planetarium/libplanet/pull/692">#692</a>]
+<li>Removed <code>AddressStateMap</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/98">#98</a>, <a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/692">#692</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]
 <ul>
 <li>The return type of <code>BlockChain&lt;T&gt;.GetState()</code> method became <code>IValue</code>
 (was <code>AddressStateMap</code>).</li>
 <li>The return type of <code>IStore.GetBlockStates()</code> method became
-<code>IImmutableDictionary&lt;Address, IValue&gt;</code> (was <code>AddressStateMap</code>).</li>
+<code>IImmutableDictionary&lt;string, IValue&gt;</code> (was <code>AddressStateMap</code>).</li>
 <li><code>IStore.SetBlockStates()</code> method became to take
-<code>IImmutableDictionary&lt;Address, IValue&gt;</code> instead of <code>AddressStateMap</code>.</li>
+<code>IImmutableDictionary&lt;string, IValue&gt;</code> instead of <code>AddressStateMap</code>.</li>
 </ul>
 </li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> method and <code>Swarm&lt;T&gt;.StartAsync()</code> method became
@@ -126,6 +144,8 @@ from <code>Swarm&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libp
 <li>Removed <code>Transaction&lt;T&gt;.FromBencodex(byte[])</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li><code>Block&lt;T&gt;.ToBencodex()</code> became to take no arguments.  [<a href="https://github.com/planetarium/libplanet/issues/749">#749</a>, <a href="https://github.com/planetarium/libplanet/pull/757">#757</a>]</li>
 <li>Removed <code>Swarm&lt;T&gt;.BroadcastBlocks(IEnumerable&lt;Block&lt;T&gt;&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/764">#764</a>]</li>
+<li><code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method was replaced by
+<code>IStore.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/722">#722</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -146,6 +166,10 @@ subdirectories and a LiteDB file for indices.  [<a href="https://github.com/plan
 <ul>
 <li>Added <code>DefaultStore</code> class to replace <code>LiteDBStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/662">#662</a>]</li>
 <li>Added <code>IStore.ListAllStateReferences&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/701">#701</a>, <a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Added <code>IStore.ListStateKeys()</code> method to replace <code>IStore.ListAddresses()</code>
+method.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
+<li>Added <code>IStore.LookupStateReference&lt;T&gt;()</code> method to replace
+<code>StoreExtension.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>, <a href="https://github.com/planetarium/libplanet/pull/722">#722</a>, <a href="https://github.com/planetarium/libplanet/pull/774">#774</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.Genesis</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>InvalidGenesisBlockException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
@@ -155,7 +179,6 @@ progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>
 class.  [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>, <a href="https://github.com/planetarium/libplanet/pull/726">#726</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.Peers</code> property which returns an enumerable of peers in
 <code>Swarm&lt;T&gt;</code>'s routing table.  [<a href="https://github.com/planetarium/libplanet/pull/739">#739</a>]</li>
-<li>Added <code>IStore.LookupStateReference&lt;T&gt;()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/722">#722</a>]</li>
 <li>Added <code>Block&lt;T&gt;.Serialize()</code> method which returns <code>byte[]</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li>Added <code>Transaction&lt;T&gt;.Serialize()</code> method which returns <code>byte[]</code>.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
 <li>Added <code>Block&lt;T&gt;(Bencodex.Types.Dictionary)</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/751">#751</a>]</li>
@@ -286,9 +309,9 @@ added it to <code>Swarm&lt;T&gt;.PreloadAsync()</code> &amp; <code>Swarm&lt;T&gt
 <li>Removed <code>BlockChain&lt;T&gt;.GetEnumerate()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
 <li>Removed <code>BlockPolicyExtension.ValidateBlocks()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
 <li><code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> method became to receive
-<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
 <li><code>IBlockPolicy&lt;T&gt;.ValidateNextBlock()</code> method became to receive
-<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
+<code>BlockChain&lt;T&gt;</code> instead of <code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/630">#630</a>]</li>
 </ul>
 </li>
 </ul>
@@ -777,9 +800,9 @@ a message.  [<a href="https://github.com/planetarium/libplanet/pull/321">#321</a
 <li>Added <code>IAction.Unrender(IActionContext, IAccountStateDelta)</code> method.
 [<a href="https://github.com/planetarium/libplanet/issues/31">#31</a>, <a href="https://github.com/planetarium/libplanet/pull/212">#212</a>]</li>
 <li><code>BlockChain&lt;T&gt;.Validate()</code> method became to receive
-<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
 <li><code>IBlockPolicy&lt;T&gt;.GetNextBlockDifficulty()</code> method became to receive
-<code>IReadOnlyList&lt;Block&lt;&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
+<code>IReadOnlyList&lt;Block&lt;T&gt;&gt;</code> instead of <code>IEnumerable&lt;Block&lt;T&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/205">#205</a>]</li>
 <li>Added
 <code>IBlockPolicy&lt;T&gt;.ValidateNextBlock(IReadOnlyList&lt;Block&lt;T&gt;&gt;, Block&lt;T&gt;)</code>
 method.  [<a href="https://github.com/planetarium/libplanet/pull/210">#210</a>]</li>
