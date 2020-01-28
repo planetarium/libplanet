@@ -8,6 +8,7 @@ using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
+using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Interfaces;
 using Libplanet.Net;
@@ -49,7 +50,7 @@ namespace Libplanet.Explorer.Executable
                 blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
                 minimumDifficulty: options.MinimumDifficulty,
                 difficultyBoundDivisor: options.DifficultyBoundDivisor);
-            var blockChain = new BlockChain<AppAgnosticAction>(policy, store);
+            var blockChain = new BlockChain<AppAgnosticAction>(policy, store, options.GenesisBlock);
             Startup.BlockChainSingleton = blockChain;
             Startup.StoreSingleton = store;
 
@@ -142,7 +143,21 @@ namespace Libplanet.Explorer.Executable
             await swarm.PreloadAsync(
                 dialTimeout: TimeSpan.FromSeconds(15),
                 trustedStateValidators: trustedPeers,
-                cancellationToken: cancellationToken
+                cancellationToken: cancellationToken,
+                blockDownloadFailed: (obj, args) =>
+                {
+                    foreach (var exception in args.InnerExceptions)
+                    {
+                        if (exception is InvalidGenesisBlockException invalidGenesisBlockException)
+                        {
+                            Log.Error(
+                                "It seems you use different genesis block with the network. " +
+                                "The hash stored was {Stored} but network was {Network}",
+                                invalidGenesisBlockException.Stored.ToString(),
+                                invalidGenesisBlockException.NetworkExpected.ToString());
+                        }
+                    }
+                }
             );
             Console.WriteLine("Finished preloading.");
 
