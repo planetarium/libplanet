@@ -35,12 +35,14 @@ namespace Libplanet.Store
 
         private static readonly UPath TxRootPath = UPath.Root / "tx";
         private static readonly UPath BlockRootPath = UPath.Root / "block";
+        private static readonly UPath StateRootPath = UPath.Root / "state";
 
         private readonly ILogger _logger;
 
         private readonly IFileSystem _root;
         private readonly SubFileSystem _txs;
         private readonly SubFileSystem _blocks;
+        private readonly SubFileSystem _states;
         private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
@@ -146,6 +148,8 @@ namespace Libplanet.Store
             _txs = new SubFileSystem(_root, TxRootPath, owned: false);
             _root.CreateDirectory(BlockRootPath);
             _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
+            _root.CreateDirectory(StateRootPath);
+            _states = new SubFileSystem(_root, StateRootPath, owned: false);
 
             _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
@@ -523,20 +527,37 @@ namespace Libplanet.Store
                 return cached;
             }
 
-            LiteFileInfo file =
-                _db.FileStorage.FindById(BlockStateFileId(blockHash));
-            if (file is null)
+            UPath path = StatePath(blockHash);
+            if (!_states.FileExists(path))
             {
                 return null;
             }
 
-            using (var stream = new MemoryStream())
+            using (var buffer = new MemoryStream())
+            using (Stream file = _states.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read))
             {
-                DownloadFile(file, stream);
-                stream.Seek(0, SeekOrigin.Begin);
+                if (_compress)
+                {
+                    using (var deflate = new DeflateStream(file, CompressionMode.Decompress))
+                    {
+                        deflate.CopyTo(buffer);
+                    }
+                }
+                else
+                {
+                    file.CopyTo(buffer);
+                }
 
-                var deserialized = (Bencodex.Types.Dictionary)_codec.Decode(stream);
-                ImmutableDictionary<string, IValue> states = deserialized.ToImmutableDictionary(
+                buffer.Seek(0, SeekOrigin.Begin);
+                IValue value = new Codec().Decode(buffer);
+                if (!(value is Bencodex.Types.Dictionary dict))
+                {
+                    throw new DecodingException(
+                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                        $"{value.GetType()}");
+                }
+
+                ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
                     kv => ((Text)kv.Key).Value,
                     kv => kv.Value
                 );
@@ -550,23 +571,34 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states)
         {
-            _statesCache.AddOrUpdate(blockHash, states);
             var serialized = new Bencodex.Types.Dictionary(
                 states.ToImmutableDictionary(
                     kv => (IKey)(Text)kv.Key,
                     kv => kv.Value
                 )
             );
-            using (var stream = new MemoryStream())
+
+            UPath path = StatePath(blockHash);
+            UPath dirPath = path.GetDirectory();
+            CreateDirectoryRecursively(_states, dirPath);
+
+            var codec = new Codec();
+            using (Stream file = _states.CreateFile(path))
             {
-                _codec.Encode(serialized, stream);
-                stream.Seek(0, SeekOrigin.Begin);
-                UploadFile(
-                    BlockStateFileId(blockHash),
-                    ByteUtil.Hex(blockHash.ToByteArray()),
-                    stream
-                );
+                if (_compress)
+                {
+                    using (var deflate = new DeflateStream(file, CompressionLevel.Fastest, true))
+                    {
+                        codec.Encode(serialized, deflate);
+                    }
+                }
+                else
+                {
+                    codec.Encode(serialized, file);
+                }
             }
+
+            _statesCache.AddOrUpdate(blockHash, states);
         }
 
         public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
@@ -898,9 +930,9 @@ namespace Libplanet.Store
             return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
         }
 
-        private string BlockStateFileId(HashDigest<SHA256> blockHash)
+        private UPath StatePath(HashDigest<SHA256> blockHash)
         {
-            return $"state/{blockHash}";
+            return BlockPath(blockHash);
         }
 
         private string StateRefId(Guid chainId)
@@ -911,59 +943,6 @@ namespace Libplanet.Store
         private string TxNonceId(Guid chainId)
         {
             return $"{TxNonceIdPrefix}{FormatChainId(chainId)}";
-        }
-
-        private void UploadFile(string fileId, string filename, Stream inStream)
-        {
-            if (_compress)
-            {
-                using (var buffer = new MemoryStream())
-                {
-                    using (var deflate = new DeflateStream(buffer, CompressionLevel.Fastest, true))
-                    {
-                        inStream.CopyTo(deflate);
-                    }
-
-                    buffer.Seek(0, SeekOrigin.Begin);
-                    _db.FileStorage.Upload(fileId, filename, buffer);
-                }
-            }
-            else
-            {
-                _db.FileStorage.Upload(fileId, filename, inStream);
-            }
-        }
-
-        private void UploadFile(string fileId, string filename, byte[] bytes)
-        {
-            using (var stream = new MemoryStream(bytes))
-            {
-                stream.Seek(0, SeekOrigin.Begin);
-                UploadFile(fileId, filename, stream);
-            }
-        }
-
-        private void DownloadFile(LiteFileInfo file, Stream outStream)
-        {
-            using (var fileStream = file.OpenRead())
-            {
-                if (fileStream.Length > file.Length)
-                {
-                    fileStream.SetLength(file.Length);
-                }
-
-                if (_compress)
-                {
-                    using (var deflate = new DeflateStream(outStream, CompressionMode.Decompress))
-                    {
-                        deflate.CopyTo(outStream);
-                    }
-                }
-                else
-                {
-                    fileStream.CopyTo(outStream);
-                }
-            }
         }
 
         private LiteCollection<HashDoc> IndexCollection(Guid chainId)
