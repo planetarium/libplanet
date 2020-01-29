@@ -44,6 +44,8 @@ namespace Libplanet.Net
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
 
+        private (long, BoundPeer, HashDigest<SHA256>)? _demandBlockHash;
+
         static Swarm()
         {
             if (!(Type.GetType("Mono.Runtime") is null))
@@ -278,6 +280,7 @@ namespace Libplanet.Net
             {
                 tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
+                tasks.Add(ProcessFillblock(_cancellationToken));
                 _logger.Debug("Swarm started.");
 
                 await await Task.WhenAny(tasks);
@@ -1149,9 +1152,7 @@ namespace Libplanet.Net
 
                 case BlockHashes blockHashes:
                     {
-                        Task.Run(
-                            async () => await ProcessBlockHashes(blockHashes, _cancellationToken),
-                            _cancellationToken);
+                        _logger.Error("BlockHashes message is no more processed!");
                         break;
                     }
 
@@ -1165,32 +1166,6 @@ namespace Libplanet.Net
 
                 default:
                     throw new InvalidMessageException($"Can't handle message: {message}", message);
-            }
-        }
-
-        private async Task ProcessBlockHashes(
-            BlockHashes message,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (!(message.Remote is BoundPeer peer))
-            {
-                _logger.Information(
-                    "BlockHashes was sent from invalid peer " +
-                    $"[{message.Remote.Address.ToHex()}]. ignored.");
-                return;
-            }
-
-            ImmutableList<HashDigest<SHA256>> newHashes = message.Hashes
-                .Where(hash => !_store.ContainsBlock(hash))
-                .ToImmutableList();
-
-            if (newHashes.Any())
-            {
-                await FetchBlocks(peer, newHashes, cancellationToken);
-            }
-            else
-            {
-               _logger.Debug($"No blocks are required; {nameof(BlockHashes)} is ignored.");
             }
         }
 
@@ -1209,72 +1184,20 @@ namespace Libplanet.Net
             BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
 
-            // FIXME: this should be changed into total difficulty.
-            if (header.Index > BlockChain.Tip.Index)
+            using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
-                await FetchBlocks(
-                    peer,
-                    new[] { new HashDigest<SHA256>(header.Hash.ToArray()) },
-                    cancellationToken);
-            }
-            else
-            {
-                _logger.Debug($"No blocks are required; {nameof(BlockHeaderMessage)} is ignored.");
-            }
-        }
-
-        private async Task FetchBlocks(
-            BoundPeer peer,
-            IReadOnlyCollection<HashDigest<SHA256>> hashes,
-            CancellationToken cancellationToken)
-        {
-            _logger.Debug(
-                $"Trying to {nameof(GetBlocksAsync)}() using {{0}} hashes.",
-                hashes.Count);
-
-            System.Collections.Async.IAsyncEnumerable<Block<T>> fetched = GetBlocksAsync(
-                peer,
-                hashes
-            );
-
-            List<Block<T>> blocks = await fetched.ToListAsync(
-                cancellationToken
-            );
-            _logger.Debug($"{nameof(GetBlocksAsync)}() complete.");
-
-            if (!blocks.Any())
-            {
-                _logger.Debug("No blocks fetched.");
-                return;
-            }
-
-            LastReceived = DateTimeOffset.UtcNow;
-            BlockReceived.Set();
-
-            try
-            {
-                using (await _blockSyncMutex.LockAsync(cancellationToken))
+                // FIXME: this should be changed into total difficulty.
+                if (header.Index > BlockChain.Tip.Index &&
+                    (_demandBlockHash is null || _demandBlockHash.Value.Item1 < header.Index))
                 {
-                    if (await AppendBlocksAsync(peer, blocks, cancellationToken))
-                    {
-                        BroadcastBlock(peer.Address, blocks.Last());
-                    }
-
-                    _logger.Debug("Append complete.");
+                    _demandBlockHash =
+                        (header.Index, peer, new HashDigest<SHA256>(header.Hash.ToArray()));
                 }
-            }
-            catch (TimeoutException)
-            {
-                // As we have more chances, ignore this.
-                _logger.Debug($"Timeout occurred during {nameof(ProcessBlockHashes)}().");
-            }
-            catch (Exception e)
-            {
-                _logger.Error(
-                    e,
-                    $"Append failed during {nameof(ProcessBlockHashes)}() due to exception: {{0}}",
-                    e);
-                throw;
+                else
+                {
+                    _logger.Debug(
+                        $"No blocks are required; {nameof(BlockHeaderMessage)} is ignored.");
+                }
             }
         }
 
@@ -1355,75 +1278,6 @@ namespace Libplanet.Net
                         blockChain.Swap(synced, evaluateActions);
                     }
                 }
-            }
-        }
-
-        private async Task<bool> AppendBlocksAsync(
-            BoundPeer peer,
-            List<Block<T>> blocks,
-            CancellationToken cancellationToken
-        )
-        {
-            // We assume that the blocks are sorted in order.
-            Block<T> oldest = blocks.First();
-            Block<T> latest = blocks.Last();
-            Block<T> tip = BlockChain.Tip;
-
-            if (tip is null || latest.Index > tip.Index)
-            {
-                List<Block<T>> blocksToAppend;
-                if (oldest.PreviousHash is null)
-                {
-                    _logger.Debug("The oldest block[{block}] seems to be genesis.", oldest);
-                    blocksToAppend = blocks;
-                }
-                else if (!(tip is null) &&
-                         blocks.Any(block => block.PreviousHash.Equals(tip.Hash)))
-                {
-                    // FIXME: This may not work as expected in multi-miner environment.
-                    _logger.Debug("Does not need to fill.");
-                    blocksToAppend = blocks.Where(block => block.Index > tip.Index).ToList();
-                }
-                else
-                {
-                    _logger.Debug("Trying to fill up previous blocks...");
-                    await SyncPreviousBlocksAsync(
-                        BlockChain,
-                        peer,
-                        oldest.PreviousHash,
-                        null,
-                        blocks.Count,
-                        evaluateActions: true,
-                        cancellationToken: cancellationToken
-                    );
-                    _logger.Debug("Filled up; trying to concatenation...");
-                    blocksToAppend = blocks;
-                }
-
-                foreach (Block<T> block in blocksToAppend)
-                {
-                    BlockChain.Append(block);
-                }
-
-                _logger.Debug("Sync is done.");
-
-                BlockAppended.Set();
-
-                var blockHashes =
-                    blocks.Aggregate(string.Empty, (current, block) =>
-                        current + $"[{block.Hash.ToString()}]");
-                _logger.Debug(
-                    $"Re-broadcast {nameof(BlockHashes)} with {{0}} blocks, which are {{1}}.",
-                    blocks.Count,
-                    blockHashes);
-                return true;
-            }
-            else
-            {
-                _logger.Information(
-                    "Received index is older than current chain's tip." +
-                    " ignored.");
-                return false;
             }
         }
 
@@ -1817,6 +1671,52 @@ namespace Libplanet.Net
             };
 
             Transport.ReplyMessage(reply);
+        }
+
+        private async Task ProcessFillblock(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (_demandBlockHash is null ||
+                    _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
+                {
+                    await Task.Delay(100, cancellationToken);
+                }
+                else
+                {
+                    (long index, BoundPeer peer, HashDigest<SHA256> blockHash) =
+                        _demandBlockHash.Value;
+                    if (index > BlockChain.Tip.Index)
+                    {
+                        try
+                        {
+                            await SyncPreviousBlocksAsync(
+                                BlockChain,
+                                peer,
+                                blockHash,
+                                null,
+                                0,
+                                true,
+                                cancellationToken);
+                            BlockReceived.Set();
+                            BlockAppended.Set();
+                            BroadcastBlock(peer.Address, BlockChain.Tip);
+                        }
+                        catch (TimeoutException)
+                        {
+                            _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
+                            await Task.Delay(100);
+                        }
+                        catch (Exception e)
+                        {
+                            var msg =
+                                $"Unexpected exception occurred during" +
+                                $" {nameof(ProcessFillblock)}: {{e}}";
+                            _logger.Error(e, msg, e);
+                        }
+                    }
+                }
+            }
         }
     }
 }
