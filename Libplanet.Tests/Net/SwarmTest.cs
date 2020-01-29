@@ -2919,19 +2919,19 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(2 * 4, header.Trail.Trails.Length);
                 int count = 0;
                 expected =
-                    $"[{sentTrail}:{swarms[0].Address}:{reply.Trail.Trails[count++].Timestamp}]/";
+                    $"[{sentTrail}:{swarms[0].Address}:{header.Trail.Trails[count++].Timestamp}]/";
                 for (int i = 1; i < 4; i++)
                 {
                     expected +=
                         $"[{receivedTrail}:{swarms[i].Address}:" +
-                        $"{reply.Trail.Trails[count++].Timestamp}]/";
+                        $"{header.Trail.Trails[count++].Timestamp}]/";
                     expected +=
                         $"[{sentTrail}:{swarms[i].Address}:" +
-                        $"{reply.Trail.Trails[count++].Timestamp}]/";
+                        $"{header.Trail.Trails[count++].Timestamp}]/";
                 }
 
                 expected += $"[{receivedTrail}:{swarms[4].Address}:" +
-                            $"{reply.Trail.Trails[count].Timestamp}]";
+                            $"{header.Trail.Trails[count].Timestamp}]";
 
                 Assert.Equal(
                     expected,

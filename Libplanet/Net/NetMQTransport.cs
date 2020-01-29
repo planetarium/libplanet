@@ -20,6 +20,8 @@ namespace Libplanet.Net
 {
     internal class NetMQTransport : ITransport
     {
+        private const int MessageHistoryCapacity = 30;
+
         private static readonly TimeSpan TurnAllocationLifetime =
             TimeSpan.FromSeconds(777);
 
@@ -134,6 +136,7 @@ namespace Libplanet.Net
                 TaskScheduler.Default
             );
 
+            MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
             Protocol = new KademliaProtocol(
                 this,
                 _privateKey.PublicKey.ToAddress(),
@@ -190,6 +193,8 @@ namespace Libplanet.Net
         }
 
         internal IProtocol Protocol { get; }
+
+        internal FixedSizedQueue<Message> MessageHistory { get; }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
@@ -478,6 +483,11 @@ namespace Libplanet.Net
                 );
 
                 var reply = (await tcs.Task).ToList();
+                foreach (var msg in reply)
+                {
+                    MessageHistory.Enqueue(msg);
+                }
+
                 const string logMsg =
                     "Received {ReplyMessageCount} reply messages to {RequestId} " +
                     "from {PeerAddress}: {ReplyMessages}.";
@@ -568,6 +578,7 @@ namespace Libplanet.Net
                 }
 
                 _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+                MessageHistory.Enqueue(message);
                 if (!(message is Ping))
                 {
                     ValidateSender(message.Remote);
