@@ -715,6 +715,43 @@ namespace Libplanet.Tests.Store
                     Fx.Store.LookupStateReference(targetChainId, stateKey2, blocks[3]));
         }
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        // Check the count of state references after ForkStateReferences().
+        public void ForkStateReferencesCheckCount(int branchPointIndex)
+        {
+            Block<DumbAction>[] blocks =
+            {
+                Fx.GenesisBlock, Fx.Block1, Fx.Block2, Fx.Block3,
+            };
+            string[] stateKeys = { "a", "b", "c", "d", };
+
+            foreach (var (block, stateKey) in blocks.Zip(stateKeys, ValueTuple.Create))
+            {
+                Fx.Store.StoreStateReference(
+                    Fx.StoreChainId,
+                    ImmutableHashSet<string>.Empty.Add(stateKey),
+                    block.Hash,
+                    block.Index);
+            }
+
+            // Check there are as many state references in the chain as the expected count.
+            Assert.Equal(4, Fx.Store.ListAllStateReferences(Fx.StoreChainId).Count);
+
+            var forkedChainId = Guid.NewGuid();
+            var branchPoint = blocks[branchPointIndex];
+            Fx.Store.ForkStateReferences(Fx.StoreChainId, forkedChainId, branchPoint);
+
+            // If the ForkStateReferences() worked correctly, there will be as many state references
+            // in the forked chain as branchPointIndex + 1.
+            Assert.Equal(
+                branchPointIndex + 1,
+                Fx.Store.ListAllStateReferences(forkedChainId).Count);
+        }
+
         [Fact]
         public void ForkStateReferencesChainIdNotFound()
         {
