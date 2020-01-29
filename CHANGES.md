@@ -14,6 +14,7 @@ To be released.
     replaced by a new `BlockHashes` message type (with type number `0x0e`)
     in order to include an offset block index besides block hashes
     so that a receiver is able to determine their block indices too.  [[#707]]
+ -  Messages used in `Swarm<T>` now contains breadcrumb metadata.  [[#771], [#779]]
 
 ### Backward-incompatible storage format changes
 
@@ -31,6 +32,8 @@ To be released.
 ### Bug fixes
 
 [#707]: https://github.com/planetarium/libplanet/pull/707
+[#771]: https://github.com/planetarium/libplanet/issues/771
+[#779]: https://github.com/planetarium/libplanet/pull/779
 
 
 Version 0.8.0
