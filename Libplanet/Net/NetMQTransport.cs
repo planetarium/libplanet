@@ -34,7 +34,7 @@ namespace Libplanet.Net
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
 
-        private NetMQQueue<Message> _replyQueue;
+        private NetMQQueue<(BreadcrumbTrail, Message)> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
 
         private RouterSocket _router;
@@ -253,7 +253,7 @@ namespace Libplanet.Net
                 _endPoint = new DnsEndPoint(_host, _listenPort.Value);
             }
 
-            _replyQueue = new NetMQQueue<Message>();
+            _replyQueue = new NetMQQueue<(BreadcrumbTrail, Message)>();
             _broadcastQueue = new NetMQQueue<(Address?, Message)>();
             _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
@@ -531,9 +531,10 @@ namespace Libplanet.Net
             _broadcastQueue.Enqueue((except, message));
         }
 
-        public void ReplyMessage(Message message)
+        public void ReplyMessage(Message source, Message reply)
         {
-            _replyQueue.Enqueue(message);
+            reply.Identity = source.Identity;
+            _replyQueue.Enqueue((source.Trail, reply));
         }
 
         public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
@@ -633,18 +634,19 @@ namespace Libplanet.Net
             }
         }
 
-        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
+        private void DoReply(object sender, NetMQQueueEventArgs<(BreadcrumbTrail, Message)> e)
         {
-            Message msg = e.Queue.Dequeue();
+            (BreadcrumbTrail trail, Message msg) = e.Queue.Dequeue();
 
             string identityHex = ByteUtil.Hex(msg.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", msg, identityHex);
-            if (msg.Trail.Record)
+            if (trail.Record)
             {
-                msg.Trail.Add(
-                    BreadcrumbTrail.TrailType.Sent,
+                trail.Add(
+                    BreadcrumbTrail.TrailType.Replied,
                     AsPeer.Address,
                     DateTimeOffset.UtcNow);
+                msg.Trail = trail;
             }
 
             NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer);

@@ -816,12 +816,9 @@ namespace Libplanet.Net.Protocols
         {
             IEnumerable<BoundPeer> found = _routing.Neighbors(findNeighbors.Target, _bucketSize);
 
-            Neighbors neighbors = new Neighbors(found)
-            {
-                Identity = findNeighbors.Identity,
-            };
+            Neighbors neighbors = new Neighbors(found);
 
-            _transport.ReplyMessage(neighbors);
+            _transport.ReplyMessage(findNeighbors, neighbors);
         }
     }
 }

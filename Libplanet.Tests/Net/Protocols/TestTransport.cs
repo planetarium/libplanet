@@ -360,20 +360,21 @@ namespace Libplanet.Tests.Net.Protocols
             };
         }
 
-        public void ReplyMessage(Message message)
+        public void ReplyMessage(Message source, Message reply)
         {
             if (!Running)
             {
                 throw new SwarmException("Start swarm before use.");
             }
 
-            _logger.Debug("Replying {Message}...", message);
-            message.Remote = AsPeer;
+            _logger.Debug("Replying {Message}...", reply);
+            reply.Identity = source.Identity;
+            reply.Remote = AsPeer;
             Task.Run(async () =>
             {
                 await Task.Delay(_networkDelay);
-                _transports[_peersToReply[message.Identity]].ReceiveReply(message);
-                _peersToReply.TryRemove(message.Identity, out Address addr);
+                _transports[_peersToReply[reply.Identity]].ReceiveReply(reply);
+                _peersToReply.TryRemove(reply.Identity, out Address addr);
             });
         }
 
@@ -439,11 +440,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             if (message is Ping)
             {
-                ReplyMessage(new Pong((long?)null)
-                {
-                    Identity = message.Identity,
-                    Remote = AsPeer,
-                });
+                ReplyMessage(message, new Pong((long?)null));
             }
 
             ReceivedMessages.Add(message);

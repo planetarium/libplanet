@@ -42,6 +42,6 @@ namespace Libplanet.Net
 
         void BroadcastMessage(Address? except, Message message);
 
-        void ReplyMessage(Message message);
+        void ReplyMessage(Message source, Message reply);
     }
 }

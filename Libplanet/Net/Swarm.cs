@@ -1436,12 +1436,9 @@ namespace Libplanet.Net
                     {
                         _logger.Debug($"Ping received.");
 
-                        Pong pong = new Pong(BlockChain.Tip?.Index)
-                        {
-                            Identity = ping.Identity,
-                        };
+                        Pong pong = new Pong(BlockChain.Tip?.Index);
 
-                        Transport.ReplyMessage(pong);
+                        Transport.ReplyMessage(ping, pong);
                         break;
                     }
 
@@ -1465,7 +1462,7 @@ namespace Libplanet.Net
                         {
                             Identity = getBlockHashes.Identity,
                         };
-                        Transport.ReplyMessage(reply);
+                        Transport.ReplyMessage(getBlockHashes, reply);
                         break;
                     }
 
@@ -1938,11 +1935,8 @@ namespace Libplanet.Net
 
             foreach (Transaction<T> tx in txs)
             {
-                Message response = new Messages.Tx(tx.Serialize(true))
-                {
-                    Identity = getTxs.Identity,
-                };
-                Transport.ReplyMessage(response);
+                Message response = new Messages.Tx(tx.Serialize(true));
+                Transport.ReplyMessage(getTxs, response);
             }
         }
 
@@ -2018,16 +2012,13 @@ namespace Libplanet.Net
 
                 if (blocks.Count == getData.ChunkSize)
                 {
-                    var response = new Messages.Blocks(blocks)
-                    {
-                        Identity = getData.Identity,
-                    };
+                    var response = new Messages.Blocks(blocks);
                     _logger.Verbose(
                         "Enqueuing a blocks reply (...{Index}/{Total})...",
                         i,
                         total
                     );
-                    Transport.ReplyMessage(response);
+                    Transport.ReplyMessage(getData, response);
                     blocks.Clear();
                 }
 
@@ -2036,17 +2027,14 @@ namespace Libplanet.Net
 
             if (blocks.Any())
             {
-                var response = new Messages.Blocks(blocks)
-                {
-                    Identity = getData.Identity,
-                };
+                var response = new Messages.Blocks(blocks);
                 _logger.Verbose(
                     "Enqueuing a blocks reply (...{Index}/{Total}) to {Identity}...",
                     total,
                     total,
                     identityHex
                 );
-                Transport.ReplyMessage(response);
+                Transport.ReplyMessage(getData, response);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
@@ -2174,12 +2162,9 @@ namespace Libplanet.Net
                 nextOffset,
                 iteration,
                 blockStates,
-                stateRefs.ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value))
-            {
-                Identity = getRecentStates.Identity,
-            };
+                stateRefs.ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value));
 
-            Transport.ReplyMessage(reply);
+            Transport.ReplyMessage(getRecentStates, reply);
         }
 
         /// <summary>
