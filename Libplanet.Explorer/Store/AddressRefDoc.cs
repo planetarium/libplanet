@@ -20,6 +20,6 @@ namespace Libplanet.Explorer.Store
 
         public TxId TxId { get; set; }
 
-        public DateTimeOffset Timestamp { get; set; }
+        public long TxNonce { get; set; }
     }
 }

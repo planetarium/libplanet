@@ -85,10 +85,10 @@ namespace Libplanet.Explorer.Store
         public override void PutTransaction<T>(Transaction<T> tx)
         {
             base.PutTransaction(tx);
-            StoreSignerReferences(tx.Id, tx.Timestamp, tx.Signer);
+            StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
             foreach (var updatedAddress in tx.UpdatedAddresses)
             {
-                StoreUpdatedAddressReferences(tx.Id, tx.Timestamp, updatedAddress);
+                StoreUpdatedAddressReferences(tx.Id, tx.Nonce, updatedAddress);
             }
         }
 
@@ -117,8 +117,8 @@ namespace Libplanet.Explorer.Store
             if (!(txId is null))
             {
                 query = Query.And(
-                    Query.EQ(nameof(TxRefDoc.TxId), txId?.ToByteArray()),
-                    query
+                    query,
+                    Query.EQ(nameof(TxRefDoc.TxId), txId?.ToByteArray())
                 );
             }
 
@@ -128,15 +128,15 @@ namespace Libplanet.Explorer.Store
             }
         }
 
-        public void StoreSignerReferences(TxId txId, DateTimeOffset timestamp, Address signer)
+        public void StoreSignerReferences(TxId txId, long txNonce, Address signer)
         {
             var collection = SignerRefCollection();
             collection.Upsert(new AddressRefDoc
             {
-                Address = signer, Timestamp = timestamp, TxId = txId,
+                Address = signer, TxNonce = txNonce, TxId = txId,
             });
             collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
-            collection.EnsureIndex(nameof(AddressRefDoc.Timestamp));
+            collection.EnsureIndex(nameof(AddressRefDoc.TxNonce));
         }
 
         public IEnumerable<TxId> IterateSignerReferences(
@@ -149,8 +149,8 @@ namespace Libplanet.Explorer.Store
             var order = desc ? Query.Descending : Query.Ascending;
             var addressString = signer.ToHex().ToLowerInvariant();
             var query = Query.And(
-                Query.EQ(nameof(AddressRefDoc.AddressString), addressString),
-                Query.All(nameof(AddressRefDoc.Timestamp), order)
+                Query.All(nameof(AddressRefDoc.TxNonce), order),
+                Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
             );
             foreach (var doc in collection.Find(query, offset, limit))
             {
@@ -160,16 +160,16 @@ namespace Libplanet.Explorer.Store
 
         public void StoreUpdatedAddressReferences(
             TxId txId,
-            DateTimeOffset timestamp,
+            long txNonce,
             Address updatedAddress)
         {
             var collection = UpdatedAddressRefCollection();
             collection.Upsert(new AddressRefDoc
             {
-                Address = updatedAddress, Timestamp = timestamp, TxId = txId,
+                Address = updatedAddress, TxNonce = txNonce, TxId = txId,
             });
             collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
-            collection.EnsureIndex(nameof(AddressRefDoc.Timestamp));
+            collection.EnsureIndex(nameof(AddressRefDoc.TxNonce));
         }
 
         public IEnumerable<TxId> IterateUpdatedAddressReferences(
@@ -182,8 +182,8 @@ namespace Libplanet.Explorer.Store
             var order = desc ? Query.Descending : Query.Ascending;
             var addressString = updatedAddress.ToHex().ToLowerInvariant();
             var query = Query.And(
-                Query.EQ(nameof(AddressRefDoc.AddressString), addressString),
-                Query.All(nameof(AddressRefDoc.Timestamp), order)
+                Query.All(nameof(AddressRefDoc.TxNonce), order),
+                Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
             );
             foreach (var doc in collection.Find(query, offset, limit))
             {
