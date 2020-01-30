@@ -15,7 +15,7 @@ namespace Libplanet.Explorer.Store
         public Address Address
         {
             get => new Address(AddressString);
-            set { AddressString = value.ToString(); }
+            set { AddressString = value.ToHex().ToLowerInvariant(); }
         }
 
         public TxId TxId { get; set; }

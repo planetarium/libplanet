@@ -7,6 +7,7 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LiteDB;
+using Serilog;
 using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Explorer.Store
@@ -90,8 +91,6 @@ namespace Libplanet.Explorer.Store
         {
             var collection = TxRefCollection();
             collection.Upsert(new TxRefDoc { TxId = txId, BlockHash = blockHash });
-            Console.WriteLine(
-                $"{nameof(StoreTxReferences)} | {txId.ToHex()} - {blockHash.ToString()}");
         }
 
         public IEnumerable<HashDigest<SHA256>> IterateTxReferences(TxId txId)
@@ -111,8 +110,6 @@ namespace Libplanet.Explorer.Store
             {
                 Address = signer, Timestamp = timestamp, TxId = txId,
             });
-            Console.WriteLine(
-                $"{nameof(StoreSignerReferences)} | {txId.ToHex()} - {signer.ToHex()}");
         }
 
         public IEnumerable<TxId> IterateSignerReferences(Address signer, bool desc)
@@ -140,9 +137,6 @@ namespace Libplanet.Explorer.Store
             {
                 Address = updatedAddress, Timestamp = timestamp, TxId = txId,
             });
-            Console.WriteLine(
-                $"{nameof(StoreUpdatedAddressReferences)} | {txId.ToHex()} - " +
-                $"{updatedAddress.ToHex()}");
         }
 
         public IEnumerable<TxId> IterateUpdatedAddressReferences(

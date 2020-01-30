@@ -11,6 +11,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Store;
 using Microsoft.AspNetCore;
@@ -40,7 +41,7 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store = new DefaultStore(
+            IStore store = new RichStore(
                 path: options.StorePath,
                 flush: false,
                 readOnly: options.Seeds is null
