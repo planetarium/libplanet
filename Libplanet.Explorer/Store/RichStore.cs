@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Libplanet.Blocks;
@@ -122,10 +123,7 @@ namespace Libplanet.Explorer.Store
                 );
             }
 
-            foreach (var doc in collection.Find(query, offset, limit))
-            {
-                yield return (doc.TxId, doc.BlockHash);
-            }
+            return collection.Find(query, offset, limit).Select(doc => (doc.TxId, doc.BlockHash));
         }
 
         public void StoreSignerReferences(TxId txId, long txNonce, Address signer)
@@ -152,10 +150,7 @@ namespace Libplanet.Explorer.Store
                 Query.All(nameof(AddressRefDoc.TxNonce), order),
                 Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
             );
-            foreach (var doc in collection.Find(query, offset, limit))
-            {
-                yield return doc.TxId;
-            }
+            return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
 
         public void StoreUpdatedAddressReferences(
@@ -185,10 +180,7 @@ namespace Libplanet.Explorer.Store
                 Query.All(nameof(AddressRefDoc.TxNonce), order),
                 Query.EQ(nameof(AddressRefDoc.AddressString), addressString)
             );
-            foreach (var doc in collection.Find(query, offset, limit))
-            {
-                yield return doc.TxId;
-            }
+            return collection.Find(query, offset, limit).Select(doc => doc.TxId);
         }
 
         private LiteCollection<TxRefDoc> TxRefCollection() =>
