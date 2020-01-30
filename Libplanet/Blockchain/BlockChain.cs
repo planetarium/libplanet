@@ -1143,7 +1143,7 @@ namespace Libplanet.Blockchain
 
                 return new BlockLocator(
                     indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
-                    blockHashByIndex: hash => _blocks[hash].Index,
+                    indexByBlockHash: hash => _blocks[hash].Index,
                     sampleAfter: threshold
                 );
             }

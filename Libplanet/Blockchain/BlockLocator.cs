@@ -11,7 +11,7 @@ namespace Libplanet.Blockchain
 
         public BlockLocator(
             Func<long, HashDigest<SHA256>?> indexBlockHash,
-            Func<HashDigest<SHA256>, long> blockHashByIndex,
+            Func<HashDigest<SHA256>, long> indexByBlockHash,
             int sampleAfter = 10
         )
         {
@@ -21,7 +21,7 @@ namespace Libplanet.Blockchain
             while (current is HashDigest<SHA256> hash)
             {
                 hashes.Add(hash);
-                long currentBlockIndex = blockHashByIndex(hash);
+                long currentBlockIndex = indexByBlockHash(hash);
 
                 if (currentBlockIndex == 0)
                 {

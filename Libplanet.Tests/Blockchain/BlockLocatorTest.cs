@@ -33,7 +33,7 @@ namespace Libplanet.Tests.Blockchain
 
             var locator = new BlockLocator(
                 indexBlockHash: idx => blocks[(int)(idx < 0 ? blocks.Length + idx : idx)],
-                blockHashByIndex: hash => blocks.IndexOf(hash),
+                indexByBlockHash: hash => blocks.IndexOf(hash),
                 sampleAfter: 5
             );
 
