@@ -11,6 +11,8 @@ namespace Libplanet.Explorer.Store
 
         public HashDigest<SHA256> BlockHash { get; set; }
 
+        public long BlockIndex { get; set; }
+
         public TxId TxId { get; set; }
     }
 }

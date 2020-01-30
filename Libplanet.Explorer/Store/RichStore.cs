@@ -7,11 +7,11 @@ using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
 using LiteDB;
-using Serilog;
 using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.Explorer.Store
 {
+    // It assumes running Explorer as online-mode.
     public class RichStore : DefaultStore
     {
         private const string TxRefCollectionName = "block_ref";
@@ -78,7 +78,7 @@ namespace Libplanet.Explorer.Store
             base.PutBlock(block);
             foreach (var tx in block.Transactions)
             {
-                StoreTxReferences(tx.Id, block.Hash);
+                StoreTxReferences(tx.Id, block.Hash, block.Index);
             }
         }
 
@@ -92,19 +92,39 @@ namespace Libplanet.Explorer.Store
             }
         }
 
-        public void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash)
+        public void StoreTxReferences(TxId txId, HashDigest<SHA256> blockHash, long blockIndex)
         {
             var collection = TxRefCollection();
-            collection.Upsert(new TxRefDoc { TxId = txId, BlockHash = blockHash });
+            collection.Upsert(
+                new TxRefDoc
+                {
+                    TxId = txId, BlockHash = blockHash, BlockIndex = blockIndex,
+                });
+            collection.EnsureIndex(nameof(TxRefDoc.TxId));
+            collection.EnsureIndex(nameof(TxRefDoc.BlockIndex));
         }
 
-        public IEnumerable<HashDigest<SHA256>> IterateTxReferences(TxId txId)
+        public IEnumerable<ValueTuple<TxId, HashDigest<SHA256>>> IterateTxReferences(
+            TxId? txId = null,
+            bool desc = false,
+            int offset = 0,
+            int limit = int.MaxValue)
         {
             var collection = TxRefCollection();
-            var query = Query.EQ(nameof(TxRefDoc.TxId), txId.ToByteArray());
-            foreach (var doc in collection.Find(query))
+            var order = desc ? Query.Descending : Query.Ascending;
+            var query = Query.All(nameof(TxRefDoc.BlockIndex), order);
+
+            if (!(txId is null))
             {
-                yield return doc.BlockHash;
+                query = Query.And(
+                    Query.EQ(nameof(TxRefDoc.TxId), txId?.ToByteArray()),
+                    query
+                );
+            }
+
+            foreach (var doc in collection.Find(query, offset, limit))
+            {
+                yield return (doc.TxId, doc.BlockHash);
             }
         }
 
@@ -115,6 +135,8 @@ namespace Libplanet.Explorer.Store
             {
                 Address = signer, Timestamp = timestamp, TxId = txId,
             });
+            collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
+            collection.EnsureIndex(nameof(AddressRefDoc.Timestamp));
         }
 
         public IEnumerable<TxId> IterateSignerReferences(
@@ -146,6 +168,8 @@ namespace Libplanet.Explorer.Store
             {
                 Address = updatedAddress, Timestamp = timestamp, TxId = txId,
             });
+            collection.EnsureIndex(nameof(AddressRefDoc.AddressString));
+            collection.EnsureIndex(nameof(AddressRefDoc.Timestamp));
         }
 
         public IEnumerable<TxId> IterateUpdatedAddressReferences(

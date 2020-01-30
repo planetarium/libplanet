@@ -82,7 +82,7 @@ namespace Libplanet.Explorer.Queries
                 yield break;
             }
 
-            if (_store is RichStore richStore && !(signer is null && involved is null))
+            if (_store is RichStore richStore)
             {
                 IEnumerable<TxId> txIds;
                 if (!(signer is null))
@@ -91,11 +91,17 @@ namespace Libplanet.Explorer.Queries
                         .IterateSignerReferences(
                             (Address)signer, desc, (int)offset, limit ?? int.MaxValue);
                 }
-                else
+                else if (!(involved is null))
                 {
                     txIds = richStore
                         .IterateUpdatedAddressReferences(
                             (Address)involved, desc, (int)offset, limit ?? int.MaxValue);
+                }
+                else
+                {
+                    txIds = richStore
+                        .IterateTxReferences(null, desc, (int)offset, limit ?? int.MaxValue)
+                        .Select(r => r.Item1);
                 }
 
                 var txs = txIds.Select(txId => _chain.GetTransaction(txId));

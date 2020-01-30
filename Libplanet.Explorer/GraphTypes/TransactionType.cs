@@ -38,8 +38,9 @@ namespace Libplanet.Explorer.GraphTypes
                     var (chain, store) = (ValueTuple<BlockChain<T>, IStore>)ctx.UserContext;
                     if (store is RichStore richStore)
                     {
-                        return richStore.IterateTxReferences(ctx.Source.Id)
-                            .Select(blockHash => chain[blockHash]);
+                        return richStore
+                            .IterateTxReferences(ctx.Source.Id)
+                            .Select(r => chain[r.Item2]);
                     }
                     else
                     {
