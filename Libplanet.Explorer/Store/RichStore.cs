@@ -79,11 +79,16 @@ namespace Libplanet.Explorer.Store
             foreach (var tx in block.Transactions)
             {
                 StoreTxReferences(tx.Id, block.Hash);
-                StoreSignerReferences(tx.Id, tx.Timestamp, tx.Signer);
-                foreach (var updatedAddress in tx.UpdatedAddresses)
-                {
-                    StoreUpdatedAddressReferences(tx.Id, tx.Timestamp, updatedAddress);
-                }
+            }
+        }
+
+        public override void PutTransaction<T>(Transaction<T> tx)
+        {
+            base.PutTransaction(tx);
+            StoreSignerReferences(tx.Id, tx.Timestamp, tx.Signer);
+            foreach (var updatedAddress in tx.UpdatedAddresses)
+            {
+                StoreUpdatedAddressReferences(tx.Id, tx.Timestamp, updatedAddress);
             }
         }
 
@@ -112,7 +117,11 @@ namespace Libplanet.Explorer.Store
             });
         }
 
-        public IEnumerable<TxId> IterateSignerReferences(Address signer, bool desc)
+        public IEnumerable<TxId> IterateSignerReferences(
+            Address signer,
+            bool desc,
+            int offset = 0,
+            int limit = int.MaxValue)
         {
             var collection = SignerRefCollection();
             var order = desc ? Query.Descending : Query.Ascending;
@@ -121,7 +130,7 @@ namespace Libplanet.Explorer.Store
                 Query.EQ(nameof(AddressRefDoc.AddressString), addressString),
                 Query.All(nameof(AddressRefDoc.Timestamp), order)
             );
-            foreach (var doc in collection.Find(query))
+            foreach (var doc in collection.Find(query, offset, limit))
             {
                 yield return doc.TxId;
             }
@@ -141,7 +150,9 @@ namespace Libplanet.Explorer.Store
 
         public IEnumerable<TxId> IterateUpdatedAddressReferences(
             Address updatedAddress,
-            bool desc)
+            bool desc,
+            int offset = 0,
+            int limit = int.MaxValue)
         {
             var collection = UpdatedAddressRefCollection();
             var order = desc ? Query.Descending : Query.Ascending;
@@ -150,7 +161,7 @@ namespace Libplanet.Explorer.Store
                 Query.EQ(nameof(AddressRefDoc.AddressString), addressString),
                 Query.All(nameof(AddressRefDoc.Timestamp), order)
             );
-            foreach (var doc in collection.Find(query))
+            foreach (var doc in collection.Find(query, offset, limit))
             {
                 yield return doc.TxId;
             }
