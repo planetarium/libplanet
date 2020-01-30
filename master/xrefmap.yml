@@ -3975,6 +3975,64 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PeerNotFoundException.PeerNotFoundException
   nameWithType: PeerNotFoundException.PeerNotFoundException
+- uid: Libplanet.Net.PeerState
+  name: PeerState
+  href: api/Libplanet.Net.PeerState.html
+  commentId: T:Libplanet.Net.PeerState
+  fullName: Libplanet.Net.PeerState
+  nameWithType: PeerState
+- uid: Libplanet.Net.PeerState.Address
+  name: Address
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Address
+  commentId: P:Libplanet.Net.PeerState.Address
+  fullName: Libplanet.Net.PeerState.Address
+  nameWithType: PeerState.Address
+- uid: Libplanet.Net.PeerState.Address*
+  name: Address
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Address_
+  commentId: Overload:Libplanet.Net.PeerState.Address
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerState.Address
+  nameWithType: PeerState.Address
+- uid: Libplanet.Net.PeerState.LastChecked
+  name: LastChecked
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_LastChecked
+  commentId: P:Libplanet.Net.PeerState.LastChecked
+  fullName: Libplanet.Net.PeerState.LastChecked
+  nameWithType: PeerState.LastChecked
+- uid: Libplanet.Net.PeerState.LastChecked*
+  name: LastChecked
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_LastChecked_
+  commentId: Overload:Libplanet.Net.PeerState.LastChecked
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerState.LastChecked
+  nameWithType: PeerState.LastChecked
+- uid: Libplanet.Net.PeerState.LastUpdated
+  name: LastUpdated
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_LastUpdated
+  commentId: P:Libplanet.Net.PeerState.LastUpdated
+  fullName: Libplanet.Net.PeerState.LastUpdated
+  nameWithType: PeerState.LastUpdated
+- uid: Libplanet.Net.PeerState.LastUpdated*
+  name: LastUpdated
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_LastUpdated_
+  commentId: Overload:Libplanet.Net.PeerState.LastUpdated
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerState.LastUpdated
+  nameWithType: PeerState.LastUpdated
+- uid: Libplanet.Net.PeerState.Latency
+  name: Latency
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Latency
+  commentId: P:Libplanet.Net.PeerState.Latency
+  fullName: Libplanet.Net.PeerState.Latency
+  nameWithType: PeerState.Latency
+- uid: Libplanet.Net.PeerState.Latency*
+  name: Latency
+  href: api/Libplanet.Net.PeerState.html#Libplanet_Net_PeerState_Latency_
+  commentId: Overload:Libplanet.Net.PeerState.Latency
+  isSpec: "True"
+  fullName: Libplanet.Net.PeerState.Latency
+  nameWithType: PeerState.Latency
 - uid: Libplanet.Net.PreloadBlockDownloadFailEventArgs
   name: PreloadBlockDownloadFailEventArgs
   href: api/Libplanet.Net.PreloadBlockDownloadFailEventArgs.html
@@ -4248,6 +4306,24 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).BroadcastTxs
   nameWithType: Swarm<T>.BroadcastTxs
   nameWithType.vb: Swarm(Of T).BroadcastTxs
+- uid: Libplanet.Net.Swarm`1.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
+  name: CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_CheckAllPeersAsync_System_Nullable_TimeSpan__CancellationToken_
+  commentId: M:Libplanet.Net.Swarm`1.CheckAllPeersAsync(System.Nullable{TimeSpan},CancellationToken)
+  name.vb: CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
+  fullName: Libplanet.Net.Swarm<T>.CheckAllPeersAsync(System.Nullable<TimeSpan>, CancellationToken)
+  fullName.vb: Libplanet.Net.Swarm(Of T).CheckAllPeersAsync(System.Nullable(Of TimeSpan), CancellationToken)
+  nameWithType: Swarm<T>.CheckAllPeersAsync(Nullable<TimeSpan>, CancellationToken)
+  nameWithType.vb: Swarm(Of T).CheckAllPeersAsync(Nullable(Of TimeSpan), CancellationToken)
+- uid: Libplanet.Net.Swarm`1.CheckAllPeersAsync*
+  name: CheckAllPeersAsync
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_CheckAllPeersAsync_
+  commentId: Overload:Libplanet.Net.Swarm`1.CheckAllPeersAsync
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.CheckAllPeersAsync
+  fullName.vb: Libplanet.Net.Swarm(Of T).CheckAllPeersAsync
+  nameWithType: Swarm<T>.CheckAllPeersAsync
+  nameWithType.vb: Swarm(Of T).CheckAllPeersAsync
 - uid: Libplanet.Net.Swarm`1.Dispose
   name: Dispose()
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_Dispose
