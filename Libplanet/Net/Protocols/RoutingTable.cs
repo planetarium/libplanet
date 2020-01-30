@@ -51,7 +51,8 @@ namespace Libplanet.Net.Protocols
         public int Count => _buckets.Sum(bucket => bucket.Count);
 
         public IEnumerable<BoundPeer> Peers => NonEmptyBuckets
-            .SelectMany((bucket, _) => bucket.Peers).ToList();
+            .SelectMany((bucket, _) => bucket.Peers)
+            .ToList();
 
         public IEnumerable<IEnumerable<BoundPeer>> CachesToCheck
         {
@@ -100,8 +101,8 @@ namespace Libplanet.Net.Protocols
         public IEnumerable<BoundPeer> PeersToRefresh(TimeSpan maxAge)
         {
             return NonEmptyBuckets
-                .Where(bucket => bucket.Tail.Value + maxAge < DateTimeOffset.UtcNow)
-                .Select(bucket => bucket.Tail.Key);
+                .Where(bucket => bucket.Tail.LastUpdated + maxAge < DateTimeOffset.UtcNow)
+                .Select(bucket => bucket.Tail.Peer);
         }
 
         public void AddPeer(BoundPeer peer)
@@ -191,6 +192,16 @@ namespace Libplanet.Net.Protocols
             }
 
             return peers;
+        }
+
+        public void Check(BoundPeer peer, DateTimeOffset start, DateTimeOffset end)
+        {
+            if (peer is null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            BucketOf(peer).Check(peer, start, end);
         }
 
         private int GetBucketIndexOf(Peer peer)

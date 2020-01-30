@@ -154,7 +154,7 @@ namespace Libplanet.Net.Protocols
                             peer,
                             _requestTimeout,
                             cancellationToken)
-                ).ToList();
+                    ).ToList();
 
                 _logger.Debug("Refresh candidates: {Count}", tasks.Count);
 
@@ -163,6 +163,22 @@ namespace Libplanet.Net.Protocols
             }
             catch (TimeoutException)
             {
+            }
+        }
+
+        public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
+        {
+            try
+            {
+                _logger.Debug("Start to validate all peers: ({Count})", _routing.Peers.Count());
+                foreach (var peer in _routing.Peers)
+                {
+                    await ValidateAsync(peer, timeout ?? _requestTimeout, cancellationToken);
+                }
+            }
+            catch (TimeoutException e)
+            {
+                _logger.Error(e, "Timeout occurred checking some peers: {e}", e);
             }
         }
 
@@ -264,8 +280,12 @@ namespace Libplanet.Net.Protocols
                 }
 
                 trace += $"**Bucket {i}**\n";
-                trace = _routing.BucketOf(i).Peers.Aggregate(trace, (current, peer) =>
-                    current + $"{++count} : [{peer.Address.ToHex()}]\n");
+                trace = _routing.BucketOf(i).PeerStates.Aggregate(trace, (current, state) =>
+                    current +
+                    $"| {++count}: [{state.Address.ToHex()}]\n" +
+                    $"| - LastUpdated: {state.LastUpdated}\n" +
+                    $"| - LastChecked: {state.LastChecked}\n" +
+                    $"| - Latency: {state.Latency?.Milliseconds}ms\n");
 
                 trace = trace.TrimEnd(' ', ',');
             }
@@ -396,8 +416,10 @@ namespace Libplanet.Net.Protocols
         {
             try
             {
-                _logger.Debug("Validating peer {Peer}", peer);
+                _logger.Debug("Start to validate a peer: {Peer}", peer);
+                DateTimeOffset check = DateTimeOffset.UtcNow;
                 await PingAsync(peer, timeout, cancellationToken);
+                _routing.Check(peer, check, DateTimeOffset.UtcNow);
             }
             catch (TimeoutException)
             {

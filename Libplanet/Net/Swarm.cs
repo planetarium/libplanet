@@ -590,6 +590,25 @@ namespace Libplanet.Net
                 cancellationToken);
         }
 
+        /// <summary>
+        /// Validates all <see cref="Peer"/>s in the routing table by sending a simple message.
+        /// </summary>
+        /// <param name="timeout">Timeout for this operation. If it is set to <c>null</c>,
+        /// wait infinitely until the requested operation is finished.</param>
+        /// <param name="cancellationToken">A cancellation token used to propagate notification
+        /// that this operation should be canceled.</param>
+        /// <returns>An awaitable task without value.</returns>
+        public async Task CheckAllPeersAsync(
+            TimeSpan? timeout = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            cancellationToken = CancellationTokenSource
+                .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
+
+            var netMQTransport = (NetMQTransport)_transport;
+            await netMQTransport.CheckAllPeersAsync(cancellationToken, timeout);
+        }
+
         internal async Task AddPeersAsync(
             IEnumerable<Peer> peers,
             TimeSpan? timeout,

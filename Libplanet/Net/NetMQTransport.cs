@@ -356,7 +356,7 @@ namespace Libplanet.Net
 
             try
             {
-                KademliaProtocol kp = (KademliaProtocol)Protocol;
+                var kp = (KademliaProtocol)Protocol;
 
                 var tasks = new List<Task>();
                 foreach (Peer peer in peers)
@@ -405,7 +405,7 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            KademliaProtocol kp = (KademliaProtocol)Protocol;
+            var kp = (KademliaProtocol)Protocol;
             return await kp.FindSpecificPeerAsync(
                 null,
                 target,
@@ -534,6 +534,12 @@ namespace Libplanet.Net
         public void ReplyMessage(Message message)
         {
             _replyQueue.Enqueue(message);
+        }
+
+        public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
+        {
+            var kp = (KademliaProtocol)Protocol;
+            await kp.CheckAllPeersAsync(cancellationToken, timeout);
         }
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)

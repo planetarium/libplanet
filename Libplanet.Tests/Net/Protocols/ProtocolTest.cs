@@ -308,7 +308,7 @@ namespace Libplanet.Tests.Net.Protocols
             await transportC.StopAsync(TimeSpan.Zero);
         }
 
-        [Theory(Timeout = Timeout)]
+        [Theory(Timeout = 2 * Timeout)]
         [InlineData(1)]
         [InlineData(5)]
         [InlineData(20)]
