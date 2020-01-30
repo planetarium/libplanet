@@ -41,6 +41,7 @@ namespace Libplanet.Explorer.Controllers
             {
                 _.UserContext = (BlockChain, Store);
                 _.Query = body.Query;
+                _.ThrowOnUnhandledException = true;
                 if (body.Variables != null)
                 {
                     _.Inputs = body.Variables.ToString(Newtonsoft.Json.Formatting.None).ToInputs();
