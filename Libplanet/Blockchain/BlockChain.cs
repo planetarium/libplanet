@@ -44,11 +44,6 @@ namespace Libplanet.Blockchain
         private readonly ILogger _logger;
 
         /// <summary>
-        /// The hash of the genesis block.
-        /// </summary>
-        private readonly HashDigest<SHA256> _genesisHash;
-
-        /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
         /// storage, including orphan <see cref="Block{T}"/>s.
         /// Keys are <see cref="Block{T}.Hash"/>es and values are
@@ -129,7 +124,7 @@ namespace Libplanet.Blockchain
             Policy = policy;
             Store = store;
 
-            _genesisHash = genesisHash;
+            GenesisHash = genesisHash;
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
@@ -140,8 +135,8 @@ namespace Libplanet.Blockchain
             {
                 Store.SetCanonicalChainId(Id);
             }
-            else if (Store.CountBlocks() > 0
-                     && !Store.IterateIndexes((Guid)canonicalId).First().Equals(_genesisHash))
+            else if (Count > 0
+                     && !IterateBlockHashes(limit: 1).First().Equals(GenesisHash))
             {
                 string msg =
                     $"The genesis block that the given {nameof(IStore)} contains does not match " +
@@ -150,8 +145,8 @@ namespace Libplanet.Blockchain
                     "restarted the chain with a new genesis block so that it is incompatible " +
                     "with your existing chain in the local store.";
                 throw new InvalidGenesisBlockException(
-                    networkExpected: _genesisHash,
-                    stored: Genesis.Hash,
+                    networkExpected: GenesisHash,
+                    stored: Store.IterateIndexes(Id, limit: 1).First(),
                     message: msg
                 );
             }
@@ -169,6 +164,11 @@ namespace Libplanet.Blockchain
         /// An event which is invoked when <see cref="Tip"/> is changed.
         /// </summary>
         public event EventHandler<TipChangedEventArgs> TipChanged;
+
+        /// <summary>
+        /// The hash of the genesis block.
+        /// </summary>
+        public HashDigest<SHA256> GenesisHash { get; }
 
         public IBlockPolicy<T> Policy { get; }
 
@@ -194,20 +194,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// The first <see cref="Block{T}"/> in the <see cref="BlockChain{T}"/>.
         /// </summary>
-        public Block<T> Genesis
-        {
-            get
-            {
-                try
-                {
-                    return this[0];
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return null;
-                }
-            }
-        }
+        public Block<T> Genesis => Store.GetBlock<T>(GenesisHash);
 
         public Guid Id { get; private set; }
 
@@ -750,17 +737,16 @@ namespace Libplanet.Blockchain
                 );
             }
 
-            if (block.Index == 0 && !block.Hash.Equals(_genesisHash))
+            if (block.Index == 0 && !block.Hash.Equals(GenesisHash))
             {
-                string msg =
-                    $"The genesis block that the given {nameof(IStore)} contains does not match " +
-                    "to the genesis block that the network expects.  You might pass the wrong " +
-                    "store which is incompatible with this chain.  Or your network might " +
-                    "restarted the chain with a new genesis block so that it is incompatible " +
-                    "with your existing chain in the local store.";
+                string msg = $"The genesis hash given in {nameof(BlockChain<T>)} does not match " +
+                             "to the genesis block that network expects.  Your might be " +
+                             "in the network you does not wanted to join.  Check if you are in" +
+                             $" the network expected.  Or set {GenesisHash} to a hash from the" +
+                             " network you wanted.";
                 throw new InvalidGenesisBlockException(
-                    networkExpected: _genesisHash,
-                    stored: Genesis.Hash,
+                    networkExpected: block.Hash,
+                    stored: GenesisHash,
                     message: msg
                 );
             }
@@ -1103,7 +1089,7 @@ namespace Libplanet.Blockchain
                     nameof(point));
             }
 
-            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), Genesis.Hash);
+            var forked = new BlockChain<T>(Policy, Store, Guid.NewGuid(), GenesisHash);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +

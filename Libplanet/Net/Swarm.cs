@@ -464,8 +464,7 @@ namespace Libplanet.Net
                     BlockChain.Policy,
                     _store,
                     Guid.NewGuid(),
-                    BlockChain.Genesis.Hash);
-
+                    BlockChain.GenesisHash);
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;
 
