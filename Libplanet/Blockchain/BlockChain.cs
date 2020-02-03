@@ -1184,11 +1184,24 @@ namespace Libplanet.Blockchain
             {
                 long shorterHeight =
                     Math.Min(Count, other.Count) - 1;
-                for (long index = shorterHeight; index >= 0; --index)
+                Block<T> t = this[shorterHeight], o = other[shorterHeight];
+
+                while (true)
                 {
-                    if (this[index].Equals(other[index]))
+                    if (t.Equals(o))
                     {
-                        topmostCommon = this[index];
+                        topmostCommon = t;
+                        break;
+                    }
+
+                    if (t.PreviousHash is HashDigest<SHA256> tp &&
+                        o.PreviousHash is HashDigest<SHA256> op)
+                    {
+                        t = this[tp];
+                        o = other[op];
+                    }
+                    else
+                    {
                         break;
                     }
                 }
@@ -1231,11 +1244,11 @@ namespace Libplanet.Blockchain
                     .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
 
             // It assumes reorg is small size. If it was big, this may be heavy task.
-            var unstagedTxIds =
+            ImmutableHashSet<TxId> unstagedTxIds =
                 GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
-            var stageTxIds =
+            ImmutableHashSet<TxId> stageTxIds =
                 GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
-            var restageTxIds = unstagedTxIds.Except(stageTxIds);
+            ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
             Store.StageTransactionIds(restageTxIds);
 
             try
