@@ -12,7 +12,7 @@ namespace Libplanet.Net.Messages
             BlockLocator baseLocator,
             HashDigest<SHA256> target,
             long offset)
-            : base(LeaveTrail)
+            : base(true)
         {
             BaseLocator = baseLocator;
             TargetBlockHash = target;

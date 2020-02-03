@@ -13,8 +13,6 @@ namespace Libplanet.Net.Messages
     {
         internal const int HeaderSize = 4;
 
-        protected const bool LeaveTrail = true;
-
         protected Message()
         {
         }

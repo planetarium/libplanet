@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     internal class Tx : Message
     {
         public Tx(byte[] payload)
-            : base(LeaveTrail)
+            : base(true)
         {
             Payload = payload;
         }

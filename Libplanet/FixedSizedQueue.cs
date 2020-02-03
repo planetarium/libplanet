@@ -3,13 +3,12 @@ using System.Collections.Concurrent;
 namespace Libplanet
 {
     /// <summary>
-    /// Implements a <see cref="ConcurrentQueue{T}"/> of a fixed size.
+    /// Equivalent to <see cref="ConcurrentQueue{T}"/>, except this does not accept more than
+    /// the specified maximum size.
     /// </summary>
     /// <typeparam name="T">Specifies the type of elements in the queue.</typeparam>
-#pragma warning disable MEN002
     // This class referenced the implementation of the following.
-    // https://github.com/couchcoding/Logbert/blob/bbed28fabf9493310f4b51324f8af88c14551c9d/src/Logbert/Helper/FixedSizedQueue.cs
-#pragma warning restore MEN002
+    // https://git.io/Jvs1f
     internal class FixedSizedQueue<T> : ConcurrentQueue<T>
     {
         /// <summary>

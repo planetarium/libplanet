@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     internal class Ping : Message
     {
         public Ping()
-            : base(LeaveTrail)
+            : base(true)
         {
         }
 

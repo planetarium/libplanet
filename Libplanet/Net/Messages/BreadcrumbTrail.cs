@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Libplanet.Net.Messages
 {
@@ -47,10 +46,7 @@ namespace Libplanet.Net.Messages
         public override string ToString()
         {
             return Record
-                ? _trails.Aggregate(
-                    string.Empty,
-                    (s, trail) => s + $"[{trail}]/",
-                    s => s.TrimEnd('/'))
+                ? string.Join("/", _trails)
                 : string.Empty;
         }
 
@@ -72,7 +68,7 @@ namespace Libplanet.Net.Messages
             /// <inheritdoc/>
             public override string ToString()
             {
-                return $"{Type:G}:{Address}:{Timestamp}";
+                return $"[{Type:G}:{Address}:{Timestamp}]";
             }
         }
     }

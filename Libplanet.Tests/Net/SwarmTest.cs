@@ -2821,55 +2821,18 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public async Task BreadcrumbTrail()
         {
-            var keys = new PrivateKey[5];
-            var fxs = new DefaultStoreFixture[5];
-            var blockChains = new BlockChain<DumbAction>[5];
-            var swarms = new Swarm<DumbAction>[5];
+            const int swarmCount = 5;
+            var keys = TestUtils.AdjacentKeys;
+            var fxs = new DefaultStoreFixture[swarmCount];
+            var blockChains = new BlockChain<DumbAction>[swarmCount];
+            var swarms = new Swarm<DumbAction>[swarmCount];
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-
-            // Private keys to make swarms broadcast blocks in relay.
-            keys[0] = new PrivateKey(new byte[]
-            {
-                0x98, 0x66, 0x98, 0x50, 0x72, 0x8c, 0x6c, 0x41, 0x0b, 0xf4,
-                0x2c, 0x45, 0xfe, 0x7c, 0x49, 0x23, 0x2d, 0x14, 0xcf, 0xb5,
-                0x5b, 0x78, 0x4d, 0x81, 0x35, 0xae, 0x40, 0x4c, 0x7c, 0x24,
-                0x3f, 0xc7,
-            });
-            keys[1] = new PrivateKey(new byte[]
-            {
-                0xd2, 0x47, 0x6f, 0xf3, 0x1a, 0xf3, 0x4f, 0x00, 0x5a, 0xe2,
-                0xd9, 0x24, 0x18, 0x60, 0xe9, 0xb9, 0xd0, 0x42, 0x9a, 0x30,
-                0x67, 0x81, 0x2b, 0x00, 0xf0, 0x45, 0x87, 0x70, 0x3f, 0xd5,
-                0x51, 0x93,
-            });
-            keys[2] = new PrivateKey(new byte[]
-            {
-                0x9e, 0xd4, 0xdb, 0x20, 0xfd, 0x4d, 0x1c, 0x52, 0x55, 0x24,
-                0x80, 0x52, 0xc6, 0x1f, 0x95, 0x1c, 0xf1, 0x49, 0x4a, 0xd6,
-                0xf9, 0x1d, 0x29, 0xb9, 0xa3, 0x0b, 0x0e, 0x0c, 0xc8, 0xaa,
-                0xb0, 0x79,
-            });
-            keys[3] = new PrivateKey(new byte[]
-            {
-                0x0a, 0x4f, 0x84, 0xeb, 0x69, 0x4d, 0xc1, 0xf0, 0xf3, 0x15,
-                0x97, 0xcc, 0x95, 0x53, 0x66, 0x01, 0x27, 0x2a, 0xc1, 0xcd,
-                0x0f, 0xf6, 0x02, 0x6f, 0x08, 0x29, 0x1d, 0xd0, 0x79, 0xda,
-                0xcc, 0x36,
-            });
-            keys[4] = new PrivateKey(new byte[]
-            {
-                0x68, 0xbd, 0xc3, 0xda, 0xf1, 0xa1, 0x67, 0x9c, 0xa1, 0x1e,
-                0x5a, 0x64, 0x10, 0xe6, 0x74, 0x95, 0x77, 0xbc, 0x47, 0x1c,
-                0x55, 0xd7, 0x38, 0xa3, 0x67, 0x48, 0x73, 0x08, 0xcd, 0x74,
-                0x3c, 0x4b,
-            });
-
             var genesisBlock = BlockChain<DumbAction>.MakeGenesisBlock();
 
             try
             {
                 var tasks = new List<Task>();
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < swarmCount; i++)
                 {
                     fxs[i] = new DefaultStoreFixture(memory: true);
                     blockChains[i] = new BlockChain<DumbAction>(policy, fxs[i].Store, genesisBlock);
@@ -2883,7 +2846,7 @@ namespace Libplanet.Tests.Net
 
                 await Task.WhenAll(tasks.ToArray());
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < swarmCount - 1; i++)
                 {
                     await swarms[i].AddPeersAsync(new[] { swarms[i + 1].AsPeer }, null);
                 }
@@ -2911,16 +2874,17 @@ namespace Libplanet.Tests.Net
 
                 Block<DumbAction> block = await blockChains[0].MineBlock(swarms[0].Address);
                 swarms[0].BroadcastBlock(block);
-                await swarms[4].BlockAppended.WaitAsync();
-                var transport = swarms[4].Transport as NetMQTransport;
+                await swarms[swarmCount - 1].BlockAppended.WaitAsync();
+                var transport = swarms[swarmCount - 1].Transport as NetMQTransport;
+                Assert.NotNull(transport);
                 Assert.Equal(3, transport.MessageHistory.Count); // ping, header, block
                 Message header =
                     transport.MessageHistory.First(msg => msg is BlockHeaderMessage);
-                Assert.Equal(2 * 4, header.Trail.Trails.Length);
+                Assert.Equal(2 * (swarmCount - 1), header.Trail.Trails.Length);
                 int count = 0;
                 expected =
                     $"[{sentTrail}:{swarms[0].Address}:{header.Trail.Trails[count++].Timestamp}]/";
-                for (int i = 1; i < 4; i++)
+                for (int i = 1; i < swarmCount - 1; i++)
                 {
                     expected +=
                         $"[{receivedTrail}:{swarms[i].Address}:" +
@@ -2930,7 +2894,7 @@ namespace Libplanet.Tests.Net
                         $"{header.Trail.Trails[count++].Timestamp}]/";
                 }
 
-                expected += $"[{receivedTrail}:{swarms[4].Address}:" +
+                expected += $"[{receivedTrail}:{swarms[swarmCount - 1].Address}:" +
                             $"{header.Trail.Trails[count].Timestamp}]";
 
                 Assert.Equal(
@@ -2939,7 +2903,7 @@ namespace Libplanet.Tests.Net
             }
             finally
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < swarmCount; i++)
                 {
                     await StopAsync(swarms[i]);
                     swarms[i].Dispose();

@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     internal class Neighbors : Message
     {
         public Neighbors(IEnumerable<BoundPeer> found)
-            : base(LeaveTrail)
+            : base(true)
         {
             Found = found.ToImmutableList();
         }

@@ -7,7 +7,7 @@ namespace Libplanet.Net.Messages
     internal class BlockHeaderMessage : Message
     {
         public BlockHeaderMessage(BlockHeader header)
-            : base(LeaveTrail)
+            : base(true)
         {
             Header = header;
         }

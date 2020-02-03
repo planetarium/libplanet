@@ -9,7 +9,7 @@ namespace Libplanet.Net.Messages
     internal class GetBlocks : Message
     {
         public GetBlocks(IEnumerable<HashDigest<SHA256>> hashes, int chunkSize = 100)
-            : base(LeaveTrail)
+            : base(true)
         {
             if (chunkSize <= 0)
             {

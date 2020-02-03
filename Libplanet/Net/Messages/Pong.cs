@@ -6,7 +6,7 @@ namespace Libplanet.Net.Messages
     internal class Pong : Message
     {
         public Pong(long? tipIndex)
-            : base(LeaveTrail)
+            : base(true)
         {
             TipIndex = tipIndex;
         }

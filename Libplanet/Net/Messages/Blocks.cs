@@ -8,7 +8,7 @@ namespace Libplanet.Net.Messages
     internal class Blocks : Message
     {
         public Blocks(IEnumerable<byte[]> payloads)
-            : base(LeaveTrail)
+            : base(true)
         {
             if (payloads.Count() > int.MaxValue)
             {
