@@ -83,9 +83,24 @@
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The existing <code>BlockHashes</code> message type (with the type number <code>0x05</code>) was
+replaced by a new <code>BlockHashes</code> message type (with type number <code>0x0e</code>)
+in order to include an offset block index besides block hashes
+so that a receiver is able to determine their block indices too.  [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
+<ul>
+<li>Added <code>BlockHashDownloadState</code> class, a subclass of <code>PreloadState</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>]</li>
+</ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
+<ul>
+<li><code>Swarm&lt;T&gt;.PreloadAsync()</code> and <code>Swarm&lt;T&gt;.StartAsync()</code> became to download
+only a list of block hashes first and then download blocks from
+simultaneously multiple peers.  [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>]</li>
+</ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h2 id="version-080">Version 0.8.0</h2>
 <p>Released on February 4, 2020.</p>
@@ -181,8 +196,8 @@ method.  [<a href="https://github.com/planetarium/libplanet/issues/368">#368</a>
 <li>Added <code>BlockChain&lt;T&gt;.Genesis</code> property.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.MakeGenesisBlock()</code> static method.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
 <li>Added <code>InvalidGenesisBlockException</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/688">#688</a>]</li>
-<li>Added <code>StateDownloadState</code> class which reports state preloading iteration
-progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
+<li>Added <code>StateDownloadState</code> class, a subclass of <code>PreloadState</code>,
+which reports state preloading iteration progress.  [<a href="https://github.com/planetarium/libplanet/pull/703">#703</a>]</li>
 <li>Added <code>PeerDiscoveryException</code> class which inherits <code>SwarmException</code>
 class.  [<a href="https://github.com/planetarium/libplanet/issues/604">#604</a>, <a href="https://github.com/planetarium/libplanet/pull/726">#726</a>]</li>
 <li>Added <code>Swarm&lt;T&gt;.Peers</code> property which returns an enumerable of peers in
