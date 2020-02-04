@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.8.0
 -------------
 
-To be released.
+Released on February 4, 2020.
 
 ### Backward-incompatible API changes
 
