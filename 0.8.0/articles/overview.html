@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Libplanet overview | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Libplanet overview | Libplanet ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc">
+    <meta property="docfx:tocrel" content="toc">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/overview.html" title="Overview">Overview</a>
+                      </li>
+                      <li>
+                          <a href="../articles/design.html" title="Design">Design</a>
+                      </li>
+                      <li>
+                          <a href="../api/Libplanet.html" title="API Reference">API Reference</a>
+                      </li>
+                      <li>
+                          <a href="../CHANGES.html" title="Changelog">Changelog</a>
+                      </li>
+                      <li>
+                          <a href="../CONTRIBUTING.html" title="Contribute">Contribute</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="active">
+                      <a href="overview.html" title="Overview" class="active">Overview</a>
+                    </li>
+                    <li class="">
+                      <a href="design.html" title="Design" class="">Design</a>
+                    </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="libplanet-overview">Libplanet overview</h1>
+
+<p>This document describes the structure and usage of <a href="https://libplanet.io">Libplanet</a> designed to be easily used in <a href="https://unity.com/">Unity</a>.</p>
+<h2 id="libplanet">Libplanet</h2>
+<p>Libplanet is a network/storage library for games that run in distributed P2P network. In many traditional multiplayer games, it was up to the game server to manage the network and the state of games.</p>
+<pre><code class="lang-text">                       Traditional multiplayer game
+
+                     +------------------------------+
+                     |           Server             |
+                     |                              |
+                     |                              |
+                     |  +------------------------+  |
+                     |  |                        |  |
+                     |  |       Game State       |  |
+                     |  |                        |  |
+                     |  +-+----------+---------+-+  |
+                     +----+----------+---------+----+
+                          |          |         |
+                          |          |         |
+                     +----+---+ +----+---+ +---+----+
+                     |        | |        | |        |
+                     | client | | client | | client |
+                     |        | |        | |        |
+                     +--------+ +--------+ +--------+
+</code></pre>
+<p>But with Libplanet, all game clients can manage their own game state, enabling multiplayer games to be implemented without a central server.</p>
+<pre><code class="lang-text">                    Multiplayer game with Libplanet
+
+
++----------------------+ +----------------------+ +----------------------+
+|                      | |                      | |                      |
+|        Client        | |        Client        | |        Client        |
+|                      | |                      | |                      |
+| +------------------+ | | +------------------+ | | +------------------+ |
+| |                  | | | |                  | | | |                  | |
+| |    Game State    + +-+ +    Game State    + +-+ +    Game State    | |
+| |                  | | | |                  | | | |                  | |
+| +------------------+ | | +------------------+ | | +------------------+ |
++---------+------------+ +----------------------+ +-----------+----------+
+          |                                                   |
+          +---------------------------------------------------+
+
+</code></pre>
+<p>For the design rationale of Libplanet, refer to <a href="design.html">this article</a>.</p>
+<h2 id="action-and-state">Action and State</h2>
+<p>As mentioned above, games using Libplanet can manage their state from each client, not from a central server. The <strong>State</strong> of games is transitioned through an <strong>Action</strong>.</p>
+<pre><code class="lang-text">+------------+                  +------------+                  +------------+
+|            |                  |            |                  |            |
+|  State #1  |                  |  State #2  |                  |  State #3  |
+|            |  Battle(Action)  |            |  Battle(Action)  |            |
+|            +-----------------&gt;+            |-----------------&gt;+            |
+|    Lv 1    |                  |    Lv 2    |                  |    Lv 3    |
+|   Novice   |                  |   Warrior  |                  |   Veteran  |
+|            |                  |            |                  |            |
++------------+                  +------------+                  +------------+
+
+</code></pre>
+<ul>
+<li>Because the way of transitioning the State through an Action depends on each game, Libplanet does not directly provide implementation of the Action and only provides the interface <a class="xref" href="../api/Libplanet.Action.IAction.html">IAction</a>.</li>
+<li>The State is expressed in key-value pairs, and you can set appropriate values for each game.</li>
+<li>The State is readable at any point, but transitioning it is only possible through an Action.</li>
+<li>Libplanet does not directly share the transitioned State, but only shares the Action that will transition the State. Also, because State transitioned by an Action occurs on all nodes in the network, the Action must be written deterministically to return the same result from all nodes.</li>
+</ul>
+<h2 id="transaction-and-block">Transaction and Block</h2>
+<p>In order to share an Action, Libplanet uses 2 concepts internally: <strong>Block</strong> and <strong>Transaction</strong>.</p>
+<pre><code class="lang-text">+-----------------------+   +-----------------------+   +-----------------------+
+|                       |   |                       |   |                       |
+| Block #1              |   | Block #2              |   | Block #3              |
+|                       |   |                       |   |                       |
+| +-------------------+ |   | +-------------------+ |   | +-------------------+ |
+| |                   | |   | |                   | |   | |                   | |
+| | Transaction #1    | |   | | Transaction #2    | |   | | Transaction #4    | |
+| |                   | |   | |                   | |   | |                   | |
+| | +---------------+ | |   | | +---------------+ | |   | | +---------------+ | |
+| | |  Action #1-1  | | +--&gt;+ | |  Action #2-1  | | +--&gt;+ | |  Action #4-1  | | |
+| | +---------------+ | |   | | +---------------+ | |   | | +---------------+ | |
+| |                   | |   | |                   | |   | |                   | |
+| | +---------------+ | |   | +-------------------+ |   | +-------------------+ |
+| | |  Action #1-2  | | |   |                       |   |                       |
+| | +---------------+ | |   | +-------------------+ |   | +-------------------+ |
+| |                   | |   | |                   | |   | |                   | |
+| +-------------------+ |   | | Transaction #3    | |   | | Transaction #5    | |
+|                       |   | |                   | |   | |                   | |
+|                       |   | | +---------------+ | |   | +-------------------+ |
+|                       |   | | |  Action #3-1  | | |   |                       |
+|                       |   | | +---------------+ | |   |                       |
+|                       |   | |                   | |   |                       |
+|                       |   | +-------------------+ |   |                       |
+|                       |   |                       |   |                       |
++-----------------------+   +-----------------------+   +-----------------------+
+
+</code></pre>
+<p><strong>Transaction</strong> is a bundle of Actions and has the following characteristics:</p>
+<ul>
+<li>Transaction is signed using a private key of the creator(signer) of Transaction and Action.</li>
+<li>Transaction may not include an Action.</li>
+<li>Action in Transaction can be specified in the order of execution and ensures same order execution on all nodes.</li>
+<li>Transaction does not include the game code and cannot be extended. All game logic is implemented through Action.</li>
+<li>It is the game developer's freedom to decide how to group Action units. See <a href="design.html#transactions-and-actions">this document</a> for more information.</li>
+</ul>
+<p><strong>Block</strong> is a bundle of Transaction and has the following characteristics:</p>
+<ul>
+<li>Block is the smallest unit of mutual Actions in the network. Actions in a Block are either all evaluated, or all not evaluated.</li>
+<li>A Block may include many Transactions or may not include any Transaction.</li>
+<li>A Block may contain multiple users' Transactions.</li>
+<li>A Block does not include game code and cannot be extended by the game developer.</li>
+<li>Block's Transactions are evaluated in the order of execution calculated by deterministic random number to transition the state.</li>
+</ul>
+<h2 id="blockchain">BlockChain</h2>
+<p>To manage these Blocks, Libplanet offers a class called <a class="xref" href="../api/Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a>. This class allows game developers to:</p>
+<ul>
+<li>Create and register Transactions that contain desired Actions.</li>
+<li>Mine Blocks with registered Transactions.</li>
+<li>Inquire State obtained by evaluating Blocks.</li>
+</ul>
+<h2 id="rendering">Rendering</h2>
+<p>One way for game developers to reflect the State of the game is by using <a href="xref:Libplanet.Blockchain.BlockChain%601.GetState(Libplanet.Address,System.Nullable%7BLibplanet.HashDigest%7BSystem.Security.Cryptography.SHA256%7D%7D,System.Boolean)"><code>BlockChain&lt;T&gt;.GetState()</code></a>.</p>
+<pre><code class="lang-csharp">public class Game : MonoBehaviour
+{
+    private BlockChain&lt;Action&gt; _blockChain;
+
+    private static void UpdateScore(long score)
+    {
+        // Update player's score in game.
+    }
+
+    // MonoBehaviour.Awake()
+    private void Awake()
+    {
+        UpdateScore((long?) _blockChain.GetState(playerAddress) ?? 0);
+    }
+}
+</code></pre>
+<p>State transition occurs after a Block containing an Action is added and confirmed to the chain. The code above is suboptimal because you are polling the <a class="xref" href="../api/Libplanet.Blockchain.BlockChain-1.html">BlockChain&lt;T&gt;</a> object to see if a specific Action has been reflected.</p>
+<pre><code class="lang-csharp">public class Game : MonoBehaviour
+{
+    // ...
+
+    private IEnumerator CoScoreUpdater()
+    {
+        while (true)
+        {
+            UpdateScore((long?) _blockChain.GetState(playerAddress) ?? 0);
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    // MonoBehaviour.Awake()
+    private void Awake()
+    {
+        StartCoroutine(CoScoreUpdater());
+    }
+}
+</code></pre>
+<p>Although this method works, there are still some problems because reflecting the State of the game depends only on time, regardless of whether the action is processed or not.</p>
+<ul>
+<li>If the wait time is long, the interval between States being reflected in the game is also extended, and if it becomes too short, frequent State checks makes the process inefficient.</li>
+<li>If multiple actions were executed in a short period of time, they would not be handled accurately.</li>
+</ul>
+<p>Libplanet provides a rendering mechanism called <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a> to solve this problem. <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a> is called after a Block with the corresponding Actions is confirmed and the State is transitioned. The following code has been re-implemented using <a class="xref" href="../api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Render_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_"><code>IAction.Render()</code></a>.</p>
+<pre><code class="lang-csharp">public class Win : IAction
+{
+    // ...
+
+    public override void Render(IActioncontext ctx, IAccountstatedelta nextStates)
+    {
+        Game.UpdateScore((long?) nextStates.GetState())
+    }
+}
+</code></pre>
+<h2 id="networking">Networking</h2>
+<p>Libplanet has the feature to store Blocks and Transactions, as well as sharing them across other nodes in the P2P network. Game developers can use the <a class="xref" href="../api/Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> class to propagate or receive Blocks from other nodes in the network.</p>
+<p>Also, because the network is a P2P network without a central server, <a class="xref" href="../api/Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> also does not need a specific server, however, it is necessary to specify a seed node with a specific address to configure the network. These seed nodes are completely the same as other nodes, except that they must have an IP address or domain accessible from the Internet.</p>
+<h2 id="consensus">Consensus</h2>
+<h3 id="perspective">Perspective</h3>
+<p>Libplanet is a library that enables game developers to create &quot;centralized server&quot;-less multiplayer games. “Centralized server-less” means that not only one entity is responsible for the state of the game, but every node in the network has the state of the game and synchronizes it accordingly. To synchronize, it should maintain a consistent state even in the event of a failure or tampering. The way of choosing which state is canonical is also called <a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)">consensus</a> in distributed computing and multi-agent environments.</p>
+<p>The algorithms used for consensus are various, with many different characteristics and pros and cons. For example, <a href="https://en.wikipedia.org/wiki/Proof_of_work">Proof of Work (PoW)</a> allows anyone with computing power to participate in the network, but that cannot guarantee the state of the game at a specific time. In contrast, <a href="https://en.wikipedia.org/wiki/Proof_of_authority">Proof of Authority (PoA)</a> can guarantee that a game's state is established after a certain time, but only authorized users can join the network. These charateristics may work for some games, but won't for others, making the consensus algorithm also unusable for a general purpose network.</p>
+<p>Libplanet isn't a tool for creating games of any particular genre, but rather a tool for creating varied types of games. Also it assumes that each game has a different network and consensus algorithm. Nor is Libplanet itself a project that focuses on developing and testing any particular consensus algorithm or mechanism. That's why Libplanet aims to allow game developers to choose a consensus algorithm at implementation time to suit their game's characteristics.</p>
+<h3 id="about-pow">About PoW</h3>
+<p>Currently, the only consensus algorithm currently implemented in Libplanet is
+a PoW (<a href="https://en.wikipedia.org/wiki/Hashcash">Hashcash</a>). It has the following characteristics:</p>
+<ul>
+<li>Anyone with hash power (= computing power) can join the network</li>
+<li>Simple to implement, robust</li>
+<li>Blocks aren't finalized and can be re-organized</li>
+<li>Can't decrease block creation (≒ state transition) time below a certain amount (network propagation and validation time)</li>
+</ul>
+<p>The main reason Libplanet chose PoW as its first consensus algorithm is its simple architecture. As mentioned earlier, Libplanet is not a library that aims to implement certain functions of the blockchain, but a library that allows the game to run without a centralized server. That's why we chose PoW as our first consensus algorithm, which allows us to create and run a complete game, even with a relatively simple implementation (although it does limit genre or features).</p>
+<p>Also, PoW is not Libplanet's last or only consensus algorithm, as some games can't use it due to some of the characteristics of PoW. To Libplanet will add consensus algorithms that the community believes are needed later.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/836f40b0481615f5612a97e39f015774003f8f96/Docs/articles/overview.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019–2020 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
