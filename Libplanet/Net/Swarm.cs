@@ -1178,13 +1178,19 @@ namespace Libplanet.Net
             if (!(message.Remote is BoundPeer peer))
             {
                 _logger.Information(
-                    "BlockHashes was sent from invalid peer " +
+                    "BlockHeaderMessage was sent from invalid peer " +
                     $"[{message.Remote.Address.ToHex()}]. ignored.");
                 return;
             }
 
             BlockHeaderReceived.Set();
             BlockHeader header = message.Header;
+
+            _logger.Debug(
+                "Block header of hash [{Hash}] (index: {Index}) received.",
+                ByteUtil.Hex(header.Hash),
+                header.Index,
+                Address.ToHex());
 
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
@@ -1198,7 +1204,12 @@ namespace Libplanet.Net
                 else
                 {
                     _logger.Debug(
-                        $"No blocks are required; {nameof(BlockHeaderMessage)} is ignored.");
+                        "No blocks are required " +
+                        "(current: {Current}, demand: {Demand}, received: {Received});" +
+                        $" {nameof(BlockHeaderMessage)} is ignored.",
+                        BlockChain.Tip.Index,
+                        _demandBlockHash?.Item1,
+                        header.Index);
                 }
             }
         }
