@@ -815,8 +815,12 @@ namespace Libplanet.Net
                             reply.Remote
                         );
                         ValidateSender(reply.Remote);
-                        Protocol.ReceiveMessage(reply);
                         result.Add(reply);
+                    }
+
+                    if (req.ExpectedResponses > 0)
+                    {
+                        Protocol.ReceiveMessage(result[0]);
                     }
 
                     tcs.SetResult(result);
