@@ -10,13 +10,27 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  The existing `BlockHashes` message type (with the type number `0x05`) was
+    replaced by a new `BlockHashes` message type (with type number `0x0e`)
+    in order to include an offset block index besides block hashes
+    so that a receiver is able to determine their block indices too.  [[#707]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
+    [[#707]]
+
 ### Behavioral changes
 
+ -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
+    only a list of block hashes first and then download blocks from
+    simultaneously multiple peers.  [[#707]]
+
 ### Bug fixes
+
+[#707]: https://github.com/planetarium/libplanet/pull/707
 
 
 Version 0.8.0
@@ -110,8 +124,8 @@ Released on February 4, 2020.
  -  Added `BlockChain<T>.Genesis` property.  [[#688]]
  -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
- -  Added `StateDownloadState` class which reports state preloading iteration
-    progress.  [[#703]]
+ -  Added `StateDownloadState` class, a subclass of `PreloadState`,
+    which reports state preloading iteration progress.  [[#703]]
  -  Added `PeerDiscoveryException` class which inherits `SwarmException`
     class.  [[#604], [#726]]
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
