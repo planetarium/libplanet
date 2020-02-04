@@ -1171,8 +1171,8 @@ namespace Libplanet.Blockchain
             if (other?.Tip is null)
             {
                 throw new ArgumentException(
-                        $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
-                        nameof(other));
+                    $"The chain to be swapped is invalid. Id: {other?.Id}, Tip: {other?.Tip}",
+                    nameof(other));
             }
 
             _logger.Debug(
@@ -1180,20 +1180,28 @@ namespace Libplanet.Blockchain
 
             // Finds the branch point.
             Block<T> topmostCommon = null;
-            if (render && !(Tip is null))
+            if (!(Tip is null))
             {
                 long shorterHeight =
                     Math.Min(Count, other.Count) - 1;
-                for (
-                    Block<T> t = this[shorterHeight], o = other[shorterHeight];
-                    t.PreviousHash is HashDigest<SHA256> tp &&
-                        o.PreviousHash is HashDigest<SHA256> op;
-                    t = this[tp], o = other[op]
-                )
+                Block<T> t = this[shorterHeight], o = other[shorterHeight];
+
+                while (true)
                 {
                     if (t.Equals(o))
                     {
                         topmostCommon = t;
+                        break;
+                    }
+
+                    if (t.PreviousHash is HashDigest<SHA256> tp &&
+                        o.PreviousHash is HashDigest<SHA256> op)
+                    {
+                        t = this[tp];
+                        o = other[op];
+                    }
+                    else
+                    {
                         break;
                     }
                 }
@@ -1210,7 +1218,7 @@ namespace Libplanet.Blockchain
                 for (
                     Block<T> b = Tip;
                     !(b is null) && b.Index > (topmostCommon?.Index ?? -1) &&
-                        b.PreviousHash is HashDigest<SHA256> ph;
+                    b.PreviousHash is HashDigest<SHA256> ph;
                     b = this[ph]
                 )
                 {
@@ -1229,6 +1237,19 @@ namespace Libplanet.Blockchain
 
                 _logger.Debug($"Unrender for {nameof(Swap)}() is completed.");
             }
+
+            IEnumerable<TxId> GetTxIdsWithRange(BlockChain<T> chain, Block<T> start, Block<T> end)
+                => Enumerable
+                    .Range((int)start.Index + 1, (int)(end.Index - start.Index))
+                    .SelectMany(x => chain[x].Transactions.Select(tx => tx.Id));
+
+            // It assumes reorg is small size. If it was big, this may be heavy task.
+            ImmutableHashSet<TxId> unstagedTxIds =
+                GetTxIdsWithRange(this, topmostCommon, Tip).ToImmutableHashSet();
+            ImmutableHashSet<TxId> stageTxIds =
+                GetTxIdsWithRange(other, topmostCommon, other.Tip).ToImmutableHashSet();
+            ImmutableHashSet<TxId> restageTxIds = unstagedTxIds.Except(stageTxIds);
+            Store.StageTransactionIds(restageTxIds);
 
             try
             {

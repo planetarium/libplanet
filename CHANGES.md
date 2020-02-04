@@ -188,6 +188,10 @@ To be released.
     [[#759]]
  -  Fixed a bug where `BlockChain<T>` had rendered and evaluated actions in
     the genesis block during forking.  [[#763]]
+ -  Fixed a `Swam<T>`'s bug that some `Transaction<T>`s had become excluded from
+    mining `Block<T>`s after reorg from α to β where a `Transaction<T>` was once
+    included by a `Block<T>` (α) and not included by an other `Block<T>` (β) for
+    the same `Index` due to the latency gap between nodes.  [[#775]]
 
 [#368]: https://github.com/planetarium/libplanet/issues/368
 [#570]: https://github.com/planetarium/libplanet/issues/570
@@ -241,6 +245,7 @@ To be released.
 [#767]: https://github.com/planetarium/libplanet/pull/767
 [#772]: https://github.com/planetarium/libplanet/pull/772
 [#774]: https://github.com/planetarium/libplanet/pull/774
+[#775]: https://github.com/planetarium/libplanet/pull/775
 
 
 Version 0.7.0
