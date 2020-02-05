@@ -1743,26 +1743,37 @@ namespace Libplanet.Net
                         demands[kv.Value].Add(kv.Key);
                     }
 
-                    List<Transaction<T>> txs = new List<Transaction<T>>();
+                    var tasks = new List<Task<List<Transaction<T>>>>();
                     foreach (var kv in demands)
                     {
-                        try
-                        {
-                            System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched =
-                                GetTxsAsync(
-                                    kv.Key, kv.Value, cancellationToken);
-                            txs.AddRange(await fetched.ToListAsync(cancellationToken));
-                        }
-                        catch (TimeoutException)
-                        {
-                        }
+                        System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched =
+                            GetTxsAsync(
+                                kv.Key, kv.Value, cancellationToken);
+                        tasks.Add(fetched.ToListAsync(cancellationToken));
+                    }
+
+                    var txs = new List<Transaction<T>>();
+                    try
+                    {
+                        await tasks.WhenAll();
+                    }
+                    catch (Exception)
+                    {
+                        _logger.Information("Some tasks faulted during GetTxsAsync().");
+                    }
+
+                    foreach (var task in tasks.Where(task => !task.IsFaulted))
+                    {
+                        txs.AddRange(task.Result);
                     }
 
                     BlockChain.StageTransactions(txs.ToImmutableHashSet());
                     TxReceived.Set();
-                    _logger.Debug("Txs staged successfully.");
+                    _logger.Debug(
+                        "Txs staged successfully: [{txIds}]",
+                        string.Join(", ", txs.Select(tx => tx.Id)));
 
-                    // FIXME: null?
+                    // FIXME: Should exclude peers of source of the transaction ids.
                     BroadcastTxs(null, txs);
 
                     _demandTxIds.Clear();
