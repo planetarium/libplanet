@@ -24,7 +24,7 @@ namespace Libplanet.Tests.Store
 
         protected StoreFixture Fx { get; set; }
 
-        [Fact]
+        [SkippableFact]
         public void ListChainId()
         {
             Assert.Empty(Fx.Store.ListChainIds());
@@ -44,7 +44,7 @@ namespace Libplanet.Tests.Store
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void DeleteChainId()
         {
             Block<DumbAction> block1 = TestUtils.MineNext(
@@ -71,7 +71,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
         }
 
-        [Fact]
+        [SkippableFact]
         public void CanonicalChainId()
         {
             Assert.Null(Fx.Store.GetCanonicalChainId());
@@ -83,7 +83,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(b, Fx.Store.GetCanonicalChainId());
         }
 
-        [Fact]
+        [SkippableFact]
         public void ListAddresses()
         {
             Assert.Empty(Fx.Store.ListStateKeys(Fx.StoreChainId).ToArray());
@@ -121,7 +121,7 @@ namespace Libplanet.Tests.Store
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void ListAllStateReferences()
         {
             Address address1 = Fx.Address1;
@@ -196,7 +196,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { block4.Hash }, refs[stateKey2]);
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreBlock()
         {
             Assert.Empty(Fx.Store.IterateBlockHashes());
@@ -275,7 +275,7 @@ namespace Libplanet.Tests.Store
             Assert.False(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreTx()
         {
             Assert.Equal(0, Fx.Store.CountTransactions());
@@ -341,7 +341,7 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction2.Id));
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreIndex()
         {
             Assert.Equal(0, Fx.Store.CountIndex(Fx.StoreChainId));
@@ -375,7 +375,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(Fx.Hash1, Fx.Store.IndexBlockHash(Fx.StoreChainId, -2));
         }
 
-        [Fact]
+        [SkippableFact]
         public void DeleteIndex()
         {
             Assert.False(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
@@ -385,7 +385,7 @@ namespace Libplanet.Tests.Store
             Assert.Empty(Fx.Store.IterateIndexes(Fx.StoreChainId));
         }
 
-        [Fact]
+        [SkippableFact]
         public void IterateIndexes()
         {
             var ns = Fx.StoreChainId;
@@ -429,7 +429,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(new[] { Fx.Hash2 }, indexes);
         }
 
-        [Fact]
+        [SkippableFact]
         public void LookupStateReference()
         {
             Address address = Fx.Address1;
@@ -494,7 +494,7 @@ namespace Libplanet.Tests.Store
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void IterateStateReferences()
         {
             Address address = Fx.Address1;
@@ -605,7 +605,7 @@ namespace Libplanet.Tests.Store
             });
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreStateReferenceAllowsDuplication()
         {
             const string stateKey1 = "foo", stateKey2 = "bar", stateKey3 = "baz";
@@ -642,7 +642,7 @@ namespace Libplanet.Tests.Store
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
-        [Theory]
+        [SkippableTheory]
         public void ForkStateReferences(int branchPointIndex)
         {
             Address address1 = Fx.Address1;
@@ -715,7 +715,7 @@ namespace Libplanet.Tests.Store
                     Fx.Store.LookupStateReference(targetChainId, stateKey2, blocks[3]));
         }
 
-        [Theory]
+        [SkippableTheory]
         [InlineData(0)]
         [InlineData(1)]
         [InlineData(2)]
@@ -752,7 +752,7 @@ namespace Libplanet.Tests.Store
                 Fx.Store.ListAllStateReferences(forkedChainId).Count);
         }
 
-        [Fact]
+        [SkippableFact]
         public void ForkStateReferencesChainIdNotFound()
         {
             var targetChainId = Guid.NewGuid();
@@ -770,7 +770,7 @@ namespace Libplanet.Tests.Store
             Fx.Store.ForkStateReferences(chain.Id, targetChainId, Fx.Block1);
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreStage()
         {
             Fx.Store.PutTransaction(Fx.Transaction1);
@@ -805,7 +805,7 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateStagedTransactionIds().ToHashSet());
         }
 
-        [Fact]
+        [SkippableFact]
         public void StoreStageOnce()
         {
             Fx.Store.PutTransaction(Fx.Transaction1);
@@ -825,7 +825,7 @@ namespace Libplanet.Tests.Store
                 Fx.Store.IterateStagedTransactionIds().OrderBy(txId => txId.ToHex()));
         }
 
-        [Fact]
+        [SkippableFact]
         public void BlockState()
         {
             Assert.Null(Fx.Store.GetBlockStates(Fx.Hash1));
@@ -847,7 +847,7 @@ namespace Libplanet.Tests.Store
             Assert.Equal(states["bar"], actual["bar"]);
         }
 
-        [Fact]
+        [SkippableFact]
         public void TxNonce()
         {
             Assert.Equal(0, Fx.Store.GetTxNonce(Fx.StoreChainId, Fx.Transaction1.Signer));
@@ -889,7 +889,7 @@ namespace Libplanet.Tests.Store
             );
         }
 
-        [Fact]
+        [SkippableFact]
         public void IndexBlockHashReturnNull()
         {
             Fx.Store.PutBlock(Fx.Block1);
@@ -898,7 +898,7 @@ namespace Libplanet.Tests.Store
             Assert.Null(Fx.Store.IndexBlockHash(Fx.StoreChainId, 2));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ContainsBlockWithoutCache()
         {
             Fx.Store.PutBlock(Fx.Block1);
@@ -910,7 +910,7 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.ContainsBlock(Fx.Block3.Hash));
         }
 
-        [Fact]
+        [SkippableFact]
         public void ContainsTransactionWithoutCache()
         {
             Fx.Store.PutTransaction(Fx.Transaction1);
@@ -922,7 +922,7 @@ namespace Libplanet.Tests.Store
             Assert.True(Fx.Store.ContainsTransaction(Fx.Transaction3.Id));
         }
 
-        [Fact]
+        [SkippableFact]
         public void TxAtomicity()
         {
             Transaction<AtomicityTestAction> MakeTx(
@@ -1010,7 +1010,7 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public void Copy()
         {
             using (DefaultStoreFixture fx = new DefaultStoreFixture(memory: true))

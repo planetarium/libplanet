@@ -1,5 +1,6 @@
 using System;
 using Libplanet.Tests.Store;
+using Xunit;
 
 namespace Libplanet.RocksDBStore.Tests
 {
@@ -9,7 +10,14 @@ namespace Libplanet.RocksDBStore.Tests
 
         public RocksDBStoreTest()
         {
-            Fx = _fx = new RocksDBStoreFixture();
+            try
+            {
+                Fx = _fx = new RocksDBStoreFixture();
+            }
+            catch (TypeInitializationException)
+            {
+                throw new SkipException("RocksDB is not available.");
+            }
         }
 
         public void Dispose()
