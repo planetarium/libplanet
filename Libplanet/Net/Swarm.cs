@@ -41,8 +41,6 @@ namespace Libplanet.Net
         private readonly AsyncLock _runningMutex;
 
         private readonly ILogger _logger;
-
-        private readonly ITransport _transport;
         private readonly IStore _store;
 
         private CancellationTokenSource _workerCancellationTokenSource;
@@ -118,7 +116,7 @@ namespace Libplanet.Net
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
-            _transport = new NetMQTransport(
+            Transport = new NetMQTransport(
                 _privateKey,
                 _appProtocolVersion,
                 tableSize,
@@ -143,13 +141,13 @@ namespace Libplanet.Net
             }
         }
 
-        public bool Running => _transport is NetMQTransport p && p.Running;
+        public bool Running => Transport is NetMQTransport p && p.Running;
 
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
         public Address Address => _privateKey.PublicKey.ToAddress();
 
-        public Peer AsPeer => _transport.AsPeer;
+        public Peer AsPeer => Transport.AsPeer;
 
         public DateTimeOffset LastReceived { get; private set; }
 
@@ -159,7 +157,7 @@ namespace Libplanet.Net
             private set;
         }
 
-        public IEnumerable<BoundPeer> Peers => _transport.Peers;
+        public IEnumerable<BoundPeer> Peers => Transport.Peers;
 
         /// <summary>
         /// The <see cref="BlockChain{T}"/> instance this <see cref="Swarm{T}"/> instance
@@ -167,7 +165,9 @@ namespace Libplanet.Net
         /// </summary>
         public BlockChain<T> BlockChain { get; private set; }
 
-        internal IProtocol Protocol => (_transport as NetMQTransport)?.Protocol;
+        internal ITransport Transport { get; private set; }
+
+        internal IProtocol Protocol => (Transport as NetMQTransport)?.Protocol;
 
         internal AsyncAutoResetEvent TxReceived { get; }
 
@@ -196,11 +196,11 @@ namespace Libplanet.Net
         /// </summary>
         /// <returns>A <see cref="Task"/> completed when <see cref="NetMQTransport.Running"/>
         /// property becomes <c>true</c>.</returns>
-        public Task WaitForRunningAsync() => (_transport as NetMQTransport)?.WaitForRunningAsync();
+        public Task WaitForRunningAsync() => (Transport as NetMQTransport)?.WaitForRunningAsync();
 
         public void Dispose()
         {
-            _transport.Dispose();
+            Transport.Dispose();
         }
 
         public async Task StopAsync(
@@ -219,7 +219,7 @@ namespace Libplanet.Net
             _logger.Debug("Stopping...");
             using (await _runningMutex.LockAsync())
             {
-                await _transport.StopAsync(waitFor, cancellationToken);
+                await Transport.StopAsync(waitFor, cancellationToken);
             }
 
             _logger.Debug("Stopped.");
@@ -271,14 +271,14 @@ namespace Libplanet.Net
             _cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(
                     _workerCancellationTokenSource.Token, cancellationToken
                 ).Token;
-            await _transport.StartAsync(_cancellationToken);
+            await Transport.StartAsync(_cancellationToken);
 
             _logger.Debug("Starting swarm...");
             _logger.Debug("Peer information : {Peer}", AsPeer);
 
             try
             {
-                tasks.Add(_transport.RunAsync(_cancellationToken));
+                tasks.Add(Transport.RunAsync(_cancellationToken));
                 tasks.Add(BroadcastTxAsync(broadcastTxInterval, _cancellationToken));
                 _logger.Debug("Swarm started.");
 
@@ -341,7 +341,7 @@ namespace Libplanet.Net
 
             IEnumerable<BoundPeer> peers = seedPeers.OfType<BoundPeer>();
 
-            await _transport.BootstrapAsync(
+            await Transport.BootstrapAsync(
                 peers,
                 pingSeedTimeout,
                 findNeighborsTimeout,
@@ -361,7 +361,7 @@ namespace Libplanet.Net
 
         public string TraceTable()
         {
-            return _transport is null ? string.Empty : (_transport as NetMQTransport)?.Trace();
+            return Transport is null ? string.Empty : (Transport as NetMQTransport)?.Trace();
         }
 
         /// <summary>
@@ -786,7 +786,7 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             CancellationToken cancellationToken)
         {
-            NetMQTransport netMQTransport = (NetMQTransport)_transport;
+            NetMQTransport netMQTransport = (NetMQTransport)Transport;
             return await netMQTransport.FindSpecificPeerAsync(
                 target,
                 searchAddress,
@@ -811,7 +811,7 @@ namespace Libplanet.Net
             cancellationToken = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken, _cancellationToken).Token;
 
-            var netMQTransport = (NetMQTransport)_transport;
+            var netMQTransport = (NetMQTransport)Transport;
             await netMQTransport.CheckAllPeersAsync(cancellationToken, timeout);
         }
 
@@ -820,9 +820,9 @@ namespace Libplanet.Net
             TimeSpan? timeout,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (_transport is null)
+            if (Transport is null)
             {
-                throw new ArgumentNullException(nameof(_transport));
+                throw new ArgumentNullException(nameof(Transport));
             }
 
             if (cancellationToken == default(CancellationToken))
@@ -830,7 +830,7 @@ namespace Libplanet.Net
                 cancellationToken = _cancellationToken;
             }
 
-            await ((NetMQTransport)_transport).AddPeersAsync(peers, timeout, cancellationToken);
+            await ((NetMQTransport)Transport).AddPeersAsync(peers, timeout, cancellationToken);
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
@@ -845,7 +845,7 @@ namespace Libplanet.Net
             {
                 var request = new GetBlockHashes(locator, stop);
 
-                Message parsedMessage = await _transport.SendMessageWithReplyAsync(
+                Message parsedMessage = await Transport.SendMessageWithReplyAsync(
                     peer,
                     request,
                     timeout: BlockHashRecvTimeout,
@@ -907,7 +907,7 @@ namespace Libplanet.Net
                     blockRecvTimeout = MaxTimeout;
                 }
 
-                IEnumerable<Message> replies = await _transport.SendMessageWithReplyAsync(
+                IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
                     peer,
                     request,
                     blockRecvTimeout,
@@ -959,7 +959,7 @@ namespace Libplanet.Net
                     txRecvTimeout = MaxTimeout;
                 }
 
-                IEnumerable<Message> replies = await _transport.SendMessageWithReplyAsync(
+                IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
                     peer,
                     request,
                     txRecvTimeout,
@@ -1000,7 +1000,7 @@ namespace Libplanet.Net
 
         private void BroadcastMessage(Address? except, Message message)
         {
-            _transport.BroadcastMessage(except, message);
+            Transport.BroadcastMessage(except, message);
         }
 
         private System.Collections.Async.IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
@@ -1013,7 +1013,7 @@ namespace Libplanet.Net
                 {
                     try
                     {
-                        Message reply = await _transport.SendMessageWithReplyAsync(
+                        Message reply = await Transport.SendMessageWithReplyAsync(
                             peer,
                             new Ping(),
                             dialTimeout,
@@ -1202,7 +1202,7 @@ namespace Libplanet.Net
                     Message reply;
                     try
                     {
-                        reply = await _transport.SendMessageWithReplyAsync(
+                        reply = await Transport.SendMessageWithReplyAsync(
                             peer,
                             request,
                             timeout: RecentStateRecvTimeout,
@@ -1424,7 +1424,7 @@ namespace Libplanet.Net
                             Identity = ping.Identity,
                         };
 
-                        _transport.ReplyMessage(pong);
+                        Transport.ReplyMessage(pong);
                         break;
                     }
 
@@ -1448,7 +1448,7 @@ namespace Libplanet.Net
                         {
                             Identity = getBlockHashes.Identity,
                         };
-                        _transport.ReplyMessage(reply);
+                        Transport.ReplyMessage(reply);
                         break;
                     }
 
@@ -1923,7 +1923,7 @@ namespace Libplanet.Net
                 {
                     Identity = getTxs.Identity,
                 };
-                _transport.ReplyMessage(response);
+                Transport.ReplyMessage(response);
             }
         }
 
@@ -2008,7 +2008,7 @@ namespace Libplanet.Net
                         i,
                         total
                     );
-                    _transport.ReplyMessage(response);
+                    Transport.ReplyMessage(response);
                     blocks.Clear();
                 }
 
@@ -2027,7 +2027,7 @@ namespace Libplanet.Net
                     total,
                     identityHex
                 );
-                _transport.ReplyMessage(response);
+                Transport.ReplyMessage(response);
             }
 
             _logger.Debug("Blocks were transferred to {Identity}.", identityHex);
@@ -2160,7 +2160,7 @@ namespace Libplanet.Net
                 Identity = getRecentStates.Identity,
             };
 
-            _transport.ReplyMessage(reply);
+            Transport.ReplyMessage(reply);
         }
 
         /// <summary>
