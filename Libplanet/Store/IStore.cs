@@ -171,6 +171,15 @@ namespace Libplanet.Store
         long? GetBlockIndex(HashDigest<SHA256> blockHash);
 
         /// <summary>
+        /// Gets the corresponding stored <see cref="BlockDigest"/> to the given
+        /// <paramref name="blockHash"/>.
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to find.</param>
+        /// <returns>A found <see cref="BlockDigest"/>, or <c>null</c> if no block having such
+        /// <paramref name="blockHash"/> is stored.</returns>
+        BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
+
+        /// <summary>
         /// Puts the given <paramref name="block"/> in to the store.
         /// If the same block already exists in the store it does nothing.
         /// </summary>

@@ -21,6 +21,10 @@ To be released.
 
  -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
     [[#707]]
+ -  Added `BlockDigest` class.  [[#785]]
+ -  Added `BlockHeader` class.  [[#785]]
+ -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
+ -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
 
 ### Behavioral changes
 
@@ -31,6 +35,7 @@ To be released.
 ### Bug fixes
 
 [#707]: https://github.com/planetarium/libplanet/pull/707
+[#785]: https://github.com/planetarium/libplanet/pull/785
 
 
 Version 0.8.0

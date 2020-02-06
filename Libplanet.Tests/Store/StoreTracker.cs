@@ -110,6 +110,12 @@ namespace Libplanet.Tests.Store
             return _store.GetBlockIndex(blockHash);
         }
 
+        public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        {
+            Log(nameof(GetBlockDigest), blockHash);
+            return _store.GetBlockDigest(blockHash);
+        }
+
         public IImmutableDictionary<string, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
         {
             Log(nameof(GetBlockStates), blockHash);
