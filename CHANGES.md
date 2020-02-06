@@ -23,7 +23,11 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug where `Swarm<T>` broadcast a message to its source peer when
+    guaranteeing minimum peers to broadcast.  [[#788]]
+
 [#785]: https://github.com/planetarium/libplanet/pull/785
+[#788]: https://github.com/planetarium/libplanet/pull/788
 
 
 Version 0.8.0
