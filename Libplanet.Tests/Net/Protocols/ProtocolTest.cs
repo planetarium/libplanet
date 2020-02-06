@@ -442,6 +442,37 @@ namespace Libplanet.Tests.Net.Protocols
             }
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotBroadcastToSourcePeer()
+        {
+            TestTransport transportA = CreateTestTransport(new PrivateKey());
+            TestTransport transportB = CreateTestTransport(new PrivateKey());
+            TestTransport transportC = CreateTestTransport(new PrivateKey());
+
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
+
+            try
+            {
+                await transportA.AddPeersAsync(new[] { transportB.AsPeer }, null);
+                await transportB.AddPeersAsync(new[] { transportC.AsPeer }, null);
+
+                transportA.BroadcastTestMessage(null, "foo");
+                await transportC.WaitForTestMessageWithData("foo");
+                await Task.Delay(100);
+
+                Assert.True(transportC.ReceivedTestMessageOfData("foo"));
+                Assert.False(transportA.ReceivedTestMessageOfData("foo"));
+            }
+            finally
+            {
+                await transportA.StopAsync(TimeSpan.Zero);
+                await transportB.StopAsync(TimeSpan.Zero);
+                await transportC.StopAsync(TimeSpan.Zero);
+            }
+        }
+
         private TestTransport CreateTestTransport(
             PrivateKey privateKey = null,
             bool blockBroadcast = false,
