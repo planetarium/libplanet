@@ -286,6 +286,36 @@ namespace Libplanet.Tests.Net
             Assert.Subset(peers.ToHashSet(), sourcePeers);
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task CompleteWithWrongBlockFetcher()
+        {
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>(),
+                demand = TestUtils.MineNext(genesis),
+                wrong = TestUtils.MineNext(genesis);
+            _logger.Debug("Genesis: #{Index} {Hash}", genesis.Index, genesis.Hash);
+            _logger.Debug("Demand:  #{Index} {Hash}", demand.Index, demand.Hash);
+            _logger.Debug("Wrong:   #{Index} {Hash}", wrong.Index, wrong.Hash);
+            var bc = new BlockCompletion<char, DumbAction>(
+                ((IEquatable<HashDigest<SHA256>>)genesis.Hash).Equals,
+                5
+            );
+            bc.Demand(demand.Hash);
+
+            long counter = 0;
+            BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
+                (peer, blockHashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                {
+                    // Provides a wrong block (i.e., not corresponding to the demand) at first call,
+                    // and then provide a proper block later calls.
+                    await yield.ReturnAsync(Interlocked.Read(ref counter) < 1 ? wrong : demand);
+                    Interlocked.Increment(ref counter);
+                });
+
+            Tuple<Block<DumbAction>, char>[] result =
+                await bc.Complete(new[] { 'A' }, wrongBlockFetcher).ToArrayAsync();
+            Assert.Equal(new[] { Tuple.Create(demand, 'A') }, result);
+        }
+
         private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
             where T : IAction, new()
         {

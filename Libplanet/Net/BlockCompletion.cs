@@ -163,6 +163,15 @@ namespace Libplanet.Net
             return false;
         }
 
+        /// <summary>
+        /// Downloads blocks from <paramref name="peers"/> in parallel,
+        /// using the given <paramref name="blockFetcher"/> function.
+        /// </summary>
+        /// <param name="peers">A list of peers to download blocks.</param>
+        /// <param name="blockFetcher">A function to take demands and a peer, and then
+        /// download corresponding blocks.</param>
+        /// <returns>An async enumerable that yields pairs of a fetched block and its source
+        /// peer.  It terminates when all demands are satisfied.</returns>
         public System.Collections.Async.IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher
@@ -205,10 +214,13 @@ namespace Libplanet.Net
                                                 block.Hash,
                                                 peer
                                             );
-                                            await yield.ReturnAsync(
-                                                new Tuple<Block<TAction>, TPeer>(block, peer)
-                                            );
-                                            Satisfy(block);
+                                            if (Satisfy(block))
+                                            {
+                                                await yield.ReturnAsync(
+                                                    new Tuple<Block<TAction>, TPeer>(block, peer)
+                                                );
+                                            }
+
                                             demands.Remove(block.Hash);
                                         },
                                         yield.CancellationToken
