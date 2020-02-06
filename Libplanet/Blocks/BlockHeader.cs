@@ -29,7 +29,7 @@ namespace Libplanet.Blocks
         /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance.
         /// </summary>
-        /// <param name="index">The height of the block to create.  Goes to the <see cref="Index"/>.
+        /// <param name="index">The height of the block.  Goes to the <see cref="Index"/>.
         /// </param>
         /// <param name="timestamp">The time this block is created.
         /// Goes to the <see cref="Timestamp"/>.</param>
