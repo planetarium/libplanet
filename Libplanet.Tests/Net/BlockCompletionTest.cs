@@ -52,7 +52,7 @@ namespace Libplanet.Tests.Net
             Task[] spawns = Enumerable.Range(0, tasks).Select(i =>
             {
                 int sleep = random.Next(5, 50);
-                return pool.SpawnAsync(async peerId =>
+                return pool.SpawnAsync(async (peerId, cancellationToken) =>
                 {
                     try
                     {

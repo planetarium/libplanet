@@ -192,9 +192,9 @@ namespace Libplanet.Net
                         IList<HashDigest<SHA256>> hashDigests =
                             hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
                         await pool.SpawnAsync(
-                            async (peer) =>
+                            async (peer, ct) =>
                             {
-                                yield.CancellationToken.ThrowIfCancellationRequested();
+                                ct.ThrowIfCancellationRequested();
                                 var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
                                 try
                                 {
@@ -223,16 +223,27 @@ namespace Libplanet.Net
 
                                             demands.Remove(block.Hash);
                                         },
-                                        yield.CancellationToken
+                                        ct
                                     );
                                 }
                                 finally
                                 {
-                                    _logger.Verbose(
-                                        "Enqueue unsatisfied demands again: {UnsatisfiedDemands}.",
-                                        demands
-                                    );
-                                    Demand(demands, retry: true);
+                                    if (demands.Any())
+                                    {
+                                        _logger.Verbose(
+                                            "Fetched blocks from {Peer}, but there are still " +
+                                            "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
+                                            "enqueue them again: {UnsatisfiedDemands}.",
+                                            peer,
+                                            demands.Count,
+                                            demands
+                                        );
+                                        Demand(demands, retry: true);
+                                    }
+                                    else
+                                    {
+                                        _logger.Verbose("Fetched blocks from {Peer}.", peer);
+                                    }
                                 }
                             },
                             cancellationToken: yield.CancellationToken
@@ -283,7 +294,7 @@ namespace Libplanet.Net
             }
 
             public async Task SpawnAsync(
-                Func<TPeer, Task> action,
+                Func<TPeer, CancellationToken, Task> action,
                 CancellationToken cancellationToken = default
             )
             {
@@ -309,7 +320,7 @@ namespace Libplanet.Net
                         cancellationToken.ThrowIfCancellationRequested();
                         try
                         {
-                            await action(peer);
+                            await action(peer, cancellationToken);
                         }
                         finally
                         {

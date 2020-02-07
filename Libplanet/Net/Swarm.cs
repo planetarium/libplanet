@@ -549,14 +549,14 @@ namespace Libplanet.Net
                             // TODO: catch exceptions
                             return new AsyncEnumerable<Block<T>>(async yield =>
                             {
-                                cancellationToken.ThrowIfCancellationRequested();
+                                yield.CancellationToken.ThrowIfCancellationRequested();
                                 await GetBlocksAsync(peer, hashes).ForEachAsync(
                                     async block =>
                                     {
-                                        cancellationToken.ThrowIfCancellationRequested();
+                                        yield.CancellationToken.ThrowIfCancellationRequested();
                                         await yield.ReturnAsync(block);
                                     },
-                                    cancellationToken: cancellationToken
+                                    cancellationToken: yield.CancellationToken
                                 );
                             });
                         }
