@@ -44,9 +44,12 @@ To be released.
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
  -  Added `ByteArrayExtensions` class.  [[#803]]
+ -  Added `IStore.PruneBlockStates<T>(Guid, Block<T>)` method.  [[#790]]
 
 ### Behavioral changes
 
+ -  `Swarm<T>.PreloadAsync()` became to prune states until its parameter
+    `thickness` if any trusted peers were given.  [[#790]]
  -  `BlockChain.MineBlock()` method became to ignore transactions having
     lower nonce than the expected nonce in the chain.  [[#791]]
  -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
@@ -73,6 +76,7 @@ To be released.
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
 [#789]: https://github.com/planetarium/libplanet/pull/789
+[#790]: https://github.com/planetarium/libplanet/pull/790
 [#791]: https://github.com/planetarium/libplanet/pull/791
 [#798]: https://github.com/planetarium/libplanet/pull/798
 [#802]: https://github.com/planetarium/libplanet/pull/802
