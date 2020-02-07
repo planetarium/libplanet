@@ -1776,7 +1776,10 @@ namespace Libplanet.Net
                 // FIXME: Should exclude peers of source of the transaction ids.
                 BroadcastTxs(null, txs);
 
-                _demandTxIds.Clear();
+                foreach (var kv in demandTxIds)
+                {
+                    _demandTxIds.TryRemove(kv.Key, out BoundPeer value);
+                }
             }
         }
     }
