@@ -467,6 +467,42 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
+        public override BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        {
+            if (_blockCache.TryGetValue(blockHash, out BlockDigest cachedDigest))
+            {
+                return cachedDigest;
+            }
+
+            UPath path = BlockPath(blockHash);
+            if (!_blocks.FileExists(path))
+            {
+                return null;
+            }
+
+            BlockDigest blockDigest;
+            try
+            {
+                IValue value = new Codec().Decode(_blocks.ReadAllBytes(path));
+                if (!(value is Bencodex.Types.Dictionary dict))
+                {
+                    throw new DecodingException(
+                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                        $"{value.GetType()}");
+                }
+
+                blockDigest = new BlockDigest(dict);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+
+            _blockCache.AddOrUpdate(blockHash, blockDigest);
+            return blockDigest;
+        }
+
+        /// <inheritdoc/>
         public override void PutBlock<T>(Block<T> block)
         {
             if (_blockCache.ContainsKey(block.Hash))
@@ -828,41 +864,6 @@ namespace Libplanet.Store
 
         internal static string FormatChainId(Guid chainId) =>
             ByteUtil.Hex(chainId.ToByteArray());
-
-        internal override BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
-        {
-            if (_blockCache.TryGetValue(blockHash, out BlockDigest cahcedDigest))
-            {
-                return cahcedDigest;
-            }
-
-            UPath path = BlockPath(blockHash);
-            if (!_blocks.FileExists(path))
-            {
-                return null;
-            }
-
-            BlockDigest blockDigest;
-            try
-            {
-                IValue value = new Codec().Decode(_blocks.ReadAllBytes(path));
-                if (!(value is Bencodex.Types.Dictionary dict))
-                {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
-                }
-
-                blockDigest = new BlockDigest(dict);
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
-
-            _blockCache.AddOrUpdate(blockHash, blockDigest);
-            return blockDigest;
-        }
 
         private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
         {

@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Tx;
 
 namespace Libplanet.Blocks
 {
@@ -9,18 +10,32 @@ namespace Libplanet.Blocks
     /// Class that store uses to save blocks. This contains:
     /// <see cref="BlockHeader"/>, and list of <see cref="Libplanet.Tx.TxId"/>s.
     /// </summary>
-    internal readonly struct BlockDigest
+    public readonly struct BlockDigest
     {
-        public static readonly byte[] HeaderKey = { 0x48 }; // 'H'
+        private static readonly byte[] HeaderKey = { 0x48 }; // 'H'
 
-        public static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
+        private static readonly byte[] TransactionIdsKey = { 0x54 }; // 'T'
 
+        /// <summary>
+        /// Creates <see cref="BlockDigest"/> instance from <see cref="BlockHeader"/> and
+        /// <see cref="Transaction{T}"/> ids the <see cref="Block{T}"/> has.
+        /// </summary>
+        /// <param name="header"><see cref="BlockHeader"/> of the <see cref="Block{T}"/>.</param>
+        /// <param name="txIds"><see cref="Transaction{T}"/> ids the <see cref="Block{T}"/> has.
+        /// </param>
         public BlockDigest(BlockHeader header, ImmutableArray<ImmutableArray<byte>> txIds)
         {
             Header = header;
             TxIds = txIds;
         }
 
+        /// <summary>
+        /// Creates <see cref="BlockDigest"/> instance from
+        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block{T}"/>.
+        /// </summary>
+        /// <param name="dict">
+        /// <see cref="Bencodex.Types.Dictionary"/> representation of the <see cref="Block{T}"/>.
+        /// </param>
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
@@ -34,6 +49,13 @@ namespace Libplanet.Blocks
 
         public ImmutableArray<ImmutableArray<byte>> TxIds { get; }
 
+        /// <summary>
+        /// Gets <see cref="BlockDigest"/> instance from serialized <paramref name="bytes"/>.
+        /// </summary>
+        /// <param name="bytes">Serialized <see cref="BlockDigest"/>.</param>
+        /// <returns>Deserialized <see cref="BlockDigest"/>.</returns>
+        /// <exception cref="DecodingException">Thrown when decoded value is not
+        /// <see cref="Bencodex.Types.Dictionary"/> type.</exception>
         public static BlockDigest Deserialize(byte[] bytes)
         {
             IValue value = new Codec().Decode(bytes);
@@ -47,11 +69,21 @@ namespace Libplanet.Blocks
             return new BlockDigest(dict);
         }
 
+        /// <summary>
+        /// Gets serialized byte array of the <see cref="BlockDigest"/>.
+        /// </summary>
+        /// <returns>Serialized byte array of <see cref="BlockDigest"/>.</returns>
         public byte[] Serialize()
         {
             return new Codec().Encode(ToBencodex());
         }
 
+        /// <summary>
+        /// Gets <see cref="Bencodex.Types.Dictionary"/> representation of
+        /// <see cref="BlockDigest"/>.
+        /// </summary>
+        /// <returns><see cref="Bencodex.Types.Dictionary"/> representation of
+        /// <see cref="BlockDigest"/>.</returns>
         public Bencodex.Types.Dictionary ToBencodex()
         {
             var dict = Bencodex.Types.Dictionary.Empty

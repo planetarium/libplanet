@@ -108,6 +108,9 @@ namespace Libplanet.Store
             return GetBlockDigest(blockHash)?.Header.Index;
         }
 
+        /// <inheritdoc/>
+        public abstract BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
+
         /// <inheritdoc />
         public abstract void PutBlock<T>(Block<T> block)
             where T : IAction, new();
@@ -180,7 +183,5 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void DeleteChainId(Guid chainId);
-
-        internal abstract BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash);
     }
 }

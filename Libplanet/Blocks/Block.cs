@@ -401,6 +401,20 @@ namespace Libplanet.Blocks
             return txEvaluations.Select(te => te.Item2);
         }
 
+        /// <summary>
+        /// Gets <see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// </summary>
+        /// <returns><see cref="BlockDigest"/> representation of the <see cref="Block{T}"/>.
+        /// </returns>
+        public BlockDigest ToBlockDigest()
+        {
+            return new BlockDigest(
+                header: GetBlockHeader(),
+                txIds: Transactions
+                    .Select(tx => tx.Id.ToByteArray().ToImmutableArray())
+                    .ToImmutableArray());
+        }
+
         public override string ToString()
         {
             return Hash.ToString();
@@ -490,15 +504,6 @@ namespace Libplanet.Blocks
             {
                 tx.Validate();
             }
-        }
-
-        internal BlockDigest ToBlockDigest()
-        {
-            return new BlockDigest(
-                header: GetBlockHeader(),
-                txIds: Transactions
-                    .Select(tx => tx.Id.ToByteArray().ToImmutableArray())
-                    .ToImmutableArray());
         }
 
         internal RawBlock ToRawBlock()
