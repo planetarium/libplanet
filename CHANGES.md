@@ -21,8 +21,8 @@ To be released.
 
  -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
     [[#707]]
- -  Added `BlockDigest` class.  [[#785]]
- -  Added `BlockHeader` class.  [[#785]]
+ -  Added `BlockDigest` struct.  [[#785]]
+ -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
 
