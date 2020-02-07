@@ -239,7 +239,7 @@ namespace Libplanet.RocksDBStore
             LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
             LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
-            var genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
+            HashDigest<SHA256> genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
             destColl.InsertBulk(srcColl.FindAll()
                 .TakeWhile(i => !i.Hash.Equals(branchPoint)).Skip(1));
             if (!branchPoint.Equals(genesisHash))
@@ -307,12 +307,12 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            var it = _rocksDb.NewIterator();
+            Iterator it = _rocksDb.NewIterator();
 
             for (it.Seek(TxKeyPrefix); it.Valid(); it.Next())
             {
-                var key = it.Key();
-                var txIdBytes = key.Skip(TxKeyPrefix.Length).ToArray();
+                byte[] key = it.Key();
+                byte[] txIdBytes = key.Skip(TxKeyPrefix.Length).ToArray();
 
                 var txId = new TxId(txIdBytes);
                 yield return txId;
@@ -327,8 +327,8 @@ namespace Libplanet.RocksDBStore
                 return (Transaction<T>)cachedTx;
             }
 
-            var key = TxKey(txid);
-            var bytes = _rocksDb.Get(key);
+            byte[] key = TxKey(txid);
+            byte[] bytes = _rocksDb.Get(key);
 
             if (bytes is null)
             {
@@ -348,7 +348,7 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            var key = TxKey(tx.Id);
+            byte[] key = TxKey(tx.Id);
 
             if (!(_rocksDb.Get(key) is null))
             {
@@ -362,7 +362,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            var key = TxKey(txid);
+            byte[] key = TxKey(txid);
 
             if (_rocksDb.Get(key) is null)
             {
@@ -383,7 +383,7 @@ namespace Libplanet.RocksDBStore
                 return true;
             }
 
-            var key = TxKey(txId);
+            byte[] key = TxKey(txId);
 
             return !(_rocksDb.Get(key) is null);
         }
@@ -391,12 +391,12 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            var it = _rocksDb.NewIterator();
+            Iterator it = _rocksDb.NewIterator();
 
             for (it.Seek(BlockKeyPrefix); it.Valid(); it.Next())
             {
-                var key = it.Key();
-                var hashBytes = key.Skip(BlockKeyPrefix.Length).ToArray();
+                byte[] key = it.Key();
+                byte[] hashBytes = key.Skip(BlockKeyPrefix.Length).ToArray();
 
                 var blockHash = new HashDigest<SHA256>(hashBytes);
                 yield return blockHash;
@@ -411,15 +411,15 @@ namespace Libplanet.RocksDBStore
                 return cachedDigest;
             }
 
-            var key = BlockKey(blockHash);
-            var bytes = _rocksDb.Get(key);
+            byte[] key = BlockKey(blockHash);
+            byte[] bytes = _rocksDb.Get(key);
 
             if (bytes is null)
             {
                 return null;
             }
 
-            var blockDigest = BlockDigest.Deserialize(bytes);
+            BlockDigest blockDigest = BlockDigest.Deserialize(bytes);
 
             _blockCache.AddOrUpdate(blockHash, blockDigest);
             return blockDigest;
@@ -433,7 +433,7 @@ namespace Libplanet.RocksDBStore
                 return;
             }
 
-            var key = BlockKey(block.Hash);
+            byte[] key = BlockKey(block.Hash);
 
             if (!(_rocksDb.Get(key) is null))
             {
@@ -445,7 +445,7 @@ namespace Libplanet.RocksDBStore
                 PutTransaction(tx);
             }
 
-            var value = block.ToBlockDigest().Serialize();
+            byte[] value = block.ToBlockDigest().Serialize();
             _rocksDb.Put(key, value);
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
@@ -453,7 +453,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            var key = BlockKey(blockHash);
+            byte[] key = BlockKey(blockHash);
 
             if (_rocksDb.Get(key) is null)
             {
@@ -474,7 +474,7 @@ namespace Libplanet.RocksDBStore
                 return true;
             }
 
-            var key = BlockKey(blockHash);
+            byte[] key = BlockKey(blockHash);
 
             return !(_rocksDb.Get(key) is null);
         }
@@ -491,9 +491,9 @@ namespace Libplanet.RocksDBStore
                 return cached;
             }
 
-            var key = BlockStateKey(blockHash);
+            byte[] key = BlockStateKey(blockHash);
 
-            var bytes = _rocksDb.Get(key);
+            byte[] bytes = _rocksDb.Get(key);
 
             if (bytes is null)
             {
@@ -528,10 +528,10 @@ namespace Libplanet.RocksDBStore
                 )
             );
 
-            var key = BlockStateKey(blockHash);
+            byte[] key = BlockStateKey(blockHash);
 
             var codec = new Codec();
-            var value = codec.Encode(serialized);
+            byte[] value = codec.Encode(serialized);
 
             _rocksDb.Put(key, value);
             _statesCache.AddOrUpdate(blockHash, states);
@@ -695,7 +695,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            var collId = TxNonceId(chainId);
+            string collId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             foreach (BsonDocument doc in collection.FindAll())
             {
@@ -713,7 +713,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            var collId = TxNonceId(chainId);
+            string collId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
@@ -724,7 +724,7 @@ namespace Libplanet.RocksDBStore
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
             long nextNonce = GetTxNonce(chainId, signer) + delta;
-            var collId = TxNonceId(chainId);
+            string collId = TxNonceId(chainId);
             LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             var docId = new BsonValue(signer.ToByteArray());
             collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
