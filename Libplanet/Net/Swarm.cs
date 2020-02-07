@@ -1154,7 +1154,7 @@ namespace Libplanet.Net
 
                 case BlockHashes blockHashes:
                     {
-                        _logger.Error("BlockHashes message is no more processed!");
+                        _logger.Error("BlockHashes message is only for IBD.");
                         break;
                     }
 
@@ -1179,7 +1179,8 @@ namespace Libplanet.Net
             {
                 _logger.Information(
                     "BlockHeaderMessage was sent from invalid peer " +
-                    $"[{message.Remote.Address.ToHex()}]. ignored.");
+                    "{PeerAddress}; ignored.",
+                    message.Remote.Address);
                 return;
             }
 
@@ -1475,7 +1476,7 @@ namespace Libplanet.Net
                 return;
             }
 
-            _logger.Debug("Txs to require: [{txIds}]", string.Join(", ", newTxIds));
+            _logger.Debug("Txs to require: {@txIds}", newTxIds.Select(txid => txid.ToString()));
             foreach (var txid in newTxIds)
             {
                 _demandTxIds.TryAdd(txid, peer);
@@ -1679,40 +1680,38 @@ namespace Libplanet.Net
                     _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
                 {
                     await Task.Delay(100, cancellationToken);
+                    continue;
                 }
-                else
+
+                (long index, BoundPeer peer, HashDigest<SHA256> blockHash) =
+                    _demandBlockHash.Value;
+                try
                 {
-                    (long index, BoundPeer peer, HashDigest<SHA256> blockHash) =
-                        _demandBlockHash.Value;
-                    if (index > BlockChain.Tip.Index)
-                    {
-                        try
-                        {
-                            await SyncPreviousBlocksAsync(
-                                BlockChain,
-                                peer,
-                                blockHash,
-                                null,
-                                0,
-                                true,
-                                cancellationToken);
-                            BlockReceived.Set();
-                            BlockAppended.Set();
-                            BroadcastBlock(peer.Address, BlockChain.Tip);
-                        }
-                        catch (TimeoutException)
-                        {
-                            _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
-                            await Task.Delay(100);
-                        }
-                        catch (Exception e)
-                        {
-                            var msg =
-                                $"Unexpected exception occurred during" +
-                                $" {nameof(ProcessFillblock)}: {{e}}";
-                            _logger.Error(e, msg, e);
-                        }
-                    }
+                    await SyncPreviousBlocksAsync(
+                        BlockChain,
+                        peer,
+                        blockHash,
+                        null,
+                        0,
+                        true,
+                        cancellationToken);
+
+                    // FIXME: Clean up events
+                    BlockReceived.Set();
+                    BlockAppended.Set();
+                    BroadcastBlock(peer.Address, BlockChain.Tip);
+                }
+                catch (TimeoutException)
+                {
+                    _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
+                    await Task.Delay(100, cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    var msg =
+                        $"Unexpected exception occurred during" +
+                        $" {nameof(ProcessFillblock)}: {{e}}";
+                    _logger.Error(e, msg, e);
                 }
             }
         }
@@ -1724,60 +1723,60 @@ namespace Libplanet.Net
                 if (_demandTxIds.IsEmpty)
                 {
                     await Task.Delay(100, cancellationToken);
+                    continue;
                 }
-                else
+
+                _logger.Debug(
+                    "Processing txids: {@txIds}",
+                    _demandTxIds.Keys.Select(txid => txid.ToString()));
+                var demandTxIds = _demandTxIds.ToArray();
+                var demands = new Dictionary<BoundPeer, List<TxId>>();
+
+                foreach (var kv in demandTxIds)
                 {
-                    _logger.Debug(
-                        "Processing txids: [{txIds}]",
-                        string.Join(", ", _demandTxIds.Keys));
-                    var demandTxIds = _demandTxIds.ToArray();
-                    var demands = new Dictionary<BoundPeer, List<TxId>>();
-
-                    foreach (var kv in _demandTxIds)
+                    if (!demands.ContainsKey(kv.Value))
                     {
-                        if (!demands.ContainsKey(kv.Value))
-                        {
-                            demands[kv.Value] = new List<TxId>();
-                        }
-
-                        demands[kv.Value].Add(kv.Key);
+                        demands[kv.Value] = new List<TxId>();
                     }
 
-                    var tasks = new List<Task<List<Transaction<T>>>>();
-                    foreach (var kv in demands)
-                    {
-                        System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched =
-                            GetTxsAsync(
-                                kv.Key, kv.Value, cancellationToken);
-                        tasks.Add(fetched.ToListAsync(cancellationToken));
-                    }
-
-                    var txs = new List<Transaction<T>>();
-                    try
-                    {
-                        await tasks.WhenAll();
-                    }
-                    catch (Exception)
-                    {
-                        _logger.Information("Some tasks faulted during GetTxsAsync().");
-                    }
-
-                    foreach (var task in tasks.Where(task => !task.IsFaulted))
-                    {
-                        txs.AddRange(task.Result);
-                    }
-
-                    BlockChain.StageTransactions(txs.ToImmutableHashSet());
-                    TxReceived.Set();
-                    _logger.Debug(
-                        "Txs staged successfully: [{txIds}]",
-                        string.Join(", ", txs.Select(tx => tx.Id)));
-
-                    // FIXME: Should exclude peers of source of the transaction ids.
-                    BroadcastTxs(null, txs);
-
-                    _demandTxIds.Clear();
+                    demands[kv.Value].Add(kv.Key);
                 }
+
+                var tasks = new List<Task<List<Transaction<T>>>>();
+                foreach (var kv in demands)
+                {
+                    System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched =
+                        GetTxsAsync(
+                            kv.Key, kv.Value, cancellationToken);
+                    tasks.Add(fetched.ToListAsync(cancellationToken));
+                }
+
+                var txs = new List<Transaction<T>>();
+                try
+                {
+                    await tasks.WhenAll();
+                }
+                catch (Exception)
+                {
+                    _logger.Information(
+                        $"Some tasks faulted during {nameof(GetTxsAsync)}().");
+                }
+
+                foreach (var task in tasks.Where(task => !task.IsFaulted))
+                {
+                    txs.AddRange(task.Result);
+                }
+
+                BlockChain.StageTransactions(txs.ToImmutableHashSet());
+                TxReceived.Set();
+                _logger.Debug(
+                    "Txs staged successfully: {@txIds}",
+                    txs.Select(tx => tx.Id.ToString()));
+
+                // FIXME: Should exclude peers of source of the transaction ids.
+                BroadcastTxs(null, txs);
+
+                _demandTxIds.Clear();
             }
         }
     }

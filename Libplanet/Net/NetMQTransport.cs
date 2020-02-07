@@ -487,7 +487,8 @@ namespace Libplanet.Net
                         tcs)
                 );
                 _logger.Verbose(
-                    "Enqueued a request {RequestId} to {PeerAddress}: {Message}. (left: {Count})",
+                    "Enqueued a request {RequestId} to {PeerAddress}: {Message}; " +
+                    "{LeftRequests} left.",
                     reqId,
                     peer.Address,
                     message,
@@ -767,10 +768,10 @@ namespace Libplanet.Net
         private async Task ProcessRequest(MessageRequest req, CancellationToken cancellationToken)
         {
             _logger.Verbose(
-                "Request {Message}({RequestId}) is ready to be processed in {TimeSpan}ms.",
+                "Request {Message}({RequestId}) is ready to be processed in {TimeSpan}.",
                 req.Message,
                 req.Id,
-                (DateTimeOffset.UtcNow - req.RequestedTime).TotalMilliseconds);
+                DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
             using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
@@ -839,10 +840,10 @@ namespace Libplanet.Net
             }
 
             _logger.Verbose(
-                "Request {Message}({RequestId}) processed in {TimeSpan}ms.",
+                "Request {Message}({RequestId}) processed in {TimeSpan}.",
                 req.Message,
                 req.Id,
-                (DateTimeOffset.UtcNow - startedTime).TotalMilliseconds);
+                DateTimeOffset.UtcNow - startedTime);
         }
 
         // FIXME: Separate turn related features outside of Transport if possible.
