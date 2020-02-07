@@ -41,7 +41,6 @@ Sdk="Microsoft.NET.Sdk">
     </IncludeAssets>
   </PackageReference>
   <PackageReference Include="Serilog" Version="2.8.0" />
-  <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
   <PackageReference Include="RocksDbSharp" Version="6.2.2" />
 </ItemGroup>
 
