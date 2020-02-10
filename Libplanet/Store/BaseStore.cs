@@ -131,12 +131,6 @@ namespace Libplanet.Store
         );
 
         /// <inheritdoc />
-        public abstract void DeleteBlockStates(
-            HashDigest<SHA256> blockHash,
-            IEnumerable<string> stateKeys
-        );
-
-        /// <inheritdoc />
         public abstract void PruneBlockStates<T>(
             Guid chainId,
             Block<T> until)

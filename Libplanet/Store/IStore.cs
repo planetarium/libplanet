@@ -242,21 +242,6 @@ namespace Libplanet.Store
         );
 
         /// <summary>
-        /// Deletes the states with specified keys (i.e., <paramref name="stateKeys"/>)
-        /// updated by actions in the specified block (i.e., <paramref name="blockHash"/>).
-        /// </summary>
-        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to delete states.
-        /// </param>
-        /// <param name="stateKeys">The state keys to delete which were updated by actions
-        /// in the specified block (i.e., <paramref name="blockHash"/>).
-        /// </param>
-        /// <seealso cref="GetBlockStates"/>
-        void DeleteBlockStates(
-            HashDigest<SHA256> blockHash,
-            IEnumerable<string> stateKeys
-        );
-
-        /// <summary>
         /// Prunes states in blockchain <paramref name="chainId"/> with until specified block
         /// <paramref name="until"/>.
         /// </summary>

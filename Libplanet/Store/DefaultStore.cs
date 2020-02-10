@@ -623,33 +623,6 @@ namespace Libplanet.Store
         }
 
         /// <inheritdoc/>
-        public override void DeleteBlockStates(
-            HashDigest<SHA256> blockHash,
-            IEnumerable<string> stateKeys)
-        {
-            IImmutableDictionary<string, IValue> dict = GetBlockStates(blockHash);
-            _logger.Debug("Trying to delete block states at {Hash}. {@Keys}", blockHash, stateKeys);
-            if (dict is null)
-            {
-                return;
-            }
-
-            _logger.Debug("Previous dict: {@Dict}", dict);
-            dict = dict.RemoveRange(stateKeys);
-            _logger.Debug("After dict: {@Dict}", dict);
-            if (dict.Any())
-            {
-                SetBlockStates(blockHash, dict);
-            }
-            else
-            {
-                UPath path = StatePath(blockHash);
-                _states.DeleteFile(path);
-                _statesCache.Remove(blockHash);
-            }
-        }
-
-        /// <inheritdoc/>
         public override void PruneBlockStates<T>(
             Guid chainId,
             Block<T> until)
@@ -914,6 +887,39 @@ namespace Libplanet.Store
             {
                 CreateDirectoryRecursively(fs, path.GetDirectory());
                 fs.CreateDirectory(path);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the states with specified keys (i.e., <paramref name="stateKeys"/>)
+        /// updated by actions in the specified block (i.e., <paramref name="blockHash"/>).
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to delete states.
+        /// </param>
+        /// <param name="stateKeys">The state keys to delete which were updated by actions
+        /// in the specified block (i.e., <paramref name="blockHash"/>).
+        /// </param>
+        /// <seealso cref="GetBlockStates"/>
+        private void DeleteBlockStates(
+            HashDigest<SHA256> blockHash,
+            IEnumerable<string> stateKeys)
+        {
+            IImmutableDictionary<string, IValue> dict = GetBlockStates(blockHash);
+            if (dict is null)
+            {
+                return;
+            }
+
+            dict = dict.RemoveRange(stateKeys);
+            if (dict.Any())
+            {
+                SetBlockStates(blockHash, dict);
+            }
+            else
+            {
+                UPath path = StatePath(blockHash);
+                _states.DeleteFile(path);
+                _statesCache.Remove(blockHash);
             }
         }
 
