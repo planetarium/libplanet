@@ -24,7 +24,7 @@ namespace Libplanet.RocksDBStore
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class RocksDBStore : BaseStore, IDisposable
+    public class RocksDBStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -742,7 +742,7 @@ namespace Libplanet.RocksDBStore
             return IterateBlockHashes().LongCount();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _liteDb?.Dispose();
             _rocksDb?.Dispose();

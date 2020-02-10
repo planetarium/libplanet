@@ -11,7 +11,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public abstract class BaseStore : IStore
+    public abstract class BaseStore : IStore, IDisposable
     {
         /// <inheritdoc />
         public abstract IEnumerable<Guid> ListChainIds();
@@ -183,5 +183,8 @@ namespace Libplanet.Store
 
         /// <inheritdoc/>
         public abstract void DeleteChainId(Guid chainId);
+
+        /// <inheritdoc/>
+        public abstract void Dispose();
     }
 }

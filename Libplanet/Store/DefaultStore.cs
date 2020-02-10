@@ -25,7 +25,7 @@ namespace Libplanet.Store
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore, IDisposable
+    public class DefaultStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -852,7 +852,7 @@ namespace Libplanet.Store
             return IterateBlockHashes().LongCount();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             _db?.Dispose();
             _memoryStream?.Dispose();

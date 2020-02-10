@@ -10,6 +10,8 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  `BaseStore` class became to implement `IDisposable`.  [[#785]]
+
 ### Backward-incompatible storage format changes
 
 ### Added APIs
