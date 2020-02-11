@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -252,11 +251,9 @@ namespace Libplanet.Tests.Net.Protocols
         public void BroadcastMessage(Address? except, Message message)
         {
             var peers = Protocol.PeersToBroadcast(except).ToList();
-            var peersString = peers.Aggregate(
-                new StringBuilder(),
-                (builder, peer) => builder.Append($"{peer.Address.ToHex()}, ")).ToString();
+            var peersString = string.Join(", ", peers.Select(peer => peer.Address));
             _logger.Debug(
-                "Broadcasting test message {Data} to {Count} peers which are: {Peers}.",
+                "Broadcasting test message {Data} to {Count} peers which are: {Peers}",
                 ((TestMessage)message).Data,
                 peers.Count,
                 peersString);
@@ -419,7 +416,6 @@ namespace Libplanet.Tests.Net.Protocols
                 if (_ignoreTestMessageWithData.Contains(testMessage.Data))
                 {
                     _logger.Debug("Ignore received test message {Data}.", testMessage.Data);
-                    return;
                 }
                 else
                 {

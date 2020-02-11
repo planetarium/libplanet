@@ -91,7 +91,9 @@ namespace Libplanet.Net.Protocols
             if (count < _minPeersToBroadcast)
             {
                 peers.AddRange(Peers
-                    .Where(peer => except is null || !peer.Address.Equals(except.Value))
+                    .Where(peer =>
+                        !peers.Contains(peer) &&
+                        (except is null || !peer.Address.Equals(except.Value)))
                     .Take(_minPeersToBroadcast - count));
             }
 
