@@ -983,7 +983,7 @@ namespace Libplanet.Blockchain
             }
         }
 
-        internal IEnumerable<HashDigest<SHA256>> FindNextHashes(
+        internal Tuple<long?, IReadOnlyList<HashDigest<SHA256>>> FindNextHashes(
             BlockLocator locator,
             HashDigest<SHA256>? stop = null,
             int count = 500)
@@ -995,7 +995,10 @@ namespace Libplanet.Blockchain
                 HashDigest<SHA256>? tip = Store.IndexBlockHash(Id, -1);
                 if (tip is null)
                 {
-                    yield break;
+                    return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
+                        null,
+                        new HashDigest<SHA256>[0]
+                    );
                 }
 
                 HashDigest<SHA256>? branchPoint = FindBranchPoint(locator);
@@ -1016,22 +1019,28 @@ namespace Libplanet.Blockchain
                 IEnumerable<HashDigest<SHA256>> hashes = Store
                     .IterateIndexes(Id, branchPointIndex, count);
 
+                var result = new List<HashDigest<SHA256>>();
                 foreach (HashDigest<SHA256> hash in hashes)
                 {
                     if (count == 0)
                     {
-                        yield break;
+                        break;
                     }
 
-                    yield return hash;
+                    result.Add(hash);
 
                     if (hash.Equals(stop))
                     {
-                        yield break;
+                        break;
                     }
 
                     count--;
                 }
+
+                return new Tuple<long?, IReadOnlyList<HashDigest<SHA256>>>(
+                    branchPointIndex,
+                    result
+                );
             }
             finally
             {
@@ -1133,30 +1142,11 @@ namespace Libplanet.Blockchain
             {
                 _rwlock.EnterReadLock();
 
-                HashDigest<SHA256>? current = Store.IndexBlockHash(Id, -1);
-                long step = 1;
-                var hashes = new List<HashDigest<SHA256>>();
-
-                while (current is HashDigest<SHA256> hash)
-                {
-                    hashes.Add(hash);
-                    Block<T> currentBlock = _blocks[hash];
-
-                    if (currentBlock.Index == 0)
-                    {
-                        break;
-                    }
-
-                    long nextIndex = Math.Max(currentBlock.Index - step, 0);
-                    current = Store.IndexBlockHash(Id, nextIndex);
-
-                    if (hashes.Count > threshold)
-                    {
-                        step *= 2;
-                    }
-                }
-
-                return new BlockLocator(hashes);
+                return new BlockLocator(
+                    indexBlockHash: idx => Store.IndexBlockHash(Id, idx),
+                    indexByBlockHash: hash => _blocks[hash].Index,
+                    sampleAfter: threshold
+                );
             }
             finally
             {

@@ -8,14 +8,21 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
+
 ### Backward-incompatible network protocol changes
 
- -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
+ -  The existing `BlockHashes` message type (with the type number `0x05`) was
+    replaced by a new `BlockHashes` message type (with type number `0x0e`)
+    in order to include an offset block index besides block hashes
+    so that a receiver is able to determine their block indices too.  [[#707]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
+ -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
+    [[#707]]
  -  Added `BlockDigest` struct.  [[#785]]
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
@@ -25,17 +32,23 @@ To be released.
 
  -  `BlockChain.MineBlock()` method became to ignore transactions having
     lower nonce than the expected nonce in the chain.  [[#791]]
+ -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
+    only a list of block hashes first and then download blocks from
+    simultaneously multiple peers.  [[#707]]
 
 ### Bug fixes
 
  -  `Swarm<T>` became not to sync the same `Block<T>`s or `Transaction<T>`s
     multiple times.  [[#784]]
- -  Fixed a `Swarm<T>`'s bug that had broadcasted a message to its source peer when
-    the number of peers is not enough (less than the minimum number).  [[#788]]
+ -  Fixed a `Swarm<T>`'s bug that had broadcasted a message to its source peer
+    when the number of peers is not enough (less than the minimum number).
+    [[#788]]
  -  Fixed a bug where `BlockChain.MineBlock()` had produced an invalid block
-    when there is any staged transaction which has lower nonce than the expected nonce,
-    that means, shares an already taken nonce by the same signer.  [[#791]]
+    when there is any staged transaction which has lower nonce than the expected
+    nonce, that means, shares an already taken nonce by the same signer.
+    [[#791]]
 
+[#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
@@ -133,8 +146,8 @@ Released on February 4, 2020.
  -  Added `BlockChain<T>.Genesis` property.  [[#688]]
  -  Added `BlockChain<T>.MakeGenesisBlock()` static method.  [[#688]]
  -  Added `InvalidGenesisBlockException` class.  [[#688]]
- -  Added `StateDownloadState` class which reports state preloading iteration
-    progress.  [[#703]]
+ -  Added `StateDownloadState` class, a subclass of `PreloadState`,
+    which reports state preloading iteration progress.  [[#703]]
  -  Added `PeerDiscoveryException` class which inherits `SwarmException`
     class.  [[#604], [#726]]
  -  Added `Swarm<T>.Peers` property which returns an enumerable of peers in
