@@ -10,7 +10,7 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  `BaseStore` class became to implement `IDisposable`.  [[#785]]
+ -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
 
 ### Backward-incompatible storage format changes
 
@@ -33,6 +33,7 @@ To be released.
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
+[#789]: https://github.com/planetarium/libplanet/pull/789
 
 
 Version 0.8.0
