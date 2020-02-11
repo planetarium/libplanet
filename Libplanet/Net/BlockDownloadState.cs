@@ -24,7 +24,7 @@ namespace Libplanet.Net
         public HashDigest<SHA256> ReceivedBlockHash { get; internal set; }
 
         /// <inheritdoc />
-        public override int CurrentPhase => 2;
+        public override int CurrentPhase => 1;
 
         /// <summary>
         /// The peer which sent the block.
