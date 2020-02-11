@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Serilog;
@@ -39,7 +39,7 @@ namespace Libplanet.Net
             _demandEnqueued = new SemaphoreSlim(0);
         }
 
-        public delegate System.Collections.Async.IAsyncEnumerable<Block<TAction>> BlockFetcher(
+        public delegate IAsyncEnumerable<Block<TAction>> BlockFetcher(
             TPeer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes
         );
@@ -50,8 +50,7 @@ namespace Libplanet.Net
         public void Demand(IEnumerable<HashDigest<SHA256>> blockHashes) =>
             Demand(blockHashes, retry: false);
 
-        public System.Collections.Async.IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>>
-        EnumerateChunks() =>
+        public IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>> EnumerateChunks() =>
             new AsyncEnumerable<IEnumerable<HashDigest<SHA256>>>(async yield =>
             {
                 var chunk = new List<HashDigest<SHA256>>(capacity: _window);
@@ -172,7 +171,7 @@ namespace Libplanet.Net
         /// download corresponding blocks.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
-        public System.Collections.Async.IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
+        public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher
         )

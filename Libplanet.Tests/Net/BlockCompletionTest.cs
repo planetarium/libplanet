@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Net;
@@ -253,7 +253,7 @@ namespace Libplanet.Tests.Net
                 .ToImmutableArray();
             bc.Demand(initialDemands);
             _logger.Verbose("Initial demands: {0}", initialDemands);
-            System.Collections.Async.IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv =
+            IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv =
                 bc.Complete(
                     new[] { 'A', 'B', 'C', 'D' },
                     (peer, hashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>

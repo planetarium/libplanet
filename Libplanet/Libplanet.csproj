@@ -60,7 +60,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <!-- TODO: We should replace AsyncEnumerator with C# 8.0's async streams -->
-    <PackageReference Include="AsyncEnumerator" Version="2.2.2" />
+    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="Bencodex" Version="0.3.0-dev.1b62adcbf3bf91d1a96787f4447dc6cc518d9734" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
     <PackageReference Include="Equals.Fody" Version="1.9.6" />

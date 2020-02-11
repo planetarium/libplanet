@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Async;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AsyncIO;
 using Bencodex.Types;
+using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
@@ -841,8 +841,7 @@ namespace Libplanet.Net
         }
 
         // FIXME: This would be better if it's merged with GetDemandBlockHashes
-        internal System.Collections.Async.IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>>
-        GetBlockHashes(
+        internal IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> GetBlockHashes(
             BoundPeer peer,
             BlockLocator locator,
             HashDigest<SHA256>? stop,
@@ -890,7 +889,7 @@ namespace Libplanet.Net
                 );
             });
 
-        internal System.Collections.Async.IAsyncEnumerable<Block<T>> GetBlocksAsync(
+        internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
             BoundPeer peer,
             IEnumerable<HashDigest<SHA256>> blockHashes)
         {
@@ -947,7 +946,7 @@ namespace Libplanet.Net
             });
         }
 
-        internal System.Collections.Async.IAsyncEnumerable<Transaction<T>> GetTxsAsync(
+        internal IAsyncEnumerable<Transaction<T>> GetTxsAsync(
             BoundPeer peer,
             IEnumerable<TxId> txIds,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -1010,7 +1009,7 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private System.Collections.Async.IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
+        private IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
             TimeSpan? dialTimeout,
             CancellationToken cancellationToken)
         {
@@ -1052,8 +1051,7 @@ namespace Libplanet.Net
             });
         }
 
-        private System.Collections.Async.IAsyncEnumerable<(long, HashDigest<SHA256>)>
-        GetDemandBlockHashes(
+        private IAsyncEnumerable<(long, HashDigest<SHA256>)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, long?)> peersWithHeight,
             IProgress<PreloadState> progress = null,
@@ -1649,8 +1647,8 @@ namespace Libplanet.Net
                     _logger.Debug("Trying to find branchpoint...");
                     BlockLocator locator = workspace.GetBlockLocator();
                     _logger.Debug("Locator's count: {LocatorCount}", locator.Count());
-                    System.Collections.Async.IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>>
-                        hashesAsync = GetBlockHashes(peer, locator, stop, cancellationToken);
+                    IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> hashesAsync =
+                        GetBlockHashes(peer, locator, stop, cancellationToken);
                     IEnumerable<Tuple<long, HashDigest<SHA256>>> hashes =
                         await hashesAsync.ToArrayAsync();
 
@@ -2089,9 +2087,8 @@ namespace Libplanet.Net
                 var tasks = new List<Task<List<Transaction<T>>>>();
                 foreach (var kv in demands)
                 {
-                    System.Collections.Async.IAsyncEnumerable<Transaction<T>> fetched =
-                        GetTxsAsync(
-                            kv.Key, kv.Value, cancellationToken);
+                    IAsyncEnumerable<Transaction<T>> fetched =
+                        GetTxsAsync(kv.Key, kv.Value, cancellationToken);
                     tasks.Add(fetched.ToListAsync(cancellationToken));
                 }
 
