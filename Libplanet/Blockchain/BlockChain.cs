@@ -625,7 +625,8 @@ namespace Libplanet.Blockchain
             IEnumerable<Transaction<T>> transactions = Store
                 .IterateStagedTransactionIds()
                 .Select(Store.GetTransaction<T>)
-                .Where(tx => tx.Nonce < GetNextTxNonce(tx.Signer));
+                .Where(tx => Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
+                             && tx.Nonce < GetNextTxNonce(tx.Signer));
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =
