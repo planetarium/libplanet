@@ -2063,6 +2063,31 @@ namespace Libplanet.Tests.Blockchain
             });
         }
 
+        [Fact]
+        private async Task IgnoreLowerNonceTxsAndMine()
+        {
+            var privateKey = new PrivateKey();
+            var address = privateKey.PublicKey.ToAddress();
+            var txsA = Enumerable.Range(0, 3)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            _blockChain.StageTransactions(txsA.ToImmutableHashSet());
+            Block<DumbAction> b1 = await _blockChain.MineBlock(address);
+            Assert.Equal(txsA, b1.Transactions);
+
+            var txsB = Enumerable.Range(0, 4)
+                .Select(nonce => _fx.MakeTransaction(
+                    nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
+                .ToArray();
+            _blockChain.StageTransactions(txsB.ToImmutableHashSet());
+
+            // Mine only txs having higher or equal with nonce than expected nonce.
+            Block<DumbAction> b2 = await _blockChain.MineBlock(address);
+            Assert.Single(b2.Transactions);
+            Assert.Contains(txsB[3], b2.Transactions);
+        }
+
         private sealed class TestEvaluateAction : IAction
         {
             public static readonly Address SignerKey =
