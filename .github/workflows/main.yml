@@ -16,6 +16,9 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt

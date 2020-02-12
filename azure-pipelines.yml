@@ -11,12 +11,12 @@ jobs:
 
 - job: Windows_NETCore_coverage
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: windows-2019
   steps:
   - task: CmdLine@2
     displayName: dotnet tool install Codecov.Tool
     inputs:
-      script: dotnet tool install --global Codecov.Tool --version 1.5.0
+      script: dotnet tool install --global Codecov.Tool --version 1.10.0
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
       configuration: Debug
@@ -36,10 +36,11 @@ jobs:
           echo "codecovToken variable is not configured." > /dev/stderr
           exit 0
         fi
+        mcc_ver=16.5.0
         curl \
-          -o microsoft.codecoverage.16.1.0.nupkg -L \
-          https://www.nuget.org/api/v2/package/Microsoft.CodeCoverage/16.1.0
-        unzip microsoft.codecoverage.16.1.0.nupkg
+          -o microsoft.codecoverage.$mcc_ver.nupkg -L \
+          https://www.nuget.org/api/v2/package/Microsoft.CodeCoverage/$mcc_ver
+        unzip microsoft.codecoverage.$mcc_ver.nupkg
         i=0
         for cov in **/*.coverage; do
           echo build/netstandard1.0/CodeCoverage/CodeCoverage.exe analyze \
@@ -69,7 +70,7 @@ jobs:
     displayName: Stick with .NET Core SDK version compatible to Mono toolchain
     inputs:
       packageType: sdk
-      version: 2.2.301  # See also: https://github.com/mono/mono/issues/13537
+      version: 3.1.101
       installationPath: $(Agent.ToolsDirectory)/dotnet
   - template: .azure-pipelines/mono.yml
     parameters:
@@ -79,7 +80,7 @@ jobs:
 
 - job: macOS_Mono
   pool:
-    vmImage: macOS-10.14
+    vmImage: macOS-10.15
   steps:
   - template: .azure-pipelines/mono.yml
     parameters:
@@ -87,7 +88,6 @@ jobs:
       turnServerUrl: $(turnServerUrl)
   timeoutInMinutes: 30
 
-# FIXME: Currently mono version fixed to 6.0.0.334 for testing, it needs to be reverted.
 - job: Windows_Mono
   pool:
     vmImage: windows-2019
@@ -95,7 +95,7 @@ jobs:
   - task: CmdLine@2
     displayName: choco install mono
     inputs:
-      script: choco install mono --version 6.0.0.334 --yes
+      script: choco install mono --yes
   - template: .azure-pipelines/windows-net471.yml
     parameters:
       configuration: $(configuration)
@@ -106,7 +106,7 @@ jobs:
 
 - job: macOS_Unity
   pool:
-    vmImage: macOS-10.14
+    vmImage: macOS-10.15
   steps:
   - task: CmdLine@2
     displayName: Download xunit-unity-runner
@@ -140,7 +140,7 @@ jobs:
 
 - job: macOS_NETCore
   pool:
-    vmImage: 'macOS-10.14'
+    vmImage: macOS-10.15
   steps:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:
@@ -151,7 +151,7 @@ jobs:
 
 - job: Windows_NETCore
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: windows-2019
   steps:
   - template: .azure-pipelines/dotnet-core.yml
     parameters:

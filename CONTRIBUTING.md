@@ -29,20 +29,14 @@ for purposes in the *Libplanet* category:
 Prerequisites
 -------------
 
-You need [.NET Core] SDK 2.2+ which provides the latest C# compiler and .NET VM.
+You need [.NET Core] SDK 3.1+ which provides the latest C# compiler and .NET VM.
 Read and follow the instruction to install .NET Core SDK on
 the [.NET Core downloads page][1].
 FYI if you use macOS and [Homebrew] you can install it by
 `brew cask install dotnet-sdk` command.
 
-Make sure that your .NET Core SDK is 2.2 or higher.  You could show
+Make sure that your .NET Core SDK is 3.1 or higher.  You could show
 the version you are using by `dotnet --info` command.
-
-If it's Windows please check if the environment variable named
-`MSBuildSDKsPath` refers to the proper version of .NET Core SDK.
-If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
-at the highest.  .NET Core SDK higher than the version 2.2.105 is not
-recognized by Visual Studio 2017.
 
 Although it is not necessary, you should install a proper IDE for .NET
 (or an [OmniSharp] extension for your favorite editor — except it takes
@@ -203,24 +197,3 @@ As our benchmarks are based on [BenchmarkDotNet], please read their official
 docs for details.
 
 [BenchmarkDotNet]: https://benchmarkdotnet.org/
-
-
-Troubleshooting
---------------
-
-### I got the error like `Fody is only supported on MSBuild 16 and above. Current version: 15.`
-
-Your .NET Core SDK version probably is outdated.  Our recommended version is: *2.2.300*.
-
-1. Download the lastest (as of June 2019) .NET Core SDK binary from the official website:
-
-   <https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300>
-
-2. Extract *.tar.gz* in proper directory.
-
-3. You could permanently add the following commands into your shell profile.
-
-    ~~~~
-    export DOTNET_ROOT="$YOUR_DOTNET_INSTALLATION_PATH/dotnet"
-    export PATH="$PATH:$DOTNET_ROOT"
-    ~~~~

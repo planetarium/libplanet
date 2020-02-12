@@ -20,4 +20,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.100
     - run: 'dotnet run -p Libplanet.Benchmarks -c Release -- -j short -f "*"'
