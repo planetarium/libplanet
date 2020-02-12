@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "i7qcAniSDCAcbWhMoa+Vfg=="
+          "hash": "n8yOiL2q1iJUVORIz5AU6w=="
         }
       },
       "is_incremental": false,
@@ -969,7 +969,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Net.Swarm-1.html",
-          "hash": "6eGBQbSDehzniQeV4jbrwQ=="
+          "hash": "T66inH4C9axKUaVcyBA+Qg=="
         }
       },
       "is_incremental": false,
@@ -1348,16 +1348,16 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 103,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 6,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 103,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
