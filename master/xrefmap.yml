@@ -5432,6 +5432,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteTransaction
   nameWithType: BaseStore.DeleteTransaction
+- uid: Libplanet.Store.BaseStore.Dispose
+  name: Dispose()
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_Dispose
+  commentId: M:Libplanet.Store.BaseStore.Dispose
+  fullName: Libplanet.Store.BaseStore.Dispose()
+  nameWithType: BaseStore.Dispose()
+- uid: Libplanet.Store.BaseStore.Dispose*
+  name: Dispose
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_Dispose_
+  commentId: Overload:Libplanet.Store.BaseStore.Dispose
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.Dispose
+  nameWithType: BaseStore.Dispose
 - uid: Libplanet.Store.BaseStore.ForkBlockIndexes(Guid,Guid,Libplanet.HashDigest{SHA256})
   name: ForkBlockIndexes(Guid, Guid, HashDigest<SHA256>)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_ForkBlockIndexes_Guid_Guid_Libplanet_HashDigest_SHA256__
