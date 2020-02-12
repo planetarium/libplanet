@@ -124,6 +124,7 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash
         );
 
+        /// <inheritdoc />
         public abstract void SetBlockStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states
