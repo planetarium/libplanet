@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Libplanet.Tests", "Libplane
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.Benchmarks", "Libplanet.Benchmarks\Libplanet.Benchmarks.csproj", "{E010FB5E-0D68-4AF7-B632-5DB6B902F158}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet.RocksDBStore", "Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj", "{A5DE942D-912D-4012-8493-1E958E5445F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x64.Build.0 = Release|Any CPU
 		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x86.ActiveCfg = Release|Any CPU
 		{E010FB5E-0D68-4AF7-B632-5DB6B902F158}.Release|x86.Build.0 = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|x64.Build.0 = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Debug|x86.Build.0 = Debug|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|x64.Build.0 = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|x86.ActiveCfg = Release|Any CPU
+		{A5DE942D-912D-4012-8493-1E958E5445F4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

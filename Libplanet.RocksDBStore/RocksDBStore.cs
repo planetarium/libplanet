@@ -2,30 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
+using Libplanet.Store;
 using Libplanet.Tx;
 using LiteDB;
 using LruCacheNet;
+using RocksDbSharp;
 using Serilog;
-using Zio;
-using Zio.FileSystems;
 using FileMode = LiteDB.FileMode;
 
-namespace Libplanet.Store
+namespace Libplanet.RocksDBStore
 {
     /// <summary>
-    /// The default built-in <see cref="IStore"/> implementation.  This stores data in
-    /// the file system or in memory.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
+    /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IStore"/> implementation.
+    /// This stores data in the RocksDB.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
     /// for some complex indices.
     /// </summary>
     /// <seealso cref="IStore"/>
-    public class DefaultStore : BaseStore
+    public class RocksDBStore : BaseStore
     {
         private const string IndexColPrefix = "index_";
 
@@ -33,17 +32,14 @@ namespace Libplanet.Store
 
         private const string TxNonceIdPrefix = "nonce_";
 
-        private static readonly UPath TxRootPath = UPath.Root / "tx";
-        private static readonly UPath BlockRootPath = UPath.Root / "block";
-        private static readonly UPath StateRootPath = UPath.Root / "state";
+        private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
+
+        private static readonly byte[] BlockStateKeyPrefix = { (byte)'S' };
+
+        private static readonly byte[] TxKeyPrefix = { (byte)'T' };
 
         private readonly ILogger _logger;
 
-        private readonly IFileSystem _root;
-        private readonly SubFileSystem _txs;
-        private readonly SubFileSystem _blocks;
-        private readonly SubFileSystem _states;
-        private readonly bool _compress;
         private readonly LruCache<TxId, object> _txCache;
         private readonly LruCache<HashDigest<SHA256>, BlockDigest> _blockCache;
         private readonly LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>
@@ -52,17 +48,14 @@ namespace Libplanet.Store
         private readonly Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>
             _lastStateRefCaches;
 
-        private readonly MemoryStream _memoryStream;
-
-        private readonly LiteDatabase _db;
-        private readonly Codec _codec;
+        private readonly LiteDatabase _liteDb;
+        private readonly RocksDb _rocksDb;
 
         /// <summary>
-        /// Creates a new <seealso cref="DefaultStore"/>.
+        /// Creates a new <seealso cref="RocksDBStore"/>.
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
-        /// If the path is <c>null</c>, the database is created in memory.</param>
-        /// <param name="compress">Whether to compress data.  Does not compress by default.</param>
+        /// </param>
         /// <param name="journal">
         /// Enables or disables double write check to ensure durability.
         /// </param>
@@ -73,9 +66,8 @@ namespace Libplanet.Store
         /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
         /// </param>
         /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
-        public DefaultStore(
+        public RocksDBStore(
             string path,
-            bool compress = false,
             bool journal = true,
             int indexCacheSize = 50000,
             int blockCacheSize = 512,
@@ -89,69 +81,50 @@ namespace Libplanet.Store
 
             if (path is null)
             {
-                _root = new MemoryFileSystem();
-                _memoryStream = new MemoryStream();
-                _db = new LiteDatabase(_memoryStream);
-            }
-            else
-            {
-                path = Path.GetFullPath(path);
-
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                var pfs = new PhysicalFileSystem();
-                _root = new SubFileSystem(
-                    pfs,
-                    pfs.ConvertPathFromInternal(path),
-                    owned: true
-                );
-
-                var connectionString = new ConnectionString
-                {
-                    Filename = Path.Combine(path, "index.ldb"),
-                    Journal = journal,
-                    CacheSize = indexCacheSize,
-                    Flush = flush,
-                };
-
-                if (readOnly)
-                {
-                    connectionString.Mode = FileMode.ReadOnly;
-                }
-                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
-                    Type.GetType("Mono.Runtime") is null)
-                {
-                    // macOS + .NETCore doesn't support shared lock.
-                    connectionString.Mode = FileMode.Exclusive;
-                }
-
-                _db = new LiteDatabase(connectionString);
+                throw new ArgumentNullException(nameof(path));
             }
 
-            lock (_db.Mapper)
+            path = Path.GetFullPath(path);
+
+            if (!Directory.Exists(path))
             {
-                _db.Mapper.RegisterType(
+                Directory.CreateDirectory(path);
+            }
+
+            var connectionString = new ConnectionString
+            {
+                Filename = Path.Combine(path, "index.ldb"),
+                Journal = journal,
+                CacheSize = indexCacheSize,
+                Flush = flush,
+            };
+
+            if (readOnly)
+            {
+                connectionString.Mode = FileMode.ReadOnly;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
+                Type.GetType("Mono.Runtime") is null)
+            {
+                // macOS + .NETCore doesn't support shared lock.
+                connectionString.Mode = FileMode.Exclusive;
+            }
+
+            _liteDb = new LiteDatabase(connectionString);
+
+            lock (_liteDb.Mapper)
+            {
+                _liteDb.Mapper.RegisterType(
                     hash => hash.ToByteArray(),
                     b => new HashDigest<SHA256>(b));
-                _db.Mapper.RegisterType(
+                _liteDb.Mapper.RegisterType(
                     txid => txid.ToByteArray(),
                     b => new TxId(b));
-                _db.Mapper.RegisterType(
+                _liteDb.Mapper.RegisterType(
                     address => address.ToByteArray(),
                     b => new Address(b.AsBinary));
             }
 
-            _root.CreateDirectory(TxRootPath);
-            _txs = new SubFileSystem(_root, TxRootPath, owned: false);
-            _root.CreateDirectory(BlockRootPath);
-            _blocks = new SubFileSystem(_root, BlockRootPath, owned: false);
-            _root.CreateDirectory(StateRootPath);
-            _states = new SubFileSystem(_root, StateRootPath, owned: false);
-
-            _compress = compress;
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
             _blockCache = new LruCache<HashDigest<SHA256>, BlockDigest>(capacity: blockCacheSize);
             _statesCache = new LruCache<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>(
@@ -160,16 +133,19 @@ namespace Libplanet.Store
             _lastStateRefCaches =
                 new Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>();
 
-            _codec = new Codec();
+            var options = new DbOptions()
+                .SetCreateIfMissing();
+
+            _rocksDb = RocksDb.Open(options, path);
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
-            _db.GetCollection<StagedTxIdDoc>("staged_txids");
+            _liteDb.GetCollection<StagedTxIdDoc>("staged_txids");
 
         /// <inheritdoc/>
         public override IEnumerable<Guid> ListChainIds()
         {
-            return _db.GetCollectionNames()
+            return _liteDb.GetCollectionNames()
                 .Where(name => name.StartsWith(IndexColPrefix))
                 .Select(name => ParseChainId(name.Substring(IndexColPrefix.Length)));
         }
@@ -177,16 +153,16 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
-            _db.DropCollection(IndexCollection(chainId).Name);
-            _db.DropCollection(TxNonceId(chainId));
-            _db.DropCollection(StateRefId(chainId));
+            _liteDb.DropCollection(IndexCollection(chainId).Name);
+            _liteDb.DropCollection(TxNonceId(chainId));
+            _liteDb.DropCollection(StateRefId(chainId));
             _lastStateRefCaches.Remove(chainId);
         }
 
         /// <inheritdoc />
         public override Guid? GetCanonicalChainId()
         {
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
             BsonDocument doc = collection.FindById(docId);
             if (doc is null)
@@ -202,7 +178,7 @@ namespace Libplanet.Store
         /// <inheritdoc />
         public override void SetCanonicalChainId(Guid chainId)
         {
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>("canon");
+            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>("canon");
             var docId = new BsonValue("canon");
             byte[] idBytes = chainId.ToByteArray();
             collection.Upsert(docId, new BsonDocument() { ["chainId"] = new BsonValue(idBytes) });
@@ -263,7 +239,7 @@ namespace Libplanet.Store
             LiteCollection<HashDoc> srcColl = IndexCollection(sourceChainId);
             LiteCollection<HashDoc> destColl = IndexCollection(destinationChainId);
 
-            var genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
+            HashDigest<SHA256> genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
             destColl.InsertBulk(srcColl.FindAll()
                 .TakeWhile(i => !i.Hash.Equals(branchPoint)).Skip(1));
             if (!branchPoint.Equals(genesisHash))
@@ -276,7 +252,7 @@ namespace Libplanet.Store
         public override IEnumerable<string> ListStateKeys(Guid chainId)
         {
             string collId = StateRefId(chainId);
-            return _db.GetCollection<StateRefDoc>(collId)
+            return _liteDb.GetCollection<StateRefDoc>(collId)
                 .Find(Query.All(nameof(StateRefDoc.StateKey), Query.Ascending))
                 .Select(doc => doc.StateKey)
                 .ToImmutableHashSet();
@@ -290,7 +266,7 @@ namespace Libplanet.Store
                 long highestIndex = long.MaxValue)
         {
             string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
 
             Query query = Query.And(
                 Query.All(nameof(StateRefDoc.BlockIndex)),
@@ -331,36 +307,15 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            foreach (UPath path in _txs.EnumerateDirectories(UPath.Root))
+            Iterator it = _rocksDb.NewIterator();
+
+            for (it.Seek(TxKeyPrefix); it.Valid(); it.Next())
             {
-                string upper = path.GetName();
-                if (upper.Length != 2)
-                {
-                    continue;
-                }
+                byte[] key = it.Key();
+                byte[] txIdBytes = key.Skip(TxKeyPrefix.Length).ToArray();
 
-                foreach (UPath subPath in _txs.EnumerateFiles(path))
-                {
-                    string lower = subPath.GetName();
-                    if (lower.Length != 62)
-                    {
-                        continue;
-                    }
-
-                    string name = upper + lower;
-                    TxId txid;
-                    try
-                    {
-                        txid = new TxId(ByteUtil.ParseHex(name));
-                    }
-                    catch (Exception)
-                    {
-                        // Skip if a filename does not match to the format.
-                        continue;
-                    }
-
-                    yield return txid;
-                }
+                var txId = new TxId(txIdBytes);
+                yield return txId;
             }
         }
 
@@ -372,18 +327,10 @@ namespace Libplanet.Store
                 return (Transaction<T>)cachedTx;
             }
 
-            UPath path = TxPath(txid);
-            if (!_txs.FileExists(path))
-            {
-                return null;
-            }
+            byte[] key = TxKey(txid);
+            byte[] bytes = _rocksDb.Get(key);
 
-            byte[] bytes;
-            try
-            {
-                bytes = _txs.ReadAllBytes(path);
-            }
-            catch (FileNotFoundException)
+            if (bytes is null)
             {
                 return null;
             }
@@ -401,22 +348,31 @@ namespace Libplanet.Store
                 return;
             }
 
-            WriteContentAddressableFile(_txs, TxPath(tx.Id), tx.Serialize(true));
+            byte[] key = TxKey(tx.Id);
+
+            if (!(_rocksDb.Get(key) is null))
+            {
+                return;
+            }
+
+            _rocksDb.Put(key, tx.Serialize(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
         /// <inheritdoc/>
         public override bool DeleteTransaction(TxId txid)
         {
-            var path = TxPath(txid);
-            if (_txs.FileExists(path))
+            byte[] key = TxKey(txid);
+
+            if (_rocksDb.Get(key) is null)
             {
-                _txs.DeleteFile(path);
-                _txCache.Remove(txid);
-                return true;
+                return false;
             }
 
-            return false;
+            _txCache.Remove(txid);
+            _rocksDb.Remove(key);
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -427,42 +383,23 @@ namespace Libplanet.Store
                 return true;
             }
 
-            return _txs.FileExists(TxPath(txId));
+            byte[] key = TxKey(txId);
+
+            return !(_rocksDb.Get(key) is null);
         }
 
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            foreach (UPath path in _blocks.EnumerateDirectories(UPath.Root))
+            Iterator it = _rocksDb.NewIterator();
+
+            for (it.Seek(BlockKeyPrefix); it.Valid(); it.Next())
             {
-                string upper = path.GetName();
-                if (upper.Length != 2)
-                {
-                    continue;
-                }
+                byte[] key = it.Key();
+                byte[] hashBytes = key.Skip(BlockKeyPrefix.Length).ToArray();
 
-                foreach (UPath subPath in _blocks.EnumerateFiles(path))
-                {
-                    string lower = subPath.GetName();
-                    if (lower.Length != 62)
-                    {
-                        continue;
-                    }
-
-                    string name = upper + lower;
-                    HashDigest<SHA256> blockHash;
-                    try
-                    {
-                        blockHash = new HashDigest<SHA256>(ByteUtil.ParseHex(name));
-                    }
-                    catch (Exception)
-                    {
-                        // Skip if a filename does not match to the format.
-                        continue;
-                    }
-
-                    yield return blockHash;
-                }
+                var blockHash = new HashDigest<SHA256>(hashBytes);
+                yield return blockHash;
             }
         }
 
@@ -474,29 +411,15 @@ namespace Libplanet.Store
                 return cachedDigest;
             }
 
-            UPath path = BlockPath(blockHash);
-            if (!_blocks.FileExists(path))
+            byte[] key = BlockKey(blockHash);
+            byte[] bytes = _rocksDb.Get(key);
+
+            if (bytes is null)
             {
                 return null;
             }
 
-            BlockDigest blockDigest;
-            try
-            {
-                IValue value = new Codec().Decode(_blocks.ReadAllBytes(path));
-                if (!(value is Bencodex.Types.Dictionary dict))
-                {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
-                }
-
-                blockDigest = new BlockDigest(dict);
-            }
-            catch (FileNotFoundException)
-            {
-                return null;
-            }
+            BlockDigest blockDigest = BlockDigest.Deserialize(bytes);
 
             _blockCache.AddOrUpdate(blockHash, blockDigest);
             return blockDigest;
@@ -510,8 +433,9 @@ namespace Libplanet.Store
                 return;
             }
 
-            UPath path = BlockPath(block.Hash);
-            if (_blocks.FileExists(path))
+            byte[] key = BlockKey(block.Hash);
+
+            if (!(_rocksDb.Get(key) is null))
             {
                 return;
             }
@@ -521,22 +445,25 @@ namespace Libplanet.Store
                 PutTransaction(tx);
             }
 
-            WriteContentAddressableFile(_blocks, path, block.ToBlockDigest().Serialize());
+            byte[] value = block.ToBlockDigest().Serialize();
+            _rocksDb.Put(key, value);
             _blockCache.AddOrUpdate(block.Hash, block.ToBlockDigest());
         }
 
         /// <inheritdoc/>
         public override bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
-            var path = BlockPath(blockHash);
-            if (_blocks.FileExists(path))
+            byte[] key = BlockKey(blockHash);
+
+            if (_rocksDb.Get(key) is null)
             {
-                _blocks.DeleteFile(path);
-                _blockCache.Remove(blockHash);
-                return true;
+                return false;
             }
 
-            return false;
+            _blockCache.Remove(blockHash);
+            _rocksDb.Remove(key);
+
+            return true;
         }
 
         /// <inheritdoc/>
@@ -547,8 +474,9 @@ namespace Libplanet.Store
                 return true;
             }
 
-            UPath blockPath = BlockPath(blockHash);
-            return _blocks.FileExists(blockPath);
+            byte[] key = BlockKey(blockHash);
+
+            return !(_rocksDb.Get(key) is null);
         }
 
         /// <inheritdoc/>
@@ -563,43 +491,29 @@ namespace Libplanet.Store
                 return cached;
             }
 
-            UPath path = StatePath(blockHash);
-            if (!_states.FileExists(path))
+            byte[] key = BlockStateKey(blockHash);
+
+            byte[] bytes = _rocksDb.Get(key);
+
+            if (bytes is null)
             {
                 return null;
             }
 
-            using (var buffer = new MemoryStream())
-            using (Stream file = _states.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read))
+            IValue value = new Codec().Decode(bytes);
+            if (!(value is Bencodex.Types.Dictionary dict))
             {
-                if (_compress)
-                {
-                    using (var deflate = new DeflateStream(file, CompressionMode.Decompress))
-                    {
-                        deflate.CopyTo(buffer);
-                    }
-                }
-                else
-                {
-                    file.CopyTo(buffer);
-                }
-
-                buffer.Seek(0, SeekOrigin.Begin);
-                IValue value = new Codec().Decode(buffer);
-                if (!(value is Bencodex.Types.Dictionary dict))
-                {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
-                }
-
-                ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
-                    kv => ((Text)kv.Key).Value,
-                    kv => kv.Value
-                );
-                _statesCache.AddOrUpdate(blockHash, states);
-                return states;
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
             }
+
+            ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
+                kv => ((Text)kv.Key).Value,
+                kv => kv.Value
+            );
+            _statesCache.AddOrUpdate(blockHash, states);
+            return states;
         }
 
         /// <inheritdoc/>
@@ -614,26 +528,12 @@ namespace Libplanet.Store
                 )
             );
 
-            UPath path = StatePath(blockHash);
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(_states, dirPath);
+            byte[] key = BlockStateKey(blockHash);
 
             var codec = new Codec();
-            using (Stream file = _states.CreateFile(path))
-            {
-                if (_compress)
-                {
-                    using (var deflate = new DeflateStream(file, CompressionLevel.Fastest, true))
-                    {
-                        codec.Encode(serialized, deflate);
-                    }
-                }
-                else
-                {
-                    codec.Encode(serialized, file);
-                }
-            }
+            byte[] value = codec.Encode(serialized);
 
+            _rocksDb.Put(key, value);
             _statesCache.AddOrUpdate(blockHash, states);
         }
 
@@ -711,7 +611,7 @@ namespace Libplanet.Store
             }
 
             string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
             IEnumerable<StateRefDoc> stateRefs = coll.Find(
                 Query.And(
                     Query.All(nameof(StateRefDoc.BlockIndex), Query.Descending),
@@ -731,7 +631,7 @@ namespace Libplanet.Store
             long blockIndex)
         {
             string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _db.GetCollection<StateRefDoc>(collId);
+            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
             IEnumerable<StateRefDoc> stateRefDocs = keys
                 .Select(key => new StateRefDoc
                 {
@@ -773,8 +673,8 @@ namespace Libplanet.Store
         {
             string srcCollId = StateRefId(sourceChainId);
             string dstCollId = StateRefId(destinationChainId);
-            LiteCollection<StateRefDoc> srcColl = _db.GetCollection<StateRefDoc>(srcCollId),
-                                        dstColl = _db.GetCollection<StateRefDoc>(dstCollId);
+            LiteCollection<StateRefDoc> srcColl = _liteDb.GetCollection<StateRefDoc>(srcCollId),
+                                        dstColl = _liteDb.GetCollection<StateRefDoc>(dstCollId);
 
             dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
 
@@ -795,8 +695,8 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            string collId = TxNonceId(chainId);
+            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             foreach (BsonDocument doc in collection.FindAll())
             {
                 if (doc.TryGetValue("_id", out BsonValue id) && id.IsBinary)
@@ -813,8 +713,8 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            string collId = TxNonceId(chainId);
+            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             var docId = new BsonValue(address.ToByteArray());
             BsonDocument doc = collection.FindById(docId);
             return doc is null ? 0 : (doc.TryGetValue("v", out BsonValue v) ? v.AsInt64 : 0);
@@ -824,8 +724,8 @@ namespace Libplanet.Store
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
             long nextNonce = GetTxNonce(chainId, signer) + delta;
-            var collectionId = TxNonceId(chainId);
-            LiteCollection<BsonDocument> collection = _db.GetCollection<BsonDocument>(collectionId);
+            string collId = TxNonceId(chainId);
+            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>(collId);
             var docId = new BsonValue(signer.ToByteArray());
             collection.Upsert(docId, new BsonDocument() { ["v"] = new BsonValue(nextNonce) });
         }
@@ -833,30 +733,19 @@ namespace Libplanet.Store
         /// <inheritdoc/>
         public override long CountTransactions()
         {
-            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
-            // unused (except for unit tests).  If this is never used why should we maintain
-            // this?  This is basically only for making TransactionSet<T> class to implement
-            // IDictionary<TxId, Transaction<T>>.Count property, which is never used either.
-            // We'd better to refactor all such things so that unnecessary APIs are gone away.
             return IterateTransactionIds().LongCount();
         }
 
         /// <inheritdoc/>
         public override long CountBlocks()
         {
-            // FIXME: This implementation is too inefficient.  Fortunately, this method seems
-            // unused (except for unit tests).  If this is never used why should we maintain
-            // this?  This is basically only for making BlockSet<T> class to implement
-            // IDictionary<HashDigest<SHA256>, Block<T>>.Count property, which is never used either.
-            // We'd better to refactor all such things so that unnecessary APIs are gone away.
             return IterateBlockHashes().LongCount();
         }
 
         public override void Dispose()
         {
-            _db?.Dispose();
-            _memoryStream?.Dispose();
-            _root.Dispose();
+            _liteDb?.Dispose();
+            _rocksDb?.Dispose();
         }
 
         internal static Guid ParseChainId(string chainIdString) =>
@@ -864,72 +753,6 @@ namespace Libplanet.Store
 
         internal static string FormatChainId(Guid chainId) =>
             ByteUtil.Hex(chainId.ToByteArray());
-
-        private static void CreateDirectoryRecursively(IFileSystem fs, UPath path)
-        {
-            if (!fs.DirectoryExists(path))
-            {
-                CreateDirectoryRecursively(fs, path.GetDirectory());
-                fs.CreateDirectory(path);
-            }
-        }
-
-        private void WriteContentAddressableFile(IFileSystem fs, UPath path, byte[] contents)
-        {
-            UPath dirPath = path.GetDirectory();
-            CreateDirectoryRecursively(fs, dirPath);
-
-            // Assuming the filename is content-addressable, so that if there is
-            // already the file of the same name the content is the same as well.
-            if (fs.FileExists(path))
-            {
-                return;
-            }
-
-            // For atomicity, writes bytes into an intermediate temp file,
-            // and then renames it to the final destination.
-            UPath tmpPath = dirPath / $".{Guid.NewGuid():N}.tmp";
-            try
-            {
-                fs.WriteAllBytes(tmpPath, contents);
-                try
-                {
-                    fs.MoveFile(tmpPath, path);
-                }
-                catch (IOException)
-                {
-                    if (!fs.FileExists(path) ||
-                        fs.GetFileLength(path) != contents.LongLength)
-                    {
-                        throw;
-                    }
-                }
-            }
-            finally
-            {
-                if (fs.FileExists(tmpPath))
-                {
-                    fs.DeleteFile(tmpPath);
-                }
-            }
-        }
-
-        private UPath BlockPath(HashDigest<SHA256> blockHash)
-        {
-            string idHex = ByteUtil.Hex(blockHash.ByteArray);
-            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
-        }
-
-        private UPath TxPath(TxId txid)
-        {
-            string idHex = txid.ToHex();
-            return UPath.Root / idHex.Substring(0, 2) / idHex.Substring(2);
-        }
-
-        private UPath StatePath(HashDigest<SHA256> blockHash)
-        {
-            return BlockPath(blockHash);
-        }
 
         private string StateRefId(Guid chainId)
         {
@@ -943,7 +766,22 @@ namespace Libplanet.Store
 
         private LiteCollection<HashDoc> IndexCollection(Guid chainId)
         {
-            return _db.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
+            return _liteDb.GetCollection<HashDoc>($"{IndexColPrefix}{FormatChainId(chainId)}");
+        }
+
+        private byte[] BlockKey(HashDigest<SHA256> blockHash)
+        {
+            return BlockKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
+        }
+
+        private byte[] BlockStateKey(HashDigest<SHA256> blockHash)
+        {
+            return BlockStateKeyPrefix.Concat(blockHash.ToByteArray()).ToArray();
+        }
+
+        private byte[] TxKey(TxId txId)
+        {
+            return TxKeyPrefix.Concat(txId.ToByteArray()).ToArray();
         }
 
         internal class StateRefDoc
