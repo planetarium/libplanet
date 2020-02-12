@@ -23,18 +23,24 @@ To be released.
 
 ### Behavioral changes
 
+ -  `BlockChain.MineBlock()` method became to ignore transactions having
+    lower nonce than the expected nonce in the chain.  [[#791]]
+
 ### Bug fixes
 
  -  `Swarm<T>` became not to sync the same `Block<T>`s or `Transaction<T>`s
     multiple times.  [[#784]]
  -  Fixed a `Swarm<T>`'s bug that had broadcasted a message to its source peer when
     the number of peers is not enough (less than the minimum number).  [[#788]]
+ -  Fixed a bug where `BlockChain.MineBlock()` had produced an invalid block
+    when there is any staged transaction which has lower nonce than the expected nonce,
+    that means, shares an already taken nonce by the same signer.  [[#791]]
 
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
 [#789]: https://github.com/planetarium/libplanet/pull/789
-
+[#791]: https://github.com/planetarium/libplanet/pull/791
 
 Version 0.8.0
 -------------
