@@ -2237,8 +2237,9 @@ namespace Libplanet.Tests.Net
                 await StartAsync(swarm2);
 
                 await swarm1.AddPeersAsync(new[] { swarm0.AsPeer }, null);
-                await swarm1.PreloadAsync(trustedStateValidators:
-                    new[] { swarm0.Address }.ToImmutableHashSet());
+                await swarm1.PreloadAsync(
+                    trustedStateValidators: new[] { swarm0.Address }.ToImmutableHashSet(),
+                    thickness: 20);
 
                 Assert.Equal(chain0.BlockHashes, chain1.BlockHashes);
 
@@ -2275,8 +2276,9 @@ namespace Libplanet.Tests.Net
                 }
 
                 await swarm2.AddPeersAsync(new[] { swarm1.AsPeer }, null);
-                await swarm2.PreloadAsync(trustedStateValidators:
-                    new[] { swarm1.Address }.ToImmutableHashSet());
+                await swarm2.PreloadAsync(
+                    trustedStateValidators: new[] { swarm1.Address }.ToImmutableHashSet(),
+                    thickness: 20);
 
                 Assert.Equal(chain1.BlockHashes, chain2.BlockHashes);
 
