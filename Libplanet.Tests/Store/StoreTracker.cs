@@ -188,6 +188,24 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
+        public void DeleteBlockStates(
+            HashDigest<SHA256> blockHash,
+            IEnumerable<string> stateKeys
+        )
+        {
+            Log(nameof(DeleteBlockStates), blockHash, stateKeys);
+            _store.DeleteBlockStates(blockHash, stateKeys);
+        }
+
+        public void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+            where T : IAction, new()
+        {
+            Log(nameof(PruneBlockStates), chainId, until);
+            _store.PruneBlockStates(chainId, until);
+        }
+
         public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
             string key,

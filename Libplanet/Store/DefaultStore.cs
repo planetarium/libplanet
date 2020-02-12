@@ -622,6 +622,64 @@ namespace Libplanet.Store
             _statesCache.AddOrUpdate(blockHash, states);
         }
 
+        /// <inheritdoc/>
+        public override void DeleteBlockStates(
+            HashDigest<SHA256> blockHash,
+            IEnumerable<string> stateKeys)
+        {
+            IImmutableDictionary<string, IValue> dict = GetBlockStates(blockHash);
+            _logger.Debug("Trying to delete block states at {Hash}. {@Keys}", blockHash, stateKeys);
+            if (dict is null)
+            {
+                return;
+            }
+
+            _logger.Debug("Previous dict: {@Dict}", dict);
+            dict = dict.RemoveRange(stateKeys);
+            _logger.Debug("After dict: {@Dict}", dict);
+            if (dict.Any())
+            {
+                SetBlockStates(blockHash, dict);
+            }
+            else
+            {
+                UPath path = StatePath(blockHash);
+                _states.DeleteFile(path);
+                _statesCache.Remove(blockHash);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+        {
+            string[] keys = ListStateKeys(chainId).ToArray();
+            long untilIndex = until.Index;
+            foreach (var key in keys)
+            {
+                Tuple<HashDigest<SHA256>, long>[] stateRefs =
+                    IterateStateReferences(chainId, key, untilIndex, null, null)
+                        .OrderByDescending(tuple => tuple.Item2)
+                        .ToArray();
+                var dict = new Dictionary<HashDigest<SHA256>, List<string>>();
+                foreach ((HashDigest<SHA256> blockHash, long index) in stateRefs.Skip(1))
+                {
+                    if (!dict.ContainsKey(blockHash))
+                    {
+                        dict.Add(blockHash, new List<string>());
+                    }
+
+                    dict[blockHash].Add(key);
+                }
+
+                foreach (var kv in dict)
+                {
+                    DeleteBlockStates(kv.Key, kv.Value);
+                }
+            }
+        }
+
         public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
             string key,
