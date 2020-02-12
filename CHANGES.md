@@ -23,9 +23,12 @@ To be released.
 
 ### Bug fixes
 
+ -  `Swarm<T>` became not to sync the same `Block<T>`s or `Transaction<T>`s
+    multiple times.  [[#784]]
  -  Fixed a `Swarm<T>`'s bug that had broadcasted a message to its source peer when
     the number of peers is not enough (less than the minimum number).  [[#788]]
 
+[#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
 [#788]: https://github.com/planetarium/libplanet/pull/788
 

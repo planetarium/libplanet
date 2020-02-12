@@ -1013,50 +1013,6 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreventFillBlockWhenReceivedContinuousBlocks()
-        {
-            Swarm<DumbAction> swarmA = _swarms[0];
-            Swarm<DumbAction> swarmB = _swarms[1];
-
-            BlockChain<DumbAction> chainA = _blockchains[0];
-            BlockChain<DumbAction> chainB = _blockchains[1];
-
-            Block<DumbAction> block1 = await _blockchains[0].MineBlock(_fx1.Address1);
-            await _blockchains[0].MineBlock(_fx1.Address1);
-            Block<DumbAction> block2 = await _blockchains[0].MineBlock(_fx1.Address1);
-
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-
-                await BootstrapAsync(swarmA, swarmB.AsPeer);
-
-                Task t = swarmB.BlockAppended.WaitAsync();
-                swarmA.BroadcastBlock(block1);
-                await t;
-                // Make sure that FillBlocksAsync did not run.
-                Assert.False(swarmB.FillBlocksAsyncStarted.IsSet);
-                Assert.Equal(chainB.BlockHashes, new[] { chainA[0].Hash, chainA[1].Hash });
-
-                t = swarmB.BlockAppended.WaitAsync();
-                swarmA.BroadcastBlock(block2);
-                await t;
-                // Make sure that FillBlocksAsync is ran.
-                Assert.True(swarmB.FillBlocksAsyncStarted.IsSet);
-                Assert.Equal(chainB.BlockHashes, chainA.BlockHashes);
-            }
-            finally
-            {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
         public async Task BroadcastBlockWithSkip()
         {
             var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
@@ -2757,6 +2713,72 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarmB);
                 await StopAsync(swarmC);
                 await StopAsync(swarmD);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task DoNotFillMultipleTimes()
+        {
+            Swarm<DumbAction> receiver = _swarms[0];
+            Swarm<DumbAction> sender1 = _swarms[1];
+            Swarm<DumbAction> sender2 = _swarms[2];
+
+            await StartAsync(receiver);
+            await StartAsync(sender1);
+            await StartAsync(sender2);
+
+            Block<DumbAction> b1 =
+                TestUtils.MineNext(receiver.BlockChain.Genesis, difficulty: 1024);
+
+            try
+            {
+                await BootstrapAsync(sender1, receiver.AsPeer);
+                await BootstrapAsync(sender2, receiver.AsPeer);
+
+                sender1.BlockChain.Append(b1);
+                sender2.BlockChain.Append(b1);
+
+                sender1.BroadcastBlock(b1);
+                sender2.BroadcastBlock(b1);
+
+                // Make sure that receiver swarm only filled once for same block
+                // that were broadcasted simultaneously.
+                await receiver.BlockReceived.WaitAsync();
+
+                // Awaits 1 second because receiver swarm may tried to fill again after filled.
+                await Task.Delay(1000);
+                var transport = receiver.Transport as NetMQTransport;
+                Log.Debug("Messages: {@Message}", transport.MessageHistory);
+                Assert.Single(
+                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Blocks));
+
+                Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
+                    0,
+                    new PrivateKey(),
+                    new DumbAction[] { }
+                );
+                sender1.BlockChain.StageTransactions(
+                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+                sender2.BlockChain.StageTransactions(
+                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+
+                // Make sure that receiver swarm only filled once for same transaction
+                // that were broadcasted simultaneously.
+                sender1.BroadcastTxs(new[] { tx });
+                sender2.BroadcastTxs(new[] { tx });
+
+                await receiver.TxReceived.WaitAsync();
+
+                // Awaits 1 second because receiver swarm may tried to fill again after filled.
+                await Task.Delay(1000);
+                Assert.Single(
+                    transport.MessageHistory.Where(msg => msg is Libplanet.Net.Messages.Tx));
+            }
+            finally
+            {
+                await StopAsync(receiver);
+                await StopAsync(sender1);
+                await StopAsync(sender2);
             }
         }
 
