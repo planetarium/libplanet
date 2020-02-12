@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using Bencodex.Types;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
@@ -13,7 +16,7 @@ using FileMode = LiteDB.FileMode;
 namespace Libplanet.Explorer.Store
 {
     // It assumes running Explorer as online-mode.
-    public class RichStore : DefaultStore
+    public class RichStore : IRichStore
     {
         private const string TxRefCollectionName = "block_ref";
         private const string SignerRefCollectionName = "signer_ref";
@@ -21,29 +24,18 @@ namespace Libplanet.Explorer.Store
 
         private readonly MemoryStream _memoryStream;
         private readonly LiteDatabase _db;
+        private readonly IStore _store;
 
-        /// <inheritdoc cref="DefaultStore"/>
         public RichStore(
+            IStore store,
             string path,
-            bool compress = false,
             bool journal = true,
             int indexCacheSize = 50000,
-            int blockCacheSize = 512,
-            int txCacheSize = 1024,
-            int statesCacheSize = 10000,
             bool flush = true,
             bool readOnly = false)
-            : base(
-                path,
-                compress,
-                journal,
-                indexCacheSize,
-                blockCacheSize,
-                txCacheSize,
-                statesCacheSize,
-                flush,
-                readOnly)
         {
+            _store = store;
+
             if (path is null)
             {
                 _memoryStream = new MemoryStream();
@@ -74,18 +66,267 @@ namespace Libplanet.Explorer.Store
             }
         }
 
-        public override void PutBlock<T>(Block<T> block)
+        /// <inheritdoc cref="IStore"/>
+        public long? GetBlockIndex(HashDigest<SHA256> blockHash)
         {
-            base.PutBlock(block);
+            return _store.GetBlockIndex(blockHash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public bool DeleteBlock(HashDigest<SHA256> blockHash)
+        {
+            return _store.DeleteBlock(blockHash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public bool ContainsBlock(HashDigest<SHA256> blockHash)
+        {
+            return _store.ContainsBlock(blockHash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
+        {
+            return _store.GetBlockStates(blockHash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void SetBlockStates(
+            HashDigest<SHA256> blockHash,
+            IImmutableDictionary<Address, IValue> states)
+        {
+            _store.SetBlockStates(blockHash, states);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
+            Guid chainId,
+            Address address,
+            Block<T> lookupUntil)
+            where T : IAction, new()
+        {
+            return _store.LookupStateReference(chainId, address, lookupUntil);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            Guid chainId,
+            Address address,
+            long? highestIndex = null,
+            long? lowestIndex = null,
+            int? limit = null)
+        {
+            return _store.IterateStateReferences(
+                chainId,
+                address,
+                highestIndex,
+                lowestIndex,
+                limit);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void StoreStateReference(
+            Guid chainId,
+            IImmutableSet<Address> addresses,
+            HashDigest<SHA256> blockHash,
+            long blockIndex)
+        {
+            _store.StoreStateReference(chainId, addresses, blockHash, blockIndex);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void ForkStateReferences<T>(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            Block<T> branchPoint)
+            where T : IAction, new()
+        {
+            _store.ForkStateReferences(sourceChainId, destinationChainId, branchPoint);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
+        {
+            return _store.ListTxNonces(chainId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public long GetTxNonce(Guid chainId, Address address)
+        {
+            return _store.GetTxNonce(chainId, address);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
+        {
+            _store.IncreaseTxNonce(chainId, signer, delta);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public bool ContainsTransaction(TxId txId)
+        {
+            return _store.ContainsTransaction(txId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public long CountTransactions()
+        {
+            return _store.CountTransactions();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public long CountBlocks()
+        {
+            return _store.CountBlocks();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void PutBlock<T>(Block<T> block)
+            where T : IAction, new()
+        {
+            _store.PutBlock(block);
             foreach (var tx in block.Transactions)
             {
                 StoreTxReferences(tx.Id, block.Hash, block.Index);
             }
         }
 
-        public override void PutTransaction<T>(Transaction<T> tx)
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<Guid> ListChainIds()
         {
-            base.PutTransaction(tx);
+            return _store.ListChainIds();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void DeleteChainId(Guid chainId)
+        {
+            _store.DeleteChainId(chainId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public Guid? GetCanonicalChainId()
+        {
+            return _store.GetCanonicalChainId();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void SetCanonicalChainId(Guid chainId)
+        {
+            _store.SetCanonicalChainId(chainId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public long CountIndex(Guid chainId)
+        {
+            return _store.CountIndex(chainId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<HashDigest<SHA256>> IterateIndexes(
+            Guid chainId,
+            int offset = 0,
+            int? limit = null)
+        {
+            return _store.IterateIndexes(chainId, offset, limit);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public HashDigest<SHA256>? IndexBlockHash(Guid chainId, long index)
+        {
+            return _store.IndexBlockHash(chainId, index);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
+        {
+            return _store.AppendIndex(chainId, hash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
+        {
+            return _store.DeleteIndex(chainId, hash);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void ForkBlockIndexes(
+            Guid sourceChainId,
+            Guid destinationChainId,
+            HashDigest<SHA256> branchPoint)
+        {
+            _store.ForkBlockIndexes(sourceChainId, destinationChainId, branchPoint);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<Address> ListAddresses(Guid chainId)
+        {
+            return _store.ListAddresses(chainId);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+            ListAllStateReferences(
+            Guid chainId,
+            long lowestIndex = 0,
+            long highestIndex = long.MaxValue)
+        {
+            return _store.ListAllStateReferences(chainId, lowestIndex, highestIndex);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void StageTransactionIds(IImmutableSet<TxId> txids)
+        {
+            _store.StageTransactionIds(txids);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public void UnstageTransactionIds(ISet<TxId> txids)
+        {
+            _store.UnstageTransactionIds(txids);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<TxId> IterateStagedTransactionIds()
+        {
+            return _store.IterateStagedTransactionIds();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<TxId> IterateTransactionIds()
+        {
+            return _store.IterateTransactionIds();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public Transaction<T> GetTransaction<T>(TxId txid)
+            where T : IAction, new()
+        {
+            return _store.GetTransaction<T>(txid);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public bool DeleteTransaction(TxId txid)
+        {
+            return _store.DeleteTransaction(txid);
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
+        {
+            return _store.IterateBlockHashes();
+        }
+
+        /// <inheritdoc cref="IStore"/>
+        public Block<T> GetBlock<T>(HashDigest<SHA256> blockHash)
+            where T : IAction, new()
+        {
+            return _store.GetBlock<T>(blockHash);
+        }
+
+        public void PutTransaction<T>(Transaction<T> tx)
+            where T : IAction, new()
+        {
+            _store.PutTransaction(tx);
             StoreSignerReferences(tx.Id, tx.Nonce, tx.Signer);
             foreach (var updatedAddress in tx.UpdatedAddresses)
             {

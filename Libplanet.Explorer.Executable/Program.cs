@@ -44,7 +44,16 @@ namespace Libplanet.Explorer.Executable
             IStore store;
             if (options.Seeds.Any())
             {
+                // Initialized DefaultStore.
+                store = new DefaultStore(
+                    path: options.StorePath,
+                    flush: false,
+                    readOnly: options.Seeds is null
+                );
+
+                // Warp up store.
                 store = new RichStore(
+                    store,
                     path: options.StorePath,
                     flush: false,
                     readOnly: options.Seeds is null
