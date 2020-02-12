@@ -1,11 +1,9 @@
-using System;
 using System.Linq;
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blockchain;
+using Libplanet.Explorer.Interfaces;
 using Libplanet.Explorer.Store;
-using Libplanet.Store;
 using Libplanet.Tx;
 
 namespace Libplanet.Explorer.GraphTypes
@@ -35,12 +33,12 @@ namespace Libplanet.Explorer.GraphTypes
                 name: "BlockRef",
                 resolve: ctx =>
                 {
-                    var (chain, store) = (ValueTuple<BlockChain<T>, IStore>)ctx.UserContext;
-                    if (store is RichStore richStore)
+                    var blockChainContext = (IBlockChainContext<T>)ctx.UserContext;
+                    if (blockChainContext.Store is RichStore richStore)
                     {
                         return richStore
                             .IterateTxReferences(ctx.Source.Id)
-                            .Select(r => chain[r.Item2]);
+                            .Select(r => blockChainContext.BlockChain[r.Item2]);
                     }
                     else
                     {

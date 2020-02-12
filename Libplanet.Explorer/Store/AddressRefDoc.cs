@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace Libplanet.Explorer.Store
 {
-    public class AddressRefDoc
+    internal class AddressRefDoc
     {
         [BsonId]
         public string Id => AddressString + "_" + TxId.ToHex();

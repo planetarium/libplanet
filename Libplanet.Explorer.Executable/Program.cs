@@ -41,30 +41,23 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            IStore store;
+            bool readOnlyMode = options.Seeds is null;
+
+            // Initialized DefaultStore.
+            IStore store = new DefaultStore(
+                path: options.StorePath,
+                flush: false,
+                readOnly: readOnlyMode
+            );
+
             if (options.Seeds.Any())
             {
-                // Initialized DefaultStore.
-                store = new DefaultStore(
-                    path: options.StorePath,
-                    flush: false,
-                    readOnly: options.Seeds is null
-                );
-
                 // Warp up store.
                 store = new RichStore(
                     store,
                     path: options.StorePath,
                     flush: false,
-                    readOnly: options.Seeds is null
-                );
-            }
-            else
-            {
-                store = new DefaultStore(
-                    path: options.StorePath,
-                    flush: false,
-                    readOnly: options.Seeds is null
+                    readOnly: readOnlyMode
                 );
             }
 
