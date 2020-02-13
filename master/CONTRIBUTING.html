@@ -98,18 +98,13 @@ except you can speak Korean instead English here.</li>
 except you can speak Korean instead English here.</li>
 </ul>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>You need <a href="https://dot.net/">.NET Core</a> SDK 2.2+ which provides the latest C# compiler and .NET VM.
+<p>You need <a href="https://dot.net/">.NET Core</a> SDK 3.1+ which provides the latest C# compiler and .NET VM.
 Read and follow the instruction to install .NET Core SDK on
 the <a href="https://dotnet.microsoft.com/download">.NET Core downloads page</a>.
 FYI if you use macOS and <a href="https://brew.sh/">Homebrew</a> you can install it by
 <code>brew cask install dotnet-sdk</code> command.</p>
-<p>Make sure that your .NET Core SDK is 2.2 or higher.  You could show
+<p>Make sure that your .NET Core SDK is 3.1 or higher.  You could show
 the version you are using by <code>dotnet --info</code> command.</p>
-<p>If it's Windows please check if the environment variable named
-<code>MSBuildSDKsPath</code> refers to the proper version of .NET Core SDK.
-If you use Visual Studio 2017 (not 2019) you can only use .NET Core 2.2.105
-at the highest.  .NET Core SDK higher than the version 2.2.105 is not
-recognized by Visual Studio 2017.</p>
 <p>Although it is not necessary, you should install a proper IDE for .NET
 (or an <a href="http://www.omnisharp.net/">OmniSharp</a> extension for your favorite editor — except it takes
 hours to properly configure and integrate with your editor).
@@ -206,21 +201,6 @@ quite a long time.  This will print like below:</p>
 <p>All benchmark code is placed under <em>Libplanet.Benchmarks</em> project.
 As our benchmarks are based on <a href="https://benchmarkdotnet.org/">BenchmarkDotNet</a>, please read their official
 docs for details.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<h3 id="i-got-the-error-like-fody-is-only-supported-on-msbuild-16-and-above-current-version-15">I got the error like <code>Fody is only supported on MSBuild 16 and above. Current version: 15.</code></h3>
-<p>Your .NET Core SDK version probably is outdated.  Our recommended version is: <em>2.2.300</em>.</p>
-<ol>
-<li><p>Download the lastest (as of June 2019) .NET Core SDK binary from the official website:</p>
-<p><a href="https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300">https://dotnet.microsoft.com/download/dotnet-core/2.2#sdk-2.2.300</a></p>
-</li>
-<li><p>Extract <em>.tar.gz</em> in proper directory.</p>
-</li>
-<li><p>You could permanently add the following commands into your shell profile.</p>
-<pre><code>export DOTNET_ROOT=&quot;$YOUR_DOTNET_INSTALLATION_PATH/dotnet&quot;
-export PATH=&quot;$PATH:$DOTNET_ROOT&quot;
-</code></pre>
-</li>
-</ol>
 </article>
           </div>
           
