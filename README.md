@@ -26,7 +26,7 @@ It has competitive advantages over other solutions for decentralized gaming:
  -  *Token-independent*: Unlike almost every blockchain system, it does not
     force users to create and deal with yet-another-cryptocurrency. Your
     game can be free to play, and enjoyed by regular gamers.
-    
+
 To learn more about why Planetarium is creating technology for fully
 decentralized games, please refer to our [blog post].
 

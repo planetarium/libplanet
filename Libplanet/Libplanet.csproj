@@ -23,7 +23,7 @@ https://docs.libplanet.io/</Description>
     <!-- FIXME: The above summary/description should be rewritten. -->
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <PackageDocumentationFile>README.md</PackageDocumentationFile>
     <Authors>Hong Minhee; Swen Mun</Authors>
     <Company>Planetarium</Company>
@@ -38,18 +38,13 @@ https://docs.libplanet.io/</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.2</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;NU5104;MEN001</NoWarn>
     <!-- FIXME: CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(MSBuildRuntimeType)'!='Mono' And
-                             '$(MSBuildVersion)'&gt;='16.3.0'">
-    <TargetFrameworks>netstandard2.0;netcoreapp3.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -64,6 +59,7 @@ https://docs.libplanet.io/</Description>
   </ItemGroup>
 
   <ItemGroup>
+    <!-- TODO: We should replace AsyncEnumerator with C# 8.0's async streams -->
     <PackageReference Include="AsyncEnumerator" Version="2.2.2" />
     <PackageReference Include="Bencodex" Version="0.3.0-dev.1b62adcbf3bf91d1a96787f4447dc6cc518d9734" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
