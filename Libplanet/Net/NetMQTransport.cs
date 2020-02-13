@@ -420,6 +420,28 @@ namespace Libplanet.Net
             }
         }
 
+        public void RemovePeer(BoundPeer boundPeer)
+        {
+            if (Protocol is null)
+            {
+                throw new ArgumentNullException(nameof(Protocol));
+            }
+
+            try
+            {
+                var kp = (KademliaProtocol)Protocol;
+                kp.RemovePeer(boundPeer);
+                _logger.Debug("Removed peer {Peer}.", boundPeer);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(
+                    e,
+                    $"Unexpected exception occurred during {nameof(AddPeersAsync)}().");
+                throw;
+            }
+        }
+
         public async Task<BoundPeer> FindSpecificPeerAsync(
             Address target,
             Address searchAddress,

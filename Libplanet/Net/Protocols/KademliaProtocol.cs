@@ -277,6 +277,12 @@ namespace Libplanet.Net.Protocols
         }
 #pragma warning restore CS4014
 
+        public void RemovePeer(BoundPeer peer)
+        {
+            _logger.Debug("Removing peer {Peer} from table.", peer);
+            _routing.RemovePeer(peer);
+        }
+
         public string Trace()
         {
             var trace = $"Routing table of [{_address.ToHex()}]\n";
@@ -461,12 +467,6 @@ namespace Libplanet.Net.Protocols
             }
 
             _routing.AddPeer(peer);
-        }
-
-        private void RemovePeer(BoundPeer peer)
-        {
-            _logger.Debug("Removing peer {Peer} from table.", peer);
-            _routing.RemovePeer(peer);
         }
 
         /// <summary>

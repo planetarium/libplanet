@@ -2099,6 +2099,12 @@ namespace Libplanet.Net
                     _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
                     await Task.Delay(100, cancellationToken);
                 }
+                catch (InvalidGenesisBlockException)
+                {
+                    _logger.Debug("Peer[{Peer}] has the genesis block of other network", peer);
+                    var netMQTransport = (NetMQTransport)Transport;
+                    netMQTransport.RemovePeer(peer);
+                }
                 catch (Exception e)
                 {
                     var msg =
