@@ -1,7 +1,7 @@
 <Project
-  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-  Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    Sdk="Microsoft.NET.Sdk">
+<PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -33,7 +33,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -54,7 +53,6 @@
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-    <PackageReference Include="Xunit.SkippableFact" Version="1.3.12" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">
@@ -62,18 +60,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
-    <ProjectReference Include="..\Libplanet.Stun\Libplanet.Stun.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(MSBuildRuntimeType)'=='Mono' ">
-    <!--
-    As Mono has no proper AppDomain, we prevent it on Mono.
-    This works around Xunit's fatal error on Mono.
-    -->
-    <Content Include="xunit.runner.mono.json">
-      <Link>xunit.runner.json</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Libplanet.RocksDBStore\Libplanet.RocksDBStore.csproj" />
+    <ProjectReference Include="..\Libplanet.Tests\Libplanet.Tests.csproj" />
   </ItemGroup>
 </Project>
