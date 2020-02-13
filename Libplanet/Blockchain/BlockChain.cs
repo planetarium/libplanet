@@ -517,6 +517,8 @@ namespace Libplanet.Blockchain
         /// <see cref="Transaction{T}.Nonce"/> is different from
         /// <see cref="GetNextTxNonce"/> result of the
         /// <see cref="Transaction{T}.Signer"/>.</exception>
+        /// <exception cref="InvalidGenesisBlockException">Thrown when given block's
+        /// <see cref="Block{T}.Hash"/> doesn't match to <see cref="GenesisHash"/>.</exception>
         public void Append(Block<T> block, DateTimeOffset currentTime) =>
             Append(block, currentTime, evaluateActions: true, renderActions: true);
 
