@@ -169,11 +169,15 @@ namespace Libplanet.Net
         /// <param name="peers">A list of peers to download blocks.</param>
         /// <param name="blockFetcher">A function to take demands and a peer, and then
         /// download corresponding blocks.</param>
+        /// <param name="singleSessionTimeout">A maximum time to wait each single call of
+        /// <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied demands
+        /// are automatically retried to fetch from other peers.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
         public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
-            BlockFetcher blockFetcher
+            BlockFetcher blockFetcher,
+            TimeSpan singleSessionTimeout
         )
         {
             if (!peers.Any())
@@ -191,9 +195,9 @@ namespace Libplanet.Net
                         IList<HashDigest<SHA256>> hashDigests =
                             hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
                         await pool.SpawnAsync(
-                            async (peer, ct) =>
+                            async (peer, cancellationToken) =>
                             {
-                                ct.ThrowIfCancellationRequested();
+                                cancellationToken.ThrowIfCancellationRequested();
                                 var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
                                 try
                                 {
@@ -202,10 +206,18 @@ namespace Libplanet.Net
                                         hashDigests,
                                         peer
                                     );
+                                    var timeout = new CancellationTokenSource(singleSessionTimeout);
+                                    var timeoutToken = timeout.Token;
+                                    timeoutToken.Register(() =>
+                                        _logger.Debug(
+                                            "Timed out to wait a response from {Peer}.",
+                                            peer
+                                        )
+                                    );
+                                    cancellationToken.Register(() => timeout.Cancel());
                                     await blockFetcher(peer, hashDigests).ForEachAsync(
                                         async block =>
                                         {
-                                            yield.CancellationToken.ThrowIfCancellationRequested();
                                             _logger.Debug(
                                                 "Downloaded a block #{BlockIndex} {BlockHash} " +
                                                 "from {Peer}.",
@@ -213,6 +225,7 @@ namespace Libplanet.Net
                                                 block.Hash,
                                                 peer
                                             );
+
                                             if (Satisfy(block))
                                             {
                                                 await yield.ReturnAsync(
@@ -222,7 +235,7 @@ namespace Libplanet.Net
 
                                             demands.Remove(block.Hash);
                                         },
-                                        ct
+                                        timeoutToken
                                     );
                                 }
                                 finally
@@ -252,6 +265,30 @@ namespace Libplanet.Net
                 );
             });
         }
+
+        /// <summary>
+        /// Downloads blocks from <paramref name="peers"/> in parallel,
+        /// using the given <paramref name="blockFetcher"/> function.
+        /// </summary>
+        /// <param name="peers">A list of peers to download blocks.</param>
+        /// <param name="blockFetcher">A function to take demands and a peer, and then
+        /// download corresponding blocks.</param>
+        /// <param name="millisecondsSingleSessionTimeout">A maximum time in milliseconds to wait
+        /// each single call of <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied
+        /// demands are automatically retried to fetch from other peers.  10 seconds by default.
+        /// </param>
+        /// <returns>An async enumerable that yields pairs of a fetched block and its source
+        /// peer.  It terminates when all demands are satisfied.</returns>
+        public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
+            IReadOnlyList<TPeer> peers,
+            BlockFetcher blockFetcher,
+            int millisecondsSingleSessionTimeout = 10000
+        ) =>
+            Complete(
+                peers,
+                blockFetcher,
+                TimeSpan.FromMilliseconds(millisecondsSingleSessionTimeout)
+            );
 
         private void Demand(HashDigest<SHA256> blockHash, bool retry)
         {

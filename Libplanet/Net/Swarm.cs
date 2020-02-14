@@ -537,33 +537,18 @@ namespace Libplanet.Net
 
                     await blockCompletion.Complete(
                         peers: peersWithHeight.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: (peer, hashes) =>
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
-                            _logger.Information(
-                                "Try to download blocks from {EndPoint}@{Address}...",
-                                peer.EndPoint,
-                                peer.Address.ToHex()
-                            );
-
-                            // TODO: catch exceptions
-                            return new AsyncEnumerable<Block<T>>(async yield =>
-                            {
-                                yield.CancellationToken.ThrowIfCancellationRequested();
-                                await GetBlocksAsync(peer, hashes).ForEachAsync(
-                                    async block =>
-                                    {
-                                        yield.CancellationToken.ThrowIfCancellationRequested();
-                                        await yield.ReturnAsync(block);
-                                    },
-                                    cancellationToken: yield.CancellationToken
-                                );
-                            });
-                        }
+                        blockFetcher: GetBlocksAsync
                     ).ForEachAsync(
                         pair =>
                         {
+                            _logger.Verbose("Does ForEachAsync work? {0}", pair);
                             pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
+                            _logger.Verbose(
+                                "Got #{BlockIndex} {BlockHash} from {Pair}.",
+                                block.Index,
+                                block.Hash,
+                                sourcePeer
+                            );
                             cancellationToken.ThrowIfCancellationRequested();
 
                             if (block.Index == 0 && !block.Hash.Equals(workspace.Genesis.Hash))
@@ -895,6 +880,12 @@ namespace Libplanet.Net
         {
             return new AsyncEnumerable<Block<T>>(async yield =>
             {
+                _logger.Information(
+                    "Try to download blocks from {EndPoint}@{Address}...",
+                    peer.EndPoint,
+                    peer.Address.ToHex()
+                );
+
                 CancellationToken yieldToken = yield.CancellationToken;
                 var blockHashesAsArray =
                     blockHashes as HashDigest<SHA256>[] ??
@@ -923,16 +914,20 @@ namespace Libplanet.Net
 
                 foreach (Message message in replies)
                 {
+                    yieldToken.ThrowIfCancellationRequested();
+
                     if (message is Messages.Blocks blockMessage)
                     {
                         IList<byte[]> payloads = blockMessage.Payloads;
                         _logger.Debug(
-                            "Received {0} blocks from {1}.",
+                            "Received {Number} blocks from {Peer}.",
                             payloads.Count,
-                            message.Remote.PublicKey.ToAddress().ToHex());
+                            message.Remote);
                         foreach (byte[] payload in payloads)
                         {
+                            yieldToken.ThrowIfCancellationRequested();
                             Block<T> block = Block<T>.Deserialize(payload);
+
                             await yield.ReturnAsync(block);
                         }
                     }
@@ -943,6 +938,12 @@ namespace Libplanet.Net
                             $"but {message}");
                     }
                 }
+
+                _logger.Information(
+                    "Downloaded blocks from {EndPoint}@{Address}.",
+                    peer.EndPoint,
+                    peer.Address.ToHex()
+                );
             });
         }
 

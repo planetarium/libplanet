@@ -474,15 +474,10 @@ namespace Libplanet.Net
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 Interlocked.Increment(ref _requestCount);
+                cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.AddAsync(
-                    new MessageRequest(
-                        reqId,
-                        message,
-                        peer,
-                        now,
-                        timeout,
-                        expectedResponses,
-                        tcs)
+                    new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
+                    cancellationToken
                 );
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to {PeerAddress}: {Message}; " +
