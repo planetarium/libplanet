@@ -132,6 +132,7 @@ namespace Libplanet.Net
                 workers,
                 host,
                 listenPort,
+                BlockChain.GenesisHash,
                 iceServers,
                 differentAppProtocolVersionEncountered,
                 ProcessMessageHandler,
@@ -1462,7 +1463,7 @@ namespace Libplanet.Net
             {
                 case Ping ping:
                     {
-                        _logger.Debug($"Ping received.");
+                        _logger.Debug("Ping received.");
 
                         Pong pong = new Pong(BlockChain.Tip?.Index)
                         {

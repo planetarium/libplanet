@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -33,6 +34,7 @@ namespace Libplanet.Net
         private readonly AppProtocolVersion _appProtocolVersion;
         private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
         private readonly string _host;
+        private readonly HashDigest<SHA256> _genesisHash;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
 
@@ -71,6 +73,7 @@ namespace Libplanet.Net
             int workers,
             string host,
             int? listenPort,
+            HashDigest<SHA256> genesisHash,
             IEnumerable<IceServer> iceServers,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             EventHandler<Message> processMessageHandler,
@@ -83,7 +86,9 @@ namespace Libplanet.Net
             _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _listenPort = listenPort;
+            _genesisHash = genesisHash;
             _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
+
             ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
@@ -621,6 +626,14 @@ namespace Libplanet.Net
                     ValidateSender(message.Remote);
                 }
 
+                if (!message.GenesisHash.Equals(_genesisHash))
+                {
+                    var msg = $"Ignore peer[{message.Remote.Address}] having other" +
+                              $" genesis block[{message.GenesisHash}].";
+                    _logger.Debug(msg);
+                    return;
+                }
+
                 try
                 {
                     Protocol.ReceiveMessage(message);
@@ -688,7 +701,7 @@ namespace Libplanet.Net
 
             string identityHex = ByteUtil.Hex(msg.Identity);
             _logger.Debug("Reply {Message} to {Identity}...", msg, identityHex);
-            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer);
+            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer, _genesisHash);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
@@ -822,7 +835,7 @@ namespace Libplanet.Net
                 req.Message,
                 req.Peer
             );
-            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer, _genesisHash);
             var result = new List<Message>();
             TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
             try

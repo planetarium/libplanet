@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -308,6 +309,33 @@ namespace Libplanet.Tests.Net.Protocols
             await transportC.StopAsync(TimeSpan.Zero);
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task IgnoreMessageFromOtherNetwork()
+        {
+            var genesisHashA = TestUtils.MakeRandomHashDigest<SHA256>();
+            var genesisHashB = TestUtils.MakeRandomHashDigest<SHA256>();
+
+            var transportA = CreateTestTransport(genesisHash: genesisHashA);
+            var transportB = CreateTestTransport(genesisHash: genesisHashB);
+            var transportC = CreateTestTransport(genesisHash: genesisHashA);
+
+            await StartTestTransportAsync(transportA);
+            await StartTestTransportAsync(transportB);
+            await StartTestTransportAsync(transportC);
+
+            await transportA.BootstrapAsync(
+                new[] { transportB.AsPeer, transportC.AsPeer },
+                TimeSpan.FromSeconds(3),
+                TimeSpan.FromSeconds(3));
+
+            Assert.DoesNotContain(transportB.AsPeer, transportA.Protocol.Peers);
+            Assert.Contains(transportC.AsPeer, transportA.Protocol.Peers);
+
+            await transportA.StopAsync(TimeSpan.Zero);
+            await transportB.StopAsync(TimeSpan.Zero);
+            await transportC.StopAsync(TimeSpan.Zero);
+        }
+
         [Theory(Timeout = 2 * Timeout)]
         [InlineData(1)]
         [InlineData(5)]
@@ -478,7 +506,8 @@ namespace Libplanet.Tests.Net.Protocols
             bool blockBroadcast = false,
             int? tableSize = null,
             int? bucketSize = null,
-            TimeSpan? networkDelay = null)
+            TimeSpan? networkDelay = null,
+            HashDigest<SHA256>? genesisHash = null)
         {
             return new TestTransport(
                 _transports,
@@ -486,7 +515,8 @@ namespace Libplanet.Tests.Net.Protocols
                 blockBroadcast,
                 tableSize,
                 bucketSize,
-                networkDelay);
+                networkDelay,
+                genesisHash ?? default);
         }
 
         private async Task<Task> StartTestTransportAsync(

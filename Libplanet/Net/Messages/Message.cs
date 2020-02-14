@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using NetMQ;
@@ -89,6 +90,8 @@ namespace Libplanet.Net.Messages
 
         public Peer Remote { get; set; }
 
+        public HashDigest<SHA256> GenesisHash { get; set; }
+
         protected abstract MessageType Type { get; }
 
         protected abstract IEnumerable<NetMQFrame> DataFrames { get; }
@@ -100,12 +103,13 @@ namespace Libplanet.Net.Messages
                 throw new ArgumentException("Can't parse empty NetMQMessage.");
             }
 
-            // (reply == true)  [type, sign, peer, frames...]
-            // (reply == false) [identity, type, sign, peer, frames...]
-            int headerCount = reply ? 3 : 4;
-            var rawType = (MessageType)raw[headerCount - 3].ConvertToInt32();
-            var peer = raw[headerCount - 2].ToByteArray();
-            byte[] signature = raw[headerCount - 1].ToByteArray();
+            // (reply == true)  [type, peer, sign, genesisHash, frames...]
+            // (reply == false) [identity, type, peer, sign, genesisHash, frames...]
+            int headerCount = reply ? 4 : 5;
+            var rawType = (MessageType)raw[headerCount - 4].ConvertToInt32();
+            var peer = raw[headerCount - 3].ToByteArray();
+            byte[] signature = raw[headerCount - 2].ToByteArray();
+            var genesisHash = raw[headerCount - 1].ConvertToHashDigest<SHA256>();
 
             NetMQFrame[] body = raw.Skip(headerCount).ToArray();
 
@@ -136,6 +140,7 @@ namespace Libplanet.Net.Messages
             var message = (Message)Activator.CreateInstance(
                 type, new[] { body });
             message.Remote = DeserializePeer(peer);
+            message.GenesisHash = genesisHash;
 
             if (!message.Remote.PublicKey.Verify(body.ToByteArray(), signature))
             {
@@ -152,7 +157,10 @@ namespace Libplanet.Net.Messages
             return message;
         }
 
-        public NetMQMessage ToNetMQMessage(PrivateKey key, Peer peer)
+        public NetMQMessage ToNetMQMessage(
+            PrivateKey key,
+            Peer peer,
+            HashDigest<SHA256> genesisHash)
         {
             if (peer is null)
             {
@@ -167,8 +175,11 @@ namespace Libplanet.Net.Messages
                 message.Append(frame);
             }
 
+            var signature = key.Sign(message.ToByteArray());
+
             // Write headers. (inverse order)
-            message.Push(key.Sign(message.ToByteArray()));
+            message.Push(genesisHash.ToByteArray());
+            message.Push(signature);
             message.Push(SerializePeer(peer));
             message.Push((byte)Type);
 

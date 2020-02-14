@@ -161,9 +161,11 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
 
         public static byte[] GetRandomBytes(int size)
         {
-            var random = new System.Random();
             var bytes = new byte[size];
-            random.NextBytes(bytes);
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(bytes);
+            }
 
             return bytes;
         }
@@ -232,6 +234,12 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 timestamp: timestamp,
                 transactions: txs
             );
+        }
+
+        public static HashDigest<T> MakeRandomHashDigest<T>()
+            where T : HashAlgorithm
+        {
+            return new HashDigest<T>(GetRandomBytes(HashDigest<T>.Size));
         }
 
         public static string ToString(BitArray bitArray)

@@ -596,7 +596,7 @@ namespace Libplanet.Tests.Net
                 {
                     var request = new GetBlocks(hashes.Select(pair => pair.Item2), 2);
                     socket.SendMultipartMessage(
-                        request.ToNetMQMessage(privateKey, swarmB.AsPeer)
+                        request.ToNetMQMessage(privateKey, swarmB.AsPeer, chainB.GenesisHash)
                     );
 
                     NetMQMessage response = socket.ReceiveMultipartMessage();
@@ -2589,109 +2589,6 @@ namespace Libplanet.Tests.Net
                 await StopAsync(swarmA);
                 await StopAsync(swarmB);
             }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task DoNotReceiveBlockFromNodeHavingDifferenceGenesisBlock()
-        {
-            var keyA = ByteUtil.ParseHex(
-                "8568eb6f287afedece2c7b918471183db0451e1a61535bb0381cfdf95b85df20");
-            var keyB = ByteUtil.ParseHex(
-                "c34f7498befcc39a14f03b37833f6c7bb78310f1243616524eda70e078b8313c");
-            var keyC = ByteUtil.ParseHex(
-                "941bc2edfab840d79914d80fe3b30840628ac37a5d812d7f922b5d2405a223d3");
-
-            var privateKeyA = new PrivateKey(keyA);
-            var privateKeyB = new PrivateKey(keyB);
-            var privateKeyC = new PrivateKey(keyC);
-
-            var actionsA = new[] { new DumbAction(_fx1.Address1, "1") };
-            var actionsB = new[] { new DumbAction(_fx1.Address1, "2") };
-
-            var genesisBlockA = BlockChain<DumbAction>.MakeGenesisBlock(actionsA, privateKeyA);
-            var genesisBlockB = BlockChain<DumbAction>.MakeGenesisBlock(actionsB, privateKeyB);
-
-            BlockChain<DumbAction>
-                MakeGenesisChain(IStore store, Block<DumbAction> genesisBlock) =>
-                new BlockChain<DumbAction>(new BlockPolicy<DumbAction>(), store, genesisBlock);
-
-            var genesisChainA = MakeGenesisChain(new DefaultStore(null), genesisBlockA);
-            var genesisChainB = MakeGenesisChain(new DefaultStore(null), genesisBlockB);
-            var genesisChainC = MakeGenesisChain(new DefaultStore(null), genesisBlockA);
-
-            var swarmA = CreateSwarm(genesisChainA, privateKeyA);
-            var swarmB = CreateSwarm(genesisChainB, privateKeyB);
-            var swarmC = CreateSwarm(genesisChainC, privateKeyC);
-            try
-            {
-                await StartAsync(swarmA);
-                await StartAsync(swarmB);
-                await StartAsync(swarmC);
-
-                await swarmB.AddPeersAsync(new[] { swarmA.AsPeer }, null);
-                await swarmC.AddPeersAsync(new[] { swarmA.AsPeer }, null);
-
-                var block = await swarmA.BlockChain.MineBlock(swarmA.Address);
-
-                Task.WaitAll(new[]
-                {
-                    Task.Run(() => swarmC.BlockAppended.Wait()),
-                    Task.Run(() => swarmA.BroadcastBlock(block)),
-                });
-
-                Assert.NotEqual(genesisChainA.Genesis, genesisChainB.Genesis);
-                Assert.Equal(genesisChainA.BlockHashes, genesisChainC.BlockHashes);
-                Assert.Equal(2, genesisChainA.Count);
-                Assert.Equal(1, genesisChainB.Count);
-                Assert.Equal(2, genesisChainC.Count);
-
-                Assert.Equal("1", (Text)genesisChainA.GetState(_fx1.Address1));
-                Assert.Equal("2", (Text)genesisChainB.GetState(_fx1.Address1));
-                Assert.Equal("1", (Text)genesisChainC.GetState(_fx1.Address1));
-            }
-            finally
-            {
-                await StopAsync(swarmA);
-                await StopAsync(swarmB);
-                await StopAsync(swarmC);
-
-                swarmA.Dispose();
-                swarmB.Dispose();
-                swarmC.Dispose();
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task ThrowInvalidGenesisException()
-        {
-            var policy = new BlockPolicy<DumbAction>();
-            BlockChain<DumbAction> MakeBlockChain() => TestUtils.MakeBlockChain(
-                policy,
-                new DefaultStore(path: null),
-                null,
-                new PrivateKey());
-
-            var chainA = MakeBlockChain();
-            var chainB = MakeBlockChain();
-            var swarmA = CreateSwarm(chainA);
-            var swarmB = CreateSwarm(chainB);
-
-            await chainB.MineBlock(_fx1.Address1);
-
-            await StartAsync(swarmA);
-            await StartAsync(swarmB);
-
-            await swarmA.AddPeersAsync(new[] { swarmB.AsPeer }, null);
-            Assert.NotEqual(chainA.Genesis, chainB.Genesis);
-            Task t = swarmA.PreloadAsync();
-            await Assert.ThrowsAsync<AggregateException>(async () => await t);
-            var exception = t.Exception.InnerException?.InnerException;
-            Assert.IsType<InvalidGenesisBlockException>(exception);
-
-            await StopAsync(swarmA);
-            await StopAsync(swarmB);
-            swarmA.Dispose();
-            swarmB.Dispose();
         }
 
         [Fact(Timeout = Timeout)]

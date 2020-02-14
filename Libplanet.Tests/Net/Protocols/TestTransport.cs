@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Libplanet.Crypto;
@@ -30,6 +31,7 @@ namespace Libplanet.Tests.Net.Protocols
         private readonly PrivateKey _privateKey;
         private readonly Random _random;
         private readonly bool _blockBroadcast;
+        private readonly HashDigest<SHA256> _genesisHash;
 
         private CancellationTokenSource _swarmCancellationTokenSource;
         private TimeSpan _networkDelay;
@@ -40,7 +42,8 @@ namespace Libplanet.Tests.Net.Protocols
             bool blockBroadcast,
             int? tableSize,
             int? bucketSize,
-            TimeSpan? networkDelay)
+            TimeSpan? networkDelay,
+            HashDigest<SHA256> genesisHash)
         {
             _privateKey = privateKey;
             _blockBroadcast = blockBroadcast;
@@ -58,6 +61,8 @@ namespace Libplanet.Tests.Net.Protocols
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
+            _genesisHash = genesisHash;
+
             Protocol = new KademliaProtocol(
                 this,
                 Address,
@@ -95,7 +100,7 @@ namespace Libplanet.Tests.Net.Protocols
         public async Task StartAsync(
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            _logger.Debug("Starting transport of {Peer}.", AsPeer);
+            _logger.Debug("Starting transport of {Peer}@{GenesisHash}.", AsPeer, _genesisHash);
             _swarmCancellationTokenSource = new CancellationTokenSource();
         }
 #pragma warning restore CS1998
@@ -302,6 +307,7 @@ namespace Libplanet.Tests.Net.Protocols
             var bytes = new byte[10];
             _random.NextBytes(bytes);
             message.Identity = _privateKey.PublicKey.ToAddress().ByteArray.Concat(bytes).ToArray();
+            message.GenesisHash = _genesisHash;
             var sendTime = DateTimeOffset.UtcNow;
             _logger.Debug("Adding request of {Message} of {Identity}.", message, message.Identity);
             await _requests.AddAsync(
@@ -416,6 +422,14 @@ namespace Libplanet.Tests.Net.Protocols
         {
             if (_swarmCancellationTokenSource.IsCancellationRequested)
             {
+                return;
+            }
+
+            if (!message.GenesisHash.Equals(_genesisHash))
+            {
+                var msg = $"Ignore peer[{message.Remote.Address}] having other" +
+                          $" genesis block[{message.GenesisHash}].";
+                _logger.Debug(msg);
                 return;
             }
 

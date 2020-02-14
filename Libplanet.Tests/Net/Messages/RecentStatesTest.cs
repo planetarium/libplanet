@@ -52,6 +52,7 @@ namespace Libplanet.Tests.Net.Messages
                 new PrivateKey().PublicKey.ToAddress()
             ).ToHashSet();
             int accountsCount = accounts.Count;
+            var genesisHash = TestUtils.MakeRandomHashDigest<SHA256>();
             var privKey = new PrivateKey();
 
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -100,8 +101,8 @@ namespace Libplanet.Tests.Net.Messages
             AppProtocolVersion version = AppProtocolVersion.Sign(versionSigner, 1);
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), version);
 
-            NetMQMessage msg = reply.ToNetMQMessage(privKey, peer);
-            const int headerSize = 3;  // type, peer, sig
+            NetMQMessage msg = reply.ToNetMQMessage(privKey, peer, genesisHash);
+            const int headerSize = 4;  // type, peer, sig, genesisHash
             int stateRefsOffset = headerSize + 3;  // blockHash, offsetHash, iteration
             int blockStatesOffset = stateRefsOffset + 1 + (accountsCount * 4);
             Assert.Equal(
@@ -152,7 +153,7 @@ namespace Libplanet.Tests.Net.Messages
                 }
             }
 
-            msg = reply.ToNetMQMessage(privKey, peer);
+            msg = reply.ToNetMQMessage(privKey, peer, genesisHash);
             var parsed = new RecentStates(msg.Skip(headerSize).ToArray());
             Assert.Equal(blockHash, parsed.BlockHash);
             Assert.False(parsed.Missing);
@@ -160,12 +161,12 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(stateRefs, parsed.StateReferences);
 
             RecentStates missing = new RecentStates(blockHash, -1, 1, null, null);
-            msg = missing.ToNetMQMessage(privKey, peer);
+            msg = missing.ToNetMQMessage(privKey, peer, genesisHash);
             Assert.Equal(blockHash, new HashDigest<SHA256>(msg[headerSize].Buffer));
             Assert.Equal(-1, msg[stateRefsOffset].ConvertToInt32());
 
             parsed = new RecentStates(
-                missing.ToNetMQMessage(privKey, peer).Skip(headerSize).ToArray());
+                missing.ToNetMQMessage(privKey, peer, genesisHash).Skip(headerSize).ToArray());
             Assert.Equal(blockHash, parsed.BlockHash);
             Assert.True(parsed.Missing);
         }
