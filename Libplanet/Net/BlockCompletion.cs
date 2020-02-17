@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Nito.AsyncEx;
 using Serilog;
 
 namespace Libplanet.Net
@@ -78,14 +79,8 @@ namespace Libplanet.Net
                             _started && _demands.IsEmpty && _satisfiedBlocks.All(kv =>
                                 kv.Value || chunk.Contains(kv.Key))))
                     {
-                        _logger.Verbose("_satisfiedBlocks.Keys @{keys}", _satisfiedBlocks.Keys);
-                        _logger.Verbose(
-                            "_satisfiedBlocks.Values @{values}",
-                            _satisfiedBlocks.Values
-                        );
-                        _logger.Verbose("chunks: @{chunk}", chunk);
                         await yield.ReturnAsync(chunk.ToImmutableArray());
-                        _logger.Verbose("A chunk of {Window} demands made.", _window);
+                        _logger.Verbose("A chunk of {Window} demands have made.", chunk.Count);
 
                         chunk.Clear();
                     }
@@ -104,7 +99,7 @@ namespace Libplanet.Net
 
                 if (!yield.CancellationToken.IsCancellationRequested && chunk.Count > 0)
                 {
-                    _logger.Verbose("A chunk of {Window} demands made.", chunk.Count);
+                    _logger.Verbose("The last chunk of {Window} demands have made.", chunk.Count);
                     await yield.ReturnAsync(chunk);
                 }
 
@@ -152,8 +147,20 @@ namespace Libplanet.Net
                 return true;
             }
 
+            if (_satisfiedBlocks.ContainsKey(block.Hash))
+            {
+                _logger.Verbose(
+                    "The block #{BlockIndex} {BlockHash} is already complete. " +
+                    "(Remained incomplete demands: {IncompleteDemands})",
+                    block.Index,
+                    block.Hash,
+                    _demands.Count + _satisfiedBlocks.Count(kv => !kv.Value)
+                );
+                return false;
+            }
+
             _logger.Verbose(
-                "The block #{BlockIndex} {BlockHash} is already complete. " +
+                "The block #{BlockIndex} {BlockHash} has never demanded. " +
                 "(Remained incomplete demands: {IncompleteDemands})",
                 block.Index,
                 block.Hash,
@@ -188,9 +195,18 @@ namespace Libplanet.Net
             PeerPool pool = new PeerPool(peers);
             return new AsyncEnumerable<Tuple<Block<TAction>, TPeer>>(async yield =>
             {
+                var queue = new AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>>();
+                var completion =
+                    new ConcurrentDictionary<HashDigest<SHA256>, bool>(_satisfiedBlocks);
+
                 await EnumerateChunks().ForEachAsync(
                     async hashes =>
                     {
+                        foreach (HashDigest<SHA256> hash in hashes)
+                        {
+                            completion.TryAdd(hash, false);
+                        }
+
                         yield.CancellationToken.ThrowIfCancellationRequested();
                         IList<HashDigest<SHA256>> hashDigests =
                             hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
@@ -215,7 +231,7 @@ namespace Libplanet.Net
                                         )
                                     );
                                     cancellationToken.Register(() => timeout.Cancel());
-                                    await blockFetcher(peer, hashDigests).ForEachAsync(
+                                    Task fetch = blockFetcher(peer, hashDigests).ForEachAsync(
                                         async block =>
                                         {
                                             _logger.Debug(
@@ -228,8 +244,9 @@ namespace Libplanet.Net
 
                                             if (Satisfy(block))
                                             {
-                                                await yield.ReturnAsync(
-                                                    new Tuple<Block<TAction>, TPeer>(block, peer)
+                                                await queue.EnqueueAsync(
+                                                    Tuple.Create(block, peer),
+                                                    yield.CancellationToken
                                                 );
                                             }
 
@@ -237,6 +254,29 @@ namespace Libplanet.Net
                                         },
                                         timeoutToken
                                     );
+
+                                    try
+                                    {
+                                        await fetch;
+                                    }
+                                    catch (OperationCanceledException e)
+                                    {
+                                        if (cancellationToken.IsCancellationRequested)
+                                        {
+                                            _logger.Error(
+                                                e,
+                                                "A blockFetcher job (peer: {Peer}) is cancelled.",
+                                                peer
+                                            );
+                                            throw;
+                                        }
+
+                                        _logger.Debug(
+                                            e,
+                                            "Timed out to wait a response from {Peer}.",
+                                            peer
+                                        );
+                                    }
                                 }
                                 finally
                                 {
@@ -263,6 +303,31 @@ namespace Libplanet.Net
                     },
                     yield.CancellationToken
                 );
+
+                while (!completion.All(kv => kv.Value))
+                {
+                    Tuple<Block<TAction>, TPeer> pair;
+                    try
+                    {
+                        pair = await queue.DequeueAsync(yield.CancellationToken);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        break;
+                    }
+
+                    await yield.ReturnAsync(pair);
+                    _logger.Verbose(
+                        "Completed a block {BlockIndex} {BlockHash} from {Peer}.",
+                        pair.Item1.Index,
+                        pair.Item1.Hash,
+                        pair.Item2
+                    );
+                    completion[pair.Item1.Hash] = true;
+                }
+
+                _logger.Verbose("Completed all blocks ({Number}).", completion.Count);
+                yield.Break();
             });
         }
 
