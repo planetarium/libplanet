@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Nito.AsyncEx;
@@ -42,7 +42,8 @@ namespace Libplanet.Net
 
         public delegate IAsyncEnumerable<Block<TAction>> BlockFetcher(
             TPeer peer,
-            IEnumerable<HashDigest<SHA256>> blockHashes
+            IEnumerable<HashDigest<SHA256>> blockHashes,
+            CancellationToken cancellationToken
         );
 
         public void Demand(HashDigest<SHA256> blockHash) =>
@@ -51,62 +52,63 @@ namespace Libplanet.Net
         public void Demand(IEnumerable<HashDigest<SHA256>> blockHashes) =>
             Demand(blockHashes, retry: false);
 
-        public IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>> EnumerateChunks() =>
-            new AsyncEnumerable<IEnumerable<HashDigest<SHA256>>>(async yield =>
+        public async IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>> EnumerateChunks(
+            [EnumeratorCancellation] CancellationToken cancellationToken = default
+        )
+        {
+            var chunk = new List<HashDigest<SHA256>>(capacity: _window);
+            bool QueuedDemandCompleted() =>
+                _started && _demands.IsEmpty && _satisfiedBlocks.All(kv => kv.Value);
+            while (!(cancellationToken.IsCancellationRequested ||
+                     QueuedDemandCompleted()))
             {
-                var chunk = new List<HashDigest<SHA256>>(capacity: _window);
-                bool QueuedDemandCompleted() =>
-                    _started && _demands.IsEmpty && _satisfiedBlocks.All(kv => kv.Value);
-                while (!(yield.CancellationToken.IsCancellationRequested ||
-                         QueuedDemandCompleted()))
+                cancellationToken.ThrowIfCancellationRequested();
+                _logger.Verbose(
+                    "Waiting a demand enqueued...\n" +
+                    "Demands in the buffer: {DemandCount}.\n" +
+                    "Incomplete downloads: {IncompleteDownloads}.",
+                    chunk.Count,
+                    _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
+                );
+
+                await _demandEnqueued.WaitAsync(100, cancellationToken);
+                if (_demands.TryDequeue(out HashDigest<SHA256> demand))
                 {
-                    yield.CancellationToken.ThrowIfCancellationRequested();
+                    chunk.Add(demand);
+                }
+
+                if (chunk.Count >= _window || (
+                        _started && _demands.IsEmpty && _satisfiedBlocks.All(kv =>
+                            kv.Value || chunk.Contains(kv.Key))))
+                {
+                    yield return chunk.ToImmutableArray();
+                    _logger.Verbose("A chunk of {Window} demands have made.", chunk.Count);
+
+                    chunk.Clear();
+                }
+                else
+                {
                     _logger.Verbose(
-                        "Waiting a demand enqueued...\n" +
-                        "Demands in the buffer: {DemandCount}.\n" +
-                        "Incomplete downloads: {IncompleteDownloads}.",
+                        "The number of buffered demands: {DemandCount}.\n" +
+                        "The number of demands in the backlog: {BacklogCount}.\n" +
+                        "The number of incomplete downloads: {IncompleteDownloads}.",
                         chunk.Count,
+                        _demands.Count,
                         _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
                     );
-
-                    await _demandEnqueued.WaitAsync(100, yield.CancellationToken);
-                    if (_demands.TryDequeue(out HashDigest<SHA256> demand))
-                    {
-                        chunk.Add(demand);
-                    }
-
-                    if (chunk.Count >= _window || (
-                            _started && _demands.IsEmpty && _satisfiedBlocks.All(kv =>
-                                kv.Value || chunk.Contains(kv.Key))))
-                    {
-                        await yield.ReturnAsync(chunk.ToImmutableArray());
-                        _logger.Verbose("A chunk of {Window} demands have made.", chunk.Count);
-
-                        chunk.Clear();
-                    }
-                    else
-                    {
-                        _logger.Verbose(
-                            "The number of buffered demands: {DemandCount}.\n" +
-                            "The number of demands in the backlog: {BacklogCount}.\n" +
-                            "The number of incomplete downloads: {IncompleteDownloads}.",
-                            chunk.Count,
-                            _demands.Count,
-                            _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
-                        );
-                    }
                 }
+            }
 
-                if (!yield.CancellationToken.IsCancellationRequested && chunk.Count > 0)
-                {
-                    _logger.Verbose("The last chunk of {Window} demands have made.", chunk.Count);
-                    await yield.ReturnAsync(chunk);
-                }
+            if (!cancellationToken.IsCancellationRequested && chunk.Count > 0)
+            {
+                _logger.Verbose("The last chunk of {Window} demands have made.", chunk.Count);
+                yield return chunk;
+            }
 
-                _logger.Verbose("The stream of demand chunks finished.");
+            _logger.Verbose("The stream of demand chunks finished.");
 
-                yield.CancellationToken.ThrowIfCancellationRequested();
-            });
+            cancellationToken.ThrowIfCancellationRequested();
+        }
 
         [Pure]
         public bool Satisfies(HashDigest<SHA256> blockHash, bool ignoreTransientCompletions = false)
@@ -179,12 +181,15 @@ namespace Libplanet.Net
         /// <param name="singleSessionTimeout">A maximum time to wait each single call of
         /// <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied demands
         /// are automatically retried to fetch from other peers.</param>
+        /// <param name="cancellationToken">A cancellation token to observe while waiting
+        /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
-        public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
+        public async IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher,
-            TimeSpan singleSessionTimeout
+            TimeSpan singleSessionTimeout,
+            [EnumeratorCancellation] CancellationToken cancellationToken = default
         )
         {
             if (!peers.Any())
@@ -192,143 +197,134 @@ namespace Libplanet.Net
                 throw new ArgumentException("The list of peers must not be empty.", nameof(peers));
             }
 
-            PeerPool pool = new PeerPool(peers);
-            return new AsyncEnumerable<Tuple<Block<TAction>, TPeer>>(async yield =>
+            var pool = new PeerPool(peers);
+            var queue = new AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>>();
+            var completion =
+                new ConcurrentDictionary<HashDigest<SHA256>, bool>(_satisfiedBlocks);
+
+            await foreach (var hashes in EnumerateChunks(cancellationToken))
             {
-                var queue = new AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>>();
-                var completion =
-                    new ConcurrentDictionary<HashDigest<SHA256>, bool>(_satisfiedBlocks);
+                cancellationToken.ThrowIfCancellationRequested();
+                IList<HashDigest<SHA256>> hashDigests =
+                    hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
 
-                await EnumerateChunks().ForEachAsync(
-                    async hashes =>
-                    {
-                        foreach (HashDigest<SHA256> hash in hashes)
-                        {
-                            completion.TryAdd(hash, false);
-                        }
-
-                        yield.CancellationToken.ThrowIfCancellationRequested();
-                        IList<HashDigest<SHA256>> hashDigests =
-                            hashes is IList<HashDigest<SHA256>> l ? l : hashes.ToList();
-                        await pool.SpawnAsync(
-                            async (peer, cancellationToken) =>
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
-                                try
-                                {
-                                    _logger.Debug(
-                                        "Request blocks {BlockHashes} to {Peer}...",
-                                        hashDigests,
-                                        peer
-                                    );
-                                    var timeout = new CancellationTokenSource(singleSessionTimeout);
-                                    var timeoutToken = timeout.Token;
-                                    timeoutToken.Register(() =>
-                                        _logger.Debug(
-                                            "Timed out to wait a response from {Peer}.",
-                                            peer
-                                        )
-                                    );
-                                    cancellationToken.Register(() => timeout.Cancel());
-                                    Task fetch = blockFetcher(peer, hashDigests).ForEachAsync(
-                                        async block =>
-                                        {
-                                            _logger.Debug(
-                                                "Downloaded a block #{BlockIndex} {BlockHash} " +
-                                                "from {Peer}.",
-                                                block.Index,
-                                                block.Hash,
-                                                peer
-                                            );
-
-                                            if (Satisfy(block))
-                                            {
-                                                await queue.EnqueueAsync(
-                                                    Tuple.Create(block, peer),
-                                                    yield.CancellationToken
-                                                );
-                                            }
-
-                                            demands.Remove(block.Hash);
-                                        },
-                                        timeoutToken
-                                    );
-
-                                    try
-                                    {
-                                        await fetch;
-                                    }
-                                    catch (OperationCanceledException e)
-                                    {
-                                        if (cancellationToken.IsCancellationRequested)
-                                        {
-                                            _logger.Error(
-                                                e,
-                                                "A blockFetcher job (peer: {Peer}) is cancelled.",
-                                                peer
-                                            );
-                                            throw;
-                                        }
-
-                                        _logger.Debug(
-                                            e,
-                                            "Timed out to wait a response from {Peer}.",
-                                            peer
-                                        );
-                                    }
-                                }
-                                finally
-                                {
-                                    if (demands.Any())
-                                    {
-                                        _logger.Verbose(
-                                            "Fetched blocks from {Peer}, but there are still " +
-                                            "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
-                                            "enqueue them again: {UnsatisfiedDemands}.",
-                                            peer,
-                                            demands.Count,
-                                            demands
-                                        );
-                                        Demand(demands, retry: true);
-                                    }
-                                    else
-                                    {
-                                        _logger.Verbose("Fetched blocks from {Peer}.", peer);
-                                    }
-                                }
-                            },
-                            cancellationToken: yield.CancellationToken
-                        );
-                    },
-                    yield.CancellationToken
-                );
-
-                while (!completion.All(kv => kv.Value))
+                foreach (HashDigest<SHA256> hash in hashDigests)
                 {
-                    Tuple<Block<TAction>, TPeer> pair;
-                    try
-                    {
-                        pair = await queue.DequeueAsync(yield.CancellationToken);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        break;
-                    }
-
-                    await yield.ReturnAsync(pair);
-                    _logger.Verbose(
-                        "Completed a block {BlockIndex} {BlockHash} from {Peer}.",
-                        pair.Item1.Index,
-                        pair.Item1.Hash,
-                        pair.Item2
-                    );
-                    completion[pair.Item1.Hash] = true;
+                    completion.TryAdd(hash, false);
                 }
 
-                _logger.Verbose("Completed all blocks ({Number}).", completion.Count);
-                yield.Break();
-            });
+                cancellationToken.ThrowIfCancellationRequested();
+                await pool.SpawnAsync(
+                    async (peer, ct) =>
+                    {
+                        ct.ThrowIfCancellationRequested();
+                        var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
+                        try
+                        {
+                            _logger.Debug(
+                                "Request blocks {BlockHashes} to {Peer}...",
+                                hashDigests,
+                                peer
+                            );
+                            var timeout = new CancellationTokenSource(singleSessionTimeout);
+                            CancellationToken timeoutToken = timeout.Token;
+                            timeoutToken.Register(() =>
+                                _logger.Debug("Timed out to wait a response from {Peer}.", peer)
+                            );
+                            ct.Register(() => timeout.Cancel());
+
+                            try
+                            {
+                                ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
+                                    blockFetcher(peer, hashDigests, timeoutToken)
+                                        .WithCancellation(timeoutToken);
+                                await foreach (Block<TAction> block in blocks)
+                                {
+                                    _logger.Debug(
+                                        "Downloaded a block #{BlockIndex} {BlockHash} " +
+                                        "from {Peer}.",
+                                        block.Index,
+                                        block.Hash,
+                                        peer
+                                    );
+
+                                    if (Satisfy(block))
+                                    {
+                                        await queue.EnqueueAsync(
+                                            Tuple.Create(block, peer),
+                                            cancellationToken
+                                        );
+                                    }
+
+                                    demands.Remove(block.Hash);
+                                }
+                            }
+                            catch (OperationCanceledException e)
+                            {
+                                if (ct.IsCancellationRequested)
+                                {
+                                    _logger.Error(
+                                        e,
+                                        "A blockFetcher job (peer: {Peer}) is cancelled.",
+                                        peer
+                                    );
+                                    throw;
+                                }
+
+                                _logger.Debug(
+                                    e,
+                                    "Timed out to wait a response from {Peer}.",
+                                    peer
+                                );
+                            }
+                        }
+                        finally
+                        {
+                            if (demands.Any())
+                            {
+                                _logger.Verbose(
+                                    "Fetched blocks from {Peer}, but there are still " +
+                                    "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
+                                    "enqueue them again: {UnsatisfiedDemands}.",
+                                    peer,
+                                    demands.Count,
+                                    demands
+                                );
+                                Demand(demands, retry: true);
+                            }
+                            else
+                            {
+                                _logger.Verbose("Fetched blocks from {Peer}.", peer);
+                            }
+                        }
+                    },
+                    cancellationToken: cancellationToken
+                );
+            }
+
+            while (!completion.All(kv => kv.Value))
+            {
+                Tuple<Block<TAction>, TPeer> pair;
+                try
+                {
+                    pair = await queue.DequeueAsync(cancellationToken);
+                }
+                catch (InvalidOperationException)
+                {
+                    break;
+                }
+
+                yield return pair;
+                _logger.Verbose(
+                    "Completed a block {BlockIndex} {BlockHash} from {Peer}.",
+                    pair.Item1.Index,
+                    pair.Item1.Hash,
+                    pair.Item2
+                );
+                completion[pair.Item1.Hash] = true;
+            }
+
+            _logger.Verbose("Completed all blocks ({Number}).", completion.Count);
         }
 
         /// <summary>

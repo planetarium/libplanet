@@ -876,7 +876,9 @@ namespace Libplanet.Net
 
         internal IAsyncEnumerable<Block<T>> GetBlocksAsync(
             BoundPeer peer,
-            IEnumerable<HashDigest<SHA256>> blockHashes)
+            IEnumerable<HashDigest<SHA256>> blockHashes,
+            CancellationToken cancellationToken = default
+        )
         {
             return new AsyncEnumerable<Block<T>>(async yield =>
             {

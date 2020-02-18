@@ -255,7 +255,7 @@ namespace Libplanet.Tests.Net
             _logger.Verbose("Initial demands: {0}", initialDemands);
             IAsyncEnumerable<Tuple<Block<DumbAction>, char>> rv = bc.Complete(
                 new[] { 'A', 'B', 'C', 'D' },
-                (peer, hashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                (peer, hashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
                     var blocksPeerHas = peerBlocks[peer];
                     var sent = new HashSet<HashDigest<SHA256>>();
@@ -302,7 +302,7 @@ namespace Libplanet.Tests.Net
 
             long counter = 0;
             BlockCompletion<char, DumbAction>.BlockFetcher wrongBlockFetcher =
-                (peer, blockHashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
                     // Provides a wrong block (i.e., not corresponding to the demand) at first call,
                     // and then provide a proper block later calls.
@@ -324,7 +324,7 @@ namespace Libplanet.Tests.Net
             bc.Demand(fixture.Select(b => b.Hash));
 
             BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
-                (peer, blockHashes) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
                 {
                     // Peer A does not respond and Peer B does respond.
                     if (peer == 'A')
