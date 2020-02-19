@@ -338,17 +338,21 @@ namespace Libplanet.Net
         /// each single call of <paramref name="blockFetcher"/>.  If a call is timed out unsatisfied
         /// demands are automatically retried to fetch from other peers.  10 seconds by default.
         /// </param>
+        /// <param name="cancellationToken">A cancellation token to observe while waiting
+        /// for the task to complete.</param>
         /// <returns>An async enumerable that yields pairs of a fetched block and its source
         /// peer.  It terminates when all demands are satisfied.</returns>
         public IAsyncEnumerable<Tuple<Block<TAction>, TPeer>> Complete(
             IReadOnlyList<TPeer> peers,
             BlockFetcher blockFetcher,
-            int millisecondsSingleSessionTimeout = 10000
+            int millisecondsSingleSessionTimeout = 10000,
+            CancellationToken cancellationToken = default
         ) =>
             Complete(
                 peers,
                 blockFetcher,
-                TimeSpan.FromMilliseconds(millisecondsSingleSessionTimeout)
+                TimeSpan.FromMilliseconds(millisecondsSingleSessionTimeout),
+                cancellationToken
             );
 
         private void Demand(HashDigest<SHA256> blockHash, bool retry)

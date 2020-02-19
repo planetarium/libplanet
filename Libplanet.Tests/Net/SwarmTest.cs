@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
-using Dasync.Collections;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
@@ -25,6 +24,7 @@ using NetMQ;
 using NetMQ.Sockets;
 using Nito.AsyncEx;
 using Serilog;
+using Serilog.Events;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -631,7 +631,8 @@ namespace Libplanet.Tests.Net
                 Block<DumbAction>[] receivedBlocks =
                     await swarmB.GetBlocksAsync(
                         swarmA.AsPeer as BoundPeer,
-                        inventories1.Select(pair => pair.Item2)
+                        inventories1.Select(pair => pair.Item2),
+                        cancellationToken: default
                     ).ToArrayAsync();
                 Assert.Equal(new[] { genesis, block1, block2 }, receivedBlocks);
             }
@@ -729,7 +730,9 @@ namespace Libplanet.Tests.Net
 
                 List<Transaction<DumbAction>> txs =
                     await swarmA.GetTxsAsync(
-                        swarmB.AsPeer as BoundPeer, new[] { tx.Id }
+                        swarmB.AsPeer as BoundPeer,
+                        new[] { tx.Id },
+                        cancellationToken: default
                     ).ToListAsync();
 
                 Assert.Equal(new[] { tx }, txs);
@@ -1427,12 +1430,31 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
+                _logger.Verbose("Both chains before synchronization:");
+                _logger.CompareBothChains(
+                    LogEventLevel.Verbose,
+                    "Miner chain",
+                    minerChain,
+                    "Receiver chain",
+                    receiverChain
+                );
+
                 minerSwarm.FindNextHashesChunkSize = 2;
                 await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(15), progress);
 
                 // Await 1 second to make sure all progresses is reported.
                 await Task.Delay(1000);
 
+                _logger.Verbose(
+                    $"Both chains after synchronization ({nameof(receiverSwarm.PreloadAsync)}):"
+                );
+                _logger.CompareBothChains(
+                    LogEventLevel.Verbose,
+                    "Miner chain",
+                    minerChain,
+                    "Receiver chain",
+                    receiverChain
+                );
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
 
                 var expectedStates = new List<PreloadState>();
@@ -1761,8 +1783,12 @@ namespace Libplanet.Tests.Net
 
             try
             {
+                _logger.Verbose("Start the miner swarm...");
                 await StartAsync(minerSwarm);
+                _logger.Verbose("Started the miner swarm.");
+                _logger.Verbose("Start the receiver swarm...");
                 await StartAsync(receiverSwarm);
+                _logger.Verbose("Started the receiver swarm.");
 
                 await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
 
@@ -1772,7 +1798,9 @@ namespace Libplanet.Tests.Net
                 IImmutableSet<Address> trustedPeers = trust
                     ? new[] { minerSwarm.Address }.ToImmutableHashSet()
                     : ImmutableHashSet<Address>.Empty;
+                _logger.Verbose("Make the receiver swarm to start preloading...");
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedPeers);
+                _logger.Verbose("The receiver swarm finished preloading.");
 
                 Assert.Empty(DumbAction.RenderRecords.Value);
                 Assert.Empty(MinerReward.RenderRecords.Value);

@@ -15,6 +15,7 @@ using Nito.AsyncEx;
 using Serilog;
 using Xunit;
 using Xunit.Abstractions;
+using AsyncEnumerable = System.Linq.AsyncEnumerable;
 
 namespace Libplanet.Tests.Net
 {
@@ -123,7 +124,7 @@ namespace Libplanet.Tests.Net
             {
                 await Task.Delay(100);
                 int i = 0;
-                await bc.EnumerateChunks().ForEachAsync(hashes =>
+                await AsyncEnumerable.ForEachAsync(bc.EnumerateChunks(), hashes =>
                 {
                     ImmutableArray<HashDigest<SHA256>> hashesArray = hashes.ToImmutableArray();
                     logs.Add((i, hashesArray));
@@ -275,7 +276,7 @@ namespace Libplanet.Tests.Net
 
             var downloadedBlocks = new HashSet<Block<DumbAction>>();
             var sourcePeers = new HashSet<char>();
-            await rv.ForEachAsync(pair =>
+            await AsyncEnumerable.ForEachAsync(rv, pair =>
             {
                 downloadedBlocks.Add(pair.Item1);
                 sourcePeers.Add(pair.Item2);
@@ -311,7 +312,7 @@ namespace Libplanet.Tests.Net
                 });
 
             Tuple<Block<DumbAction>, char>[] result =
-                await bc.Complete(new[] { 'A' }, wrongBlockFetcher).ToArrayAsync();
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A' }, wrongBlockFetcher));
             Assert.Equal(new[] { Tuple.Create(demand, 'A') }, result);
         }
 
@@ -345,7 +346,7 @@ namespace Libplanet.Tests.Net
                 });
 
             Tuple<Block<DumbAction>, char>[] result =
-                await bc.Complete(new[] { 'A', 'B' }, blockFetcher).ToArrayAsync();
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
             Assert.Equal(
                 fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
                 result.ToHashSet()

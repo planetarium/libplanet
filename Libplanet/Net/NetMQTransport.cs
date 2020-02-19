@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Dasync.Collections;
 using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
@@ -622,7 +621,7 @@ namespace Libplanet.Net
                 var peers = Protocol.PeersToBroadcast(except).ToList();
                 _logger.Debug($"Broadcasting message [{msg}]");
                 _logger.Debug($"Peers to broadcast : {peers.Count}");
-                peers.ParallelForEachAsync(async peer =>
+                Parallel.ForEach(peers, async peer =>
                 {
                     await SendMessageAsync(peer, msg);
                 });
