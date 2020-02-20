@@ -48,8 +48,6 @@ To be released.
 
 ### Behavioral changes
 
- -  `Swarm<T>.PreloadAsync()` became to prune states until its parameter
-    `thickness` if any trusted peers were given.  [[#790]]
  -  `BlockChain.MineBlock()` method became to ignore transactions having
     lower nonce than the expected nonce in the chain.  [[#791]]
  -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
