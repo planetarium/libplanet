@@ -15,14 +15,17 @@ To be released.
  -  The existing `BlockHashes` message type (with the type number `0x05`) was
     replaced by a new `BlockHashes` message type (with type number `0x0e`)
     in order to include an offset block index besides block hashes
-    so that a receiver is able to determine their block indices too.  [[#707]]
+    so that a receiver is able to determine their block indices too.
+    [[#707], [#798]]
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
  -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
-    [[#707]]
+    [[#707], [#798]]
+ -  Added `BlockVerificationState` class, a subclass of `PreloadState`.
+    [[#798]]
  -  Added `BlockDigest` struct.  [[#785]]
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
@@ -34,7 +37,7 @@ To be released.
     lower nonce than the expected nonce in the chain.  [[#791]]
  -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
     only a list of block hashes first and then download blocks from
-    simultaneously multiple peers.  [[#707]]
+    simultaneously multiple peers.  [[#707], [#798]]
 
 ### Bug fixes
 
@@ -54,6 +57,8 @@ To be released.
 [#788]: https://github.com/planetarium/libplanet/pull/788
 [#789]: https://github.com/planetarium/libplanet/pull/789
 [#791]: https://github.com/planetarium/libplanet/pull/791
+[#798]: https://github.com/planetarium/libplanet/pull/798
+
 
 Version 0.8.0
 -------------

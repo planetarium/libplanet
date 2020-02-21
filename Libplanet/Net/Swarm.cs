@@ -469,93 +469,29 @@ namespace Libplanet.Net
                 short lapCount = 0;
                 Block<T> tipCandidate = initialTip;
 
-                while (true)
+                Block<T> tempTip = tipCandidate;
+
+                try
                 {
-                    Block<T> tempTip = tipCandidate;
+                    // From the second lap, as it's catching up the latest blocks made
+                    // in very short time, do not report the progress.  Even if it's reported,
+                    // it can be very confusing, because it looks like BlockHashDownloadState
+                    // recurring after later phases like BlockDownloadState.
+                    IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
 
-                    try
+                    var demandBlockHashes = GetDemandBlockHashes(
+                        workspace,
+                        peersWithHeight,
+                        demandProgress,
+                        cancellationToken
+                    ).WithCancellation(cancellationToken);
+
+                    await foreach (var pair in demandBlockHashes)
                     {
-                        // From the second lap, as it's catching up the latest blocks made
-                        // in very short time, do not report the progress.  Even if it's reported,
-                        // it can be very confusing, because it looks like BlockHashDownloadState
-                        // recurring after later phases like BlockDownloadState.
-                        IProgress<PreloadState> demandProgress = lapCount++ < 1 ? progress : null;
-
-                        var demandBlockHashes = GetDemandBlockHashes(
-                            workspace,
-                            peersWithHeight,
-                            demandProgress,
-                            cancellationToken
-                        ).WithCancellation(cancellationToken);
-
-                        await foreach (var pair in demandBlockHashes)
-                        {
-                            (long index, HashDigest<SHA256> hash) = pair;
-                            cancellationToken.ThrowIfCancellationRequested();
-
-                            if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
-                            {
-                                // FIXME: This behavior can unexpectedly terminate the swarm
-                                // (and the game app) if it encounters a peer having a different
-                                // blockchain, and therefore can be exploited to remotely shut
-                                // down other nodes as well.
-                                // Since the intention of this behavior is to prevent mistakes
-                                // to try to connect incorrect seeds (by a user),
-                                // this behavior should be limited for only seed peers.
-                                var msg =
-                                    $"Since the genesis block is fixed to {workspace.Genesis} " +
-                                    "protocol-wise, the blockchain which does not share " +
-                                    "any mutual block is not acceptable.";
-                                var e = new InvalidGenesisBlockException(
-                                    hash,
-                                    workspace.Genesis.Hash,
-                                    msg);
-                                throw new AggregateException(msg, e);
-                            }
-
-                            _logger.Verbose(
-                                "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
-                                index,
-                                hash
-                            );
-                            blockCompletion.Demand(hash);
-                            totalBlocksToDownload++;
-                        }
-                    }
-                    catch (AggregateException e)
-                    {
-                        if (blockDownloadFailed is null)
-                        {
-                            throw new AggregateException(e.Message, e.InnerExceptions);
-                        }
-
-                        blockDownloadFailed.Invoke(
-                            this,
-                            new PreloadBlockDownloadFailEventArgs
-                            {
-                                InnerExceptions = e.InnerExceptions,
-                            }
-                        );
-                        break;
-                    }
-
-                    var completedBlocks = blockCompletion.Complete(
-                        peers: peersWithHeight.Select(pair => pair.Item1).ToList(),
-                        blockFetcher: GetBlocksAsync,
-                        cancellationToken: cancellationToken
-                    );
-                    await foreach (var pair in completedBlocks)
-                    {
-                        pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
-                        _logger.Verbose(
-                            "Got #{BlockIndex} {BlockHash} from {Pair}.",
-                            block.Index,
-                            block.Hash,
-                            sourcePeer
-                        );
+                        (long index, HashDigest<SHA256> hash) = pair;
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        if (block.Index == 0 && !block.Hash.Equals(workspace.Genesis.Hash))
+                        if (index == 0 && !hash.Equals(workspace.Genesis.Hash))
                         {
                             // FIXME: This behavior can unexpectedly terminate the swarm
                             // (and the game app) if it encounters a peer having a different
@@ -568,57 +504,117 @@ namespace Libplanet.Net
                                 $"Since the genesis block is fixed to {workspace.Genesis} " +
                                 "protocol-wise, the blockchain which does not share " +
                                 "any mutual block is not acceptable.";
-
-                            // Although it's actually not aggregated, but to be consistent with
-                            // above code throwing InvalidGenesisBlockException, makes this
-                            // to wrap an exception with AggregateException... Not sure if
-                            // it show be wrapped from the very beginning.
-                            throw new AggregateException(
-                                msg,
-                                new InvalidGenesisBlockException(
-                                    block.Hash,
-                                    workspace.Genesis.Hash,
-                                    msg
-                                )
-                            );
+                            var e = new InvalidGenesisBlockException(
+                                hash,
+                                workspace.Genesis.Hash,
+                                msg);
+                            throw new AggregateException(msg, e);
                         }
 
                         _logger.Verbose(
-                            "Add a block #{BlockIndex} {BlockHash}...",
-                            block.Index,
-                            block.Hash
+                            "Enqueue #{BlockIndex} {BlockHash} to demands queue...",
+                            index,
+                            hash
                         );
-                        wStore.PutBlock(block);
-                        if (tempTip is null || block.Index > tempTip.Index)
+                        if (blockCompletion.Demand(hash))
                         {
-                            tempTip = block;
+                            totalBlocksToDownload++;
                         }
+                    }
+                }
+                catch (AggregateException e)
+                {
+                    if (blockDownloadFailed is null)
+                    {
+                        throw new AggregateException(e.Message, e.InnerExceptions);
+                    }
 
-                        receivedBlockCount++;
-                        progress?.Report(new BlockDownloadState
+                    blockDownloadFailed.Invoke(
+                        this,
+                        new PreloadBlockDownloadFailEventArgs
                         {
-                            TotalBlockCount = Math.Max(
-                                totalBlocksToDownload,
-                                receivedBlockCount),
-                            ReceivedBlockCount = receivedBlockCount,
-                            ReceivedBlockHash = block.Hash,
-                            SourcePeer = sourcePeer,
-                        });
-                        _logger.Debug(
-                            "Appended a block #{BlockIndex} {BlockHash} " +
-                            "to the workspace chain.",
-                            block.Index,
-                            block.Hash
+                            InnerExceptions = e.InnerExceptions,
+                        }
+                    );
+
+                    return;
+                }
+
+                IAsyncEnumerable<Tuple<Block<T>, BoundPeer>> completedBlocks =
+                    blockCompletion.Complete(
+                        peers: peersWithHeight.Select(pair => pair.Item1).ToList(),
+                        blockFetcher: GetBlocksAsync,
+                        cancellationToken: cancellationToken
+                    );
+                await foreach (var pair in completedBlocks)
+                {
+                    pair.Deconstruct(out Block<T> block, out BoundPeer sourcePeer);
+                    _logger.Verbose(
+                        "Got #{BlockIndex} {BlockHash} from {Pair}.",
+                        block.Index,
+                        block.Hash,
+                        sourcePeer
+                    );
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (block.Index == 0 && !block.Hash.Equals(workspace.Genesis.Hash))
+                    {
+                        // FIXME: This behavior can unexpectedly terminate the swarm
+                        // (and the game app) if it encounters a peer having a different
+                        // blockchain, and therefore can be exploited to remotely shut
+                        // down other nodes as well.
+                        // Since the intention of this behavior is to prevent mistakes
+                        // to try to connect incorrect seeds (by a user),
+                        // this behavior should be limited for only seed peers.
+                        var msg =
+                            $"Since the genesis block is fixed to {workspace.Genesis} " +
+                            "protocol-wise, the blockchain which does not share " +
+                            "any mutual block is not acceptable.";
+
+                        // Although it's actually not aggregated, but to be consistent with
+                        // above code throwing InvalidGenesisBlockException, makes this
+                        // to wrap an exception with AggregateException... Not sure if
+                        // it show be wrapped from the very beginning.
+                        throw new AggregateException(
+                            msg,
+                            new InvalidGenesisBlockException(
+                                block.Hash,
+                                workspace.Genesis.Hash,
+                                msg
+                            )
                         );
                     }
 
-                    if (tempTip.Equals(tipCandidate))
+                    _logger.Verbose(
+                        "Add a block #{BlockIndex} {BlockHash}...",
+                        block.Index,
+                        block.Hash
+                    );
+                    wStore.PutBlock(block);
+                    if (tempTip is null || block.Index > tempTip.Index)
                     {
-                        break;
+                        tempTip = block;
                     }
 
-                    tipCandidate = tempTip;
+                    receivedBlockCount++;
+                    progress?.Report(new BlockDownloadState
+                    {
+                        TotalBlockCount = Math.Max(
+                            totalBlocksToDownload,
+                            receivedBlockCount),
+                        ReceivedBlockCount = receivedBlockCount,
+                        ReceivedBlockHash = block.Hash,
+                        SourcePeer = sourcePeer,
+                    });
+                    _logger.Debug(
+                        "Appended a block #{BlockIndex} {BlockHash} " +
+                        "to the workspace chain.",
+                        block.Index,
+                        block.Hash
+                    );
                 }
+
+                tipCandidate = tempTip;
 
                 if (tipCandidate is null)
                 {
@@ -666,6 +662,7 @@ namespace Libplanet.Net
                         BlockChain<T> fork = workspace.Fork(bp);
                         try
                         {
+                            long verifiedBlockCount = 0;
                             foreach (Block<T> deltaBlock in deltaBlocks)
                             {
                                 fork.Append(
@@ -674,6 +671,12 @@ namespace Libplanet.Net
                                     evaluateActions: false,
                                     renderActions: false
                                 );
+                                progress?.Report(new BlockVerificationState
+                                {
+                                    TotalBlockCount = deltaBlocks.Count,
+                                    VerifiedBlockCount = ++verifiedBlockCount,
+                                    VerifiedBlockHash = deltaBlock.Hash,
+                                });
                             }
                         }
                         catch (Exception e)

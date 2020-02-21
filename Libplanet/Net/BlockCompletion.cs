@@ -46,10 +46,10 @@ namespace Libplanet.Net
             CancellationToken cancellationToken
         );
 
-        public void Demand(HashDigest<SHA256> blockHash) =>
+        public bool Demand(HashDigest<SHA256> blockHash) =>
             Demand(blockHash, retry: false);
 
-        public void Demand(IEnumerable<HashDigest<SHA256>> blockHashes) =>
+        public int Demand(IEnumerable<HashDigest<SHA256>> blockHashes) =>
             Demand(blockHashes, retry: false);
 
         public async IAsyncEnumerable<IEnumerable<HashDigest<SHA256>>> EnumerateChunks(
@@ -355,11 +355,11 @@ namespace Libplanet.Net
                 cancellationToken
             );
 
-        private void Demand(HashDigest<SHA256> blockHash, bool retry)
+        private bool Demand(HashDigest<SHA256> blockHash, bool retry)
         {
             if (Satisfies(blockHash, ignoreTransientCompletions: retry))
             {
-                return;
+                return false;
             }
 
             if (_satisfiedBlocks.TryAdd(blockHash, false) || retry)
@@ -368,15 +368,24 @@ namespace Libplanet.Net
                 _started = true;
                 _demandEnqueued.Release();
                 _logger.Verbose("A demand was enqueued: {BlockHash}", blockHash);
+                return true;
             }
+
+            return false;
         }
 
-        private void Demand(IEnumerable<HashDigest<SHA256>> blockHashes, bool retry)
+        private int Demand(IEnumerable<HashDigest<SHA256>> blockHashes, bool retry)
         {
+            int sum = 0;
             foreach (HashDigest<SHA256> hash in blockHashes)
             {
-                Demand(hash, retry);
+                if (Demand(hash, retry))
+                {
+                    sum++;
+                }
             }
+
+            return sum;
         }
 
         internal class PeerPool

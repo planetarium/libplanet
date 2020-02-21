@@ -1487,6 +1487,18 @@ namespace Libplanet.Tests.Net
                 for (var i = 1; i < minerChain.Count; i++)
                 {
                     var b = minerChain[i];
+                    var state = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = b.Hash,
+                        TotalBlockCount = i == 9 || i == 10 ? 11 : 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state);
+                }
+
+                for (var i = 1; i < minerChain.Count; i++)
+                {
+                    var b = minerChain[i];
                     var state = new ActionExecutionState
                     {
                         ExecutedBlockHash = b.Hash,
@@ -1496,8 +1508,8 @@ namespace Libplanet.Tests.Net
                     expectedStates.Add(state);
                 }
 
-                _logger.Debug("{@expectedStates}", expectedStates);
-                _logger.Debug("{@actualStates}", actualStates);
+                _logger.Debug("Expected preload states: {@expectedStates}", expectedStates);
+                _logger.Debug("Actual preload states: {@actualStates}", actualStates);
 
                 Assert.Equal(expectedStates.Count, actualStates.Count);
                 foreach (var states in expectedStates.Zip(actualStates, ValueTuple.Create))
@@ -1621,7 +1633,6 @@ namespace Libplanet.Tests.Net
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var b = minerChain[i];
                     var state = new BlockHashDownloadState
                     {
                         EstimatedTotalBlockHashCount = 10,
@@ -1633,10 +1644,9 @@ namespace Libplanet.Tests.Net
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var b = minerChain[i];
                     var state = new BlockDownloadState
                     {
-                        ReceivedBlockHash = b.Hash,
+                        ReceivedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ReceivedBlockCount = i,
                         SourcePeer = nominerSwarm1.AsPeer as BoundPeer,
@@ -1646,10 +1656,20 @@ namespace Libplanet.Tests.Net
 
                 for (var i = 1; i < minerChain.Count; i++)
                 {
-                    var b = minerChain[i];
+                    var state = new BlockVerificationState
+                    {
+                        VerifiedBlockHash = minerChain[i].Hash,
+                        TotalBlockCount = 10,
+                        VerifiedBlockCount = i,
+                    };
+                    expectedStates.Add(state);
+                }
+
+                for (var i = 1; i < minerChain.Count; i++)
+                {
                     var state = new ActionExecutionState
                     {
-                        ExecutedBlockHash = b.Hash,
+                        ExecutedBlockHash = minerChain[i].Hash,
                         TotalBlockCount = 10,
                         ExecutedBlockCount = i,
                     };
@@ -1986,14 +2006,29 @@ namespace Libplanet.Tests.Net
                 await t;
 
                 var minerStateRefs = minerChain.Store
-                    .ListAllStateReferences(minerChain.Id, 0, receiverChain.Count)
+                    .ListAllStateReferences(minerChain.Id, 0, receiverChain.Tip.Index)
                     .FirstOrDefault().Value;
 
                 var receiverStateRefs = receiverChain.Store
-                    .ListAllStateReferences(receiverChain.Id, 0, receiverChain.Count)
+                    .ListAllStateReferences(receiverChain.Id, 0, receiverChain.Tip.Index)
                     .FirstOrDefault().Value;
 
                 Assert.Equal(receiverChain.Count, receiverStateRefs.Count + 1);
+                _logger.CompareBothChains(
+                    LogEventLevel.Verbose,
+                    "minerChain",
+                    minerChain,
+                    "receiverChain",
+                    receiverChain
+                );
+                _logger.Verbose(
+                    "minerStateRefs = {@minerStateRefs}",
+                    minerStateRefs.Select(s => s.ToString())
+                );
+                _logger.Verbose(
+                    "receiverStateRefs = {@receiverStateRefs}",
+                    receiverStateRefs.Select(s => s.ToString())
+                );
                 Assert.Equal(minerStateRefs, receiverStateRefs);
             }
             finally
@@ -2153,7 +2188,7 @@ namespace Libplanet.Tests.Net
                 i = 1;
                 foreach (StateDownloadState state in downloadStates)
                 {
-                    Assert.Equal(3, state.CurrentPhase);
+                    Assert.Equal(4, state.CurrentPhase);
                     Assert.Equal(totalCount, state.TotalIterationCount);
                     Assert.Equal(i++, state.ReceivedIterationCount);
                 }
