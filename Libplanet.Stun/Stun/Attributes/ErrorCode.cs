@@ -29,18 +29,16 @@ namespace Libplanet.Stun.Attributes
 
         protected override byte[] EncodePayload(byte[] transactionId)
         {
-            using (var ms = new MemoryStream())
-            {
-                ms.WriteByte(0x00);
-                ms.WriteByte(0x00);
-                ms.WriteByte((byte)(Code / 100));
-                ms.WriteByte((byte)(Code % 100));
+            using var ms = new MemoryStream();
+            ms.WriteByte(0x00);
+            ms.WriteByte(0x00);
+            ms.WriteByte((byte)(Code / 100));
+            ms.WriteByte((byte)(Code % 100));
 
-                var reason = Encoding.ASCII.GetBytes(Reason);
-                ms.Write(reason, 0, reason.Length);
+            var reason = Encoding.ASCII.GetBytes(Reason);
+            ms.Write(reason, 0, reason.Length);
 
-                return ms.ToArray();
-            }
+            return ms.ToArray();
         }
     }
 }

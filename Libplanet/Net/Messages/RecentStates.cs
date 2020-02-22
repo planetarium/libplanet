@@ -113,10 +113,8 @@ namespace Libplanet.Net.Messages
                     var address = new Address(it.Current.Buffer);
 
                     it.MoveNext();
-                    using (var stream = new MemoryStream(it.Current.Buffer))
-                    {
-                        states[address] = codec.Decode(stream);
-                    }
+                    using var stream = new MemoryStream(it.Current.Buffer);
+                    states[address] = codec.Decode(stream);
                 }
 
                 blockStates[blockHash] = states.ToImmutableDictionary();

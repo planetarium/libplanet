@@ -104,19 +104,17 @@ namespace Libplanet.Net
                     // tests
                     try
                     {
-                        using (var runtime = new NetMQRuntime())
+                        using var runtime = new NetMQRuntime();
+                        var workerTasks = new Task[workers];
+
+                        for (int i = 0; i < workers; i++)
                         {
-                            var workerTasks = new Task[workers];
-
-                            for (int i = 0; i < workers; i++)
-                            {
-                                workerTasks[i] = ProcessRuntime(
-                                    _runtimeCancellationTokenSource.Token
-                                );
-                            }
-
-                            runtime.Run(workerTasks);
+                            workerTasks[i] = ProcessRuntime(
+                                _runtimeCancellationTokenSource.Token
+                            );
                         }
+
+                        runtime.Run(workerTasks);
                     }
                     catch (NetMQException e)
                     {
@@ -774,70 +772,69 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow - req.RequestedTime);
             DateTimeOffset startedTime = DateTimeOffset.UtcNow;
 
-            using (var dealer = new DealerSocket(ToNetMQAddress(req.Peer)))
-            {
-                // FIXME 1 min is an arbitrary value.
-                // See also https://github.com/planetarium/libplanet/pull/599 and
-                // https://github.com/planetarium/libplanet/pull/709
-                dealer.Options.Linger = TimeSpan.FromMinutes(1);
+            using var dealer = new DealerSocket(ToNetMQAddress(req.Peer));
 
-                _logger.Debug(
-                    "Trying to send {Message} to {Peer}...",
-                    req.Message,
-                    req.Peer
+            // FIXME 1 min is an arbitrary value.
+            // See also https://github.com/planetarium/libplanet/pull/599 and
+            // https://github.com/planetarium/libplanet/pull/709
+            dealer.Options.Linger = TimeSpan.FromMinutes(1);
+
+            _logger.Debug(
+                "Trying to send {Message} to {Peer}...",
+                req.Message,
+                req.Peer
+            );
+            var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
+            var result = new List<Message>();
+            TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
+            try
+            {
+                await dealer.SendMultipartMessageAsync(
+                    message,
+                    timeout: req.Timeout,
+                    cancellationToken: cancellationToken
                 );
-                var message = req.Message.ToNetMQMessage(_privateKey, AsPeer);
-                var result = new List<Message>();
-                TaskCompletionSource<IEnumerable<Message>> tcs = req.TaskCompletionSource;
-                try
+
+                _logger.Debug("A message {Message} sent.", req.Message);
+
+                foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
                 {
-                    await dealer.SendMultipartMessageAsync(
-                        message,
+                    NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
                         timeout: req.Timeout,
                         cancellationToken: cancellationToken
                     );
-
-                    _logger.Debug("A message {Message} sent.", req.Message);
-
-                    foreach (var i in Enumerable.Range(0, req.ExpectedResponses))
-                    {
-                        NetMQMessage raw = await dealer.ReceiveMultipartMessageAsync(
-                            timeout: req.Timeout,
-                            cancellationToken: cancellationToken
-                        );
-                        _logger.Verbose(
-                            "A raw message ({FrameCount} frames) has replied.",
-                            raw.FrameCount
-                        );
-                        Message reply = Message.Parse(raw, true);
-                        _logger.Debug(
-                            "A reply has parsed: {Reply} from {ReplyRemote}",
-                            reply,
-                            reply.Remote
-                        );
-                        ValidateSender(reply.Remote);
-                        result.Add(reply);
-                    }
-
-                    if (req.ExpectedResponses > 0)
-                    {
-                        Protocol.ReceiveMessage(result[0]);
-                    }
-
-                    tcs.SetResult(result);
+                    _logger.Verbose(
+                        "A raw message ({FrameCount} frames) has replied.",
+                        raw.FrameCount
+                    );
+                    Message reply = Message.Parse(raw, true);
+                    _logger.Debug(
+                        "A reply has parsed: {Reply} from {ReplyRemote}",
+                        reply,
+                        reply.Remote
+                    );
+                    ValidateSender(reply.Remote);
+                    result.Add(reply);
                 }
-                catch (DifferentAppProtocolVersionException dape)
+
+                if (req.ExpectedResponses > 0)
                 {
-                    tcs.SetException(dape);
-                }
-                catch (TimeoutException te)
-                {
-                    tcs.SetException(te);
+                    Protocol.ReceiveMessage(result[0]);
                 }
 
-                // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
-                await Task.Delay(100, cancellationToken);
+                tcs.SetResult(result);
             }
+            catch (DifferentAppProtocolVersionException dape)
+            {
+                tcs.SetException(dape);
+            }
+            catch (TimeoutException te)
+            {
+                tcs.SetException(te);
+            }
+
+            // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
+            await Task.Delay(100, cancellationToken);
 
             _logger.Verbose(
                 "Request {Message}({RequestId}) processed in {TimeSpan}.",
@@ -862,10 +859,8 @@ namespace Libplanet.Net
 #pragma warning disable CS4014
                     Task.Run(async () =>
                     {
-                        using (var proxy = new NetworkStreamProxy(stream))
-                        {
-                            await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
-                        }
+                        using var proxy = new NetworkStreamProxy(stream);
+                        await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
                     }).ContinueWith(_ => stream.Dispose());
 #pragma warning restore CS4014
                 }
