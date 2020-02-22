@@ -525,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Crypto.SymmetricKey.html",
-          "hash": "hrX3GkgFQK93wIOj26k+Zg=="
+          "hash": "cQSWiWmEwnGLACTX4sR41Q=="
         }
       },
       "is_incremental": false,
@@ -729,7 +729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.KeyStore.ProtectedPrivateKey.html",
-          "hash": "9ZzgGJPB13CnzsqtNWNPcA=="
+          "hash": "FvtkaftpDVkbx9iqMpPw1w=="
         }
       },
       "is_incremental": false,
@@ -1089,7 +1089,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Store.DefaultStore.html",
-          "hash": "SHODL2uv+HYThHis0kbTKQ=="
+          "hash": "GQWXo9RqfHyElLS1GOpm6w=="
         }
       },
       "is_incremental": false,
@@ -1221,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Tx.Transaction-1.html",
-          "hash": "tKSBs8179/PJGKhnxbpQBQ=="
+          "hash": "mFECgVxUQarpPB7OvO2bfA=="
         }
       },
       "is_incremental": false,
@@ -1348,13 +1348,6 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -1365,6 +1358,13 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 103,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
