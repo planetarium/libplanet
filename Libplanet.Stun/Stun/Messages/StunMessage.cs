@@ -105,59 +105,32 @@ namespace Libplanet.Stun.Messages
             );
 
             StunMessage rv = null;
-            switch (@class)
+            rv = @class switch
             {
-                case MessageClass.SuccessResponse:
-                    switch (method)
-                    {
-                        case MessageMethod.Allocate:
-                            rv = new AllocateSuccessResponse();
-                            break;
-                        case MessageMethod.Connect:
-                            rv = new ConnectSuccessResponse();
-                            break;
-                        case MessageMethod.ConnectionBind:
-                            rv = new ConnectionBindSuccessResponse();
-                            break;
-                        case MessageMethod.Binding:
-                            rv = new BindingSuccessResponse();
-                            break;
-                        case MessageMethod.CreatePermission:
-                            rv = new CreatePermissionSuccessResponse();
-                            break;
-                        case MessageMethod.Refresh:
-                            rv = new RefreshSuccessResponse();
-                            break;
-                    }
-
-                    break;
-
-                case MessageClass.ErrorResponse:
-                    switch (method)
-                    {
-                        case MessageMethod.Allocate:
-                            rv = new AllocateErrorResponse();
-                            break;
-                        case MessageMethod.CreatePermission:
-                            rv = new CreatePermissionErrorResponse();
-                            break;
-                        case MessageMethod.Refresh:
-                            rv = new RefreshErrorResponse();
-                            break;
-                    }
-
-                    break;
-
-                case MessageClass.Indication:
-                    switch (method)
-                    {
-                        case MessageMethod.ConnectionAttempt:
-                            rv = new ConnectionAttempt();
-                            break;
-                    }
-
-                    break;
-            }
+                MessageClass.SuccessResponse => method switch
+                {
+                    MessageMethod.Allocate => new AllocateSuccessResponse(),
+                    MessageMethod.Connect => new ConnectSuccessResponse(),
+                    MessageMethod.ConnectionBind => new ConnectionBindSuccessResponse(),
+                    MessageMethod.Binding => new BindingSuccessResponse(),
+                    MessageMethod.CreatePermission => new CreatePermissionSuccessResponse(),
+                    MessageMethod.Refresh => new RefreshSuccessResponse(),
+                    _ => rv
+                },
+                MessageClass.ErrorResponse => method switch
+                {
+                    MessageMethod.Allocate => new AllocateErrorResponse(),
+                    MessageMethod.CreatePermission => new CreatePermissionErrorResponse(),
+                    MessageMethod.Refresh => new RefreshErrorResponse(),
+                    _ => rv
+                },
+                MessageClass.Indication => method switch
+                {
+                    MessageMethod.ConnectionAttempt => new ConnectionAttempt(),
+                    _ => rv
+                },
+                _ => rv
+            };
 
             if (rv != null)
             {
@@ -264,37 +237,25 @@ namespace Libplanet.Stun.Messages
                 ushort length = bytes.Skip(2).Take(2).ToUShort();
                 byte[] payload = bytes.Skip(4).Take(length).ToArray();
 
-                switch (type)
+                Attribute attr = type switch
                 {
-                    case Attribute.AttributeType.ErrorCode:
-                        yield return ErrorCode.Parse(payload);
-                        break;
-                    case Attribute.AttributeType.Realm:
-                        yield return Realm.Parse(payload);
-                        break;
-                    case Attribute.AttributeType.Nonce:
-                        yield return Stun.Attributes.Nonce.Parse(payload);
-                        break;
-                    case Attribute.AttributeType.Software:
-                        yield return Software.Parse(payload);
-                        break;
-                    case Attribute.AttributeType.Fingerprint:
-                        yield return Fingerprint.Parse(payload);
-                        break;
-                    case Attribute.AttributeType.XorMappedAddress:
-                        yield return XorMappedAddress.Parse(
-                            payload, transactionId);
-                        break;
-                    case Attribute.AttributeType.XorRelayedAddress:
-                        yield return XorRelayedAddress.Parse(
-                            payload, transactionId);
-                        break;
-                    case Attribute.AttributeType.ConnectionId:
-                        yield return new ConnectionId(payload);
-                        break;
-                    case Attribute.AttributeType.Lifetime:
-                        yield return new Lifetime((int)payload.ToUInt());
-                        break;
+                    Attribute.AttributeType.ErrorCode => ErrorCode.Parse(payload),
+                    Attribute.AttributeType.Realm => Realm.Parse(payload),
+                    Attribute.AttributeType.Nonce => Stun.Attributes.Nonce.Parse(payload),
+                    Attribute.AttributeType.Software => Software.Parse(payload),
+                    Attribute.AttributeType.Fingerprint => Fingerprint.Parse(payload),
+                    Attribute.AttributeType.XorMappedAddress =>
+                        XorMappedAddress.Parse(payload, transactionId),
+                    Attribute.AttributeType.XorRelayedAddress =>
+                        XorRelayedAddress.Parse(payload, transactionId),
+                    Attribute.AttributeType.ConnectionId => new ConnectionId(payload),
+                    Attribute.AttributeType.Lifetime => new Lifetime((int)payload.ToUInt()),
+                    _ => null
+                };
+
+                if (!(attr is null))
+                {
+                    yield return attr;
                 }
 
                 // Detect padding

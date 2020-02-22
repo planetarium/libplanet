@@ -265,37 +265,25 @@ namespace Libplanet.KeyStore
                 );
             }
 
-            ICipher cipher;
-            switch (cipherType)
+            var cipher = cipherType switch
             {
-                case "aes-128-ctr":
-                    cipher = Aes128Ctr.FromJson(cipherParamsElement);
-                    break;
-
-                default:
+                "aes-128-ctr" => Aes128Ctr.FromJson(cipherParamsElement),
+                _ =>
                     throw new UnsupportedKeyJsonException(
-                        $"Unsupported cipher type: \"{cipherType}\"."
-                    );
-            }
+                        $"Unsupported cipher type: \"{cipherType}\".")
+            };
 
             IKdf kdf;
             try
             {
-                switch (kdfType)
+                kdf = kdfType switch
                 {
-                    case "pbkdf2":
-                        kdf = Pbkdf2.FromJson(kdfParamsElement);
-                        break;
-
-                    case "scrypt":
-                        kdf = Scrypt.FromJson(kdfParamsElement);
-                        break;
-
-                    default:
+                    "pbkdf2" => Pbkdf2.FromJson(kdfParamsElement),
+                    "scrypt" => Scrypt.FromJson(kdfParamsElement),
+                    _ =>
                         throw new UnsupportedKeyJsonException(
-                            $"Unsupported cipher type: \"{kdfType}\"."
-                        );
-                }
+                            $"Unsupported cipher type: \"{kdfType}\".")
+                };
             }
             catch (ArgumentException e)
             {
