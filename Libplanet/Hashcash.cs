@@ -81,10 +81,8 @@ namespace Libplanet
         /// <paramref name="bytes"/>.</returns>
         public static HashDigest<SHA256> Hash(byte[] bytes)
         {
-            using (SHA256 hashAlgo = SHA256.Create())
-            {
-                return new HashDigest<SHA256>(hashAlgo.ComputeHash(bytes));
-            }
+            using SHA256 hashAlgo = SHA256.Create();
+            return new HashDigest<SHA256>(hashAlgo.ComputeHash(bytes));
         }
     }
 }

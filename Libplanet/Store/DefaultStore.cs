@@ -569,37 +569,33 @@ namespace Libplanet.Store
                 return null;
             }
 
-            using (var buffer = new MemoryStream())
-            using (Stream file = _states.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read))
+            using var buffer = new MemoryStream();
+            using Stream file = _states.OpenFile(path, System.IO.FileMode.Open, FileAccess.Read);
+            if (_compress)
             {
-                if (_compress)
-                {
-                    using (var deflate = new DeflateStream(file, CompressionMode.Decompress))
-                    {
-                        deflate.CopyTo(buffer);
-                    }
-                }
-                else
-                {
-                    file.CopyTo(buffer);
-                }
-
-                buffer.Seek(0, SeekOrigin.Begin);
-                IValue value = new Codec().Decode(buffer);
-                if (!(value is Bencodex.Types.Dictionary dict))
-                {
-                    throw new DecodingException(
-                        $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
-                        $"{value.GetType()}");
-                }
-
-                ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
-                    kv => ((Text)kv.Key).Value,
-                    kv => kv.Value
-                );
-                _statesCache.AddOrUpdate(blockHash, states);
-                return states;
+                using var deflate = new DeflateStream(file, CompressionMode.Decompress);
+                deflate.CopyTo(buffer);
             }
+            else
+            {
+                file.CopyTo(buffer);
+            }
+
+            buffer.Seek(0, SeekOrigin.Begin);
+            IValue value = new Codec().Decode(buffer);
+            if (!(value is Bencodex.Types.Dictionary dict))
+            {
+                throw new DecodingException(
+                    $"Expected {typeof(Bencodex.Types.Dictionary)} but " +
+                    $"{value.GetType()}");
+            }
+
+            ImmutableDictionary<string, IValue> states = dict.ToImmutableDictionary(
+                kv => ((Text)kv.Key).Value,
+                kv => kv.Value
+            );
+            _statesCache.AddOrUpdate(blockHash, states);
+            return states;
         }
 
         /// <inheritdoc/>
@@ -619,19 +615,15 @@ namespace Libplanet.Store
             CreateDirectoryRecursively(_states, dirPath);
 
             var codec = new Codec();
-            using (Stream file = _states.CreateFile(path))
+            using Stream file = _states.CreateFile(path);
+            if (_compress)
             {
-                if (_compress)
-                {
-                    using (var deflate = new DeflateStream(file, CompressionLevel.Fastest, true))
-                    {
-                        codec.Encode(serialized, deflate);
-                    }
-                }
-                else
-                {
-                    codec.Encode(serialized, file);
-                }
+                using var deflate = new DeflateStream(file, CompressionLevel.Fastest, true);
+                codec.Encode(serialized, deflate);
+            }
+            else
+            {
+                codec.Encode(serialized, file);
             }
 
             _statesCache.AddOrUpdate(blockHash, states);

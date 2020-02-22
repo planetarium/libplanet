@@ -183,20 +183,16 @@ namespace Libplanet.Net.Messages
         protected static Peer DeserializePeer(byte[] bytes)
         {
             var formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream(bytes))
-            {
-                return (Peer)formatter.Deserialize(stream);
-            }
+            using MemoryStream stream = new MemoryStream(bytes);
+            return (Peer)formatter.Deserialize(stream);
         }
 
         protected byte[] SerializePeer(Peer peer)
         {
             var formatter = new BinaryFormatter();
-            using (MemoryStream stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, peer);
-                return stream.ToArray();
-            }
+            using MemoryStream stream = new MemoryStream();
+            formatter.Serialize(stream, peer);
+            return stream.ToArray();
         }
     }
 }

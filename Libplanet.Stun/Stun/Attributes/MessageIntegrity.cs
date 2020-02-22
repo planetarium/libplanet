@@ -23,14 +23,10 @@ namespace Libplanet.Stun.Attributes
             byte[] key = Encoding.ASCII.GetBytes(
                 $"{username}:{realm}:{password}"
             );
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] hmacKey = md5.ComputeHash(key);
-                using (var hmac = new HMACSHA1(hmacKey))
-                {
-                    return new MessageIntegrity(hmac.ComputeHash(msg));
-                }
-            }
+            using MD5 md5 = MD5.Create();
+            byte[] hmacKey = md5.ComputeHash(key);
+            using var hmac = new HMACSHA1(hmacKey);
+            return new MessageIntegrity(hmac.ComputeHash(msg));
         }
 
         protected override byte[] EncodePayload(byte[] transactionId)

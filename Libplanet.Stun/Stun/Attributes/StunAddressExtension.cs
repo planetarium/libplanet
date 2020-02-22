@@ -69,28 +69,26 @@ namespace Libplanet.Stun.Attributes
                     throw new NotSupportedException();
             }
 
-            using (var ms = new MemoryStream())
+            using var ms = new MemoryStream();
+            ms.WriteByte(0x00);
+            if (endpoint.AddressFamily == AddressFamily.InterNetwork)
             {
-                ms.WriteByte(0x00);
-                if (endpoint.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    ms.WriteByte((byte)StunAf.IpV4);
-                    ms.Write(portBytes, 0, 2);
-                    ms.Write(addrBytes, 0, 4);
-                }
-                else if (endpoint.AddressFamily == AddressFamily.InterNetworkV6)
-                {
-                    ms.WriteByte((byte)StunAf.IpV6);
-                    ms.Write(portBytes, 0, 2);
-                    ms.Write(addrBytes, 0, 16);
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
-
-                return ms.ToArray();
+                ms.WriteByte((byte)StunAf.IpV4);
+                ms.Write(portBytes, 0, 2);
+                ms.Write(addrBytes, 0, 4);
             }
+            else if (endpoint.AddressFamily == AddressFamily.InterNetworkV6)
+            {
+                ms.WriteByte((byte)StunAf.IpV6);
+                ms.Write(portBytes, 0, 2);
+                ms.Write(addrBytes, 0, 16);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+
+            return ms.ToArray();
         }
 
         public static IPEndPoint DecodeStunAddress(
@@ -100,54 +98,52 @@ namespace Libplanet.Stun.Attributes
             uint cookie = StunMessage.MagicCookie.ToUInt();
             bool inTransaction = transactionId != null;
 
-            using (var ms = new MemoryStream(encoded))
+            using var ms = new MemoryStream(encoded);
+            ms.ReadByte();
+
+            StunAf family = (StunAf)ms.ReadByte();
+            var portBytes = new byte[2];
+            ms.Read(portBytes, 0, 2);
+
+            int port = inTransaction
+                ? (int)(portBytes.ToUShort() ^ (cookie >> 16))
+                : portBytes.ToUShort();
+
+            byte[] addrBytes = null;
+            switch (family)
             {
-                ms.ReadByte();
+                case StunAf.IpV4:
+                    addrBytes = new byte[4];
+                    ms.Read(addrBytes, 0, 4);
 
-                StunAf family = (StunAf)ms.ReadByte();
-                var portBytes = new byte[2];
-                ms.Read(portBytes, 0, 2);
+                    uint addr = inTransaction
+                        ? addrBytes.ToUInt() ^ cookie
+                        : addrBytes.ToUInt();
+                    addrBytes = addr.ToBytes();
+                    break;
 
-                int port = inTransaction
-                    ? (int)(portBytes.ToUShort() ^ (cookie >> 16))
-                    : portBytes.ToUShort();
+                case StunAf.IpV6:
+                    addrBytes = new byte[16];
+                    ms.Read(addrBytes, 0, 16);
 
-                byte[] addrBytes = null;
-                switch (family)
-                {
-                    case StunAf.IpV4:
-                        addrBytes = new byte[4];
-                        ms.Read(addrBytes, 0, 4);
+                    foreach (var index in
+                        Enumerable.Range(0, 16))
+                    {
+                        addrBytes[index] ^= index < 4
+                            ? StunMessage.MagicCookie[index]
+                            : transactionId[index - 4];
+                    }
 
-                        uint addr = inTransaction
-                            ? addrBytes.ToUInt() ^ cookie
-                            : addrBytes.ToUInt();
-                        addrBytes = addr.ToBytes();
-                        break;
+                    break;
 
-                    case StunAf.IpV6:
-                        addrBytes = new byte[16];
-                        ms.Read(addrBytes, 0, 16);
-
-                        foreach (var index in
-                            Enumerable.Range(0, 16))
-                        {
-                            addrBytes[index] ^= index < 4
-                                ? StunMessage.MagicCookie[index]
-                                : transactionId[index - 4];
-                        }
-
-                        break;
-
-                    default:
-                        throw new InvalidStunAddressException(
-                            $"Unknown address familiy {family}.");
-                }
-
-                return new IPEndPoint(
-                    new IPAddress(addrBytes),
-                    port);
+                default:
+                    throw new InvalidStunAddressException(
+                        $"Unknown address family {family}.");
             }
+
+            return new IPEndPoint(
+                new IPAddress(addrBytes),
+                port);
         }
     }
 }

@@ -141,20 +141,18 @@ namespace Libplanet.Stun.Attributes
         public byte[] ToByteArray(byte[] transactionId = null)
         {
             var payload = EncodePayload(transactionId);
-            using (var ms = new MemoryStream())
+            using var ms = new MemoryStream();
+            ms.Write(((ushort)Type).ToBytes(), 0, 2);
+            ms.Write(((ushort)payload.Length).ToBytes(), 0, 2);
+            ms.Write(payload, 0, payload.Length);
+
+            // Fill padding
+            while (ms.Position % 4 != 0)
             {
-                ms.Write(((ushort)Type).ToBytes(), 0, 2);
-                ms.Write(((ushort)payload.Length).ToBytes(), 0, 2);
-                ms.Write(payload, 0, payload.Length);
-
-                // Fill padding
-                while (ms.Position % 4 != 0)
-                {
-                    ms.WriteByte(0x00);
-                }
-
-                return ms.ToArray();
+                ms.WriteByte(0x00);
             }
+
+            return ms.ToArray();
         }
 
         protected abstract byte[] EncodePayload(byte[] transactionId);

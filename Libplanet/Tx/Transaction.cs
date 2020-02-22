@@ -153,11 +153,9 @@ namespace Libplanet.Tx
             PublicKey = publicKey ??
                         throw new ArgumentNullException(nameof(publicKey));
 
-            using (var hasher = SHA256.Create())
-            {
-                byte[] payload = Serialize(true);
-                Id = new TxId(hasher.ComputeHash(payload));
-            }
+            using var hasher = SHA256.Create();
+            byte[] payload = Serialize(true);
+            Id = new TxId(hasher.ComputeHash(payload));
 
             if (validate)
             {

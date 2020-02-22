@@ -107,17 +107,15 @@ namespace Libplanet.Crypto
                 cipher.ProcessBytes(message, 0, message.Length, cipherText, 0);
             cipher.DoFinal(cipherText, len);
 
-            using (var combinedStream = new MemoryStream())
+            using var combinedStream = new MemoryStream();
+            using (var binaryWriter = new BinaryWriter(combinedStream))
             {
-                using (var binaryWriter = new BinaryWriter(combinedStream))
-                {
-                    binaryWriter.Write(nonSecret);
-                    binaryWriter.Write(nonce);
-                    binaryWriter.Write(cipherText);
-                }
-
-                return combinedStream.ToArray();
+                binaryWriter.Write(nonSecret);
+                binaryWriter.Write(nonce);
+                binaryWriter.Write(cipherText);
             }
+
+            return combinedStream.ToArray();
         }
 
         /// <summary>
@@ -149,43 +147,41 @@ namespace Libplanet.Crypto
                     nameof(ciphertext));
             }
 
-            using (var cipherStream = new MemoryStream(ciphertext))
-            using (var cipherReader = new BinaryReader(cipherStream))
+            using var cipherStream = new MemoryStream(ciphertext);
+            using var cipherReader = new BinaryReader(cipherStream);
+            byte[] nonSecretPayload = cipherReader.ReadBytes(
+                nonSecretLength
+            );
+            byte[] nonce = cipherReader.ReadBytes(NonceBitSize / 8);
+
+            var cipher = new GcmBlockCipher(new AesEngine());
+            var parameters = new AeadParameters(
+                new KeyParameter(_key),
+                MacBitSize,
+                nonce,
+                nonSecretPayload);
+            cipher.Init(false, parameters);
+
+            byte[] cipherText = cipherReader.ReadBytes(
+                ciphertext.Length - nonSecretLength - nonce.Length
+            );
+            var plainText =
+                new byte[cipher.GetOutputSize(cipherText.Length)];
+
+            try
             {
-                byte[] nonSecretPayload = cipherReader.ReadBytes(
-                    nonSecretLength
+                int len = cipher.ProcessBytes(
+                    cipherText, 0, cipherText.Length, plainText, 0
                 );
-                byte[] nonce = cipherReader.ReadBytes(NonceBitSize / 8);
-
-                var cipher = new GcmBlockCipher(new AesEngine());
-                var parameters = new AeadParameters(
-                    new KeyParameter(_key),
-                    MacBitSize,
-                    nonce,
-                    nonSecretPayload);
-                cipher.Init(false, parameters);
-
-                byte[] cipherText = cipherReader.ReadBytes(
-                    ciphertext.Length - nonSecretLength - nonce.Length
-                );
-                var plainText =
-                    new byte[cipher.GetOutputSize(cipherText.Length)];
-
-                try
-                {
-                    int len = cipher.ProcessBytes(
-                        cipherText, 0, cipherText.Length, plainText, 0
-                    );
-                    cipher.DoFinal(plainText, len);
-                    return plainText;
-                }
-                catch (InvalidCipherTextException)
-                {
-                    throw new InvalidCiphertextException(
-                        "The ciphertext is invalid. " +
-                        "Ciphertext may not have been encrypted with " +
-                        "the corresponding public key");
-                }
+                cipher.DoFinal(plainText, len);
+                return plainText;
+            }
+            catch (InvalidCipherTextException)
+            {
+                throw new InvalidCiphertextException(
+                    "The ciphertext is invalid. " +
+                    "Ciphertext may not have been encrypted with " +
+                    "the corresponding public key");
             }
         }
 

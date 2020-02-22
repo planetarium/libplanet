@@ -22,16 +22,14 @@ namespace Libplanet.Net
 
         public static byte[] ToByteArray(this IEnumerable<NetMQFrame> frames)
         {
-            using (var stream = new MemoryStream())
+            using var stream = new MemoryStream();
+            foreach (NetMQFrame frame in frames)
             {
-                foreach (NetMQFrame frame in frames)
-                {
-                    byte[] bytes = frame.ToByteArray();
-                    stream.Write(bytes, 0, bytes.Length);
-                }
-
-                return stream.ToArray();
+                byte[] bytes = frame.ToByteArray();
+                stream.Write(bytes, 0, bytes.Length);
             }
+
+            return stream.ToArray();
         }
     }
 }
