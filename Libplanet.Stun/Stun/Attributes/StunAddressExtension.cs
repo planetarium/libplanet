@@ -141,7 +141,7 @@ namespace Libplanet.Stun.Attributes
 
                     default:
                         throw new InvalidStunAddressException(
-                            $"Unknown address familiy {family}.");
+                            $"Unknown address family {family}.");
                 }
 
                 return new IPEndPoint(
