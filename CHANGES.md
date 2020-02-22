@@ -50,6 +50,9 @@ To be released.
     when there is any staged transaction which has lower nonce than the expected
     nonce, that means, shares an already taken nonce by the same signer.
     [[#791]]
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that temporary chain IDs
+    in the store had been completely cleaned up in some corner cases
+    if `cancellationToken` was requested.  [[#798]]
 
 [#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784

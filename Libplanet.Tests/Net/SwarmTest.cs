@@ -475,9 +475,7 @@ namespace Libplanet.Tests.Net
                 await StopAsync(b);
             }
 
-            Log.Debug($"chainA: {string.Join(",", chainA)}");
-            Log.Debug($"chainB: {string.Join(",", chainB)}");
-
+            _logger.CompareBothChains(LogEventLevel.Debug, "A", chainA, "B", chainB);
             Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
         }
 

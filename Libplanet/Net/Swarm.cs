@@ -219,13 +219,13 @@ namespace Libplanet.Net
         )
         {
             _workerCancellationTokenSource?.Cancel();
-            _logger.Debug("Stopping...");
+            _logger.Debug($"Stopping {nameof(Swarm<T>)}...");
             using (await _runningMutex.LockAsync())
             {
                 await Transport.StopAsync(waitFor, cancellationToken);
             }
 
-            _logger.Debug("Stopped.");
+            _logger.Debug($"{nameof(Swarm<T>)} stopped.");
         }
 
         public async Task StartAsync(
@@ -416,7 +416,11 @@ namespace Libplanet.Net
             CancellationToken cancellationToken = default(CancellationToken)
         )
         {
-            trustedStateValidators = trustedStateValidators ?? ImmutableHashSet<Address>.Empty;
+            cancellationToken.Register(() =>
+                _logger.Information("Preloading is requested to be cancelled.")
+            );
+
+            trustedStateValidators ??= ImmutableHashSet<Address>.Empty;
 
             Block<T> initialTip = BlockChain.Tip;
             BlockLocator initialLocator = BlockChain.GetBlockLocator();
@@ -524,6 +528,8 @@ namespace Libplanet.Net
                 }
                 catch (AggregateException e)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     if (blockDownloadFailed is null)
                     {
                         throw new AggregateException(e.Message, e.InnerExceptions);
@@ -654,6 +660,8 @@ namespace Libplanet.Net
                     deltaBlocks.AddFirst(blockToAdd);
                 }
 
+                cancellationToken.ThrowIfCancellationRequested();
+
                 if (deltaBlocks.First is LinkedListNode<Block<T>> deltaBottom)
                 {
                     Block<T> bottomBlock = deltaBottom.Value;
@@ -665,6 +673,7 @@ namespace Libplanet.Net
                             long verifiedBlockCount = 0;
                             foreach (Block<T> deltaBlock in deltaBlocks)
                             {
+                                cancellationToken.ThrowIfCancellationRequested();
                                 fork.Append(
                                     deltaBlock,
                                     DateTimeOffset.UtcNow,
@@ -686,10 +695,10 @@ namespace Libplanet.Net
                                 "An exception occurred during appending blocks: {Exception}",
                                 e
                             );
-                            fork.Store.DeleteChainId(fork.Id);
                             throw;
                         }
 
+                        cancellationToken.ThrowIfCancellationRequested();
                         workspace.Swap(fork, render: false);
                         wId = fork.Id;
                     }
@@ -756,7 +765,6 @@ namespace Libplanet.Net
                         BlockChain.Id,
                         BlockChain.Tip
                     );
-                    _store.DeleteChainId(wId);
                 }
                 else
                 {
@@ -771,7 +779,16 @@ namespace Libplanet.Net
                     BlockChain.Swap(workspace, render: false);
                 }
 
-                cancellationToken.ThrowIfCancellationRequested();
+                foreach (Guid chainId in wStore.ListChainIds().ToList())
+                {
+                    if (!chainId.Equals(BlockChain.Id))
+                    {
+                        _logger.Verbose("Delete an unused chain: {ChainId}", chainId);
+                        wStore.DeleteChainId(chainId);
+                    }
+                }
+
+                _logger.Verbose("Remaining chains: {@ChainIds}", wStore.ListChainIds());
             }
         }
 
@@ -1712,7 +1729,9 @@ namespace Libplanet.Net
                     {
                         _logger.Debug("Forking needed. Trying to fork...");
                         workspace = workspace.Fork(branchPoint);
-                        scope.Add(workspace.Id);
+                        IStore workStore = workspace.Store;
+                        Guid workChainId = workspace.Id;
+                        scope.Add(workChainId);
                         _logger.Debug("Forking complete.");
                     }
 

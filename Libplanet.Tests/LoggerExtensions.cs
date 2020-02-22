@@ -18,6 +18,15 @@ namespace Libplanet.Tests
         )
             where T : IAction, new()
         {
+            if (chainA is null)
+            {
+                throw new ArgumentNullException(nameof(chainA));
+            }
+            else if (chainB is null)
+            {
+                throw new ArgumentNullException(nameof(chainB));
+            }
+
             if (!logger.IsEnabled(logLevel))
             {
                 return;

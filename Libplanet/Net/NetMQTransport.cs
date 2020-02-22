@@ -731,7 +731,10 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException)
                 {
-                    _logger.Information("Cancellation requsted; shutdown runtime...");
+                    _logger.Information(
+                        $"Cancellation requested; shut down {nameof(NetMQTransport)}." +
+                        $"{nameof(ProcessRuntime)}()..."
+                    );
                     throw;
                 }
                 catch (Exception e)
