@@ -9,7 +9,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The number of total phases.
         /// </summary>
-        public const int TotalPhase = 4;
+        public const int TotalPhase = 5;
 
         /// <summary>
         /// The current phase.

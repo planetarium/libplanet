@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Async;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -474,15 +473,10 @@ namespace Libplanet.Net
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 Interlocked.Increment(ref _requestCount);
+                cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.AddAsync(
-                    new MessageRequest(
-                        reqId,
-                        message,
-                        peer,
-                        now,
-                        timeout,
-                        expectedResponses,
-                        tcs)
+                    new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
+                    cancellationToken
                 );
                 _logger.Verbose(
                     "Enqueued a request {RequestId} to {PeerAddress}: {Message}; " +
@@ -627,7 +621,7 @@ namespace Libplanet.Net
                 var peers = Protocol.PeersToBroadcast(except).ToList();
                 _logger.Debug($"Broadcasting message [{msg}]");
                 _logger.Debug($"Peers to broadcast : {peers.Count}");
-                peers.ParallelForEachAsync(async peer =>
+                Parallel.ForEach(peers, async peer =>
                 {
                     await SendMessageAsync(peer, msg);
                 });
@@ -737,7 +731,10 @@ namespace Libplanet.Net
                 }
                 catch (OperationCanceledException)
                 {
-                    _logger.Information("Cancellation requsted; shutdown runtime...");
+                    _logger.Information(
+                        $"Cancellation requested; shut down {nameof(NetMQTransport)}." +
+                        $"{nameof(ProcessRuntime)}()..."
+                    );
                     throw;
                 }
                 catch (Exception e)
