@@ -188,21 +188,15 @@ namespace Libplanet.KeyStore.Kdfs
                 );
             }
 
-            switch (prf)
+            return prf switch
             {
-                case "hmac-sha256":
-                    return new Pbkdf2<Sha256Digest>(iterations, salt, keyLength);
-
-                case null:
+                "hmac-sha256" => new Pbkdf2<Sha256Digest>(iterations, salt, keyLength),
+                null =>
                     throw new InvalidKeyJsonException(
-                        "The \"prf\" field must not be null, but a string."
-                    );
-
-                default:
-                    throw new UnsupportedKeyJsonException(
-                        $"Unsupported \"prf\" type: \"{prf}\"."
-                    );
-            }
+                        "The \"prf\" field must not be null, but a string."),
+                _ =>
+                    throw new UnsupportedKeyJsonException($"Unsupported \"prf\" type: \"{prf}\".")
+            };
         }
     }
 }
