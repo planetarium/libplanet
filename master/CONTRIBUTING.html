@@ -121,15 +121,15 @@ builds the entire <em>Libplanet</em> solution:</p>
 <h2 id="tests-build-status-codecov">Tests <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master"><img src="https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
 Going near to the <a href="https://codecov.io/gh/planetarium/libplanet">code coverage</a> 100% is one of our goals.</p>
-<p>The <em>Libplanet</em> solution consists of several projects.  <em>Libplanet</em> and
-<em>Libplanet.Stun</em> are actual implementations.  These are built to <em>Libplanet.dll</em>
-and <em>Libplanet.Stun.dll</em> assemblies and packed into one NuGet package.</p>
-<p><em>Libplanet.Tests</em> is a test suite for the <em>Libplanet.dll</em> assembly, and
-<em>Libplanet.Stun.Tests</em> is a test suite for the <em>Libplanet.Stun.dll</em> assembly.
-Both depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in these corresponds to
-one in <em>Libplanet</em> or <em>Libplanet.Stun</em> projects.
+<p>The <em>Libplanet</em> solution consists of several projects.
+Every project without <em>.Tests</em> suffix is an actual implementation.
+These are built to <em>Libplanet*.dll</em> assemblies and packed into one NuGet
+package.</p>
+<p><em>Libplanet*.Tests</em> is a test suite for the <em>Libplanet*.dll</em> assembly.
+All of them depend on <a href="https://xunit.github.io/">Xunit</a>, and every namespace and class in these
+corresponds to one in <em>Libplanet*</em> projects.
 If there's <em>Libplanet.Foo.Bar</em> class there also should be
-<em>Libplanet.Tests.Foo.BarTest</em> to test it.</p>
+<em>Libplanet.Foo.Bar.Tests</em> to test it.</p>
 <p>To build and run unit tests at a time execute the below command:</p>
 <pre><code>dotnet test
 </code></pre>
@@ -168,7 +168,7 @@ option as well.</p>
 <p>To sum up, the instruction is like below (the example is assuming Linux):</p>
 <pre><code>msbuild -r
 xunit-unity-runner/StandaloneLinux64 \
-  &quot;`pwd`&quot;/*.Tests/bin/Debug/net461/*.Tests.dll
+  &quot;`pwd`&quot;/*.Tests/bin/Debug/net47/*.Tests.dll
 </code></pre>
 <h2 id="style-convention">Style convention</h2>
 <p>Please follow the existing coding convention.  We are already using several
