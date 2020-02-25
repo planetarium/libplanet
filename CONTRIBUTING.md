@@ -71,16 +71,16 @@ Tests [![Build Status](https://dev.azure.com/planetarium/libplanet/_apis/build/s
 We write as complete tests as possible to the corresponding implementation code.
 Going near to the [code coverage][3] 100% is one of our goals.
 
-The *Libplanet* solution consists of several projects.  *Libplanet* and
-*Libplanet.Stun* are actual implementations.  These are built to *Libplanet.dll*
-and *Libplanet.Stun.dll* assemblies and packed into one NuGet package.
+The *Libplanet* solution consists of several projects.
+Every project without *.Tests* suffix is an actual implementation.
+These are built to *Libplanet\*.dll* assemblies and packed into one NuGet
+package.
 
-*Libplanet.Tests* is a test suite for the *Libplanet.dll* assembly, and
-*Libplanet.Stun.Tests* is a test suite for the *Libplanet.Stun.dll* assembly.
-Both depend on [Xunit], and every namespace and class in these corresponds to
-one in *Libplanet* or *Libplanet.Stun* projects.
+*Libplanet\*.Tests* is a test suite for the *Libplanet\*.dll* assembly.
+All of them depend on [Xunit], and every namespace and class in these
+corresponds to one in *Libplanet&ast;* projects.
 If there's *Libplanet.Foo.Bar* class there also should be
-*Libplanet.Tests.Foo.BarTest* to test it.
+*Libplanet.Foo.Bar.Tests* to test it.
 
 To build and run unit tests at a time execute the below command:
 
@@ -141,7 +141,7 @@ To sum up, the instruction is like below (the example is assuming Linux):
 
     msbuild -r
     xunit-unity-runner/StandaloneLinux64 \
-      "`pwd`"/*.Tests/bin/Debug/net461/*.Tests.dll
+      "`pwd`"/*.Tests/bin/Debug/net47/*.Tests.dll
 
 [xunit-unity-runner]: https://github.com/planetarium/xunit-unity-runner
 [4]: https://github.com/planetarium/xunit-unity-runner/releases/latest

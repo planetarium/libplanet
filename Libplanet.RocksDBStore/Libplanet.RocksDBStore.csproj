@@ -1,6 +1,4 @@
-<Project
-xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-Sdk="Microsoft.NET.Sdk">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
   <TargetFramework>netstandard2.0</TargetFramework>
   <RootNamespace>Libplanet.RocksDBStore</RootNamespace>
@@ -22,14 +20,13 @@ Sdk="Microsoft.NET.Sdk">
   <PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
     <PrivateAssets>all</PrivateAssets>
   </PackageReference>
-  <PackageReference
-      Include="Microsoft.DotNet.Analyzers.Compatibility"
-      Version="0.2.12-alpha">
+  <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
     <PrivateAssets>all</PrivateAssets>
     <IncludeAssets>
       runtime; build; native; contentfiles; analyzers; buildtransitive
     </IncludeAssets>
   </PackageReference>
+  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.2.1-planetarium" />
   <PackageReference Include="SonarAnalyzer.CSharp" Version="8.1.0.13383">
     <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     <PrivateAssets>all</PrivateAssets>
@@ -41,7 +38,6 @@ Sdk="Microsoft.NET.Sdk">
     </IncludeAssets>
   </PackageReference>
   <PackageReference Include="Serilog" Version="2.8.0" />
-  <PackageReference Include="RocksDbSharp" Version="6.2.2" />
 </ItemGroup>
 
 <ItemGroup>
