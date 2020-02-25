@@ -24,6 +24,8 @@ namespace Libplanet.Tests.Store
 
         protected StoreFixture Fx { get; set; }
 
+        protected Func<StoreFixture> FxConstructor { get; set; }
+
         [SkippableFact]
         public void ListChainId()
         {
@@ -131,7 +133,7 @@ namespace Libplanet.Tests.Store
             string stateKey2 = address2.ToHex().ToLowerInvariant();
             string stateKey3 = address3.ToHex().ToLowerInvariant();
 
-            var store = new DefaultStore(null);
+            var store = Fx.Store;
             var chain = TestUtils.MakeBlockChain(new NullPolicy<DumbAction>(), store);
 
             var block1 = TestUtils.MineNext(chain.Genesis);
@@ -1003,8 +1005,8 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void Copy()
         {
-            using (DefaultStoreFixture fx = new DefaultStoreFixture(memory: true))
-            using (DefaultStoreFixture fx2 = new DefaultStoreFixture(memory: true))
+            using (StoreFixture fx = FxConstructor())
+            using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var blocks = new BlockChain<DumbAction>(
