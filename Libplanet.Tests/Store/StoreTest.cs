@@ -882,6 +882,41 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void ListTxNonces()
+        {
+            var chainId1 = Guid.NewGuid();
+            var chainId2 = Guid.NewGuid();
+
+            Address address1 = Fx.Address1;
+            Address address2 = Fx.Address2;
+
+            Assert.Empty(Fx.Store.ListTxNonces(chainId1));
+            Assert.Empty(Fx.Store.ListTxNonces(chainId2));
+
+            Fx.Store.IncreaseTxNonce(chainId1, address1);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 1, },
+                Fx.Store.ListTxNonces(chainId1));
+
+            Fx.Store.IncreaseTxNonce(chainId2, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address2] = 1, },
+                Fx.Store.ListTxNonces(chainId2));
+
+            Fx.Store.IncreaseTxNonce(chainId1, address1);
+            Fx.Store.IncreaseTxNonce(chainId1, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 2, [address2] = 1, },
+                Fx.Store.ListTxNonces(chainId1));
+
+            Fx.Store.IncreaseTxNonce(chainId2, address1);
+            Fx.Store.IncreaseTxNonce(chainId2, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 1, [address2] = 2, },
+                Fx.Store.ListTxNonces(chainId2));
+        }
+
+        [SkippableFact]
         public void IndexBlockHashReturnNull()
         {
             Fx.Store.PutBlock(Fx.Block1);
