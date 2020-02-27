@@ -9,6 +9,7 @@ To be released.
 ### Backward-incompatible API changes
 
  -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
+ -  Removed `IStore.DeleteIndex(Guid, HashDigest<SHA256>)` method.  [[#802]]
 
 ### Backward-incompatible network protocol changes
 
@@ -61,6 +62,7 @@ To be released.
 [#789]: https://github.com/planetarium/libplanet/pull/789
 [#791]: https://github.com/planetarium/libplanet/pull/791
 [#798]: https://github.com/planetarium/libplanet/pull/798
+[#802]: https://github.com/planetarium/libplanet/pull/802
 
 
 Version 0.8.0

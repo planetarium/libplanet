@@ -224,13 +224,6 @@ namespace Libplanet.RocksDBStore
         }
 
         /// <inheritdoc/>
-        public override bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
-        {
-            int deleted = IndexCollection(chainId).Delete(i => i.Hash.Equals(hash));
-            return deleted > 0;
-        }
-
-        /// <inheritdoc/>
         public override void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
