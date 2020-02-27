@@ -42,6 +42,8 @@ namespace Libplanet.RocksDBStore
 
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
 
+        private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
+
         private readonly ILogger _logger;
 
         private readonly LruCache<TxId, object> _txCache;
@@ -170,26 +172,18 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc />
         public override Guid? GetCanonicalChainId()
         {
-            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>("canon");
-            var docId = new BsonValue("canon");
-            BsonDocument doc = collection.FindById(docId);
-            if (doc is null)
-            {
-                return null;
-            }
+            byte[] bytes = _chainDb.Get(CanonicalChainIdIdKey);
 
-            return doc.TryGetValue("chainId", out BsonValue ns)
-                ? new Guid(ns.AsBinary)
-                : (Guid?)null;
+            return bytes is null
+                ? (Guid?)null
+                : new Guid(bytes);
         }
 
         /// <inheritdoc />
         public override void SetCanonicalChainId(Guid chainId)
         {
-            LiteCollection<BsonDocument> collection = _liteDb.GetCollection<BsonDocument>("canon");
-            var docId = new BsonValue("canon");
-            byte[] idBytes = chainId.ToByteArray();
-            collection.Upsert(docId, new BsonDocument() { ["chainId"] = new BsonValue(idBytes) });
+            byte[] bytes = chainId.ToByteArray();
+            _chainDb.Put(CanonicalChainIdIdKey, bytes);
         }
 
         /// <inheritdoc/>
