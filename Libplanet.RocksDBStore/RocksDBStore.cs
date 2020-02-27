@@ -303,11 +303,12 @@ namespace Libplanet.RocksDBStore
         public override IEnumerable<TxId> IterateTransactionIds()
         {
             Iterator it = _blockDb.NewIterator();
+            byte[] prefix = TxKeyPrefix;
 
-            for (it.Seek(TxKeyPrefix); it.Valid(); it.Next())
+            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
                 byte[] key = it.Key();
-                byte[] txIdBytes = key.Skip(TxKeyPrefix.Length).ToArray();
+                byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
 
                 var txId = new TxId(txIdBytes);
                 yield return txId;
@@ -387,11 +388,12 @@ namespace Libplanet.RocksDBStore
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
             Iterator it = _blockDb.NewIterator();
+            byte[] prefix = BlockKeyPrefix;
 
-            for (it.Seek(BlockKeyPrefix); it.Valid(); it.Next())
+            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
                 byte[] key = it.Key();
-                byte[] hashBytes = key.Skip(BlockKeyPrefix.Length).ToArray();
+                byte[] hashBytes = key.Skip(prefix.Length).ToArray();
 
                 var blockHash = new HashDigest<SHA256>(hashBytes);
                 yield return blockHash;
@@ -692,11 +694,12 @@ namespace Libplanet.RocksDBStore
         {
             ColumnFamilyHandle cf = GetColumnFamilyFromChainId(chainId);
             Iterator it = _chainDb.NewIterator(cf);
+            byte[] prefix = TxNonceKeyPrefix;
 
-            for (it.Seek(TxNonceKeyPrefix); it.Valid(); it.Next())
+            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
                 byte[] addressBytes = it.Key()
-                    .Skip(TxNonceKeyPrefix.Length)
+                    .Skip(prefix.Length)
                     .ToArray();
                 var address = new Address(addressBytes);
                 long nonce = BitConverter.ToInt64(it.Value(), 0);

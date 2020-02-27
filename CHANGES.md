@@ -31,6 +31,7 @@ To be released.
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
+ -  Added `ByteArrayExtensions` class.  [[#803]]
 
 ### Behavioral changes
 
@@ -63,6 +64,7 @@ To be released.
 [#791]: https://github.com/planetarium/libplanet/pull/791
 [#798]: https://github.com/planetarium/libplanet/pull/798
 [#802]: https://github.com/planetarium/libplanet/pull/802
+[#803]: https://github.com/planetarium/libplanet/pull/803
 
 
 Version 0.8.0

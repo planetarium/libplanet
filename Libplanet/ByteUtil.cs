@@ -118,34 +118,5 @@ namespace Libplanet
                 (current, t) => unchecked(current * (bytes.Length + 1) + t)
             );
         }
-
-        [Pure]
-        public static bool StartsWith(this byte[] bytes, byte[] prefix)
-        {
-            if (bytes == null)
-            {
-                throw new ArgumentNullException(nameof(bytes));
-            }
-
-            if (prefix == null)
-            {
-                throw new ArgumentNullException(nameof(prefix));
-            }
-
-            if (prefix.Length > bytes.Length)
-            {
-                return false;
-            }
-
-            for (int i = 0, j = 0; i < bytes.Length && j < prefix.Length; i++, j++)
-            {
-                if (bytes[i] != prefix[j])
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
     }
 }
