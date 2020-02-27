@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # Submit .nupkg files to NuGet.
 # Note that this script is intended to be run by GitHub Actions.
 set -e
 
-projects="Libplanet Libplanet.RocksDBStore"
+projects=("Libplanet" "Libplanet.RocksDBStore")
 configuration=Release
 
 if [ ! -f obj/package_version.txt ]; then
@@ -31,7 +31,7 @@ fi
 
 package_version="$(cat obj/package_version.txt)"
 
-for project in $projects; do
+for project in "${projects[@]}"; do
   dotnet nuget push \
     "./$project/bin/$configuration/$project.$package_version.nupkg" \
     --api-key "$NUGET_API_KEY" \

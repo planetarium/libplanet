@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # Build a .nupkg file.
 # Note that this script is intended to be run by GitHub Actions.
 set -e
 
-projects="Libplanet Libplanet.RocksDBStore"
+projects=("Libplanet" "Libplanet.RocksDBStore")
 configuration=Release
 
 if ! (env | grep '^GITHUB_'); then
@@ -11,7 +11,7 @@ if ! (env | grep '^GITHUB_'); then
   exit 1
 fi
 
-for project in $projects; do
+for project in "${projects[@]}"; do
   rm -rf "./$project/bin/$configuration/"
 
   if [ -f obj/version_suffix.txt ]; then
