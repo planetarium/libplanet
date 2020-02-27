@@ -63,8 +63,6 @@ namespace Libplanet.Store
 
         long AppendIndex(Guid chainId, HashDigest<SHA256> hash);
 
-        bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash);
-
         /// <summary>
         /// Forks block indexes from
         /// <paramref name="sourceChainId"/> to

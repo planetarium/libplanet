@@ -376,16 +376,6 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void DeleteIndex()
-        {
-            Assert.False(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
-            Fx.Store.AppendIndex(Fx.StoreChainId, Fx.Hash1);
-            Assert.NotEmpty(Fx.Store.IterateIndexes(Fx.StoreChainId));
-            Assert.True(Fx.Store.DeleteIndex(Fx.StoreChainId, Fx.Hash1));
-            Assert.Empty(Fx.Store.IterateIndexes(Fx.StoreChainId));
-        }
-
-        [SkippableFact]
         public void IterateIndexes()
         {
             var ns = Fx.StoreChainId;

@@ -176,8 +176,6 @@ namespace Libplanet.Store
             return IterateBlockHashes().LongCount();
         }
 
-        public abstract bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash);
-
         /// <inheritdoc />
         public abstract bool ContainsTransaction(TxId txId);
 
