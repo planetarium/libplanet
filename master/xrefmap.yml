@@ -5519,22 +5519,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.BaseStore.DeleteChainId
   nameWithType: BaseStore.DeleteChainId
-- uid: Libplanet.Store.BaseStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name: DeleteIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.BaseStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name.vb: DeleteIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.BaseStore.DeleteIndex(Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.BaseStore.DeleteIndex(Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: BaseStore.DeleteIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: BaseStore.DeleteIndex(Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.BaseStore.DeleteIndex*
-  name: DeleteIndex
-  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteIndex_
-  commentId: Overload:Libplanet.Store.BaseStore.DeleteIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.BaseStore.DeleteIndex
-  nameWithType: BaseStore.DeleteIndex
 - uid: Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_
@@ -6303,22 +6287,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.DefaultStore.DeleteChainId
   nameWithType: DefaultStore.DeleteChainId
-- uid: Libplanet.Store.DefaultStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name: DeleteIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.DefaultStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name.vb: DeleteIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.DefaultStore.DeleteIndex(Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.DefaultStore.DeleteIndex(Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: DefaultStore.DeleteIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: DefaultStore.DeleteIndex(Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.DefaultStore.DeleteIndex*
-  name: DeleteIndex
-  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteIndex_
-  commentId: Overload:Libplanet.Store.DefaultStore.DeleteIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.DefaultStore.DeleteIndex
-  nameWithType: DefaultStore.DeleteIndex
 - uid: Libplanet.Store.DefaultStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_DeleteTransaction_Libplanet_Tx_TxId_
@@ -6844,22 +6812,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.DeleteChainId
   nameWithType: IStore.DeleteChainId
-- uid: Libplanet.Store.IStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name: DeleteIndex(Guid, HashDigest<SHA256>)
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__
-  commentId: M:Libplanet.Store.IStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})
-  name.vb: DeleteIndex(Guid, HashDigest(Of SHA256))
-  fullName: Libplanet.Store.IStore.DeleteIndex(Guid, Libplanet.HashDigest<SHA256>)
-  fullName.vb: Libplanet.Store.IStore.DeleteIndex(Guid, Libplanet.HashDigest(Of SHA256))
-  nameWithType: IStore.DeleteIndex(Guid, HashDigest<SHA256>)
-  nameWithType.vb: IStore.DeleteIndex(Guid, HashDigest(Of SHA256))
-- uid: Libplanet.Store.IStore.DeleteIndex*
-  name: DeleteIndex
-  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteIndex_
-  commentId: Overload:Libplanet.Store.IStore.DeleteIndex
-  isSpec: "True"
-  fullName: Libplanet.Store.IStore.DeleteIndex
-  nameWithType: IStore.DeleteIndex
 - uid: Libplanet.Store.IStore.DeleteTransaction(Libplanet.Tx.TxId)
   name: DeleteTransaction(TxId)
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_DeleteTransaction_Libplanet_Tx_TxId_

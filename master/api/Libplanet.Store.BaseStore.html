@@ -590,7 +590,7 @@ the specified <code data-dev-comment-type="paramref" class="paramref">blockHash<
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L182">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L180">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_ContainsTransaction_" data-uid="Libplanet.Store.BaseStore.ContainsTransaction*"></a>
   <h4 id="Libplanet_Store_BaseStore_ContainsTransaction_Libplanet_Tx_TxId_" data-uid="Libplanet.Store.BaseStore.ContainsTransaction(Libplanet.Tx.TxId)">ContainsTransaction(TxId)</h4>
@@ -797,7 +797,7 @@ with the specified <code data-dev-comment-type="paramref" class="paramref">txId<
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteChainId_Guid_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteChainId(Guid)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L185">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L183">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_DeleteChainId_" data-uid="Libplanet.Store.BaseStore.DeleteChainId*"></a>
   <h4 id="Libplanet_Store_BaseStore_DeleteChainId_Guid_" data-uid="Libplanet.Store.BaseStore.DeleteChainId(Guid)">DeleteChainId(Guid)</h4>
@@ -833,58 +833,6 @@ does nothing.</p>
   <div class="markdown level1 remarks"><p>This does not delete blocks or transactions that belong to the index of
 the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but only the index, tx nonces, and state references.</p>
 </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteIndex(Guid%2CLibplanet.HashDigest%7BSHA256%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L179">View Source</a>
-  </span>
-  <a id="Libplanet_Store_BaseStore_DeleteIndex_" data-uid="Libplanet.Store.BaseStore.DeleteIndex*"></a>
-  <h4 id="Libplanet_Store_BaseStore_DeleteIndex_Guid_Libplanet_HashDigest_SHA256__" data-uid="Libplanet.Store.BaseStore.DeleteIndex(Guid,Libplanet.HashDigest{SHA256})">DeleteIndex(Guid, HashDigest&lt;SHA256&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool DeleteIndex(Guid chainId, HashDigest&lt;SHA256&gt; hash)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Guid</span></td>
-        <td><span class="parametername">chainId</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Libplanet.HashDigest-1.html">HashDigest</a>&lt;<span class="xref">SHA256</span>&gt;</td>
-        <td><span class="parametername">hash</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_DeleteTransaction_Libplanet_Tx_TxId_.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.DeleteTransaction(Libplanet.Tx.TxId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -937,7 +885,7 @@ the <code data-dev-comment-type="paramref" class="paramref">chainId</code>, but 
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Store_BaseStore_Dispose.md&amp;value=---%0Auid%3A%20Libplanet.Store.BaseStore.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L188">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Store/BaseStore.cs/#L186">View Source</a>
   </span>
   <a id="Libplanet_Store_BaseStore_Dispose_" data-uid="Libplanet.Store.BaseStore.Dispose*"></a>
   <h4 id="Libplanet_Store_BaseStore_Dispose" data-uid="Libplanet.Store.BaseStore.Dispose">Dispose()</h4>
