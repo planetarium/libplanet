@@ -3,7 +3,7 @@
 # Note that this script is intended to be run by GitHub Actions.
 set -e
 
-project=Libplanet
+projects="Libplanet Libplanet.RocksDBStore"
 configuration=Release
 
 if [ ! -f obj/package_version.txt ]; then
@@ -30,7 +30,10 @@ if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ] || (
 fi
 
 package_version="$(cat obj/package_version.txt)"
-dotnet nuget push \
-  "./$project/bin/$configuration/$project.$package_version.nupkg" \
-  --api-key "$NUGET_API_KEY" \
-  --source https://api.nuget.org/v3/index.json
+
+for project in $projects; do
+  dotnet nuget push \
+    "./$project/bin/$configuration/$project.$package_version.nupkg" \
+    --api-key "$NUGET_API_KEY" \
+    --source https://api.nuget.org/v3/index.json
+done

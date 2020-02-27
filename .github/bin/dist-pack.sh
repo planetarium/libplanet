@@ -3,7 +3,7 @@
 # Note that this script is intended to be run by GitHub Actions.
 set -e
 
-project=Libplanet
+projects="Libplanet Libplanet.RocksDBStore"
 configuration=Release
 
 if ! (env | grep '^GITHUB_'); then
@@ -11,21 +11,23 @@ if ! (env | grep '^GITHUB_'); then
   exit 1
 fi
 
-rm -rf "./$project/bin/$configuration/"
+for project in $projects; do
+  rm -rf "./$project/bin/$configuration/"
 
-if [ -f obj/version_suffix.txt ]; then
-  dotnet_args="--version-suffix $(cat obj/version_suffix.txt)"
-  dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
-fi
-# shellcheck disable=SC2086
-dotnet build -c "$configuration" $dotnet_args
-# shellcheck disable=SC2086
-dotnet pack "$project" -c "$configuration" $dotnet_args
+  if [ -f obj/version_suffix.txt ]; then
+    dotnet_args="-p:Version=$(cat obj/package_version.txt)"
+    dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
+  fi
+  # shellcheck disable=SC2086
+  dotnet build -c "$configuration" $dotnet_args
+  # shellcheck disable=SC2086
+  dotnet pack "$project" -c "$configuration" $dotnet_args
 
-version_prefix="$(cat obj/version_prefix.txt)"
-package_version="$(cat obj/package_version.txt)"
+  version_prefix="$(cat obj/version_prefix.txt)"
+  package_version="$(cat obj/package_version.txt)"
 
-ls -al "./$project/bin/$configuration/"
-if [ "$package_version" != "$version_prefix" ]; then
-  rm -f "./$project/bin/$configuration/$project.$version_prefix.nupkg"
-fi
+  ls -al "./$project/bin/$configuration/"
+  if [ "$package_version" != "$version_prefix" ]; then
+    rm -f "./$project/bin/$configuration/$project.$version_prefix.nupkg"
+  fi
+done

@@ -1,5 +1,18 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Sdk="Microsoft.NET.Sdk">
 <PropertyGroup>
+  <PackageId>Libplanet.RocksDBStore</PackageId>
+  <Title>Libplanet.RocksDBStore</Title>
+  <Summary>A Libplanet.IStore implementation using RocksDB</Summary>
+  <Description>A Libplanet.IStore implementation using RocksDB</Description>
+  <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
+  <Authors>Planetarium</Authors>
+  <Company>Planetarium</Company>
+  <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+  <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+  <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
+  <RepositoryType>git</RepositoryType>
+  <PackageIcon>icon.png</PackageIcon>
+  <LangVersion>8.0</LangVersion>
   <TargetFramework>netstandard2.0</TargetFramework>
   <RootNamespace>Libplanet.RocksDBStore</RootNamespace>
   <AssemblyName>Libplanet.RocksDBStore</AssemblyName>
@@ -10,6 +23,7 @@
 </PropertyGroup>
 
 <ItemGroup>
+  <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
   <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
     <Link>Menees.Analyzers.Settings.xml</Link>
   </AdditionalFiles>
