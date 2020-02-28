@@ -10,8 +10,8 @@ To be released.
 
  -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
  -  Removed `IStore.DeleteIndex(Guid, HashDigest<SHA256>)` method.  [[#802]]
- -  Extension classes have been renamed. However, it is not affected
-    if you do not call it directly.  [[#803]]
+ -  Extension classes was renamed.  However, it would not be affected
+    if you have called it by using instance method syntax.  [[#803]]
      -  Renamed `StunAddressExtension` class to `StunAddressExtensions`.
      -  Renamed `BytesConvertExtension` class to `BytesConvertExtensions`.
      -  Renamed `RandomExtension` class to `RandomExtensions`.
