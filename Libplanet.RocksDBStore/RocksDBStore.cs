@@ -302,10 +302,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<TxId> IterateTransactionIds()
         {
-            Iterator it = _blockDb.NewIterator();
             byte[] prefix = TxKeyPrefix;
 
-            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
+            foreach (Iterator it in IterateDb(_blockDb, prefix) )
             {
                 byte[] key = it.Key();
                 byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
@@ -387,10 +386,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<HashDigest<SHA256>> IterateBlockHashes()
         {
-            Iterator it = _blockDb.NewIterator();
             byte[] prefix = BlockKeyPrefix;
 
-            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
+            foreach (Iterator it in IterateDb(_blockDb, prefix))
             {
                 byte[] key = it.Key();
                 byte[] hashBytes = key.Skip(prefix.Length).ToArray();
@@ -692,11 +690,9 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<KeyValuePair<Address, long>> ListTxNonces(Guid chainId)
         {
-            ColumnFamilyHandle cf = GetColumnFamilyFromChainId(chainId);
-            Iterator it = _chainDb.NewIterator(cf);
             byte[] prefix = TxNonceKeyPrefix;
 
-            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId))
             {
                 byte[] addressBytes = it.Key()
                     .Skip(prefix.Length)
@@ -710,7 +706,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            ColumnFamilyHandle cf = GetColumnFamilyFromChainId(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(chainId);
             byte[] key = TxNonceKey(address);
             byte[] bytes = _chainDb.Get(key, cf);
 
@@ -722,7 +718,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
-            ColumnFamilyHandle cf = GetColumnFamilyFromChainId(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(chainId);
             long nextNonce = GetTxNonce(chainId, signer) + delta;
 
             byte[] key = TxNonceKey(signer);
@@ -788,9 +784,25 @@ namespace Libplanet.RocksDBStore
                 .ToArray();
         }
 
-        private ColumnFamilyHandle GetColumnFamilyFromChainId(Guid chainId)
+        private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
+            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            Iterator it = db.NewIterator(cf);
+            for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
+            {
+                yield return it;
+            }
+        }
+
+        private ColumnFamilyHandle GetColumnFamily(Guid? chainId = null)
+        {
+            if (chainId is null)
+            {
+                return null;
+            }
+
             var cfName = chainId.ToString();
+
             ColumnFamilyHandle cf;
             try
             {
