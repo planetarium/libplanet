@@ -17,6 +17,7 @@ namespace Libplanet.Tests.Store
         {
             TestOutputHelper = testOutputHelper;
             Fx = _fx = new DefaultStoreFixture();
+            FxConstructor = () => new DefaultStoreFixture();
         }
 
         public void Dispose()

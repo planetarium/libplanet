@@ -10,7 +10,7 @@ using Libplanet.Tx;
 
 namespace Libplanet.Store
 {
-    public static class StoreExtension
+    public static class StoreExtensions
     {
         /// <summary>
         /// Makes a store, <paramref name="to"/>, logically (but not necessarily physically)

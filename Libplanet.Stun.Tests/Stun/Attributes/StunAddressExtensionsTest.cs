@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Libplanet.Stun.Tests.Attributes
 {
-    public class StunAddressExtensionTest
+    public class StunAddressExtensionsTest
     {
         public static IEnumerable<object[]> Testcases => new List<object[]>
         {

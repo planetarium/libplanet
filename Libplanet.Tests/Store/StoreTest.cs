@@ -24,6 +24,8 @@ namespace Libplanet.Tests.Store
 
         protected StoreFixture Fx { get; set; }
 
+        protected Func<StoreFixture> FxConstructor { get; set; }
+
         [SkippableFact]
         public void ListChainId()
         {
@@ -131,7 +133,7 @@ namespace Libplanet.Tests.Store
             string stateKey2 = address2.ToHex().ToLowerInvariant();
             string stateKey3 = address3.ToHex().ToLowerInvariant();
 
-            var store = new DefaultStore(null);
+            var store = Fx.Store;
             var chain = TestUtils.MakeBlockChain(new NullPolicy<DumbAction>(), store);
 
             var block1 = TestUtils.MineNext(chain.Genesis);
@@ -880,6 +882,41 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void ListTxNonces()
+        {
+            var chainId1 = Guid.NewGuid();
+            var chainId2 = Guid.NewGuid();
+
+            Address address1 = Fx.Address1;
+            Address address2 = Fx.Address2;
+
+            Assert.Empty(Fx.Store.ListTxNonces(chainId1));
+            Assert.Empty(Fx.Store.ListTxNonces(chainId2));
+
+            Fx.Store.IncreaseTxNonce(chainId1, address1);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 1, },
+                Fx.Store.ListTxNonces(chainId1));
+
+            Fx.Store.IncreaseTxNonce(chainId2, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address2] = 1, },
+                Fx.Store.ListTxNonces(chainId2));
+
+            Fx.Store.IncreaseTxNonce(chainId1, address1);
+            Fx.Store.IncreaseTxNonce(chainId1, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 2, [address2] = 1, },
+                Fx.Store.ListTxNonces(chainId1));
+
+            Fx.Store.IncreaseTxNonce(chainId2, address1);
+            Fx.Store.IncreaseTxNonce(chainId2, address2);
+            Assert.Equal(
+                new Dictionary<Address, long> { [address1] = 1, [address2] = 2, },
+                Fx.Store.ListTxNonces(chainId2));
+        }
+
+        [SkippableFact]
         public void IndexBlockHashReturnNull()
         {
             Fx.Store.PutBlock(Fx.Block1);
@@ -1003,8 +1040,8 @@ namespace Libplanet.Tests.Store
         [SkippableFact]
         public void Copy()
         {
-            using (DefaultStoreFixture fx = new DefaultStoreFixture(memory: true))
-            using (DefaultStoreFixture fx2 = new DefaultStoreFixture(memory: true))
+            using (StoreFixture fx = FxConstructor())
+            using (StoreFixture fx2 = FxConstructor())
             {
                 IStore s1 = fx.Store, s2 = fx2.Store;
                 var blocks = new BlockChain<DumbAction>(

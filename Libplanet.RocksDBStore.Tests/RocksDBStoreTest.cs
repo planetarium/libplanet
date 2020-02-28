@@ -13,6 +13,7 @@ namespace Libplanet.RocksDBStore.Tests
             try
             {
                 Fx = _fx = new RocksDBStoreFixture();
+                FxConstructor = () => new RocksDBStoreFixture();
             }
             catch (TypeInitializationException)
             {

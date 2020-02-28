@@ -10,6 +10,18 @@ To be released.
 
  -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
  -  Removed `IStore.DeleteIndex(Guid, HashDigest<SHA256>)` method.  [[#802]]
+ -  Extension classes was renamed.  However, it would not be affected
+    if you have called it by using instance method syntax.  [[#803]]
+     -  Renamed `StunAddressExtension` class to `StunAddressExtensions`.
+     -  Renamed `BytesConvertExtension` class to `BytesConvertExtensions`.
+     -  Renamed `RandomExtension` class to `RandomExtensions`.
+     -  Renamed `AddressExtension` class to `AddressExtensions`.
+     -  Renamed `HashDigestExtension` class to `HashDigestExtensions`.
+     -  Renamed `NetMQFrameExtension` class to `NetMQFrameExtensions`.
+     -  Renamed `NetMQSocketExtension` class to `NetMQSocketExtensions`.
+     -  Renamed `SerializationInfoExtension` class to
+        `SerializationInfoExtensions`.
+     -  Renamed `StoreExtension` class to `StoreExtensions`.
 
 ### Backward-incompatible network protocol changes
 
@@ -31,6 +43,7 @@ To be released.
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
+ -  Added `ByteArrayExtensions` class.  [[#803]]
 
 ### Behavioral changes
 
@@ -63,6 +76,7 @@ To be released.
 [#791]: https://github.com/planetarium/libplanet/pull/791
 [#798]: https://github.com/planetarium/libplanet/pull/798
 [#802]: https://github.com/planetarium/libplanet/pull/802
+[#803]: https://github.com/planetarium/libplanet/pull/803
 
 
 Version 0.8.0

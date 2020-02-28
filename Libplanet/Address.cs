@@ -104,13 +104,13 @@ namespace Libplanet
         /// Derives the corresponding <see cref="Address"/> from a <see
         /// cref="PublicKey"/>.
         /// <para>Note that there is an equivalent extension method
-        /// <see cref="AddressExtension.ToAddress(PublicKey)"/>, which enables
+        /// <see cref="AddressExtensions.ToAddress(PublicKey)"/>, which enables
         /// a code like <c>publicKey.ToAddress()</c> instead of
         /// <c>new Address(publicKey)</c>, for convenience.</para>
         /// </summary>
         /// <param name="publicKey">A <see cref="PublicKey"/> to derive
         /// the corresponding <see cref="Address"/> from.</param>
-        /// <seealso cref="AddressExtension.ToAddress(PublicKey)"/>
+        /// <seealso cref="AddressExtensions.ToAddress(PublicKey)"/>
         public Address(PublicKey publicKey)
             : this(DeriveAddress(publicKey))
         {

@@ -7,7 +7,7 @@ using Libplanet.Stun.Messages;
 
 namespace Libplanet.Stun.Attributes
 {
-    internal static class StunAddressExtension
+    internal static class StunAddressExtensions
     {
         private enum StunAf : byte
         {

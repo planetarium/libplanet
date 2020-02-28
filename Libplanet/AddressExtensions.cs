@@ -7,7 +7,7 @@ namespace Libplanet
     /// the most part) to deal with <see cref="Address"/>.
     /// </summary>
     /// <seealso cref="Address"/>
-    public static class AddressExtension
+    public static class AddressExtensions
     {
         /// <summary>
         /// Derives the corresponding <see cref="Address"/> from a <see

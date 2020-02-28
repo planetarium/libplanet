@@ -6,7 +6,7 @@ namespace Libplanet.Action
     /// This extension class provides some convenient methods
     /// to deal with <see cref="IRandom"/>.
     /// </summary>
-    public static class RandomExtension
+    public static class RandomExtensions
     {
         /// <summary>
         /// Generates a UUID version 4, i.e., a random <see cref="Guid"/>.

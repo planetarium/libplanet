@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Libplanet.Tests
 {
-    public class AddressExtensionTest
+    public class AddressExtensionsTest
     {
         [Fact]
         public void CanGetAddress()

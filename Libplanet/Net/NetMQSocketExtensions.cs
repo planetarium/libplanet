@@ -5,7 +5,7 @@ using NetMQ;
 
 namespace Libplanet.Net
 {
-    internal static class NetMQSocketExtension
+    internal static class NetMQSocketExtensions
     {
         public static async Task SendMultipartMessageAsync(
             this NetMQSocket socket,
