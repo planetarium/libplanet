@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -26,25 +27,18 @@ namespace Libplanet.RocksDBStore
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
     {
-        private const string StateRefIdPrefix = "stateref_";
-
         private const string BlockDbName = "blockdb";
-
         private const string ChainDbName = "chaindb";
+        private const string StateRefDbName = "staterefdb";
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
-
         private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
-
         private static readonly byte[] BlockStateKeyPrefix = { (byte)'S' };
-
         private static readonly byte[] TxKeyPrefix = { (byte)'T' };
-
         private static readonly byte[] TxNonceKeyPrefix = { (byte)'N' };
-
         private static readonly byte[] IndexCountKey = { (byte)'c' };
-
         private static readonly byte[] CanonicalChainIdIdKey = { (byte)'C' };
+        private static readonly byte[] StateRefKeyPrefix = { (byte)'s' };
 
         private readonly ILogger _logger;
 
@@ -61,6 +55,7 @@ namespace Libplanet.RocksDBStore
         private readonly string _path;
         private readonly RocksDb _blockDb;
         private readonly RocksDb _chainDb;
+        private readonly RocksDb _stateRefDb;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -151,6 +146,8 @@ namespace Libplanet.RocksDBStore
             _blockDb = RocksDb.Open(_options, Path.Combine(path, BlockDbName));
             _chainDb = RocksDb.Open(
                 _options, Path.Combine(path, ChainDbName), new ColumnFamilies());
+            _stateRefDb = RocksDb.Open(
+                _options, Path.Combine(path, StateRefDbName), new ColumnFamilies());
         }
 
         private LiteCollection<StagedTxIdDoc> StagedTxIds =>
@@ -181,11 +178,11 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
-            _liteDb.DropCollection(StateRefId(chainId));
             _lastStateRefCaches.Remove(chainId);
 
             var cfName = chainId.ToString();
             _chainDb.DropColumnFamily(cfName);
+            _stateRefDb.DropColumnFamily(cfName);
         }
 
         /// <inheritdoc />
@@ -208,7 +205,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long CountIndex(Guid chainId)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
             byte[] bytes = _chainDb.Get(IndexCountKey, cf);
             return bytes is null
                 ? 0
@@ -251,7 +248,7 @@ namespace Libplanet.RocksDBStore
                 }
             }
 
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
 
             // Use Big-endian to order index lexicographically.
             byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
@@ -272,7 +269,7 @@ namespace Libplanet.RocksDBStore
             byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
 
             using var writeBatch = new WriteBatch();
 
@@ -304,11 +301,22 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override IEnumerable<string> ListStateKeys(Guid chainId)
         {
-            string collId = StateRefId(chainId);
-            return _liteDb.GetCollection<StateRefDoc>(collId)
-                .Find(Query.All(nameof(StateRefDoc.StateKey), Query.Ascending))
-                .Select(doc => doc.StateKey)
-                .ToImmutableHashSet();
+            byte[] prefix = StateRefKeyPrefix;
+            var prevStateKey = string.Empty;
+
+            foreach (Iterator it in IterateDb(_stateRefDb, prefix, chainId))
+            {
+                byte[] key = it.Key();
+                int stateKeyLength = key.Length - sizeof(long) - prefix.Length;
+                byte[] stateKeyBytes = key.Skip(prefix.Length).Take(stateKeyLength).ToArray();
+                string stateKey = GetString(stateKeyBytes);
+
+                if (stateKey != prevStateKey)
+                {
+                    yield return stateKey;
+                    prevStateKey = stateKey;
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -318,15 +326,36 @@ namespace Libplanet.RocksDBStore
                 long lowestIndex = 0,
                 long highestIndex = long.MaxValue)
         {
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
+            byte[] prefix = StateRefKeyPrefix;
 
-            Query query = Query.And(
-                Query.All(nameof(StateRefDoc.BlockIndex)),
-                Query.Between(nameof(StateRefDoc.BlockIndex), lowestIndex, highestIndex)
-            );
+            var stateRefs = new List<StateRef>();
 
-            IEnumerable<StateRefDoc> stateRefs = coll.Find(query);
+            foreach (Iterator it in IterateDb(_stateRefDb, prefix, chainId))
+            {
+                byte[] key = it.Key();
+                int stateKeyLength = key.Length - sizeof(long) - prefix.Length;
+                byte[] stateKeyBytes = key.Skip(prefix.Length).Take(stateKeyLength).ToArray();
+                string stateKey = GetString(stateKeyBytes);
+
+                byte[] indexBytes = key.Skip(prefix.Length + stateKeyLength).ToArray();
+                long index = ToInt64(indexBytes);
+
+                if (index < lowestIndex || index > highestIndex)
+                {
+                    continue;
+                }
+
+                var hash = new HashDigest<SHA256>(it.Value());
+                var stateRef = new StateRef
+                {
+                    StateKey = stateKey,
+                    BlockHash = hash,
+                    BlockIndex = index,
+                };
+
+                stateRefs.Add(stateRef);
+            }
+
             return stateRefs
                 .GroupBy(stateRef => stateRef.StateKey)
                 .ToImmutableDictionary(
@@ -650,8 +679,9 @@ namespace Libplanet.RocksDBStore
             long? lowestIndex,
             int? limit)
         {
-            highestIndex = highestIndex ?? long.MaxValue;
-            lowestIndex = lowestIndex ?? 0;
+            highestIndex ??= long.MaxValue;
+            lowestIndex ??= 0;
+            limit ??= int.MaxValue;
 
             if (highestIndex < lowestIndex)
             {
@@ -663,17 +693,14 @@ namespace Libplanet.RocksDBStore
                     nameof(highestIndex));
             }
 
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
-            IEnumerable<StateRefDoc> stateRefs = coll.Find(
-                Query.And(
-                    Query.All(nameof(StateRefDoc.BlockIndex), Query.Descending),
-                    Query.EQ(nameof(StateRefDoc.StateKey), key),
-                    Query.Between(nameof(StateRefDoc.BlockIndex), lowestIndex, highestIndex)
-                ), limit: limit ?? int.MaxValue
-            );
-            return stateRefs
-                .Select(doc => new Tuple<HashDigest<SHA256>, long>(doc.BlockHash, doc.BlockIndex));
+            byte[] keyBytes = GetBytes(key);
+            byte[] prefix = StateRefKeyPrefix.Concat(keyBytes).ToArray();
+
+            ColumnFamilyHandle cf = GetColumnFamily(_stateRefDb, chainId);
+            Iterator it = _stateRefDb.NewIterator(cf);
+
+            return IterateStateReferences(
+                prefix, it, highestIndex.Value, lowestIndex.Value, limit.Value);
         }
 
         /// <inheritdoc/>
@@ -683,19 +710,12 @@ namespace Libplanet.RocksDBStore
             HashDigest<SHA256> blockHash,
             long blockIndex)
         {
-            string collId = StateRefId(chainId);
-            LiteCollection<StateRefDoc> coll = _liteDb.GetCollection<StateRefDoc>(collId);
-            IEnumerable<StateRefDoc> stateRefDocs = keys
-                .Select(key => new StateRefDoc
-                {
-                    StateKey = key,
-                    BlockIndex = blockIndex,
-                    BlockHash = blockHash,
-                })
-                .Where(doc => !coll.Exists(d => d.Id == doc.Id));
-            coll.InsertBulk(stateRefDocs);
-            coll.EnsureIndex(nameof(StateRefDoc.StateKey));
-            coll.EnsureIndex(nameof(StateRefDoc.BlockIndex));
+            ColumnFamilyHandle cf = GetColumnFamily(_stateRefDb, chainId);
+            foreach (string key in keys)
+            {
+                byte[] keyBytes = StateRefKey(key, blockIndex);
+                _stateRefDb.Put(keyBytes, blockHash.ToByteArray(), cf);
+            }
 
             if (!_lastStateRefCaches.ContainsKey(chainId))
             {
@@ -724,23 +744,34 @@ namespace Libplanet.RocksDBStore
             Guid destinationChainId,
             Block<T> branchPoint)
         {
-            string srcCollId = StateRefId(sourceChainId);
-            string dstCollId = StateRefId(destinationChainId);
-            LiteCollection<StateRefDoc> srcColl = _liteDb.GetCollection<StateRefDoc>(srcCollId),
-                                        dstColl = _liteDb.GetCollection<StateRefDoc>(dstCollId);
+            byte[] prefix = StateRefKeyPrefix;
+            ColumnFamilyHandle destCf = GetColumnFamily(_stateRefDb, destinationChainId);
 
-            dstColl.InsertBulk(srcColl.Find(Query.LTE("BlockIndex", branchPoint.Index)));
+            foreach (Iterator it in IterateDb(_stateRefDb, prefix, sourceChainId))
+            {
+                byte[] key = it.Key();
+                byte[] indexBytes = key.Skip(key.Length - sizeof(long)).ToArray();
+                long index = ToInt64(indexBytes);
 
-            if (!dstColl.Exists(_ => true) && CountIndex(sourceChainId) < 1)
+                if (index > branchPoint.Index)
+                {
+                    continue;
+                }
+
+                _stateRefDb.Put(key, it.Value(), destCf);
+            }
+
+            Iterator destIt = _stateRefDb.NewIterator(destCf);
+
+            destIt.Seek(prefix);
+
+            if (!(destIt.Valid() && destIt.Key().StartsWith(prefix))
+                && CountIndex(sourceChainId) < 1)
             {
                 throw new ChainIdNotFoundException(
                     sourceChainId,
-                    "The source chain to be forked does not exist."
-                );
+                    "The source chain to be forked does not exist.");
             }
-
-            dstColl.EnsureIndex(nameof(StateRefDoc.StateKey));
-            dstColl.EnsureIndex(nameof(StateRefDoc.BlockIndex));
 
             _lastStateRefCaches.Remove(destinationChainId);
         }
@@ -764,7 +795,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override long GetTxNonce(Guid chainId, Address address)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
             byte[] key = TxNonceKey(address);
             byte[] bytes = _chainDb.Get(key, cf);
 
@@ -776,7 +807,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void IncreaseTxNonce(Guid chainId, Address signer, long delta = 1)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
             long nextNonce = GetTxNonce(chainId, signer) + delta;
 
             byte[] key = TxNonceKey(signer);
@@ -801,15 +832,46 @@ namespace Libplanet.RocksDBStore
         {
             _liteDb?.Dispose();
             _chainDb?.Dispose();
+            _stateRefDb?.Dispose();
             _blockDb?.Dispose();
         }
 
-        internal static string FormatChainId(Guid chainId) =>
-            ByteUtil.Hex(chainId.ToByteArray());
-
-        private string StateRefId(Guid chainId)
+        private IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            byte[] prefix,
+            Iterator it,
+            long highestIndex,
+            long lowestIndex,
+            int limit)
         {
-            return $"{StateRefIdPrefix}{FormatChainId(chainId)}";
+            // FIXME: We need to change the state reference to be ordered by reverse byte-wise
+            // and use the Seek function.
+            it.SeekToLast();
+            while (it.Valid() && !it.Key().StartsWith(prefix))
+            {
+                it.Prev();
+            }
+
+            for (; it.Valid() && it.Key().StartsWith(prefix); it.Prev())
+            {
+                byte[] indexBytes = it.Key().Skip(prefix.Length).ToArray();
+                long index = ToInt64(indexBytes);
+
+                if (index > highestIndex)
+                {
+                    continue;
+                }
+
+                if (index < lowestIndex || limit <= 0)
+                {
+                    break;
+                }
+
+                byte[] hashBytes = it.Value();
+                var hash = new HashDigest<SHA256>(hashBytes);
+
+                yield return new Tuple<HashDigest<SHA256>, long>(hash, index);
+                limit--;
+            }
         }
 
         private byte[] BlockKey(HashDigest<SHA256> blockHash)
@@ -834,9 +896,20 @@ namespace Libplanet.RocksDBStore
                 .ToArray();
         }
 
+        private byte[] StateRefKey(string stateKey, long blockIndex)
+        {
+            byte[] stateKeyBytes = GetBytes(stateKey);
+            byte[] blockIndexBytes = GetBytes(blockIndex);
+
+            return StateRefKeyPrefix
+                .Concat(stateKeyBytes)
+                .Concat(blockIndexBytes)
+                .ToArray();
+        }
+
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
-            ColumnFamilyHandle cf = GetColumnFamily(chainId);
+            ColumnFamilyHandle cf = GetColumnFamily(db, chainId);
             Iterator it = db.NewIterator(cf);
             for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
@@ -844,7 +917,7 @@ namespace Libplanet.RocksDBStore
             }
         }
 
-        private ColumnFamilyHandle GetColumnFamily(Guid? chainId = null)
+        private ColumnFamilyHandle GetColumnFamily(RocksDb db, Guid? chainId = null)
         {
             if (chainId is null)
             {
@@ -856,40 +929,45 @@ namespace Libplanet.RocksDBStore
             ColumnFamilyHandle cf;
             try
             {
-                cf = _chainDb.GetColumnFamily(cfName);
+                cf = db.GetColumnFamily(cfName);
             }
             catch (KeyNotFoundException)
             {
-                cf = _chainDb.CreateColumnFamily(new ColumnFamilyOptions(), cfName);
+                cf = db.CreateColumnFamily(new ColumnFamilyOptions(), cfName);
             }
 
             return cf;
         }
 
-        internal class StateRefDoc
+        private long ToInt64(byte[] value)
+        {
+            // Use Big-endian to order index lexicographically.
+            return NetMQ.NetworkOrderBitsConverter.ToInt64(value);
+        }
+
+        private string GetString(byte[] value)
+        {
+            return Encoding.UTF8.GetString(value);
+        }
+
+        private byte[] GetBytes(long value)
+        {
+            // Use Big-endian to order index lexicographically.
+            return NetMQ.NetworkOrderBitsConverter.GetBytes(value);
+        }
+
+        private byte[] GetBytes(string value)
+        {
+            return Encoding.UTF8.GetBytes(value);
+        }
+
+        private class StateRef
         {
             public string StateKey { get; set; }
 
             public long BlockIndex { get; set; }
 
-            public string BlockHashString { get; set; }
-
-            [BsonId]
-            public string Id => StateKey + BlockHashString;
-
-            [BsonIgnore]
-            public HashDigest<SHA256> BlockHash
-            {
-                get
-                {
-                    return HashDigest<SHA256>.FromString(BlockHashString);
-                }
-
-                set
-                {
-                    BlockHashString = value.ToString();
-                }
-            }
+            public HashDigest<SHA256> BlockHash { get; set; }
         }
 
         private class StagedTxIdDoc
