@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 
 namespace Libplanet.Serialization
 {
-    public static class SerializationInfoExtension
+    public static class SerializationInfoExtensions
     {
         public static T GetValue<T>(this SerializationInfo info, string name)
         {

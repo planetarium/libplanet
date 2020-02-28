@@ -6,7 +6,7 @@ using NetMQ;
 
 namespace Libplanet.Net
 {
-    internal static class NetMQFrameExtension
+    internal static class NetMQFrameExtensions
     {
         public static HashDigest<T> ConvertToHashDigest<T>(
             this NetMQFrame frame)

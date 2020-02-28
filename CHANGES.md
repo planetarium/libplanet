@@ -10,6 +10,18 @@ To be released.
 
  -  `BaseStore` class became to implement `IDisposable`.  [[#789]]
  -  Removed `IStore.DeleteIndex(Guid, HashDigest<SHA256>)` method.  [[#802]]
+ -  Extension classes have been renamed. However, it is not affected
+    if you do not call it directly.  [[#803]]
+     -  Renamed `StunAddressExtension` class to `StunAddressExtensions`.
+     -  Renamed `BytesConvertExtension` class to `BytesConvertExtensions`.
+     -  Renamed `RandomExtension` class to `RandomExtensions`.
+     -  Renamed `AddressExtension` class to `AddressExtensions`.
+     -  Renamed `HashDigestExtension` class to `HashDigestExtensions`.
+     -  Renamed `NetMQFrameExtension` class to `NetMQFrameExtensions`.
+     -  Renamed `NetMQSocketExtension` class to `NetMQSocketExtensions`.
+     -  Renamed `SerializationInfoExtension` class to
+        `SerializationInfoExtensions`.
+     -  Renamed `StoreExtension` class to `StoreExtensions`.
 
 ### Backward-incompatible network protocol changes
 

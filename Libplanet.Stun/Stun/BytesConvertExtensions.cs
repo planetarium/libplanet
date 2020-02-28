@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Libplanet.Stun
 {
-    internal static class BytesConvertExtension
+    internal static class BytesConvertExtensions
     {
         public static byte[] ToBytes(this ushort value)
         {

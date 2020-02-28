@@ -113,7 +113,7 @@ namespace Libplanet
         /// the <see cref="Size"/>, the hash algorithm
         /// (i.e., <typeparamref name="T"/> requires.</exception>
         /// <seealso cref="ToString()"/>
-        /// <seealso cref="HashDigestExtension.ToHashDigest{T}(string)"/>
+        /// <seealso cref="HashDigestExtensions.ToHashDigest{T}(string)"/>
         [Pure]
         public static HashDigest<T> FromString(string hexDigest)
         {
@@ -232,7 +232,7 @@ namespace Libplanet
     /// Augments types to have some shortcut methods dealing with
     /// <see cref="HashDigest{T}"/> values.
     /// </summary>
-    public static class HashDigestExtension
+    public static class HashDigestExtensions
     {
         /// <summary>
         /// Converts a given hexadecimal representation of a digest into
