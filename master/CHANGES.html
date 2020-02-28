@@ -85,6 +85,21 @@
 <ul>
 <li><code>BaseStore</code> class became to implement <code>IDisposable</code>.  [<a href="https://github.com/planetarium/libplanet/pull/789">#789</a>]</li>
 <li>Removed <code>IStore.DeleteIndex(Guid, HashDigest&lt;SHA256&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/802">#802</a>]</li>
+<li>Extension classes was renamed.  However, it would not be affected
+if you have called it by using instance method syntax.  [<a href="https://github.com/planetarium/libplanet/pull/803">#803</a>]
+<ul>
+<li>Renamed <code>StunAddressExtension</code> class to <code>StunAddressExtensions</code>.</li>
+<li>Renamed <code>BytesConvertExtension</code> class to <code>BytesConvertExtensions</code>.</li>
+<li>Renamed <code>RandomExtension</code> class to <code>RandomExtensions</code>.</li>
+<li>Renamed <code>AddressExtension</code> class to <code>AddressExtensions</code>.</li>
+<li>Renamed <code>HashDigestExtension</code> class to <code>HashDigestExtensions</code>.</li>
+<li>Renamed <code>NetMQFrameExtension</code> class to <code>NetMQFrameExtensions</code>.</li>
+<li>Renamed <code>NetMQSocketExtension</code> class to <code>NetMQSocketExtensions</code>.</li>
+<li>Renamed <code>SerializationInfoExtension</code> class to
+<code>SerializationInfoExtensions</code>.</li>
+<li>Renamed <code>StoreExtension</code> class to <code>StoreExtensions</code>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -105,6 +120,7 @@ so that a receiver is able to determine their block indices too.
 <li>Added <code>BlockHeader</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>IStore.GetBlockDigest(HashDigest&lt;SHA256&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>Block&lt;T&gt;.ToBlockDigest()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
+<li>Added <code>ByteArrayExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/803">#803</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>

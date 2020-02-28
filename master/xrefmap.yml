@@ -581,25 +581,25 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Unrender
   nameWithType: PolymorphicAction<T>.Unrender
   nameWithType.vb: PolymorphicAction(Of T).Unrender
-- uid: Libplanet.Action.RandomExtension
-  name: RandomExtension
-  href: api/Libplanet.Action.RandomExtension.html
-  commentId: T:Libplanet.Action.RandomExtension
-  fullName: Libplanet.Action.RandomExtension
-  nameWithType: RandomExtension
-- uid: Libplanet.Action.RandomExtension.GenerateRandomGuid(Libplanet.Action.IRandom)
+- uid: Libplanet.Action.RandomExtensions
+  name: RandomExtensions
+  href: api/Libplanet.Action.RandomExtensions.html
+  commentId: T:Libplanet.Action.RandomExtensions
+  fullName: Libplanet.Action.RandomExtensions
+  nameWithType: RandomExtensions
+- uid: Libplanet.Action.RandomExtensions.GenerateRandomGuid(Libplanet.Action.IRandom)
   name: GenerateRandomGuid(IRandom)
-  href: api/Libplanet.Action.RandomExtension.html#Libplanet_Action_RandomExtension_GenerateRandomGuid_Libplanet_Action_IRandom_
-  commentId: M:Libplanet.Action.RandomExtension.GenerateRandomGuid(Libplanet.Action.IRandom)
-  fullName: Libplanet.Action.RandomExtension.GenerateRandomGuid(Libplanet.Action.IRandom)
-  nameWithType: RandomExtension.GenerateRandomGuid(IRandom)
-- uid: Libplanet.Action.RandomExtension.GenerateRandomGuid*
+  href: api/Libplanet.Action.RandomExtensions.html#Libplanet_Action_RandomExtensions_GenerateRandomGuid_Libplanet_Action_IRandom_
+  commentId: M:Libplanet.Action.RandomExtensions.GenerateRandomGuid(Libplanet.Action.IRandom)
+  fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid(Libplanet.Action.IRandom)
+  nameWithType: RandomExtensions.GenerateRandomGuid(IRandom)
+- uid: Libplanet.Action.RandomExtensions.GenerateRandomGuid*
   name: GenerateRandomGuid
-  href: api/Libplanet.Action.RandomExtension.html#Libplanet_Action_RandomExtension_GenerateRandomGuid_
-  commentId: Overload:Libplanet.Action.RandomExtension.GenerateRandomGuid
+  href: api/Libplanet.Action.RandomExtensions.html#Libplanet_Action_RandomExtensions_GenerateRandomGuid_
+  commentId: Overload:Libplanet.Action.RandomExtensions.GenerateRandomGuid
   isSpec: "True"
-  fullName: Libplanet.Action.RandomExtension.GenerateRandomGuid
-  nameWithType: RandomExtension.GenerateRandomGuid
+  fullName: Libplanet.Action.RandomExtensions.GenerateRandomGuid
+  nameWithType: RandomExtensions.GenerateRandomGuid
 - uid: Libplanet.Action.UnexpectedlyTerminatedActionException
   name: UnexpectedlyTerminatedActionException
   href: api/Libplanet.Action.UnexpectedlyTerminatedActionException.html
@@ -794,25 +794,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.ToString
   nameWithType: Address.ToString
-- uid: Libplanet.AddressExtension
-  name: AddressExtension
-  href: api/Libplanet.AddressExtension.html
-  commentId: T:Libplanet.AddressExtension
-  fullName: Libplanet.AddressExtension
-  nameWithType: AddressExtension
-- uid: Libplanet.AddressExtension.ToAddress(Libplanet.Crypto.PublicKey)
+- uid: Libplanet.AddressExtensions
+  name: AddressExtensions
+  href: api/Libplanet.AddressExtensions.html
+  commentId: T:Libplanet.AddressExtensions
+  fullName: Libplanet.AddressExtensions
+  nameWithType: AddressExtensions
+- uid: Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
   name: ToAddress(PublicKey)
-  href: api/Libplanet.AddressExtension.html#Libplanet_AddressExtension_ToAddress_Libplanet_Crypto_PublicKey_
-  commentId: M:Libplanet.AddressExtension.ToAddress(Libplanet.Crypto.PublicKey)
-  fullName: Libplanet.AddressExtension.ToAddress(Libplanet.Crypto.PublicKey)
-  nameWithType: AddressExtension.ToAddress(PublicKey)
-- uid: Libplanet.AddressExtension.ToAddress*
+  href: api/Libplanet.AddressExtensions.html#Libplanet_AddressExtensions_ToAddress_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
+  nameWithType: AddressExtensions.ToAddress(PublicKey)
+- uid: Libplanet.AddressExtensions.ToAddress*
   name: ToAddress
-  href: api/Libplanet.AddressExtension.html#Libplanet_AddressExtension_ToAddress_
-  commentId: Overload:Libplanet.AddressExtension.ToAddress
+  href: api/Libplanet.AddressExtensions.html#Libplanet_AddressExtensions_ToAddress_
+  commentId: Overload:Libplanet.AddressExtensions.ToAddress
   isSpec: "True"
-  fullName: Libplanet.AddressExtension.ToAddress
-  nameWithType: AddressExtension.ToAddress
+  fullName: Libplanet.AddressExtensions.ToAddress
+  nameWithType: AddressExtensions.ToAddress
 - uid: Libplanet.Blockchain
   name: Libplanet.Blockchain
   href: api/Libplanet.Blockchain.html
@@ -2314,6 +2314,28 @@ references:
   isSpec: "True"
   fullName: Libplanet.Blocks.InvalidGenesisBlockException.Stored
   nameWithType: InvalidGenesisBlockException.Stored
+- uid: Libplanet.ByteArrayExtensions
+  name: ByteArrayExtensions
+  href: api/Libplanet.ByteArrayExtensions.html
+  commentId: T:Libplanet.ByteArrayExtensions
+  fullName: Libplanet.ByteArrayExtensions
+  nameWithType: ByteArrayExtensions
+- uid: Libplanet.ByteArrayExtensions.StartsWith(System.Byte[],System.Byte[])
+  name: StartsWith(Byte[], Byte[])
+  href: api/Libplanet.ByteArrayExtensions.html#Libplanet_ByteArrayExtensions_StartsWith_System_Byte___System_Byte___
+  commentId: M:Libplanet.ByteArrayExtensions.StartsWith(System.Byte[],System.Byte[])
+  name.vb: StartsWith(Byte(), Byte())
+  fullName: Libplanet.ByteArrayExtensions.StartsWith(System.Byte[], System.Byte[])
+  fullName.vb: Libplanet.ByteArrayExtensions.StartsWith(System.Byte(), System.Byte())
+  nameWithType: ByteArrayExtensions.StartsWith(Byte[], Byte[])
+  nameWithType.vb: ByteArrayExtensions.StartsWith(Byte(), Byte())
+- uid: Libplanet.ByteArrayExtensions.StartsWith*
+  name: StartsWith
+  href: api/Libplanet.ByteArrayExtensions.html#Libplanet_ByteArrayExtensions_StartsWith_
+  commentId: Overload:Libplanet.ByteArrayExtensions.StartsWith
+  isSpec: "True"
+  fullName: Libplanet.ByteArrayExtensions.StartsWith
+  nameWithType: ByteArrayExtensions.StartsWith
 - uid: Libplanet.ByteUtil
   name: ByteUtil
   href: api/Libplanet.ByteUtil.html
@@ -2921,28 +2943,28 @@ references:
   fullName.vb: Libplanet.HashDigest(Of T).ToString
   nameWithType: HashDigest<T>.ToString
   nameWithType.vb: HashDigest(Of T).ToString
-- uid: Libplanet.HashDigestExtension
-  name: HashDigestExtension
-  href: api/Libplanet.HashDigestExtension.html
-  commentId: T:Libplanet.HashDigestExtension
-  fullName: Libplanet.HashDigestExtension
-  nameWithType: HashDigestExtension
-- uid: Libplanet.HashDigestExtension.ToHashDigest*
+- uid: Libplanet.HashDigestExtensions
+  name: HashDigestExtensions
+  href: api/Libplanet.HashDigestExtensions.html
+  commentId: T:Libplanet.HashDigestExtensions
+  fullName: Libplanet.HashDigestExtensions
+  nameWithType: HashDigestExtensions
+- uid: Libplanet.HashDigestExtensions.ToHashDigest*
   name: ToHashDigest
-  href: api/Libplanet.HashDigestExtension.html#Libplanet_HashDigestExtension_ToHashDigest_
-  commentId: Overload:Libplanet.HashDigestExtension.ToHashDigest
+  href: api/Libplanet.HashDigestExtensions.html#Libplanet_HashDigestExtensions_ToHashDigest_
+  commentId: Overload:Libplanet.HashDigestExtensions.ToHashDigest
   isSpec: "True"
-  fullName: Libplanet.HashDigestExtension.ToHashDigest
-  nameWithType: HashDigestExtension.ToHashDigest
-- uid: Libplanet.HashDigestExtension.ToHashDigest``1(System.String)
+  fullName: Libplanet.HashDigestExtensions.ToHashDigest
+  nameWithType: HashDigestExtensions.ToHashDigest
+- uid: Libplanet.HashDigestExtensions.ToHashDigest``1(System.String)
   name: ToHashDigest<T>(String)
-  href: api/Libplanet.HashDigestExtension.html#Libplanet_HashDigestExtension_ToHashDigest__1_System_String_
-  commentId: M:Libplanet.HashDigestExtension.ToHashDigest``1(System.String)
+  href: api/Libplanet.HashDigestExtensions.html#Libplanet_HashDigestExtensions_ToHashDigest__1_System_String_
+  commentId: M:Libplanet.HashDigestExtensions.ToHashDigest``1(System.String)
   name.vb: ToHashDigest(Of T)(String)
-  fullName: Libplanet.HashDigestExtension.ToHashDigest<T>(System.String)
-  fullName.vb: Libplanet.HashDigestExtension.ToHashDigest(Of T)(System.String)
-  nameWithType: HashDigestExtension.ToHashDigest<T>(String)
-  nameWithType.vb: HashDigestExtension.ToHashDigest(Of T)(String)
+  fullName: Libplanet.HashDigestExtensions.ToHashDigest<T>(System.String)
+  fullName.vb: Libplanet.HashDigestExtensions.ToHashDigest(Of T)(System.String)
+  nameWithType: HashDigestExtensions.ToHashDigest<T>(String)
+  nameWithType.vb: HashDigestExtensions.ToHashDigest(Of T)(String)
 - uid: Libplanet.KeyStore
   name: Libplanet.KeyStore
   href: api/Libplanet.KeyStore.html
@@ -5070,44 +5092,44 @@ references:
   commentId: N:Libplanet.Serialization
   fullName: Libplanet.Serialization
   nameWithType: Libplanet.Serialization
-- uid: Libplanet.Serialization.SerializationInfoExtension
-  name: SerializationInfoExtension
-  href: api/Libplanet.Serialization.SerializationInfoExtension.html
-  commentId: T:Libplanet.Serialization.SerializationInfoExtension
-  fullName: Libplanet.Serialization.SerializationInfoExtension
-  nameWithType: SerializationInfoExtension
-- uid: Libplanet.Serialization.SerializationInfoExtension.GetValue*
+- uid: Libplanet.Serialization.SerializationInfoExtensions
+  name: SerializationInfoExtensions
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html
+  commentId: T:Libplanet.Serialization.SerializationInfoExtensions
+  fullName: Libplanet.Serialization.SerializationInfoExtensions
+  nameWithType: SerializationInfoExtensions
+- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValue*
   name: GetValue
-  href: api/Libplanet.Serialization.SerializationInfoExtension.html#Libplanet_Serialization_SerializationInfoExtension_GetValue_
-  commentId: Overload:Libplanet.Serialization.SerializationInfoExtension.GetValue
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValue_
+  commentId: Overload:Libplanet.Serialization.SerializationInfoExtensions.GetValue
   isSpec: "True"
-  fullName: Libplanet.Serialization.SerializationInfoExtension.GetValue
-  nameWithType: SerializationInfoExtension.GetValue
-- uid: Libplanet.Serialization.SerializationInfoExtension.GetValue``1(SerializationInfo,System.String)
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValue
+  nameWithType: SerializationInfoExtensions.GetValue
+- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValue``1(SerializationInfo,System.String)
   name: GetValue<T>(SerializationInfo, String)
-  href: api/Libplanet.Serialization.SerializationInfoExtension.html#Libplanet_Serialization_SerializationInfoExtension_GetValue__1_SerializationInfo_System_String_
-  commentId: M:Libplanet.Serialization.SerializationInfoExtension.GetValue``1(SerializationInfo,System.String)
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValue__1_SerializationInfo_System_String_
+  commentId: M:Libplanet.Serialization.SerializationInfoExtensions.GetValue``1(SerializationInfo,System.String)
   name.vb: GetValue(Of T)(SerializationInfo, String)
-  fullName: Libplanet.Serialization.SerializationInfoExtension.GetValue<T>(SerializationInfo, System.String)
-  fullName.vb: Libplanet.Serialization.SerializationInfoExtension.GetValue(Of T)(SerializationInfo, System.String)
-  nameWithType: SerializationInfoExtension.GetValue<T>(SerializationInfo, String)
-  nameWithType.vb: SerializationInfoExtension.GetValue(Of T)(SerializationInfo, String)
-- uid: Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault*
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValue<T>(SerializationInfo, System.String)
+  fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.GetValue(Of T)(SerializationInfo, System.String)
+  nameWithType: SerializationInfoExtensions.GetValue<T>(SerializationInfo, String)
+  nameWithType.vb: SerializationInfoExtensions.GetValue(Of T)(SerializationInfo, String)
+- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault*
   name: GetValueOrDefault
-  href: api/Libplanet.Serialization.SerializationInfoExtension.html#Libplanet_Serialization_SerializationInfoExtension_GetValueOrDefault_
-  commentId: Overload:Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValueOrDefault_
+  commentId: Overload:Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault
   isSpec: "True"
-  fullName: Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault
-  nameWithType: SerializationInfoExtension.GetValueOrDefault
-- uid: Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault``1(SerializationInfo,System.String,``0)
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault
+  nameWithType: SerializationInfoExtensions.GetValueOrDefault
+- uid: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault``1(SerializationInfo,System.String,``0)
   name: GetValueOrDefault<T>(SerializationInfo, String, T)
-  href: api/Libplanet.Serialization.SerializationInfoExtension.html#Libplanet_Serialization_SerializationInfoExtension_GetValueOrDefault__1_SerializationInfo_System_String___0_
-  commentId: M:Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault``1(SerializationInfo,System.String,``0)
+  href: api/Libplanet.Serialization.SerializationInfoExtensions.html#Libplanet_Serialization_SerializationInfoExtensions_GetValueOrDefault__1_SerializationInfo_System_String___0_
+  commentId: M:Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault``1(SerializationInfo,System.String,``0)
   name.vb: GetValueOrDefault(Of T)(SerializationInfo, String, T)
-  fullName: Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault<T>(SerializationInfo, System.String, T)
-  fullName.vb: Libplanet.Serialization.SerializationInfoExtension.GetValueOrDefault(Of T)(SerializationInfo, System.String, T)
-  nameWithType: SerializationInfoExtension.GetValueOrDefault<T>(SerializationInfo, String, T)
-  nameWithType.vb: SerializationInfoExtension.GetValueOrDefault(Of T)(SerializationInfo, String, T)
+  fullName: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault<T>(SerializationInfo, System.String, T)
+  fullName.vb: Libplanet.Serialization.SerializationInfoExtensions.GetValueOrDefault(Of T)(SerializationInfo, System.String, T)
+  nameWithType: SerializationInfoExtensions.GetValueOrDefault<T>(SerializationInfo, String, T)
+  nameWithType.vb: SerializationInfoExtensions.GetValueOrDefault(Of T)(SerializationInfo, String, T)
 - uid: Libplanet.Store
   name: Libplanet.Store
   href: api/Libplanet.Store.html
@@ -7237,25 +7259,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.Store.IStore.UnstageTransactionIds
   nameWithType: IStore.UnstageTransactionIds
-- uid: Libplanet.Store.StoreExtension
-  name: StoreExtension
-  href: api/Libplanet.Store.StoreExtension.html
-  commentId: T:Libplanet.Store.StoreExtension
-  fullName: Libplanet.Store.StoreExtension
-  nameWithType: StoreExtension
-- uid: Libplanet.Store.StoreExtension.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)
+- uid: Libplanet.Store.StoreExtensions
+  name: StoreExtensions
+  href: api/Libplanet.Store.StoreExtensions.html
+  commentId: T:Libplanet.Store.StoreExtensions
+  fullName: Libplanet.Store.StoreExtensions
+  nameWithType: StoreExtensions
+- uid: Libplanet.Store.StoreExtensions.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)
   name: Copy(IStore, IStore)
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_
-  commentId: M:Libplanet.Store.StoreExtension.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)
-  fullName: Libplanet.Store.StoreExtension.Copy(Libplanet.Store.IStore, Libplanet.Store.IStore)
-  nameWithType: StoreExtension.Copy(IStore, IStore)
-- uid: Libplanet.Store.StoreExtension.Copy*
+  href: api/Libplanet.Store.StoreExtensions.html#Libplanet_Store_StoreExtensions_Copy_Libplanet_Store_IStore_Libplanet_Store_IStore_
+  commentId: M:Libplanet.Store.StoreExtensions.Copy(Libplanet.Store.IStore,Libplanet.Store.IStore)
+  fullName: Libplanet.Store.StoreExtensions.Copy(Libplanet.Store.IStore, Libplanet.Store.IStore)
+  nameWithType: StoreExtensions.Copy(IStore, IStore)
+- uid: Libplanet.Store.StoreExtensions.Copy*
   name: Copy
-  href: api/Libplanet.Store.StoreExtension.html#Libplanet_Store_StoreExtension_Copy_
-  commentId: Overload:Libplanet.Store.StoreExtension.Copy
+  href: api/Libplanet.Store.StoreExtensions.html#Libplanet_Store_StoreExtensions_Copy_
+  commentId: Overload:Libplanet.Store.StoreExtensions.Copy
   isSpec: "True"
-  fullName: Libplanet.Store.StoreExtension.Copy
-  nameWithType: StoreExtension.Copy
+  fullName: Libplanet.Store.StoreExtensions.Copy
+  nameWithType: StoreExtensions.Copy
 - uid: Libplanet.Store.TransactionSet`1
   name: TransactionSet<T>
   href: api/Libplanet.Store.TransactionSet-1.html
