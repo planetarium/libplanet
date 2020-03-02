@@ -252,13 +252,9 @@ namespace Libplanet.RocksDBStore
             }
 
             ColumnFamilyHandle cf = GetColumnFamily(chainId);
-            byte[] indexBytes = BitConverter.GetBytes(index);
 
             // Use Big-endian to order index lexicographically.
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(indexBytes);
-            }
+            byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
             byte[] bytes = _chainDb.Get(key, cf);
@@ -271,13 +267,9 @@ namespace Libplanet.RocksDBStore
         public override long AppendIndex(Guid chainId, HashDigest<SHA256> hash)
         {
             long index = CountIndex(chainId);
-            byte[] indexBytes = BitConverter.GetBytes(index);
 
             // Use Big-endian to order index lexicographically.
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(indexBytes);
-            }
+            byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
             ColumnFamilyHandle cf = GetColumnFamily(chainId);
