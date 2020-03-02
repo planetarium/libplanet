@@ -167,7 +167,7 @@ namespace Libplanet.RocksDBStore
 
                 try
                 {
-                    guid = new Guid(name);
+                    guid = Guid.Parse(name);
                 }
                 catch (FormatException)
                 {
