@@ -221,18 +221,11 @@ namespace Libplanet.RocksDBStore
             int offset,
             int? limit)
         {
-            int skip = 0;
             int count = 0;
             byte[] prefix = IndexKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId))
+            foreach (Iterator it in IterateDb(_chainDb, prefix, chainId).Skip(offset))
             {
-                if (skip < offset)
-                {
-                    skip += 1;
-                    continue;
-                }
-
                 if (count >= limit)
                 {
                     break;
