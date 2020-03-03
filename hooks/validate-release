@@ -27,7 +27,10 @@ fi
 csproj="$root/Libplanet/Libplanet.csproj"
 if command -v xmllint > /dev/null; then
   csproj_version="$(xmllint \
-    --xpath './Project/PropertyGroup/VersionPrefix/text()' \
+    --xpath '/*[local-name()="Project"]
+             /*[local-name()="PropertyGroup"]
+             /*[local-name()="VersionPrefix"]
+             /text()' \
     "$csproj")"
 else
   regex='<VersionPrefix>([0-9]+\.[0-9]+\.[0-9]+)</VersionPrefix>'
