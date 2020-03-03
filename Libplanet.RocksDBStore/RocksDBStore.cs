@@ -22,10 +22,12 @@ namespace Libplanet.RocksDBStore
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
     {
-        private const string BlockDbName = "blockdb";
-        private const string StagedTxDbName = "stagedtxdb";
-        private const string ChainDbName = "chaindb";
-        private const string StateRefDbName = "staterefdb";
+        private const string BlockDbName = "block";
+        private const string TxDbName = "tx";
+        private const string StateDbName = "state";
+        private const string StagedTxDbName = "stagedtx";
+        private const string ChainDbName = "chain";
+        private const string StateRefDbName = "stateref";
 
         private static readonly byte[] IndexKeyPrefix = { (byte)'I' };
         private static readonly byte[] BlockKeyPrefix = { (byte)'B' };
@@ -51,10 +53,13 @@ namespace Libplanet.RocksDBStore
 
         private readonly DbOptions _options;
         private readonly string _path;
+
         private readonly RocksDb _blockDb;
+        private readonly RocksDb _txDb;
+        private readonly RocksDb _stateDb;
+        private readonly RocksDb _stagedTxDb;
         private readonly RocksDb _chainDb;
         private readonly RocksDb _stateRefDb;
-        private readonly RocksDb _stagedTxDb;
 
         /// <summary>
         /// Creates a new <seealso cref="RocksDBStore"/>.
@@ -98,6 +103,8 @@ namespace Libplanet.RocksDBStore
                 .SetCreateIfMissing();
 
             _blockDb = RocksDb.Open(_options, Path.Combine(path, BlockDbName));
+            _txDb = RocksDb.Open(_options, Path.Combine(path, TxDbName));
+            _stateDb = RocksDb.Open(_options, Path.Combine(path, StateDbName));
             _stagedTxDb = RocksDb.Open(_options, Path.Combine(path, StagedTxDbName));
             _chainDb = RocksDb.Open(
                 _options, Path.Combine(path, ChainDbName), new ColumnFamilies());
@@ -352,7 +359,7 @@ namespace Libplanet.RocksDBStore
         {
             byte[] prefix = TxKeyPrefix;
 
-            foreach (Iterator it in IterateDb(_blockDb, prefix) )
+            foreach (Iterator it in IterateDb(_txDb, prefix) )
             {
                 byte[] key = it.Key();
                 byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
@@ -371,7 +378,7 @@ namespace Libplanet.RocksDBStore
             }
 
             byte[] key = TxKey(txid);
-            byte[] bytes = _blockDb.Get(key);
+            byte[] bytes = _txDb.Get(key);
 
             if (bytes is null)
             {
@@ -393,12 +400,12 @@ namespace Libplanet.RocksDBStore
 
             byte[] key = TxKey(tx.Id);
 
-            if (!(_blockDb.Get(key) is null))
+            if (!(_txDb.Get(key) is null))
             {
                 return;
             }
 
-            _blockDb.Put(key, tx.Serialize(true));
+            _txDb.Put(key, tx.Serialize(true));
             _txCache.AddOrUpdate(tx.Id, tx);
         }
 
@@ -407,13 +414,13 @@ namespace Libplanet.RocksDBStore
         {
             byte[] key = TxKey(txid);
 
-            if (_blockDb.Get(key) is null)
+            if (_txDb.Get(key) is null)
             {
                 return false;
             }
 
             _txCache.Remove(txid);
-            _blockDb.Remove(key);
+            _txDb.Remove(key);
 
             return true;
         }
@@ -428,7 +435,7 @@ namespace Libplanet.RocksDBStore
 
             byte[] key = TxKey(txId);
 
-            return !(_blockDb.Get(key) is null);
+            return !(_txDb.Get(key) is null);
         }
 
         /// <inheritdoc/>
@@ -536,7 +543,7 @@ namespace Libplanet.RocksDBStore
 
             byte[] key = BlockStateKey(blockHash);
 
-            byte[] bytes = _blockDb.Get(key);
+            byte[] bytes = _stateDb.Get(key);
 
             if (bytes is null)
             {
@@ -576,7 +583,7 @@ namespace Libplanet.RocksDBStore
             var codec = new Codec();
             byte[] value = codec.Encode(serialized);
 
-            _blockDb.Put(key, value);
+            _stateDb.Put(key, value);
             _statesCache.AddOrUpdate(blockHash, states);
         }
 
@@ -793,6 +800,8 @@ namespace Libplanet.RocksDBStore
         {
             _chainDb?.Dispose();
             _stateRefDb?.Dispose();
+            _txDb?.Dispose();
+            _stateDb?.Dispose();
             _blockDb?.Dispose();
             _stagedTxDb?.Dispose();
         }
