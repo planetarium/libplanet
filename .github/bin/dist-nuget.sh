@@ -26,13 +26,21 @@ if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ] || (
     [ "$GITHUB_REF" = "${GITHUB_REF#refs/tags/}" ] &&
     [ "$GITHUB_REF" != refs/heads/master ] &&
     [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ] ); then
-  alias dotnet="echo DRY-RUN: dotnet"
+  function dotnet-nuget {
+    shift
+    echo "DRY-RUN: dotnet nuget" "$@"
+  }
+else
+  function dotnet-nuget {
+    shift
+    dotnet nuget "$@"
+  }
 fi
 
 package_version="$(cat obj/package_version.txt)"
 
 for project in "${projects[@]}"; do
-  dotnet nuget push \
+  dotnet-nuget push \
     "./$project/bin/$configuration/$project.$package_version.nupkg" \
     --api-key "$NUGET_API_KEY" \
     --source https://api.nuget.org/v3/index.json
