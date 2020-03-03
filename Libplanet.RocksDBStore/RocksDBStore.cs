@@ -3,25 +3,21 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
 using Libplanet.Store;
 using Libplanet.Tx;
-using LiteDB;
 using LruCacheNet;
 using RocksDbSharp;
 using Serilog;
-using FileMode = LiteDB.FileMode;
 
 namespace Libplanet.RocksDBStore
 {
     /// <summary>
     /// The <a href="https://rocksdb.org/">RocksDB</a> <see cref="IStore"/> implementation.
-    /// This stores data in the RocksDB.  It also uses <a href="https://www.litedb.org/">LiteDB</a>
-    /// for some complex indices.
+    /// This stores data in the RocksDB.
     /// </summary>
     /// <seealso cref="IStore"/>
     public class RocksDBStore : BaseStore
@@ -53,7 +49,6 @@ namespace Libplanet.RocksDBStore
         private readonly Dictionary<Guid, LruCache<string, Tuple<HashDigest<SHA256>, long>>>
             _lastStateRefCaches;
 
-        private readonly LiteDatabase _liteDb;
         private readonly DbOptions _options;
         private readonly string _path;
         private readonly RocksDb _blockDb;
@@ -66,25 +61,14 @@ namespace Libplanet.RocksDBStore
         /// </summary>
         /// <param name="path">The path of the directory where the storage files will be saved.
         /// </param>
-        /// <param name="journal">
-        /// Enables or disables double write check to ensure durability.
-        /// </param>
-        /// <param name="indexCacheSize">Max number of pages in the index cache.</param>
         /// <param name="blockCacheSize">The capacity of the block cache.</param>
         /// <param name="txCacheSize">The capacity of the transaction cache.</param>
         /// <param name="statesCacheSize">The capacity of the states cache.</param>
-        /// <param name="flush">Writes data direct to disk avoiding OS cache.  Turned on by default.
-        /// </param>
-        /// <param name="readOnly">Opens database readonly mode. Turned off by default.</param>
         public RocksDBStore(
             string path,
-            bool journal = true,
-            int indexCacheSize = 50000,
             int blockCacheSize = 512,
             int txCacheSize = 1024,
-            int statesCacheSize = 10000,
-            bool flush = true,
-            bool readOnly = false
+            int statesCacheSize = 10000
         )
         {
             _logger = Log.ForContext<DefaultStore>();
@@ -99,40 +83,6 @@ namespace Libplanet.RocksDBStore
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
-            }
-
-            var connectionString = new ConnectionString
-            {
-                Filename = Path.Combine(path, "index.ldb"),
-                Journal = journal,
-                CacheSize = indexCacheSize,
-                Flush = flush,
-            };
-
-            if (readOnly)
-            {
-                connectionString.Mode = FileMode.ReadOnly;
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) &&
-                Type.GetType("Mono.Runtime") is null)
-            {
-                // macOS + .NETCore doesn't support shared lock.
-                connectionString.Mode = FileMode.Exclusive;
-            }
-
-            _liteDb = new LiteDatabase(connectionString);
-
-            lock (_liteDb.Mapper)
-            {
-                _liteDb.Mapper.RegisterType(
-                    hash => hash.ToByteArray(),
-                    b => new HashDigest<SHA256>(b));
-                _liteDb.Mapper.RegisterType(
-                    txid => txid.ToByteArray(),
-                    b => new TxId(b));
-                _liteDb.Mapper.RegisterType(
-                    address => address.ToByteArray(),
-                    b => new Address(b.AsBinary));
             }
 
             _txCache = new LruCache<TxId, object>(capacity: txCacheSize);
@@ -841,7 +791,6 @@ namespace Libplanet.RocksDBStore
 
         public override void Dispose()
         {
-            _liteDb?.Dispose();
             _chainDb?.Dispose();
             _stateRefDb?.Dispose();
             _blockDb?.Dispose();
