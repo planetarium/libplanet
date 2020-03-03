@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Blocks;
@@ -209,7 +208,7 @@ namespace Libplanet.RocksDBStore
             byte[] bytes = _chainDb.Get(IndexCountKey, cf);
             return bytes is null
                 ? 0
-                : BitConverter.ToInt64(bytes, 0);
+                : RocksDBStoreBitConverter.ToInt64(bytes);
         }
 
         /// <inheritdoc/>
@@ -250,8 +249,7 @@ namespace Libplanet.RocksDBStore
 
             ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
 
-            // Use Big-endian to order index lexicographically.
-            byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
+            byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
             byte[] bytes = _chainDb.Get(key, cf);
@@ -265,8 +263,7 @@ namespace Libplanet.RocksDBStore
         {
             long index = CountIndex(chainId);
 
-            // Use Big-endian to order index lexicographically.
-            byte[] indexBytes = NetMQ.NetworkOrderBitsConverter.GetBytes(index);
+            byte[] indexBytes = RocksDBStoreBitConverter.GetBytes(index);
 
             byte[] key = IndexKeyPrefix.Concat(indexBytes).ToArray();
             ColumnFamilyHandle cf = GetColumnFamily(_chainDb, chainId);
@@ -274,7 +271,7 @@ namespace Libplanet.RocksDBStore
             using var writeBatch = new WriteBatch();
 
             writeBatch.Put(key, hash.ToByteArray(), cf);
-            writeBatch.Put(IndexCountKey, BitConverter.GetBytes(index + 1), cf);
+            writeBatch.Put(IndexCountKey, RocksDBStoreBitConverter.GetBytes(index + 1), cf);
 
             _chainDb.Write(writeBatch);
 
@@ -309,7 +306,7 @@ namespace Libplanet.RocksDBStore
                 byte[] key = it.Key();
                 int stateKeyLength = key.Length - sizeof(long) - prefix.Length;
                 byte[] stateKeyBytes = key.Skip(prefix.Length).Take(stateKeyLength).ToArray();
-                string stateKey = GetString(stateKeyBytes);
+                string stateKey = RocksDBStoreBitConverter.GetString(stateKeyBytes);
 
                 if (stateKey != prevStateKey)
                 {
@@ -335,10 +332,10 @@ namespace Libplanet.RocksDBStore
                 byte[] key = it.Key();
                 int stateKeyLength = key.Length - sizeof(long) - prefix.Length;
                 byte[] stateKeyBytes = key.Skip(prefix.Length).Take(stateKeyLength).ToArray();
-                string stateKey = GetString(stateKeyBytes);
+                string stateKey = RocksDBStoreBitConverter.GetString(stateKeyBytes);
 
                 byte[] indexBytes = key.Skip(prefix.Length + stateKeyLength).ToArray();
-                long index = ToInt64(indexBytes);
+                long index = RocksDBStoreBitConverter.ToInt64(indexBytes);
 
                 if (index < lowestIndex || index > highestIndex)
                 {
@@ -693,7 +690,7 @@ namespace Libplanet.RocksDBStore
                     nameof(highestIndex));
             }
 
-            byte[] keyBytes = GetBytes(key);
+            byte[] keyBytes = RocksDBStoreBitConverter.GetBytes(key);
             byte[] prefix = StateRefKeyPrefix.Concat(keyBytes).ToArray();
 
             ColumnFamilyHandle cf = GetColumnFamily(_stateRefDb, chainId);
@@ -751,7 +748,7 @@ namespace Libplanet.RocksDBStore
             {
                 byte[] key = it.Key();
                 byte[] indexBytes = key.Skip(key.Length - sizeof(long)).ToArray();
-                long index = ToInt64(indexBytes);
+                long index = RocksDBStoreBitConverter.ToInt64(indexBytes);
 
                 if (index > branchPoint.Index)
                 {
@@ -787,7 +784,7 @@ namespace Libplanet.RocksDBStore
                     .Skip(prefix.Length)
                     .ToArray();
                 var address = new Address(addressBytes);
-                long nonce = BitConverter.ToInt64(it.Value(), 0);
+                long nonce = RocksDBStoreBitConverter.ToInt64(it.Value());
                 yield return new KeyValuePair<Address, long>(address, nonce);
             }
         }
@@ -801,7 +798,7 @@ namespace Libplanet.RocksDBStore
 
             return bytes is null
                 ? 0
-                : BitConverter.ToInt64(bytes, 0);
+                : RocksDBStoreBitConverter.ToInt64(bytes);
         }
 
         /// <inheritdoc/>
@@ -811,7 +808,7 @@ namespace Libplanet.RocksDBStore
             long nextNonce = GetTxNonce(chainId, signer) + delta;
 
             byte[] key = TxNonceKey(signer);
-            byte[] bytes = BitConverter.GetBytes(nextNonce);
+            byte[] bytes = RocksDBStoreBitConverter.GetBytes(nextNonce);
 
             _chainDb.Put(key, bytes, cf);
         }
@@ -854,7 +851,7 @@ namespace Libplanet.RocksDBStore
             for (; it.Valid() && it.Key().StartsWith(prefix); it.Prev())
             {
                 byte[] indexBytes = it.Key().Skip(prefix.Length).ToArray();
-                long index = ToInt64(indexBytes);
+                long index = RocksDBStoreBitConverter.ToInt64(indexBytes);
 
                 if (index > highestIndex)
                 {
@@ -898,8 +895,8 @@ namespace Libplanet.RocksDBStore
 
         private byte[] StateRefKey(string stateKey, long blockIndex)
         {
-            byte[] stateKeyBytes = GetBytes(stateKey);
-            byte[] blockIndexBytes = GetBytes(blockIndex);
+            byte[] stateKeyBytes = RocksDBStoreBitConverter.GetBytes(stateKey);
+            byte[] blockIndexBytes = RocksDBStoreBitConverter.GetBytes(blockIndex);
 
             return StateRefKeyPrefix
                 .Concat(stateKeyBytes)
@@ -937,28 +934,6 @@ namespace Libplanet.RocksDBStore
             }
 
             return cf;
-        }
-
-        private long ToInt64(byte[] value)
-        {
-            // Use Big-endian to order index lexicographically.
-            return NetMQ.NetworkOrderBitsConverter.ToInt64(value);
-        }
-
-        private string GetString(byte[] value)
-        {
-            return Encoding.UTF8.GetString(value);
-        }
-
-        private byte[] GetBytes(long value)
-        {
-            // Use Big-endian to order index lexicographically.
-            return NetMQ.NetworkOrderBitsConverter.GetBytes(value);
-        }
-
-        private byte[] GetBytes(string value)
-        {
-            return Encoding.UTF8.GetBytes(value);
         }
 
         private class StateRef
