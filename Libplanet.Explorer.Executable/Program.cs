@@ -11,6 +11,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Explorer.Interfaces;
+using Libplanet.Explorer.Store;
 using Libplanet.Net;
 using Libplanet.Store;
 using Microsoft.AspNetCore;
@@ -40,11 +41,26 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
+            bool readOnlyMode = options.Seeds is null;
+
+            // Initialized DefaultStore.
             IStore store = new DefaultStore(
                 path: options.StorePath,
                 flush: false,
-                readOnly: options.Seeds is null
+                readOnly: readOnlyMode
             );
+
+            if (options.Seeds.Any())
+            {
+                // Warp up store.
+                store = new RichStore(
+                    store,
+                    path: options.StorePath,
+                    flush: false,
+                    readOnly: readOnlyMode
+                );
+            }
+
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
                 blockIntervalMilliseconds: options.BlockIntervalMilliseconds,

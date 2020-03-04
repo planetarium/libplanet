@@ -6,6 +6,7 @@ using GraphQL.Types;
 using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blocks;
+using Libplanet.Explorer.Store;
 using Libplanet.Store;
 using Libplanet.Tx;
 
@@ -78,6 +79,37 @@ namespace Libplanet.Explorer.Queries
 
             if (tipIndex < offset || offset < 0)
             {
+                yield break;
+            }
+
+            if (_store is RichStore richStore)
+            {
+                IEnumerable<TxId> txIds;
+                if (!(signer is null))
+                {
+                    txIds = richStore
+                        .IterateSignerReferences(
+                            (Address)signer, desc, (int)offset, limit ?? int.MaxValue);
+                }
+                else if (!(involved is null))
+                {
+                    txIds = richStore
+                        .IterateUpdatedAddressReferences(
+                            (Address)involved, desc, (int)offset, limit ?? int.MaxValue);
+                }
+                else
+                {
+                    txIds = richStore
+                        .IterateTxReferences(null, desc, (int)offset, limit ?? int.MaxValue)
+                        .Select(r => r.Item1);
+                }
+
+                var txs = txIds.Select(txId => _chain.GetTransaction(txId));
+                foreach (var tx in txs)
+                {
+                    yield return tx;
+                }
+
                 yield break;
             }
 

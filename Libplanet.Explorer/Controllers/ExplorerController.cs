@@ -1,8 +1,6 @@
 using GraphQL;
 using GraphQL.Types;
 using Libplanet.Action;
-using Libplanet.Blockchain;
-using Libplanet.Explorer.GraphTypes;
 using Libplanet.Explorer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -22,8 +20,6 @@ namespace Libplanet.Explorer.Controllers
             _schema = context.GetSchema();
         }
 
-        public BlockChain<T> BlockChain => _context.BlockChain;
-
         [HttpGet("/")]
         public IActionResult GetRoot()
         {
@@ -37,8 +33,9 @@ namespace Libplanet.Explorer.Controllers
         {
             var json = _schema.Execute(_ =>
             {
-                _.UserContext = BlockChain;
+                _.UserContext = _context;
                 _.Query = body.Query;
+                _.ThrowOnUnhandledException = true;
                 if (body.Variables != null)
                 {
                     _.Inputs = body.Variables.ToString(Newtonsoft.Json.Formatting.None).ToInputs();
