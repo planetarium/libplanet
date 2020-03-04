@@ -53,18 +53,11 @@ if command -v apk; then
   update-ca-certificates
 fi
 
-wget -O /tmp/github-release.tar.bz2 \
-  https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2
-tar xvfj /tmp/github-release.tar.bz2 -C /tmp
-rm /tmp/github-release.tar.bz2 \
-
 # Fill the description on GitHub releases with the release note
 github_user="${GITHUB_REPOSITORY%/*}"
 github_repo="${GITHUB_REPOSITORY#*/}"
 
-export PATH="/tmp/bin/linux/amd64:$PATH"
-
-github-release release \
+"$(dirname "$0")/github-release.sh" release \
   --user "$github_user" \
   --repo "$github_repo" \
   --tag "$tag" \
@@ -73,12 +66,10 @@ github-release release \
 
 for project in "${projects[@]}"; do
   nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
-  github-release upload \
+  "$(dirname "$0")/github-release.sh" upload \
     --user "$github_user" \
     --repo "$github_repo" \
     --tag "$tag" \
     --name "$(basename "$nupkg_path")" \
     --file "$nupkg_path"
 done
-
-rm /tmp/bin/linux/amd64/github-release
