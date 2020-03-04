@@ -3,8 +3,8 @@
 # Note that this script is intended to be run by GitHub Actions.
 set -e
 
-projects=("Libplanet" "Libplanet.RocksDBStore")
-configuration=Release
+# shellcheck source=constants.sh
+. "$(dirname "$0")/constants.sh"
 
 if ! (env | grep '^GITHUB_'); then
   echo "This script is intended to be run by GitHub Actions." > /dev/stderr

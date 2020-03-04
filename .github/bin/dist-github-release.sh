@@ -4,8 +4,8 @@
 # shellcheck disable=SC2169
 set -e
 
-projects=("Libplanet" "Libplanet.RocksDBStore")
-configuration=Release
+# shellcheck source=constants.sh
+. "$(dirname "$0")/constants.sh"
 
 if [ "$GITHUB_REPOSITORY" = "" ] | [ "$GITHUB_REF" = "" ]; then
   echo "This script is intended to be run by GitHub Actions." > /dev/stderr
