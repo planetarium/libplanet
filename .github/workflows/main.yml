@@ -1,5 +1,9 @@
 on:
-  push: []
+  push:
+    branches-ignore:
+    - gh-pages
+    tags:
+    - "*"
   schedule:
   - cron: 59 14 * * *
   pull_request: []

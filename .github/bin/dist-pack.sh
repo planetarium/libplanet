@@ -14,8 +14,8 @@ fi
 for project in "${projects[@]}"; do
   rm -rf "./$project/bin/$configuration/"
 
+  dotnet_args="-p:Version=$(cat obj/package_version.txt)"
   if [ -f obj/version_suffix.txt ]; then
-    dotnet_args="-p:Version=$(cat obj/package_version.txt)"
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
   fi
   # shellcheck disable=SC2086

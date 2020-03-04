@@ -4,7 +4,7 @@
 # shellcheck disable=SC2169
 set -e
 
-project=Libplanet
+projects=("Libplanet" "Libplanet.RocksDBStore")
 configuration=Release
 
 if [ "$GITHUB_REPOSITORY" = "" ] | [ "$GITHUB_REF" = "" ]; then
@@ -37,14 +37,16 @@ elif [ ! -f obj/release_note.txt ]; then
   exit 1
 fi
 
-nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
-if [ ! -f "$nupkg_path" ]; then
-  {
-    echo "$nupkg_path is missing."
-    echo "dist:pack action must be run first."
-  } > /dev/stderr
-  exit 1
-fi
+for project in "${projects[@]}"; do
+  nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
+  if [ ! -f "$nupkg_path" ]; then
+    {
+      echo "$nupkg_path is missing."
+      echo "dist:pack action must be run first."
+    } > /dev/stderr
+    exit 1
+  fi
+done
 
 if command -v apk; then
   apk add --no-cache ca-certificates
@@ -66,14 +68,17 @@ github-release release \
   --user "$github_user" \
   --repo "$github_repo" \
   --tag "$tag" \
-  --name "$project $tag" \
+  --name "${projects[0]} $tag" \
   --description - < obj/release_note.txt
 
-github-release upload \
-  --user "$github_user" \
-  --repo "$github_repo" \
-  --tag "$tag" \
-  --name "$(basename "$nupkg_path")" \
-  --file "$nupkg_path"
+for project in "${projects[@]}"; do
+  nupkg_path="./$project/bin/$configuration/$project.$tag.nupkg"
+  github-release upload \
+    --user "$github_user" \
+    --repo "$github_repo" \
+    --tag "$tag" \
+    --name "$(basename "$nupkg_path")" \
+    --file "$nupkg_path"
+done
 
 rm /tmp/bin/linux/amd64/github-release
