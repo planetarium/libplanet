@@ -38,10 +38,14 @@ steps:
   inputs:
     targetType: inline
     script: |
-      ${{ parameters.testPrefix }} \
-        xunit.runner.console.*/tools/net471/xunit.console.exe \
-          *.Tests/bin/$(configuration)/net*/*.Tests.dll \
-          ${{ parameters.testArguments }}
+      # Because Libplanet.RocksDBStore.Tests has Libplanet.Tests as a dependency,
+      # Libplanet.Tests is executed twice without this.
+      for f in *.Tests; do
+        ${{ parameters.testPrefix }} \
+          xunit.runner.console.*/tools/net471/xunit.console.exe \
+            $(pwd)/"$f"/bin/${{ parameters.configuration }}/net*/"$f".dll \
+            ${{ parameters.testArguments }}
+      done
   env:
     TURN_SERVER_URL: ${{ parameters.turnServerUrl }}
     MONO_THREADS_SUSPEND: preemptive
