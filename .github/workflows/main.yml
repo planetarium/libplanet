@@ -31,10 +31,16 @@ jobs:
         name: dist-obj
         path: obj/
     - run: .github/bin/dist-pack.sh
+    - run: |
+        . .github/bin/constants.sh
+        mkdir -p /tmp/dist-bin/
+        for project in "${projects[@]}"; do
+          cp -r "$project/bin/$configuration"/* /tmp/dist-bin/
+        done
     - uses: actions/upload-artifact@master
       with:
         name: dist-bin
-        path: Libplanet/bin/Release/
+        path: /tmp/dist-bin/
     - if: >-
         github.event_name != 'pull_request' &&
         startsWith(github.ref, 'refs/tags/')
@@ -80,3 +86,49 @@ jobs:
           --url="$(cat Docs/obj/url.txt)"
           --token="$GH_CHECK_STATUS_TOKEN"
       if: github.event_name != 'pull_request'
+
+  bundle:
+    name: bundle
+    needs: [build]
+    runs-on: ubuntu-18.04
+    steps:
+    - run: sudo apt-get install nuget
+    - uses: actions/checkout@master
+      if: github.event_name != 'pull_request'
+    - uses: actions/checkout@master
+      if: github.event_name == 'pull_request'
+      with:
+        ref: ${{ github.pull_request.head.sha }}
+    - uses: actions/download-artifact@master
+      with:
+        name: dist-bin
+        path: /tmp/nupkg
+    - run: |
+        targets=(netcoreapp3.1 net472 net462 net461)
+        for target in "${targets[@]}"; do
+          find /tmp/nupkg \
+            -name '*.nupkg' \
+            -exec .github/bin/bundle.sh {} /tmp/bundles "$target" ';'
+        done
+      shell: bash
+    - uses: actions/upload-artifact@master
+      with:
+        name: bundles
+        path: /tmp/bundles
+    - if: >-
+        github.event_name != 'pull_request' &&
+        startsWith(github.ref, 'refs/tags/')
+      run: |
+        tag="${GITHUB_REF#refs/*/}"
+        github_user="${GITHUB_REPOSITORY%/*}"
+        github_repo="${GITHUB_REPOSITORY#*/}"
+        for bundle in /tmp/bundles/*; do
+          .github/bin/github-release.sh upload \
+            --user "$github_user" \
+            --repo "$github_repo" \
+            --tag "$tag" \
+            --name "$(basename "$bundle")" \
+            --file "$bundle"
+        done
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
