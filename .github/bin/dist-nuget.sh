@@ -27,12 +27,10 @@ if [ "$GITHUB_REPOSITORY" != "planetarium/libplanet" ] || (
     [ "$GITHUB_REF" != refs/heads/master ] &&
     [ "$GITHUB_REF" = "${GITHUB_REF#refs/heads/maintenance-}" ] ); then
   function dotnet-nuget {
-    shift
     echo "DRY-RUN: dotnet nuget" "$@"
   }
 else
   function dotnet-nuget {
-    shift
     dotnet nuget "$@"
   }
 fi
