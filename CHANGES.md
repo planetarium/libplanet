@@ -39,6 +39,7 @@ To be released.
     [[#707], [#798]]
  -  Added `BlockVerificationState` class, a subclass of `PreloadState`.
     [[#798]]
+ -  Added `AppProtocolVersion` struct.  [[#266], [#815]]
  -  Added `BlockDigest` struct.  [[#785]]
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
@@ -69,6 +70,7 @@ To be released.
     in the store had been completely cleaned up in some corner cases
     if `cancellationToken` was requested.  [[#798]]
 
+[#266]: https://github.com/planetarium/libplanet/issues/266
 [#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
@@ -79,6 +81,7 @@ To be released.
 [#798]: https://github.com/planetarium/libplanet/pull/798
 [#802]: https://github.com/planetarium/libplanet/pull/802
 [#803]: https://github.com/planetarium/libplanet/pull/803
+[#815]: https://github.com/planetarium/libplanet/pull/815
 
 
 Version 0.8.0
