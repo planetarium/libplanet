@@ -325,7 +325,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void StageTransactionIds(IImmutableSet<TxId> txids)
         {
-            foreach (var txId in txids)
+            foreach (TxId txId in txids)
             {
                 byte[] key = StagedTxKey(txId);
                 _stagedTxDb.Put(key, EmptyBytes);
@@ -335,7 +335,7 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void UnstageTransactionIds(ISet<TxId> txids)
         {
-            foreach (var txId in txids)
+            foreach (TxId txId in txids)
             {
                 byte[] key = StagedTxKey(txId);
                 _stagedTxDb.Remove(key);
