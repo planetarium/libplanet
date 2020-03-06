@@ -86,7 +86,7 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
-        public void ListAddresses()
+        public void ListStateKeys()
         {
             Assert.Empty(Fx.Store.ListStateKeys(Fx.StoreChainId).ToArray());
 
