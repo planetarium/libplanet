@@ -348,8 +348,8 @@ namespace Libplanet.RocksDBStore
             byte[] prefix = StagedTxKeyPrefix;
             foreach (var it in IterateDb(_stagedTxDb, prefix))
             {
-                var key = it.Key();
-                var txIdBytes = key.Skip(prefix.Length).ToArray();
+                byte[] key = it.Key();
+                byte[] txIdBytes = key.Skip(prefix.Length).ToArray();
                 yield return new TxId(txIdBytes);
             }
         }
