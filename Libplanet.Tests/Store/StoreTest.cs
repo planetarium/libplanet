@@ -1086,10 +1086,10 @@ namespace Libplanet.Tests.Store
             }
         }
 
-        [Fact]
+        [SkippableFact]
         public async Task PruneBlockStates()
         {
-            using (DefaultStoreFixture fx = new DefaultStoreFixture(memory: true))
+            using (StoreFixture fx = FxConstructor())
             {
                 IStore store = fx.Store;
                 var blocks = new BlockChain<DumbAction>(
