@@ -631,10 +631,10 @@ namespace Libplanet.Store
             long untilIndex = until.Index;
             foreach (var key in keys)
             {
-                Tuple<HashDigest<SHA256>, long>[] stateRefs =
+                IEnumerable<Tuple<HashDigest<SHA256>, long>> stateRefs =
                     IterateStateReferences(chainId, key, untilIndex, null, null)
-                        .OrderByDescending(tuple => tuple.Item2)
-                        .ToArray();
+                        .OrderByDescending(tuple => tuple.Item2);
+
                 var dict = new Dictionary<HashDigest<SHA256>, List<string>>();
                 foreach ((HashDigest<SHA256> blockHash, long index) in stateRefs.Skip(1))
                 {
