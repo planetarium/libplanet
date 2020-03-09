@@ -106,10 +106,16 @@ namespace Libplanet.RocksDBStore
             _txDb = RocksDb.Open(_options, Path.Combine(path, TxDbName));
             _stateDb = RocksDb.Open(_options, Path.Combine(path, StateDbName));
             _stagedTxDb = RocksDb.Open(_options, Path.Combine(path, StagedTxDbName));
-            _chainDb = RocksDb.Open(
-                _options, Path.Combine(path, ChainDbName), new ColumnFamilies());
-            _stateRefDb = RocksDb.Open(
-                _options, Path.Combine(path, StateRefDbName), new ColumnFamilies());
+
+            // When opening a DB in a read-write mode, you need to specify all Column Families that
+            // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
+            var chainDbPath = Path.Combine(path, ChainDbName);
+            var chainDbColumnFamilies = GetColumnFamilies(_options, chainDbPath);
+            _chainDb = RocksDb.Open(_options, chainDbPath, chainDbColumnFamilies);
+
+            var stateRefDbPath = Path.Combine(path, StateRefDbName);
+            var stateRefDbColumnFamilies = GetColumnFamilies(_options, stateRefDbPath);
+            _stateRefDb = RocksDb.Open(_options, stateRefDbPath, stateRefDbColumnFamilies);
         }
 
         /// <inheritdoc/>
@@ -971,10 +977,32 @@ namespace Libplanet.RocksDBStore
             }
             catch (KeyNotFoundException)
             {
-                cf = db.CreateColumnFamily(new ColumnFamilyOptions(), cfName);
+                cf = db.CreateColumnFamily(_options, cfName);
             }
 
             return cf;
+        }
+
+        private ColumnFamilies GetColumnFamilies(DbOptions options, string path)
+        {
+            var columnFamilies = new ColumnFamilies();
+            List<string> listColumnFamilies;
+
+            try
+            {
+                listColumnFamilies = RocksDb.ListColumnFamilies(options, path).ToList();
+            }
+            catch (RocksDbException)
+            {
+                listColumnFamilies = new List<string>();
+            }
+
+            foreach (string name in listColumnFamilies)
+            {
+                columnFamilies.Add(name, _options);
+            }
+
+            return columnFamilies;
         }
 
         private class StateRef
