@@ -5870,6 +5870,22 @@ references:
   fullName.vb: Libplanet.Store.BaseStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
   nameWithType: BaseStore.LookupStateReference<T>(Guid, String, Block<T>)
   nameWithType.vb: BaseStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
+- uid: Libplanet.Store.BaseStore.PruneBlockStates*
+  name: PruneBlockStates
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PruneBlockStates_
+  commentId: Overload:Libplanet.Store.BaseStore.PruneBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.BaseStore.PruneBlockStates
+  nameWithType: BaseStore.PruneBlockStates
+- uid: Libplanet.Store.BaseStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name: PruneBlockStates<T>(Guid, Block<T>)
+  href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PruneBlockStates__1_Guid_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.BaseStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name.vb: PruneBlockStates(Of T)(Guid, Block(Of T))
+  fullName: Libplanet.Store.BaseStore.PruneBlockStates<T>(Guid, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.BaseStore.PruneBlockStates(Of T)(Guid, Libplanet.Blocks.Block(Of T))
+  nameWithType: BaseStore.PruneBlockStates<T>(Guid, Block<T>)
+  nameWithType.vb: BaseStore.PruneBlockStates(Of T)(Guid, Block(Of T))
 - uid: Libplanet.Store.BaseStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.BaseStore.html#Libplanet_Store_BaseStore_PutBlock_
@@ -6606,6 +6622,22 @@ references:
   fullName.vb: Libplanet.Store.DefaultStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
   nameWithType: DefaultStore.LookupStateReference<T>(Guid, String, Block<T>)
   nameWithType.vb: DefaultStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
+- uid: Libplanet.Store.DefaultStore.PruneBlockStates*
+  name: PruneBlockStates
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PruneBlockStates_
+  commentId: Overload:Libplanet.Store.DefaultStore.PruneBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.DefaultStore.PruneBlockStates
+  nameWithType: DefaultStore.PruneBlockStates
+- uid: Libplanet.Store.DefaultStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name: PruneBlockStates<T>(Guid, Block<T>)
+  href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PruneBlockStates__1_Guid_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.DefaultStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name.vb: PruneBlockStates(Of T)(Guid, Block(Of T))
+  fullName: Libplanet.Store.DefaultStore.PruneBlockStates<T>(Guid, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.DefaultStore.PruneBlockStates(Of T)(Guid, Libplanet.Blocks.Block(Of T))
+  nameWithType: DefaultStore.PruneBlockStates<T>(Guid, Block<T>)
+  nameWithType.vb: DefaultStore.PruneBlockStates(Of T)(Guid, Block(Of T))
 - uid: Libplanet.Store.DefaultStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.DefaultStore.html#Libplanet_Store_DefaultStore_PutBlock_
@@ -7150,6 +7182,22 @@ references:
   fullName.vb: Libplanet.Store.IStore.LookupStateReference(Of T)(Guid, System.String, Libplanet.Blocks.Block(Of T))
   nameWithType: IStore.LookupStateReference<T>(Guid, String, Block<T>)
   nameWithType.vb: IStore.LookupStateReference(Of T)(Guid, String, Block(Of T))
+- uid: Libplanet.Store.IStore.PruneBlockStates*
+  name: PruneBlockStates
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PruneBlockStates_
+  commentId: Overload:Libplanet.Store.IStore.PruneBlockStates
+  isSpec: "True"
+  fullName: Libplanet.Store.IStore.PruneBlockStates
+  nameWithType: IStore.PruneBlockStates
+- uid: Libplanet.Store.IStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name: PruneBlockStates<T>(Guid, Block<T>)
+  href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PruneBlockStates__1_Guid_Libplanet_Blocks_Block___0__
+  commentId: M:Libplanet.Store.IStore.PruneBlockStates``1(Guid,Libplanet.Blocks.Block{``0})
+  name.vb: PruneBlockStates(Of T)(Guid, Block(Of T))
+  fullName: Libplanet.Store.IStore.PruneBlockStates<T>(Guid, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Store.IStore.PruneBlockStates(Of T)(Guid, Libplanet.Blocks.Block(Of T))
+  nameWithType: IStore.PruneBlockStates<T>(Guid, Block<T>)
+  nameWithType.vb: IStore.PruneBlockStates(Of T)(Guid, Block(Of T))
 - uid: Libplanet.Store.IStore.PutBlock*
   name: PutBlock
   href: api/Libplanet.Store.IStore.html#Libplanet_Store_IStore_PutBlock_
