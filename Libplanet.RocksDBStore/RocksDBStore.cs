@@ -102,20 +102,18 @@ namespace Libplanet.RocksDBStore
             _options = new DbOptions()
                 .SetCreateIfMissing();
 
-            _blockDb = RocksDb.Open(_options, Path.Combine(path, BlockDbName));
-            _txDb = RocksDb.Open(_options, Path.Combine(path, TxDbName));
-            _stateDb = RocksDb.Open(_options, Path.Combine(path, StateDbName));
-            _stagedTxDb = RocksDb.Open(_options, Path.Combine(path, StagedTxDbName));
+            _blockDb = RocksDbOpen(_options, BlockDbName);
+            _txDb = RocksDbOpen(_options, TxDbName);
+            _stateDb = RocksDbOpen(_options, StateDbName);
+            _stagedTxDb = RocksDbOpen(_options, StagedTxDbName);
 
             // When opening a DB in a read-write mode, you need to specify all Column Families that
             // currently exist in a DB. https://github.com/facebook/rocksdb/wiki/Column-Families
-            var chainDbPath = Path.Combine(path, ChainDbName);
-            var chainDbColumnFamilies = GetColumnFamilies(_options, chainDbPath);
-            _chainDb = RocksDb.Open(_options, chainDbPath, chainDbColumnFamilies);
+            var chainDbColumnFamilies = GetColumnFamilies(_options, ChainDbName);
+            _chainDb = RocksDbOpen(_options, ChainDbName, chainDbColumnFamilies);
 
-            var stateRefDbPath = Path.Combine(path, StateRefDbName);
-            var stateRefDbColumnFamilies = GetColumnFamilies(_options, stateRefDbPath);
-            _stateRefDb = RocksDb.Open(_options, stateRefDbPath, stateRefDbColumnFamilies);
+            var stateRefDbColumnFamilies = GetColumnFamilies(_options, StateRefDbName);
+            _stateRefDb = RocksDbOpen(_options, StateRefDbName, stateRefDbColumnFamilies);
         }
 
         /// <inheritdoc/>
@@ -983,14 +981,15 @@ namespace Libplanet.RocksDBStore
             return cf;
         }
 
-        private ColumnFamilies GetColumnFamilies(DbOptions options, string path)
+        private ColumnFamilies GetColumnFamilies(DbOptions options, string dbName)
         {
+            var dbPath = Path.Combine(_path, dbName);
             var columnFamilies = new ColumnFamilies();
             List<string> listColumnFamilies;
 
             try
             {
-                listColumnFamilies = RocksDb.ListColumnFamilies(options, path).ToList();
+                listColumnFamilies = RocksDb.ListColumnFamilies(options, dbPath).ToList();
             }
             catch (RocksDbException)
             {
@@ -1003,6 +1002,16 @@ namespace Libplanet.RocksDBStore
             }
 
             return columnFamilies;
+        }
+
+        private RocksDb RocksDbOpen(
+            DbOptions options, string dbName, ColumnFamilies columnFamilies = null)
+        {
+            var dbPath = Path.Combine(_path, dbName);
+
+            return columnFamilies is null
+                ? RocksDb.Open(options, dbPath)
+                : RocksDb.Open(options, dbPath, columnFamilies);
         }
 
         private class StateRef
