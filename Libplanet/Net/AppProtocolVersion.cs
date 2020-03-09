@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Crypto;
@@ -19,7 +20,7 @@ namespace Libplanet.Net
     /// <see cref="Verify(PublicKey)"/> method purposes to determine whether an information
     /// is claimed by its corresponding <see cref="Signer"/> in fact.</para>
     /// </summary>
-    public readonly struct AppProtocolVersion
+    public readonly struct AppProtocolVersion : IEquatable<AppProtocolVersion>
     {
         /// <summary>
         /// The version number.  This does not have to be increased by only 1, but can be more
@@ -83,6 +84,14 @@ namespace Libplanet.Net
             Signature = ImmutableArray.Create(signer.Sign(GetMessage()));
         }
 
+        [Pure]
+        public static bool operator ==(AppProtocolVersion left, AppProtocolVersion right) =>
+            left.Equals(right);
+
+        [Pure]
+        public static bool operator !=(AppProtocolVersion left, AppProtocolVersion right) =>
+            !(left == right);
+
         /// <summary>
         /// Verifies whether the claim is certainly signed by the <see cref="Signer"/>.
         /// </summary>
@@ -94,6 +103,38 @@ namespace Libplanet.Net
         public bool Verify(PublicKey publicKey) =>
             Signer.Equals(new Address(publicKey)) &&
             publicKey.Verify(GetMessage(), Signature.ToBuilder().ToArray());
+
+        /// <inheritdoc/>
+        [Pure]
+        public bool Equals(AppProtocolVersion other) =>
+            /* The reason why we need to check other fields than the Signature is that
+            this struct in itself does not guarantee its Signature is derived from
+            other field values.  A value of this struct can represent an invalid claim. */
+            Version == other.Version &&
+            Signer.Equals(other.Signer) &&
+            Equals(Extra, other.Extra) &&
+            Signature.SequenceEqual(other.Signature);
+
+        /// <inheritdoc/>
+        [Pure]
+        public override bool Equals(object obj) =>
+            obj is AppProtocolVersion other && Equals(other);
+
+        /// <inheritdoc/>
+        [Pure]
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            unchecked
+            {
+                hash *= 31 + Version.GetHashCode();
+                hash *= 31 + (Extra is null ? 0 : Extra.GetHashCode());
+                hash *= 31 + Signature.GetHashCode();
+                hash *= 31 + Signer.GetHashCode();
+            }
+
+            return hash;
+        }
 
         /// <inheritdoc/>
         [Pure]

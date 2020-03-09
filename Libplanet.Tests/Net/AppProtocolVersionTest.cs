@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Immutable;
-using Bencodex.Types;
+using Bencodex;
 using Libplanet.Crypto;
 using Libplanet.Net;
 using Xunit;
@@ -91,6 +91,88 @@ namespace Libplanet.Tests.Net
             );
             Assert.False(invalidSigner.Verify(signerPublicKey));
             Assert.False(invalidSigner.Verify(otherPartyPublicKey));
+        }
+
+        [Fact]
+        public void Equality()
+        {
+            var signer = new PrivateKey();
+            var claim = new AppProtocolVersion(signer, 123, (Bencodex.Types.Text)"foo");
+
+            var claim2 = new AppProtocolVersion(124, claim.Extra, claim.Signature, claim.Signer);
+            Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim2));
+            Assert.False(((object)claim).Equals(claim2));
+            Assert.NotEqual(claim.GetHashCode(), claim2.GetHashCode());
+            Assert.False(claim == claim2);
+            Assert.True(claim != claim2);
+
+            var claim3 = new AppProtocolVersion(
+                claim.Version,
+                default(Bencodex.Types.Null),
+                claim.Signature,
+                claim.Signer
+            );
+            Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim3));
+            Assert.False(((object)claim).Equals(claim3));
+            Assert.NotEqual(claim.GetHashCode(), claim3.GetHashCode());
+            Assert.False(claim == claim3);
+            Assert.True(claim != claim3);
+
+            var claim4 = new AppProtocolVersion(
+                claim.Version,
+                claim.Extra,
+                ImmutableArray<byte>.Empty,
+                claim.Signer
+            );
+            Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim4));
+            Assert.False(((object)claim).Equals(claim4));
+            Assert.NotEqual(claim.GetHashCode(), claim4.GetHashCode());
+            Assert.False(claim == claim4);
+            Assert.True(claim != claim4);
+
+            var claim5 = new AppProtocolVersion(
+                claim.Version,
+                claim.Extra,
+                claim.Signature,
+                new PrivateKey().PublicKey.ToAddress()
+            );
+            Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim5));
+            Assert.False(((object)claim).Equals(claim5));
+            Assert.NotEqual(claim.GetHashCode(), claim5.GetHashCode());
+            Assert.False(claim == claim5);
+            Assert.True(claim != claim5);
+
+            var codec = new Codec();
+            var sameClaim = new AppProtocolVersion(
+                claim.Version,
+                codec.Decode(codec.Encode(claim.Extra)),
+                ImmutableArray.Create(claim.Signature, 0, claim.Signature.Length),
+                new Address(claim.Signer.ByteArray)
+            );
+            Assert.True(((IEquatable<AppProtocolVersion>)claim).Equals(sameClaim));
+            Assert.True(((object)claim).Equals(sameClaim));
+            Assert.Equal(claim.GetHashCode(), sameClaim.GetHashCode());
+            Assert.True(claim == sameClaim);
+            Assert.False(claim != sameClaim);
+
+            var claimWithoutExtra = new AppProtocolVersion(signer, 1);
+            var sameClaimWithoutExtra = new AppProtocolVersion(
+                claimWithoutExtra.Version,
+                claimWithoutExtra.Extra,
+                ImmutableArray.Create(
+                    claimWithoutExtra.Signature,
+                    0,
+                    claimWithoutExtra.Signature.Length
+                ),
+                new Address(claimWithoutExtra.Signer.ByteArray)
+            );
+            Assert.True(
+                ((IEquatable<AppProtocolVersion>)claimWithoutExtra).Equals(sameClaimWithoutExtra)
+            );
+            Assert.True(((object)claimWithoutExtra).Equals(sameClaimWithoutExtra));
+            Assert.Equal(claimWithoutExtra.GetHashCode(), sameClaimWithoutExtra.GetHashCode());
+            Assert.True(claimWithoutExtra == sameClaimWithoutExtra);
+            Assert.False(claimWithoutExtra != sameClaimWithoutExtra);
         }
 
         [Fact]
