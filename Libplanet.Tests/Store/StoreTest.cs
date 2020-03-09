@@ -1086,6 +1086,68 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [SkippableFact]
+        public async Task PruneBlockStates()
+        {
+            using (StoreFixture fx = FxConstructor())
+            {
+                IStore store = fx.Store;
+                var blocks = new BlockChain<DumbAction>(
+                    new NullPolicy<DumbAction>(),
+                    store,
+                    Fx.GenesisBlock
+                );
+
+                var privKey = new PrivateKey();
+                Transaction<DumbAction> tx1 = Transaction<DumbAction>.Create(
+                    0,
+                    privKey,
+                    new[] { new DumbAction(fx.Address1, "item0") });
+                Transaction<DumbAction> tx2 = Transaction<DumbAction>.Create(
+                    1,
+                    privKey,
+                    new[] { new DumbAction(fx.Address1, "item1") });
+                Transaction<DumbAction> tx3 = Transaction<DumbAction>.Create(
+                    2,
+                    privKey,
+                    new[] { new DumbAction(fx.Address1, "item2") });
+                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx1));
+                var block1 = await blocks.MineBlock(fx.Address2);
+                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx2));
+                var block2 = await blocks.MineBlock(fx.Address2);
+                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx3));
+                var block3 = await blocks.MineBlock(fx.Address2);
+                Assert.Equal(
+                    (Text)"item0",
+                    blocks.GetState(fx.Address1, block1.Hash));
+                Assert.Equal(
+                    (Text)"item0,item1",
+                    blocks.GetState(fx.Address1, block2.Hash));
+                Assert.Equal(
+                    (Text)"item0,item1,item2",
+                    blocks.GetState(fx.Address1, block3.Hash));
+
+                store.PruneBlockStates(blocks.Id, block2);
+                Assert.Throws<IncompleteBlockStatesException>(
+                    () => blocks.GetState(fx.Address1, block1.Hash));
+                Assert.Equal(
+                    (Text)"item0,item1",
+                    blocks.GetState(fx.Address1, block2.Hash));
+                Assert.Equal(
+                    (Text)"item0,item1,item2",
+                    blocks.GetState(fx.Address1, block3.Hash));
+
+                store.PruneBlockStates(blocks.Id, block3);
+                Assert.Throws<IncompleteBlockStatesException>(
+                    () => blocks.GetState(fx.Address1, block1.Hash));
+                Assert.Throws<IncompleteBlockStatesException>(
+                    () => blocks.GetState(fx.Address1, block2.Hash));
+                Assert.Equal(
+                    (Text)"item0,item1,item2",
+                    blocks.GetState(fx.Address1, block3.Hash));
+            }
+        }
+
         private class AtomicityTestAction : IAction
         {
             public ImmutableArray<byte> ArbitraryBytes { get; set; }

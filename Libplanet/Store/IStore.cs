@@ -242,6 +242,19 @@ namespace Libplanet.Store
         );
 
         /// <summary>
+        /// Prunes states in blockchain <paramref name="chainId"/> with until specified block
+        /// <paramref name="until"/>.
+        /// </summary>
+        /// <param name="chainId">The chain ID to prune block states.</param>
+        /// <param name="until">The upper bound block to prune states.</param>
+        /// <typeparam name="T">An <see cref="IAction"/> class used with
+        /// <paramref name="until"/>.</typeparam>
+        void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+            where T : IAction, new();
+
+        /// <summary>
         /// Looks up a state reference, which is a block's <see cref="Block{T}.Hash"/> that contains
         /// an action mutating the <paramref name="key"/>'s tate.
         /// </summary>

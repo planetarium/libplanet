@@ -587,6 +587,37 @@ namespace Libplanet.RocksDBStore
             _statesCache.AddOrUpdate(blockHash, states);
         }
 
+        /// <inheritdoc/>
+        public override void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+        {
+            string[] keys = ListStateKeys(chainId).ToArray();
+            long untilIndex = until.Index;
+            foreach (var key in keys)
+            {
+                Tuple<HashDigest<SHA256>, long>[] stateRefs =
+                    IterateStateReferences(chainId, key, untilIndex, null, null)
+                        .OrderByDescending(tuple => tuple.Item2)
+                        .ToArray();
+                var dict = new Dictionary<HashDigest<SHA256>, List<string>>();
+                foreach ((HashDigest<SHA256> blockHash, long index) in stateRefs.Skip(1))
+                {
+                    if (!dict.ContainsKey(blockHash))
+                    {
+                        dict.Add(blockHash, new List<string>());
+                    }
+
+                    dict[blockHash].Add(key);
+                }
+
+                foreach (var kv in dict)
+                {
+                    DeleteBlockStates(kv.Key, kv.Value);
+                }
+            }
+        }
+
         public override Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
             string key,
@@ -804,6 +835,38 @@ namespace Libplanet.RocksDBStore
             _stateDb?.Dispose();
             _blockDb?.Dispose();
             _stagedTxDb?.Dispose();
+        }
+
+        /// <summary>
+        /// Deletes the states with specified keys (i.e., <paramref name="stateKeys"/>)
+        /// updated by actions in the specified block (i.e., <paramref name="blockHash"/>).
+        /// </summary>
+        /// <param name="blockHash"><see cref="Block{T}.Hash"/> to delete states.
+        /// </param>
+        /// <param name="stateKeys">The state keys to delete which were updated by actions
+        /// in the specified block (i.e., <paramref name="blockHash"/>).
+        /// </param>
+        /// <seealso cref="GetBlockStates"/>
+        private void DeleteBlockStates(
+            HashDigest<SHA256> blockHash,
+            IEnumerable<string> stateKeys)
+        {
+            IImmutableDictionary<string, IValue> dict = GetBlockStates(blockHash);
+            if (dict is null)
+            {
+                return;
+            }
+
+            dict = dict.RemoveRange(stateKeys);
+            if (dict.Any())
+            {
+                SetBlockStates(blockHash, dict);
+            }
+            else
+            {
+                _stateDb.Remove(BlockStateKey(blockHash));
+                _statesCache.Remove(blockHash);
+            }
         }
 
         private IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(

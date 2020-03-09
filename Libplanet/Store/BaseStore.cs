@@ -124,10 +124,17 @@ namespace Libplanet.Store
             HashDigest<SHA256> blockHash
         );
 
+        /// <inheritdoc />
         public abstract void SetBlockStates(
             HashDigest<SHA256> blockHash,
             IImmutableDictionary<string, IValue> states
         );
+
+        /// <inheritdoc />
+        public abstract void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+            where T : IAction, new();
 
         /// <inheritdoc />
         public abstract Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(

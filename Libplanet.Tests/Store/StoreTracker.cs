@@ -188,6 +188,15 @@ namespace Libplanet.Tests.Store
             _store.SetBlockStates(blockHash, states);
         }
 
+        public void PruneBlockStates<T>(
+            Guid chainId,
+            Block<T> until)
+            where T : IAction, new()
+        {
+            Log(nameof(PruneBlockStates), chainId, until);
+            _store.PruneBlockStates(chainId, until);
+        }
+
         public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
             string key,
