@@ -30,24 +30,13 @@ using Xunit.Abstractions;
 
 namespace Libplanet.Tests.Net
 {
-    public class SwarmTest : IDisposable
+    public partial class SwarmTest : IDisposable
     {
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
-        private static readonly AppProtocolVersion DefaultAppProtocolVersion =
-            new AppProtocolVersion(new PrivateKey(), 1);
-
-        private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
 
         private readonly ITestOutputHelper _output;
         private readonly ILogger _logger;
-        private readonly StoreFixture _fx1;
-        private readonly StoreFixture _fx2;
-        private readonly StoreFixture _fx3;
-        private readonly StoreFixture _fx4;
-
-        private readonly List<BlockChain<DumbAction>> _blockchains;
-        private readonly List<Swarm<DumbAction>> _swarms;
 
         public SwarmTest(ITestOutputHelper output)
         {
@@ -479,84 +468,6 @@ namespace Libplanet.Tests.Net
 
             _logger.CompareBothChains(LogEventLevel.Debug, "A", chainA, "B", chainB);
             Assert.Equal(chainA.BlockHashes, chainB.BlockHashes);
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task DetectAppProtocolVersion()
-        {
-            var blockChain = _blockchains[0];
-
-            var signer = new PrivateKey();
-            var v2 = new AppProtocolVersion(signer, 2);
-            var v3 = new AppProtocolVersion(signer, 3);
-            var a = CreateSwarm(blockChain, appProtocolVersion: v2);
-            var b = CreateSwarm(blockChain, appProtocolVersion: v3);
-            var c = CreateSwarm(blockChain, appProtocolVersion: v2);
-            var d = CreateSwarm(blockChain, appProtocolVersion: v3);
-
-            try
-            {
-                await StartAsync(c);
-                await StartAsync(d);
-
-                var peers = new[] { c.AsPeer, d.AsPeer };
-
-                foreach (var peer in peers)
-                {
-                    await a.AddPeersAsync(new[] { peer }, null);
-                    await b.AddPeersAsync(new[] { peer }, null);
-                }
-
-                Assert.Equal(new[] { c.AsPeer }, a.Peers.ToArray());
-                Assert.Equal(new[] { d.AsPeer }, b.Peers.ToArray());
-            }
-            finally
-            {
-                await StopAsync(c);
-                await StopAsync(d);
-
-                a.Dispose();
-                b.Dispose();
-                c.Dispose();
-                d.Dispose();
-            }
-        }
-
-        [Fact(Timeout = Timeout)]
-        public async Task HandleDifferentAppProtocolVersion()
-        {
-            var isCalled = false;
-
-            void GameHandler(object sender, DifferentProtocolVersionEventArgs e)
-            {
-                isCalled = true;
-            }
-
-            var signer = new PrivateKey();
-            var v2 = new AppProtocolVersion(signer, 2);
-            var v3 = new AppProtocolVersion(signer, 3);
-            var a = CreateSwarm(
-                _blockchains[0],
-                appProtocolVersion: v2,
-                differentVersionPeerEncountered: GameHandler);
-            var b = CreateSwarm(_blockchains[1], appProtocolVersion: v3);
-
-            try
-            {
-                await StartAsync(b);
-
-                await Assert.ThrowsAsync<PeerDiscoveryException>(() => BootstrapAsync(a, b.AsPeer));
-
-                Assert.True(isCalled);
-            }
-            finally
-            {
-                await StopAsync(a);
-                await StopAsync(b);
-
-                a.Dispose();
-                b.Dispose();
-            }
         }
 
         [Fact(Timeout = Timeout)]
@@ -2900,83 +2811,6 @@ namespace Libplanet.Tests.Net
                 await StopAsync(sender1);
                 await StopAsync(sender2);
             }
-        }
-
-        private static async Task<(Address, Block<DumbAction>[])>
-            MakeFixtureBlocksForPreloadAsyncCancellationTest()
-        {
-            Block<DumbAction>[] blocks = _fixtureBlocksForPreloadAsyncCancellationTest;
-
-            if (blocks is null)
-            {
-                var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
-                using (var storeFx = new DefaultStoreFixture(memory: true))
-                {
-                    var chain = TestUtils.MakeBlockChain(policy, storeFx.Store);
-                    Address miner = new PrivateKey().PublicKey.ToAddress();
-                    var signer = new PrivateKey();
-                    Address address = signer.PublicKey.ToAddress();
-                    Log.Logger.Information("Fixture blocks:");
-                    for (int i = 0; i < 20; i++)
-                    {
-                        for (int j = 0; j < 5; j++)
-                        {
-                            chain.MakeTransaction(
-                                signer,
-                                new[] { new DumbAction(address, $"Item{i}.{j}", idempotent: true) }
-                            );
-                        }
-
-                        Block<DumbAction> block = await chain.MineBlock(miner);
-                        Log.Logger.Information("  #{0,2} {1}", block.Index, block.Hash);
-                    }
-
-                    var blockList = new List<Block<DumbAction>>();
-                    for (var i = 1; i < chain.Count; i++)
-                    {
-                        Block<DumbAction> block = chain[i];
-                        blockList.Add(block);
-                    }
-
-                    blocks = blockList.ToArray();
-
-                    _fixtureBlocksForPreloadAsyncCancellationTest = blocks;
-                }
-            }
-
-            return (blocks[1].Transactions.First().Actions.First().TargetAddress, blocks);
-        }
-
-        private Swarm<T> CreateSwarm<T>(
-            BlockChain<T> blockChain,
-            PrivateKey privateKey = null,
-            AppProtocolVersion? appProtocolVersion = null,
-            int? tableSize = null,
-            int? bucketSize = null,
-            string host = null,
-            int? listenPort = null,
-            DateTimeOffset? createdAt = null,
-            IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
-            where T : IAction, new()
-        {
-            if (host is null && !(iceServers?.Any() ?? false))
-            {
-                host = IPAddress.Loopback.ToString();
-            }
-
-            return new Swarm<T>(
-                blockChain,
-                privateKey ?? new PrivateKey(),
-                appProtocolVersion ?? DefaultAppProtocolVersion,
-                tableSize,
-                bucketSize,
-                5,
-                host,
-                listenPort,
-                createdAt,
-                iceServers,
-                differentVersionPeerEncountered);
         }
 
         private async Task<Task> StartAsync<T>(
