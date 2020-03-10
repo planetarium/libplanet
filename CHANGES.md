@@ -22,6 +22,24 @@ To be released.
      -  Renamed `SerializationInfoExtension` class to
         `SerializationInfoExtensions`.
      -  Renamed `StoreExtension` class to `StoreExtensions`.
+ -  All parameters, fields, property, and method return values that had been
+    represented as an `Int32` became retyped to `AppProtocolVersion`.
+    [[#266], [#815]]
+     -  `Swarm()` constructor's parameter `appProtocolVersion` became
+        `AppProtocolVersion` (was `Int32`). 
+     -  `Peer()` and `BoundPeer()` constructors' parameter `appProtocolVersion`
+        became `AppProtocolVersion` (was `Int32`).
+     -  `Peer.AppProtocolVersion` property became `AppProtocolVersion`
+        (was `Int32`).
+     -  `DifferentProtocolVersionEventArgs.ExpectedVersion` and
+        `DifferentProtocolVersionEventArgs.ActualVersion` properties became
+        `AppProtocolVersion` (was `Int32`).
+     -  `DifferentAppProtocolVersionException()` constructor's parameters
+        `expectedVersion` and `actualVersion` became `AppProtocolVersion`
+        (was `Int32`).
+     -  `DifferentAppProtocolVersionException.ExpectedVersion` and
+        `DifferentAppProtocolVersionException.ActualVersion` properties became
+        `AppProtocolVersion` (was `Int32`).
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +48,8 @@ To be released.
     in order to include an offset block index besides block hashes
     so that a receiver is able to determine their block indices too.
     [[#707], [#798]]
+ -  `Peer` became to have 3 more fields to represent the whole fields of
+    `AppProtocolVersion`, which is newly introduced.  [[#266], [#815]]
 
 ### Backward-incompatible storage format changes
 

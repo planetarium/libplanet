@@ -16,7 +16,7 @@ namespace Libplanet.Net.Protocols
         private readonly TimeSpan _requestTimeout;
         private readonly ITransport _transport;
         private readonly Address _address;
-        private readonly int _appProtocolVersion;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly Random _random;
         private readonly RoutingTable _routing;
         private readonly int _tableSize;
@@ -27,7 +27,7 @@ namespace Libplanet.Net.Protocols
         public KademliaProtocol(
             ITransport transport,
             Address address,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             ILogger logger,
             int? tableSize,
             int? bucketSize,

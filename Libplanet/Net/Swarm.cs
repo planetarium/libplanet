@@ -35,7 +35,7 @@ namespace Libplanet.Net
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
         private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(150);
         private readonly PrivateKey _privateKey;
-        private readonly int _appProtocolVersion;
+        private readonly AppProtocolVersion _appProtocolVersion;
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
@@ -60,7 +60,7 @@ namespace Libplanet.Net
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             int workers = 5,
             string host = null,
             int? listenPort = null,
@@ -86,7 +86,7 @@ namespace Libplanet.Net
         internal Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             int? tableSize,
             int? bucketSize,
             int workers = 5,

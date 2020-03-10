@@ -96,7 +96,9 @@ namespace Libplanet.Tests.Net.Messages
             RecentStates reply =
                 new RecentStates(blockHash, -1, 1, compressedBlockStates, stateRefs);
 
-            Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), 0);
+            var versionSigner = new PrivateKey();
+            var version = new AppProtocolVersion(versionSigner, 1);
+            Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), version);
 
             NetMQMessage msg = reply.ToNetMQMessage(privKey, peer);
             const int headerSize = 3;  // type, peer, sig

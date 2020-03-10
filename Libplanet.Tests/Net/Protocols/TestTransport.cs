@@ -17,6 +17,10 @@ namespace Libplanet.Tests.Net.Protocols
 {
     internal class TestTransport : ITransport
     {
+        private static readonly PrivateKey VersionSigner = new PrivateKey();
+        private static readonly AppProtocolVersion AppProtocolVersion =
+            new AppProtocolVersion(VersionSigner, 1);
+
         private readonly Dictionary<Address, TestTransport> _transports;
         private readonly ILogger _logger;
         private readonly ConcurrentDictionary<byte[], Address> _peersToReply;
@@ -54,7 +58,14 @@ namespace Libplanet.Tests.Net.Protocols
             _requests = new AsyncCollection<Request>();
             _ignoreTestMessageWithData = new List<string>();
             _random = new Random();
-            Protocol = new KademliaProtocol(this, Address, 0, _logger, tableSize, bucketSize);
+            Protocol = new KademliaProtocol(
+                this,
+                Address,
+                AppProtocolVersion,
+                _logger,
+                tableSize,
+                bucketSize
+            );
         }
 
         public AsyncAutoResetEvent MessageReceived { get; }
@@ -64,7 +75,7 @@ namespace Libplanet.Tests.Net.Protocols
         public Peer AsPeer => new BoundPeer(
             _privateKey.PublicKey,
             new DnsEndPoint("localhost", 1234),
-            0);
+            AppProtocolVersion);
 
         public IEnumerable<BoundPeer> Peers => Protocol.Peers;
 

@@ -30,7 +30,7 @@ namespace Libplanet.Net
             TimeSpan.FromMinutes(5);
 
         private readonly PrivateKey _privateKey;
-        private readonly int _appProtocolVersion;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -57,7 +57,7 @@ namespace Libplanet.Net
 
         public NetMQTransport(
             PrivateKey privateKey,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             int? tableSize,
             int? bucketSize,
             int workers,
@@ -378,9 +378,24 @@ namespace Libplanet.Net
                 await Task.WhenAll(tasks);
                 _logger.Verbose("Update complete.");
             }
-            catch (DifferentAppProtocolVersionException)
+            catch (DifferentAppProtocolVersionException e)
             {
-                _logger.Debug($"Different version encountered during {nameof(AddPeersAsync)}().");
+                AppProtocolVersion expected = e.ExpectedVersion, actual = e.ActualVersion;
+                _logger.Debug(
+                    $"Different version encountered during {nameof(AddPeersAsync)}().\n" +
+                    "Expected version: {ExpectedVersion} ({ExpectedVersionExtra}) " +
+                    "[{ExpectedSignature}; {ExpectedSigner}]\n" +
+                    "Actual version: {ActualVersion} ({ActualVersionExtra}) [{ActualSignature};" +
+                    "{ActualSigner}]",
+                    expected.Version,
+                    expected.Extra,
+                    ByteUtil.Hex(expected.Signature),
+                    expected.Signer.ToString(),
+                    actual.Version,
+                    actual.Extra,
+                    ByteUtil.Hex(actual.Signature),
+                    actual.Signer
+                );
             }
             catch (TimeoutException)
             {
@@ -935,7 +950,7 @@ namespace Libplanet.Net
                 DifferentVersionPeerEncountered?.Invoke(this, args);
 
                 throw new DifferentAppProtocolVersionException(
-                    $"Peer protocol version is different.",
+                    "Peer protocol version is different.",
                     _appProtocolVersion,
                     peer.AppProtocolVersion);
             }

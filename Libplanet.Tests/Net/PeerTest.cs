@@ -12,6 +12,8 @@ namespace Libplanet.Tests.Net
     {
         public static IEnumerable<object[]> GetPeers()
         {
+            var signer = new PrivateKey();
+            var ver = new AppProtocolVersion(signer, 1);
             yield return new object[]
             {
                 new BoundPeer(
@@ -26,7 +28,7 @@ namespace Libplanet.Tests.Net
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
                     new DnsEndPoint("0.0.0.0", 1234),
-                    1,
+                    ver,
                     IPAddress.IPv6Loopback),
             };
             yield return new object[]
@@ -43,7 +45,7 @@ namespace Libplanet.Tests.Net
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
                     new DnsEndPoint("0.0.0.0", 1234),
-                    1),
+                    ver),
             };
             yield return new object[]
             {
@@ -59,7 +61,7 @@ namespace Libplanet.Tests.Net
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
                     new DnsEndPoint("0.0.0.0", 1234),
-                    0),
+                    ver),
             };
             yield return new object[]
             {
@@ -74,7 +76,7 @@ namespace Libplanet.Tests.Net
                         0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
-                    0),
+                    ver),
             };
         }
 

@@ -34,6 +34,8 @@ namespace Libplanet.Tests.Net
     {
         private const int Timeout = 60 * 1000;
         private const int DisposeTimeout = 5 * 1000;
+        private static readonly AppProtocolVersion DefaultAppProtocolVersion =
+            new AppProtocolVersion(new PrivateKey(), 1);
 
         private static Block<DumbAction>[] _fixtureBlocksForPreloadAsyncCancellationTest;
 
@@ -484,10 +486,13 @@ namespace Libplanet.Tests.Net
         {
             var blockChain = _blockchains[0];
 
-            var a = CreateSwarm(blockChain, appProtocolVersion: 2);
-            var b = CreateSwarm(blockChain, appProtocolVersion: 3);
-            var c = CreateSwarm(blockChain, appProtocolVersion: 2);
-            var d = CreateSwarm(blockChain, appProtocolVersion: 3);
+            var signer = new PrivateKey();
+            var v2 = new AppProtocolVersion(signer, 2);
+            var v3 = new AppProtocolVersion(signer, 3);
+            var a = CreateSwarm(blockChain, appProtocolVersion: v2);
+            var b = CreateSwarm(blockChain, appProtocolVersion: v3);
+            var c = CreateSwarm(blockChain, appProtocolVersion: v2);
+            var d = CreateSwarm(blockChain, appProtocolVersion: v3);
 
             try
             {
@@ -527,11 +532,14 @@ namespace Libplanet.Tests.Net
                 isCalled = true;
             }
 
+            var signer = new PrivateKey();
+            var v2 = new AppProtocolVersion(signer, 2);
+            var v3 = new AppProtocolVersion(signer, 3);
             var a = CreateSwarm(
                 _blockchains[0],
-                appProtocolVersion: 2,
+                appProtocolVersion: v2,
                 differentVersionPeerEncountered: GameHandler);
-            var b = CreateSwarm(_blockchains[1], appProtocolVersion: 3);
+            var b = CreateSwarm(_blockchains[1], appProtocolVersion: v3);
 
             try
             {
@@ -1189,30 +1197,28 @@ namespace Libplanet.Tests.Net
         [Fact(Timeout = Timeout)]
         public void ThrowArgumentExceptionInConstructor()
         {
+            var key = new PrivateKey();
+            var ver = new AppProtocolVersion(key, 1);
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm<DumbAction>(null, new PrivateKey(), 1);
+                new Swarm<DumbAction>(null, key, ver);
             });
 
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new Swarm<DumbAction>(_blockchains[0], null, 1);
+                new Swarm<DumbAction>(_blockchains[0], null, ver);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
             Assert.Throws<ArgumentException>(() =>
             {
-                new Swarm<DumbAction>(_blockchains[0], new PrivateKey(), 1);
+                new Swarm<DumbAction>(_blockchains[0], key, ver);
             });
 
             // Swarm<DumbAction> needs host or iceServers.
             Assert.Throws<ArgumentException>(() =>
             {
-                new Swarm<DumbAction>(
-                    _blockchains[0],
-                    new PrivateKey(),
-                    1,
-                    iceServers: new IceServer[] { });
+                new Swarm<DumbAction>(_blockchains[0], key, ver, iceServers: new IceServer[] { });
             });
         }
 
@@ -2944,7 +2950,7 @@ namespace Libplanet.Tests.Net
         private Swarm<T> CreateSwarm<T>(
             BlockChain<T> blockChain,
             PrivateKey privateKey = null,
-            int appProtocolVersion = 1,
+            AppProtocolVersion? appProtocolVersion = null,
             int? tableSize = null,
             int? bucketSize = null,
             string host = null,
@@ -2962,7 +2968,7 @@ namespace Libplanet.Tests.Net
             return new Swarm<T>(
                 blockChain,
                 privateKey ?? new PrivateKey(),
-                appProtocolVersion,
+                appProtocolVersion ?? DefaultAppProtocolVersion,
                 tableSize,
                 bucketSize,
                 5,
