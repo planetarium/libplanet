@@ -2830,17 +2830,25 @@ namespace Libplanet.Tests.Net
             return swarm.StopAsync(TimeSpan.FromMilliseconds(10));
         }
 
-        private async Task BootstrapAsync<T>(
+        private Task BootstrapAsync<T>(
             Swarm<T> swarm,
             Peer seed,
             CancellationToken cancellationToken = default
-            )
+        )
+            where T : IAction, new() =>
+            BootstrapAsync(swarm, new[] { seed }, cancellationToken);
+
+        private async Task BootstrapAsync<T>(
+            Swarm<T> swarm,
+            IEnumerable<Peer> seeds,
+            CancellationToken cancellationToken = default
+        )
             where T : IAction, new()
         {
             await swarm.BootstrapAsync(
-                new[] { seed },
+                seeds,
                 null,
-                TimeSpan.FromSeconds(3),
+                findNeighborsTimeout: TimeSpan.FromSeconds(3),
                 cancellationToken: cancellationToken);
         }
 

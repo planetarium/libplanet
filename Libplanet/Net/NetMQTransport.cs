@@ -31,6 +31,7 @@ namespace Libplanet.Net
 
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
         private readonly string _host;
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
@@ -55,16 +56,23 @@ namespace Libplanet.Net
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
 
+        /// <summary>
+        /// The <see cref="EventHandler" /> triggered when the different version of
+        /// <see cref="Peer" /> is discovered.
+        /// </summary>
+        private DifferentAppProtocolVersionEncountered _differentAppProtocolVersionEncountered;
+
         public NetMQTransport(
             PrivateKey privateKey,
             AppProtocolVersion appProtocolVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
             int? tableSize,
             int? bucketSize,
             int workers,
             string host,
             int? listenPort,
             IEnumerable<IceServer> iceServers,
-            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             EventHandler<Message> processMessageHandler,
             ILogger logger)
         {
@@ -72,9 +80,10 @@ namespace Libplanet.Net
 
             _privateKey = privateKey;
             _appProtocolVersion = appProtocolVersion;
+            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
             _host = host;
             _listenPort = listenPort;
-            DifferentVersionPeerEncountered = differentVersionPeerEncountered;
+            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             ProcessMessageHandler = processMessageHandler;
 
             if (_host != null && _listenPort is int listenPortAsInt)
@@ -140,17 +149,12 @@ namespace Libplanet.Net
                 this,
                 _privateKey.PublicKey.ToAddress(),
                 _appProtocolVersion,
+                _trustedAppProtocolVersionSigners,
+                _differentAppProtocolVersionEncountered,
                 _logger,
                 tableSize,
                 bucketSize);
         }
-
-        /// <summary>
-        /// The <see cref="EventHandler" /> triggered when the different version of
-        /// <see cref="Peer" /> is discovered.
-        /// </summary>
-        private event EventHandler<DifferentProtocolVersionEventArgs>
-            DifferentVersionPeerEncountered;
 
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when a <see cref="Message"/> is
@@ -938,17 +942,11 @@ namespace Libplanet.Net
         // FIXME: This method should be in Swarm<T>
         private void ValidateSender(Peer peer)
         {
-            if (peer.AppProtocolVersion != _appProtocolVersion)
+            if (!peer.IsCompatibleWith(
+                    _appProtocolVersion,
+                    _trustedAppProtocolVersionSigners,
+                    _differentAppProtocolVersionEncountered))
             {
-                DifferentProtocolVersionEventArgs args =
-                    new DifferentProtocolVersionEventArgs
-                    {
-                        ExpectedVersion = _appProtocolVersion,
-                        ActualVersion = peer.AppProtocolVersion,
-                    };
-
-                DifferentVersionPeerEncountered?.Invoke(this, args);
-
                 throw new DifferentAppProtocolVersionException(
                     "Peer protocol version is different.",
                     _appProtocolVersion,

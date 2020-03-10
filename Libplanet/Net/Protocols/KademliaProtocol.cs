@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Crypto;
 using Libplanet.Net.Messages;
 using Serilog;
 using Random = System.Random;
@@ -17,6 +18,10 @@ namespace Libplanet.Net.Protocols
         private readonly ITransport _transport;
         private readonly Address _address;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly IImmutableSet<PublicKey> _trustedAppProtocolVersionSigners;
+        private readonly DifferentAppProtocolVersionEncountered
+            _differentAppProtocolVersionEncountered;
+
         private readonly Random _random;
         private readonly RoutingTable _routing;
         private readonly int _tableSize;
@@ -28,6 +33,8 @@ namespace Libplanet.Net.Protocols
             ITransport transport,
             Address address,
             AppProtocolVersion appProtocolVersion,
+            IImmutableSet<PublicKey> trustedAppProtocolVersionSigners,
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered,
             ILogger logger,
             int? tableSize,
             int? bucketSize,
@@ -35,6 +42,8 @@ namespace Libplanet.Net.Protocols
         {
             _transport = transport;
             _appProtocolVersion = appProtocolVersion;
+            _trustedAppProtocolVersionSigners = trustedAppProtocolVersionSigners;
+            _differentAppProtocolVersionEncountered = differentAppProtocolVersionEncountered;
             _logger = logger;
 
             _address = address;
@@ -441,7 +450,11 @@ namespace Libplanet.Net.Protocols
                 throw new ArgumentNullException(nameof(rawPeer));
             }
 
-            if (!(rawPeer is BoundPeer peer) || rawPeer.AppProtocolVersion != _appProtocolVersion)
+            if (!(rawPeer is BoundPeer peer &&
+                  peer.IsCompatibleWith(
+                      _appProtocolVersion,
+                      _trustedAppProtocolVersionSigners,
+                      _differentAppProtocolVersionEncountered)))
             {
                 // Don't update peer without endpoint or with different appProtocolVersion.
                 return;

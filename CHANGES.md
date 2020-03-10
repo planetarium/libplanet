@@ -40,6 +40,13 @@ To be released.
      -  `DifferentAppProtocolVersionException.ExpectedVersion` and
         `DifferentAppProtocolVersionException.ActualVersion` properties became
         `AppProtocolVersion` (was `Int32`).
+ -  `Swarm()` constructor's `EventHandler<DifferentProtocolVersionEventArgs>
+    differentVersionPeerEncountered = null` parameter became replaced by
+    `DifferentAppProtocolVersionEncountered
+    differentAppProtocolVersionEncountered = null` parameter.  [[#266], [#815]]
+ -  Added `IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null`
+    parameter to `Swarm()` constructor.  [[#266], [#815]]
+ -  Removed `DifferentProtocolVersionEventArgs` class.  [[#266], [#815]]
 
 ### Backward-incompatible network protocol changes
 
@@ -66,6 +73,10 @@ To be released.
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
  -  Added `ByteArrayExtensions` class.  [[#803]]
  -  Added `IStore.PruneBlockStates<T>(Guid, Block<T>)` method.  [[#790]]
+ -  Added `DifferentAppProtocolVersionEncountered` delegate.  [[#266], [#815]]
+ -  Added `Swarm<T>.TrustedAppProtocolVersionSigners` property.
+    [[#266], [#815]]
+ -  Added `Peer.IsCompatibleWith()` method.  [[#266], [#815]]
 
 ### Behavioral changes
 

@@ -82,7 +82,9 @@ namespace Libplanet.Tests.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null
+        )
             where T : IAction, new()
         {
             if (host is null && !(iceServers?.Any() ?? false))
@@ -101,7 +103,8 @@ namespace Libplanet.Tests.Net
                 listenPort,
                 createdAt,
                 iceServers,
-                differentVersionPeerEncountered);
+                differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners);
         }
     }
 }

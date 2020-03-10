@@ -62,6 +62,8 @@ namespace Libplanet.Tests.Net.Protocols
                 this,
                 Address,
                 AppProtocolVersion,
+                null,
+                null,
                 _logger,
                 tableSize,
                 bucketSize
