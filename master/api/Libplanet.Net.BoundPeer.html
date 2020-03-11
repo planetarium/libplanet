@@ -318,6 +318,9 @@
                             <a href="Libplanet.Net.ActionExecutionState.html" title="ActionExecutionState" class="">ActionExecutionState</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Net.AppProtocolVersion.html" title="AppProtocolVersion" class="">AppProtocolVersion</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
                           </li>
                           <li class="">
@@ -330,10 +333,10 @@
                             <a href="Libplanet.Net.BoundPeer.html" title="BoundPeer" class="active">BoundPeer</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html" title="DifferentAppProtocolVersionEncountered" class="">DifferentAppProtocolVersionEncountered</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
@@ -466,7 +469,7 @@
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></div>
     <div class="level2"><span class="xref">BoundPeer</span></div>
   </div>
@@ -484,6 +487,9 @@
     <div>
       <a class="xref" href="Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicIPAddress">Peer.PublicIPAddress</a>
     </div>
+    <div>
+      <a class="xref" href="Libplanet.Net.Peer.html#Libplanet_Net_Peer_IsCompatibleWith_Libplanet_Net_AppProtocolVersion_IEnumerable_Libplanet_Crypto_PublicKey__Libplanet_Net_DifferentAppProtocolVersionEncountered_">Peer.IsCompatibleWith(AppProtocolVersion, IEnumerable&lt;PublicKey&gt;, DifferentAppProtocolVersionEncountered)</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
@@ -495,19 +501,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_System_Int32_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.%23ctor(Libplanet.Crypto.PublicKey%2CDnsEndPoint%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.BoundPeer.%23ctor(Libplanet.Crypto.PublicKey%2CDnsEndPoint%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/BoundPeer.cs/#L22">View Source</a>
   </span>
   <a id="Libplanet_Net_BoundPeer__ctor_" data-uid="Libplanet.Net.BoundPeer.#ctor*"></a>
-  <h4 id="Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_System_Int32_" data-uid="Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,System.Int32)">BoundPeer(PublicKey, DnsEndPoint, Int32)</h4>
+  <h4 id="Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,Libplanet.Net.AppProtocolVersion)">BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Libplanet.Net.BoundPeer.html">BoundPeer</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoundPeer(PublicKey publicKey, DnsEndPoint endPoint, int appProtocolVersion)</code></pre>
+    <pre><code class="lang-csharp hljs">public BoundPeer(PublicKey publicKey, DnsEndPoint endPoint, AppProtocolVersion appProtocolVersion)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -534,7 +540,7 @@ host and port of the <a class="xref" href="Libplanet.Net.Peer.html">Peer</a>.</p
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
         <td><span class="parametername">appProtocolVersion</span></td>
         <td><p>An application protocol version
 that the <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> is using.</p>

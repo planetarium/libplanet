@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ActionEvaluation
+    <title>Struct AppProtocolVersion
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ActionEvaluation
+    <meta name="title" content="Struct AppProtocolVersion
    | Libplanet ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -131,8 +131,8 @@
                           <li class="">
                             <a href="Libplanet.Action.AccountStateGetter.html" title="AccountStateGetter" class="">AccountStateGetter</a>
                           </li>
-                          <li class="active">
-                            <a href="Libplanet.Action.ActionEvaluation.html" title="ActionEvaluation" class="active">ActionEvaluation</a>
+                          <li class="">
+                            <a href="Libplanet.Action.ActionEvaluation.html" title="ActionEvaluation" class="">ActionEvaluation</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Action.ActionTypeAttribute.html" title="ActionTypeAttribute" class="">ActionTypeAttribute</a>
@@ -317,8 +317,8 @@
                           <li class="">
                             <a href="Libplanet.Net.ActionExecutionState.html" title="ActionExecutionState" class="">ActionExecutionState</a>
                           </li>
-                          <li class="">
-                            <a href="Libplanet.Net.AppProtocolVersion.html" title="AppProtocolVersion" class="">AppProtocolVersion</a>
+                          <li class="active">
+                            <a href="Libplanet.Net.AppProtocolVersion.html" title="AppProtocolVersion" class="active">AppProtocolVersion</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
@@ -460,44 +460,48 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.ActionEvaluation">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.AppProtocolVersion">
   
   
-  <h1 id="Libplanet_Action_ActionEvaluation" data-uid="Libplanet.Action.ActionEvaluation" class="text-break">Class ActionEvaluation
+  <h1 id="Libplanet_Net_AppProtocolVersion" data-uid="Libplanet.Net.AppProtocolVersion" class="text-break">Struct AppProtocolVersion
   </h1>
-  <div class="markdown level0 summary"><p>A record type to represent an evaluation plan and result of
-a single action.</p>
+  <div class="markdown level0 summary"><p>A <em>claim</em> of a version.</p>
+<p>Every peer in network shows others their <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> information.
+As every peer can change its software by itself, this <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
+is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
+<p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
+has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">ActionEvaluation</span></div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IEquatable</span>&lt;<a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>&gt;</div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Action_ActionEvaluation_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_AppProtocolVersion_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ActionEvaluation : object</code></pre>
+    <pre><code class="lang-csharp hljs">public struct AppProtocolVersion : IEquatable&lt;AppProtocolVersion&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.%23ctor(Libplanet.Action.IAction%2CLibplanet.Action.IActionContext%2CLibplanet.Action.IAccountStateDelta)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion__ctor_System_Int32_IValue_ImmutableArray_System_Byte__Libplanet_Address_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.%23ctor(System.Int32%2CIValue%2CImmutableArray%7BSystem.Byte%7D%2CLibplanet.Address)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/ActionEvaluation.cs/#L27">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L56">View Source</a>
   </span>
-  <a id="Libplanet_Action_ActionEvaluation__ctor_" data-uid="Libplanet.Action.ActionEvaluation.#ctor*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_" data-uid="Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)">ActionEvaluation(IAction, IActionContext, IAccountStateDelta)</h4>
-  <div class="markdown level1 summary"><p>Creates an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a> instance
-with filling properties.</p>
+  <a id="Libplanet_Net_AppProtocolVersion__ctor_" data-uid="Libplanet.Net.AppProtocolVersion.#ctor*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion__ctor_System_Int32_IValue_ImmutableArray_System_Byte__Libplanet_Address_" data-uid="Libplanet.Net.AppProtocolVersion.#ctor(System.Int32,IValue,ImmutableArray{System.Byte},Libplanet.Address)">AppProtocolVersion(Int32, IValue, ImmutableArray&lt;Byte&gt;, Address)</h4>
+  <div class="markdown level1 summary"><p>Initializes an <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> value with field values.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ActionEvaluation(IAction action, IActionContext inputContext, IAccountStateDelta outputStates)</code></pre>
+    <pre><code class="lang-csharp hljs">public AppProtocolVersion(int version, IValue extra, ImmutableArray&lt;byte&gt; signature, Address signer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -510,46 +514,50 @@ with filling properties.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
-        <td><span class="parametername">action</span></td>
-        <td><p>An action to evaluate.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>Sets the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Version">Version</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
-        <td><span class="parametername">inputContext</span></td>
-        <td><p>An input <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> to
-evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.</p>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">extra</span></td>
+        <td><p>Sets the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Extra">Extra</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
-        <td><span class="parametername">outputStates</span></td>
-        <td><p>The result states that
-<code data-dev-comment-type="paramref" class="paramref">action</code> makes.</p>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
+        <td><span class="parametername">signature</span></td>
+        <td><p>Sets the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
+        <td><span class="parametername">signer</span></td>
+        <td><p>Gets the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
+  <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_Action.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.Action%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Extra.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Extra%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/ActionEvaluation.cs/#L41">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L35">View Source</a>
   </span>
-  <a id="Libplanet_Action_ActionEvaluation_Action_" data-uid="Libplanet.Action.ActionEvaluation.Action*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation_Action" data-uid="Libplanet.Action.ActionEvaluation.Action">Action</h4>
-  <div class="markdown level1 summary"><p>An action to evaluate.</p>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Extra" data-uid="Libplanet.Net.AppProtocolVersion.Extra">Extra</h4>
+  <div class="markdown level1 summary"><p>Optional extra data about the version.  This can be used for any purpose
+by apps, such as a URL to download the software.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAction Action { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly IValue Extra</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -559,29 +567,27 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAction.html">IAction</a></td>
+        <td><span class="xref">IValue</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_InputContext.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.InputContext%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Signature.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Signature%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/ActionEvaluation.cs/#L49">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L40">View Source</a>
   </span>
-  <a id="Libplanet_Action_ActionEvaluation_InputContext_" data-uid="Libplanet.Action.ActionEvaluation.InputContext*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation_InputContext" data-uid="Libplanet.Action.ActionEvaluation.InputContext">InputContext</h4>
-  <div class="markdown level1 summary"><p>An input <a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a> to evaluate
-<a class="xref" href="Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Action">Action</a>.</p>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Signature" data-uid="Libplanet.Net.AppProtocolVersion.Signature">Signature</h4>
+  <div class="markdown level1 summary"><p>A signature which verifies <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>'s claim of a version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IActionContext InputContext { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly ImmutableArray&lt;byte&gt; Signature</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -591,32 +597,27 @@ evaluate <code data-dev-comment-type="paramref" class="paramref">action</code>.<
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IActionContext.html">IActionContext</a></td>
+        <td><span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Libplanet_Action_ActionEvaluation_InputContext_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Its <a class="xref" href="Libplanet.Action.IActionContext.html#Libplanet_Action_IActionContext_Random">Random</a> property
-is not consumed yet.</p>
-</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_ActionEvaluation_OutputStates.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation.OutputStates%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Signer.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Signer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/ActionEvaluation.cs/#L54">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L45">View Source</a>
   </span>
-  <a id="Libplanet_Action_ActionEvaluation_OutputStates_" data-uid="Libplanet.Action.ActionEvaluation.OutputStates*"></a>
-  <h4 id="Libplanet_Action_ActionEvaluation_OutputStates" data-uid="Libplanet.Action.ActionEvaluation.OutputStates">OutputStates</h4>
-  <div class="markdown level1 summary"><p>The result states that <a class="xref" href="Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Action">Action</a> makes.</p>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Signer" data-uid="Libplanet.Net.AppProtocolVersion.Signer">Signer</h4>
+  <div class="markdown level1 summary"><p>A signer who claims presence of a version.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IAccountStateDelta OutputStates { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public readonly Address Signer</code></pre>
   </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -626,11 +627,423 @@ is not consumed yet.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Libplanet.Action.IAccountStateDelta.html">IAccountStateDelta</a></td>
+        <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Version.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Version%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L29">View Source</a>
+  </span>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Version" data-uid="Libplanet.Net.AppProtocolVersion.Version">Version</h4>
+  <div class="markdown level1 summary"><p>The version number.  This does not have to be increased by only 1, but can be more
+than that.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly int Version</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Equals_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L115">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_Equals_" data-uid="Libplanet.Net.AppProtocolVersion.Equals*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Equals_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)">Equals(AppProtocolVersion)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(AppProtocolVersion other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L126">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_Equals_" data-uid="Libplanet.Net.AppProtocolVersion.Equals*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Equals_System_Object_" data-uid="Libplanet.Net.AppProtocolVersion.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_GetHashCode.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L131">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_GetHashCode_" data-uid="Libplanet.Net.AppProtocolVersion.GetHashCode*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_GetHashCode" data-uid="Libplanet.Net.AppProtocolVersion.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Crypto_PrivateKey_System_Int32_IValue_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey%2CSystem.Int32%2CIValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L87">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_Sign_" data-uid="Libplanet.Net.AppProtocolVersion.Sign*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Crypto_PrivateKey_System_Int32_IValue_" data-uid="Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey,System.Int32,IValue)">Sign(PrivateKey, Int32, IValue)</h4>
+  <div class="markdown level1 summary"><p>Claim a <code data-dev-comment-type="paramref" class="paramref">version</code> with <code data-dev-comment-type="paramref" class="paramref">extra</code> data and sign it
+using the given private key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AppProtocolVersion Sign(PrivateKey signer, int version, IValue extra = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PrivateKey.html">PrivateKey</a></td>
+        <td><span class="parametername">signer</span></td>
+        <td><p>A private key to sign the claim.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td><span class="parametername">version</span></td>
+        <td><p>A version to claim.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IValue</span></td>
+        <td><span class="parametername">extra</span></td>
+        <td><p>Extra data to claim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><p>A signed version claim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L147">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_ToString_" data-uid="Libplanet.Net.AppProtocolVersion.ToString*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_ToString" data-uid="Libplanet.Net.AppProtocolVersion.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L109">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_Verify_" data-uid="Libplanet.Net.AppProtocolVersion.Verify*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_" data-uid="Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)">Verify(PublicKey)</h4>
+  <div class="markdown level1 summary"><p>Verifies whether the claim is certainly signed by the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Verify(PublicKey publicKey)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Crypto.PublicKey.html">PublicKey</a></td>
+        <td><span class="parametername">publicKey</span></td>
+        <td><p>A public key of the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p><code>true</code> if and only if the given <code data-dev-comment-type="paramref" class="paramref">publicKey</code> is
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>'s and the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> is certainly signed by
+the <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="operators">Operators
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_op_Equality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L69">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_op_Equality_" data-uid="Libplanet.Net.AppProtocolVersion.op_Equality*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_op_Equality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)">Equality(AppProtocolVersion, AppProtocolVersion)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(AppProtocolVersion left, AppProtocolVersion right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion_op_Inequality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion%2CLibplanet.Net.AppProtocolVersion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L73">View Source</a>
+  </span>
+  <a id="Libplanet_Net_AppProtocolVersion_op_Inequality_" data-uid="Libplanet.Net.AppProtocolVersion.op_Inequality*"></a>
+  <h4 id="Libplanet_Net_AppProtocolVersion_op_Inequality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_" data-uid="Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)">Inequality(AppProtocolVersion, AppProtocolVersion)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(AppProtocolVersion left, AppProtocolVersion right)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">left</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">right</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IEquatable&lt;&gt;</span>
+  </div>
 </article>
           </div>
           
@@ -639,10 +1052,10 @@ is not consumed yet.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_ActionEvaluation.md&amp;value=---%0Auid%3A%20Libplanet.Action.ActionEvaluation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_AppProtocolVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.AppProtocolVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/ActionEvaluation.cs/#L16" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/AppProtocolVersion.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

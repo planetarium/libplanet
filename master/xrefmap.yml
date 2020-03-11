@@ -3775,6 +3775,149 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.ActionExecutionState.TotalBlockCount
   nameWithType: ActionExecutionState.TotalBlockCount
+- uid: Libplanet.Net.AppProtocolVersion
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.AppProtocolVersion.html
+  commentId: T:Libplanet.Net.AppProtocolVersion
+  fullName: Libplanet.Net.AppProtocolVersion
+  nameWithType: AppProtocolVersion
+- uid: Libplanet.Net.AppProtocolVersion.#ctor(System.Int32,IValue,ImmutableArray{System.Byte},Libplanet.Address)
+  name: AppProtocolVersion(Int32, IValue, ImmutableArray<Byte>, Address)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion__ctor_System_Int32_IValue_ImmutableArray_System_Byte__Libplanet_Address_
+  commentId: M:Libplanet.Net.AppProtocolVersion.#ctor(System.Int32,IValue,ImmutableArray{System.Byte},Libplanet.Address)
+  name.vb: AppProtocolVersion(Int32, IValue, ImmutableArray(Of Byte), Address)
+  fullName: Libplanet.Net.AppProtocolVersion.AppProtocolVersion(System.Int32, IValue, ImmutableArray<System.Byte>, Libplanet.Address)
+  fullName.vb: Libplanet.Net.AppProtocolVersion.AppProtocolVersion(System.Int32, IValue, ImmutableArray(Of System.Byte), Libplanet.Address)
+  nameWithType: AppProtocolVersion.AppProtocolVersion(Int32, IValue, ImmutableArray<Byte>, Address)
+  nameWithType.vb: AppProtocolVersion.AppProtocolVersion(Int32, IValue, ImmutableArray(Of Byte), Address)
+- uid: Libplanet.Net.AppProtocolVersion.#ctor*
+  name: AppProtocolVersion
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion__ctor_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.AppProtocolVersion
+  nameWithType: AppProtocolVersion.AppProtocolVersion
+- uid: Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)
+  name: Equals(AppProtocolVersion)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Equals_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.AppProtocolVersion.Equals(Libplanet.Net.AppProtocolVersion)
+  nameWithType: AppProtocolVersion.Equals(AppProtocolVersion)
+- uid: Libplanet.Net.AppProtocolVersion.Equals(System.Object)
+  name: Equals(Object)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Equals_System_Object_
+  commentId: M:Libplanet.Net.AppProtocolVersion.Equals(System.Object)
+  fullName: Libplanet.Net.AppProtocolVersion.Equals(System.Object)
+  nameWithType: AppProtocolVersion.Equals(Object)
+- uid: Libplanet.Net.AppProtocolVersion.Equals*
+  name: Equals
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Equals_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.Equals
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Equals
+  nameWithType: AppProtocolVersion.Equals
+- uid: Libplanet.Net.AppProtocolVersion.Extra
+  name: Extra
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Extra
+  commentId: F:Libplanet.Net.AppProtocolVersion.Extra
+  fullName: Libplanet.Net.AppProtocolVersion.Extra
+  nameWithType: AppProtocolVersion.Extra
+- uid: Libplanet.Net.AppProtocolVersion.GetHashCode
+  name: GetHashCode()
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_GetHashCode
+  commentId: M:Libplanet.Net.AppProtocolVersion.GetHashCode
+  fullName: Libplanet.Net.AppProtocolVersion.GetHashCode()
+  nameWithType: AppProtocolVersion.GetHashCode()
+- uid: Libplanet.Net.AppProtocolVersion.GetHashCode*
+  name: GetHashCode
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_GetHashCode_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.GetHashCode
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.GetHashCode
+  nameWithType: AppProtocolVersion.GetHashCode
+- uid: Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  name: Equality(AppProtocolVersion, AppProtocolVersion)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_op_Equality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.AppProtocolVersion.op_Equality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.AppProtocolVersion.Equality(Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion)
+  nameWithType: AppProtocolVersion.Equality(AppProtocolVersion, AppProtocolVersion)
+- uid: Libplanet.Net.AppProtocolVersion.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_op_Equality_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Equality
+  nameWithType: AppProtocolVersion.Equality
+- uid: Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  name: Inequality(AppProtocolVersion, AppProtocolVersion)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_op_Inequality_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.AppProtocolVersion.op_Inequality(Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.AppProtocolVersion.Inequality(Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion)
+  nameWithType: AppProtocolVersion.Inequality(AppProtocolVersion, AppProtocolVersion)
+- uid: Libplanet.Net.AppProtocolVersion.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_op_Inequality_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Inequality
+  nameWithType: AppProtocolVersion.Inequality
+- uid: Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey,System.Int32,IValue)
+  name: Sign(PrivateKey, Int32, IValue)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Sign_Libplanet_Crypto_PrivateKey_System_Int32_IValue_
+  commentId: M:Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey,System.Int32,IValue)
+  fullName: Libplanet.Net.AppProtocolVersion.Sign(Libplanet.Crypto.PrivateKey, System.Int32, IValue)
+  nameWithType: AppProtocolVersion.Sign(PrivateKey, Int32, IValue)
+- uid: Libplanet.Net.AppProtocolVersion.Sign*
+  name: Sign
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Sign_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.Sign
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Sign
+  nameWithType: AppProtocolVersion.Sign
+- uid: Libplanet.Net.AppProtocolVersion.Signature
+  name: Signature
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature
+  commentId: F:Libplanet.Net.AppProtocolVersion.Signature
+  fullName: Libplanet.Net.AppProtocolVersion.Signature
+  nameWithType: AppProtocolVersion.Signature
+- uid: Libplanet.Net.AppProtocolVersion.Signer
+  name: Signer
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer
+  commentId: F:Libplanet.Net.AppProtocolVersion.Signer
+  fullName: Libplanet.Net.AppProtocolVersion.Signer
+  nameWithType: AppProtocolVersion.Signer
+- uid: Libplanet.Net.AppProtocolVersion.ToString
+  name: ToString()
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_ToString
+  commentId: M:Libplanet.Net.AppProtocolVersion.ToString
+  fullName: Libplanet.Net.AppProtocolVersion.ToString()
+  nameWithType: AppProtocolVersion.ToString()
+- uid: Libplanet.Net.AppProtocolVersion.ToString*
+  name: ToString
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_ToString_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.ToString
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.ToString
+  nameWithType: AppProtocolVersion.ToString
+- uid: Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)
+  name: Verify(PublicKey)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Net.AppProtocolVersion.Verify(Libplanet.Crypto.PublicKey)
+  nameWithType: AppProtocolVersion.Verify(PublicKey)
+- uid: Libplanet.Net.AppProtocolVersion.Verify*
+  name: Verify
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.Verify
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Verify
+  nameWithType: AppProtocolVersion.Verify
+- uid: Libplanet.Net.AppProtocolVersion.Version
+  name: Version
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Version
+  commentId: F:Libplanet.Net.AppProtocolVersion.Version
+  fullName: Libplanet.Net.AppProtocolVersion.Version
+  nameWithType: AppProtocolVersion.Version
 - uid: Libplanet.Net.BlockDownloadState
   name: BlockDownloadState
   href: api/Libplanet.Net.BlockDownloadState.html
@@ -3968,12 +4111,12 @@ references:
   commentId: T:Libplanet.Net.BoundPeer
   fullName: Libplanet.Net.BoundPeer
   nameWithType: BoundPeer
-- uid: Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,System.Int32)
-  name: BoundPeer(PublicKey, DnsEndPoint, Int32)
-  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_System_Int32_
-  commentId: M:Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,System.Int32)
-  fullName: Libplanet.Net.BoundPeer.BoundPeer(Libplanet.Crypto.PublicKey, DnsEndPoint, System.Int32)
-  nameWithType: BoundPeer.BoundPeer(PublicKey, DnsEndPoint, Int32)
+- uid: Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,Libplanet.Net.AppProtocolVersion)
+  name: BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_Libplanet_Crypto_PublicKey_DnsEndPoint_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.BoundPeer.#ctor(Libplanet.Crypto.PublicKey,DnsEndPoint,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.BoundPeer.BoundPeer(Libplanet.Crypto.PublicKey, DnsEndPoint, Libplanet.Net.AppProtocolVersion)
+  nameWithType: BoundPeer.BoundPeer(PublicKey, DnsEndPoint, AppProtocolVersion)
 - uid: Libplanet.Net.BoundPeer.#ctor*
   name: BoundPeer
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer__ctor_
@@ -4020,18 +4163,24 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.ToString
   nameWithType: BoundPeer.ToString
+- uid: Libplanet.Net.DifferentAppProtocolVersionEncountered
+  name: DifferentAppProtocolVersionEncountered
+  href: api/Libplanet.Net.DifferentAppProtocolVersionEncountered.html
+  commentId: T:Libplanet.Net.DifferentAppProtocolVersionEncountered
+  fullName: Libplanet.Net.DifferentAppProtocolVersionEncountered
+  nameWithType: DifferentAppProtocolVersionEncountered
 - uid: Libplanet.Net.DifferentAppProtocolVersionException
   name: DifferentAppProtocolVersionException
   href: api/Libplanet.Net.DifferentAppProtocolVersionException.html
   commentId: T:Libplanet.Net.DifferentAppProtocolVersionException
   fullName: Libplanet.Net.DifferentAppProtocolVersionException
   nameWithType: DifferentAppProtocolVersionException
-- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,System.Int32,System.Int32)
-  name: DifferentAppProtocolVersionException(String, Int32, Int32)
-  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_System_Int32_System_Int32_
-  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,System.Int32,System.Int32)
-  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, System.Int32, System.Int32)
-  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, Int32, Int32)
+- uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  name: DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion)
+  href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_System_String_Libplanet_Net_AppProtocolVersion_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.DifferentAppProtocolVersionException.#ctor(System.String,Libplanet.Net.AppProtocolVersion,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(System.String, Libplanet.Net.AppProtocolVersion, Libplanet.Net.AppProtocolVersion)
+  nameWithType: DifferentAppProtocolVersionException.DifferentAppProtocolVersionException(String, AppProtocolVersion, AppProtocolVersion)
 - uid: Libplanet.Net.DifferentAppProtocolVersionException.#ctor*
   name: DifferentAppProtocolVersionException
   href: api/Libplanet.Net.DifferentAppProtocolVersionException.html#Libplanet_Net_DifferentAppProtocolVersionException__ctor_
@@ -4065,38 +4214,6 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.DifferentAppProtocolVersionException.ExpectedVersion
   nameWithType: DifferentAppProtocolVersionException.ExpectedVersion
-- uid: Libplanet.Net.DifferentProtocolVersionEventArgs
-  name: DifferentProtocolVersionEventArgs
-  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html
-  commentId: T:Libplanet.Net.DifferentProtocolVersionEventArgs
-  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs
-  nameWithType: DifferentProtocolVersionEventArgs
-- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
-  name: ActualVersion
-  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion
-  commentId: P:Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
-  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
-  nameWithType: DifferentProtocolVersionEventArgs.ActualVersion
-- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion*
-  name: ActualVersion
-  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion_
-  commentId: Overload:Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion
-  nameWithType: DifferentProtocolVersionEventArgs.ActualVersion
-- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
-  name: ExpectedVersion
-  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion
-  commentId: P:Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
-  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
-  nameWithType: DifferentProtocolVersionEventArgs.ExpectedVersion
-- uid: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion*
-  name: ExpectedVersion
-  href: api/Libplanet.Net.DifferentProtocolVersionEventArgs.html#Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion_
-  commentId: Overload:Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
-  isSpec: "True"
-  fullName: Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion
-  nameWithType: DifferentProtocolVersionEventArgs.ExpectedVersion
 - uid: Libplanet.Net.IceServer
   name: IceServer
   href: api/Libplanet.Net.IceServer.html
@@ -4266,12 +4383,12 @@ references:
   commentId: T:Libplanet.Net.Peer
   fullName: Libplanet.Net.Peer
   nameWithType: Peer
-- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Int32)
-  name: Peer(PublicKey, Int32)
-  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_System_Int32_
-  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,System.Int32)
-  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, System.Int32)
-  nameWithType: Peer.Peer(PublicKey, Int32)
+- uid: Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,Libplanet.Net.AppProtocolVersion)
+  name: Peer(PublicKey, AppProtocolVersion)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_Libplanet_Crypto_PublicKey_Libplanet_Net_AppProtocolVersion_
+  commentId: M:Libplanet.Net.Peer.#ctor(Libplanet.Crypto.PublicKey,Libplanet.Net.AppProtocolVersion)
+  fullName: Libplanet.Net.Peer.Peer(Libplanet.Crypto.PublicKey, Libplanet.Net.AppProtocolVersion)
+  nameWithType: Peer.Peer(PublicKey, AppProtocolVersion)
 - uid: Libplanet.Net.Peer.#ctor(SerializationInfo,StreamingContext)
   name: Peer(SerializationInfo, StreamingContext)
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer__ctor_SerializationInfo_StreamingContext_
@@ -4324,6 +4441,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.GetObjectData
   nameWithType: Peer.GetObjectData
+- uid: Libplanet.Net.Peer.IsCompatibleWith(Libplanet.Net.AppProtocolVersion,IEnumerable{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  name: IsCompatibleWith(AppProtocolVersion, IEnumerable<PublicKey>, DifferentAppProtocolVersionEncountered)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_IsCompatibleWith_Libplanet_Net_AppProtocolVersion_IEnumerable_Libplanet_Crypto_PublicKey__Libplanet_Net_DifferentAppProtocolVersionEncountered_
+  commentId: M:Libplanet.Net.Peer.IsCompatibleWith(Libplanet.Net.AppProtocolVersion,IEnumerable{Libplanet.Crypto.PublicKey},Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  name.vb: IsCompatibleWith(AppProtocolVersion, IEnumerable(Of PublicKey), DifferentAppProtocolVersionEncountered)
+  fullName: Libplanet.Net.Peer.IsCompatibleWith(Libplanet.Net.AppProtocolVersion, IEnumerable<Libplanet.Crypto.PublicKey>, Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  fullName.vb: Libplanet.Net.Peer.IsCompatibleWith(Libplanet.Net.AppProtocolVersion, IEnumerable(Of Libplanet.Crypto.PublicKey), Libplanet.Net.DifferentAppProtocolVersionEncountered)
+  nameWithType: Peer.IsCompatibleWith(AppProtocolVersion, IEnumerable<PublicKey>, DifferentAppProtocolVersionEncountered)
+  nameWithType.vb: Peer.IsCompatibleWith(AppProtocolVersion, IEnumerable(Of PublicKey), DifferentAppProtocolVersionEncountered)
+- uid: Libplanet.Net.Peer.IsCompatibleWith*
+  name: IsCompatibleWith
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_IsCompatibleWith_
+  commentId: Overload:Libplanet.Net.Peer.IsCompatibleWith
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.IsCompatibleWith
+  nameWithType: Peer.IsCompatibleWith
 - uid: Libplanet.Net.Peer.PublicIPAddress
   name: PublicIPAddress
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicIPAddress
@@ -4599,15 +4732,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T)
   nameWithType: Swarm<T>
   nameWithType.vb: Swarm(Of T)
-- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name: Swarm(BlockChain<T>, PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_System_Int32_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__EventHandler_Libplanet_Net_DifferentProtocolVersionEventArgs__
-  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,System.Int32,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},EventHandler{Libplanet.Net.DifferentProtocolVersionEventArgs})
-  name.vb: Swarm(BlockChain(Of T), PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
-  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<DateTimeOffset>, IEnumerable<Libplanet.Net.IceServer>, EventHandler<Libplanet.Net.DifferentProtocolVersionEventArgs>)
-  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, System.Int32, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of DateTimeOffset), IEnumerable(Of Libplanet.Net.IceServer), EventHandler(Of Libplanet.Net.DifferentProtocolVersionEventArgs))
-  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, Int32, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, EventHandler<DifferentProtocolVersionEventArgs>)
-  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, Int32, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), EventHandler(Of DifferentProtocolVersionEventArgs))
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey})
+  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Int32_System_String_System_Nullable_System_Int32__System_Nullable_DateTimeOffset__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_IEnumerable_Libplanet_Crypto_PublicKey__
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},System.Nullable{DateTimeOffset},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey})
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey))
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable<System.Int32>, System.Nullable<DateTimeOffset>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable<Libplanet.Crypto.PublicKey>)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable(Of System.Int32), System.Nullable(Of DateTimeOffset), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable(Of Libplanet.Crypto.PublicKey))
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, Nullable<DateTimeOffset>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), Nullable(Of DateTimeOffset), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey))
 - uid: Libplanet.Net.Swarm`1.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_
@@ -4971,6 +5104,23 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T).TraceTable
   nameWithType: Swarm<T>.TraceTable
   nameWithType.vb: Swarm(Of T).TraceTable
+- uid: Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners
+  commentId: P:Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners
+  fullName: Libplanet.Net.Swarm<T>.TrustedAppProtocolVersionSigners
+  fullName.vb: Libplanet.Net.Swarm(Of T).TrustedAppProtocolVersionSigners
+  nameWithType: Swarm<T>.TrustedAppProtocolVersionSigners
+  nameWithType.vb: Swarm(Of T).TrustedAppProtocolVersionSigners
+- uid: Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners*
+  name: TrustedAppProtocolVersionSigners
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_TrustedAppProtocolVersionSigners_
+  commentId: Overload:Libplanet.Net.Swarm`1.TrustedAppProtocolVersionSigners
+  isSpec: "True"
+  fullName: Libplanet.Net.Swarm<T>.TrustedAppProtocolVersionSigners
+  fullName.vb: Libplanet.Net.Swarm(Of T).TrustedAppProtocolVersionSigners
+  nameWithType: Swarm<T>.TrustedAppProtocolVersionSigners
+  nameWithType.vb: Swarm(Of T).TrustedAppProtocolVersionSigners
 - uid: Libplanet.Net.Swarm`1.WaitForRunningAsync
   name: WaitForRunningAsync()
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1_WaitForRunningAsync

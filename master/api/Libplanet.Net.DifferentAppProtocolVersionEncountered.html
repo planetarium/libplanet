@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class DifferentProtocolVersionEventArgs
+    <title>Delegate DifferentAppProtocolVersionEncountered
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class DifferentProtocolVersionEventArgs
+    <meta name="title" content="Delegate DifferentAppProtocolVersionEncountered
    | Libplanet ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -318,6 +318,9 @@
                             <a href="Libplanet.Net.ActionExecutionState.html" title="ActionExecutionState" class="">ActionExecutionState</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Net.AppProtocolVersion.html" title="AppProtocolVersion" class="">AppProtocolVersion</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
                           </li>
                           <li class="">
@@ -329,11 +332,11 @@
                           <li class="">
                             <a href="Libplanet.Net.BoundPeer.html" title="BoundPeer" class="">BoundPeer</a>
                           </li>
+                          <li class="active">
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html" title="DifferentAppProtocolVersionEncountered" class="active">DifferentAppProtocolVersionEncountered</a>
+                          </li>
                           <li class="">
                             <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
-                          </li>
-                          <li class="active">
-                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="active">DifferentProtocolVersionEventArgs</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
@@ -457,77 +460,53 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Net.DifferentAppProtocolVersionEncountered">
   
   
-  <h1 id="Libplanet_Net_DifferentProtocolVersionEventArgs" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs" class="text-break">Class DifferentProtocolVersionEventArgs
+  <h1 id="Libplanet_Net_DifferentAppProtocolVersionEncountered" data-uid="Libplanet.Net.DifferentAppProtocolVersionEncountered" class="text-break">Delegate DifferentAppProtocolVersionEncountered
   </h1>
-  <div class="markdown level0 summary"><p>The event data that provides a value when
-<span class="xref">Libplanet.Net.NetMQTransport.DifferentVersionPeerEncountered</span> is occurred.</p>
+  <div class="markdown level0 summary"><p>A delegate called back when a <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> encounters
+a peer with different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> in the network.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritance">
-    <h5>Inheritance</h5>
-    <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">DifferentProtocolVersionEventArgs</span></div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Net.html">Libplanet.Net</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Net_DifferentProtocolVersionEventArgs_syntax">Syntax</h5>
+  <h5 id="Libplanet_Net_DifferentAppProtocolVersionEncountered_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DifferentProtocolVersionEventArgs : object</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate bool DifferentAppProtocolVersionEncountered(Peer peer, AppProtocolVersion peerVersion, AppProtocolVersion localVersion);</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/DifferentProtocolVersionEventArgs.cs/#L18">View Source</a>
-  </span>
-  <a id="Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion_" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion*"></a>
-  <h4 id="Libplanet_Net_DifferentProtocolVersionEventArgs_ActualVersion" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs.ActualVersion">ActualVersion</h4>
-  <div class="markdown level1 summary"><p>The protocol version of the <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that the
-<a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> is trying to connect to.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ActualVersion { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
+        <td><a class="xref" href="Libplanet.Net.Peer.html">Peer</a></td>
+        <td><span class="parametername">peer</span></td>
+        <td><p>An encountered peer with a different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">peerVersion</span></td>
+        <td><p>An encountered different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></td>
+        <td><span class="parametername">localVersion</span></td>
+        <td><p>The currently running application's
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>.</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion.md&amp;value=---%0Auid%3A%20Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/DifferentProtocolVersionEventArgs.cs/#L12">View Source</a>
-  </span>
-  <a id="Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion_" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion*"></a>
-  <h4 id="Libplanet_Net_DifferentProtocolVersionEventArgs_ExpectedVersion" data-uid="Libplanet.Net.DifferentProtocolVersionEventArgs.ExpectedVersion">ExpectedVersion</h4>
-  <div class="markdown level1 summary"><p>The protocol version of the current <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ExpectedVersion { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -537,8 +516,11 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>Whether to recognize the encountered <code data-dev-comment-type="paramref" class="paramref">peer</code> as a valid
+participant of the network or not.  The <code data-dev-comment-type="paramref" class="paramref">peer</code> is ignored if
+it returns <code>false</code>.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -550,10 +532,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_DifferentProtocolVersionEventArgs.md&amp;value=---%0Auid%3A%20Libplanet.Net.DifferentProtocolVersionEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Net_DifferentAppProtocolVersionEncountered.md&amp;value=---%0Auid%3A%20Libplanet.Net.DifferentAppProtocolVersionEncountered%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/DifferentProtocolVersionEventArgs.cs/#L7" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Net/DifferentAppProtocolVersionEncountered.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

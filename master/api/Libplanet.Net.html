@@ -318,6 +318,9 @@
                             <a href="Libplanet.Net.ActionExecutionState.html" title="ActionExecutionState" class="">ActionExecutionState</a>
                           </li>
                           <li class="">
+                            <a href="Libplanet.Net.AppProtocolVersion.html" title="AppProtocolVersion" class="">AppProtocolVersion</a>
+                          </li>
+                          <li class="">
                             <a href="Libplanet.Net.BlockDownloadState.html" title="BlockDownloadState" class="">BlockDownloadState</a>
                           </li>
                           <li class="">
@@ -330,10 +333,10 @@
                             <a href="Libplanet.Net.BoundPeer.html" title="BoundPeer" class="">BoundPeer</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html" title="DifferentAppProtocolVersionEncountered" class="">DifferentAppProtocolVersionEncountered</a>
                           </li>
                           <li class="">
-                            <a href="Libplanet.Net.DifferentProtocolVersionEventArgs.html" title="DifferentProtocolVersionEventArgs" class="">DifferentProtocolVersionEventArgs</a>
+                            <a href="Libplanet.Net.DifferentAppProtocolVersionException.html" title="DifferentAppProtocolVersionException" class="">DifferentAppProtocolVersionException</a>
                           </li>
                           <li class="">
                             <a href="Libplanet.Net.IceServer.html" title="IceServer" class="">IceServer</a>
@@ -485,10 +488,6 @@
 <a class="xref" href="Libplanet.Net.Peer.html">Peer</a> that <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> is trying to connect
 to is different.</p>
 </section>
-      <h4><a class="xref" href="Libplanet.Net.DifferentProtocolVersionEventArgs.html">DifferentProtocolVersionEventArgs</a></h4>
-      <section><p>The event data that provides a value when
-<span class="xref">Libplanet.Net.NetMQTransport.DifferentVersionPeerEncountered</span> is occurred.</p>
-</section>
       <h4><a class="xref" href="Libplanet.Net.IceServer.html">IceServer</a></h4>
       <section></section>
       <h4><a class="xref" href="Libplanet.Net.IceServerException.html">IceServerException</a></h4>
@@ -518,6 +517,24 @@ downloading fails during preloading.</p>
       <section></section>
       <h4><a class="xref" href="Libplanet.Net.SwarmException.html">SwarmException</a></h4>
       <section></section>
+    <h3 id="structs">Structs
+  </h3>
+      <h4><a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a></h4>
+      <section><p>A <em>claim</em> of a version.</p>
+<p>Every peer in network shows others their <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> information.
+As every peer can change its software by itself, this <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
+is theoretically arbitrary, hence a “claim.” (i.e., no authority).</p>
+<p>In order to verify who claimed a version, every <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a>
+has its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature">Signature</a> which is made by its <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a>.
+<a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Verify_Libplanet_Crypto_PublicKey_">Verify(PublicKey)</a> method purposes to determine whether an information
+is claimed by its corresponding <a class="xref" href="Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signer">Signer</a> in fact.</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="Libplanet.Net.DifferentAppProtocolVersionEncountered.html">DifferentAppProtocolVersionEncountered</a></h4>
+      <section><p>A delegate called back when a <a class="xref" href="Libplanet.Net.Swarm-1.html">Swarm&lt;T&gt;</a> encounters
+a peer with different <a class="xref" href="Libplanet.Net.AppProtocolVersion.html">AppProtocolVersion</a> in the network.</p>
+</section>
 </article>
           </div>
           

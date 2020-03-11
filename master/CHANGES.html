@@ -100,6 +100,32 @@ if you have called it by using instance method syntax.  [<a href="https://github
 <li>Renamed <code>StoreExtension</code> class to <code>StoreExtensions</code>.</li>
 </ul>
 </li>
+<li>All parameters, fields, property, and method return values that had been
+represented as an <code>Int32</code> became retyped to <code>AppProtocolVersion</code>.
+[<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]
+<ul>
+<li><code>Swarm()</code> constructor's parameter <code>appProtocolVersion</code> became
+<code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
+<li><code>Peer()</code> and <code>BoundPeer()</code> constructors' parameter <code>appProtocolVersion</code>
+became <code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
+<li><code>Peer.AppProtocolVersion</code> property became <code>AppProtocolVersion</code>
+(was <code>Int32</code>).</li>
+<li><code>DifferentProtocolVersionEventArgs.ExpectedVersion</code> and
+<code>DifferentProtocolVersionEventArgs.ActualVersion</code> properties became
+<code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
+<li><code>DifferentAppProtocolVersionException()</code> constructor's parameters
+<code>expectedVersion</code> and <code>actualVersion</code> became <code>AppProtocolVersion</code>
+(was <code>Int32</code>).</li>
+<li><code>DifferentAppProtocolVersionException.ExpectedVersion</code> and
+<code>DifferentAppProtocolVersionException.ActualVersion</code> properties became
+<code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
+</ul>
+</li>
+<li><code>Swarm()</code> constructor's <code>EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null</code> parameter became replaced by
+<code>DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null</code> parameter.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Added <code>IEnumerable&lt;PublicKey&gt; trustedAppProtocolVersionSigners = null</code>
+parameter to <code>Swarm()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Removed <code>DifferentProtocolVersionEventArgs</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -108,6 +134,8 @@ replaced by a new <code>BlockHashes</code> message type (with type number <code>
 in order to include an offset block index besides block hashes
 so that a receiver is able to determine their block indices too.
 [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>, <a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
+<li><code>Peer</code> became to have 3 more fields to represent the whole fields of
+<code>AppProtocolVersion</code>, which is newly introduced.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
@@ -116,12 +144,17 @@ so that a receiver is able to determine their block indices too.
 [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>, <a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
 <li>Added <code>BlockVerificationState</code> class, a subclass of <code>PreloadState</code>.
 [<a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
+<li>Added <code>AppProtocolVersion</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 <li>Added <code>BlockDigest</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>BlockHeader</code> struct.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>IStore.GetBlockDigest(HashDigest&lt;SHA256&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>Block&lt;T&gt;.ToBlockDigest()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/785">#785</a>]</li>
 <li>Added <code>ByteArrayExtensions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/803">#803</a>]</li>
 <li>Added <code>IStore.PruneBlockStates&lt;T&gt;(Guid, Block&lt;T&gt;)</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/790">#790</a>]</li>
+<li>Added <code>DifferentAppProtocolVersionEncountered</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Added <code>Swarm&lt;T&gt;.TrustedAppProtocolVersionSigners</code> property.
+[<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Added <code>Peer.IsCompatibleWith()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
