@@ -540,7 +540,7 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Removes <paramref name="transaction"/> from the pending list.
+        /// Removes a <paramref name="transaction"/> from the pending list.
         /// </summary>
         /// <param name="transaction">A <see cref="Transaction{T}"/>
         /// to remove from the pending list.</param>

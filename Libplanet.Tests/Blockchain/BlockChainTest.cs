@@ -186,12 +186,16 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void UnstageTransaction()
         {
+            Transaction<DumbAction>[] txs = new[]
+            {
+                _fx.Transaction1,
+                _fx.Transaction2,
+            };
             Assert.Empty(_blockChain.GetStagedTransactionIds());
 
-            _blockChain.StageTransaction(_fx.Transaction1);
-            _blockChain.StageTransaction(_fx.Transaction2);
+            StageTransactions(txs);
 
-            HashSet<TxId> txIds = new[] { _fx.Transaction1.Id, _fx.Transaction2.Id }.ToHashSet();
+            HashSet<TxId> txIds = txs.Select(tx => tx.Id).ToHashSet();
             HashSet<TxId> stagedTxIds = _blockChain.GetStagedTransactionIds().ToHashSet();
 
             Assert.Equal(txIds, stagedTxIds);
