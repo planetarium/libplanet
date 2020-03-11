@@ -511,29 +511,27 @@ namespace Libplanet.Blockchain
             Append(block, currentTime, evaluateActions: true, renderActions: true);
 
         /// <summary>
-        /// Adds <paramref name="transactions"/> to the pending list so that
-        /// a next <see cref="Block{T}"/> to be mined contains these
-        /// <paramref name="transactions"/>.
+        /// Adds a <paramref name="transaction"/> to the pending list so that
+        /// a next <see cref="Block{T}"/> to be mined contains the given
+        /// <paramref name="transaction"/>.
         /// </summary>
-        /// <param name="transactions"><see cref="Transaction{T}"/>s to add to the pending list.
+        /// <param name="transaction"><see cref="Transaction{T}"/> to add to the pending list.
         /// </param>
-        public void StageTransactions(IImmutableSet<Transaction<T>> transactions)
+        /// <exception cref="InvalidTxException">Thrown when the given
+        /// <paramref name="transaction"/> is invalid.</exception>
+        public void StageTransaction(Transaction<T> transaction)
         {
+            // FIXME it's global chain lock so using it in this method can cause degrading
+            // parallelism of `BlockChain<T>`. we should re-organize locks in `BlockChain<T>`
             _rwlock.EnterWriteLock();
 
             try
             {
-                // FIXME: We need to create a separate pool to handle transactions.
-                transactions = transactions
-                    .Where(tx => !_transactions.ContainsKey(tx.Id))
-                    .ToImmutableHashSet();
-
-                foreach (Transaction<T> tx in transactions)
+                if (!_transactions.ContainsKey(transaction.Id))
                 {
-                    _transactions[tx.Id] = tx;
+                    _transactions[transaction.Id] = transaction;
+                    Store.StageTransactionIds(ImmutableHashSet.Create(transaction.Id));
                 }
-
-                Store.StageTransactionIds(transactions.Select(tx => tx.Id).ToImmutableHashSet());
             }
             finally
             {
@@ -542,19 +540,20 @@ namespace Libplanet.Blockchain
         }
 
         /// <summary>
-        /// Removes <paramref name="transactions"/> from the pending list.
+        /// Removes <paramref name="transaction"/> from the pending list.
         /// </summary>
-        /// <param name="transactions"><see cref="Transaction{T}"/>s
+        /// <param name="transaction">A <see cref="Transaction{T}"/>
         /// to remove from the pending list.</param>
-        /// <seealso cref="StageTransactions"/>
-        public void UnstageTransactions(ISet<Transaction<T>> transactions)
+        /// <seealso cref="StageTransaction"/>
+        public void UnstageTransaction(Transaction<T> transaction)
         {
+            // FIXME it's global chain lock so using it in this method can cause degrading
+            // parallelism of `BlockChain<T>`. we should re-organize locks in `BlockChain<T>`
             _rwlock.EnterWriteLock();
 
             try
             {
-                Store.UnstageTransactionIds(
-                    transactions.Select(tx => tx.Id).ToImmutableHashSet());
+                Store.UnstageTransactionIds(ImmutableHashSet.Create(transaction.Id));
             }
             finally
             {
@@ -706,7 +705,7 @@ namespace Libplanet.Blockchain
                     actions,
                     updatedAddresses,
                     timestamp);
-                StageTransactions(ImmutableHashSet<Transaction<T>>.Empty.Add(tx));
+                StageTransaction(tx);
 
                 return tx;
             }
@@ -791,7 +790,6 @@ namespace Libplanet.Blockchain
                         Index = block.Index,
                         Hash = block.Hash,
                     };
-                    TipChanged?.Invoke(this, tipChangedEventArgs);
 
                     _logger.Debug("Unstaging transactions...");
 
@@ -813,6 +811,7 @@ namespace Libplanet.Blockchain
                         .Select(tx => tx.Id)
                         .ToImmutableHashSet();
                     Store.UnstageTransactionIds(txIds);
+                    TipChanged?.Invoke(this, tipChangedEventArgs);
                     _logger.Debug("Block {blockIndex}: {block} is appended.", block?.Index, block);
                 }
                 finally

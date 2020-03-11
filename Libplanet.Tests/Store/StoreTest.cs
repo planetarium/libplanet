@@ -1111,11 +1111,11 @@ namespace Libplanet.Tests.Store
                     2,
                     privKey,
                     new[] { new DumbAction(fx.Address1, "item2") });
-                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx1));
+                blocks.StageTransaction(tx1);
                 var block1 = await blocks.MineBlock(fx.Address2);
-                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx2));
+                blocks.StageTransaction(tx2);
                 var block2 = await blocks.MineBlock(fx.Address2);
-                blocks.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx3));
+                blocks.StageTransaction(tx3);
                 var block3 = await blocks.MineBlock(fx.Address2);
                 Assert.Equal(
                     (Text)"item0",
