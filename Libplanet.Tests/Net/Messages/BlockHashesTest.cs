@@ -32,7 +32,7 @@ namespace Libplanet.Tests.Net.Messages
             Assert.Equal(123, msg.StartIndex);
             Assert.Equal(blockHashes, msg.Hashes);
             var privKey = new PrivateKey();
-            var ver = new AppProtocolVersion(privKey, 3);
+            AppProtocolVersion ver = AppProtocolVersion.Sign(privKey, 3);
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), ver);
             NetMQFrame[] frames = msg.ToNetMQMessage(privKey, peer).Skip(3).ToArray();
             var restored = new BlockHashes(frames);

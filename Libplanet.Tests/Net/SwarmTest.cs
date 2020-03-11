@@ -1109,7 +1109,7 @@ namespace Libplanet.Tests.Net
         public void ThrowArgumentExceptionInConstructor()
         {
             var key = new PrivateKey();
-            var ver = new AppProtocolVersion(key, 1);
+            AppProtocolVersion ver = AppProtocolVersion.Sign(key, 1);
             Assert.Throws<ArgumentNullException>(() =>
             {
                 new Swarm<DumbAction>(null, key, ver);

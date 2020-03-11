@@ -66,24 +66,6 @@ namespace Libplanet.Net
             Signer = signer;
         }
 
-        /// <summary>
-        /// Claim a <paramref name="version"/> with <paramref name="extra"/> data and sign it
-        /// using the given private key.
-        /// </summary>
-        /// <param name="signer">A private key to sign the claim.</param>
-        /// <param name="version">A version to claim.</param>
-        /// <param name="extra">Extra data to claim.</param>
-        public AppProtocolVersion(PrivateKey signer, int version, IValue extra = null)
-            : this(
-                version,
-                extra,
-                ImmutableArray<byte>.Empty,
-                new Address((signer ?? throw new ArgumentNullException(nameof(signer))).PublicKey)
-            )
-        {
-            Signature = ImmutableArray.Create(signer.Sign(GetMessage()));
-        }
-
         [Pure]
         public static bool operator ==(AppProtocolVersion left, AppProtocolVersion right) =>
             left.Equals(right);
@@ -91,6 +73,31 @@ namespace Libplanet.Net
         [Pure]
         public static bool operator !=(AppProtocolVersion left, AppProtocolVersion right) =>
             !(left == right);
+
+        /// <summary>
+        /// Claim a <paramref name="version"/> with <paramref name="extra"/> data and sign it
+        /// using the given private key.
+        /// </summary>
+        /// <param name="signer">A private key to sign the claim.</param>
+        /// <param name="version">A version to claim.</param>
+        /// <param name="extra">Extra data to claim.</param>
+        /// <returns>A signed version claim.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="signer"/> is
+        /// <c>null</c>.</exception>
+        public static AppProtocolVersion Sign(PrivateKey signer, int version, IValue extra = null)
+        {
+            if (signer is null)
+            {
+                throw new ArgumentNullException(nameof(signer));
+            }
+
+            return new AppProtocolVersion(
+                version,
+                extra,
+                ImmutableArray.Create(signer.Sign(GetMessage(version, extra))),
+                new Address(signer.PublicKey)
+            );
+        }
 
         /// <summary>
         /// Verifies whether the claim is certainly signed by the <see cref="Signer"/>.
@@ -102,7 +109,7 @@ namespace Libplanet.Net
         [Pure]
         public bool Verify(PublicKey publicKey) =>
             Signer.Equals(new Address(publicKey)) &&
-            publicKey.Verify(GetMessage(), Signature.ToBuilder().ToArray());
+            publicKey.Verify(GetMessage(Version, Extra), Signature.ToBuilder().ToArray());
 
         /// <inheritdoc/>
         [Pure]
@@ -150,12 +157,12 @@ namespace Libplanet.Net
         /// </summary>
         /// <returns>A deterministic message to sign.</returns>
         [Pure]
-        private byte[] GetMessage()
+        private static byte[] GetMessage(int version, IValue extra)
         {
-            byte[] msg = NetworkOrderBitsConverter.GetBytes(Version);
-            if (!(Extra is null))
+            byte[] msg = NetworkOrderBitsConverter.GetBytes(version);
+            if (!(extra is null))
             {
-                byte[] extraBytes = _codec.Encode(Extra);
+                byte[] extraBytes = _codec.Encode(extra);
                 int versionLength = msg.Length;
                 Array.Resize(ref msg, versionLength + extraBytes.Length);
                 extraBytes.CopyTo(msg, versionLength);

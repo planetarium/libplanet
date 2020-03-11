@@ -14,20 +14,21 @@ namespace Libplanet.Tests.Net
         {
             var signer = new PrivateKey();
             PublicKey otherParty = new PrivateKey().PublicKey;
-            var claim = new AppProtocolVersion(signer, 1, null);
+            AppProtocolVersion claim = AppProtocolVersion.Sign(signer, 1, null);
             Assert.Equal(1, claim.Version);
             Assert.Null(claim.Extra);
             Assert.True(claim.Verify(signer.PublicKey));
             Assert.False(claim.Verify(otherParty));
 
-            var claimWithExtra = new AppProtocolVersion(signer, 2, (Bencodex.Types.Text)"extra");
+            AppProtocolVersion claimWithExtra =
+                AppProtocolVersion.Sign(signer, 2, (Bencodex.Types.Text)"extra");
             Assert.Equal(2, claimWithExtra.Version);
             Assert.Equal((Bencodex.Types.Text)"extra", claimWithExtra.Extra);
             Assert.True(claimWithExtra.Verify(signer.PublicKey));
             Assert.False(claimWithExtra.Verify(otherParty));
 
             ArgumentNullException exception =
-                Assert.Throws<ArgumentNullException>(() => new AppProtocolVersion(null, 1));
+                Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.Sign(null, 1));
             Assert.Equal("signer", exception.ParamName);
         }
 
@@ -97,7 +98,8 @@ namespace Libplanet.Tests.Net
         public void Equality()
         {
             var signer = new PrivateKey();
-            var claim = new AppProtocolVersion(signer, 123, (Bencodex.Types.Text)"foo");
+            AppProtocolVersion claim =
+                AppProtocolVersion.Sign(signer, 123, (Bencodex.Types.Text)"foo");
 
             var claim2 = new AppProtocolVersion(124, claim.Extra, claim.Signature, claim.Signer);
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim2));
@@ -155,7 +157,7 @@ namespace Libplanet.Tests.Net
             Assert.True(claim == sameClaim);
             Assert.False(claim != sameClaim);
 
-            var claimWithoutExtra = new AppProtocolVersion(signer, 1);
+            AppProtocolVersion claimWithoutExtra = AppProtocolVersion.Sign(signer, 1);
             var sameClaimWithoutExtra = new AppProtocolVersion(
                 claimWithoutExtra.Version,
                 claimWithoutExtra.Extra,
@@ -179,10 +181,11 @@ namespace Libplanet.Tests.Net
         public void String()
         {
             var signer = new PrivateKey();
-            var claim = new AppProtocolVersion(signer, 123);
+            AppProtocolVersion claim = AppProtocolVersion.Sign(signer, 123);
             Assert.Equal("123", claim.ToString());
 
-            var claimWithExtra = new AppProtocolVersion(signer, 456, (Bencodex.Types.Text)"extra");
+            AppProtocolVersion claimWithExtra =
+                AppProtocolVersion.Sign(signer, 456, (Bencodex.Types.Text)"extra");
             Assert.Equal("456 (Bencodex.Types.Text \"extra\")", claimWithExtra.ToString());
         }
     }

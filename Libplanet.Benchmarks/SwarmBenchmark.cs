@@ -36,7 +36,7 @@ namespace Libplanet.Benchmarks
             {
                 TestUtils.MineGenesis<DumbAction>(),
             };
-            _appProtocolVersion = new AppProtocolVersion(new PrivateKey(), 1);
+            _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
             _blocks.Add(TestUtils.MineNext(_blocks[0]));
             _blocks.Add(TestUtils.MineNext(_blocks[1]));
             _blocks.Add(TestUtils.MineNext(_blocks[2]));

@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Net
     public partial class SwarmTest
     {
         private static readonly AppProtocolVersion DefaultAppProtocolVersion =
-            new AppProtocolVersion(new PrivateKey(), 1);
+            AppProtocolVersion.Sign(new PrivateKey(), 1);
 
         [Fact(Timeout = Timeout)]
         public async Task DetectAppProtocolVersion()
@@ -20,8 +20,8 @@ namespace Libplanet.Tests.Net
             var blockChain = _blockchains[0];
 
             var signer = new PrivateKey();
-            var v2 = new AppProtocolVersion(signer, 2);
-            var v3 = new AppProtocolVersion(signer, 3);
+            AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
+            AppProtocolVersion v3 = AppProtocolVersion.Sign(signer, 3);
             var a = CreateSwarm(blockChain, appProtocolVersion: v2);
             var b = CreateSwarm(blockChain, appProtocolVersion: v3);
             var c = CreateSwarm(blockChain, appProtocolVersion: v2);
@@ -61,8 +61,8 @@ namespace Libplanet.Tests.Net
             var isCalled = false;
 
             var signer = new PrivateKey();
-            var v1 = new AppProtocolVersion(signer, 1);
-            var v2 = new AppProtocolVersion(signer, 2);
+            AppProtocolVersion v1 = AppProtocolVersion.Sign(signer, 1);
+            AppProtocolVersion v2 = AppProtocolVersion.Sign(signer, 2);
             var a = CreateSwarm(
                 _blockchains[0],
                 appProtocolVersion: v1,
@@ -98,12 +98,12 @@ namespace Libplanet.Tests.Net
             var blockChain = _blockchains[0];
 
             var signer = new PrivateKey();
-            var older = new AppProtocolVersion(signer, 2);
-            var newer = new AppProtocolVersion(signer, 3);
+            AppProtocolVersion older = AppProtocolVersion.Sign(signer, 2);
+            AppProtocolVersion newer = AppProtocolVersion.Sign(signer, 3);
 
             var untrustedSigner = new PrivateKey();
-            var untrustedOlder = new AppProtocolVersion(untrustedSigner, 2);
-            var untrustedNewer = new AppProtocolVersion(untrustedSigner, 3);
+            AppProtocolVersion untrustedOlder = AppProtocolVersion.Sign(untrustedSigner, 2);
+            AppProtocolVersion untrustedNewer = AppProtocolVersion.Sign(untrustedSigner, 3);
 
             _output.WriteLine("Trusted version signer: {0}", signer.PublicKey.ToAddress());
             _output.WriteLine(

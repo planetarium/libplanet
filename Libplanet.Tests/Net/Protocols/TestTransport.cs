@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Net.Protocols
     {
         private static readonly PrivateKey VersionSigner = new PrivateKey();
         private static readonly AppProtocolVersion AppProtocolVersion =
-            new AppProtocolVersion(VersionSigner, 1);
+            AppProtocolVersion.Sign(VersionSigner, 1);
 
         private readonly Dictionary<Address, TestTransport> _transports;
         private readonly ILogger _logger;

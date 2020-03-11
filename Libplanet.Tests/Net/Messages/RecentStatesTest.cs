@@ -97,7 +97,7 @@ namespace Libplanet.Tests.Net.Messages
                 new RecentStates(blockHash, -1, 1, compressedBlockStates, stateRefs);
 
             var versionSigner = new PrivateKey();
-            var version = new AppProtocolVersion(versionSigner, 1);
+            AppProtocolVersion version = AppProtocolVersion.Sign(versionSigner, 1);
             Peer peer = new BoundPeer(privKey.PublicKey, new DnsEndPoint("0.0.0.0", 1234), version);
 
             NetMQMessage msg = reply.ToNetMQMessage(privKey, peer);

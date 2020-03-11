@@ -18,7 +18,7 @@ namespace Libplanet.Tests.Net.Protocols
 
         private static readonly PrivateKey VersionSigner = new PrivateKey();
         private static readonly AppProtocolVersion AppProtocolVer =
-            new AppProtocolVersion(VersionSigner, 1);
+            AppProtocolVersion.Sign(VersionSigner, 1);
 
         [Fact]
         public void BucketTest()

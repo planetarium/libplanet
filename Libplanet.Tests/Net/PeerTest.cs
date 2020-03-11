@@ -13,7 +13,7 @@ namespace Libplanet.Tests.Net
         public static IEnumerable<object[]> GetPeers()
         {
             var signer = new PrivateKey();
-            var ver = new AppProtocolVersion(signer, 1);
+            AppProtocolVersion ver = AppProtocolVersion.Sign(signer, 1);
             yield return new object[]
             {
                 new BoundPeer(
