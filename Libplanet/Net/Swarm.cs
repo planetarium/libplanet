@@ -35,7 +35,7 @@ namespace Libplanet.Net
         private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
         private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(150);
         private readonly PrivateKey _privateKey;
-        private readonly int _appProtocolVersion;
+        private readonly AppProtocolVersion _appProtocolVersion;
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
@@ -60,14 +60,14 @@ namespace Libplanet.Net
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             int workers = 5,
             string host = null,
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs>
-                differentVersionPeerEncountered = null)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null)
             : this(
                 blockChain,
                 privateKey,
@@ -79,14 +79,15 @@ namespace Libplanet.Net
                 listenPort,
                 createdAt,
                 iceServers,
-                differentVersionPeerEncountered)
+                differentAppProtocolVersionEncountered,
+                trustedAppProtocolVersionSigners)
         {
         }
 
         internal Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             int? tableSize,
             int? bucketSize,
             int workers = 5,
@@ -94,7 +95,8 @@ namespace Libplanet.Net
             int? listenPort = null,
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
-            EventHandler<DifferentProtocolVersionEventArgs> differentVersionPeerEncountered = null)
+            DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -114,6 +116,8 @@ namespace Libplanet.Net
             _runningMutex = new AsyncLock();
 
             _appProtocolVersion = appProtocolVersion;
+            TrustedAppProtocolVersionSigners =
+                trustedAppProtocolVersionSigners?.ToImmutableHashSet();
 
             string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm<T>>()
@@ -122,13 +126,14 @@ namespace Libplanet.Net
             Transport = new NetMQTransport(
                 _privateKey,
                 _appProtocolVersion,
+                TrustedAppProtocolVersionSigners,
                 tableSize,
                 bucketSize,
                 workers,
                 host,
                 listenPort,
                 iceServers,
-                differentVersionPeerEncountered,
+                differentAppProtocolVersionEncountered,
                 ProcessMessageHandler,
                 _logger);
         }
@@ -167,6 +172,8 @@ namespace Libplanet.Net
         /// synchronizes with.
         /// </summary>
         public BlockChain<T> BlockChain { get; private set; }
+
+        public IImmutableSet<PublicKey> TrustedAppProtocolVersionSigners { get; }
 
         internal ITransport Transport { get; private set; }
 

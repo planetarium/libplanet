@@ -23,6 +23,7 @@ namespace Libplanet.Benchmarks
         private const int WaitTimeout = 5 * 1000;
         private readonly NullPolicy<DumbAction> _policy;
         private readonly List<Block<DumbAction>> _blocks;
+        private readonly AppProtocolVersion _appProtocolVersion;
         private PrivateKey[] _keys;
         private DefaultStoreFixture[] _fxs;
         private BlockChain<DumbAction>[] _blockChains;
@@ -35,6 +36,7 @@ namespace Libplanet.Benchmarks
             {
                 TestUtils.MineGenesis<DumbAction>(),
             };
+            _appProtocolVersion = AppProtocolVersion.Sign(new PrivateKey(), 1);
             _blocks.Add(TestUtils.MineNext(_blocks[0]));
             _blocks.Add(TestUtils.MineNext(_blocks[1]));
             _blocks.Add(TestUtils.MineNext(_blocks[2]));
@@ -59,7 +61,7 @@ namespace Libplanet.Benchmarks
                 _swarms[i] = new Swarm<DumbAction>(
                     _blockChains[i],
                     _keys[i],
-                    0,
+                    _appProtocolVersion,
                     host: IPAddress.Loopback.ToString());
                 tasks.Add(StartAsync(_swarms[i]));
             }

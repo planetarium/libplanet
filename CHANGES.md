@@ -22,6 +22,31 @@ To be released.
      -  Renamed `SerializationInfoExtension` class to
         `SerializationInfoExtensions`.
      -  Renamed `StoreExtension` class to `StoreExtensions`.
+ -  All parameters, fields, property, and method return values that had been
+    represented as an `Int32` became retyped to `AppProtocolVersion`.
+    [[#266], [#815]]
+     -  `Swarm()` constructor's parameter `appProtocolVersion` became
+        `AppProtocolVersion` (was `Int32`). 
+     -  `Peer()` and `BoundPeer()` constructors' parameter `appProtocolVersion`
+        became `AppProtocolVersion` (was `Int32`).
+     -  `Peer.AppProtocolVersion` property became `AppProtocolVersion`
+        (was `Int32`).
+     -  `DifferentProtocolVersionEventArgs.ExpectedVersion` and
+        `DifferentProtocolVersionEventArgs.ActualVersion` properties became
+        `AppProtocolVersion` (was `Int32`).
+     -  `DifferentAppProtocolVersionException()` constructor's parameters
+        `expectedVersion` and `actualVersion` became `AppProtocolVersion`
+        (was `Int32`).
+     -  `DifferentAppProtocolVersionException.ExpectedVersion` and
+        `DifferentAppProtocolVersionException.ActualVersion` properties became
+        `AppProtocolVersion` (was `Int32`).
+ -  `Swarm()` constructor's `EventHandler<DifferentProtocolVersionEventArgs>
+    differentVersionPeerEncountered = null` parameter became replaced by
+    `DifferentAppProtocolVersionEncountered
+    differentAppProtocolVersionEncountered = null` parameter.  [[#266], [#815]]
+ -  Added `IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null`
+    parameter to `Swarm()` constructor.  [[#266], [#815]]
+ -  Removed `DifferentProtocolVersionEventArgs` class.  [[#266], [#815]]
 
 ### Backward-incompatible network protocol changes
 
@@ -30,6 +55,8 @@ To be released.
     in order to include an offset block index besides block hashes
     so that a receiver is able to determine their block indices too.
     [[#707], [#798]]
+ -  `Peer` became to have 3 more fields to represent the whole fields of
+    `AppProtocolVersion`, which is newly introduced.  [[#266], [#815]]
 
 ### Backward-incompatible storage format changes
 
@@ -39,12 +66,17 @@ To be released.
     [[#707], [#798]]
  -  Added `BlockVerificationState` class, a subclass of `PreloadState`.
     [[#798]]
+ -  Added `AppProtocolVersion` struct.  [[#266], [#815]]
  -  Added `BlockDigest` struct.  [[#785]]
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
  -  Added `Block<T>.ToBlockDigest()` method.  [[#785]]
  -  Added `ByteArrayExtensions` class.  [[#803]]
  -  Added `IStore.PruneBlockStates<T>(Guid, Block<T>)` method.  [[#790]]
+ -  Added `DifferentAppProtocolVersionEncountered` delegate.  [[#266], [#815]]
+ -  Added `Swarm<T>.TrustedAppProtocolVersionSigners` property.
+    [[#266], [#815]]
+ -  Added `Peer.IsCompatibleWith()` method.  [[#266], [#815]]
 
 ### Behavioral changes
 
@@ -69,6 +101,7 @@ To be released.
     in the store had been completely cleaned up in some corner cases
     if `cancellationToken` was requested.  [[#798]]
 
+[#266]: https://github.com/planetarium/libplanet/issues/266
 [#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
@@ -79,6 +112,7 @@ To be released.
 [#798]: https://github.com/planetarium/libplanet/pull/798
 [#802]: https://github.com/planetarium/libplanet/pull/802
 [#803]: https://github.com/planetarium/libplanet/pull/803
+[#815]: https://github.com/planetarium/libplanet/pull/815
 
 
 Version 0.8.0

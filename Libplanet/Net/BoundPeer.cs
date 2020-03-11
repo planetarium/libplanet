@@ -22,7 +22,7 @@ namespace Libplanet.Net
         public BoundPeer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            int appProtocolVersion)
+            AppProtocolVersion appProtocolVersion)
         : this(publicKey, endPoint, appProtocolVersion, null)
         {
         }
@@ -30,7 +30,7 @@ namespace Libplanet.Net
         internal BoundPeer(
             PublicKey publicKey,
             DnsEndPoint endPoint,
-            int appProtocolVersion,
+            AppProtocolVersion appProtocolVersion,
             IPAddress publicIPAddress)
         : base(publicKey, appProtocolVersion, publicIPAddress)
         {
