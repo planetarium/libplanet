@@ -2150,12 +2150,31 @@ namespace Libplanet.Net
                         $"Some tasks faulted during {nameof(GetTxsAsync)}().");
                 }
 
-                foreach (var task in tasks.Where(task => !task.IsFaulted))
+                foreach (Task<List<Transaction<T>>> task in tasks)
                 {
-                    txs.AddRange(task.Result);
+                    if (!task.IsFaulted)
+                    {
+                        // `task.Result` is okay because we've already waited.
+                        txs.AddRange(task.Result);
+                    }
                 }
 
-                BlockChain.StageTransactions(txs.ToImmutableHashSet());
+                foreach (Transaction<T> tx in txs)
+                {
+                    try
+                    {
+                        BlockChain.StageTransaction(tx);
+                    }
+                    catch (InvalidTxException ite)
+                    {
+                        _logger.Error(
+                            ite,
+                            "{TxId} will not be staged since it is invalid.",
+                            tx.Id
+                        );
+                    }
+                }
+
                 TxReceived.Set();
                 _logger.Debug(
                     "Txs staged successfully: {@txIds}",

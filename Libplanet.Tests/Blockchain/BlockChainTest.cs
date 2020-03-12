@@ -96,7 +96,8 @@ namespace Libplanet.Tests.Blockchain
                     new DumbAction[] { }),
             };
 
-            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            StageTransactions(txs);
+
             Block<DumbAction> block = await _blockChain.MineBlock(_fx.Address1);
 
             Assert.True(_blockChain.ContainsBlock(block.Hash));
@@ -165,7 +166,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void StageTransactions()
+        public void StageTransaction()
         {
             var txs = new HashSet<Transaction<DumbAction>>()
             {
@@ -174,7 +175,8 @@ namespace Libplanet.Tests.Blockchain
             };
             Assert.Empty(txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)));
 
-            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            StageTransactions(txs);
+
             Assert.Equal(
                 txs,
                 txs.Where(tx => _fx.Store.ContainsTransaction(tx.Id)).ToHashSet()
@@ -182,19 +184,25 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void UnstageTransactions()
+        public void UnstageTransaction()
         {
-            Assert.Empty(_blockChain.GetStagedTransactionIds());
-            var txs = new HashSet<Transaction<DumbAction>>()
+            Transaction<DumbAction>[] txs = new[]
             {
                 _fx.Transaction1,
                 _fx.Transaction2,
             };
-            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            Assert.Empty(_blockChain.GetStagedTransactionIds());
+
+            StageTransactions(txs);
+
             HashSet<TxId> txIds = txs.Select(tx => tx.Id).ToHashSet();
             HashSet<TxId> stagedTxIds = _blockChain.GetStagedTransactionIds().ToHashSet();
+
             Assert.Equal(txIds, stagedTxIds);
-            _blockChain.UnstageTransactions(txs);
+
+            _blockChain.UnstageTransaction(_fx.Transaction1);
+            _blockChain.UnstageTransaction(_fx.Transaction2);
+
             Assert.Empty(_blockChain.GetStagedTransactionIds());
         }
 
@@ -235,9 +243,7 @@ namespace Libplanet.Tests.Blockchain
                 store,
                 genesisBlock
             );
-            chain.StageTransactions(
-                ImmutableHashSet<Transaction<PolymorphicAction<BaseAction>>>.Empty.Add(tx1)
-            );
+            chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
             IValue state = chain.GetState(_fx.Address1);
@@ -264,9 +270,7 @@ namespace Libplanet.Tests.Blockchain
                 actions2
             );
 
-            chain.StageTransactions(
-                ImmutableHashSet<Transaction<PolymorphicAction<BaseAction>>>.Empty.Add(tx2)
-            );
+            chain.StageTransaction(tx2);
             await chain.MineBlock(_fx.Address1);
 
             state = chain.GetState(_fx.Address1);
@@ -286,9 +290,7 @@ namespace Libplanet.Tests.Blockchain
                     },
                 }
             );
-            chain.StageTransactions(
-                ImmutableHashSet<Transaction<PolymorphicAction<BaseAction>>>.Empty.Add(tx3)
-            );
+            chain.StageTransaction(tx3);
             await chain.MineBlock(_fx.Address1);
             state = chain.GetState(_fx.Address1);
 
@@ -480,7 +482,9 @@ namespace Libplanet.Tests.Blockchain
                     blockInterval: TimeSpan.FromSeconds(10));
                 _blockChain.Append(block1);
                 Assert.Empty(_blockChain.GetStagedTransactionIds());
-                _blockChain.StageTransactions(txs.ToImmutableHashSet());
+
+                StageTransactions(txs);
+
                 Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
                 Block<DumbAction> block2 = TestUtils.MineNext(
@@ -491,7 +495,7 @@ namespace Libplanet.Tests.Blockchain
                 );
                 _blockChain.Append(block2);
                 Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
-                _blockChain.StageTransactions(txs.ToImmutableHashSet());
+                StageTransactions(txs);
                 Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
 
                 var actions = new[] { new DumbAction(addresses[0], "foobar") };
@@ -499,7 +503,7 @@ namespace Libplanet.Tests.Blockchain
                 {
                     _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
                 };
-                _blockChain.StageTransactions(txs2.ToImmutableHashSet());
+                StageTransactions(txs2);
                 Assert.Equal(2, _blockChain.GetStagedTransactionIds().Count);
 
                 Block<DumbAction> block3 = TestUtils.MineNext(
@@ -1461,9 +1465,7 @@ namespace Libplanet.Tests.Blockchain
                 new BlockPolicy<TestEvaluateAction>(),
                 store
             );
-            chain.StageTransactions(
-                ImmutableHashSet<Transaction<TestEvaluateAction>>.Empty.Add(tx1)
-            );
+            chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
             Assert.Equal(
@@ -1508,7 +1510,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 2),
             };
 
-            _blockChain.StageTransactions(txsB.ToImmutableHashSet());
+            StageTransactions(txsB);
 
             Assert.Equal(3, _blockChain.GetNextTxNonce(address));
 
@@ -1517,7 +1519,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 3),
             };
-            _blockChain.StageTransactions(txsC.ToImmutableHashSet());
+            StageTransactions(txsC);
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
 
@@ -1525,7 +1527,7 @@ namespace Libplanet.Tests.Blockchain
             {
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
             };
-            _blockChain.StageTransactions(txsD.ToImmutableHashSet());
+            StageTransactions(txsD);
 
             Assert.Equal(4, _blockChain.GetNextTxNonce(address));
 
@@ -1535,7 +1537,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 5),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 7),
             };
-            _blockChain.StageTransactions(txsE.ToImmutableHashSet());
+            StageTransactions(txsE);
 
             Assert.Equal(6, _blockChain.GetNextTxNonce(address));
         }
@@ -1553,7 +1555,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
 
-            _blockChain.StageTransactions(txs.ToImmutableHashSet());
+            StageTransactions(txs);
             await _blockChain.MineBlock(address);
 
             Transaction<DumbAction>[] staleTxs =
@@ -1561,7 +1563,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 0),
                 _fx.MakeTransaction(actions, privateKey: privateKey, nonce: 1),
             };
-            _blockChain.StageTransactions(staleTxs.ToImmutableHashSet());
+            StageTransactions(staleTxs);
 
             Assert.Equal(2, _blockChain.GetNextTxNonce(address));
 
@@ -2077,7 +2079,7 @@ namespace Libplanet.Tests.Blockchain
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
-            _blockChain.StageTransactions(txsA.ToImmutableHashSet());
+            StageTransactions(txsA);
             Block<DumbAction> b1 = await _blockChain.MineBlock(address);
             Assert.Equal(txsA, b1.Transactions);
 
@@ -2085,12 +2087,20 @@ namespace Libplanet.Tests.Blockchain
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
                 .ToArray();
-            _blockChain.StageTransactions(txsB.ToImmutableHashSet());
+            StageTransactions(txsB);
 
             // Mine only txs having higher or equal with nonce than expected nonce.
             Block<DumbAction> b2 = await _blockChain.MineBlock(address);
             Assert.Single(b2.Transactions);
             Assert.Contains(txsB[3], b2.Transactions);
+        }
+
+        private void StageTransactions(IEnumerable<Transaction<DumbAction>> txs)
+        {
+            foreach (Transaction<DumbAction> tx in txs)
+            {
+                _blockChain.StageTransaction(tx);
+            }
         }
 
         private sealed class TestEvaluateAction : IAction

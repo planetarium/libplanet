@@ -635,7 +635,7 @@ namespace Libplanet.Tests.Net
                 new PrivateKey(),
                 new DumbAction[0]
             );
-            chainB.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+            chainB.StageTransaction(tx);
             await chainB.MineBlock(_fx1.Address1);
 
             try
@@ -678,7 +678,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            chainA.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+            chainA.StageTransaction(tx);
             await chainA.MineBlock(_fx1.Address1);
 
             try
@@ -775,7 +775,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            chainA.StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+            chainA.StageTransaction(tx);
 
             try
             {
@@ -832,8 +832,7 @@ namespace Libplanet.Tests.Net
                 new DumbAction[] { }
             );
 
-            blockChains[size - 1]
-                .StageTransactions(ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+            blockChains[size - 1].StageTransaction(tx);
 
             try
             {
@@ -2380,15 +2379,12 @@ namespace Libplanet.Tests.Net
 
             foreach (var i in Enumerable.Range(0, 8))
             {
-                miner1.BlockChain.StageTransactions(
-                    new[]
-                    {
-                        Transaction<Sleep>.Create(
-                            0,
-                            new PrivateKey(),
-                            actions: new[] { new Sleep() }
-                        ),
-                    }.ToImmutableHashSet()
+                miner1.BlockChain.StageTransaction(
+                    Transaction<Sleep>.Create(
+                        0,
+                        new PrivateKey(),
+                        actions: new[] { new Sleep() }
+                    )
                 );
                 var b = await miner1.BlockChain.MineBlock(miner1.Address);
                 miner2.BlockChain.Append(b);
@@ -2448,8 +2444,7 @@ namespace Libplanet.Tests.Net
 
                 if (!restage)
                 {
-                    minerB.BlockChain.StageTransactions(
-                        ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(txA));
+                    minerB.BlockChain.StageTransaction(txA);
                 }
 
                 Log.Debug("Make minerB's chain longer than minerA's chain.");
@@ -2788,10 +2783,8 @@ namespace Libplanet.Tests.Net
                     new PrivateKey(),
                     new DumbAction[] { }
                 );
-                sender1.BlockChain.StageTransactions(
-                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
-                sender2.BlockChain.StageTransactions(
-                    ImmutableHashSet<Transaction<DumbAction>>.Empty.Add(tx));
+                sender1.BlockChain.StageTransaction(tx);
+                sender2.BlockChain.StageTransaction(tx);
 
                 // Make sure that receiver swarm only filled once for same transaction
                 // that were broadcasted simultaneously.

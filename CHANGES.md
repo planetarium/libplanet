@@ -47,6 +47,10 @@ To be released.
  -  Added `IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null`
     parameter to `Swarm()` constructor.  [[#266], [#815]]
  -  Removed `DifferentProtocolVersionEventArgs` class.  [[#266], [#815]]
+ -  Replaced `BlockChain<T>.StageTransactions()` with `.StageTransaction()`
+    that receives only one transaction.  [[#820]]
+ -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
+    that receives only one transaction.  [[#820]]
 
 ### Backward-incompatible network protocol changes
 
@@ -100,6 +104,8 @@ To be released.
  -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that temporary chain IDs
     in the store had been completely cleaned up in some corner cases
     if `cancellationToken` was requested.  [[#798]]
+ -  Fixed a bug where `Swarm<T>` had crashed if it received invalid
+    `Transaction<T>` from the nodes.  [[#820]]
 
 [#266]: https://github.com/planetarium/libplanet/issues/266
 [#707]: https://github.com/planetarium/libplanet/pull/707
@@ -113,6 +119,7 @@ To be released.
 [#802]: https://github.com/planetarium/libplanet/pull/802
 [#803]: https://github.com/planetarium/libplanet/pull/803
 [#815]: https://github.com/planetarium/libplanet/pull/815
+[#820]: https://github.com/planetarium/libplanet/pull/820
 
 
 Version 0.8.0
