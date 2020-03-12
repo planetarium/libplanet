@@ -1142,24 +1142,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).Policy
   nameWithType: BlockChain<T>.Policy
   nameWithType.vb: BlockChain(Of T).Policy
-- uid: Libplanet.Blockchain.BlockChain`1.StageTransactions(IImmutableSet{Libplanet.Tx.Transaction{`0}})
-  name: StageTransactions(IImmutableSet<Transaction<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_IImmutableSet_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.StageTransactions(IImmutableSet{Libplanet.Tx.Transaction{`0}})
-  name.vb: StageTransactions(IImmutableSet(Of Transaction(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransactions(IImmutableSet<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransactions(IImmutableSet(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: BlockChain<T>.StageTransactions(IImmutableSet<Transaction<T>>)
-  nameWithType.vb: BlockChain(Of T).StageTransactions(IImmutableSet(Of Transaction(Of T)))
-- uid: Libplanet.Blockchain.BlockChain`1.StageTransactions*
-  name: StageTransactions
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransactions_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.StageTransactions
+- uid: Libplanet.Blockchain.BlockChain`1.StageTransaction(Libplanet.Tx.Transaction{`0})
+  name: StageTransaction(Transaction<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransaction_Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.StageTransaction(Libplanet.Tx.Transaction{`0})
+  name.vb: StageTransaction(Transaction(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransaction(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransaction(Libplanet.Tx.Transaction(Of T))
+  nameWithType: BlockChain<T>.StageTransaction(Transaction<T>)
+  nameWithType.vb: BlockChain(Of T).StageTransaction(Transaction(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.StageTransaction*
+  name: StageTransaction
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_StageTransaction_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.StageTransaction
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransactions
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransactions
-  nameWithType: BlockChain<T>.StageTransactions
-  nameWithType.vb: BlockChain(Of T).StageTransactions
+  fullName: Libplanet.Blockchain.BlockChain<T>.StageTransaction
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).StageTransaction
+  nameWithType: BlockChain<T>.StageTransaction
+  nameWithType.vb: BlockChain(Of T).StageTransaction
 - uid: Libplanet.Blockchain.BlockChain`1.Tip
   name: Tip
   href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_Tip
@@ -1262,24 +1262,24 @@ references:
   fullName.vb: Libplanet.Blockchain.BlockChain(Of T).TipChangedEventArgs.PreviousIndex
   nameWithType: BlockChain<T>.TipChangedEventArgs.PreviousIndex
   nameWithType.vb: BlockChain(Of T).TipChangedEventArgs.PreviousIndex
-- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransactions(ISet{Libplanet.Tx.Transaction{`0}})
-  name: UnstageTransactions(ISet<Transaction<T>>)
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransactions_ISet_Libplanet_Tx_Transaction__0___
-  commentId: M:Libplanet.Blockchain.BlockChain`1.UnstageTransactions(ISet{Libplanet.Tx.Transaction{`0}})
-  name.vb: UnstageTransactions(ISet(Of Transaction(Of T)))
-  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransactions(ISet<Libplanet.Tx.Transaction<T>>)
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransactions(ISet(Of Libplanet.Tx.Transaction(Of T)))
-  nameWithType: BlockChain<T>.UnstageTransactions(ISet<Transaction<T>>)
-  nameWithType.vb: BlockChain(Of T).UnstageTransactions(ISet(Of Transaction(Of T)))
-- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransactions*
-  name: UnstageTransactions
-  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransactions_
-  commentId: Overload:Libplanet.Blockchain.BlockChain`1.UnstageTransactions
+- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransaction(Libplanet.Tx.Transaction{`0})
+  name: UnstageTransaction(Transaction<T>)
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransaction_Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.BlockChain`1.UnstageTransaction(Libplanet.Tx.Transaction{`0})
+  name.vb: UnstageTransaction(Transaction(Of T))
+  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransaction(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction(Libplanet.Tx.Transaction(Of T))
+  nameWithType: BlockChain<T>.UnstageTransaction(Transaction<T>)
+  nameWithType.vb: BlockChain(Of T).UnstageTransaction(Transaction(Of T))
+- uid: Libplanet.Blockchain.BlockChain`1.UnstageTransaction*
+  name: UnstageTransaction
+  href: api/Libplanet.Blockchain.BlockChain-1.html#Libplanet_Blockchain_BlockChain_1_UnstageTransaction_
+  commentId: Overload:Libplanet.Blockchain.BlockChain`1.UnstageTransaction
   isSpec: "True"
-  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransactions
-  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransactions
-  nameWithType: BlockChain<T>.UnstageTransactions
-  nameWithType.vb: BlockChain(Of T).UnstageTransactions
+  fullName: Libplanet.Blockchain.BlockChain<T>.UnstageTransaction
+  fullName.vb: Libplanet.Blockchain.BlockChain(Of T).UnstageTransaction
+  nameWithType: BlockChain<T>.UnstageTransaction
+  nameWithType.vb: BlockChain(Of T).UnstageTransaction
 - uid: Libplanet.Blockchain.IncompleteBlockStatesException
   name: IncompleteBlockStatesException
   href: api/Libplanet.Blockchain.IncompleteBlockStatesException.html
