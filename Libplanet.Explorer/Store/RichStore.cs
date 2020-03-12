@@ -72,6 +72,11 @@ namespace Libplanet.Explorer.Store
             return _store.GetBlockIndex(blockHash);
         }
 
+        public BlockDigest? GetBlockDigest(HashDigest<SHA256> blockHash)
+        {
+            return _store.GetBlockDigest(blockHash);
+        }
+
         /// <inheritdoc cref="IStore"/>
         public bool DeleteBlock(HashDigest<SHA256> blockHash)
         {
@@ -85,7 +90,7 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc cref="IStore"/>
-        public IImmutableDictionary<Address, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
+        public IImmutableDictionary<string, IValue> GetBlockStates(HashDigest<SHA256> blockHash)
         {
             return _store.GetBlockStates(blockHash);
         }
@@ -93,32 +98,38 @@ namespace Libplanet.Explorer.Store
         /// <inheritdoc cref="IStore"/>
         public void SetBlockStates(
             HashDigest<SHA256> blockHash,
-            IImmutableDictionary<Address, IValue> states)
+            IImmutableDictionary<string, IValue> states)
         {
             _store.SetBlockStates(blockHash, states);
+        }
+
+        public void PruneBlockStates<T>(Guid chainId, Block<T> until)
+            where T : IAction, new()
+        {
+            _store.PruneBlockStates(chainId, until);
         }
 
         /// <inheritdoc cref="IStore"/>
         public Tuple<HashDigest<SHA256>, long> LookupStateReference<T>(
             Guid chainId,
-            Address address,
+            string key,
             Block<T> lookupUntil)
             where T : IAction, new()
         {
-            return _store.LookupStateReference(chainId, address, lookupUntil);
+            return _store.LookupStateReference(chainId, key, lookupUntil);
         }
 
         /// <inheritdoc cref="IStore"/>
         public IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
             Guid chainId,
-            Address address,
+            string key,
             long? highestIndex = null,
             long? lowestIndex = null,
             int? limit = null)
         {
             return _store.IterateStateReferences(
                 chainId,
-                address,
+                key,
                 highestIndex,
                 lowestIndex,
                 limit);
@@ -127,11 +138,11 @@ namespace Libplanet.Explorer.Store
         /// <inheritdoc cref="IStore"/>
         public void StoreStateReference(
             Guid chainId,
-            IImmutableSet<Address> addresses,
+            IImmutableSet<string> keys,
             HashDigest<SHA256> blockHash,
             long blockIndex)
         {
-            _store.StoreStateReference(chainId, addresses, blockHash, blockIndex);
+            _store.StoreStateReference(chainId, keys, blockHash, blockIndex);
         }
 
         /// <inheritdoc cref="IStore"/>
@@ -243,12 +254,6 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc cref="IStore"/>
-        public bool DeleteIndex(Guid chainId, HashDigest<SHA256> hash)
-        {
-            return _store.DeleteIndex(chainId, hash);
-        }
-
-        /// <inheritdoc cref="IStore"/>
         public void ForkBlockIndexes(
             Guid sourceChainId,
             Guid destinationChainId,
@@ -258,13 +263,13 @@ namespace Libplanet.Explorer.Store
         }
 
         /// <inheritdoc cref="IStore"/>
-        public IEnumerable<Address> ListAddresses(Guid chainId)
+        public IEnumerable<string> ListStateKeys(Guid chainId)
         {
-            return _store.ListAddresses(chainId);
+            return _store.ListStateKeys(chainId);
         }
 
         /// <inheritdoc cref="IStore"/>
-        public IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>
+        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>
             ListAllStateReferences(
             Guid chainId,
             long lowestIndex = 0,
