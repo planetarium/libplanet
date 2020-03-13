@@ -1037,6 +1037,41 @@ namespace Libplanet.Tests.Store
             }
         }
 
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [SkippableTheory]
+        public void ForkBlockIndex(int branchPointIndex)
+        {
+            var store = Fx.Store;
+
+            var blocks = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                store,
+                Fx.GenesisBlock
+            );
+
+            blocks.Append(Fx.Block1);
+            blocks.Append(Fx.Block2);
+            blocks.Append(Fx.Block3);
+
+            var forked = new BlockChain<DumbAction>(
+                new NullPolicy<DumbAction>(),
+                store,
+                Guid.NewGuid(),
+                Fx.GenesisBlock
+            );
+
+            store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
+
+            Assert.Equal(
+                store.IterateIndexes(blocks.Id, 0, branchPointIndex + 1).ToList(),
+                store.IterateIndexes(forked.Id).ToList()
+            );
+
+            Assert.Equal(branchPointIndex + 1, store.CountIndex(forked.Id));
+        }
+
         [SkippableFact]
         public void Copy()
         {
