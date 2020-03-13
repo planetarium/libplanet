@@ -248,9 +248,11 @@ namespace Libplanet.RocksDBStore
             Guid destinationChainId,
             HashDigest<SHA256> branchPoint)
         {
-            var genesisHash = IterateIndexes(sourceChainId, 0, 1).First();
+            HashDigest<SHA256>? genesisHash = IterateIndexes(sourceChainId, 0, 1)
+                .Cast<HashDigest<SHA256>?>()
+                .FirstOrDefault();
 
-            if (branchPoint.Equals(genesisHash))
+            if (genesisHash is null || branchPoint.Equals(genesisHash))
             {
                 return;
             }
