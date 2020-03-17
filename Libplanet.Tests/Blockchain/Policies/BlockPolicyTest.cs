@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
@@ -80,6 +81,31 @@ namespace Libplanet.Tests.Blockchain.Policies
                 new BlockPolicy<DumbAction>(null, tenSec, 0, 128));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 new BlockPolicy<DumbAction>(null, tenSec, 1024, 1024));
+        }
+
+        [Fact]
+        public void IsTransactionValid()
+        {
+            var validKey = new PrivateKey();
+
+            bool IsTransactionValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+
+            // Valid Transaction
+            var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
+            var expected = policy.IsTransactionValid(validTx);
+            Assert.True(expected);
+
+            // Invalid Transaction
+            var invalidKey = new PrivateKey();
+            var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
+            expected = policy.IsTransactionValid(invalidTx);
+            Assert.False(expected);
         }
 
         [Fact]
