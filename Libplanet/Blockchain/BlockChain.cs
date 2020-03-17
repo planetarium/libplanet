@@ -294,7 +294,7 @@ namespace Libplanet.Blockchain
             return Block<T>.Mine(
                 0,
                 0,
-                privateKey.PublicKey.ToAddress(),
+                privateKey.ToAddress(),
                 null,
                 timestamp ?? DateTimeOffset.UtcNow,
                 new[] { Transaction<T>.Create(0, privateKey, actions, timestamp: timestamp), });
@@ -700,7 +700,7 @@ namespace Libplanet.Blockchain
             lock (_txLock)
             {
                 Transaction<T> tx = Transaction<T>.Create(
-                    GetNextTxNonce(privateKey.PublicKey.ToAddress()),
+                    GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
                     actions,
                     updatedAddresses,

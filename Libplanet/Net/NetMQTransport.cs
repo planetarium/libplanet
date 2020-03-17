@@ -147,7 +147,7 @@ namespace Libplanet.Net
             MessageHistory = new FixedSizedQueue<Message>(MessageHistoryCapacity);
             Protocol = new KademliaProtocol(
                 this,
-                _privateKey.PublicKey.ToAddress(),
+                _privateKey.ToAddress(),
                 _appProtocolVersion,
                 _trustedAppProtocolVersionSigners,
                 _differentAppProtocolVersionEncountered,

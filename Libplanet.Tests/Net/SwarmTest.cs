@@ -717,7 +717,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> chainC = _blockchains[2];
 
             var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
+            var address = privateKey.ToAddress();
 
             var txs = Enumerable.Range(0, 10).Select(_ =>
                 chainA.MakeTransaction(new PrivateKey(), new[] { new DumbAction(address, "foo") }))
@@ -1271,7 +1271,7 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> receiverChain = _blockchains[1];
 
             var key = new PrivateKey();
-            var address = key.PublicKey.ToAddress();
+            var address = key.ToAddress();
 
             minerChain.MakeTransaction(key, new[] { new DumbAction(address, "foo") });
             await minerChain.MineBlock(_fx1.Address1);
@@ -1675,14 +1675,14 @@ namespace Libplanet.Tests.Net
             PrivateKey[] signers =
                 Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
             Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
-                => new PrivateKey().PublicKey.ToAddress()
+                => new PrivateKey().ToAddress()
             ).ToArray();
             (PrivateKey, Address)[] fixturePairs =
                 signers.Zip(targets, ValueTuple.Create).ToArray();
 
             HashDigest<SHA256>? deepBlockHash = null;
 
-            Address genesisTarget = new PrivateKey().PublicKey.ToAddress();
+            Address genesisTarget = new PrivateKey().ToAddress();
             if (genesisWithAction)
             {
                 minerChain.MakeTransaction(
@@ -1879,7 +1879,7 @@ namespace Libplanet.Tests.Net
         public async Task PreloadWhilePeerTipIsChanging()
         {
             var key = new PrivateKey();
-            var address = key.PublicKey.ToAddress();
+            var address = key.ToAddress();
 
             var policy = new NullPolicy<DumbAction>();
 
@@ -1978,14 +1978,14 @@ namespace Libplanet.Tests.Net
             PrivateKey[] signers =
                 Enumerable.Repeat(0, 10).Select(_ => new PrivateKey()).ToArray();
             Address[] targets = Enumerable.Repeat(0, signers.Length).Select(_
-                => new PrivateKey().PublicKey.ToAddress()
+                => new PrivateKey().ToAddress()
             ).ToArray();
             (PrivateKey, Address)[] fixturePairs =
                 signers.Zip(targets, ValueTuple.Create).ToArray();
 
             HashDigest<SHA256>? deepBlockHash = null;
 
-            Address genesisTarget = new PrivateKey().PublicKey.ToAddress();
+            Address genesisTarget = new PrivateKey().ToAddress();
             minerChain.MakeTransaction(
                 signers[0],
                 new[] { new DumbAction(genesisTarget, "Genesis") }

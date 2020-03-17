@@ -113,7 +113,7 @@ namespace Libplanet.Tests.Tx
                 tx.UpdatedAddresses
             );
 
-            Address additionalAddr = new PrivateKey().PublicKey.ToAddress();
+            Address additionalAddr = new PrivateKey().ToAddress();
             var txWithAddr = Transaction<PolymorphicAction<BaseAction>>.Create(
                 0,
                 _fx.PrivateKey1,
@@ -211,7 +211,7 @@ namespace Libplanet.Tests.Tx
             };
             var tx = new Transaction<DumbAction>(
                 0,
-                privateKey.PublicKey.ToAddress(),
+                privateKey.ToAddress(),
                 privateKey.PublicKey,
                 ImmutableHashSet<Address>.Empty,
                 timestamp,
@@ -258,7 +258,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<DumbAction>(
                     0,
-                    privateKey.PublicKey.ToAddress(),
+                    privateKey.ToAddress(),
                     null,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
@@ -271,7 +271,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<DumbAction>(
                     0,
-                    privateKey.PublicKey.ToAddress(),
+                    privateKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
@@ -284,7 +284,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<ArgumentNullException>(() =>
                 new Transaction<DumbAction>(
                     0,
-                    privateKey.PublicKey.ToAddress(),
+                    privateKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
@@ -296,7 +296,7 @@ namespace Libplanet.Tests.Tx
             Assert.Throws<InvalidTxSignatureException>(() =>
                 new Transaction<DumbAction>(
                     0,
-                    privateKey.PublicKey.ToAddress(),
+                    privateKey.ToAddress(),
                     privateKey.PublicKey,
                     ImmutableHashSet<Address>.Empty,
                     timestamp,
@@ -551,9 +551,9 @@ namespace Libplanet.Tests.Tx
         {
             Address[] addresses =
             {
-                new PrivateKey().PublicKey.ToAddress(),
-                new PrivateKey().PublicKey.ToAddress(),
-                new PrivateKey().PublicKey.ToAddress(),
+                new PrivateKey().ToAddress(),
+                new PrivateKey().ToAddress(),
+                new PrivateKey().ToAddress(),
             };
             DumbAction[] actions =
             {
@@ -841,7 +841,7 @@ namespace Libplanet.Tests.Tx
             );
             var t2 = new Transaction<DumbAction>(
                 0,
-                _fx.PrivateKey1.PublicKey.ToAddress(),
+                _fx.PrivateKey1.ToAddress(),
                 _fx.PrivateKey1.PublicKey,
                 ImmutableHashSet<Address>.Empty,
                 t1.Timestamp,

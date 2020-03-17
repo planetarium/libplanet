@@ -119,7 +119,7 @@ namespace Libplanet.KeyStore
                 ImmutableArray.Create(privateKey.ByteArray)
             );
             ImmutableArray<byte> mac = CalculateMac(derivedKey, ciphertext);
-            Address address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.ToAddress();
             return new ProtectedPrivateKey(address, kdf, mac, cipher, ciphertext);
         }
 
@@ -324,7 +324,7 @@ namespace Libplanet.KeyStore
             ImmutableArray<byte> plaintext = Cipher.Decrypt(encKey, Ciphertext);
 
             var key = new PrivateKey(plaintext.ToArray());
-            Address actualAddress = key.PublicKey.ToAddress();
+            Address actualAddress = key.ToAddress();
             if (!Address.Equals(actualAddress))
             {
                 throw new MismatchedAddressException(

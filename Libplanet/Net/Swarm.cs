@@ -119,7 +119,7 @@ namespace Libplanet.Net
             TrustedAppProtocolVersionSigners =
                 trustedAppProtocolVersionSigners?.ToImmutableHashSet();
 
-            string loggerId = _privateKey.PublicKey.ToAddress().ToHex();
+            string loggerId = _privateKey.ToAddress().ToHex();
             _logger = Log.ForContext<Swarm<T>>()
                 .ForContext("SwarmId", loggerId);
 
@@ -153,7 +153,7 @@ namespace Libplanet.Net
 
         public DnsEndPoint EndPoint => AsPeer is BoundPeer boundPeer ? boundPeer.EndPoint : null;
 
-        public Address Address => _privateKey.PublicKey.ToAddress();
+        public Address Address => _privateKey.ToAddress();
 
         public Peer AsPeer => Transport.AsPeer;
 
@@ -1692,7 +1692,7 @@ namespace Libplanet.Net
                     {
                         _logger.Debug(
                             "Peer [{0}] didn't return any hashes; ignored.",
-                            peer.PublicKey.ToAddress().ToHex()
+                            peer.Address.ToHex()
                         );
                         return workspace;
                     }

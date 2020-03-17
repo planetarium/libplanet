@@ -24,5 +24,20 @@ namespace Libplanet
         {
             return new Address(publicKey);
         }
+
+        /// <summary>
+        /// Derives the corresponding <see cref="Address"/> from a <see
+        /// cref="PrivateKey"/>.
+        /// <para>This enables a code like <c>privateKey.ToAddress()</c> instead
+        /// of <c>new Address(privateKey.PublicKey)</c>.</para>
+        /// </summary>
+        /// <param name="privateKey">A <see cref="PrivateKey"/> to derive
+        /// the corresponding <see cref="Address"/> from.</param>
+        /// <returns>The corresponding <see cref="Address"/> derived from
+        /// <paramref name="privateKey"/>.</returns>
+        public static Address ToAddress(this PrivateKey privateKey)
+        {
+            return new Address(privateKey.PublicKey);
+        }
     }
 }

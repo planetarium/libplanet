@@ -708,7 +708,7 @@ namespace Libplanet.Tests.Blockchain
         {
             var miner = _fx.Address1;
             var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
+            var address = privateKey.ToAddress();
             var actions1 = new[] { new DumbAction(address, "foo") };
             var actions2 = new[] { new DumbAction(address, "bar") };
 
@@ -733,8 +733,8 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public void ForkStateReferences()
         {
-            Address addr1 = new PrivateKey().PublicKey.ToAddress();
-            Address addr2 = new PrivateKey().PublicKey.ToAddress();
+            Address addr1 = new PrivateKey().ToAddress();
+            Address addr2 = new PrivateKey().ToAddress();
 
             var actions1 = new[] { new DumbAction(addr1, "foo") };
             var actions2 = new[] { new DumbAction(addr2, "bar") };
@@ -912,12 +912,12 @@ namespace Libplanet.Tests.Blockchain
         {
             // An active account, so that its some recent transactions became "stale" due to a fork.
             var privateKey = new PrivateKey();
-            Address address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.ToAddress();
 
             // An inactive account, so that it has no recent transactions but only an old
             // transaction, so that its all transactions are stale-proof (stale-resistant).
             var lessActivePrivateKey = new PrivateKey();
-            Address lessActiveAddress = lessActivePrivateKey.PublicKey.ToAddress();
+            Address lessActiveAddress = lessActivePrivateKey.ToAddress();
 
             var actions = new[] { new DumbAction(address, "foo") };
 
@@ -1185,7 +1185,7 @@ namespace Libplanet.Tests.Blockchain
             for (int i = 0; i < addresses.Length; ++i)
             {
                 var privateKey = new PrivateKey();
-                Address address = privateKey.PublicKey.ToAddress();
+                Address address = privateKey.ToAddress();
                 addresses[i] = address;
                 DumbAction[] actions =
                 {
@@ -1236,7 +1236,7 @@ namespace Libplanet.Tests.Blockchain
             }
 
             tracker.ClearLogs();
-            Address nonexistent = new PrivateKey().PublicKey.ToAddress();
+            Address nonexistent = new PrivateKey().ToAddress();
             IValue result = chain.GetState(nonexistent);
             Assert.Null(result);
             var callCount = tracker.Logs.Where(
@@ -1377,7 +1377,7 @@ namespace Libplanet.Tests.Blockchain
         public async void GetStateReturnsLatestStatesWhenMultipleAddresses()
         {
             var privateKeys = Enumerable.Range(1, 10).Select(_ => new PrivateKey()).ToList();
-            var addresses = privateKeys.Select(k => k.PublicKey.ToAddress()).ToList();
+            var addresses = privateKeys.Select(AddressExtensions.ToAddress).ToList();
             var chain = new BlockChain<DumbAction>(
                 new NullPolicy<DumbAction>(),
                 _fx.Store,
@@ -1450,7 +1450,7 @@ namespace Libplanet.Tests.Blockchain
         public async void EvaluateActions()
         {
             PrivateKey fromPrivateKey = new PrivateKey();
-            Address fromAddress = fromPrivateKey.PublicKey.ToAddress();
+            Address fromAddress = fromPrivateKey.ToAddress();
             long blockIndex = 1;
 
             TestEvaluateAction action = new TestEvaluateAction();
@@ -1483,7 +1483,7 @@ namespace Libplanet.Tests.Blockchain
         public void GetNextTxNonce()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(_fx.Address1, "foo") };
             var genesis = _blockChain.Genesis;
 
@@ -1546,7 +1546,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task GetNextTxNonceWithStaleTx()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
+            var address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(address, "foo") };
 
             Transaction<DumbAction>[] txs =
@@ -1626,7 +1626,7 @@ namespace Libplanet.Tests.Blockchain
         public void MakeTransaction()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(address, "foo") };
 
             _blockChain.MakeTransaction(privateKey, actions);
@@ -1655,7 +1655,7 @@ namespace Libplanet.Tests.Blockchain
         public async Task MakeTransactionConcurrency()
         {
             var privateKey = new PrivateKey();
-            Address address = privateKey.PublicKey.ToAddress();
+            Address address = privateKey.ToAddress();
             var actions = new[] { new DumbAction(address, "foo") };
 
             var tasks = Enumerable.Range(0, 10)
@@ -1680,10 +1680,10 @@ namespace Libplanet.Tests.Blockchain
         public async void MineBlockWithBlockAction()
         {
             var privateKey1 = new PrivateKey();
-            var address1 = privateKey1.PublicKey.ToAddress();
+            var address1 = privateKey1.ToAddress();
 
             var privateKey2 = new PrivateKey();
-            var address2 = privateKey2.PublicKey.ToAddress();
+            var address2 = privateKey2.ToAddress();
 
             var blockAction = new DumbAction(address1, "foo");
             BlockPolicy<DumbAction> policy = new BlockPolicy<DumbAction>(blockAction);
@@ -1818,7 +1818,7 @@ namespace Libplanet.Tests.Blockchain
                 _fx.GenesisBlock
             );
             var privateKey = new PrivateKey();
-            Address signer = privateKey.PublicKey.ToAddress();
+            Address signer = privateKey.ToAddress();
 
             IImmutableDictionary<Address, IValue> GetDirty(
                 IEnumerable<ActionEvaluation> evaluations) =>
@@ -1845,7 +1845,7 @@ namespace Libplanet.Tests.Blockchain
                 GetDirty(b.Evaluate(DateTimeOffset.UtcNow, _ => null));
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
-                .Select(_ => new PrivateKey().PublicKey.ToAddress())
+                .Select(_ => new PrivateKey().ToAddress())
                 .ToArray();
             for (int i = 0; i < 2; ++i)
             {
@@ -2074,7 +2074,7 @@ namespace Libplanet.Tests.Blockchain
         private async Task IgnoreLowerNonceTxsAndMine()
         {
             var privateKey = new PrivateKey();
-            var address = privateKey.PublicKey.ToAddress();
+            var address = privateKey.ToAddress();
             var txsA = Enumerable.Range(0, 3)
                 .Select(nonce => _fx.MakeTransaction(
                     nonce: nonce, privateKey: privateKey, timestamp: DateTimeOffset.Now))
@@ -2105,14 +2105,9 @@ namespace Libplanet.Tests.Blockchain
 
         private sealed class TestEvaluateAction : IAction
         {
-            public static readonly Address SignerKey =
-                new PrivateKey().PublicKey.ToAddress();
-
-            public static readonly Address MinerKey =
-                new PrivateKey().PublicKey.ToAddress();
-
-            public static readonly Address BlockIndexKey =
-                new PrivateKey().PublicKey.ToAddress();
+            public static readonly Address SignerKey = new PrivateKey().ToAddress();
+            public static readonly Address MinerKey = new PrivateKey().ToAddress();
+            public static readonly Address BlockIndexKey = new PrivateKey().ToAddress();
 
             public TestEvaluateAction()
             {

@@ -11,7 +11,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void Constructor()
         {
-            Address address = new PrivateKey().PublicKey.ToAddress();
+            Address address = new PrivateKey().ToAddress();
             var evaluation = new ActionEvaluation(
                 new DumbAction(address, "item"),
                 new ActionContext(

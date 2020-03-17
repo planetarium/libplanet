@@ -38,9 +38,9 @@ namespace Libplanet.Tests.Net
                 using (var storeFx = new DefaultStoreFixture(memory: true))
                 {
                     var chain = TestUtils.MakeBlockChain(policy, storeFx.Store);
-                    Address miner = new PrivateKey().PublicKey.ToAddress();
+                    Address miner = new PrivateKey().ToAddress();
                     var signer = new PrivateKey();
-                    Address address = signer.PublicKey.ToAddress();
+                    Address address = signer.ToAddress();
                     Log.Logger.Information("Fixture blocks:");
                     for (int i = 0; i < 20; i++)
                     {

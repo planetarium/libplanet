@@ -19,7 +19,7 @@ namespace Libplanet.Tests.Net
         private static readonly AppProtocolVersion ValidClaimFixture = new AppProtocolVersion(
             version: 1,
             extra: null,
-            signer: SignerFixture.PublicKey.ToAddress(),
+            signer: SignerFixture.ToAddress(),
             signature: new byte[]
             {
                 0x30, 0x45, 0x02, 0x21, 0x00, 0x89, 0x95, 0x9c, 0x59, 0x25, 0x83, 0x4e,
@@ -34,7 +34,7 @@ namespace Libplanet.Tests.Net
         private static readonly AppProtocolVersion ValidClaimWExtraFixture = new AppProtocolVersion(
             version: 123,
             extra: (Bencodex.Types.Text)"foo",
-            signer: SignerFixture.PublicKey.ToAddress(),
+            signer: SignerFixture.ToAddress(),
             signature: new byte[]
             {
                 0x30, 0x44, 0x02, 0x20, 0x08, 0x5d, 0xd4, 0x4d, 0x2f, 0xa1, 0x57, 0xe0,
@@ -153,7 +153,7 @@ namespace Libplanet.Tests.Net
                 claim.Version,
                 claim.Extra,
                 claim.Signature,
-                new PrivateKey().PublicKey.ToAddress()
+                new PrivateKey().ToAddress()
             );
             Assert.False(((IEquatable<AppProtocolVersion>)claim).Equals(claim5));
             Assert.False(((object)claim).Equals(claim5));
