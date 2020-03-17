@@ -5,6 +5,8 @@
   font-style: normal;
   font-size: 17px;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
 }
 
 #wrapper header > nav {
@@ -25,6 +27,7 @@
 }
 
 #wrapper footer > .footer {
+  flex-shrink: 0;
   position: relative;
   z-index: 2;
   border-top: none;
@@ -39,6 +42,10 @@
 
 #wrapper .sidetoc.shiftup {
   bottom: 0;
+}
+
+#wrapper > .container {
+  flex: 1 0 auto;
 }
 
 #wrapper > .container > .article {
