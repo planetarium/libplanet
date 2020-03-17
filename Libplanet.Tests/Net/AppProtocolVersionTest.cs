@@ -9,6 +9,43 @@ namespace Libplanet.Tests.Net
 {
     public class AppProtocolVersionTest
     {
+        public static readonly PrivateKey SignerFixture = new PrivateKey(new byte[]
+        {
+            0x45, 0x7a, 0xfa, 0x94, 0x17, 0x78, 0x6e, 0x0c, 0xff, 0x4b, 0xa2,
+            0x5b, 0x35, 0x95, 0xe1, 0xfb, 0x2a, 0x54, 0x39, 0xf9, 0x0e, 0xd2,
+            0x9d, 0x39, 0xdf, 0x54, 0x57, 0x9b, 0x13, 0xea, 0x7c, 0x0f,
+        });
+
+        private static readonly AppProtocolVersion ValidClaimFixture = new AppProtocolVersion(
+            version: 1,
+            extra: null,
+            signer: SignerFixture.PublicKey.ToAddress(),
+            signature: new byte[]
+            {
+                0x30, 0x45, 0x02, 0x21, 0x00, 0x89, 0x95, 0x9c, 0x59, 0x25, 0x83, 0x4e,
+                0xbc, 0x45, 0x59, 0xd7, 0x9b, 0xca, 0x82, 0x4a, 0x69, 0x20, 0xe5, 0x18,
+                0xf0, 0xc5, 0xad, 0xe2, 0xb9, 0xa3, 0xa3, 0xb3, 0x29, 0xbb, 0xa3, 0x3d,
+                0xd8, 0x02, 0x20, 0x1d, 0xcb, 0x88, 0xa1, 0x3a, 0x3c, 0x19, 0x2d, 0xe1,
+                0x9e, 0x39, 0xf6, 0x58, 0x05, 0xd4, 0x06, 0xbf, 0xb2, 0x93, 0xd1, 0x64,
+                0x85, 0x75, 0xa8, 0xa2, 0xcb, 0x9f, 0x95, 0xd9, 0x90, 0xb9, 0x51,
+            }.ToImmutableArray()
+        );
+
+        private static readonly AppProtocolVersion ValidClaimWExtraFixture = new AppProtocolVersion(
+            version: 123,
+            extra: (Bencodex.Types.Text)"foo",
+            signer: SignerFixture.PublicKey.ToAddress(),
+            signature: new byte[]
+            {
+                0x30, 0x44, 0x02, 0x20, 0x08, 0x5d, 0xd4, 0x4d, 0x2f, 0xa1, 0x57, 0xe0,
+                0x01, 0xca, 0x6f, 0xca, 0x98, 0x8d, 0x7a, 0x1d, 0x13, 0x74, 0xcb, 0xc9,
+                0x26, 0xca, 0x3b, 0xc3, 0xdf, 0x14, 0x3d, 0x37, 0xe2, 0xad, 0x04, 0x88,
+                0x02, 0x20, 0x16, 0xd4, 0xae, 0x72, 0x42, 0x31, 0x63, 0xe9, 0x73, 0x99,
+                0x50, 0x0b, 0xb9, 0x19, 0x49, 0xa1, 0xf2, 0xbb, 0x63, 0x20, 0x99, 0x5a,
+                0x77, 0xd2, 0x15, 0xfd, 0xbd, 0x59, 0x99, 0xec, 0x5c, 0x51,
+            }.ToImmutableArray()
+        );
+
         [Fact]
         public void Sign()
         {
@@ -35,49 +72,29 @@ namespace Libplanet.Tests.Net
         [Fact]
         public void Verify()
         {
-            var signer = new PrivateKey(new byte[]
-            {
-                0x45, 0x7a, 0xfa, 0x94, 0x17, 0x78, 0x6e, 0x0c, 0xff, 0x4b, 0xa2,
-                0x5b, 0x35, 0x95, 0xe1, 0xfb, 0x2a, 0x54, 0x39, 0xf9, 0x0e, 0xd2,
-                0x9d, 0x39, 0xdf, 0x54, 0x57, 0x9b, 0x13, 0xea, 0x7c, 0x0f,
-            });
-            PublicKey signerPublicKey = signer.PublicKey;
+            PublicKey signerPublicKey = SignerFixture.PublicKey;
             var otherParty = new PrivateKey();
             PublicKey otherPartyPublicKey = otherParty.PublicKey;
 
-            var validClaim = new AppProtocolVersion(
-                version: 1,
-                extra: null,
-                signer: signerPublicKey.ToAddress(),
-                signature: new byte[]
-                {
-                    0x30, 0x45, 0x02, 0x21, 0x00, 0x89, 0x95, 0x9c, 0x59, 0x25, 0x83, 0x4e,
-                    0xbc, 0x45, 0x59, 0xd7, 0x9b, 0xca, 0x82, 0x4a, 0x69, 0x20, 0xe5, 0x18,
-                    0xf0, 0xc5, 0xad, 0xe2, 0xb9, 0xa3, 0xa3, 0xb3, 0x29, 0xbb, 0xa3, 0x3d,
-                    0xd8, 0x02, 0x20, 0x1d, 0xcb, 0x88, 0xa1, 0x3a, 0x3c, 0x19, 0x2d, 0xe1,
-                    0x9e, 0x39, 0xf6, 0x58, 0x05, 0xd4, 0x06, 0xbf, 0xb2, 0x93, 0xd1, 0x64,
-                    0x85, 0x75, 0xa8, 0xa2, 0xcb, 0x9f, 0x95, 0xd9, 0x90, 0xb9, 0x51,
-                }.ToImmutableArray()
-            );
-            Assert.True(validClaim.Verify(signerPublicKey));
-            Assert.False(validClaim.Verify(otherPartyPublicKey));
+            Assert.True(ValidClaimFixture.Verify(signerPublicKey));
+            Assert.False(ValidClaimFixture.Verify(otherPartyPublicKey));
 
             // A signature is no more valid for a different version.
             var invalidVersionClaim = new AppProtocolVersion(
-                version: validClaim.Version + 1,
-                extra: validClaim.Extra,
-                signer: validClaim.Signer,
-                signature: validClaim.Signature
+                version: ValidClaimFixture.Version + 1,
+                extra: ValidClaimFixture.Extra,
+                signer: ValidClaimFixture.Signer,
+                signature: ValidClaimFixture.Signature
             );
             Assert.False(invalidVersionClaim.Verify(signerPublicKey));
             Assert.False(invalidVersionClaim.Verify(otherPartyPublicKey));
 
             // A signature is no more valid for a different extra data.
             var invalidExtraClaim = new AppProtocolVersion(
-                version: validClaim.Version,
+                version: ValidClaimFixture.Version,
                 extra: (Bencodex.Types.Text)"invalid extra",
-                signer: validClaim.Signer,
-                signature: validClaim.Signature
+                signer: ValidClaimFixture.Signer,
+                signature: ValidClaimFixture.Signature
             );
             Assert.False(invalidExtraClaim.Verify(signerPublicKey));
             Assert.False(invalidExtraClaim.Verify(otherPartyPublicKey));
@@ -85,10 +102,10 @@ namespace Libplanet.Tests.Net
             // If a signer field does not correspond to an actual private key which signed
             // a signature a claim is invalid even if a signature in itself is valid.
             var invalidSigner = new AppProtocolVersion(
-                version: validClaim.Version,
-                extra: validClaim.Extra,
+                version: ValidClaimFixture.Version,
+                extra: ValidClaimFixture.Extra,
                 signer: otherPartyPublicKey.ToAddress(),
-                signature: validClaim.Signature
+                signature: ValidClaimFixture.Signature
             );
             Assert.False(invalidSigner.Verify(signerPublicKey));
             Assert.False(invalidSigner.Verify(otherPartyPublicKey));
@@ -187,6 +204,88 @@ namespace Libplanet.Tests.Net
             AppProtocolVersion claimWithExtra =
                 AppProtocolVersion.Sign(signer, 456, (Bencodex.Types.Text)"extra");
             Assert.Equal("456 (Bencodex.Types.Text \"extra\")", claimWithExtra.ToString());
+        }
+
+        [Fact]
+        public void Token()
+        {
+            var expected =
+                "1/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+yk9Fk" +
+                "hXWoosufldmQuVE=";
+            Assert.Equal(expected, ValidClaimFixture.Token);
+
+            expected =
+                "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                "MEQCIAhd1E0voVfgAcpvypiNeh0TdMvJJso7w98UPTfirQSIAiAW1K5yQjFj6XOZUAu5GUmh8rtjIJla" +
+                "d9IV.b1ZmexcUQ==/" +
+                "dTM6Zm9v";
+            Assert.Equal(expected, ValidClaimWExtraFixture.Token);
+        }
+
+        [Fact]
+        public void FromToken()
+        {
+            Assert.Equal(
+                ValidClaimFixture,
+                AppProtocolVersion.FromToken(
+                    "1/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                    "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+y" +
+                    "k9FkhXWoosufldmQuVE="
+                )
+            );
+            Assert.Equal(
+                ValidClaimWExtraFixture,
+                AppProtocolVersion.FromToken(
+                    "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                    "MEQCIAhd1E0voVfgAcpvypiNeh0TdMvJJso7w98UPTfirQSIAiAW1K5yQjFj6XOZUAu5GUmh8rtj" +
+                    "IJlad9IV.b1ZmexcUQ==/" +
+                    "dTM6Zm9v"
+                )
+            );
+
+            // No first delimiter
+            Assert.Throws<FormatException>(() => AppProtocolVersion.FromToken("123"));
+
+            // No second delimiter
+            Assert.Throws<FormatException>(() =>
+                AppProtocolVersion.FromToken("123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4")
+            );
+
+            // A version is not an integer
+            Assert.Throws<FormatException>(() =>
+                AppProtocolVersion.FromToken(
+                    "INCORRECT/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                    "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+y" +
+                    "k9FkhXWoosufldmQuVE="
+                )
+            );
+
+            // A signer address is incorrect
+            Assert.Throws<FormatException>(() =>
+                AppProtocolVersion.FromToken(
+                    "123/INCORRECT/" +
+                    "MEUCIQCJlZxZJYNOvEVZ15vKgkppIOUY8MWt4rmjo7Mpu6M92AIgHcuIoTo8GS3hnjn2WAXUBr+y" +
+                    "k9FkhXWoosufldmQuVE="
+                )
+            );
+
+            // A signature is not a valid base64 string
+            Assert.Throws<FormatException>(() =>
+                AppProtocolVersion.FromToken(
+                    "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/_INCORRECT_"
+                )
+            );
+
+            // An extra data is not a valid base64 string
+            Assert.Throws<FormatException>(() =>
+                AppProtocolVersion.FromToken(
+                    "123/271e00B29aeB93B2F4e30ECbebA4f72ac02f72b4/" +
+                    "MEQCIAhd1E0voVfgAcpvypiNeh0TdMvJJso7w98UPTfirQSIAiAW1K5yQjFj6XOZUAu5GUmh8rtj" +
+                    "IJlad9IV.b1ZmexcUQ==/" +
+                    "_INCORRECT_"
+                )
+            );
         }
     }
 }
