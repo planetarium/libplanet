@@ -495,6 +495,48 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void AppendWithIsTransactionValid()
+        {
+            var validKey = new PrivateKey();
+            var invalidKey = new PrivateKey();
+
+            bool IsTransactionValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            using (var fx = new DefaultStoreFixture())
+            {
+                var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
+
+                var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
+                var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+                var miner = new PrivateKey().PublicKey.ToAddress();
+
+                Block<DumbAction> block1 = TestUtils.MineNext(
+                    fx.GenesisBlock,
+                    new[] { validTx },
+                    miner: miner,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10));
+
+                blockChain.Append(block1);
+
+                Block<DumbAction> block2 = TestUtils.MineNext(
+                    block1,
+                    new[] { invalidTx },
+                    miner: miner,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10));
+
+                Assert.Throws<InvalidTxByBlockPolicyException>(() => blockChain.Append(block2));
+            }
+        }
+
+        [Fact]
         public void UnstageAfterAppendComplete()
         {
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;

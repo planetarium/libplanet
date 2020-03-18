@@ -761,6 +761,13 @@ namespace Libplanet.Blockchain
                 // the tx nounce order when the block was created
                 foreach (Transaction<T> tx1 in block.Transactions)
                 {
+                    if (!Policy.IsTransactionValid(tx1))
+                    {
+                        throw new InvalidTxByBlockPolicyException(
+                            tx1.Id,
+                            "According to BlockPolicy, this transaction is not valid.");
+                    }
+
                     Address txSigner = tx1.Signer;
                     nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
 
