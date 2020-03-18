@@ -26,7 +26,7 @@ To be released.
     represented as an `Int32` became retyped to `AppProtocolVersion`.
     [[#266], [#815]]
      -  `Swarm()` constructor's parameter `appProtocolVersion` became
-        `AppProtocolVersion` (was `Int32`). 
+        `AppProtocolVersion` (was `Int32`).
      -  `Peer()` and `BoundPeer()` constructors' parameter `appProtocolVersion`
         became `AppProtocolVersion` (was `Int32`).
      -  `Peer.AppProtocolVersion` property became `AppProtocolVersion`
@@ -51,6 +51,8 @@ To be released.
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
     that receives only one transaction.  [[#820]]
+ -  Added `IBlockPolicy.IsTransactionValid` method which is a method to
+    determine if a transaction is valid.  [[#827]]
 
 ### Backward-incompatible network protocol changes
 
@@ -83,6 +85,7 @@ To be released.
  -  Added `Swarm<T>.TrustedAppProtocolVersionSigners` property.
     [[#266], [#815]]
  -  Added `Peer.IsCompatibleWith()` method.  [[#266], [#815]]
+ -  Added `InvalidTxByBlockPolicyException` class.  [[#827]]
 
 ### Behavioral changes
 
