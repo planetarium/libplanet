@@ -14,6 +14,11 @@ namespace Libplanet.Tests.Net
         {
             var signer = new PrivateKey();
             AppProtocolVersion ver = AppProtocolVersion.Sign(signer, 1);
+            AppProtocolVersion ver2 = AppProtocolVersion.Sign(
+                signer: signer,
+                version: 2,
+                extra: Bencodex.Types.Dictionary.Empty.Add("foo", 123).Add("bar", 456)
+            );
             yield return new object[]
             {
                 new BoundPeer(
@@ -28,7 +33,7 @@ namespace Libplanet.Tests.Net
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
                     new DnsEndPoint("0.0.0.0", 1234),
-                    ver,
+                    default(AppProtocolVersion),
                     IPAddress.IPv6Loopback),
             };
             yield return new object[]
@@ -76,7 +81,7 @@ namespace Libplanet.Tests.Net
                         0x32, 0xfd, 0xa7, 0xdd, 0xc4, 0x4a, 0x16, 0x95, 0xe5, 0xce,
                         0x1a, 0x3d, 0x3c, 0x76, 0xdb,
                     }),
-                    ver),
+                    ver2),
             };
         }
 
