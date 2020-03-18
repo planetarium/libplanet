@@ -12,6 +12,7 @@ using Libplanet.Action;
 using Libplanet.Blocks;
 using Nito.AsyncEx;
 using Serilog;
+using Serilog.Events;
 
 namespace Libplanet.Net
 {
@@ -63,13 +64,16 @@ namespace Libplanet.Net
                      QueuedDemandCompleted()))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                _logger.Verbose(
-                    "Waiting a demand enqueued...\n" +
-                    "Demands in the buffer: {DemandCount}.\n" +
-                    "Incomplete downloads: {IncompleteDownloads}.",
-                    chunk.Count,
-                    _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
-                );
+                if (_logger.IsEnabled(LogEventLevel.Verbose))
+                {
+                    _logger.Verbose(
+                        "Waiting a demand enqueued...\n" +
+                        "Demands in the buffer: {DemandCount}.\n" +
+                        "Incomplete downloads: {IncompleteDownloads}.",
+                        chunk.Count,
+                        _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
+                    );
+                }
 
                 await _demandEnqueued.WaitAsync(100, cancellationToken);
                 if (_demands.TryDequeue(out HashDigest<SHA256> demand))
@@ -88,14 +92,17 @@ namespace Libplanet.Net
                 }
                 else
                 {
-                    _logger.Verbose(
-                        "The number of buffered demands: {DemandCount}.\n" +
-                        "The number of demands in the backlog: {BacklogCount}.\n" +
-                        "The number of incomplete downloads: {IncompleteDownloads}.",
-                        chunk.Count,
-                        _demands.Count,
-                        _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
-                    );
+                    if (_logger.IsEnabled(LogEventLevel.Verbose))
+                    {
+                        _logger.Verbose(
+                            "The number of buffered demands: {DemandCount}.\n" +
+                            "The number of demands in the backlog: {BacklogCount}.\n" +
+                            "The number of incomplete downloads: {IncompleteDownloads}.",
+                            chunk.Count,
+                            _demands.Count,
+                            _satisfiedBlocks.Count(kv => !kv.Value && !chunk.Contains(kv.Key))
+                        );
+                    }
                 }
             }
 
