@@ -96,10 +96,17 @@ namespace Libplanet.Explorer.Executable
                 }
 
                 Console.WriteLine("Creating Swarm.");
+
+                var privateKey = new PrivateKey();
+
+                // FIXME: The appProtocolVersion should be fixed properly.
                 swarm = new Swarm<AppAgnosticAction>(
                     blockChain,
-                    new PrivateKey(),
-                    1,
+                    privateKey,
+                    options.AppProtocolVersionToken is string t
+                        ? AppProtocolVersion.FromToken(t)
+                        : default(AppProtocolVersion),
+                    differentAppProtocolVersionEncountered: (p, pv, lv) => true,
                     iceServers: new[] { options.IceServer }
                 );
             }
