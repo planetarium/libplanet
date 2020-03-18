@@ -3896,7 +3896,14 @@ references:
 - uid: Libplanet.Net.AppProtocolVersion.Signature
   name: Signature
   href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature
-  commentId: F:Libplanet.Net.AppProtocolVersion.Signature
+  commentId: P:Libplanet.Net.AppProtocolVersion.Signature
+  fullName: Libplanet.Net.AppProtocolVersion.Signature
+  nameWithType: AppProtocolVersion.Signature
+- uid: Libplanet.Net.AppProtocolVersion.Signature*
+  name: Signature
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Signature_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.Signature
+  isSpec: "True"
   fullName: Libplanet.Net.AppProtocolVersion.Signature
   nameWithType: AppProtocolVersion.Signature
 - uid: Libplanet.Net.AppProtocolVersion.Signer
