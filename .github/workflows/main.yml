@@ -11,6 +11,7 @@ name: main
 
 jobs:
   build:
+    if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
     name: dist
     runs-on: ubuntu-18.04
     steps:
@@ -47,12 +48,13 @@ jobs:
       run: .github/bin/dist-github-release.sh
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: github.event_name != 'pull_request'
+    - if: github.event_name != 'pull_request' && env.NUGET_API_KEY != ''
       run: .github/bin/dist-nuget.sh
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
   docs:
+    if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
     name: docs
     runs-on: ubuntu-18.04
     steps:
@@ -85,7 +87,7 @@ jobs:
           --state=success
           --url="$(cat Docs/obj/url.txt)"
           --token="$GH_CHECK_STATUS_TOKEN"
-      if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request' && env.GH_CHECK_STATUS_TOKEN != ''
 
   bundle:
     name: bundle
