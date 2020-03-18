@@ -287,5 +287,13 @@ namespace Libplanet.Tests.Net
                 )
             );
         }
+
+        [Fact]
+        public void DefaultConstructor()
+        {
+            ImmutableArray<byte> defaultSig = default(AppProtocolVersion).Signature;
+            Assert.False(defaultSig.IsDefault);
+            Assert.True(defaultSig.IsEmpty);
+        }
     }
 }

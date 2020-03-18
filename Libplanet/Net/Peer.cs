@@ -70,6 +70,7 @@ namespace Libplanet.Net
         /// <summary>
         /// The corresponding application protocol version of this peer.
         /// </summary>
+        // FIXME: This would be better to be nullable...
         [IgnoreDuringEquals]
         [Pure]
         public AppProtocolVersion AppProtocolVersion { get; }

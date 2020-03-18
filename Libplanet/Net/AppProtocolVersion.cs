@@ -35,16 +35,13 @@ namespace Libplanet.Net
         public readonly IValue Extra;
 
         /// <summary>
-        /// A signature which verifies <seealso cref="Signer"/>'s claim of a version.
-        /// </summary>
-        public readonly ImmutableArray<byte> Signature;
-
-        /// <summary>
         /// A signer who claims presence of a version.
         /// </summary>
         public readonly Address Signer;
 
         private static readonly Codec _codec = new Codec();
+
+        private readonly ImmutableArray<byte> _signature;
 
         /// <summary>
         /// Initializes an <see cref="AppProtocolVersion"/> value with field values.
@@ -62,9 +59,15 @@ namespace Libplanet.Net
         {
             Version = version;
             Extra = extra;
-            Signature = signature;
+            _signature = signature;
             Signer = signer;
         }
+
+        /// <summary>
+        /// A signature which verifies <seealso cref="Signer"/>'s claim of a version.
+        /// </summary>
+        public ImmutableArray<byte> Signature =>
+            _signature.IsDefault ? ImmutableArray<byte>.Empty : _signature;
 
         /// <summary>
         /// A token string which serializes an <see cref="AppProtocolVersion"/>.
