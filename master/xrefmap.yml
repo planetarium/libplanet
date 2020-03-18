@@ -800,6 +800,12 @@ references:
   commentId: T:Libplanet.AddressExtensions
   fullName: Libplanet.AddressExtensions
   nameWithType: AddressExtensions
+- uid: Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
+  name: ToAddress(PrivateKey)
+  href: api/Libplanet.AddressExtensions.html#Libplanet_AddressExtensions_ToAddress_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PrivateKey)
+  nameWithType: AddressExtensions.ToAddress(PrivateKey)
 - uid: Libplanet.AddressExtensions.ToAddress(Libplanet.Crypto.PublicKey)
   name: ToAddress(PublicKey)
   href: api/Libplanet.AddressExtensions.html#Libplanet_AddressExtensions_ToAddress_Libplanet_Crypto_PublicKey_
@@ -3822,6 +3828,19 @@ references:
   commentId: F:Libplanet.Net.AppProtocolVersion.Extra
   fullName: Libplanet.Net.AppProtocolVersion.Extra
   nameWithType: AppProtocolVersion.Extra
+- uid: Libplanet.Net.AppProtocolVersion.FromToken(System.String)
+  name: FromToken(String)
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_FromToken_System_String_
+  commentId: M:Libplanet.Net.AppProtocolVersion.FromToken(System.String)
+  fullName: Libplanet.Net.AppProtocolVersion.FromToken(System.String)
+  nameWithType: AppProtocolVersion.FromToken(String)
+- uid: Libplanet.Net.AppProtocolVersion.FromToken*
+  name: FromToken
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_FromToken_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.FromToken
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.FromToken
+  nameWithType: AppProtocolVersion.FromToken
 - uid: Libplanet.Net.AppProtocolVersion.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_GetHashCode
@@ -3886,6 +3905,19 @@ references:
   commentId: F:Libplanet.Net.AppProtocolVersion.Signer
   fullName: Libplanet.Net.AppProtocolVersion.Signer
   nameWithType: AppProtocolVersion.Signer
+- uid: Libplanet.Net.AppProtocolVersion.Token
+  name: Token
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Token
+  commentId: P:Libplanet.Net.AppProtocolVersion.Token
+  fullName: Libplanet.Net.AppProtocolVersion.Token
+  nameWithType: AppProtocolVersion.Token
+- uid: Libplanet.Net.AppProtocolVersion.Token*
+  name: Token
+  href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_Token_
+  commentId: Overload:Libplanet.Net.AppProtocolVersion.Token
+  isSpec: "True"
+  fullName: Libplanet.Net.AppProtocolVersion.Token
+  nameWithType: AppProtocolVersion.Token
 - uid: Libplanet.Net.AppProtocolVersion.ToString
   name: ToString()
   href: api/Libplanet.Net.AppProtocolVersion.html#Libplanet_Net_AppProtocolVersion_ToString
