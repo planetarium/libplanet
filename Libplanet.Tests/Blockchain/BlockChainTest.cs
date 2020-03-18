@@ -113,6 +113,38 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async void MineBlockWithIsTransactionValid()
+        {
+            var validKey = new PrivateKey();
+            var invalidKey = new PrivateKey();
+
+            bool IsTransactionValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            using (var fx = new DefaultStoreFixture())
+            {
+                var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
+
+                var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
+                var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+                var miner = new PrivateKey().PublicKey.ToAddress();
+                var block = await blockChain.MineBlock(miner);
+
+                var txs = block.Transactions.ToHashSet();
+
+                Assert.Contains(validTx, txs);
+                Assert.DoesNotContain(invalidTx, txs);
+
+                Assert.Empty(blockChain.GetStagedTransactionIds());
+            }
+        }
+
+        [Fact]
         public async void CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
