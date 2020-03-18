@@ -66,6 +66,8 @@ To be released.
 
 ### Added APIs
 
+ -  Added `AddressExtensions.ToAddress(this PrivateKey)` overloaded extension
+    method.  [[#825]]
  -  Added `BlockHashDownloadState` class, a subclass of `PreloadState`.
     [[#707], [#798]]
  -  Added `BlockVerificationState` class, a subclass of `PreloadState`.
@@ -120,6 +122,7 @@ To be released.
 [#803]: https://github.com/planetarium/libplanet/pull/803
 [#815]: https://github.com/planetarium/libplanet/pull/815
 [#820]: https://github.com/planetarium/libplanet/pull/820
+[#825]: https://github.com/planetarium/libplanet/pull/825
 
 
 Version 0.8.0

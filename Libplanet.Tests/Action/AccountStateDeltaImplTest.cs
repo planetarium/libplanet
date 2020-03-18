@@ -14,7 +14,7 @@ namespace Libplanet.Tests.Action
 
         public AccountStateDeltaImplTest()
         {
-            Address Addr() => new PrivateKey().PublicKey.ToAddress();
+            Address Addr() => new PrivateKey().ToAddress();
 
             _addr = new[]
             {

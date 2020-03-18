@@ -66,6 +66,38 @@ namespace Libplanet.Net
             Signer = signer;
         }
 
+        /// <summary>
+        /// A token string which serializes an <see cref="AppProtocolVersion"/>.
+        /// <para>As this is designed to be easy to copy and paste, the format consists of only
+        /// printable characters in the ASCII character set.</para>
+        /// <para>A token can be deserialized into an <see cref="AppProtocolVersion"/> through
+        /// <see cref="FromToken(string)"/> method.</para>
+        /// </summary>
+        /// <seealso cref="FromToken(string)"/>
+        [Pure]
+        public string Token
+        {
+            get
+            {
+                string sig = Convert.ToBase64String(
+                    Signature.ToBuilder().ToArray(),
+                    Base64FormattingOptions.None
+                ).Replace('/', '.');
+                var prefix =
+                    $"{Version.ToString(CultureInfo.InvariantCulture)}/{Signer.ToHex()}/{sig}";
+                if (Extra is null)
+                {
+                    return prefix;
+                }
+
+                string extra = Convert.ToBase64String(
+                    _codec.Encode(Extra),
+                    Base64FormattingOptions.None
+                ).Replace('/', '.');
+                return $"{prefix}/{extra}";
+            }
+        }
+
         [Pure]
         public static bool operator ==(AppProtocolVersion left, AppProtocolVersion right) =>
             left.Equals(right);
@@ -97,6 +129,86 @@ namespace Libplanet.Net
                 ImmutableArray.Create(signer.Sign(GetMessage(version, extra))),
                 new Address(signer.PublicKey)
             );
+        }
+
+        /// <summary>
+        /// Deserializes a <see cref="Token"/> into an <see cref="AppProtocolVersion"/> object.
+        /// </summary>
+        /// <param name="token">A <see cref="Token"/> string.</param>
+        /// <returns>A deserialized <see cref="AppProtocolVersion"/> object.</returns>
+        /// <exception cref="FormatException">Thrown when the given <paramref name="token"/>'s
+        /// format is invalid.  The detailed reason is in the message.</exception>
+        /// <seealso cref="Token"/>
+        public static AppProtocolVersion FromToken(string token)
+        {
+            int pos, pos2;
+            pos = token.IndexOf('/');
+            if (pos < 0)
+            {
+                throw new FormatException("Failed to find the first field delimiter.");
+            }
+
+            int version;
+            try
+            {
+                version = int.Parse(token.Substring(0, pos), CultureInfo.InvariantCulture);
+            }
+            catch (Exception e) when (e is OverflowException || e is FormatException)
+            {
+                throw new FormatException($"Failed to parse a version number: {e}", e);
+            }
+
+            pos++;
+            pos2 = token.IndexOf('/', pos);
+            if (pos2 < 0)
+            {
+                throw new FormatException("Failed to find the second field delimiter.");
+            }
+
+            Address signer;
+            try
+            {
+                signer = new Address(token.Substring(pos, pos2 - pos));
+            }
+            catch (ArgumentException e)
+            {
+                throw new FormatException($"Failed to parse a signer address: {e}", e);
+            }
+
+            pos2++;
+            pos = token.IndexOf('/', pos2);
+            string sigEncoded = pos < 0 ? token.Substring(pos2) : token.Substring(pos2, pos - pos2);
+
+            ImmutableArray<byte> sig;
+            try
+            {
+                sig = ImmutableArray.Create(Convert.FromBase64String(sigEncoded.Replace('.', '/')));
+            }
+            catch (FormatException e)
+            {
+                throw new FormatException($"Failed to parse a signature: {e}", e);
+            }
+
+            IValue extra = null;
+            if (pos >= 0)
+            {
+                pos++;
+                string extraEncoded = token.Substring(pos);
+                byte[] extraBytes = Convert.FromBase64String(extraEncoded.Replace('.', '/'));
+                try
+                {
+                    extra = _codec.Decode(extraBytes);
+                }
+                catch (DecodingException e)
+                {
+                    throw new FormatException(
+                        $"Failed to parse extra data (offset = {pos}): {e}",
+                        e
+                    );
+                }
+            }
+
+            return new AppProtocolVersion(version, extra, sig, signer);
         }
 
         /// <summary>

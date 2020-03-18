@@ -51,7 +51,7 @@ namespace Libplanet.Tests.Blocks
             );
 
             // For transactions signed by the same signer, these should be ordered by its tx nonce.
-            Address[] signers = privKeys.Select(pk => pk.PublicKey.ToAddress()).ToArray();
+            Address[] signers = privKeys.Select(AddressExtensions.ToAddress).ToArray();
             foreach (Address signer in signers)
             {
                 IEnumerable<Transaction<DumbAction>> signersTxs =
@@ -380,7 +380,7 @@ namespace Libplanet.Tests.Blocks
         {
             RawTransaction rawTxWithoutSig = new RawTransaction(
                 0,
-                new PrivateKey().PublicKey.ToAddress().ByteArray,
+                new PrivateKey().ToAddress().ByteArray,
                 ImmutableArray<ImmutableArray<byte>>.Empty,
                 _fx.TxFixture.PublicKey1.Format(false).ToImmutableArray(),
                 DateTimeOffset.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"),

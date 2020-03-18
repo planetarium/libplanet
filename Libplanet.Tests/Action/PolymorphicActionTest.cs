@@ -12,7 +12,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void PlainValue()
         {
-            var addr = new PrivateKey().PublicKey.ToAddress();
+            var addr = new PrivateKey().ToAddress();
             var pa = new PolymorphicAction<BaseAction>(
                 new Attack
                 {
@@ -39,7 +39,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void LoadPlainValue()
         {
-            var addr = new PrivateKey().PublicKey.ToAddress();
+            var addr = new PrivateKey().ToAddress();
 #pragma warning disable 612
             var pa = new PolymorphicAction<BaseAction>();
 #pragma warning restore 612
@@ -66,7 +66,7 @@ namespace Libplanet.Tests.Action
         [Fact]
         public void ImplicitlyCastFromInnerActionType()
         {
-            var addr = new PrivateKey().PublicKey.ToAddress();
+            var addr = new PrivateKey().ToAddress();
             var a = new Attack
             {
                 Weapon = "frying pan",

@@ -63,7 +63,7 @@ namespace Libplanet.Tests.Store
         [Fact]
         public void StateRefDocBlockHash()
         {
-            var address = new PrivateKey().PublicKey.ToAddress();
+            var address = new PrivateKey().ToAddress();
             var random = new Random();
             var bytes = new byte[32];
             random.NextBytes(bytes);
