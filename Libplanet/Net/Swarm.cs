@@ -2173,6 +2173,11 @@ namespace Libplanet.Net
                             tx.Id
                         );
                     }
+
+                    if (!BlockChain.Policy.IsTransactionValid(tx))
+                    {
+                        BlockChain.UnstageTransaction(tx);
+                    }
                 }
 
                 TxReceived.Set();

@@ -2495,6 +2495,59 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task UnstageInvalidTransaction()
+        {
+            var validKey = new PrivateKey();
+            bool IsTransactionValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            var fx1 = new DefaultStoreFixture();
+            var fx2 = new DefaultStoreFixture();
+
+            var swarmA = CreateSwarm(
+                TestUtils.MakeBlockChain(policy, fx1.Store, privateKey: validKey));
+            var swarmB = CreateSwarm(
+                TestUtils.MakeBlockChain(policy, fx2.Store, privateKey: validKey));
+
+            var invalidKey = new PrivateKey();
+
+            try
+            {
+                var validTx = swarmA.BlockChain.MakeTransaction(validKey, new DumbAction[] { });
+                var invalidTx = swarmA.BlockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+                await StartAsync(swarmA);
+                await StartAsync(swarmB);
+
+                await BootstrapAsync(swarmA, swarmB.AsPeer);
+
+                swarmA.BroadcastTxs(new[] { validTx, invalidTx });
+                await swarmB.TxReceived.WaitAsync();
+
+                Assert.Equal(swarmB.BlockChain.GetTransaction(validTx.Id), validTx);
+                Assert.Equal(swarmB.BlockChain.GetTransaction(invalidTx.Id), invalidTx);
+
+                Assert.Contains(validTx.Id, swarmB.BlockChain.GetStagedTransactionIds());
+                Assert.DoesNotContain(invalidTx.Id, swarmB.BlockChain.GetStagedTransactionIds());
+            }
+            finally
+            {
+                await StopAsync(swarmA);
+                await StopAsync(swarmB);
+
+                swarmA.Dispose();
+                swarmB.Dispose();
+
+                fx1.Dispose();
+                fx2.Dispose();
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task CreateNewChainWhenBranchPointNotExist()
         {
             // If the bucket stored peers are the same, the block may not propagate,
