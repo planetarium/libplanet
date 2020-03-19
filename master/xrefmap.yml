@@ -1380,22 +1380,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T)
   nameWithType: BlockPolicy<T>
   nameWithType.vb: BlockPolicy(Of T)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32)
-  name: BlockPolicy(IAction, Int32, Int64, Int32)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32)
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32)
-- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32)
-  name: BlockPolicy(IAction, TimeSpan, Int64, Int32)
-  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_
-  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32)
-  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32)
-  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32)
-  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32)
-  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32)
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
+  name: BlockPolicy(IAction, Int32, Int64, Int32, Predicate<Transaction<T>>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_System_Int32_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,System.Int32,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
+  name.vb: BlockPolicy(IAction, Int32, Int64, Int32, Predicate(Of Transaction(Of T)))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Predicate<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, System.Int32, System.Int64, System.Int32, Predicate(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, Int32, Int64, Int32, Predicate<Transaction<T>>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, Int32, Int64, Int32, Predicate(Of Transaction(Of T)))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
+  name: BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate<Transaction<T>>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_Libplanet_Action_IAction_TimeSpan_System_Int64_System_Int32_Predicate_Libplanet_Tx_Transaction__0___
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor(Libplanet.Action.IAction,TimeSpan,System.Int64,System.Int32,Predicate{Libplanet.Tx.Transaction{`0}})
+  name.vb: BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate(Of Transaction(Of T)))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Predicate<Libplanet.Tx.Transaction<T>>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockPolicy(Libplanet.Action.IAction, TimeSpan, System.Int64, System.Int32, Predicate(Of Libplanet.Tx.Transaction(Of T)))
+  nameWithType: BlockPolicy<T>.BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate<Transaction<T>>)
+  nameWithType.vb: BlockPolicy(Of T).BlockPolicy(IAction, TimeSpan, Int64, Int32, Predicate(Of Transaction(Of T)))
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.#ctor*
   name: BlockPolicy
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1__ctor_
@@ -1439,6 +1441,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).BlockInterval
   nameWithType: BlockPolicy<T>.BlockInterval
   nameWithType.vb: BlockPolicy(Of T).BlockInterval
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
+  name: DoesTransactionFollowsPolicy(Transaction<T>)
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
+  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T))
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T))
+  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>)
+  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy*
+  name: DoesTransactionFollowsPolicy
+  href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_DoesTransactionFollowsPolicy_
+  commentId: Overload:Libplanet.Blockchain.Policies.BlockPolicy`1.DoesTransactionFollowsPolicy
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.BlockPolicy<T>.DoesTransactionFollowsPolicy
+  fullName.vb: Libplanet.Blockchain.Policies.BlockPolicy(Of T).DoesTransactionFollowsPolicy
+  nameWithType: BlockPolicy<T>.DoesTransactionFollowsPolicy
+  nameWithType.vb: BlockPolicy(Of T).DoesTransactionFollowsPolicy
 - uid: Libplanet.Blockchain.Policies.BlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.BlockPolicy-1.html#Libplanet_Blockchain_Policies_BlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
@@ -1501,6 +1521,24 @@ references:
   fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).BlockAction
   nameWithType: IBlockPolicy<T>.BlockAction
   nameWithType.vb: IBlockPolicy(Of T).BlockAction
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
+  name: DoesTransactionFollowsPolicy(Transaction<T>)
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_Libplanet_Tx_Transaction__0__
+  commentId: M:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction{`0})
+  name.vb: DoesTransactionFollowsPolicy(Transaction(Of T))
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction<T>)
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Libplanet.Tx.Transaction(Of T))
+  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy(Transaction<T>)
+  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy(Transaction(Of T))
+- uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy*
+  name: DoesTransactionFollowsPolicy
+  href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_DoesTransactionFollowsPolicy_
+  commentId: Overload:Libplanet.Blockchain.Policies.IBlockPolicy`1.DoesTransactionFollowsPolicy
+  isSpec: "True"
+  fullName: Libplanet.Blockchain.Policies.IBlockPolicy<T>.DoesTransactionFollowsPolicy
+  fullName.vb: Libplanet.Blockchain.Policies.IBlockPolicy(Of T).DoesTransactionFollowsPolicy
+  nameWithType: IBlockPolicy<T>.DoesTransactionFollowsPolicy
+  nameWithType.vb: IBlockPolicy(Of T).DoesTransactionFollowsPolicy
 - uid: Libplanet.Blockchain.Policies.IBlockPolicy`1.GetNextBlockDifficulty(Libplanet.Blockchain.BlockChain{`0})
   name: GetNextBlockDifficulty(BlockChain<T>)
   href: api/Libplanet.Blockchain.Policies.IBlockPolicy-1.html#Libplanet_Blockchain_Policies_IBlockPolicy_1_GetNextBlockDifficulty_Libplanet_Blockchain_BlockChain__0__
@@ -8322,3 +8360,22 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.ToString
   nameWithType: TxId.ToString
+- uid: Libplanet.Tx.TxViolatingBlockPolicyException
+  name: TxViolatingBlockPolicyException
+  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html
+  commentId: T:Libplanet.Tx.TxViolatingBlockPolicyException
+  fullName: Libplanet.Tx.TxViolatingBlockPolicyException
+  nameWithType: TxViolatingBlockPolicyException
+- uid: Libplanet.Tx.TxViolatingBlockPolicyException.#ctor(Libplanet.Tx.TxId,System.String)
+  name: TxViolatingBlockPolicyException(TxId, String)
+  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html#Libplanet_Tx_TxViolatingBlockPolicyException__ctor_Libplanet_Tx_TxId_System_String_
+  commentId: M:Libplanet.Tx.TxViolatingBlockPolicyException.#ctor(Libplanet.Tx.TxId,System.String)
+  fullName: Libplanet.Tx.TxViolatingBlockPolicyException.TxViolatingBlockPolicyException(Libplanet.Tx.TxId, System.String)
+  nameWithType: TxViolatingBlockPolicyException.TxViolatingBlockPolicyException(TxId, String)
+- uid: Libplanet.Tx.TxViolatingBlockPolicyException.#ctor*
+  name: TxViolatingBlockPolicyException
+  href: api/Libplanet.Tx.TxViolatingBlockPolicyException.html#Libplanet_Tx_TxViolatingBlockPolicyException__ctor_
+  commentId: Overload:Libplanet.Tx.TxViolatingBlockPolicyException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxViolatingBlockPolicyException.TxViolatingBlockPolicyException
+  nameWithType: TxViolatingBlockPolicyException.TxViolatingBlockPolicyException

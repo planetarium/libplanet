@@ -130,6 +130,8 @@ parameter to <code>Swarm()</code> constructor.  [<a href="https://github.com/pla
 that receives only one transaction.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
 <li>Replaced <code>BlockChain&lt;T&gt;.UnstageTransactions()</code> with <code>.UnstageTransaction()</code>
 that receives only one transaction.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
+<li>Added <code>IBlockPolicy.DoesTransactionFollowPolicy()</code> method which is a method to
+determine if a transaction follows the block policy.  [[#827]]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -161,6 +163,7 @@ method.  [<a href="https://github.com/planetarium/libplanet/pull/825">#825</a>]<
 <li>Added <code>Swarm&lt;T&gt;.TrustedAppProtocolVersionSigners</code> property.
 [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 <li>Added <code>Peer.IsCompatibleWith()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Added <code>TxViolatingBlockPolicyException</code> class.  [[#827]]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
