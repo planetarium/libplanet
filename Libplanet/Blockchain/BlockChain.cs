@@ -621,11 +621,24 @@ namespace Libplanet.Blockchain
             long index = Store.CountIndex(Id);
             long difficulty = Policy.GetNextBlockDifficulty(this);
             HashDigest<SHA256>? prevHash = Store.IndexBlockHash(Id, index - 1);
-            IEnumerable<Transaction<T>> transactions = Store
+            IEnumerable<Transaction<T>> stagedTransactions = Store
                 .IterateStagedTransactionIds()
-                .Select(Store.GetTransaction<T>)
-                .Where(tx => Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
-                             && tx.Nonce < GetNextTxNonce(tx.Signer));
+                .Select(Store.GetTransaction<T>);
+
+            var transactionsToMine = new List<Transaction<T>>();
+
+            foreach (Transaction<T> tx in stagedTransactions)
+            {
+                if (!Policy.DoesTransactionFollowsPolicy(tx))
+                {
+                    UnstageTransaction(tx);
+                }
+                else if (Store.GetTxNonce(Id, tx.Signer) <= tx.Nonce
+                         && tx.Nonce < GetNextTxNonce(tx.Signer))
+                {
+                    transactionsToMine.Add(tx);
+                }
+            }
 
             CancellationTokenSource cts = new CancellationTokenSource();
             CancellationTokenSource cancellationTokenSource =
@@ -648,7 +661,7 @@ namespace Libplanet.Blockchain
                         miner: miner,
                         previousHash: prevHash,
                         timestamp: currentTime,
-                        transactions: transactions,
+                        transactions: transactionsToMine,
                         cancellationToken: cancellationTokenSource.Token),
                     cancellationTokenSource.Token
                 );
@@ -748,6 +761,13 @@ namespace Libplanet.Blockchain
                 // the tx nounce order when the block was created
                 foreach (Transaction<T> tx1 in block.Transactions)
                 {
+                    if (!Policy.DoesTransactionFollowsPolicy(tx1))
+                    {
+                        throw new TxViolatingBlockPolicyException(
+                            tx1.Id,
+                            "According to BlockPolicy, this transaction is not valid.");
+                    }
+
                     Address txSigner = tx1.Signer;
                     nonceDeltas.TryGetValue(txSigner, out var nonceDelta);
 

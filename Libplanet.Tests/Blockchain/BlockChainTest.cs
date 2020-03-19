@@ -113,6 +113,38 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public async void MineBlockWithPolicyViolationTx()
+        {
+            var validKey = new PrivateKey();
+            var invalidKey = new PrivateKey();
+
+            bool IsSignerValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            using (var fx = new DefaultStoreFixture())
+            {
+                var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
+
+                var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
+                var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+                var miner = new PrivateKey().PublicKey.ToAddress();
+                var block = await blockChain.MineBlock(miner);
+
+                var txs = block.Transactions.ToHashSet();
+
+                Assert.Contains(validTx, txs);
+                Assert.DoesNotContain(invalidTx, txs);
+
+                Assert.Empty(blockChain.GetStagedTransactionIds());
+            }
+        }
+
+        [Fact]
         public async void CanFindBlockByIndex()
         {
             var genesis = _blockChain.Genesis;
@@ -460,6 +492,48 @@ namespace Libplanet.Tests.Blockchain
             Assert.IsType<ThrowException.SomeException>(e.InnerException);
 
             Assert.Equal(1, blockChain.Count);
+        }
+
+        [Fact]
+        public void AppendBlockWithPolicyViolationTx()
+        {
+            var validKey = new PrivateKey();
+            var invalidKey = new PrivateKey();
+
+            bool IsSignerValid(Transaction<DumbAction> tx)
+            {
+                var validAddress = validKey.PublicKey.ToAddress();
+                return tx.Signer.Equals(validAddress);
+            }
+
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
+            using (var fx = new DefaultStoreFixture())
+            {
+                var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
+
+                var validTx = blockChain.MakeTransaction(validKey, new DumbAction[] { });
+                var invalidTx = blockChain.MakeTransaction(invalidKey, new DumbAction[] { });
+
+                var miner = new PrivateKey().PublicKey.ToAddress();
+
+                Block<DumbAction> block1 = TestUtils.MineNext(
+                    fx.GenesisBlock,
+                    new[] { validTx },
+                    miner: miner,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10));
+
+                blockChain.Append(block1);
+
+                Block<DumbAction> block2 = TestUtils.MineNext(
+                    block1,
+                    new[] { invalidTx },
+                    miner: miner,
+                    difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
+                    blockInterval: TimeSpan.FromSeconds(10));
+
+                Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
+            }
         }
 
         [Fact]

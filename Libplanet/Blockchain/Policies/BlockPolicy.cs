@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Blockchain.Policies
 {
@@ -13,6 +14,8 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
+        private readonly Predicate<Transaction<T>> _doesTransactionFollowPolicy;
+
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
         /// <see cref="BlockInterval"/> in milliseconds,
@@ -29,16 +32,21 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
+        /// <param name="doesTransactionFollowPolicy">
+        /// A predicate that determines if the transaction follows the block policy.
+        /// </param>
         public BlockPolicy(
             IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
-            int difficultyBoundDivisor = 128)
+            int difficultyBoundDivisor = 128,
+            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
             : this(
                 blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
                 minimumDifficulty,
-                difficultyBoundDivisor)
+                difficultyBoundDivisor,
+                doesTransactionFollowPolicy)
         {
         }
 
@@ -55,11 +63,15 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/>.</param>
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>.</param>
+        /// <param name="doesTransactionFollowPolicy">
+        /// A predicate that determines if the transaction follows the block policy.
+        /// </param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
             long minimumDifficulty,
-            int difficultyBoundDivisor)
+            int difficultyBoundDivisor,
+            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -90,6 +102,7 @@ namespace Libplanet.Blockchain.Policies
             BlockInterval = blockInterval;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
+            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? (_ => true);
         }
 
         /// <inheritdoc/>
@@ -108,6 +121,11 @@ namespace Libplanet.Blockchain.Policies
         private long MinimumDifficulty { get; }
 
         private int DifficultyBoundDivisor { get; }
+
+        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
+        {
+            return _doesTransactionFollowPolicy(transaction);
+        }
 
         /// <inheritdoc/>
         public InvalidBlockException ValidateNextBlock(

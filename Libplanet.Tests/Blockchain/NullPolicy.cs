@@ -2,6 +2,7 @@ using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
+using Libplanet.Tx;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -18,6 +19,8 @@ namespace Libplanet.Tests.Blockchain
         }
 
         public IAction BlockAction => null;
+
+        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction) => true;
 
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;
