@@ -2174,7 +2174,7 @@ namespace Libplanet.Net
                         );
                     }
 
-                    if (!BlockChain.Policy.IsTransactionValid(tx))
+                    if (!BlockChain.Policy.DoesTransactionFollowsPolicy(tx))
                     {
                         BlockChain.UnstageTransaction(tx);
                     }

@@ -14,7 +14,7 @@ namespace Libplanet.Blockchain.Policies
     public class BlockPolicy<T> : IBlockPolicy<T>
         where T : IAction, new()
     {
-        private readonly Predicate<Transaction<T>> _isTransactionValid;
+        private readonly Predicate<Transaction<T>> _doesTransactionFollowPolicy;
 
         /// <summary>
         /// Creates a <see cref="BlockPolicy{T}"/> with configuring
@@ -32,21 +32,21 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/>. 1024 by default.</param>
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>. 128 by default.</param>
-        /// <param name="isTransactionValid">
-        /// A predicate that determines if the transaction is valid.
+        /// <param name="doesTransactionFollowPolicy">
+        /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         public BlockPolicy(
             IAction blockAction = null,
             int blockIntervalMilliseconds = 5000,
             long minimumDifficulty = 1024,
             int difficultyBoundDivisor = 128,
-            Predicate<Transaction<T>> isTransactionValid = null)
+            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
             : this(
                 blockAction,
                 TimeSpan.FromMilliseconds(blockIntervalMilliseconds),
                 minimumDifficulty,
                 difficultyBoundDivisor,
-                isTransactionValid)
+                doesTransactionFollowPolicy)
         {
         }
 
@@ -63,15 +63,15 @@ namespace Libplanet.Blockchain.Policies
         /// <see cref="MinimumDifficulty"/>.</param>
         /// <param name="difficultyBoundDivisor">Configures
         /// <see cref="DifficultyBoundDivisor"/>.</param>
-        /// <param name="isTransactionValid">
-        /// A predicate that determines if the transaction is valid.
+        /// <param name="doesTransactionFollowPolicy">
+        /// A predicate that determines if the transaction follows the block policy.
         /// </param>
         public BlockPolicy(
             IAction blockAction,
             TimeSpan blockInterval,
             long minimumDifficulty,
             int difficultyBoundDivisor,
-            Predicate<Transaction<T>> isTransactionValid = null)
+            Predicate<Transaction<T>> doesTransactionFollowPolicy = null)
         {
             if (blockInterval < TimeSpan.Zero)
             {
@@ -102,7 +102,7 @@ namespace Libplanet.Blockchain.Policies
             BlockInterval = blockInterval;
             MinimumDifficulty = minimumDifficulty;
             DifficultyBoundDivisor = difficultyBoundDivisor;
-            _isTransactionValid = isTransactionValid ?? (_ => true);
+            _doesTransactionFollowPolicy = doesTransactionFollowPolicy ?? (_ => true);
         }
 
         /// <inheritdoc/>
@@ -122,9 +122,9 @@ namespace Libplanet.Blockchain.Policies
 
         private int DifficultyBoundDivisor { get; }
 
-        public bool IsTransactionValid(Transaction<T> transaction)
+        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction)
         {
-            return _isTransactionValid(transaction);
+            return _doesTransactionFollowPolicy(transaction);
         }
 
         /// <inheritdoc/>

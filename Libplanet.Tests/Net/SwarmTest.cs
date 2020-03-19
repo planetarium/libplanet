@@ -2498,13 +2498,13 @@ namespace Libplanet.Tests.Net
         public async Task UnstageInvalidTransaction()
         {
             var validKey = new PrivateKey();
-            bool IsTransactionValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
             }
 
-            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
             var fx1 = new DefaultStoreFixture();
             var fx2 = new DefaultStoreFixture();
 

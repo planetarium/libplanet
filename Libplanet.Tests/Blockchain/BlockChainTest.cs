@@ -113,18 +113,18 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public async void MineBlockWithIsTransactionValid()
+        public async void MineBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
 
-            bool IsTransactionValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
             }
 
-            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
             using (var fx = new DefaultStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
@@ -495,18 +495,18 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void AppendWithIsTransactionValid()
+        public void AppendBlockWithPolicyViolationTx()
         {
             var validKey = new PrivateKey();
             var invalidKey = new PrivateKey();
 
-            bool IsTransactionValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
             }
 
-            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
             using (var fx = new DefaultStoreFixture())
             {
                 var blockChain = new BlockChain<DumbAction>(policy, fx.Store, fx.GenesisBlock);
@@ -532,7 +532,7 @@ namespace Libplanet.Tests.Blockchain
                     difficulty: _blockChain.Policy.GetNextBlockDifficulty(_blockChain),
                     blockInterval: TimeSpan.FromSeconds(10));
 
-                Assert.Throws<InvalidTxByBlockPolicyException>(() => blockChain.Append(block2));
+                Assert.Throws<TxViolatingBlockPolicyException>(() => blockChain.Append(block2));
             }
         }
 

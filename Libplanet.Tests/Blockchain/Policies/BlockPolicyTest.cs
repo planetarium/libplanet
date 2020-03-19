@@ -84,27 +84,27 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
-        public void IsTransactionValid()
+        public void DoesTransactionFollowPolicy()
         {
             var validKey = new PrivateKey();
 
-            bool IsTransactionValid(Transaction<DumbAction> tx)
+            bool IsSignerValid(Transaction<DumbAction> tx)
             {
                 var validAddress = validKey.PublicKey.ToAddress();
                 return tx.Signer.Equals(validAddress);
             }
 
-            var policy = new BlockPolicy<DumbAction>(isTransactionValid: IsTransactionValid);
+            var policy = new BlockPolicy<DumbAction>(doesTransactionFollowPolicy: IsSignerValid);
 
             // Valid Transaction
             var validTx = _chain.MakeTransaction(validKey, new DumbAction[] { });
-            var expected = policy.IsTransactionValid(validTx);
+            var expected = policy.DoesTransactionFollowsPolicy(validTx);
             Assert.True(expected);
 
             // Invalid Transaction
             var invalidKey = new PrivateKey();
             var invalidTx = _chain.MakeTransaction(invalidKey, new DumbAction[] { });
-            expected = policy.IsTransactionValid(invalidTx);
+            expected = policy.DoesTransactionFollowsPolicy(invalidTx);
             Assert.False(expected);
         }
 

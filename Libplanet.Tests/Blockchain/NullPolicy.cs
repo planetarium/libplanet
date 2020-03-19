@@ -20,7 +20,7 @@ namespace Libplanet.Tests.Blockchain
 
         public IAction BlockAction => null;
 
-        public bool IsTransactionValid(Transaction<T> transaction) => true;
+        public bool DoesTransactionFollowsPolicy(Transaction<T> transaction) => true;
 
         public long GetNextBlockDifficulty(BlockChain<T> blocks) =>
             blocks.Count == 0 ? 0 : _difficulty;

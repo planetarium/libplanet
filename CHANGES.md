@@ -51,8 +51,8 @@ To be released.
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
     that receives only one transaction.  [[#820]]
- -  Added `IBlockPolicy.IsTransactionValid` method which is a method to
-    determine if a transaction is valid.  [[#827]]
+ -  Added `IBlockPolicy.DoesTransactionFollowPolicy()` method which is a method to
+    determine if a transaction follows the block policy.  [[#827]]
 
 ### Backward-incompatible network protocol changes
 
@@ -85,7 +85,7 @@ To be released.
  -  Added `Swarm<T>.TrustedAppProtocolVersionSigners` property.
     [[#266], [#815]]
  -  Added `Peer.IsCompatibleWith()` method.  [[#266], [#815]]
- -  Added `InvalidTxByBlockPolicyException` class.  [[#827]]
+ -  Added `TxViolatingBlockPolicyException` class.  [[#827]]
 
 ### Behavioral changes
 
