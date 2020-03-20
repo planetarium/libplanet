@@ -244,6 +244,8 @@ namespace Libplanet.Tests.Net
                 )
             );
 
+            Assert.Throws<ArgumentNullException>(() => AppProtocolVersion.FromToken(null));
+
             // No first delimiter
             Assert.Throws<FormatException>(() => AppProtocolVersion.FromToken("123"));
 
@@ -291,9 +293,11 @@ namespace Libplanet.Tests.Net
         [Fact]
         public void DefaultConstructor()
         {
-            ImmutableArray<byte> defaultSig = default(AppProtocolVersion).Signature;
+            AppProtocolVersion defaultValue = default(AppProtocolVersion);
+            ImmutableArray<byte> defaultSig = defaultValue.Signature;
             Assert.False(defaultSig.IsDefault);
             Assert.True(defaultSig.IsEmpty);
+            Assert.Equal("0/0000000000000000000000000000000000000000/", defaultValue.Token);
         }
     }
 }

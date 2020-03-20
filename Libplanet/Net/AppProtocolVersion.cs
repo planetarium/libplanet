@@ -139,11 +139,18 @@ namespace Libplanet.Net
         /// </summary>
         /// <param name="token">A <see cref="Token"/> string.</param>
         /// <returns>A deserialized <see cref="AppProtocolVersion"/> object.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <c>null</c> is passed to
+        /// <paramref name="token"/>.</exception>
         /// <exception cref="FormatException">Thrown when the given <paramref name="token"/>'s
         /// format is invalid.  The detailed reason is in the message.</exception>
         /// <seealso cref="Token"/>
         public static AppProtocolVersion FromToken(string token)
         {
+            if (token is null)
+            {
+                throw new ArgumentNullException(nameof(token));
+            }
+
             int pos, pos2;
             pos = token.IndexOf('/');
             if (pos < 0)
