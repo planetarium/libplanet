@@ -75,6 +75,8 @@ To be released.
  -  Added `BlockVerificationState` class, a subclass of `PreloadState`.
     [[#798]]
  -  Added `AppProtocolVersion` struct.  [[#266], [#815]]
+ -  Added `IKeyStore` interface.  [[#831]]
+ -  Added `Web3KeyStore` class.  [[#831]]
  -  Added `BlockDigest` struct.  [[#785]]
  -  Added `BlockHeader` struct.  [[#785]]
  -  Added `IStore.GetBlockDigest(HashDigest<SHA256>)` method.  [[#785]]
@@ -86,6 +88,8 @@ To be released.
     [[#266], [#815]]
  -  Added `Peer.IsCompatibleWith()` method.  [[#266], [#815]]
  -  Added `TxViolatingBlockPolicyException` class.  [[#827]]
+ -  Added `KeyStoreException` class.  [[#831]]
+ -  Added `NoKeyException` class.  [[#831]]
 
 ### Behavioral changes
 
@@ -126,6 +130,7 @@ To be released.
 [#815]: https://github.com/planetarium/libplanet/pull/815
 [#820]: https://github.com/planetarium/libplanet/pull/820
 [#825]: https://github.com/planetarium/libplanet/pull/825
+[#831]: https://github.com/planetarium/libplanet/pull/831
 
 
 Version 0.8.0
