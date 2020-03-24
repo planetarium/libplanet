@@ -3161,6 +3161,77 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.Ciphers.ICipher.WriteJson
   nameWithType: ICipher.WriteJson
+- uid: Libplanet.KeyStore.IKeyStore
+  name: IKeyStore
+  href: api/Libplanet.KeyStore.IKeyStore.html
+  commentId: T:Libplanet.KeyStore.IKeyStore
+  fullName: Libplanet.KeyStore.IKeyStore
+  nameWithType: IKeyStore
+- uid: Libplanet.KeyStore.IKeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  name: Add(ProtectedPrivateKey)
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Add_Libplanet_KeyStore_ProtectedPrivateKey_
+  commentId: M:Libplanet.KeyStore.IKeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  fullName: Libplanet.KeyStore.IKeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  nameWithType: IKeyStore.Add(ProtectedPrivateKey)
+- uid: Libplanet.KeyStore.IKeyStore.Add*
+  name: Add
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Add_
+  commentId: Overload:Libplanet.KeyStore.IKeyStore.Add
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IKeyStore.Add
+  nameWithType: IKeyStore.Add
+- uid: Libplanet.KeyStore.IKeyStore.Get(Guid)
+  name: Get(Guid)
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Get_Guid_
+  commentId: M:Libplanet.KeyStore.IKeyStore.Get(Guid)
+  fullName: Libplanet.KeyStore.IKeyStore.Get(Guid)
+  nameWithType: IKeyStore.Get(Guid)
+- uid: Libplanet.KeyStore.IKeyStore.Get*
+  name: Get
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Get_
+  commentId: Overload:Libplanet.KeyStore.IKeyStore.Get
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IKeyStore.Get
+  nameWithType: IKeyStore.Get
+- uid: Libplanet.KeyStore.IKeyStore.List
+  name: List()
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_List
+  commentId: M:Libplanet.KeyStore.IKeyStore.List
+  fullName: Libplanet.KeyStore.IKeyStore.List()
+  nameWithType: IKeyStore.List()
+- uid: Libplanet.KeyStore.IKeyStore.List*
+  name: List
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_List_
+  commentId: Overload:Libplanet.KeyStore.IKeyStore.List
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IKeyStore.List
+  nameWithType: IKeyStore.List
+- uid: Libplanet.KeyStore.IKeyStore.ListIds
+  name: ListIds()
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_ListIds
+  commentId: M:Libplanet.KeyStore.IKeyStore.ListIds
+  fullName: Libplanet.KeyStore.IKeyStore.ListIds()
+  nameWithType: IKeyStore.ListIds()
+- uid: Libplanet.KeyStore.IKeyStore.ListIds*
+  name: ListIds
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_ListIds_
+  commentId: Overload:Libplanet.KeyStore.IKeyStore.ListIds
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IKeyStore.ListIds
+  nameWithType: IKeyStore.ListIds
+- uid: Libplanet.KeyStore.IKeyStore.Remove(Guid)
+  name: Remove(Guid)
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Remove_Guid_
+  commentId: M:Libplanet.KeyStore.IKeyStore.Remove(Guid)
+  fullName: Libplanet.KeyStore.IKeyStore.Remove(Guid)
+  nameWithType: IKeyStore.Remove(Guid)
+- uid: Libplanet.KeyStore.IKeyStore.Remove*
+  name: Remove
+  href: api/Libplanet.KeyStore.IKeyStore.html#Libplanet_KeyStore_IKeyStore_Remove_
+  commentId: Overload:Libplanet.KeyStore.IKeyStore.Remove
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.IKeyStore.Remove
+  nameWithType: IKeyStore.Remove
 - uid: Libplanet.KeyStore.IncorrectPassphraseException
   name: IncorrectPassphraseException
   href: api/Libplanet.KeyStore.IncorrectPassphraseException.html
@@ -3528,6 +3599,25 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.KeyJsonException.KeyJsonException
   nameWithType: KeyJsonException.KeyJsonException
+- uid: Libplanet.KeyStore.KeyStoreException
+  name: KeyStoreException
+  href: api/Libplanet.KeyStore.KeyStoreException.html
+  commentId: T:Libplanet.KeyStore.KeyStoreException
+  fullName: Libplanet.KeyStore.KeyStoreException
+  nameWithType: KeyStoreException
+- uid: Libplanet.KeyStore.KeyStoreException.#ctor(System.String)
+  name: KeyStoreException(String)
+  href: api/Libplanet.KeyStore.KeyStoreException.html#Libplanet_KeyStore_KeyStoreException__ctor_System_String_
+  commentId: M:Libplanet.KeyStore.KeyStoreException.#ctor(System.String)
+  fullName: Libplanet.KeyStore.KeyStoreException.KeyStoreException(System.String)
+  nameWithType: KeyStoreException.KeyStoreException(String)
+- uid: Libplanet.KeyStore.KeyStoreException.#ctor*
+  name: KeyStoreException
+  href: api/Libplanet.KeyStore.KeyStoreException.html#Libplanet_KeyStore_KeyStoreException__ctor_
+  commentId: Overload:Libplanet.KeyStore.KeyStoreException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.KeyStoreException.KeyStoreException
+  nameWithType: KeyStoreException.KeyStoreException
 - uid: Libplanet.KeyStore.MismatchedAddressException
   name: MismatchedAddressException
   href: api/Libplanet.KeyStore.MismatchedAddressException.html
@@ -3576,6 +3666,38 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.MismatchedAddressException.ExpectedAddress
   nameWithType: MismatchedAddressException.ExpectedAddress
+- uid: Libplanet.KeyStore.NoKeyException
+  name: NoKeyException
+  href: api/Libplanet.KeyStore.NoKeyException.html
+  commentId: T:Libplanet.KeyStore.NoKeyException
+  fullName: Libplanet.KeyStore.NoKeyException
+  nameWithType: NoKeyException
+- uid: Libplanet.KeyStore.NoKeyException.#ctor(Guid,System.String)
+  name: NoKeyException(Guid, String)
+  href: api/Libplanet.KeyStore.NoKeyException.html#Libplanet_KeyStore_NoKeyException__ctor_Guid_System_String_
+  commentId: M:Libplanet.KeyStore.NoKeyException.#ctor(Guid,System.String)
+  fullName: Libplanet.KeyStore.NoKeyException.NoKeyException(Guid, System.String)
+  nameWithType: NoKeyException.NoKeyException(Guid, String)
+- uid: Libplanet.KeyStore.NoKeyException.#ctor*
+  name: NoKeyException
+  href: api/Libplanet.KeyStore.NoKeyException.html#Libplanet_KeyStore_NoKeyException__ctor_
+  commentId: Overload:Libplanet.KeyStore.NoKeyException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.NoKeyException.NoKeyException
+  nameWithType: NoKeyException.NoKeyException
+- uid: Libplanet.KeyStore.NoKeyException.KeyId
+  name: KeyId
+  href: api/Libplanet.KeyStore.NoKeyException.html#Libplanet_KeyStore_NoKeyException_KeyId
+  commentId: P:Libplanet.KeyStore.NoKeyException.KeyId
+  fullName: Libplanet.KeyStore.NoKeyException.KeyId
+  nameWithType: NoKeyException.KeyId
+- uid: Libplanet.KeyStore.NoKeyException.KeyId*
+  name: KeyId
+  href: api/Libplanet.KeyStore.NoKeyException.html#Libplanet_KeyStore_NoKeyException_KeyId_
+  commentId: Overload:Libplanet.KeyStore.NoKeyException.KeyId
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.NoKeyException.KeyId
+  nameWithType: NoKeyException.KeyId
 - uid: Libplanet.KeyStore.ProtectedPrivateKey
   name: ProtectedPrivateKey
   href: api/Libplanet.KeyStore.ProtectedPrivateKey.html
@@ -3755,6 +3877,116 @@ references:
   isSpec: "True"
   fullName: Libplanet.KeyStore.UnsupportedKeyJsonException.UnsupportedKeyJsonException
   nameWithType: UnsupportedKeyJsonException.UnsupportedKeyJsonException
+- uid: Libplanet.KeyStore.Web3KeyStore
+  name: Web3KeyStore
+  href: api/Libplanet.KeyStore.Web3KeyStore.html
+  commentId: T:Libplanet.KeyStore.Web3KeyStore
+  fullName: Libplanet.KeyStore.Web3KeyStore
+  nameWithType: Web3KeyStore
+- uid: Libplanet.KeyStore.Web3KeyStore.#ctor(System.String)
+  name: Web3KeyStore(String)
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore__ctor_System_String_
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.#ctor(System.String)
+  fullName: Libplanet.KeyStore.Web3KeyStore.Web3KeyStore(System.String)
+  nameWithType: Web3KeyStore.Web3KeyStore(String)
+- uid: Libplanet.KeyStore.Web3KeyStore.#ctor*
+  name: Web3KeyStore
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore__ctor_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.#ctor
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.Web3KeyStore
+  nameWithType: Web3KeyStore.Web3KeyStore
+- uid: Libplanet.KeyStore.Web3KeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  name: Add(ProtectedPrivateKey)
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Add_Libplanet_KeyStore_ProtectedPrivateKey_
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  fullName: Libplanet.KeyStore.Web3KeyStore.Add(Libplanet.KeyStore.ProtectedPrivateKey)
+  nameWithType: Web3KeyStore.Add(ProtectedPrivateKey)
+- uid: Libplanet.KeyStore.Web3KeyStore.Add*
+  name: Add
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Add_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.Add
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.Add
+  nameWithType: Web3KeyStore.Add
+- uid: Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore
+  name: DefaultKeyStore
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_DefaultKeyStore
+  commentId: P:Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore
+  fullName: Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore
+  nameWithType: Web3KeyStore.DefaultKeyStore
+- uid: Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore*
+  name: DefaultKeyStore
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_DefaultKeyStore_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.DefaultKeyStore
+  nameWithType: Web3KeyStore.DefaultKeyStore
+- uid: Libplanet.KeyStore.Web3KeyStore.Get(Guid)
+  name: Get(Guid)
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Get_Guid_
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.Get(Guid)
+  fullName: Libplanet.KeyStore.Web3KeyStore.Get(Guid)
+  nameWithType: Web3KeyStore.Get(Guid)
+- uid: Libplanet.KeyStore.Web3KeyStore.Get*
+  name: Get
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Get_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.Get
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.Get
+  nameWithType: Web3KeyStore.Get
+- uid: Libplanet.KeyStore.Web3KeyStore.List
+  name: List()
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_List
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.List
+  fullName: Libplanet.KeyStore.Web3KeyStore.List()
+  nameWithType: Web3KeyStore.List()
+- uid: Libplanet.KeyStore.Web3KeyStore.List*
+  name: List
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_List_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.List
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.List
+  nameWithType: Web3KeyStore.List
+- uid: Libplanet.KeyStore.Web3KeyStore.ListIds
+  name: ListIds()
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_ListIds
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.ListIds
+  fullName: Libplanet.KeyStore.Web3KeyStore.ListIds()
+  nameWithType: Web3KeyStore.ListIds()
+- uid: Libplanet.KeyStore.Web3KeyStore.ListIds*
+  name: ListIds
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_ListIds_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.ListIds
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.ListIds
+  nameWithType: Web3KeyStore.ListIds
+- uid: Libplanet.KeyStore.Web3KeyStore.Path
+  name: Path
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Path
+  commentId: P:Libplanet.KeyStore.Web3KeyStore.Path
+  fullName: Libplanet.KeyStore.Web3KeyStore.Path
+  nameWithType: Web3KeyStore.Path
+- uid: Libplanet.KeyStore.Web3KeyStore.Path*
+  name: Path
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Path_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.Path
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.Path
+  nameWithType: Web3KeyStore.Path
+- uid: Libplanet.KeyStore.Web3KeyStore.Remove(Guid)
+  name: Remove(Guid)
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Remove_Guid_
+  commentId: M:Libplanet.KeyStore.Web3KeyStore.Remove(Guid)
+  fullName: Libplanet.KeyStore.Web3KeyStore.Remove(Guid)
+  nameWithType: Web3KeyStore.Remove(Guid)
+- uid: Libplanet.KeyStore.Web3KeyStore.Remove*
+  name: Remove
+  href: api/Libplanet.KeyStore.Web3KeyStore.html#Libplanet_KeyStore_Web3KeyStore_Remove_
+  commentId: Overload:Libplanet.KeyStore.Web3KeyStore.Remove
+  isSpec: "True"
+  fullName: Libplanet.KeyStore.Web3KeyStore.Remove
+  nameWithType: Web3KeyStore.Remove
 - uid: Libplanet.Net
   name: Libplanet.Net
   href: api/Libplanet.Net.html
