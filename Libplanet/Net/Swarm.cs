@@ -1026,11 +1026,11 @@ namespace Libplanet.Net
             _logger.Debug("Block broadcasting complete.");
         }
 
-        private void BroadcastTxs(Address? excpet, IEnumerable<Transaction<T>> txs)
+        private void BroadcastTxs(Address? except, IEnumerable<Transaction<T>> txs)
         {
-            _logger.Debug("Broadcast Txs.");
             List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            BroadcastTxIds(excpet, txIds);
+            _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
+            BroadcastTxIds(except, txIds);
         }
 
         private void BroadcastMessage(Address? except, Message message)
