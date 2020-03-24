@@ -324,6 +324,8 @@ Released on February 4, 2020.
     mining `Block<T>`s after reorg from α to β where a `Transaction<T>` was once
     included by a `Block<T>` (α) and not included by an other `Block<T>` (β) for
     the same `Index` due to the latency gap between nodes.  [[#775]]
+ -  Fixed a bug where `TransactionSet` and `BlockSet` has halt whole process when
+    run `Trace.Assert()` [[#806]]
 
 [#368]: https://github.com/planetarium/libplanet/issues/368
 [#570]: https://github.com/planetarium/libplanet/issues/570
@@ -378,6 +380,7 @@ Released on February 4, 2020.
 [#772]: https://github.com/planetarium/libplanet/pull/772
 [#774]: https://github.com/planetarium/libplanet/pull/774
 [#775]: https://github.com/planetarium/libplanet/pull/775
+[#806]: https://github.com/planetarium/libplanet/issues/806
 
 
 Version 0.7.0
