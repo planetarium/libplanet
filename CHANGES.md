@@ -325,7 +325,7 @@ Released on February 4, 2020.
     included by a `Block<T>` (α) and not included by an other `Block<T>` (β) for
     the same `Index` due to the latency gap between nodes.  [[#775]]
  -  Fixed a bug where `TransactionSet` and `BlockSet` has halt whole process when
-    run `Trace.Assert()` [[#806]]
+    run `Trace.Assert()` [[#806], [#833]]
 
 [#368]: https://github.com/planetarium/libplanet/issues/368
 [#570]: https://github.com/planetarium/libplanet/issues/570
@@ -381,6 +381,7 @@ Released on February 4, 2020.
 [#774]: https://github.com/planetarium/libplanet/pull/774
 [#775]: https://github.com/planetarium/libplanet/pull/775
 [#806]: https://github.com/planetarium/libplanet/issues/806
+[#833]: https://github.com/planetarium/libplanet/pull/833
 
 
 Version 0.7.0
