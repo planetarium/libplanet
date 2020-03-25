@@ -118,6 +118,12 @@ namespace Libplanet.Crypto
         [Pure]
         public byte[] ByteArray => keyParam.D.ToByteArrayUnsigned();
 
+        public static bool operator ==(PrivateKey left, PrivateKey right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(PrivateKey left, PrivateKey right) =>
+            Operator.Weave(left, right);
+
         /// <summary>
         /// Creates a signature from the given <paramref name="message"/>.
         /// <para>

@@ -86,6 +86,10 @@ namespace Libplanet.Tx
             }
         }
 
+        public static bool operator ==(TxId left, TxId right) => Operator.Weave(left, right);
+
+        public static bool operator !=(TxId left, TxId right) => Operator.Weave(left, right);
+
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of
         /// this <see cref="TxId"/>.

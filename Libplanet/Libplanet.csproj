@@ -41,7 +41,8 @@ https://docs.libplanet.io/</Description>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn);CS1591;NU5104;MEN001</NoWarn>
+    <NoWarn>$(NoWarn);CS0660;CS0661;S3875;CS1591;NU5104;MEN001</NoWarn>
+    <!-- CS0660/CS0661/S3875 are turned off due to https://github.com/Fody/Equals/pull/96 -->
     <!-- FIXME: CS1591 should be turned on eventually. -->
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
@@ -61,8 +62,8 @@ https://docs.libplanet.io/</Description>
   <ItemGroup>
     <PackageReference Include="Bencodex" Version="0.3.0-dev.1b62adcbf3bf91d1a96787f4447dc6cc518d9734" />
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.3" />
-    <PackageReference Include="Equals.Fody" Version="1.9.6" />
-    <PackageReference Include="Fody" Version="5.0.1">
+    <PackageReference Include="Equals.Fody" Version="4.0.1" />
+    <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="LiteDB" Version="4.1.4" />

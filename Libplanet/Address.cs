@@ -158,6 +158,10 @@ namespace Libplanet
             }
         }
 
+        public static bool operator ==(Address left, Address right) => Operator.Weave(left, right);
+
+        public static bool operator !=(Address left, Address right) => Operator.Weave(left, right);
+
         /// <summary>
         /// Gets a mutable array of 20 <see cref="byte"/>s that represent
         /// this <see cref="Address"/>.

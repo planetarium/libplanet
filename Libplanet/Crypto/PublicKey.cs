@@ -53,6 +53,12 @@ namespace Libplanet.Crypto
 
         internal ECPublicKeyParameters KeyParam { get; }
 
+        public static bool operator ==(PublicKey left, PublicKey right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(PublicKey left, PublicKey right) =>
+            Operator.Weave(left, right);
+
         /// <summary>
         /// Encodes this public key into a <see cref="byte"/> array
         /// representation.

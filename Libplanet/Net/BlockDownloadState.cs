@@ -30,5 +30,11 @@ namespace Libplanet.Net
         /// The peer which sent the block.
         /// </summary>
         public BoundPeer SourcePeer { get; internal set; }
+
+        public static bool operator ==(BlockDownloadState left, BlockDownloadState right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(BlockDownloadState left, BlockDownloadState right) =>
+            Operator.Weave(left, right);
     }
 }

@@ -90,6 +90,12 @@ namespace Libplanet.Tx
 
         public ImmutableArray<IValue> Actions { get; }
 
+        public static bool operator ==(RawTransaction left, RawTransaction right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(RawTransaction left, RawTransaction right) =>
+            Operator.Weave(left, right);
+
         public RawTransaction AddSignature(byte[] signature)
         {
             return new RawTransaction(

@@ -51,6 +51,12 @@ namespace Libplanet.Net
         [Pure]
         public DnsEndPoint EndPoint { get; }
 
+        public static bool operator ==(BoundPeer left, BoundPeer right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(BoundPeer left, BoundPeer right) =>
+            Operator.Weave(left, right);
+
         /// <inheritdoc/>
         public override void GetObjectData(
             SerializationInfo info,

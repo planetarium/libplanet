@@ -86,6 +86,10 @@ namespace Libplanet.Net
         [Pure]
         public IPAddress PublicIPAddress { get; }
 
+        public static bool operator ==(Peer left, Peer right) => Operator.Weave(left, right);
+
+        public static bool operator !=(Peer left, Peer right) => Operator.Weave(left, right);
+
         /// <summary>
         /// Determines if the peer is compatible with the given criteria.
         /// </summary>

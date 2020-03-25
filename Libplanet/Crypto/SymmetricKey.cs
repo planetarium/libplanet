@@ -72,6 +72,12 @@ namespace Libplanet.Crypto
         [Pure]
         public ImmutableArray<byte> ByteArray => _key.ToImmutableArray();
 
+        public static bool operator ==(SymmetricKey left, SymmetricKey right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(SymmetricKey left, SymmetricKey right) =>
+            Operator.Weave(left, right);
+
         /// <summary>
         /// Converts a plain <paramref name="message"/> to a ciphertext
         /// which can be decrypted with the same key.

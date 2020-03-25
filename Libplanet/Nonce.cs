@@ -54,6 +54,10 @@ namespace Libplanet
             }
         }
 
+        public static bool operator ==(Nonce left, Nonce right) => Operator.Weave(left, right);
+
+        public static bool operator !=(Nonce left, Nonce right) => Operator.Weave(left, right);
+
         /// <summary>
         /// Gets a bare mutable <see cref="byte"/> array of the nonce.
         /// </summary>
