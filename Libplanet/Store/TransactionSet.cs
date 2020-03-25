@@ -45,7 +45,7 @@ namespace Libplanet.Store
                 {
                     throw new InvalidTxIdException(
                         tx.Id,
-                        $"The given TxId[{key}] was invalid.");
+                        $"The given TxId[{key}] was not equal to actual[{tx.Id}].");
                 }
 
                 tx.Validate();

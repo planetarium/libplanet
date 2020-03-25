@@ -42,7 +42,7 @@ namespace Libplanet.Store
                 if (!block.Hash.Equals(key))
                 {
                     throw new InvalidBlockHashException(
-                        $"The given hash[{key}] was not equals block hash.");
+                        $"The given hash[{key}] was not equal to actual[{block.Hash}].");
                 }
 
                 return block;
