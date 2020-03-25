@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,8 +15,6 @@ using Libplanet.Store;
 using Libplanet.Tx;
 using Serilog;
 
-[assembly: InternalsVisibleTo("Libplanet.Tests")]
-[assembly: InternalsVisibleTo("Libplanet.Benchmarks")]
 namespace Libplanet.Blockchain
 {
     /// <summary>
