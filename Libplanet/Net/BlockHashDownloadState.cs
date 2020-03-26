@@ -23,5 +23,11 @@ namespace Libplanet.Net
 
         /// <inheritdoc />
         public override int CurrentPhase => 1;
+
+        public static bool operator ==(BlockHashDownloadState left, BlockHashDownloadState right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(BlockHashDownloadState left, BlockHashDownloadState right) =>
+            Operator.Weave(left, right);
     }
 }

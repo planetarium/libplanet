@@ -1,10 +1,8 @@
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Bencodex.Types;
 
-[assembly: InternalsVisibleTo("Libplanet.Tests")]
 namespace Libplanet.Tx
 {
     [Equals]
@@ -91,6 +89,12 @@ namespace Libplanet.Tx
         public ImmutableArray<byte> Signature { get; }
 
         public ImmutableArray<IValue> Actions { get; }
+
+        public static bool operator ==(RawTransaction left, RawTransaction right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(RawTransaction left, RawTransaction right) =>
+            Operator.Weave(left, right);
 
         public RawTransaction AddSignature(byte[] signature)
         {

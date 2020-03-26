@@ -165,6 +165,12 @@ namespace Libplanet.Blocks
         [IgnoreDuringEquals]
         public IEnumerable<Transaction<T>> Transactions { get; }
 
+        public static bool operator ==(Block<T> left, Block<T> right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(Block<T> left, Block<T> right) =>
+            Operator.Weave(left, right);
+
         /// <summary>
         /// Generate a block with given <paramref name="transactions"/>.
         /// </summary>

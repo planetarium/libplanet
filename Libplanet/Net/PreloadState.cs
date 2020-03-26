@@ -15,5 +15,11 @@ namespace Libplanet.Net
         /// The current phase.
         /// </summary>
         public abstract int CurrentPhase { get; }
+
+        public static bool operator ==(PreloadState left, PreloadState right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(PreloadState left, PreloadState right) =>
+            Operator.Weave(left, right);
     }
 }

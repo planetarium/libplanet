@@ -25,5 +25,11 @@ namespace Libplanet.Net
 
         /// <inheritdoc />
         public override int CurrentPhase => 5;
+
+        public static bool operator ==(ActionExecutionState left, ActionExecutionState right) =>
+            Operator.Weave(left, right);
+
+        public static bool operator !=(ActionExecutionState left, ActionExecutionState right) =>
+            Operator.Weave(left, right);
     }
 }
