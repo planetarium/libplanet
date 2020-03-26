@@ -749,6 +749,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Address.GetObjectData
   nameWithType: Address.GetObjectData
+- uid: Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)
+  name: Equality(Address, Address)
+  href: api/Libplanet.Address.html#Libplanet_Address_op_Equality_Libplanet_Address_Libplanet_Address_
+  commentId: M:Libplanet.Address.op_Equality(Libplanet.Address,Libplanet.Address)
+  fullName: Libplanet.Address.Equality(Libplanet.Address, Libplanet.Address)
+  nameWithType: Address.Equality(Address, Address)
+- uid: Libplanet.Address.op_Equality*
+  name: Equality
+  href: api/Libplanet.Address.html#Libplanet_Address_op_Equality_
+  commentId: Overload:Libplanet.Address.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Address.Equality
+  nameWithType: Address.Equality
+- uid: Libplanet.Address.op_Inequality(Libplanet.Address,Libplanet.Address)
+  name: Inequality(Address, Address)
+  href: api/Libplanet.Address.html#Libplanet_Address_op_Inequality_Libplanet_Address_Libplanet_Address_
+  commentId: M:Libplanet.Address.op_Inequality(Libplanet.Address,Libplanet.Address)
+  fullName: Libplanet.Address.Inequality(Libplanet.Address, Libplanet.Address)
+  nameWithType: Address.Inequality(Address, Address)
+- uid: Libplanet.Address.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Address.html#Libplanet_Address_op_Inequality_
+  commentId: Overload:Libplanet.Address.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Address.Inequality
+  nameWithType: Address.Inequality
 - uid: Libplanet.Address.Size
   name: Size
   href: api/Libplanet.Address.html#Libplanet_Address_Size
@@ -1771,6 +1797,42 @@ references:
   fullName.vb: Libplanet.Blocks.Block(Of T).Nonce
   nameWithType: Block<T>.Nonce
   nameWithType.vb: Block(Of T).Nonce
+- uid: Libplanet.Blocks.Block`1.op_Equality(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name: Equality(Block<T>, Block<T>)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_op_Equality_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blocks.Block`1.op_Equality(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name.vb: Equality(Block(Of T), Block(Of T))
+  fullName: Libplanet.Blocks.Block<T>.Equality(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Equality(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: Block<T>.Equality(Block<T>, Block<T>)
+  nameWithType.vb: Block(Of T).Equality(Block(Of T), Block(Of T))
+- uid: Libplanet.Blocks.Block`1.op_Equality*
+  name: Equality
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_op_Equality_
+  commentId: Overload:Libplanet.Blocks.Block`1.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Equality
+  fullName.vb: Libplanet.Blocks.Block(Of T).Equality
+  nameWithType: Block<T>.Equality
+  nameWithType.vb: Block(Of T).Equality
+- uid: Libplanet.Blocks.Block`1.op_Inequality(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name: Inequality(Block<T>, Block<T>)
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_op_Inequality_Libplanet_Blocks_Block__0__Libplanet_Blocks_Block__0__
+  commentId: M:Libplanet.Blocks.Block`1.op_Inequality(Libplanet.Blocks.Block{`0},Libplanet.Blocks.Block{`0})
+  name.vb: Inequality(Block(Of T), Block(Of T))
+  fullName: Libplanet.Blocks.Block<T>.Inequality(Libplanet.Blocks.Block<T>, Libplanet.Blocks.Block<T>)
+  fullName.vb: Libplanet.Blocks.Block(Of T).Inequality(Libplanet.Blocks.Block(Of T), Libplanet.Blocks.Block(Of T))
+  nameWithType: Block<T>.Inequality(Block<T>, Block<T>)
+  nameWithType.vb: Block(Of T).Inequality(Block(Of T), Block(Of T))
+- uid: Libplanet.Blocks.Block`1.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_op_Inequality_
+  commentId: Overload:Libplanet.Blocks.Block`1.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Blocks.Block<T>.Inequality
+  fullName.vb: Libplanet.Blocks.Block(Of T).Inequality
+  nameWithType: Block<T>.Inequality
+  nameWithType.vb: Block(Of T).Inequality
 - uid: Libplanet.Blocks.Block`1.PreviousHash
   name: PreviousHash
   href: api/Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_PreviousHash
@@ -2616,6 +2678,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PrivateKey.ExchangeKey
   nameWithType: PrivateKey.ExchangeKey
+- uid: Libplanet.Crypto.PrivateKey.op_Equality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)
+  name: Equality(PrivateKey, PrivateKey)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_op_Equality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Crypto.PrivateKey.op_Equality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Crypto.PrivateKey.Equality(Libplanet.Crypto.PrivateKey, Libplanet.Crypto.PrivateKey)
+  nameWithType: PrivateKey.Equality(PrivateKey, PrivateKey)
+- uid: Libplanet.Crypto.PrivateKey.op_Equality*
+  name: Equality
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_op_Equality_
+  commentId: Overload:Libplanet.Crypto.PrivateKey.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PrivateKey.Equality
+  nameWithType: PrivateKey.Equality
+- uid: Libplanet.Crypto.PrivateKey.op_Inequality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)
+  name: Inequality(PrivateKey, PrivateKey)
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_op_Inequality_Libplanet_Crypto_PrivateKey_Libplanet_Crypto_PrivateKey_
+  commentId: M:Libplanet.Crypto.PrivateKey.op_Inequality(Libplanet.Crypto.PrivateKey,Libplanet.Crypto.PrivateKey)
+  fullName: Libplanet.Crypto.PrivateKey.Inequality(Libplanet.Crypto.PrivateKey, Libplanet.Crypto.PrivateKey)
+  nameWithType: PrivateKey.Inequality(PrivateKey, PrivateKey)
+- uid: Libplanet.Crypto.PrivateKey.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_op_Inequality_
+  commentId: Overload:Libplanet.Crypto.PrivateKey.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PrivateKey.Inequality
+  nameWithType: PrivateKey.Inequality
 - uid: Libplanet.Crypto.PrivateKey.PublicKey
   name: PublicKey
   href: api/Libplanet.Crypto.PrivateKey.html#Libplanet_Crypto_PrivateKey_PublicKey
@@ -2696,6 +2784,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.PublicKey.Format
   nameWithType: PublicKey.Format
+- uid: Libplanet.Crypto.PublicKey.op_Equality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
+  name: Equality(PublicKey, PublicKey)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_op_Equality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.PublicKey.op_Equality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Crypto.PublicKey.Equality(Libplanet.Crypto.PublicKey, Libplanet.Crypto.PublicKey)
+  nameWithType: PublicKey.Equality(PublicKey, PublicKey)
+- uid: Libplanet.Crypto.PublicKey.op_Equality*
+  name: Equality
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_op_Equality_
+  commentId: Overload:Libplanet.Crypto.PublicKey.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.Equality
+  nameWithType: PublicKey.Equality
+- uid: Libplanet.Crypto.PublicKey.op_Inequality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
+  name: Inequality(PublicKey, PublicKey)
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_op_Inequality_Libplanet_Crypto_PublicKey_Libplanet_Crypto_PublicKey_
+  commentId: M:Libplanet.Crypto.PublicKey.op_Inequality(Libplanet.Crypto.PublicKey,Libplanet.Crypto.PublicKey)
+  fullName: Libplanet.Crypto.PublicKey.Inequality(Libplanet.Crypto.PublicKey, Libplanet.Crypto.PublicKey)
+  nameWithType: PublicKey.Inequality(PublicKey, PublicKey)
+- uid: Libplanet.Crypto.PublicKey.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_op_Inequality_
+  commentId: Overload:Libplanet.Crypto.PublicKey.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.PublicKey.Inequality
+  nameWithType: PublicKey.Inequality
 - uid: Libplanet.Crypto.PublicKey.Verify(System.Byte[],System.Byte[])
   name: Verify(Byte[], Byte[])
   href: api/Libplanet.Crypto.PublicKey.html#Libplanet_Crypto_PublicKey_Verify_System_Byte___System_Byte___
@@ -2779,6 +2893,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Crypto.SymmetricKey.Encrypt
   nameWithType: SymmetricKey.Encrypt
+- uid: Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  name: Equality(SymmetricKey, SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Equality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.op_Equality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Equality(Libplanet.Crypto.SymmetricKey, Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Equality(SymmetricKey, SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.op_Equality*
+  name: Equality
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Equality_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Equality
+  nameWithType: SymmetricKey.Equality
+- uid: Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  name: Inequality(SymmetricKey, SymmetricKey)
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Inequality_Libplanet_Crypto_SymmetricKey_Libplanet_Crypto_SymmetricKey_
+  commentId: M:Libplanet.Crypto.SymmetricKey.op_Inequality(Libplanet.Crypto.SymmetricKey,Libplanet.Crypto.SymmetricKey)
+  fullName: Libplanet.Crypto.SymmetricKey.Inequality(Libplanet.Crypto.SymmetricKey, Libplanet.Crypto.SymmetricKey)
+  nameWithType: SymmetricKey.Inequality(SymmetricKey, SymmetricKey)
+- uid: Libplanet.Crypto.SymmetricKey.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_op_Inequality_
+  commentId: Overload:Libplanet.Crypto.SymmetricKey.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Crypto.SymmetricKey.Inequality
+  nameWithType: SymmetricKey.Inequality
 - uid: Libplanet.Crypto.SymmetricKey.ToByteArray
   name: ToByteArray()
   href: api/Libplanet.Crypto.SymmetricKey.html#Libplanet_Crypto_SymmetricKey_ToByteArray
@@ -4038,6 +4178,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.ActionExecutionState.ExecutedBlockHash
   nameWithType: ActionExecutionState.ExecutedBlockHash
+- uid: Libplanet.Net.ActionExecutionState.op_Equality(Libplanet.Net.ActionExecutionState,Libplanet.Net.ActionExecutionState)
+  name: Equality(ActionExecutionState, ActionExecutionState)
+  href: api/Libplanet.Net.ActionExecutionState.html#Libplanet_Net_ActionExecutionState_op_Equality_Libplanet_Net_ActionExecutionState_Libplanet_Net_ActionExecutionState_
+  commentId: M:Libplanet.Net.ActionExecutionState.op_Equality(Libplanet.Net.ActionExecutionState,Libplanet.Net.ActionExecutionState)
+  fullName: Libplanet.Net.ActionExecutionState.Equality(Libplanet.Net.ActionExecutionState, Libplanet.Net.ActionExecutionState)
+  nameWithType: ActionExecutionState.Equality(ActionExecutionState, ActionExecutionState)
+- uid: Libplanet.Net.ActionExecutionState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.ActionExecutionState.html#Libplanet_Net_ActionExecutionState_op_Equality_
+  commentId: Overload:Libplanet.Net.ActionExecutionState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.ActionExecutionState.Equality
+  nameWithType: ActionExecutionState.Equality
+- uid: Libplanet.Net.ActionExecutionState.op_Inequality(Libplanet.Net.ActionExecutionState,Libplanet.Net.ActionExecutionState)
+  name: Inequality(ActionExecutionState, ActionExecutionState)
+  href: api/Libplanet.Net.ActionExecutionState.html#Libplanet_Net_ActionExecutionState_op_Inequality_Libplanet_Net_ActionExecutionState_Libplanet_Net_ActionExecutionState_
+  commentId: M:Libplanet.Net.ActionExecutionState.op_Inequality(Libplanet.Net.ActionExecutionState,Libplanet.Net.ActionExecutionState)
+  fullName: Libplanet.Net.ActionExecutionState.Inequality(Libplanet.Net.ActionExecutionState, Libplanet.Net.ActionExecutionState)
+  nameWithType: ActionExecutionState.Inequality(ActionExecutionState, ActionExecutionState)
+- uid: Libplanet.Net.ActionExecutionState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.ActionExecutionState.html#Libplanet_Net_ActionExecutionState_op_Inequality_
+  commentId: Overload:Libplanet.Net.ActionExecutionState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.ActionExecutionState.Inequality
+  nameWithType: ActionExecutionState.Inequality
 - uid: Libplanet.Net.ActionExecutionState.TotalBlockCount
   name: TotalBlockCount
   href: api/Libplanet.Net.ActionExecutionState.html#Libplanet_Net_ActionExecutionState_TotalBlockCount
@@ -4246,6 +4412,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockDownloadState.CurrentPhase
   nameWithType: BlockDownloadState.CurrentPhase
+- uid: Libplanet.Net.BlockDownloadState.op_Equality(Libplanet.Net.BlockDownloadState,Libplanet.Net.BlockDownloadState)
+  name: Equality(BlockDownloadState, BlockDownloadState)
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_op_Equality_Libplanet_Net_BlockDownloadState_Libplanet_Net_BlockDownloadState_
+  commentId: M:Libplanet.Net.BlockDownloadState.op_Equality(Libplanet.Net.BlockDownloadState,Libplanet.Net.BlockDownloadState)
+  fullName: Libplanet.Net.BlockDownloadState.Equality(Libplanet.Net.BlockDownloadState, Libplanet.Net.BlockDownloadState)
+  nameWithType: BlockDownloadState.Equality(BlockDownloadState, BlockDownloadState)
+- uid: Libplanet.Net.BlockDownloadState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_op_Equality_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.Equality
+  nameWithType: BlockDownloadState.Equality
+- uid: Libplanet.Net.BlockDownloadState.op_Inequality(Libplanet.Net.BlockDownloadState,Libplanet.Net.BlockDownloadState)
+  name: Inequality(BlockDownloadState, BlockDownloadState)
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_op_Inequality_Libplanet_Net_BlockDownloadState_Libplanet_Net_BlockDownloadState_
+  commentId: M:Libplanet.Net.BlockDownloadState.op_Inequality(Libplanet.Net.BlockDownloadState,Libplanet.Net.BlockDownloadState)
+  fullName: Libplanet.Net.BlockDownloadState.Inequality(Libplanet.Net.BlockDownloadState, Libplanet.Net.BlockDownloadState)
+  nameWithType: BlockDownloadState.Inequality(BlockDownloadState, BlockDownloadState)
+- uid: Libplanet.Net.BlockDownloadState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_op_Inequality_
+  commentId: Overload:Libplanet.Net.BlockDownloadState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockDownloadState.Inequality
+  nameWithType: BlockDownloadState.Inequality
 - uid: Libplanet.Net.BlockDownloadState.ReceivedBlockCount
   name: ReceivedBlockCount
   href: api/Libplanet.Net.BlockDownloadState.html#Libplanet_Net_BlockDownloadState_ReceivedBlockCount
@@ -4330,6 +4522,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockHashDownloadState.EstimatedTotalBlockHashCount
   nameWithType: BlockHashDownloadState.EstimatedTotalBlockHashCount
+- uid: Libplanet.Net.BlockHashDownloadState.op_Equality(Libplanet.Net.BlockHashDownloadState,Libplanet.Net.BlockHashDownloadState)
+  name: Equality(BlockHashDownloadState, BlockHashDownloadState)
+  href: api/Libplanet.Net.BlockHashDownloadState.html#Libplanet_Net_BlockHashDownloadState_op_Equality_Libplanet_Net_BlockHashDownloadState_Libplanet_Net_BlockHashDownloadState_
+  commentId: M:Libplanet.Net.BlockHashDownloadState.op_Equality(Libplanet.Net.BlockHashDownloadState,Libplanet.Net.BlockHashDownloadState)
+  fullName: Libplanet.Net.BlockHashDownloadState.Equality(Libplanet.Net.BlockHashDownloadState, Libplanet.Net.BlockHashDownloadState)
+  nameWithType: BlockHashDownloadState.Equality(BlockHashDownloadState, BlockHashDownloadState)
+- uid: Libplanet.Net.BlockHashDownloadState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.BlockHashDownloadState.html#Libplanet_Net_BlockHashDownloadState_op_Equality_
+  commentId: Overload:Libplanet.Net.BlockHashDownloadState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockHashDownloadState.Equality
+  nameWithType: BlockHashDownloadState.Equality
+- uid: Libplanet.Net.BlockHashDownloadState.op_Inequality(Libplanet.Net.BlockHashDownloadState,Libplanet.Net.BlockHashDownloadState)
+  name: Inequality(BlockHashDownloadState, BlockHashDownloadState)
+  href: api/Libplanet.Net.BlockHashDownloadState.html#Libplanet_Net_BlockHashDownloadState_op_Inequality_Libplanet_Net_BlockHashDownloadState_Libplanet_Net_BlockHashDownloadState_
+  commentId: M:Libplanet.Net.BlockHashDownloadState.op_Inequality(Libplanet.Net.BlockHashDownloadState,Libplanet.Net.BlockHashDownloadState)
+  fullName: Libplanet.Net.BlockHashDownloadState.Inequality(Libplanet.Net.BlockHashDownloadState, Libplanet.Net.BlockHashDownloadState)
+  nameWithType: BlockHashDownloadState.Inequality(BlockHashDownloadState, BlockHashDownloadState)
+- uid: Libplanet.Net.BlockHashDownloadState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.BlockHashDownloadState.html#Libplanet_Net_BlockHashDownloadState_op_Inequality_
+  commentId: Overload:Libplanet.Net.BlockHashDownloadState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockHashDownloadState.Inequality
+  nameWithType: BlockHashDownloadState.Inequality
 - uid: Libplanet.Net.BlockHashDownloadState.ReceivedBlockHashCount
   name: ReceivedBlockHashCount
   href: api/Libplanet.Net.BlockHashDownloadState.html#Libplanet_Net_BlockHashDownloadState_ReceivedBlockHashCount
@@ -4375,6 +4593,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BlockVerificationState.CurrentPhase
   nameWithType: BlockVerificationState.CurrentPhase
+- uid: Libplanet.Net.BlockVerificationState.op_Equality(Libplanet.Net.BlockVerificationState,Libplanet.Net.BlockVerificationState)
+  name: Equality(BlockVerificationState, BlockVerificationState)
+  href: api/Libplanet.Net.BlockVerificationState.html#Libplanet_Net_BlockVerificationState_op_Equality_Libplanet_Net_BlockVerificationState_Libplanet_Net_BlockVerificationState_
+  commentId: M:Libplanet.Net.BlockVerificationState.op_Equality(Libplanet.Net.BlockVerificationState,Libplanet.Net.BlockVerificationState)
+  fullName: Libplanet.Net.BlockVerificationState.Equality(Libplanet.Net.BlockVerificationState, Libplanet.Net.BlockVerificationState)
+  nameWithType: BlockVerificationState.Equality(BlockVerificationState, BlockVerificationState)
+- uid: Libplanet.Net.BlockVerificationState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.BlockVerificationState.html#Libplanet_Net_BlockVerificationState_op_Equality_
+  commentId: Overload:Libplanet.Net.BlockVerificationState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockVerificationState.Equality
+  nameWithType: BlockVerificationState.Equality
+- uid: Libplanet.Net.BlockVerificationState.op_Inequality(Libplanet.Net.BlockVerificationState,Libplanet.Net.BlockVerificationState)
+  name: Inequality(BlockVerificationState, BlockVerificationState)
+  href: api/Libplanet.Net.BlockVerificationState.html#Libplanet_Net_BlockVerificationState_op_Inequality_Libplanet_Net_BlockVerificationState_Libplanet_Net_BlockVerificationState_
+  commentId: M:Libplanet.Net.BlockVerificationState.op_Inequality(Libplanet.Net.BlockVerificationState,Libplanet.Net.BlockVerificationState)
+  fullName: Libplanet.Net.BlockVerificationState.Inequality(Libplanet.Net.BlockVerificationState, Libplanet.Net.BlockVerificationState)
+  nameWithType: BlockVerificationState.Inequality(BlockVerificationState, BlockVerificationState)
+- uid: Libplanet.Net.BlockVerificationState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.BlockVerificationState.html#Libplanet_Net_BlockVerificationState_op_Inequality_
+  commentId: Overload:Libplanet.Net.BlockVerificationState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.BlockVerificationState.Inequality
+  nameWithType: BlockVerificationState.Inequality
 - uid: Libplanet.Net.BlockVerificationState.TotalBlockCount
   name: TotalBlockCount
   href: api/Libplanet.Net.BlockVerificationState.html#Libplanet_Net_BlockVerificationState_TotalBlockCount
@@ -4459,6 +4703,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.BoundPeer.GetObjectData
   nameWithType: BoundPeer.GetObjectData
+- uid: Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
+  name: Equality(BoundPeer, BoundPeer)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Equality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.BoundPeer.op_Equality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.BoundPeer.Equality(Libplanet.Net.BoundPeer, Libplanet.Net.BoundPeer)
+  nameWithType: BoundPeer.Equality(BoundPeer, BoundPeer)
+- uid: Libplanet.Net.BoundPeer.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Equality_
+  commentId: Overload:Libplanet.Net.BoundPeer.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.Equality
+  nameWithType: BoundPeer.Equality
+- uid: Libplanet.Net.BoundPeer.op_Inequality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
+  name: Inequality(BoundPeer, BoundPeer)
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Inequality_Libplanet_Net_BoundPeer_Libplanet_Net_BoundPeer_
+  commentId: M:Libplanet.Net.BoundPeer.op_Inequality(Libplanet.Net.BoundPeer,Libplanet.Net.BoundPeer)
+  fullName: Libplanet.Net.BoundPeer.Inequality(Libplanet.Net.BoundPeer, Libplanet.Net.BoundPeer)
+  nameWithType: BoundPeer.Inequality(BoundPeer, BoundPeer)
+- uid: Libplanet.Net.BoundPeer.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_op_Inequality_
+  commentId: Overload:Libplanet.Net.BoundPeer.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.BoundPeer.Inequality
+  nameWithType: BoundPeer.Inequality
 - uid: Libplanet.Net.BoundPeer.ToString
   name: ToString()
   href: api/Libplanet.Net.BoundPeer.html#Libplanet_Net_BoundPeer_ToString
@@ -4766,6 +5036,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.Peer.IsCompatibleWith
   nameWithType: Peer.IsCompatibleWith
+- uid: Libplanet.Net.Peer.op_Equality(Libplanet.Net.Peer,Libplanet.Net.Peer)
+  name: Equality(Peer, Peer)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Equality_Libplanet_Net_Peer_Libplanet_Net_Peer_
+  commentId: M:Libplanet.Net.Peer.op_Equality(Libplanet.Net.Peer,Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Peer.Equality(Libplanet.Net.Peer, Libplanet.Net.Peer)
+  nameWithType: Peer.Equality(Peer, Peer)
+- uid: Libplanet.Net.Peer.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Equality_
+  commentId: Overload:Libplanet.Net.Peer.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.Equality
+  nameWithType: Peer.Equality
+- uid: Libplanet.Net.Peer.op_Inequality(Libplanet.Net.Peer,Libplanet.Net.Peer)
+  name: Inequality(Peer, Peer)
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Inequality_Libplanet_Net_Peer_Libplanet_Net_Peer_
+  commentId: M:Libplanet.Net.Peer.op_Inequality(Libplanet.Net.Peer,Libplanet.Net.Peer)
+  fullName: Libplanet.Net.Peer.Inequality(Libplanet.Net.Peer, Libplanet.Net.Peer)
+  nameWithType: Peer.Inequality(Peer, Peer)
+- uid: Libplanet.Net.Peer.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_op_Inequality_
+  commentId: Overload:Libplanet.Net.Peer.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.Peer.Inequality
+  nameWithType: Peer.Inequality
 - uid: Libplanet.Net.Peer.PublicIPAddress
   name: PublicIPAddress
   href: api/Libplanet.Net.Peer.html#Libplanet_Net_Peer_PublicIPAddress
@@ -4938,6 +5234,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.PreloadState.CurrentPhase
   nameWithType: PreloadState.CurrentPhase
+- uid: Libplanet.Net.PreloadState.op_Equality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
+  name: Equality(PreloadState, PreloadState)
+  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Equality_Libplanet_Net_PreloadState_Libplanet_Net_PreloadState_
+  commentId: M:Libplanet.Net.PreloadState.op_Equality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
+  fullName: Libplanet.Net.PreloadState.Equality(Libplanet.Net.PreloadState, Libplanet.Net.PreloadState)
+  nameWithType: PreloadState.Equality(PreloadState, PreloadState)
+- uid: Libplanet.Net.PreloadState.op_Equality*
+  name: Equality
+  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Equality_
+  commentId: Overload:Libplanet.Net.PreloadState.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Net.PreloadState.Equality
+  nameWithType: PreloadState.Equality
+- uid: Libplanet.Net.PreloadState.op_Inequality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
+  name: Inequality(PreloadState, PreloadState)
+  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Inequality_Libplanet_Net_PreloadState_Libplanet_Net_PreloadState_
+  commentId: M:Libplanet.Net.PreloadState.op_Inequality(Libplanet.Net.PreloadState,Libplanet.Net.PreloadState)
+  fullName: Libplanet.Net.PreloadState.Inequality(Libplanet.Net.PreloadState, Libplanet.Net.PreloadState)
+  nameWithType: PreloadState.Inequality(PreloadState, PreloadState)
+- uid: Libplanet.Net.PreloadState.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_op_Inequality_
+  commentId: Overload:Libplanet.Net.PreloadState.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Net.PreloadState.Inequality
+  nameWithType: PreloadState.Inequality
 - uid: Libplanet.Net.PreloadState.TotalPhase
   name: TotalPhase
   href: api/Libplanet.Net.PreloadState.html#Libplanet_Net_PreloadState_TotalPhase
@@ -5519,6 +5841,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Nonce.ByteArray
   nameWithType: Nonce.ByteArray
+- uid: Libplanet.Nonce.op_Equality(Libplanet.Nonce,Libplanet.Nonce)
+  name: Equality(Nonce, Nonce)
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce_op_Equality_Libplanet_Nonce_Libplanet_Nonce_
+  commentId: M:Libplanet.Nonce.op_Equality(Libplanet.Nonce,Libplanet.Nonce)
+  fullName: Libplanet.Nonce.Equality(Libplanet.Nonce, Libplanet.Nonce)
+  nameWithType: Nonce.Equality(Nonce, Nonce)
+- uid: Libplanet.Nonce.op_Equality*
+  name: Equality
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce_op_Equality_
+  commentId: Overload:Libplanet.Nonce.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Nonce.Equality
+  nameWithType: Nonce.Equality
+- uid: Libplanet.Nonce.op_Inequality(Libplanet.Nonce,Libplanet.Nonce)
+  name: Inequality(Nonce, Nonce)
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce_op_Inequality_Libplanet_Nonce_Libplanet_Nonce_
+  commentId: M:Libplanet.Nonce.op_Inequality(Libplanet.Nonce,Libplanet.Nonce)
+  fullName: Libplanet.Nonce.Inequality(Libplanet.Nonce, Libplanet.Nonce)
+  nameWithType: Nonce.Inequality(Nonce, Nonce)
+- uid: Libplanet.Nonce.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Nonce.html#Libplanet_Nonce_op_Inequality_
+  commentId: Overload:Libplanet.Nonce.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Nonce.Inequality
+  nameWithType: Nonce.Inequality
 - uid: Libplanet.Nonce.ToByteArray
   name: ToByteArray()
   href: api/Libplanet.Nonce.html#Libplanet_Nonce_ToByteArray
@@ -8547,6 +8895,32 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.TxId.GetObjectData
   nameWithType: TxId.GetObjectData
+- uid: Libplanet.Tx.TxId.op_Equality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)
+  name: Equality(TxId, TxId)
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_op_Equality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Tx.TxId.op_Equality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)
+  fullName: Libplanet.Tx.TxId.Equality(Libplanet.Tx.TxId, Libplanet.Tx.TxId)
+  nameWithType: TxId.Equality(TxId, TxId)
+- uid: Libplanet.Tx.TxId.op_Equality*
+  name: Equality
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_op_Equality_
+  commentId: Overload:Libplanet.Tx.TxId.op_Equality
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxId.Equality
+  nameWithType: TxId.Equality
+- uid: Libplanet.Tx.TxId.op_Inequality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)
+  name: Inequality(TxId, TxId)
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_op_Inequality_Libplanet_Tx_TxId_Libplanet_Tx_TxId_
+  commentId: M:Libplanet.Tx.TxId.op_Inequality(Libplanet.Tx.TxId,Libplanet.Tx.TxId)
+  fullName: Libplanet.Tx.TxId.Inequality(Libplanet.Tx.TxId, Libplanet.Tx.TxId)
+  nameWithType: TxId.Inequality(TxId, TxId)
+- uid: Libplanet.Tx.TxId.op_Inequality*
+  name: Inequality
+  href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_op_Inequality_
+  commentId: Overload:Libplanet.Tx.TxId.op_Inequality
+  isSpec: "True"
+  fullName: Libplanet.Tx.TxId.Inequality
+  nameWithType: TxId.Inequality
 - uid: Libplanet.Tx.TxId.Size
   name: Size
   href: api/Libplanet.Tx.TxId.html#Libplanet_Tx_TxId_Size
