@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using Libplanet.Action;
@@ -40,7 +39,12 @@ namespace Libplanet.Store
                     );
                 }
 
-                Trace.Assert(block.Hash.Equals(key));
+                if (!block.Hash.Equals(key))
+                {
+                    throw new InvalidBlockHashException(
+                        $"The given hash[{key}] was not equal to actual[{block.Hash}].");
+                }
+
                 return block;
             }
 

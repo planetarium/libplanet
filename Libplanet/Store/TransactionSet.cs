@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Libplanet.Action;
 using Libplanet.Tx;
@@ -42,8 +41,14 @@ namespace Libplanet.Store
                     throw new KeyNotFoundException();
                 }
 
-                Trace.Assert(key.Equals(tx?.Id));
-                tx?.Validate();
+                if (!key.Equals(tx.Id))
+                {
+                    throw new InvalidTxIdException(
+                        tx.Id,
+                        $"The given TxId[{key}] was not equal to actual[{tx.Id}].");
+                }
+
+                tx.Validate();
 
                 return tx;
             }
