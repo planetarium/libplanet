@@ -391,6 +391,8 @@ the genesis block during forking.  [<a href="https://github.com/planetarium/libp
 mining <code>Block&lt;T&gt;</code>s after reorg from α to β where a <code>Transaction&lt;T&gt;</code> was once
 included by a <code>Block&lt;T&gt;</code> (α) and not included by an other <code>Block&lt;T&gt;</code> (β) for
 the same <code>Index</code> due to the latency gap between nodes.  [<a href="https://github.com/planetarium/libplanet/pull/775">#775</a>]</li>
+<li>Fixed a bug where <code>TransactionSet</code> and <code>BlockSet</code> has halt whole process when
+run <code>Trace.Assert()</code> [<a href="https://github.com/planetarium/libplanet/issues/806">#806</a>, <a href="https://github.com/planetarium/libplanet/pull/833">#833</a>]</li>
 </ul>
 <h2 id="version-070">Version 0.7.0</h2>
 <p>Released on November 8, 2019.</p>
