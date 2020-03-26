@@ -40,7 +40,7 @@
       runtime; build; native; contentfiles; analyzers; buildtransitive
     </IncludeAssets>
   </PackageReference>
-  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.2.1-planetarium" />
+  <PackageReference Include="Planetarium.RocksDbSharp" Version="6.2.2.3-planetarium" />
   <PackageReference Include="SonarAnalyzer.CSharp" Version="8.1.0.13383">
     <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     <PrivateAssets>all</PrivateAssets>
