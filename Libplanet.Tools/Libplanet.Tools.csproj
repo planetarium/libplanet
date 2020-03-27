@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Libplanet.Tools</PackageId>
-    <Title>Libplanet CLI Tools</Title>
+    <Title>planet: Libplanet CLI Tools</Title>
     <OutputType>Exe</OutputType>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -15,6 +15,8 @@
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Libplanet.Tools</RootNamespace>
     <AssemblyName>Libplanet.Tools</AssemblyName>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>planet</ToolCommandName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
