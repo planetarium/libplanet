@@ -1,6 +1,4 @@
-<Project
-  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-  Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>

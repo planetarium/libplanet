@@ -23,6 +23,7 @@
 </PropertyGroup>
 
 <ItemGroup>
+  <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
   <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
   <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
     <Link>Menees.Analyzers.Settings.xml</Link>
@@ -56,6 +57,8 @@
 
 <ItemGroup>
   <ProjectReference Include="..\Libplanet\Libplanet.csproj" />
+  <!-- FIXME: We should specify the version range when the following NuGet issue
+  is addressed: <https://github.com/NuGet/Home/issues/5556>. -->
 </ItemGroup>
 
 </Project>

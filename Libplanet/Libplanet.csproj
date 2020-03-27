@@ -1,6 +1,4 @@
-<Project
-  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
-  Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Libplanet</PackageId>
     <Title>Libplanet</Title>
@@ -50,7 +48,7 @@ https://docs.libplanet.io/</Description>
 
   <ItemGroup>
     <None Include="..\CHANGES.md" Pack="true" PackagePath="CHANGES.md" />
-    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE" />
+    <None Include="..\LICENSE" Pack="true" PackagePath="LICENSE.txt" />
     <None Include="..\README.md" Pack="true" PackagePath="README.md" />
     <None Include="..\icon.png" Pack="true" PackagePath="icon.png" />
     <AdditionalFiles Include="..\Menees.Analyzers.Settings.xml">
