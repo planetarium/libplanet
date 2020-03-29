@@ -20,11 +20,8 @@ namespace Libplanet.Tools
 
         [PrimaryCommand]
         [Command(Description = "List all private keys.")]
-        public void List()
-        {
-            // TODO: -v/--verbose option to print public keys as well.
+        public void List() =>
             PrintKeys(KeyStore.List().Select(t => t.ToValueTuple()));
-        }
 
         [Command(Description = "Create a new private key.")]
         public void Create(
@@ -48,7 +45,7 @@ namespace Libplanet.Tools
                 string second = ConsolePasswordReader.Read("Retype tassphrase: ");
                 if (!passphrase.Equals(second))
                 {
-                    throw Error("Passwords do not match.");
+                    throw Utils.Error("Passwords do not match.");
                 }
             }
 
@@ -87,30 +84,20 @@ namespace Libplanet.Tools
             }
             catch (NoKeyException)
             {
-                throw Error($"No such key ID: {keyId}");
+                throw Utils.Error($"No such key ID: {keyId}");
             }
             catch (IncorrectPassphraseException)
             {
-                throw Error("The passphrase is wrong.");
+                throw Utils.Error("The passphrase is wrong.");
             }
         }
 
         private void PrintKeys(IEnumerable<(Guid, ProtectedPrivateKey)> keys)
         {
-            Console.Error.WriteLine("{0,-36} {1,-42}", "UUID", "Address");
-            Console.Error.WriteLine($"{new string('-', 36)} {new string('-', 42)}");
-            Console.Error.Flush();
-            foreach ((Guid keyId, ProtectedPrivateKey ppk) in keys)
-            {
-                Console.WriteLine("{0,-36} {1,-42}", keyId, ppk.Address);
-            }
-        }
-
-        private CommandExitedException Error(string message, int exitCode = 128)
-        {
-            Console.Error.WriteLine("Error: {0}", message);
-            Console.Error.Flush();
-            return new CommandExitedException(exitCode);
+            Utils.PrintTable(
+                ("UUID", "Address"),
+                keys.Select(t => (t.Item1.ToString(), t.Item2.Address.ToString()))
+            );
         }
     }
 }
