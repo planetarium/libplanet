@@ -7,7 +7,7 @@ namespace Libplanet.Net
 {
     internal static class NetMQSocketExtensions
     {
-        public static async Task SendMultipartMessageAsync(
+        public static Task SendMultipartMessageAsync(
             this NetMQSocket socket,
             NetMQMessage message,
             TimeSpan? timeout = null,
@@ -19,32 +19,31 @@ namespace Libplanet.Net
                 cts.CancelAfter(timeoutNotNull);
             }
 
-            var ct = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            try
+            var ct = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                cts.Token
+            );
+
+            return socket.SendMultipartMessageAsync(
+                message,
+                false,
+                cancellationToken: ct.Token
+            ).ContinueWith(t =>
             {
-                await socket.SendMultipartMessageAsync(message, false, cancellationToken: ct.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                if (cts.Token.IsCancellationRequested)
+                if (t.IsCanceled && cts.Token.IsCancellationRequested)
                 {
                     throw new TimeoutException(
                         $"The operation exceeded the specified time: {timeout}."
                     );
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            finally
-            {
+
                 cts.Dispose();
                 ct.Dispose();
-            }
+                return t;
+            });
         }
 
-        public static async Task<NetMQMessage> ReceiveMultipartMessageAsync(
+        public static Task<NetMQMessage> ReceiveMultipartMessageAsync(
             this NetMQSocket socket,
             TimeSpan? timeout = null,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -55,31 +54,27 @@ namespace Libplanet.Net
                 cts.CancelAfter(timeoutNotNull);
             }
 
-            var ct = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, cts.Token);
-            try
+            var ct = CancellationTokenSource.CreateLinkedTokenSource(
+                cancellationToken,
+                cts.Token
+            );
+
+            return socket.ReceiveMultipartMessageAsync(
+                expectedFrameCount: 4,
+                cancellationToken: ct.Token
+            ).ContinueWith(t =>
             {
-                return await socket.ReceiveMultipartMessageAsync(
-                    expectedFrameCount: 4,
-                    cancellationToken: ct.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                if (cts.Token.IsCancellationRequested)
+                if (t.IsCanceled && cts.IsCancellationRequested)
                 {
                     throw new TimeoutException(
                         $"The operation exceeded the specified time: {timeout}."
                     );
                 }
-                else
-                {
-                    throw;
-                }
-            }
-            finally
-            {
+
                 cts.Dispose();
                 ct.Dispose();
-            }
+                return t.Result;
+            });
         }
     }
 }

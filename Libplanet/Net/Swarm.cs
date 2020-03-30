@@ -2119,27 +2119,36 @@ namespace Libplanet.Net
                     "Processing txids: {@txIds}",
                     _demandTxIds.Keys.Select(txid => txid.ToString()));
                 var demandTxIds = _demandTxIds.ToArray();
-                var demands = new Dictionary<BoundPeer, List<TxId>>();
+                var demands = new Dictionary<BoundPeer, HashSet<TxId>>();
 
                 foreach (var kv in demandTxIds)
                 {
                     if (!demands.ContainsKey(kv.Value))
                     {
-                        demands[kv.Value] = new List<TxId>();
+                        demands[kv.Value] = new HashSet<TxId>();
                     }
 
                     demands[kv.Value].Add(kv.Key);
                 }
 
+                var txs = new HashSet<Transaction<T>>();
                 var tasks = new List<Task<List<Transaction<T>>>>();
                 foreach (var kv in demands)
                 {
                     IAsyncEnumerable<Transaction<T>> fetched =
                         GetTxsAsync(kv.Key, kv.Value, cancellationToken);
-                    tasks.Add(fetched.ToListAsync(cancellationToken).AsTask());
+                    ValueTask<List<Transaction<T>>> vt = fetched.ToListAsync(cancellationToken);
+
+                    if (vt.IsCompletedSuccessfully)
+                    {
+                        txs.UnionWith(vt.Result);
+                    }
+                    else
+                    {
+                        tasks.Add(vt.AsTask());
+                    }
                 }
 
-                var txs = new List<Transaction<T>>();
                 try
                 {
                     await tasks.WhenAll();
@@ -2155,7 +2164,7 @@ namespace Libplanet.Net
                     if (!task.IsFaulted)
                     {
                         // `task.Result` is okay because we've already waited.
-                        txs.AddRange(task.Result);
+                        txs.UnionWith(task.Result);
                     }
                 }
 

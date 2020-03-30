@@ -98,6 +98,8 @@ To be released.
  -  `Swarm<T>.PreloadAsync()` and `Swarm<T>.StartAsync()` became to download
     only a list of block hashes first and then download blocks from
     simultaneously multiple peers.  [[#707], [#798]]
+ -  Improved performance of `Swarm<T>` by preventing unnecessary task
+    creation.  [[#817], [#837]]
 
 ### Bug fixes
 
@@ -128,9 +130,11 @@ To be released.
 [#802]: https://github.com/planetarium/libplanet/pull/802
 [#803]: https://github.com/planetarium/libplanet/pull/803
 [#815]: https://github.com/planetarium/libplanet/pull/815
+[#817]: https://github.com/planetarium/libplanet/issues/817
 [#820]: https://github.com/planetarium/libplanet/pull/820
 [#825]: https://github.com/planetarium/libplanet/pull/825
 [#831]: https://github.com/planetarium/libplanet/pull/831
+[#837]: https://github.com/planetarium/libplanet/pull/837
 
 
 Version 0.8.0
