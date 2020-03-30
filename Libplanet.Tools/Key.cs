@@ -9,9 +9,9 @@ using Libplanet.KeyStore;
 
 namespace Libplanet.Tools
 {
-    public class Keys
+    public class Key
     {
-        public Keys()
+        public Key()
         {
             KeyStore = Web3KeyStore.DefaultKeyStore;
         }

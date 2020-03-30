@@ -3,7 +3,7 @@ using Cocona;
 
 namespace Libplanet.Tools
 {
-    [HasSubCommands(typeof(Keys), Description = "Manage private keys.")]
+    [HasSubCommands(typeof(Key), Description = "Manage private keys.")]
     public class Program
     {
         public static Task Main(string[] args) =>
