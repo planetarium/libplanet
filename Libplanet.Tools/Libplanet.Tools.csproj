@@ -14,8 +14,6 @@
     <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <RootNamespace>Libplanet.Tools</RootNamespace>
-    <AssemblyName>Libplanet.Tools</AssemblyName>
-    <PackAsTool>true</PackAsTool>
     <ToolCommandName>planet</ToolCommandName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -23,6 +21,20 @@
     <NoWarn>$(NoWarn);CS1591;S1118</NoWarn>
     <IsTestProject>false</IsTestProject>
     <CodeAnalysisRuleSet>..\Libplanet.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(PublishSingleFile)' != 'true' ">
+    <PackAsTool>true</PackAsTool>
+    <AssemblyName>Libplanet.Tools</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' ">
+    <AssemblyName>planet</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(PublishSingleFile)' == 'true' And
+                             '$(RuntimeIdentifier.Substring(0, 6))' == 'linux-' ">
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
