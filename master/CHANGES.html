@@ -176,6 +176,8 @@ lower nonce than the expected nonce in the chain.  [<a href="https://github.com/
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> and <code>Swarm&lt;T&gt;.StartAsync()</code> became to download
 only a list of block hashes first and then download blocks from
 simultaneously multiple peers.  [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>, <a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
+<li>Improved performance of <code>Swarm&lt;T&gt;</code> by preventing unnecessary task
+creation.  [<a href="https://github.com/planetarium/libplanet/issues/817">#817</a>, <a href="https://github.com/planetarium/libplanet/pull/837">#837</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
