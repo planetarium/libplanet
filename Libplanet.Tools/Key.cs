@@ -115,6 +115,43 @@ namespace Libplanet.Tools
             }
         }
 
+        [Command(
+            Aliases = new[] { "gen" },
+            Description = "Generate a raw private key without storing it."
+        )]
+        public void Generate(
+            [Option('A', Description = "Do not show a dervied address.")]
+            bool noAddress = false,
+            [Option('p', Description = "Show a public key as well.")]
+            bool publicKey = false
+        )
+        {
+            var key = new PrivateKey();
+            string priv = ByteUtil.Hex(key.ByteArray);
+            string addr = key.ToAddress().ToString();
+            string pub = ByteUtil.Hex(key.PublicKey.Format(compress: true));
+
+            if (!noAddress && publicKey)
+            {
+                Utils.PrintTable(
+                    ("Private key", "Address", "Public key"),
+                    new[] { (priv, addr, pub) }
+                );
+            }
+            else if (!noAddress)
+            {
+                Utils.PrintTable(("Private key", "Address"), new[] { (priv, addr) });
+            }
+            else if (publicKey)
+            {
+                Utils.PrintTable(("Private key", "Public key"), new[] { (priv, pub) });
+            }
+            else
+            {
+                Console.WriteLine(priv);
+            }
+        }
+
         private PrivateKey UnprotectKey(Guid keyId, string passphrase = null)
         {
             passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
