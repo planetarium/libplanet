@@ -75,16 +75,63 @@ namespace Libplanet.Tools
             string passphrase = null
         )
         {
-            passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
             try
             {
-                ProtectedPrivateKey ppk = KeyStore.Get(keyId);
-                ppk.Unprotect(passphrase);
+                UnprotectKey(keyId, passphrase);
                 KeyStore.Remove(keyId);
             }
             catch (NoKeyException)
             {
                 throw Utils.Error($"No such key ID: {keyId}");
+            }
+        }
+
+        [Command(Description = "Export a raw private key.")]
+        public void Export(
+            [Argument(Name = "UUID", Description = "A key UUID to export.")] Guid keyId,
+            [Option(
+                'p',
+                ValueName = "PASSPHRASE",
+                Description = "Take passphrase through this option instead of prompt."
+            )]
+            string passphrase = null,
+            [Option(
+                'b',
+                Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
+            )]
+            bool bytes = false
+        )
+        {
+            PrivateKey key = UnprotectKey(keyId, passphrase);
+            byte[] rawKey = key.ByteArray;
+            if (bytes)
+            {
+                using Stream stdout = Console.OpenStandardOutput();
+                stdout.Write(rawKey);
+            }
+            else
+            {
+                Console.WriteLine(ByteUtil.Hex(rawKey));
+            }
+        }
+
+        private PrivateKey UnprotectKey(Guid keyId, string passphrase = null)
+        {
+            passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
+
+            ProtectedPrivateKey ppk;
+            try
+            {
+                ppk = KeyStore.Get(keyId);
+            }
+            catch (NoKeyException)
+            {
+                throw Utils.Error($"No such key ID: {keyId}");
+            }
+
+            try
+            {
+                return ppk.Unprotect(passphrase);
             }
             catch (IncorrectPassphraseException)
             {
