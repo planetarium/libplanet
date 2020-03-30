@@ -4,24 +4,38 @@
 This CLI app is a collection of utilities for application programmers who
 create decentralized games powered by [Libplanet].
 
-Install as a [.NET Core tool]:
+[Libplanet]: https://libplanet.io/
+
+
+Installation
+------------
+
+Install as a [.NET Core tool] if .NET Core SDK is installed on your system:
 
 ~~~~ bash
 dotnet tool install -g Libplanet.Tools
 ~~~~
 
-Run the command:
+Or you could just download an executable binary for your platform from
+the [releases page]: *planet-\*-{linux,osx,win}-x64.{tar.xz,zip}* files are
+CLI tools.  Linux (x64), macOS (x64), and Windows (x64) are supported.
+Extract the binary to an appropriate directory in your `PATH`.
 
-~~~~ bash
-dotnet planet --help
-~~~~
+[.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 
-Or shortly (if it's installed with `-g`/`--global` option):
+
+Usage
+-----
 
 ~~~~ bash
 planet --help
 ~~~~
 
+If you installed it using .NET Core SDK *without `-g`/`--global` option*
+use `dotnet planet` command instead:
 
-[Libplanet]: https://libplanet.io/
-[.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+~~~~ bash
+dotnet planet --help
+~~~~
+
+[releases page]: https://github.com/planetarium/libplanet/releases
