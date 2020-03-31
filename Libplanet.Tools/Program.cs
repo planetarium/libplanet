@@ -3,6 +3,7 @@ using Cocona;
 
 namespace Libplanet.Tools
 {
+    [HasSubCommands(typeof(Apv), Description = "App protocol version utilities.")]
     [HasSubCommands(typeof(Key), Description = "Manage private keys.")]
     public class Program
     {

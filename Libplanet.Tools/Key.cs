@@ -66,7 +66,7 @@ namespace Libplanet.Tools
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
-            [Argument(Name = "UUID", Description = "A key UUID to remove.")] Guid keyId,
+            [Argument(Name = "KEY-ID", Description = "A key UUID to remove.")] Guid keyId,
             [Option(
                 'p',
                 ValueName = "PASSPHRASE",
@@ -88,7 +88,7 @@ namespace Libplanet.Tools
 
         [Command(Description = "Export a raw private key.")]
         public void Export(
-            [Argument(Name = "UUID", Description = "A key UUID to export.")] Guid keyId,
+            [Argument(Name = "KEY-ID", Description = "A key UUID to export.")] Guid keyId,
             [Option(
                 'p',
                 ValueName = "PASSPHRASE",
@@ -152,7 +152,7 @@ namespace Libplanet.Tools
             }
         }
 
-        private PrivateKey UnprotectKey(Guid keyId, string passphrase = null)
+        public PrivateKey UnprotectKey(Guid keyId, string passphrase = null)
         {
             passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
 
@@ -179,7 +179,7 @@ namespace Libplanet.Tools
         private void PrintKeys(IEnumerable<(Guid, ProtectedPrivateKey)> keys)
         {
             Utils.PrintTable(
-                ("UUID", "Address"),
+                ("Key ID", "Address"),
                 keys.Select(t => (t.Item1.ToString(), t.Item2.Address.ToString()))
             );
         }
