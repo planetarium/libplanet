@@ -21,7 +21,7 @@ namespace Libplanet.Tools
                 ValueName = "PASSPHRASE",
                 Description = "Take passphrase through this option instead of prompt."
             )]
-            string passphrase = null,
+            string? passphrase = null,
             [Option(
                 'E',
                 ValueName = "FILE",
@@ -29,11 +29,11 @@ namespace Libplanet.Tools
                     "For standard input, use a hyphen (`-').  " +
                     "For an actual file named a hyphen, prepend `./', i.e., `./-'."
             )]
-            string extraFile = null
+            string? extraFile = null
         )
         {
             PrivateKey key = new Key().UnprotectKey(keyId, passphrase);
-            IValue extra = null;
+            IValue? extra = null;
             if (extraFile is string path)
             {
                 var codec = new Codec();

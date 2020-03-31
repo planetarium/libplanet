@@ -16,6 +16,7 @@
     <RootNamespace>Libplanet.Tools</RootNamespace>
     <ToolCommandName>planet</ToolCommandName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Nullable>enable</Nullable>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);CS1591;S1118;SA1118</NoWarn>

@@ -30,7 +30,7 @@ namespace Libplanet.Tools
                 ValueName = "PASSPHRASE",
                 Description = "Take passphrase through this option instead of prompt."
             )]
-            string passphrase = null,
+            string? passphrase = null,
             [Option(
                 Description = "Print the created private key as Web3 Secret Storage format."
             )]
@@ -72,7 +72,7 @@ namespace Libplanet.Tools
                 ValueName = "PASSPHRASE",
                 Description = "Take passphrase through this option instead of prompt."
             )]
-            string passphrase = null
+            string? passphrase = null
         )
         {
             try
@@ -94,7 +94,7 @@ namespace Libplanet.Tools
                 ValueName = "PASSPHRASE",
                 Description = "Take passphrase through this option instead of prompt."
             )]
-            string passphrase = null,
+            string? passphrase = null,
             [Option(
                 'b',
                 Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
@@ -152,7 +152,7 @@ namespace Libplanet.Tools
             }
         }
 
-        public PrivateKey UnprotectKey(Guid keyId, string passphrase = null)
+        public PrivateKey UnprotectKey(Guid keyId, string? passphrase = null)
         {
             passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
 
