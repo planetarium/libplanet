@@ -57,6 +57,31 @@ namespace Libplanet.Net
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="Swarm{T}"/>.  This constructor in only itself does not start
+        /// any communication with the network.
+        /// </summary>
+        /// <param name="blockChain">A blockchain to publicize on the network.</param>
+        /// <param name="privateKey">A private key to sign messages.  The public part of
+        /// this key become a part of its end address for being pointed by peers.</param>
+        /// <param name="appProtocolVersion">An app protocol to comply.</param>
+        /// <param name="workers">The number of background workers (i.e., threads).</param>
+        /// <param name="host">A hostname to be a part of a public endpoint, that peers use when
+        /// they connect to this node.  Note that this is not a hostname to listen to;
+        /// <see cref="Swarm{T}"/> always listens to 0.0.0.0 &amp; ::/0.</param>
+        /// <param name="listenPort">A port number to listen to.</param>
+        /// <param name="iceServers">
+        /// <a href="https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment">ICE</a>
+        /// servers to use for TURN/STUN.  Purposes to traverse NAT.</param>
+        /// <param name="differentAppProtocolVersionEncountered">A delegate called back when a peer
+        /// with one different from <paramref name="appProtocolVersion"/>, and their version is
+        /// signed by a trusted party (i.e., <paramref name="trustedAppProtocolVersionSigners"/>).
+        /// If this callback returns <c>false</c> an encountered peer is ignored.  If this callback
+        /// is omitted all peers with different <see cref="AppProtocolVersion"/>s are ignored.
+        /// </param>
+        /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
+        /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
+        /// <c>null</c>, which is default.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -64,7 +89,6 @@ namespace Libplanet.Net
             int workers = 5,
             string host = null,
             int? listenPort = null,
-            DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
             IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null)
@@ -77,7 +101,7 @@ namespace Libplanet.Net
                 workers,
                 host,
                 listenPort,
-                createdAt,
+                null,
                 iceServers,
                 differentAppProtocolVersionEncountered,
                 trustedAppProtocolVersionSigners)

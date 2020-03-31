@@ -42,6 +42,7 @@ To be released.
  -  Added `IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null`
     parameter to `Swarm()` constructor.  [[#266], [#815]]
  -  Removed `DifferentProtocolVersionEventArgs` class.  [[#266], [#815]]
+ -  Removed `createdAt` parameter from `Swarm()` constructor.  [[#838]]
  -  Replaced `BlockChain<T>.StageTransactions()` with `.StageTransaction()`
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
@@ -130,6 +131,7 @@ To be released.
 [#825]: https://github.com/planetarium/libplanet/pull/825
 [#831]: https://github.com/planetarium/libplanet/pull/831
 [#837]: https://github.com/planetarium/libplanet/pull/837
+[#838]: https://github.com/planetarium/libplanet/pull/838
 
 
 Version 0.8.0
