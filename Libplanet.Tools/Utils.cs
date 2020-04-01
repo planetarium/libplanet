@@ -21,7 +21,7 @@ namespace Libplanet.Tools
             IEnumerable<(int, string)> RowToStrings(T tuple)
             {
                 return Enumerable.Range(0, tuple.Length)
-                    .Select(i => (i, tuple[i]?.ToString() ?? string.Empty));
+                    .Select(i => (i, tuple[i]?.ToString()?.Normalize() ?? string.Empty));
             }
 
             // Calculates the column lengths:

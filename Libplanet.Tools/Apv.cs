@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Bencodex;
 using Bencodex.Types;
@@ -95,6 +97,100 @@ namespace Libplanet.Tools
 
             AppProtocolVersion v = AppProtocolVersion.Sign(key, version, extraValue);
             Console.WriteLine(v.Token);
+        }
+
+        [Command(Description = "Parse and analyze a given app protocol version token.")]
+        public void Analyze(
+            [Argument(
+                Name = "APV-TOKEN",
+                Description = "An app protocol version token to analyze.  " +
+                    "Read from the standard input if omitted."
+            )]
+            string? token = null
+        )
+        {
+            if (token is null)
+            {
+                token = Console.ReadLine();
+            }
+
+            AppProtocolVersion v;
+            try
+            {
+                v = AppProtocolVersion.FromToken(token.Trim());
+            }
+            catch (FormatException e)
+            {
+                throw Utils.Error("Not a valid app protocol version token.  " + e);
+            }
+
+            var data = new List<(string, string)>
+            {
+                ("version", v.Version.ToString(CultureInfo.InvariantCulture)),
+                ("signature", ByteUtil.Hex(v.Signature)),
+                ("signer", v.Signer.ToString()),
+            };
+
+            if (v.Extra is IValue extra)
+            {
+                void TreeIntoTable(IValue tree, List<(string, string)> table, string key)
+                {
+                    switch (tree)
+                    {
+                        case Null _:
+                            table.Add((key, "null"));
+                            return;
+
+                        case Bencodex.Types.Boolean b:
+                            table.Add((key, b ? "true" : "false"));
+                            return;
+
+                        case Binary bin:
+                            table.Add((key, ByteUtil.Hex(bin.Value)));
+                            return;
+
+                        case Text t:
+                            table.Add((key, t.Value));
+                            return;
+
+                        case Bencodex.Types.Integer i:
+                            table.Add((key, i.Value.ToString(CultureInfo.InvariantCulture)));
+                            return;
+
+                        case Bencodex.Types.List l:
+                            int idx = 0;
+                            foreach (IValue el in l)
+                            {
+                                TreeIntoTable(el, table, $"{key}[{idx}]");
+                                idx++;
+                            }
+
+                            return;
+
+                        case Bencodex.Types.Dictionary d:
+                            foreach (KeyValuePair<IKey, IValue> kv in d)
+                            {
+                                string k = kv.Key switch
+                                {
+                                    Binary bk => ByteUtil.Hex(bk),
+                                    Text txt => txt.Value,
+                                    _ => kv.Key.ToString() ?? string.Empty,
+                                };
+                                TreeIntoTable(kv.Value, table, $"{key}.{k}");
+                            }
+
+                            return;
+
+                        default:
+                            table.Add((key, tree.ToString() ?? string.Empty));
+                            return;
+                    }
+                }
+
+                TreeIntoTable(v.Extra, data, "extra");
+            }
+
+            Utils.PrintTable(("Field", "Value"), data);
         }
     }
 }
