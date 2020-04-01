@@ -176,7 +176,7 @@ namespace Libplanet.Tools
             }
         }
 
-        private void PrintKeys(IEnumerable<(Guid, ProtectedPrivateKey)> keys)
+        private void PrintKeys(IEnumerable<(Guid KeyId, ProtectedPrivateKey Key)> keys)
         {
             Utils.PrintTable(
                 ("Key ID", "Address"),

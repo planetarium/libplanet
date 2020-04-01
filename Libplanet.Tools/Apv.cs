@@ -29,13 +29,29 @@ namespace Libplanet.Tools
                     "For standard input, use a hyphen (`-').  " +
                     "For an actual file named a hyphen, prepend `./', i.e., `./-'."
             )]
-            string? extraFile = null
+            string? extraFile = null,
+            [Option(
+                'e',
+                ValueName = "KEY=VALUE",
+                Description = "Set a value to a key on extra Bencodex dictionary.  " +
+                    "Can be applied multiple times (e.g., `-e foo=1 -e bar=baz').  " +
+                    "This option implies the extra data to be a Bencodex dictionary, " +
+                    "hence cannot be used together with -E/--extra-file option."
+            )]
+            string[]? extra = null
         )
         {
             PrivateKey key = new Key().UnprotectKey(keyId, passphrase);
-            IValue? extra = null;
+            IValue? extraValue = null;
             if (extraFile is string path)
             {
+                if (extra is string[] e && e.Length > 0)
+                {
+                    throw Utils.Error(
+                        "-E/--extra-file and -e/--extra cannot be used together at a time."
+                    );
+                }
+
                 var codec = new Codec();
                 if (path == "-")
                 {
@@ -47,16 +63,37 @@ namespace Libplanet.Tools
                     }
 
                     buffer.Seek(0, SeekOrigin.Begin);
-                    extra = codec.Decode(buffer);
+                    extraValue = codec.Decode(buffer);
                 }
                 else
                 {
                     using Stream stream = File.Open(path, FileMode.Open, FileAccess.Read);
-                    extra = codec.Decode(stream);
+                    extraValue = codec.Decode(stream);
                 }
             }
+            else if (extra is string[] e && e.Length > 0)
+            {
+                var dict = Bencodex.Types.Dictionary.Empty;
+                foreach (string pair in e)
+                {
+                    int sepPos = pair.IndexOf('=');
+                    if (sepPos < 0)
+                    {
+                        throw Utils.Error(
+                            "-e/--extra must be a pair of KEY=VALUE, but no equal (=) separator: " +
+                            $"`{pair}'."
+                        );
+                    }
 
-            var v = AppProtocolVersion.Sign(key, version, extra);
+                    string key_ = pair.Substring(0, sepPos);
+                    string value = pair.Substring(sepPos + 1);
+                    dict = dict.SetItem(key_, value);
+                }
+
+                extraValue = dict;
+            }
+
+            AppProtocolVersion v = AppProtocolVersion.Sign(key, version, extraValue);
             Console.WriteLine(v.Token);
         }
     }
