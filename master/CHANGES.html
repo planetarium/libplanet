@@ -113,12 +113,7 @@ became <code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
 <li><code>DifferentProtocolVersionEventArgs.ExpectedVersion</code> and
 <code>DifferentProtocolVersionEventArgs.ActualVersion</code> properties became
 <code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
-<li><code>DifferentAppProtocolVersionException()</code> constructor's parameters
-<code>expectedVersion</code> and <code>actualVersion</code> became <code>AppProtocolVersion</code>
-(was <code>Int32</code>).</li>
-<li><code>DifferentAppProtocolVersionException.ExpectedVersion</code> and
-<code>DifferentAppProtocolVersionException.ActualVersion</code> properties became
-<code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
+<li>Removed <code>DifferentAppProtocolVersionException</code> class.</li>
 </ul>
 </li>
 <li><code>Swarm()</code> constructor's <code>EventHandler&lt;DifferentProtocolVersionEventArgs&gt; differentVersionPeerEncountered = null</code> parameter became replaced by
@@ -126,6 +121,7 @@ became <code>AppProtocolVersion</code> (was <code>Int32</code>).</li>
 <li>Added <code>IEnumerable&lt;PublicKey&gt; trustedAppProtocolVersionSigners = null</code>
 parameter to <code>Swarm()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
 <li>Removed <code>DifferentProtocolVersionEventArgs</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>Removed <code>createdAt</code> parameter from <code>Swarm()</code> constructor.  [<a href="https://github.com/planetarium/libplanet/pull/838">#838</a>]</li>
 <li>Replaced <code>BlockChain&lt;T&gt;.StageTransactions()</code> with <code>.StageTransaction()</code>
 that receives only one transaction.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
 <li>Replaced <code>BlockChain&lt;T&gt;.UnstageTransactions()</code> with <code>.UnstageTransaction()</code>
@@ -1265,6 +1261,8 @@ became reported by <code>PolymorphicAction&lt;T&gt;</code> throwing
 </li>
 <li><p>Made <code>Swarm</code> possible to configure its network <code>appProtocolVersion</code> and,
 to ignore peers if their version is different.  [<a href="https://github.com/planetarium/libplanet/issues/167">#167</a>], [<a href="https://github.com/planetarium/libplanet/pull/170">#170</a>]</p>
+</li>
+<li><p>Added <code>DifferentAppProtocolVersionException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/167">#167</a>, <a href="https://github.com/planetarium/libplanet/pull/170">#170</a>]</p>
 </li>
 <li><p>Added <code>IActionContext.Miner</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/173">#173</a>], [<a href="https://github.com/planetarium/libplanet/pull/174">#174</a>]</p>
 </li>
