@@ -34,12 +34,7 @@ To be released.
      -  `DifferentProtocolVersionEventArgs.ExpectedVersion` and
         `DifferentProtocolVersionEventArgs.ActualVersion` properties became
         `AppProtocolVersion` (was `Int32`).
-     -  `DifferentAppProtocolVersionException()` constructor's parameters
-        `expectedVersion` and `actualVersion` became `AppProtocolVersion`
-        (was `Int32`).
-     -  `DifferentAppProtocolVersionException.ExpectedVersion` and
-        `DifferentAppProtocolVersionException.ActualVersion` properties became
-        `AppProtocolVersion` (was `Int32`).
+     -  Removed `DifferentAppProtocolVersionException` class.
  -  `Swarm()` constructor's `EventHandler<DifferentProtocolVersionEventArgs>
     differentVersionPeerEncountered = null` parameter became replaced by
     `DifferentAppProtocolVersionEncountered
@@ -47,6 +42,7 @@ To be released.
  -  Added `IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null`
     parameter to `Swarm()` constructor.  [[#266], [#815]]
  -  Removed `DifferentProtocolVersionEventArgs` class.  [[#266], [#815]]
+ -  Removed `createdAt` parameter from `Swarm()` constructor.  [[#838]]
  -  Replaced `BlockChain<T>.StageTransactions()` with `.StageTransaction()`
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
@@ -135,6 +131,7 @@ To be released.
 [#825]: https://github.com/planetarium/libplanet/pull/825
 [#831]: https://github.com/planetarium/libplanet/pull/831
 [#837]: https://github.com/planetarium/libplanet/pull/837
+[#838]: https://github.com/planetarium/libplanet/pull/838
 
 
 Version 0.8.0
@@ -1487,6 +1484,7 @@ Released on April 5, 2019.
  -  `BencodexFormatter` became able to serialize `BigInteger`.  [[#159]]
  -  Made `Swarm` possible to configure its network `appProtocolVersion` and,
     to ignore peers if their version is different.  [[#167]], [[#170]]
+ -  Added `DifferentAppProtocolVersionException` class.  [[#167], [#170]]
  -  Added `IActionContext.Miner` property.  [[#173]], [[#174]]
  -  Renamed `Block<T>.RewardBeneficiary` to `Block<T>.Miner`.  [[#174]]
  -  Added `BlockChain<T>.Blocks` property.  [[#176]]

@@ -1,3 +1,4 @@
+#pragma warning disable S3871
 using System;
 
 namespace Libplanet.Net
@@ -8,7 +9,7 @@ namespace Libplanet.Net
     /// to is different.
     /// </summary>
     [Serializable]
-    public sealed class DifferentAppProtocolVersionException : Exception
+    internal sealed class DifferentAppProtocolVersionException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the
@@ -47,3 +48,4 @@ namespace Libplanet.Net
         public AppProtocolVersion ActualVersion { get; }
     }
 }
+#pragma warning restore S3871
