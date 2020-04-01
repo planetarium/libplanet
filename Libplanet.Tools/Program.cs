@@ -8,7 +8,10 @@ namespace Libplanet.Tools
     public class Program
     {
         public static Task Main(string[] args) =>
-            CoconaLiteApp.RunAsync<Program>(args);
+            CoconaLiteApp.RunAsync<Program>(args, options =>
+            {
+                options.TreatPublicMethodsAsCommands = false;
+            });
 
         [PrimaryCommand]
         public Task Help() =>
