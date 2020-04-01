@@ -37,32 +37,8 @@ namespace Libplanet.Tools
             bool json = false,
             [Option(Description = "Do not add to the key store, but only show the created key.")]
             bool dryRun = false
-        )
-        {
-            if (passphrase is null)
-            {
-                passphrase = ConsolePasswordReader.Read("Passphrase: ");
-                string second = ConsolePasswordReader.Read("Retype tassphrase: ");
-                if (!passphrase.Equals(second))
-                {
-                    throw Utils.Error("Passwords do not match.");
-                }
-            }
-
-            var key = new PrivateKey();
-            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(key, passphrase);
-            Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
-            if (json)
-            {
-                using Stream stdout = System.Console.OpenStandardOutput();
-                ppk.WriteJson(stdout, keyId);
-                stdout.WriteByte(0x0a);  // line ending
-            }
-            else
-            {
-                PrintKeys(new[] { (keyId, ppk) });
-            }
-        }
+        ) =>
+            Add(new PrivateKey(), passphrase, json, dryRun);
 
         [Command(Aliases = new[] { "rm" }, Description = "Remove a private key.")]
         public void Remove(
@@ -86,9 +62,52 @@ namespace Libplanet.Tools
             }
         }
 
+        [Command(Description = "Import a raw private key.")]
+        public void Import(
+            [Argument(
+                "PRIVATE-KEY",
+                Description = "A raw private key to import in hexadecimal string."
+            )]
+            string rawKeyHex,
+            [Option(
+                'p',
+                ValueName = "PASSPHRASE",
+                Description = "Take passphrase through this option instead of prompt."
+            )]
+            string? passphrase = null,
+            [Option(
+                Description = "Print the created private key as Web3 Secret Storage format."
+            )]
+            bool json = false,
+            [Option(Description = "Do not add to the key store, but only show the created key.")]
+            bool dryRun = false
+        )
+        {
+            PrivateKey key;
+            try
+            {
+                byte[] keyBytes = ByteUtil.ParseHex(rawKeyHex);
+                key = new PrivateKey(keyBytes);
+            }
+            catch (FormatException)
+            {
+                throw Utils.Error("A raw private key should be hexadecimal.");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                throw Utils.Error("Hexadecimal characters should be even (not odd).");
+            }
+            catch (Exception)
+            {
+                throw Utils.Error("Invalid private key.");
+            }
+
+            Add(key, passphrase, json, dryRun);
+        }
+
         [Command(Description = "Export a raw private key.")]
         public void Export(
-            [Argument(Name = "KEY-ID", Description = "A key UUID to export.")] Guid keyId,
+            [Argument("KEY-ID", Description = "A key UUID to export.")] Guid keyId,
             [Option(
                 'p',
                 ValueName = "PASSPHRASE",
@@ -173,6 +192,32 @@ namespace Libplanet.Tools
             catch (IncorrectPassphraseException)
             {
                 throw Utils.Error("The passphrase is wrong.");
+            }
+        }
+
+        private void Add(PrivateKey key, string? passphrase, bool json, bool dryRun)
+        {
+            if (passphrase is null)
+            {
+                passphrase = ConsolePasswordReader.Read("Passphrase: ");
+                string second = ConsolePasswordReader.Read("Retype tassphrase: ");
+                if (!passphrase.Equals(second))
+                {
+                    throw Utils.Error("Passwords do not match.");
+                }
+            }
+
+            ProtectedPrivateKey ppk = ProtectedPrivateKey.Protect(key, passphrase);
+            Guid keyId = dryRun ? Guid.NewGuid() : KeyStore.Add(ppk);
+            if (json)
+            {
+                using Stream stdout = System.Console.OpenStandardOutput();
+                ppk.WriteJson(stdout, keyId);
+                stdout.WriteByte(0x0a);  // line ending
+            }
+            else
+            {
+                PrintKeys(new[] { (keyId, ppk) });
             }
         }
 
