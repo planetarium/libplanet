@@ -113,6 +113,8 @@ To be released.
     if `cancellationToken` was requested.  [[#798]]
  -  Fixed a bug where `Swarm<T>` had crashed if it received invalid
     `Transaction<T>` from the nodes.  [[#820]]
+ -  Fixed a bug where `Swarm<T>` hadn't reported preload states correctly.
+    [[#TBD]]
 
 ### CLI tools
 

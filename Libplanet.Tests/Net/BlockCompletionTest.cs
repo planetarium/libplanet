@@ -346,7 +346,11 @@ namespace Libplanet.Tests.Net
                 });
 
             Tuple<Block<DumbAction>, char>[] result =
-                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
+                await AsyncEnumerable.ToArrayAsync(
+                    bc.Complete(
+                        new[] { 'A', 'B' }, blockFetcher, millisecondsSingleSessionTimeout: 3000
+                    )
+                );
             Assert.Equal(
                 fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
                 result.ToHashSet()
