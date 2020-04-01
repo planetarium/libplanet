@@ -105,7 +105,7 @@ namespace Libplanet.Tools
             Add(key, passphrase, json, dryRun);
         }
 
-        [Command(Description = "Export a raw private key.")]
+        [Command(Description = "Export a raw private key (or public key).")]
         public void Export(
             [Argument("KEY-ID", Description = "A key UUID to export.")] Guid keyId,
             [Option(
@@ -114,6 +114,8 @@ namespace Libplanet.Tools
                 Description = "Take passphrase through this option instead of prompt."
             )]
             string? passphrase = null,
+            [Option('P', Description = "Export a public key instead of private key.")]
+            bool publicKey = false,
             [Option(
                 'b',
                 Description = "Print raw bytes instead of hexadecimal.  No trailing LF appended."
@@ -122,7 +124,7 @@ namespace Libplanet.Tools
         )
         {
             PrivateKey key = UnprotectKey(keyId, passphrase);
-            byte[] rawKey = key.ByteArray;
+            byte[] rawKey = publicKey ? key.PublicKey.Format(true) : key.ByteArray;
             if (bytes)
             {
                 using Stream stdout = Console.OpenStandardOutput();
