@@ -357,6 +357,40 @@ namespace Libplanet.Tests.Net
             );
         }
 
+        [Fact(Timeout = Timeout)]
+        public async Task CompleteWithCrashingPeers()
+        {
+            ImmutableArray<Block<DumbAction>> fixture =
+                GenerateBlocks<DumbAction>(15).ToImmutableArray();
+            var bc = new BlockCompletion<char, DumbAction>(_ => false, 5);
+            bc.Demand(fixture.Select(b => b.Hash));
+
+            BlockCompletion<char, DumbAction>.BlockFetcher blockFetcher =
+                (peer, blockHashes, token) => new AsyncEnumerable<Block<DumbAction>>(async yield =>
+                {
+                    // Peer A does crash and Peer B does respond.
+                    if (peer == 'A')
+                    {
+                        throw new Exception("Peer A can't respond.");
+                    }
+
+                    foreach (Block<DumbAction> b in fixture)
+                    {
+                        if (blockHashes.Contains(b.Hash))
+                        {
+                            await yield.ReturnAsync(b);
+                        }
+                    }
+                });
+
+            Tuple<Block<DumbAction>, char>[] result =
+                await AsyncEnumerable.ToArrayAsync(bc.Complete(new[] { 'A', 'B' }, blockFetcher));
+            Assert.Equal(
+                fixture.Select(b => Tuple.Create(b, 'B')).ToHashSet(),
+                result.ToHashSet()
+            );
+        }
+
         private IEnumerable<Block<T>> GenerateBlocks<T>(int count)
             where T : IAction, new()
         {

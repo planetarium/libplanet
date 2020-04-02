@@ -115,6 +115,8 @@ To be released.
     `Transaction<T>` from the nodes.  [[#820]]
  -  Fixed a bug where `Swarm<T>` hadn't reported preload states correctly.
     [[#TBD]]
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that it had hung forever
+    when a block fetch failed due to an unexpected error.  [[#TBD]]
 
 ### CLI tools
 

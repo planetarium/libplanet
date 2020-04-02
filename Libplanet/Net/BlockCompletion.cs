@@ -318,6 +318,10 @@ namespace Libplanet.Net
                                 peer
                             );
                         }
+                        catch (Exception e)
+                        {
+                            _logger.Error(e, "A blockFetcher job (peer: {Peer}) is failed.", peer);
+                        }
                     }
                     finally
                     {
