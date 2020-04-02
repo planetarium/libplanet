@@ -2,17 +2,22 @@
   <PropertyGroup>
     <PackageId>Libplanet.Tools</PackageId>
     <Title>planet: Libplanet CLI Tools</Title>
+    <Summary>planet: Libplanet CLI Tools</Summary>
+    <Description>This CLI app is a collection of utilities for application <!--
+    --> programmers who create decentralized games powered by Libplanet <!--
+    --> (https://libplanet.io/).</Description>
     <OutputType>Exe</OutputType>
     <PackageProjectUrl>https://libplanet.io/</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
-    <LangVersion>8.0</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Planetarium</Authors>
     <Company>Planetarium</Company>
     <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
     <RepositoryUrl>git://github.com/planetarium/libplanet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <LangVersion>8.0</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Libplanet.Tools</RootNamespace>
     <ToolCommandName>planet</ToolCommandName>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

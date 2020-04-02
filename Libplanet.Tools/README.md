@@ -1,9 +1,13 @@
 `planet`: Libplanet CLI Tools
 =============================
 
+[![NuGet](https://img.shields.io/nuget/v/Libplanet.Tools.svg?style=flat)][NuGet]
+[![NuGet (prerelease)](https://img.shields.io/nuget/vpre/Libplanet.Tools.svg?style=flat)][NuGet]
+
 This CLI app is a collection of utilities for application programmers who
 create decentralized games powered by [Libplanet].
 
+[NuGet]: https://www.nuget.org/packages/Libplanet.Tools/
 [Libplanet]: https://libplanet.io/
 
 
