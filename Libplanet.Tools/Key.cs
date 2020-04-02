@@ -141,7 +141,7 @@ namespace Libplanet.Tools
             Description = "Generate a raw private key without storing it."
         )]
         public void Generate(
-            [Option('A', Description = "Do not show a dervied address.")]
+            [Option('A', Description = "Do not show a derived address.")]
             bool noAddress = false,
             [Option('p', Description = "Show a public key as well.")]
             bool publicKey = false
@@ -202,10 +202,10 @@ namespace Libplanet.Tools
             if (passphrase is null)
             {
                 passphrase = ConsolePasswordReader.Read("Passphrase: ");
-                string second = ConsolePasswordReader.Read("Retype tassphrase: ");
+                string second = ConsolePasswordReader.Read("Retype passphrase: ");
                 if (!passphrase.Equals(second))
                 {
-                    throw Utils.Error("Passwords do not match.");
+                    throw Utils.Error("Passphrases do not match.");
                 }
             }
 
