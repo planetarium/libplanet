@@ -35,9 +35,17 @@
         ]
       },
       {
-        "src": "..",
+        "src": "../Libplanet.Tools",
+        "dest": "cli",
         "files": [
-          "CHANGES.md"
+          "*.md"
+        ]
+      },
+      {
+        "src": "../",
+        "files": [
+          "CHANGES.md",
+          "CONTRIBUTING.md"
         ]
       }
     ],
@@ -71,7 +79,10 @@
     },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
-    "template": ["statictoc"],
+
+    "template": ["default"],
+    // "statictoc" has a bug that relative links with nested dirs in nav refer to incorrect destinations
+
     "theme": ["theme"],
     "postProcessors": [],
     "markdownEngineName": "markdig",

@@ -1,0 +1,27 @@
+#!/bin/bash
+set -e
+
+SOLUTION="$(dirname "$0")/../Libplanet.sln"
+
+if ! [[ -f "$SOLUTION" ]]; then
+  echo "No such solution file: $SOLUTION" > /dev/stderr
+  exit 1
+fi
+
+list-projects() {
+  dotnet sln "$SOLUTION" list | tail -n +3 | awk -F/ '{ print $1 }'
+}
+
+check-project() {
+  if ! grep -E "^ -  \*$1\*: " CONTRIBUTING.md > /dev/null; then
+    echo "The project $1 is not documented in the CONTRIBUTING.md file." \
+      > /dev/stderr
+    exit 1
+  fi
+}
+
+for project in $(list-projects); do
+  check-project "$project" || exit 1
+done
+
+# vim: set filetype=sh ts=2 sw=2 et:

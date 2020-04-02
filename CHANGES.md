@@ -114,6 +114,10 @@ To be released.
  -  Fixed a bug where `Swarm<T>` had crashed if it received invalid
     `Transaction<T>` from the nodes.  [[#820]]
 
+### CLI tools
+
+ -  Added the `planet` command and its alias `dotnet planet`.
+
 [#266]: https://github.com/planetarium/libplanet/issues/266
 [#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784

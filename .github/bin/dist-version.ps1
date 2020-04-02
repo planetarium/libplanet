@@ -8,11 +8,17 @@ if ((Get-ChildItem env:GITHUB_*).Count -lt 1) {
   exit 1
 }
 
+# The root element could belong to the namespace.
 $Namespace = @{m = "http://schemas.microsoft.com/developer/msbuild/2003"}
-$VersionPrefix = (Select-Xml `
+$versionPrefixNode = (Select-Xml `
   -Path Libplanet/Libplanet.csproj `
   -Namespace $Namespace `
-  -XPath './m:Project/m:PropertyGroup/m:VersionPrefix/text()').Node.Value
+  -XPath './m:Project/m:PropertyGroup/m:VersionPrefix/text()')
+# The root element could belong to no namespace.
+$versionPrefixNode ??= (Select-Xml `
+  -Path ./Libplanet/Libplanet.csproj `
+  -XPath './Project/PropertyGroup/VersionPrefix/text()')
+$VersionPrefix = $versionPrefixNode.Node.Value
 
 New-Item -ItemType directory -Path obj -ErrorAction SilentlyContinue
 [Console]::Error.Write("VersionPrefix: ")
