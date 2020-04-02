@@ -227,7 +227,7 @@ namespace Libplanet.Tools
         {
             Utils.PrintTable(
                 ("Key ID", "Address"),
-                keys.Select(t => (t.Item1.ToString(), t.Item2.Address.ToString()))
+                keys.Select(t => (t.KeyId.ToString(), t.Key.Address.ToString()))
             );
         }
     }
