@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="styles/docfx.vendor.css">
     <link rel="stylesheet" href="styles/docfx.css">
     <link rel="stylesheet" href="styles/main.css">
-    <meta property="docfx:navrel" content="toc">
-    <meta property="docfx:tocrel" content="toc">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
     
     
     
@@ -44,24 +44,7 @@
                   <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
                 </div>
               </form>
-                
-                <ul class="nav level1 navbar-nav">
-                      <li>
-                          <a href="articles/overview.html" title="Overview">Overview</a>
-                      </li>
-                      <li>
-                          <a href="articles/design.html" title="Design">Design</a>
-                      </li>
-                      <li>
-                          <a href="api/Libplanet.html" title="API Reference">API Reference</a>
-                      </li>
-                      <li>
-                          <a href="CHANGES.html" title="Changelog">Changelog</a>
-                      </li>
-                      <li>
-                          <a href="CONTRIBUTING.html" title="Contribute">Contribute</a>
-                      </li>
-                </ul>    </div>
+            </div>
           </div>
         </nav>
         
@@ -118,6 +101,37 @@ which works well together.</p>
 builds the entire <em>Libplanet</em> solution:</p>
 <pre><code>dotnet build
 </code></pre>
+<h2 id="projects">Projects</h2>
+<p>The <a href="https://github.com/planetarium/libplanet">planetarium/libplanet</a> repository
+on GitHub consists of several projects:</p>
+<ul>
+<li><p><em>Libplanet</em>: The main project, which contains the most of implementation
+code.  When this is  built into a <a href="https://www.nuget.org/packages/Libplanet/">NuGet package</a>, it consists of two
+assemblies: <em>Libplanet</em>, and <em>Libplanet.Stun</em>, explained below.</p>
+</li>
+<li><p><em>Libplanet.Stun</em>: The project dedicated to implement <a href="https://snack.planetarium.dev/eng/2019/06/nat_traversal_2/">TURN &amp; STUN</a>.
+Note that the assembly built from this project is included by
+<em><a href="https://www.nuget.org/packages/Libplanet/">Libplanet</a></em> package on NuGet.</p>
+</li>
+<li><p><em>Libplanet.RocksDBStore</em>: The <code>IStore</code> implementation built on <a href="https://rocksdb.org/">RocksDB</a>.
+As this depends on platform-dependent libraries (which is written in C/C++),
+this is distributed as a distinct NuGet package: <em><a href="https://www.nuget.org/packages/Libplanet.RocksDBStore/">Libplanet.RocksDBStore</a></em>.</p>
+</li>
+<li><p><em>Libplanet.Tools</em>: The CLI tools for Libplanet.  See its own
+<a href="cli/README.html">README.md</a>.</p>
+</li>
+<li><p><em>Libplanet.Benchmarks</em>: Performance benchmarks.
+See the <a href="#benchmarks"><em>Benchmarks</em></a> section below.</p>
+</li>
+<li><p><em>Libplanet.Tests</em>: Unit tests of the <em>Libplanet</em> project.  See the <em>Tests</em>
+section below.</p>
+</li>
+<li><p><em>Libplanet.Stun.Tests</em>: Unit tests of the <em>Libplanet.Stun</em> project.</p>
+</li>
+<li><p><em>Libplanet.RocksDBStore.Tests</em>: Unit tests of the <em>Libplanet.RocksDBStore</em>
+project.</p>
+</li>
+</ul>
 <h2 id="tests-build-status-codecov">Tests <a href="https://dev.azure.com/planetarium/libplanet/_build/latest?definitionId=1&amp;branchName=master"><img src="https://dev.azure.com/planetarium/libplanet/_apis/build/status/planetarium.libplanet?branchName=master" alt="Build Status"></a> <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp"><img src="https://codecov.io/gh/planetarium/libplanet/branch/master/graph/badge.svg" alt="Codecov"></a></h2>
 <p>We write as complete tests as possible to the corresponding implementation code.
 Going near to the <a href="https://codecov.io/gh/planetarium/libplanet">code coverage</a> 100% is one of our goals.</p>
@@ -209,7 +223,7 @@ docs for details.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Docs/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/CONTRIBUTING.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
