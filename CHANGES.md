@@ -113,6 +113,11 @@ To be released.
     if `cancellationToken` was requested.  [[#798]]
  -  Fixed a bug where `Swarm<T>` had crashed if it received invalid
     `Transaction<T>` from the nodes.  [[#820]]
+ -  Fixed a bug where `Swarm<T>` hadn't reported `IProgress<PreloadState>`s
+    correctly.[[#839]]
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that it had hung forever
+    when a block failed to be fetched due to an unexpected inner exception.
+    [[#839]]
 
 ### CLI tools
 
@@ -136,6 +141,7 @@ To be released.
 [#831]: https://github.com/planetarium/libplanet/pull/831
 [#837]: https://github.com/planetarium/libplanet/pull/837
 [#838]: https://github.com/planetarium/libplanet/pull/838
+[#839]: https://github.com/planetarium/libplanet/pull/839
 
 
 Version 0.8.0
