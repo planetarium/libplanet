@@ -205,8 +205,7 @@ namespace Libplanet.Net
             var pool = new PeerPool(peers);
             var queue = new AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>>();
 
-#pragma warning disable CS4014
-            Task.Run(async () =>
+            Task producer = Task.Run(async () =>
             {
                 try
                 {
@@ -218,7 +217,13 @@ namespace Libplanet.Net
 
                         cancellationToken.ThrowIfCancellationRequested();
                         await pool.SpawnAsync(
-                            CreateBatch(hashDigests),
+                            CreateEnqueuing(
+                                hashDigests,
+                                blockFetcher,
+                                singleSessionTimeout,
+                                cancellationToken,
+                                queue
+                            ),
                             cancellationToken: cancellationToken
                         );
                     }
@@ -230,7 +235,6 @@ namespace Libplanet.Net
                     queue.CompleteAdding();
                 }
             });
-#pragma warning restore CS4014 // It's okay because we'll wait at next block.
 
             while (await queue.OutputAvailableAsync(cancellationToken))
             {
@@ -253,96 +257,7 @@ namespace Libplanet.Net
                 );
             }
 
-            Func<TPeer, CancellationToken, Task> CreateBatch(
-                IList<HashDigest<SHA256>> hashDigests
-            ) =>
-                async (peer, ct) =>
-                {
-                    ct.ThrowIfCancellationRequested();
-                    var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
-                    try
-                    {
-                        _logger.Debug(
-                            "Request blocks {BlockHashes} to {Peer}...",
-                            hashDigests,
-                            peer
-                        );
-                        var timeout = new CancellationTokenSource(singleSessionTimeout);
-                        CancellationToken timeoutToken = timeout.Token;
-                        timeoutToken.Register(() =>
-                            _logger.Debug("Timed out to wait a response from {Peer}.", peer)
-                        );
-                        ct.Register(() => timeout.Cancel());
-
-                        try
-                        {
-                            ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
-                                blockFetcher(peer, hashDigests, timeoutToken)
-                                    .WithCancellation(timeoutToken);
-                            await foreach (Block<TAction> block in blocks)
-                            {
-                                _logger.Debug(
-                                    "Downloaded a block #{BlockIndex} {BlockHash} " +
-                                    "from {Peer}.",
-                                    block.Index,
-                                    block.Hash,
-                                    peer
-                                );
-
-                                if (Satisfy(block))
-                                {
-                                    await queue.EnqueueAsync(
-                                        Tuple.Create(block, peer),
-                                        cancellationToken
-                                    );
-                                }
-
-                                demands.Remove(block.Hash);
-                            }
-                        }
-                        catch (OperationCanceledException e)
-                        {
-                            if (ct.IsCancellationRequested)
-                            {
-                                _logger.Error(
-                                    e,
-                                    "A blockFetcher job (peer: {Peer}) is cancelled.",
-                                    peer
-                                );
-                                throw;
-                            }
-
-                            _logger.Debug(
-                                e,
-                                "Timed out to wait a response from {Peer}.",
-                                peer
-                            );
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "A blockFetcher job (peer: {Peer}) is failed.", peer);
-                        }
-                    }
-                    finally
-                    {
-                        if (demands.Any())
-                        {
-                            _logger.Verbose(
-                                "Fetched blocks from {Peer}, but there are still " +
-                                "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
-                                "enqueue them again: {UnsatisfiedDemands}.",
-                                peer,
-                                demands.Count,
-                                demands
-                            );
-                            Demand(demands, retry: true);
-                        }
-                        else
-                        {
-                            _logger.Verbose("Fetched blocks from {Peer}.", peer);
-                        }
-                    }
-                };
+            await producer;
         }
 
         /// <summary>
@@ -408,6 +323,101 @@ namespace Libplanet.Net
 
         private bool QueuedDemandCompleted() =>
                         _started && _demands.IsEmpty && _satisfiedBlocks.All(kv => kv.Value);
+
+        private Func<TPeer, CancellationToken, Task> CreateEnqueuing(
+            IList<HashDigest<SHA256>> hashDigests,
+            BlockFetcher blockFetcher,
+            TimeSpan singleSessionTimeout,
+            CancellationToken cancellationToken,
+            AsyncProducerConsumerQueue<Tuple<Block<TAction>, TPeer>> queue
+        ) =>
+            async (peer, ct) =>
+            {
+                ct.ThrowIfCancellationRequested();
+                var demands = new HashSet<HashDigest<SHA256>>(hashDigests);
+                try
+                {
+                    _logger.Debug(
+                        "Request blocks {BlockHashes} to {Peer}...",
+                        hashDigests,
+                        peer
+                    );
+                    var timeout = new CancellationTokenSource(singleSessionTimeout);
+                    CancellationToken timeoutToken = timeout.Token;
+                    timeoutToken.Register(() =>
+                        _logger.Debug("Timed out to wait a response from {Peer}.", peer)
+                    );
+                    ct.Register(() => timeout.Cancel());
+
+                    try
+                    {
+                        ConfiguredCancelableAsyncEnumerable<Block<TAction>> blocks =
+                            blockFetcher(peer, hashDigests, timeoutToken)
+                                .WithCancellation(timeoutToken);
+                        await foreach (Block<TAction> block in blocks)
+                        {
+                            _logger.Debug(
+                                "Downloaded a block #{BlockIndex} {BlockHash} " +
+                                "from {Peer}.",
+                                block.Index,
+                                block.Hash,
+                                peer
+                            );
+
+                            if (Satisfy(block))
+                            {
+                                await queue.EnqueueAsync(
+                                    Tuple.Create(block, peer),
+                                    cancellationToken
+                                );
+                            }
+
+                            demands.Remove(block.Hash);
+                        }
+                    }
+                    catch (OperationCanceledException e)
+                    {
+                        if (ct.IsCancellationRequested)
+                        {
+                            _logger.Error(
+                                e,
+                                "A blockFetcher job (peer: {Peer}) is cancelled.",
+                                peer
+                            );
+                            throw;
+                        }
+
+                        _logger.Debug(
+                            e,
+                            "Timed out to wait a response from {Peer}.",
+                            peer
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "A blockFetcher job (peer: {Peer}) is failed.", peer);
+                    }
+                }
+                finally
+                {
+                    if (demands.Any())
+                    {
+                        _logger.Verbose(
+                            "Fetched blocks from {Peer}, but there are still " +
+                            "unsatisfied demands ({UnsatisfiedDemandsNumber}) so " +
+                            "enqueue them again: {UnsatisfiedDemands}.",
+                            peer,
+                            demands.Count,
+                            demands
+                        );
+                        Demand(demands, retry: true);
+                    }
+                    else
+                    {
+                        _logger.Verbose("Fetched blocks from {Peer}.", peer);
+                    }
+                }
+            };
 
         internal class PeerPool
         {
