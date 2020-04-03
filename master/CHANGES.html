@@ -174,6 +174,11 @@ in the store had been completely cleaned up in some corner cases
 if <code>cancellationToken</code> was requested.  [<a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had crashed if it received invalid
 <code>Transaction&lt;T&gt;</code> from the nodes.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> hadn't reported <code>IProgress&lt;PreloadState&gt;</code>s
+correctly.[<a href="https://github.com/planetarium/libplanet/pull/839">#839</a>]</li>
+<li>Fixed a <code>Swarm&lt;T&gt;.PreloadAsync()</code> method's bug that it had hung forever
+when a block failed to be fetched due to an unexpected inner exception.
+[<a href="https://github.com/planetarium/libplanet/pull/839">#839</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
