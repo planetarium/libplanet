@@ -217,7 +217,7 @@ namespace Libplanet.Net
         // FIXME: We need some sort of configuration method for it.
         internal int FindNextHashesChunkSize { get; set; } = 500;
 
-        internal int FindNextStatesChunkSize { get; set; } = 1000;
+        internal int FindNextStatesChunkSize { get; set; } = 2500;
 
         internal AsyncAutoResetEvent PreloadStarted { get; } = new AsyncAutoResetEvent();
 
