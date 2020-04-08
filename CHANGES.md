@@ -118,6 +118,8 @@ To be released.
  -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that it had hung forever
     when a block failed to be fetched due to an unexpected inner exception.
     [[#839]]
+ -  Fixed a bug where actions are evaluated twice when receiving blocks.
+    [[#844]]
 
 ### CLI tools
 
