@@ -2369,6 +2369,60 @@ namespace Libplanet.Tests.Net
             }
         }
 
+        [Fact]
+        public async Task RenderInFork()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var miner1 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+            var miner2 = CreateSwarm(TestUtils.MakeBlockChain(policy, new DefaultStore(null)));
+
+            int renderCount = 0;
+
+            void RenderHandler(object target, IAction action)
+            {
+                renderCount += 1;
+            }
+
+            try
+            {
+                await StartAsync(miner1);
+                await StartAsync(miner2);
+
+                await BootstrapAsync(miner2, miner1.AsPeer);
+
+                var privKey = new PrivateKey();
+                var addr = _fx1.Address1;
+                var item = "foo";
+
+                miner1.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+                await miner1.BlockChain.MineBlock(miner1.Address);
+
+                miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+                await miner2.BlockChain.MineBlock(miner2.Address);
+
+                miner2.BlockChain.MakeTransaction(privKey, new[] { new DumbAction(addr, item) });
+                var latest = await miner2.BlockChain.MineBlock(miner2.Address);
+
+                DumbAction.RenderEventHandler += RenderHandler;
+
+                miner2.BroadcastBlock(latest);
+
+                await miner1.BlockReceived.WaitAsync();
+
+                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
+                Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
+                Assert.Equal(2, renderCount);
+            }
+            finally
+            {
+                await StopAsync(miner1);
+                await StopAsync(miner2);
+                miner1.Dispose();
+                miner2.Dispose();
+                DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            }
+        }
+
         [Fact(Skip="This should be fixed to work deterministically.")]
         public async Task HandleReorgInSynchronizing()
         {

@@ -1667,19 +1667,10 @@ namespace Libplanet.Net
             }
             finally
             {
-                if (synced is BlockChain<T> syncedNotNull)
+                if (synced is BlockChain<T> syncedNotNull
+                    && !syncedNotNull.Id.Equals(blockChain?.Id))
                 {
-                    if (syncedNotNull.Id.Equals(blockChain?.Id))
-                    {
-                        if (evaluateActions)
-                        {
-                            blockChain.RenderBlocks(previousTipIndex + 1);
-                        }
-                    }
-                    else
-                    {
-                        blockChain.Swap(synced, evaluateActions);
-                    }
+                    blockChain.Swap(synced, evaluateActions);
                 }
             }
         }
@@ -1697,6 +1688,7 @@ namespace Libplanet.Net
         {
             BlockChain<T> workspace = blockChain;
             var scope = new List<Guid>();
+            bool renderActions = evaluateActions;
 
             try
             {
@@ -1763,6 +1755,7 @@ namespace Libplanet.Net
                         IStore workStore = workspace.Store;
                         Guid workChainId = workspace.Id;
                         scope.Add(workChainId);
+                        renderActions = false;
                         _logger.Debug("Forking complete.");
                     }
 
@@ -1793,6 +1786,7 @@ namespace Libplanet.Net
                         hashesAsArray.Select(pair => pair.Item2),
                         cancellationToken
                     );
+
                     await foreach (Block<T> block in blocks)
                     {
                         _logger.Debug(
@@ -1803,14 +1797,11 @@ namespace Libplanet.Net
 
                         cancellationToken.ThrowIfCancellationRequested();
 
-                        // As actions in this block should be rendered
-                        // after actions in stale blocks are unrendered,
-                        // given the `render: false` option here.
                         workspace.Append(
                             block,
                             DateTimeOffset.UtcNow,
                             evaluateActions: evaluateActions,
-                            renderActions: false
+                            renderActions: renderActions
                         );
                         receivedBlockCount++;
                         progress?.Report(new BlockDownloadState

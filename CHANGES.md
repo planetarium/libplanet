@@ -118,6 +118,8 @@ To be released.
  -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that it had hung forever
     when a block failed to be fetched due to an unexpected inner exception.
     [[#839]]
+ -  Fixed a bug where actions had been evaluated twice when receiving blocks.
+    [[#843], [#844]]
 
 ### CLI tools
 
@@ -142,6 +144,8 @@ To be released.
 [#837]: https://github.com/planetarium/libplanet/pull/837
 [#838]: https://github.com/planetarium/libplanet/pull/838
 [#839]: https://github.com/planetarium/libplanet/pull/839
+[#843]: https://github.com/planetarium/libplanet/issues/843
+[#844]: https://github.com/planetarium/libplanet/pull/844
 
 
 Version 0.8.0
