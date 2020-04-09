@@ -10,10 +10,11 @@ namespace Libplanet.Tests.KeyStore.Kdfs
     {
         public abstract T MakeInstance(byte[] randomBytes);
 
-        [InlineData(16)]
-        [InlineData(32)]
+        [InlineData(16, "foo")]
+        [InlineData(32, "foo")]
+        [InlineData(32, "unicode-暗號")]
         [Theory]
-        public void Derive(int size)
+        public void Derive(int size, string passphrase)
         {
             var randomBytes = new byte[size];
             using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
@@ -22,11 +23,11 @@ namespace Libplanet.Tests.KeyStore.Kdfs
             }
 
             T kdf = MakeInstance(randomBytes);
-            ImmutableArray<byte> dFoo = kdf.Derive("foo");
+            ImmutableArray<byte> dFoo = kdf.Derive(passphrase);
             Assert.Equal(size, dFoo.Length);
-            ImmutableArray<byte> dBar = kdf.Derive("bar");
+            ImmutableArray<byte> dBar = kdf.Derive($"diffrent-{passphrase}");
             Assert.NotEqual(dFoo, dBar);
-            TestUtils.AssertBytesEqual(dFoo, kdf.Derive("foo"));
+            TestUtils.AssertBytesEqual(dFoo, kdf.Derive(passphrase));
         }
     }
 }

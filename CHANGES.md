@@ -120,6 +120,9 @@ To be released.
     [[#839]]
  -  Fixed a bug where actions had been evaluated twice when receiving blocks.
     [[#843], [#844]]
+ -  Fixed `OverflowException` being thrown when a `passphrase` containing
+    any non-ASCII characters was passed to `Pbkdf2.Derive()` method or
+    `ProtectedPrivateKey.Protect()` method.  [[#845]]
 
 ### CLI tools
 
@@ -146,6 +149,7 @@ To be released.
 [#839]: https://github.com/planetarium/libplanet/pull/839
 [#843]: https://github.com/planetarium/libplanet/issues/843
 [#844]: https://github.com/planetarium/libplanet/pull/844
+[#845]: https://github.com/planetarium/libplanet/pull/845
 
 
 Version 0.8.0

@@ -131,15 +131,18 @@ namespace Libplanet.Tests.KeyStore
             Assert.Equal(AddressFixture, mismatchedAddressException.ActualAddress);
         }
 
-        [Fact]
-        public void Protect()
+        [Theory]
+        [InlineData("foobar")]
+        [InlineData("unicode-暗號")]
+        public void Protect(string passphrase)
         {
             PrivateKey privKey = new PrivateKey();
-            ProtectedPrivateKey protectedKey = ProtectedPrivateKey.Protect(privKey, "foobar");
+            ProtectedPrivateKey protectedKey = ProtectedPrivateKey.Protect(privKey, passphrase);
             AssertBytesEqual(
                 privKey.ByteArray,
-                protectedKey.Unprotect("foobar").ByteArray
+                protectedKey.Unprotect(passphrase).ByteArray
             );
+            Assert.Throws<IncorrectPassphraseException>(() => protectedKey.Unprotect("WRONG"));
         }
 
         [Fact]
