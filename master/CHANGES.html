@@ -181,6 +181,9 @@ when a block failed to be fetched due to an unexpected inner exception.
 [<a href="https://github.com/planetarium/libplanet/pull/839">#839</a>]</li>
 <li>Fixed a bug where actions had been evaluated twice when receiving blocks.
 [<a href="https://github.com/planetarium/libplanet/issues/843">#843</a>, <a href="https://github.com/planetarium/libplanet/pull/844">#844</a>]</li>
+<li>Fixed <code>OverflowException</code> being thrown when a <code>passphrase</code> containing
+any non-ASCII characters was passed to <code>Pbkdf2.Derive()</code> method or
+<code>ProtectedPrivateKey.Protect()</code> method.  [<a href="https://github.com/planetarium/libplanet/pull/845">#845</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <ul>
