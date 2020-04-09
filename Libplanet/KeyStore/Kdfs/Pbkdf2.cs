@@ -75,7 +75,7 @@ namespace Libplanet.KeyStore.Kdfs
         {
             var pdb = new Pkcs5S2ParametersGenerator(new T());
             pdb.Init(
-                PbeParametersGenerator.Pkcs5PasswordToBytes(passphrase.ToCharArray()),
+                PbeParametersGenerator.Pkcs5PasswordToUtf8Bytes(passphrase.ToCharArray()),
                 Salt.ToArray(),
                 Iterations
             );
