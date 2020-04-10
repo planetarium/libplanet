@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -461,11 +460,10 @@ namespace Libplanet.Net
                 BlockChain.Tip.Hash
             );
 
-            var peersWithHeightAsync = DialToExistingPeers(dialTimeout, cancellationToken)
+            var peersWithHeight = (await DialToExistingPeers(dialTimeout, cancellationToken))
                 .Where(pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex));
-            IList<(BoundPeer, long?)> peersWithHeight =
-                await peersWithHeightAsync.ToListAsync(cancellationToken);
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex))
+                .ToList();
 
             if (!peersWithHeight.Any())
             {
@@ -1062,46 +1060,65 @@ namespace Libplanet.Net
             Transport.BroadcastMessage(except, message);
         }
 
-        private async IAsyncEnumerable<(BoundPeer, Pong)> DialToExistingPeers(
+        private Task<(BoundPeer, Pong)[]> DialToExistingPeers(
             TimeSpan? dialTimeout,
-            [EnumeratorCancellation] CancellationToken cancellationToken
+            CancellationToken cancellationToken
         )
         {
-            foreach (BoundPeer peer in Peers)
-            {
-                Message reply = null;
-                try
-                {
-                    reply = await Transport.SendMessageWithReplyAsync(
-                        peer,
-                        new Ping(),
-                        dialTimeout,
-                        cancellationToken
-                    );
-                }
-                catch (TimeoutException)
-                {
-                    _logger.Debug($"TimeoutException occurred during dial to ({peer}).");
-                }
-                catch (IOException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"IOException occurred ({peer})."
-                    );
-                }
-                catch (DifferentAppProtocolVersionException e)
-                {
-                    _logger.Error(
-                        e,
-                        $"Protocol Version is different ({peer}).");
-                }
+            IEnumerable<Task<(BoundPeer, Pong)>> tasks = Peers.Select(
+                peer => Transport.SendMessageWithReplyAsync(
+                    peer, new Ping(), dialTimeout, cancellationToken
+                ).ContinueWith<(BoundPeer, Pong)>(
+                    t =>
+                    {
+                        if (t.IsFaulted || t.IsCanceled || !(t.Result is Pong pong))
+                        {
+                            switch (t.Exception?.InnerException)
+                            {
+                                case TimeoutException te:
+                                    _logger.Debug(
+                                        $"TimeoutException occurred during dial to ({peer})."
+                                    );
+                                    break;
+                                case DifferentAppProtocolVersionException dapve:
+                                    _logger.Error(
+                                        dapve,
+                                        $"Protocol Version is different ({peer}).");
+                                    break;
+                                case Exception e:
+                                    _logger.Error(
+                                        e,
+                                        $"An unexpected exception occurred during dial to ({peer})."
+                                    );
+                                    break;
+                                default:
+                                    break;
+                            }
 
-                if (reply is Pong pong)
+                            // Mark to skip
+                            return (null, null);
+                        }
+                        else
+                        {
+                            return (peer, pong);
+                        }
+                    },
+                    cancellationToken
+                )
+            );
+
+            return Task.WhenAll(tasks).ContinueWith(
+                t =>
                 {
-                    yield return (peer, pong);
-                }
-            }
+                    if (t.IsFaulted)
+                    {
+                        throw t.Exception;
+                    }
+
+                    return t.Result.Where(pair => !(pair.Item1 is null)).ToArray();
+                },
+                cancellationToken
+            );
         }
 
         private async IAsyncEnumerable<(long, HashDigest<SHA256>)> GetDemandBlockHashes(

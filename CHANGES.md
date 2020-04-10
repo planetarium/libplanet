@@ -96,6 +96,8 @@ To be released.
     simultaneously multiple peers.  [[#707], [#798]]
  -  Improved performance of `Swarm<T>` by preventing unnecessary task
     creation.  [[#817], [#837]]
+ -  Improved performance of `Swarm<T>.PreloadAsync()` by parallelizing
+    connections.  [[#846]]
 
 ### Bug fixes
 
@@ -150,6 +152,7 @@ To be released.
 [#843]: https://github.com/planetarium/libplanet/issues/843
 [#844]: https://github.com/planetarium/libplanet/pull/844
 [#845]: https://github.com/planetarium/libplanet/pull/845
+[#846]: https://github.com/planetarium/libplanet/pull/846
 
 
 Version 0.8.0
