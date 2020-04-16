@@ -145,6 +145,7 @@ To be released.
 [#817]: https://github.com/planetarium/libplanet/issues/817
 [#820]: https://github.com/planetarium/libplanet/pull/820
 [#825]: https://github.com/planetarium/libplanet/pull/825
+[#827]: https://github.com/planetarium/libplanet/pull/827
 [#831]: https://github.com/planetarium/libplanet/pull/831
 [#837]: https://github.com/planetarium/libplanet/pull/837
 [#838]: https://github.com/planetarium/libplanet/pull/838
