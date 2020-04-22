@@ -337,20 +337,19 @@ namespace Libplanet.Net
             }
         }
 
-        public async Task BootstrapAsync(
+        public Task BootstrapAsync(
             IEnumerable<BoundPeer> bootstrapPeers,
             TimeSpan? pingSeedTimeout,
             TimeSpan? findNeighborsTimeout,
             int depth = Kademlia.MaxDepth,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await Protocol.BootstrapAsync(
-                bootstrapPeers.ToImmutableList(),
-                pingSeedTimeout,
-                findNeighborsTimeout,
-                depth,
-                cancellationToken);
-        }
+            CancellationToken cancellationToken = default(CancellationToken)
+        ) => Protocol.BootstrapAsync(
+            bootstrapPeers.ToImmutableList(),
+            pingSeedTimeout,
+            findNeighborsTimeout,
+            depth,
+            cancellationToken
+        );
 
         public async Task AddPeersAsync(
             IEnumerable<Peer> peers,
