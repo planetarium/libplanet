@@ -36,7 +36,7 @@ namespace Libplanet.Net
         private readonly IList<IceServer> _iceServers;
         private readonly ILogger _logger;
 
-        private NetMQQueue<Message> _replyQueue;
+        private NetMQQueue<NetMQMessage> _replyQueue;
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
 
         private RouterSocket _router;
@@ -261,7 +261,7 @@ namespace Libplanet.Net
                 _endPoint = new DnsEndPoint(_host, _listenPort.Value);
             }
 
-            _replyQueue = new NetMQQueue<Message>();
+            _replyQueue = new NetMQQueue<NetMQMessage>();
             _broadcastQueue = new NetMQQueue<(Address?, Message)>();
             _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
 
@@ -566,7 +566,9 @@ namespace Libplanet.Net
 
         public void ReplyMessage(Message message)
         {
-            _replyQueue.Enqueue(message);
+            string identityHex = ByteUtil.Hex(message.Identity);
+            _logger.Debug("Reply {Message} to {Identity}...", message, identityHex);
+            _replyQueue.Enqueue(message.ToNetMQMessage(_privateKey, AsPeer));
         }
 
         public async Task CheckAllPeersAsync(CancellationToken cancellationToken, TimeSpan? timeout)
@@ -659,23 +661,20 @@ namespace Libplanet.Net
             }
         }
 
-        private void DoReply(object sender, NetMQQueueEventArgs<Message> e)
+        private void DoReply(object sender, NetMQQueueEventArgs<NetMQMessage> e)
         {
-            Message msg = e.Queue.Dequeue();
-
-            string identityHex = ByteUtil.Hex(msg.Identity);
-            _logger.Debug("Reply {Message} to {Identity}...", msg, identityHex);
-            NetMQMessage netMQMessage = msg.ToNetMQMessage(_privateKey, AsPeer);
+            NetMQMessage msg = e.Queue.Dequeue();
+            string identityHex = ByteUtil.Hex(msg[0].Buffer);
 
             // FIXME The current timeout value(1 sec) is arbitrary.
             // We should make this configurable or fix it to an unneeded structure.
-            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), netMQMessage))
+            if (_router.TrySendMultipartMessage(TimeSpan.FromSeconds(1), msg))
             {
-                _logger.Debug("A reply sent to {Identity}: {Message}", identityHex, msg);
+                _logger.Debug("A reply sent to {Identity}", identityHex);
             }
             else
             {
-                _logger.Debug("Failed to reply to {Identity}: {Message}", identityHex, msg);
+                _logger.Debug("Failed to reply to {Identity}", identityHex);
             }
         }
 

@@ -98,6 +98,7 @@ To be released.
     creation.  [[#817], [#837]]
  -  Improved performance of `Swarm<T>.PreloadAsync()` by parallelizing
     connections.  [[#846]]
+ -  Improved response throughput of `Swarm<T>`.  [[#849]]
 
 ### Bug fixes
 
@@ -154,6 +155,7 @@ To be released.
 [#844]: https://github.com/planetarium/libplanet/pull/844
 [#845]: https://github.com/planetarium/libplanet/pull/845
 [#846]: https://github.com/planetarium/libplanet/pull/846
+[#849]: https://github.com/planetarium/libplanet/pull/849
 
 
 Version 0.8.0
