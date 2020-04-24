@@ -61,7 +61,7 @@ To be released.
     `AppProtocolVersion`, which is newly introduced.  [[#266], [#815]]
  -  The existing `RecentStates` message type (with the type number `0x0c`) was
     replaced by a new `RecentStates` message type (with type number `0x0f`)
-    in order to compress its states  [[#700], [#850]]
+    in order to compress its states.  [[#700], [#850]]
 
 ### Backward-incompatible storage format changes
 
