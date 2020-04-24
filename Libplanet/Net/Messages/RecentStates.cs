@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.IO.Compression;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -11,6 +12,8 @@ namespace Libplanet.Net.Messages
 {
     internal class RecentStates : Message
     {
+        private static readonly Codec _codec = new Codec();
+
         public RecentStates(
             HashDigest<SHA256> blockHash,
             long offset,
@@ -96,7 +99,6 @@ namespace Libplanet.Net.Messages
             var blockStates =
                 new Dictionary<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
                     blocksLength);
-            var codec = new Codec();
 
             for (int j = 0; j < blocksLength; j++)
             {
@@ -113,8 +115,7 @@ namespace Libplanet.Net.Messages
                     var address = new Address(it.Current.Buffer);
 
                     it.MoveNext();
-                    using var stream = new MemoryStream(it.Current.Buffer);
-                    states[address] = codec.Decode(stream);
+                    states[address] = Decompress(it.Current.Buffer);
                 }
 
                 blockStates[blockHash] = states.ToImmutableDictionary();
@@ -241,10 +242,34 @@ namespace Libplanet.Net.Messages
                     foreach (var addressState in states)
                     {
                         yield return new NetMQFrame(addressState.Key.ToByteArray());
-                        yield return new NetMQFrame(codec.Encode(addressState.Value));
+                        yield return new NetMQFrame(Compress(addressState.Value));
                     }
                 }
             }
+        }
+
+        private byte[] Compress(IValue value)
+        {
+            using var buffer = new MemoryStream();
+            using (var deflate = new DeflateStream(buffer, CompressionLevel.Fastest))
+            {
+                _codec.Encode(value, deflate);
+            }
+
+            return buffer.ToArray();
+        }
+
+        private IValue Decompress(byte[] bytes)
+        {
+            using var buffer = new MemoryStream();
+            using var compressed = new MemoryStream(bytes);
+            using (var deflate = new DeflateStream(compressed, CompressionMode.Decompress))
+            {
+                deflate.CopyTo(buffer);
+            }
+
+            buffer.Seek(0, SeekOrigin.Begin);
+            return _codec.Decode(buffer);
         }
     }
 }
