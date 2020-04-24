@@ -15,24 +15,6 @@ version="$(cat obj/package_version.txt)"
 version_prefix="$(cat obj/version_prefix.txt)"
 package_version="$(cat obj/package_version.txt)"
 
-for project in "${projects[@]}"; do
-  rm -rf "./$project/bin/$configuration/"
-
-  dotnet_args="-p:Version=$version"
-  if [ -f obj/version_suffix.txt ]; then
-    dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
-  fi
-  # shellcheck disable=SC2086
-  dotnet build -c "$configuration" $dotnet_args
-  # shellcheck disable=SC2086
-  dotnet pack "$project" -c "$configuration" $dotnet_args
-
-  ls -al "./$project/bin/$configuration/"
-  if [ "$package_version" != "$version_prefix" ]; then
-    rm -f "./$project/bin/$configuration/$project.$version_prefix.nupkg"
-  fi
-done
-
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
     output_dir="./$project/bin/$configuration/$rid/"
@@ -53,4 +35,22 @@ for project in "${executables[@]}"; do
     popd
     rm -rf "$output_dir"
   done
+done
+
+for project in "${projects[@]}"; do
+  rm -rf "./$project/bin/$configuration/"
+
+  dotnet_args="-p:Version=$version"
+  if [ -f obj/version_suffix.txt ]; then
+    dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
+  fi
+  # shellcheck disable=SC2086
+  dotnet build -c "$configuration" $dotnet_args
+  # shellcheck disable=SC2086
+  dotnet pack "$project" -c "$configuration" $dotnet_args
+
+  ls -al "./$project/bin/$configuration/"
+  if [ "$package_version" != "$version_prefix" ]; then
+    rm -f "./$project/bin/$configuration/$project.$version_prefix.nupkg"
+  fi
 done
