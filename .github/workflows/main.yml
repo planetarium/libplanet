@@ -64,6 +64,7 @@ jobs:
       if: github.event_name == 'pull_request'
       with:
         ref: ${{ github.pull_request.head.sha }}
+    - run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - run: mkdir -p Docs/obj/
     - run: Docs/build.ps1
       shell: pwsh
