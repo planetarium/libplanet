@@ -59,6 +59,9 @@ To be released.
     [[#707], [#798]]
  -  `Peer` became to have 3 more fields to represent the whole fields of
     `AppProtocolVersion`, which is newly introduced.  [[#266], [#815]]
+ -  The existing `RecentStates` message type (with the type number `0x0c`) was
+    replaced by a new `RecentStates` message type (with type number `0x0f`)
+    in order to compress its states  [[#700], [#850]]
 
 ### Backward-incompatible storage format changes
 
@@ -132,6 +135,7 @@ To be released.
  -  Added the `planet` command and its alias `dotnet planet`.
 
 [#266]: https://github.com/planetarium/libplanet/issues/266
+[#700]: https://github.com/planetarium/libplanet/issues/700
 [#707]: https://github.com/planetarium/libplanet/pull/707
 [#784]: https://github.com/planetarium/libplanet/pull/784
 [#785]: https://github.com/planetarium/libplanet/pull/785
@@ -156,6 +160,7 @@ To be released.
 [#845]: https://github.com/planetarium/libplanet/pull/845
 [#846]: https://github.com/planetarium/libplanet/pull/846
 [#849]: https://github.com/planetarium/libplanet/pull/849
+[#850]: https://github.com/planetarium/libplanet/pull/850
 
 
 Version 0.8.0

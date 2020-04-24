@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -143,11 +144,13 @@ namespace Libplanet.Tests.Net.Messages
                 var addr = new Address(msg[offset + 2].Buffer);
                 Assert.Equal(compressedBlockStates[hash].Keys.First(), addr);
 
-                using (var stream = new MemoryStream())
+                using (var compressed = new MemoryStream(msg[offset + 3].Buffer))
+                using (var df = new DeflateStream(compressed, CompressionMode.Decompress))
+                using (var decompressed = new MemoryStream())
                 {
-                    stream.Write(msg[offset + 3].Buffer, 0, msg[offset + 3].BufferSize);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    string state = ((Text)codec.Decode(stream)).Value;
+                    df.CopyTo(decompressed);
+                    decompressed.Seek(0, SeekOrigin.Begin);
+                    string state = ((Text)codec.Decode(decompressed)).Value;
                     Assert.Equal($"B:{hash}:{addr}", state);
                 }
             }
