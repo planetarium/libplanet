@@ -121,6 +121,9 @@ so that a receiver is able to determine their block indices too.
 [<a href="https://github.com/planetarium/libplanet/pull/707">#707</a>, <a href="https://github.com/planetarium/libplanet/pull/798">#798</a>]</li>
 <li><code>Peer</code> became to have 3 more fields to represent the whole fields of
 <code>AppProtocolVersion</code>, which is newly introduced.  [<a href="https://github.com/planetarium/libplanet/issues/266">#266</a>, <a href="https://github.com/planetarium/libplanet/pull/815">#815</a>]</li>
+<li>The existing <code>RecentStates</code> message type (with the type number <code>0x0c</code>) was
+replaced by a new <code>RecentStates</code> message type (with type number <code>0x0f</code>)
+in order to compress its states.  [<a href="https://github.com/planetarium/libplanet/issues/700">#700</a>, <a href="https://github.com/planetarium/libplanet/pull/850">#850</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
