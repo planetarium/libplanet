@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Bencodex;
 using Bencodex.Types;
 using Cocona;
 using Libplanet.Crypto;
+using Libplanet.KeyStore;
 using Libplanet.Net;
 
 namespace Libplanet.Tools
@@ -99,6 +101,90 @@ namespace Libplanet.Tools
             Console.WriteLine(v.Token);
         }
 
+        [Command(Description = "Verify a given app protocol version token's signature.")]
+        public void Verify(
+            [Argument(
+                Name = "APV-TOKEN",
+                Description = "An app protocol version token to verify.  " +
+                    "Read from the standard input if omitted."
+            )]
+            string? token = null,
+            [Option(
+                'p',
+                ValueName = "PUBLIC-KEY",
+                Description = "Public key(s) to be used for verification.  " +
+                    "Can be applied multiple times."
+            )]
+            string[]? publicKey = null,
+            [Option(
+                'K',
+                Description = "Do not use any keys in the key store, " +
+                    "but only -p/--public-key options."
+            )]
+            bool noKeyStore = false
+        )
+        {
+            AppProtocolVersion v = ParseAppProtocolVersionToken(token);
+
+            if (publicKey is string[] pubKeyHexes)
+            {
+                foreach (string pubKeyHex in pubKeyHexes)
+                {
+                    string opt = $"-p/--public-key=\"{pubKeyHex}\"";
+                    PublicKey pubKey;
+                    try
+                    {
+                        pubKey = new PublicKey(ByteUtil.ParseHex(pubKeyHex));
+                    }
+                    catch (Exception e)
+                    {
+                        throw Utils.Error($"The {opt} is not a valid public key.  {e.Message}");
+                    }
+
+                    if (v.Verify(pubKey))
+                    {
+                        Console.Error.WriteLine(
+                            "The signature successfully was verified using the {0}.",
+                            opt
+                        );
+                        return;
+                    }
+
+                    Console.Error.WriteLine(
+                        "The signature was failed to verify using the {0}.",
+                        opt
+                    );
+                }
+            }
+
+            if (!noKeyStore)
+            {
+                Key keyInstance = new Key();
+                IEnumerable<Tuple<Guid, ProtectedPrivateKey>> ppks = keyInstance.KeyStore.List()
+                    .Where(pair => pair.Item2.Address.Equals(v.Signer));
+                foreach (Tuple<Guid, ProtectedPrivateKey> pair in ppks)
+                {
+                    pair.Deconstruct(out Guid keyId, out ProtectedPrivateKey ppk);
+                    PublicKey pubKey = keyInstance.UnprotectKey(keyId).PublicKey;
+                    if (v.Verify(pubKey))
+                    {
+                        Console.Error.WriteLine(
+                            "The signature successfully was verified using the key {0}.",
+                            keyId
+                        );
+                        return;
+                    }
+
+                    Console.Error.WriteLine(
+                        "The signature was failed to verify using the key {0}.",
+                        keyId
+                    );
+                }
+            }
+
+            throw Utils.Error("Failed to verify.");
+        }
+
         [Command(Description = "Parse and analyze a given app protocol version token.")]
         public void Analyze(
             [Argument(
@@ -109,20 +195,7 @@ namespace Libplanet.Tools
             string? token = null
         )
         {
-            if (token is null)
-            {
-                token = Console.ReadLine();
-            }
-
-            AppProtocolVersion v;
-            try
-            {
-                v = AppProtocolVersion.FromToken(token.Trim());
-            }
-            catch (FormatException e)
-            {
-                throw Utils.Error("Not a valid app protocol version token.  " + e);
-            }
+            AppProtocolVersion v = ParseAppProtocolVersionToken(token);
 
             var data = new List<(string, string)>
             {
@@ -191,6 +264,23 @@ namespace Libplanet.Tools
             }
 
             Utils.PrintTable(("Field", "Value"), data);
+        }
+
+        private AppProtocolVersion ParseAppProtocolVersionToken(string? token)
+        {
+            if (token is null)
+            {
+                token = Console.ReadLine();
+            }
+
+            try
+            {
+                return AppProtocolVersion.FromToken(token.Trim());
+            }
+            catch (FormatException e)
+            {
+                throw Utils.Error($"Not a valid app protocol version token.  {e.Message}");
+            }
         }
     }
 }

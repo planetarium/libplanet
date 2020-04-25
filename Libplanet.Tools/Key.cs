@@ -175,8 +175,6 @@ namespace Libplanet.Tools
 
         public PrivateKey UnprotectKey(Guid keyId, string? passphrase = null)
         {
-            passphrase ??= ConsolePasswordReader.Read("Passphrase: ");
-
             ProtectedPrivateKey ppk;
             try
             {
@@ -186,6 +184,8 @@ namespace Libplanet.Tools
             {
                 throw Utils.Error($"No such key ID: {keyId}");
             }
+
+            passphrase ??= ConsolePasswordReader.Read($"Passphrase (of {keyId}): ");
 
             try
             {
