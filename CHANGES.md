@@ -1,6 +1,26 @@
 Libplanet changelog
 ===================
 
+Version 0.10.0
+--------------
+
+To be released.
+
+### Backward-incompatible API changes
+
+### Backward-incompatible network protocol changes
+
+### Backward-incompatible storage format changes
+
+### Added APIs
+
+### Behavioral changes
+
+### Bug fixes
+
+### CLI tools
+
+
 Version 0.9.0
 -------------
 
@@ -62,8 +82,6 @@ Released on April 27, 2020.
  -  The existing `RecentStates` message type (with the type number `0x0c`) was
     replaced by a new `RecentStates` message type (with type number `0x0f`)
     in order to compress its states.  [[#700], [#850]]
-
-### Backward-incompatible storage format changes
 
 ### Added APIs
 
