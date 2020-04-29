@@ -16,10 +16,15 @@ To be released.
 
 ### Behavioral changes
 
+ -  Improved performance of `Swarm<T>` by multiplexing response and
+    broadcast.  [[#858], [#859]]
+
 ### Bug fixes
 
 ### CLI tools
 
+[#858]: https://github.com/planetarium/libplanet/issues/858
+[#859]: https://github.com/planetarium/libplanet/pull/859
 
 Version 0.9.0
 -------------

@@ -40,7 +40,8 @@ namespace Libplanet.Net
         private NetMQQueue<(Address?, Message)> _broadcastQueue;
 
         private RouterSocket _router;
-        private NetMQPoller _poller;
+        private NetMQPoller _routerPoller;
+        private NetMQPoller _broadcastPoller;
 
         private int? _listenPort;
         private TurnClient _turnClient;
@@ -263,7 +264,8 @@ namespace Libplanet.Net
 
             _replyQueue = new NetMQQueue<NetMQMessage>();
             _broadcastQueue = new NetMQQueue<(Address?, Message)>();
-            _poller = new NetMQPoller { _router, _replyQueue, _broadcastQueue };
+            _routerPoller = new NetMQPoller { _router, _replyQueue };
+            _broadcastPoller = new NetMQPoller { _broadcastQueue };
 
             _router.ReceiveReady += ReceiveMessage;
             _replyQueue.ReceiveReady += DoReply;
@@ -287,24 +289,8 @@ namespace Libplanet.Net
                     TimeSpan.FromSeconds(10),
                     _cancellationToken));
             tasks.Add(RebuildConnectionAsync(TimeSpan.FromMinutes(30), _cancellationToken));
-            tasks.Add(
-                Task.Run(() =>
-                {
-                    // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
-                    // tests.
-                    try
-                    {
-                        _poller.Run();
-                    }
-                    catch (TerminatingException)
-                    {
-                        _logger.Error($"TerminatingException occurred in {nameof(_poller)}");
-                    }
-                    catch (ObjectDisposedException)
-                    {
-                        _logger.Error($"ObjectDisposedException occurred in {nameof(_poller)}");
-                    }
-                }));
+            tasks.Add(RunPoller(_routerPoller));
+            tasks.Add(RunPoller(_broadcastPoller));
 
             await await Task.WhenAny(tasks);
         }
@@ -323,9 +309,14 @@ namespace Libplanet.Net
                 _replyQueue.ReceiveReady -= DoReply;
                 _router.ReceiveReady -= ReceiveMessage;
 
-                if (_poller.IsRunning)
+                if (_routerPoller.IsRunning)
                 {
-                    _poller.Dispose();
+                    _routerPoller.Dispose();
+                }
+
+                if (_broadcastPoller.IsRunning)
+                {
+                    _broadcastPoller.Dispose();
                 }
 
                 _broadcastQueue.Dispose();
@@ -991,6 +982,32 @@ namespace Libplanet.Net
                 }
             }
         }
+
+        private Task RunPoller(NetMQPoller poller) =>
+            Task.Factory.StartNew(
+                () =>
+                {
+                    // Ignore NetMQ related exceptions during NetMQPoller.Run() to stabilize
+                    // tests.
+                    try
+                    {
+                        poller.Run();
+                    }
+                    catch (TerminatingException)
+                    {
+                        _logger.Error($"TerminatingException occurred during poller.Run()");
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        _logger.Error(
+                            $"ObjectDisposedException occurred during poller.Run()"
+                        );
+                    }
+                },
+                CancellationToken.None,
+                TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
+                TaskScheduler.Default
+            );
 
         private readonly struct MessageRequest
         {
