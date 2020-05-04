@@ -6,6 +6,12 @@ Version 0.9.1
 
 To be released.
 
+### Bug fixes
+
+ -  Fixed a bug where the canonical chain was changed if executing actions are failed during
+    preload.  [[#862]]
+
+[#862]: https://github.com/planetarium/libplanet/pull/862
 
 Version 0.9.0
 -------------

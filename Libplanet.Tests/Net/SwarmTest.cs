@@ -1489,6 +1489,58 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
+        public async Task PreloadFailureWhileExecuteActions()
+        {
+            var policy = new BlockPolicy<ThrowException>();
+            var fx1 = new DefaultStoreFixture(memory: true);
+            var fx2 = new DefaultStoreFixture(memory: true);
+            var minerChain = TestUtils.MakeBlockChain(policy, fx1.Store);
+            var receiverChain = TestUtils.MakeBlockChain(policy, fx2.Store);
+
+            Swarm<ThrowException> minerSwarm = CreateSwarm(minerChain);
+            Swarm<ThrowException> receiverSwarm = CreateSwarm(receiverChain);
+
+            foreach (var unused in Enumerable.Range(0, 10))
+            {
+                await minerSwarm.BlockChain.MineBlock(_fx1.Address1);
+            }
+
+            try
+            {
+                await StartAsync(minerSwarm);
+
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
+
+                var action = new ThrowException { ThrowOnExecution = true };
+
+                var chainId = receiverChain.Id;
+                Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
+                    0,
+                    new PrivateKey(),
+                    new[] { action },
+                    ImmutableHashSet<Address>.Empty,
+                    DateTimeOffset.UtcNow
+                );
+
+                var block = TestUtils.MineNext(
+                    minerChain.Tip,
+                    new[] { tx },
+                    difficulty: policy.GetNextBlockDifficulty(minerChain),
+                    blockInterval: TimeSpan.FromSeconds(1));
+                minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, false);
+
+                await Assert.ThrowsAsync<UnexpectedlyTerminatedActionException>(async () =>
+                    await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1)));
+                Assert.Equal(chainId, fx2.Store.GetCanonicalChainId());
+            }
+            finally
+            {
+                await StopAsync(minerSwarm);
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
         public async Task PreloadFromNominer()
         {
             Swarm<DumbAction> minerSwarm = _swarms[0];

@@ -696,14 +696,14 @@ namespace Libplanet.Net
                     Block<T> bottomBlock = deltaBottom.Value;
                     if (bottomBlock.PreviousHash is HashDigest<SHA256> bp)
                     {
-                        BlockChain<T> fork = workspace.Fork(bp);
+                        workspace = workspace.Fork(bp);
                         try
                         {
                             long verifiedBlockCount = 0;
                             foreach (Block<T> deltaBlock in deltaBlocks)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
-                                fork.Append(
+                                workspace.Append(
                                     deltaBlock,
                                     DateTimeOffset.UtcNow,
                                     evaluateActions: false,
@@ -728,8 +728,6 @@ namespace Libplanet.Net
                         }
 
                         cancellationToken.ThrowIfCancellationRequested();
-                        workspace.Swap(fork, render: false);
-                        wId = fork.Id;
                     }
                     else
                     {
