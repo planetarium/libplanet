@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.9.1
 -------------
 
-Released on May 6, 2020
+Released on May 7, 2020.
 
 ### Bug fixes
 
