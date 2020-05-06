@@ -8,8 +8,8 @@ To be released.
 
 ### Bug fixes
 
- -  Fixed a bug where the canonical chain was changed if executing actions are failed during
-    preload.  [[#862]]
+ -  Fixed a bug where the canonical chain had changed if any actions had thrown an exception
+    during `Swarm<T>.PreloadAsync()`.  [[#862]]
 
 [#862]: https://github.com/planetarium/libplanet/pull/862
 
