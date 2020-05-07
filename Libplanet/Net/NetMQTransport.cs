@@ -492,7 +492,7 @@ namespace Libplanet.Net
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 Interlocked.Increment(ref _requestCount);
 
-                // FIXME should we also cacel tcs sender side too?
+                // FIXME should we also cancel tcs sender side too?
                 cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.AddAsync(
                     new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
