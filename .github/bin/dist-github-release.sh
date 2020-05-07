@@ -75,14 +75,16 @@ for project in "${projects[@]}"; do
 done
 
 
-for rid in "${rids[@]}"; do
-  for exec_path in "./$project/bin/$configuration"/*-"$tag-$rid".{tar.xz,zip}
-  do
-    "$(dirname "$0")/github-release.sh" upload \
-      --user "$github_user" \
-      --repo "$github_repo" \
-      --tag "$tag" \
-      --name "$(basename "$exec_path")" \
-      --file "$exec_path"
+for project in "${executables[@]}"; do
+  for rid in "${rids[@]}"; do
+    for exec_path in "./$project/bin/$configuration"/*-"$tag-$rid".*
+    do
+      "$(dirname "$0")/github-release.sh" upload \
+        --user "$github_user" \
+        --repo "$github_repo" \
+        --tag "$tag" \
+        --name "$(basename "$exec_path")" \
+        --file "$exec_path"
+    done
   done
 done
