@@ -491,6 +491,8 @@ namespace Libplanet.Net
                 );
                 var tcs = new TaskCompletionSource<IEnumerable<Message>>();
                 Interlocked.Increment(ref _requestCount);
+
+                // FIXME should we also cacel tcs sender side too?
                 cancellationToken.Register(() => tcs.TrySetCanceled());
                 await _requests.AddAsync(
                     new MessageRequest(reqId, message, peer, now, timeout, expectedResponses, tcs),
@@ -836,15 +838,15 @@ namespace Libplanet.Net
                     Protocol.ReceiveMessage(result[0]);
                 }
 
-                tcs.SetResult(result);
+                tcs.TrySetResult(result);
             }
             catch (DifferentAppProtocolVersionException dape)
             {
-                tcs.SetException(dape);
+                tcs.TrySetException(dape);
             }
             catch (TimeoutException te)
             {
-                tcs.SetException(te);
+                tcs.TrySetException(te);
             }
 
             // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
