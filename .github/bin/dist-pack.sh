@@ -18,6 +18,7 @@ package_version="$(cat obj/package_version.txt)"
 for project in "${executables[@]}"; do
   for rid in "${rids[@]}"; do
     output_dir="./$project/bin/$configuration/$rid/"
+    mkdir -p "$output_dir"
     dotnet publish \
       --runtime "$rid" \
       -p:PublishSingleFile=true \
@@ -38,8 +39,6 @@ for project in "${executables[@]}"; do
 done
 
 for project in "${projects[@]}"; do
-  rm -rf "./$project/bin/$configuration/"
-
   dotnet_args="-p:Version=$version"
   if [ -f obj/version_suffix.txt ]; then
     dotnet_args="$dotnet_args -p:NoPackageAnalysis=true"
