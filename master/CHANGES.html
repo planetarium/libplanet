@@ -75,6 +75,14 @@ broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/858">#858<
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-091">Version 0.9.1</h2>
+<p>Released on May 7, 2020.</p>
+<ul>
+<li>Fixed a bug where the canonical chain had changed if any actions had thrown
+an exception during <code>Swarm&lt;T&gt;.PreloadAsync()</code>.  [<a href="https://github.com/planetarium/libplanet/pull/862">#862</a>]</li>
+<li>Fixed a <code>Swarm&lt;T&gt;.PreloadAsync()</code> method's bug that it had hung forever and
+raised <code>InvalidOperationException</code>.  [<a href="https://github.com/planetarium/libplanet/issues/847">#847</a>, <a href="https://github.com/planetarium/libplanet/pull/864">#864</a>]</li>
+</ul>
 <h2 id="version-090">Version 0.9.0</h2>
 <p>Released on April 27, 2020.</p>
 <h3 id="backward-incompatible-api-changes-1">Backward-incompatible API changes</h3>
