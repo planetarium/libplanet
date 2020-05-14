@@ -13,6 +13,8 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
+- Added `BindingProxies` method. [[756], [#868]]
+- Added `BindingMultipleProxies` method. [#868]
 
 ### Behavioral changes
 
@@ -23,8 +25,10 @@ To be released.
 
 ### CLI tools
 
+[#756]: https://github.com/planetarium/libplanet/issues/756
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
+[#868]: https://github.com/planetarium/libplanet/pull/868
 
 
 Version 0.9.1
