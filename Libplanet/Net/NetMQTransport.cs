@@ -244,7 +244,6 @@ namespace Libplanet.Net
                 List<Task> tasks = BindingMultipleProxies(_cancellationToken, _listenPort.Value, 3);
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
-                await await Task.WhenAny(tasks);
             }
             else if (_host is null)
             {
