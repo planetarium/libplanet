@@ -13,8 +13,7 @@ To be released.
 ### Backward-incompatible storage format changes
 
 ### Added APIs
-- Added `BindingProxies` method. [[756], [#868]]
-- Added `BindingMultipleProxies` method. [#868]
+- Added `TurnClient.BindingProxies()` method. [[#756], [#868]]
 
 ### Behavioral changes
 
