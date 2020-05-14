@@ -14,7 +14,7 @@ To be released.
 
 ### Added APIs
 
-- Added `TurnClient.BindingProxies()` method. [[#756], [#868]]
+- Added `TurnClient.BindProxies()` method. [[#756], [#868]]
 
 ### Behavioral changes
 
