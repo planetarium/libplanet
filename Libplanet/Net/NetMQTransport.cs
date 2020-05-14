@@ -241,7 +241,7 @@ namespace Libplanet.Net
                 );
                 _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
-                var tasks = BindingMultipleProxies(_cancellationToken, _listenPort, 3);
+                var tasks = BindingMultipleProxies(_cancellationToken, _listenPort.Value, 3);
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
                 await await Task.WhenAny(tasks);
@@ -349,7 +349,7 @@ namespace Libplanet.Net
             {
                 var kp = (KademliaProtocol)Protocol;
 
-                var tasks = new List<Task>();
+                List<Task> tasks = new List<Task>();
                 foreach (Peer peer in peers)
                 {
                     if (peer is BoundPeer boundPeer)
@@ -978,11 +978,11 @@ namespace Libplanet.Net
 
         private List<Task> BindingMultipleProxies(
             CancellationToken cancellationToken,
-            int? listenPort,
+            int listenPort,
             int count)
         {
             return Enumerable.Range(1, count)
-                .Select(x => _turnClient.BindingProxies(_cancellationToken, listenPort.Value))
+                .Select(x => _turnClient.BindingProxies(cancellationToken, listenPort))
                 .ToList();
         }
 

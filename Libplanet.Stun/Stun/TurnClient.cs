@@ -221,24 +221,25 @@ namespace Libplanet.Stun
 
         public async Task BindingProxies(
             CancellationToken cancellationToken,
-            int? listenPort)
+            int listenPort)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
 #pragma warning disable IDE0067 // We'll dispose of `stream` in proxy task.
-                NetworkStream stream = await AcceptRelayedStreamAsync();
+                NetworkStream stream = await AcceptRelayedStreamAsync(cancellationToken);
 #pragma warning restore IDE0067
 
                 // TODO We should expose the interface so that library users
                 // can limit / manage the task.
-                Func<Task> f = async () =>
+                Func<Task> startAsync = async () =>
                 {
                     using var proxy = new NetworkStreamProxy(stream);
-                    await proxy.StartAsync(IPAddress.Loopback, listenPort.Value);
+                    await proxy.StartAsync(IPAddress.Loopback, listenPort);
                 };
 
 #pragma warning disable CS4014
-                Task.Run(f).ContinueWith(_ => stream.Dispose());
+                Task.Run(startAsync, cancellationToken)
+                    .ContinueWith(_ => stream.Dispose(), cancellationToken);
 #pragma warning restore CS4014
             }
         }
