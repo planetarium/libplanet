@@ -219,9 +219,9 @@ namespace Libplanet.Stun
             }
         }
 
-        public async Task BindingProxies(
-            CancellationToken cancellationToken,
-            int listenPort)
+        public async Task BindProxies(
+            int listenPort,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             while (!cancellationToken.IsCancellationRequested)
             {

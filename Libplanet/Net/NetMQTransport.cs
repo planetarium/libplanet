@@ -241,7 +241,7 @@ namespace Libplanet.Net
                 );
                 _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
-                List<Task> tasks = BindingMultipleProxies(_cancellationToken, _listenPort.Value, 3);
+                List<Task> tasks = BindingMultipleProxies(_listenPort.Value, 3, _cancellationToken);
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
             }
@@ -976,12 +976,12 @@ namespace Libplanet.Net
             );
 
         private List<Task> BindingMultipleProxies(
-            CancellationToken cancellationToken,
             int listenPort,
-            int count)
+            int count,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             return Enumerable.Range(1, count)
-                .Select(x => _turnClient.BindingProxies(cancellationToken, listenPort))
+                .Select(x => _turnClient.BindProxies(listenPort, cancellationToken))
                 .ToList();
         }
 
