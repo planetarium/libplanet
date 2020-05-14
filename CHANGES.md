@@ -14,6 +14,8 @@ To be released.
 
 ### Added APIs
 
+- Added `TurnClient.BindProxies()` method. [[#756], [#868]]
+
 ### Behavioral changes
 
  -  Improved performance of `Swarm<T>` by multiplexing response and
@@ -23,8 +25,10 @@ To be released.
 
 ### CLI tools
 
+[#756]: https://github.com/planetarium/libplanet/issues/756
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
+[#868]: https://github.com/planetarium/libplanet/pull/868
 
 
 Version 0.9.1

@@ -227,16 +227,11 @@ namespace Libplanet.Net
             _logger.Information($"Listen on {_listenPort}");
 
             _cancellationToken = cancellationToken;
-            var tasks = new List<Task>();
 
             if (!(_turnClient is null))
             {
                 _publicIPAddress = (await _turnClient.GetMappedAddressAsync()).Address;
-
-                if (await _turnClient.IsBehindNAT())
-                {
-                    _behindNAT = true;
-                }
+                _behindNAT = await _turnClient.IsBehindNAT();
             }
 
             if (_behindNAT)
@@ -246,10 +241,7 @@ namespace Libplanet.Net
                 );
                 _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
 
-                // FIXME should be parameterized
-                tasks.Add(BindingProxies(_cancellationToken));
-                tasks.Add(BindingProxies(_cancellationToken));
-                tasks.Add(BindingProxies(_cancellationToken));
+                List<Task> tasks = BindMultipleProxies(_listenPort.Value, 3, _cancellationToken);
                 tasks.Add(RefreshAllocate(_cancellationToken));
                 tasks.Add(RefreshPermissions(_cancellationToken));
             }
@@ -850,34 +842,6 @@ namespace Libplanet.Net
                 DateTimeOffset.UtcNow - startedTime);
         }
 
-        // FIXME: Separate turn related features outside of Transport if possible.
-        private async Task BindingProxies(CancellationToken cancellationToken)
-        {
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
-                {
-#pragma warning disable IDE0067  // We'll dispose of `stream` in proxy task.
-                    NetworkStream stream = await _turnClient.AcceptRelayedStreamAsync();
-#pragma warning restore IDE0067
-
-                    // TODO We should expose the interface so that library users
-                    // can limit / manage the task.
-#pragma warning disable CS4014
-                    Task.Run(async () =>
-                    {
-                        using var proxy = new NetworkStreamProxy(stream);
-                        await proxy.StartAsync(IPAddress.Loopback, _listenPort.Value);
-                    }).ContinueWith(_ => stream.Dispose());
-#pragma warning restore CS4014
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(e, "An unexpected exception occurred. try again...");
-                }
-            }
-        }
-
         private void CheckStarted()
         {
             if (!Running)
@@ -1010,6 +974,16 @@ namespace Libplanet.Net
                 TaskCreationOptions.DenyChildAttach | TaskCreationOptions.LongRunning,
                 TaskScheduler.Default
             );
+
+        private List<Task> BindMultipleProxies(
+            int listenPort,
+            int count,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return Enumerable.Range(1, count)
+                .Select(x => _turnClient.BindProxies(listenPort, cancellationToken))
+                .ToList();
+        }
 
         private readonly struct MessageRequest
         {
