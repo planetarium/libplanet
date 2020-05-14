@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Libplanet.Net;
 using Libplanet.Stun.Messages;
 using Nito.AsyncEx;
 using Serilog;
@@ -215,6 +216,30 @@ namespace Libplanet.Stun
             }
             catch (IOException)
             {
+            }
+        }
+
+        public async Task BindingProxies(
+            CancellationToken cancellationToken,
+            int? listenPort)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+#pragma warning disable IDE0067 // We'll dispose of `stream` in proxy task.
+                NetworkStream stream = await AcceptRelayedStreamAsync();
+#pragma warning restore IDE0067
+
+                // TODO We should expose the interface so that library users
+                // can limit / manage the task.
+                Func<Task> f = async () =>
+                {
+                    using var proxy = new NetworkStreamProxy(stream);
+                    await proxy.StartAsync(IPAddress.Loopback, listenPort.Value);
+                };
+
+#pragma warning disable CS4014
+                Task.Run(f).ContinueWith(_ => stream.Dispose());
+#pragma warning restore CS4014
             }
         }
 
