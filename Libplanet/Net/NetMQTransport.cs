@@ -857,7 +857,11 @@ namespace Libplanet.Net
 
         private async Task CreatePermission(BoundPeer peer)
         {
+            var cts = new CancellationTokenSource();
             IPAddress[] ips;
+
+            // Cancellation After 2.5 sec
+            cts.CancelAfter(2500);
             if (peer.PublicIPAddress is null)
             {
                 string peerHost = peer.EndPoint.Host;
@@ -883,13 +887,13 @@ namespace Libplanet.Net
                     // This translation is only used in test case because a
                     // seed node exposes loopback address as public address to
                     // other node in test case
-                    ep = await _turnClient.GetMappedAddressAsync();
+                    ep = await _turnClient.GetMappedAddressAsync(cts.Token);
                 }
 
                 // FIXME Can we really ignore IPv6 case?
                 if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
                 {
-                    await _turnClient.CreatePermissionAsync(ep);
+                    await _turnClient.CreatePermissionAsync(ep, cts.Token);
                 }
             }
         }
