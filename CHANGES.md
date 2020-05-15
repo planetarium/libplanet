@@ -23,16 +23,12 @@ To be released.
 
 ### Bug fixes
 
-- `NetMQTransport.CreatePermission()` became to have timeout when locked for 2.5 seconds. [[#611], [#868]]
-
 ### CLI tools
 
-[#611]: https://github.com/planetarium/libplanet/issues/611
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
 [#868]: https://github.com/planetarium/libplanet/pull/868
-[#868]: https://github.com/planetarium/libplanet/pull/869
 
 
 Version 0.9.1
