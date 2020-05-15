@@ -857,7 +857,11 @@ namespace Libplanet.Net
 
         private async Task CreatePermission(BoundPeer peer)
         {
+            var cts = new CancellationTokenSource();
             IPAddress[] ips;
+
+            // Cancellation After 2.5 sec
+            cts.CancelAfter(2500);
             if (peer.PublicIPAddress is null)
             {
                 string peerHost = peer.EndPoint.Host;
