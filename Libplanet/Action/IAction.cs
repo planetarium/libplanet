@@ -1,3 +1,4 @@
+using System;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -314,6 +315,20 @@ namespace Libplanet.Action
         void Render(IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
+        /// Does things that should be doen right after this action is
+        /// spread to the network or is &#x201c;confirmed&#x201d; (kind of)
+        /// by each peer node.
+        /// </summary>
+        /// <param name="context">The equivalent context object to
+        /// what <see cref="Execute(IActionContext)"/> method had received.
+        /// That means <see cref="IActionContext.PreviousStates"/> are
+        /// the states right <em>before</em> this action executed.
+        /// </param>
+        /// <param name="exception">The exception that had raised during excuting this action.
+        /// </param>
+        void RenderError(IActionContext context, Exception exception);
+
+        /// <summary>
         /// Does things that should be undone right after this action is
         /// invalidated (mostly due to a block which this action has belonged
         /// to becoming considered a stale).
@@ -336,5 +351,22 @@ namespace Libplanet.Action
         /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method
         /// with redrawing the graphics on the display at the finish.</remarks>
         void Unrender(IActionContext context, IAccountStateDelta nextStates);
+
+        /// <summary>
+        /// Does things that should be undone right after this action is
+        /// invalidated (mostly due to a block which this action has belonged
+        /// to becoming considered a stale).
+        /// <para>This method takes the equivalent arguments to
+        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The equivalent context object to
+        /// what <see cref="Execute(IActionContext)"/> method had received.
+        /// That means <see cref="IActionContext.PreviousStates"/> are
+        /// the states right <em>before</em> this action executed.
+        /// </param>
+        /// <param name="exception">The exception that had raised during excuting this action.
+        /// </param>
+        void UnrenderError(IActionContext context, Exception exception);
     }
 }

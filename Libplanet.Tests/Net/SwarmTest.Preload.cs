@@ -6,7 +6,6 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Bencodex.Types;
-using Libplanet.Action;
 using Libplanet.Blockchain;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -283,7 +282,7 @@ namespace Libplanet.Tests.Net
         }
 
         [Fact(Timeout = Timeout)]
-        public async Task PreloadFailureWhileExecuteActions()
+        public async Task PreloadWithFailedActions()
         {
             var policy = new BlockPolicy<ThrowException>();
             var fx1 = new DefaultStoreFixture(memory: true);
@@ -324,9 +323,10 @@ namespace Libplanet.Tests.Net
                     blockInterval: TimeSpan.FromSeconds(1));
                 minerSwarm.BlockChain.Append(block, DateTimeOffset.UtcNow, false, false);
 
-                await Assert.ThrowsAsync<UnexpectedlyTerminatedActionException>(async () =>
-                    await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1)));
-                Assert.Equal(chainId, fx2.Store.GetCanonicalChainId());
+                await receiverSwarm.PreloadAsync(TimeSpan.FromSeconds(1));
+
+                // Preloading should succeed even if action throws exception.
+                Assert.Equal(minerChain.Tip, receiverChain.Tip);
             }
             finally
             {

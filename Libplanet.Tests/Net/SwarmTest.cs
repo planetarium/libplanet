@@ -1879,7 +1879,15 @@ namespace Libplanet.Tests.Net
             {
             }
 
+            public void RenderError(IActionContext context, Exception exception)
+            {
+            }
+
             public void Unrender(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
+
+            public void UnrenderError(IActionContext context, Exception exception)
             {
             }
         }

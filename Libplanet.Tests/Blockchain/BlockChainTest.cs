@@ -17,6 +17,7 @@ using Libplanet.Tests.Tx;
 using Libplanet.Tx;
 using Serilog;
 using Xunit;
+using static Libplanet.Tests.Common.Action.ThrowException;
 
 namespace Libplanet.Tests.Blockchain
 {
@@ -483,15 +484,21 @@ namespace Libplanet.Tests.Blockchain
             var privateKey = new PrivateKey();
 
             var action = new ThrowException { ThrowOnExecution = true };
+            var onRenderErrorCalled = false;
+            action.OnRenderError = (ctx, exc) =>
+            {
+                onRenderErrorCalled = true;
+                Assert.IsType<UnexpectedlyTerminatedActionException>(exc);
+                Assert.IsType<SomeException>(exc.InnerException);
+            };
+
             var actions = new[] { action };
             blockChain.MakeTransaction(privateKey, actions);
 
-            UnexpectedlyTerminatedActionException e =
-            await Assert.ThrowsAsync<UnexpectedlyTerminatedActionException>(async () =>
-                await blockChain.MineBlock(_fx.Address1));
-            Assert.IsType<ThrowException.SomeException>(e.InnerException);
+            await blockChain.MineBlock(_fx.Address1);
 
-            Assert.Equal(1, blockChain.Count);
+            Assert.Equal(2, blockChain.Count);
+            Assert.True(onRenderErrorCalled);
         }
 
         [Fact]
@@ -2212,6 +2219,14 @@ namespace Libplanet.Tests.Blockchain
             public void Unrender(
                 IActionContext context,
                 IAccountStateDelta nextStates)
+            {
+            }
+
+            public void RenderError(IActionContext context, Exception exception)
+            {
+            }
+
+            public void UnrenderError(IActionContext context, Exception exception)
             {
             }
         }
