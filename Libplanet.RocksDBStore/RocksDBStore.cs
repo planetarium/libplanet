@@ -708,11 +708,8 @@ namespace Libplanet.RocksDBStore
             byte[] keyBytes = RocksDBStoreBitConverter.GetBytes(key);
             byte[] prefix = StateRefKeyPrefix.Concat(keyBytes).ToArray();
 
-            ColumnFamilyHandle cf = GetColumnFamily(_stateRefDb, chainId);
-            Iterator it = _stateRefDb.NewIterator(cf);
-
             return IterateStateReferences(
-                prefix, it, highestIndex.Value, lowestIndex.Value, limit.Value);
+                chainId, prefix, highestIndex.Value, lowestIndex.Value, limit.Value);
         }
 
         /// <inheritdoc/>
@@ -773,7 +770,7 @@ namespace Libplanet.RocksDBStore
                 _stateRefDb.Put(key, it.Value(), destCf);
             }
 
-            Iterator destIt = _stateRefDb.NewIterator(destCf);
+            using Iterator destIt = _stateRefDb.NewIterator(destCf);
 
             destIt.Seek(prefix);
 
@@ -883,12 +880,15 @@ namespace Libplanet.RocksDBStore
         }
 
         private IEnumerable<Tuple<HashDigest<SHA256>, long>> IterateStateReferences(
+            Guid chainId,
             byte[] prefix,
-            Iterator it,
             long highestIndex,
             long lowestIndex,
             int limit)
         {
+            ColumnFamilyHandle cf = GetColumnFamily(_stateRefDb, chainId);
+            using Iterator it = _stateRefDb.NewIterator(cf);
+
             // FIXME: We need to change the state reference to be ordered by reverse byte-wise
             // and use the Seek function.
             it.SeekToLast();
@@ -961,7 +961,7 @@ namespace Libplanet.RocksDBStore
         private IEnumerable<Iterator> IterateDb(RocksDb db, byte[] prefix, Guid? chainId = null)
         {
             ColumnFamilyHandle cf = GetColumnFamily(db, chainId);
-            Iterator it = db.NewIterator(cf);
+            using Iterator it = db.NewIterator(cf);
             for (it.Seek(prefix); it.Valid() && it.Key().StartsWith(prefix); it.Next())
             {
                 yield return it;
