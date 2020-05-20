@@ -1,6 +1,16 @@
 Libplanet changelog
 ===================
 
+Version 0.9.2
+-------------
+
+To be released.
+
+ -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.  [[#870]]
+
+[#870]: https://github.com/planetarium/libplanet/pull/870
+
+
 Version 0.9.1
 -------------
 
