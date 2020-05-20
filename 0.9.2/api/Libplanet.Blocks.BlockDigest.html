@@ -1,0 +1,385 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct BlockDigest
+   | Libplanet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct BlockDigest
+   | Libplanet ">
+    <meta name="generator" content="docfx 2.48.1.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Blocks.BlockDigest">
+  
+  
+  <h1 id="Libplanet_Blocks_BlockDigest" data-uid="Libplanet.Blocks.BlockDigest" class="text-break">Struct BlockDigest
+  </h1>
+  <div class="markdown level0 summary"><p>Class that store uses to save blocks. This contains:
+<a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a>, and list of <a class="xref" href="Libplanet.Tx.TxId.html">TxId</a>s.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Blocks.html">Libplanet.Blocks</a></h6>
+  <h6><strong>Assembly</strong>: Libplanet.dll</h6>
+  <h5 id="Libplanet_Blocks_BlockDigest_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct BlockDigest</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest__ctor_Bencodex_Types_Dictionary_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.%23ctor(Bencodex.Types.Dictionary)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L39">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest__ctor_" data-uid="Libplanet.Blocks.BlockDigest.#ctor*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest__ctor_Bencodex_Types_Dictionary_" data-uid="Libplanet.Blocks.BlockDigest.#ctor(Bencodex.Types.Dictionary)">BlockDigest(Bencodex.Types.Dictionary)</h4>
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a> instance from
+<see cref="!:Bencodex.Types.Dictionary"></see> representation of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockDigest(Bencodex.Types.Dictionary dict)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
+        <td><span class="parametername">dict</span></td>
+        <td><p><see cref="!:Bencodex.Types.Dictionary"></see> representation of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest__ctor_Libplanet_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.%23ctor(Libplanet.Blocks.BlockHeader%2CImmutableArray%7BImmutableArray%7BSystem.Byte%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L26">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest__ctor_" data-uid="Libplanet.Blocks.BlockDigest.#ctor*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest__ctor_Libplanet_Blocks_BlockHeader_ImmutableArray_ImmutableArray_System_Byte___" data-uid="Libplanet.Blocks.BlockDigest.#ctor(Libplanet.Blocks.BlockHeader,ImmutableArray{ImmutableArray{System.Byte}})">BlockDigest(BlockHeader, ImmutableArray&lt;ImmutableArray&lt;Byte&gt;&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a> instance from <a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> and
+<a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> ids the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockDigest(BlockHeader header, ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; txIds)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td><p><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a> of the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td><span class="parametername">txIds</span></td>
+        <td><p><a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a> ids the <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&lt;T&gt;</a> has.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest_Header.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.Header%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L48">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest_Header_" data-uid="Libplanet.Blocks.BlockDigest.Header*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest_Header" data-uid="Libplanet.Blocks.BlockDigest.Header">Header</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BlockHeader Header { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockHeader.html">BlockHeader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest_TxIds.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.TxIds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L50">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest_TxIds_" data-uid="Libplanet.Blocks.BlockDigest.TxIds*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest_TxIds" data-uid="Libplanet.Blocks.BlockDigest.TxIds">TxIds</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ImmutableArray&lt;ImmutableArray&lt;byte&gt;&gt; TxIds { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ImmutableArray</span>&lt;<span class="xref">ImmutableArray</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest_Deserialize_System_Byte___.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.Deserialize(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L59">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest_Deserialize_" data-uid="Libplanet.Blocks.BlockDigest.Deserialize*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest_Deserialize_System_Byte___" data-uid="Libplanet.Blocks.BlockDigest.Deserialize(System.Byte[])">Deserialize(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Gets <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a> instance from serialized <code data-dev-comment-type="paramref" class="paramref">bytes</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static BlockDigest Deserialize(byte[] bytes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><span class="parametername">bytes</span></td>
+        <td><p>Serialized <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a></td>
+        <td><p>Deserialized <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest_Serialize.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.Serialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L76">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest_Serialize_" data-uid="Libplanet.Blocks.BlockDigest.Serialize*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest_Serialize" data-uid="Libplanet.Blocks.BlockDigest.Serialize">Serialize()</h4>
+  <div class="markdown level1 summary"><p>Gets serialized byte array of the <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Serialize()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]</td>
+        <td><p>Serialized byte array of <a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest_ToBencodex.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest.ToBencodex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L87">View Source</a>
+  </span>
+  <a id="Libplanet_Blocks_BlockDigest_ToBencodex_" data-uid="Libplanet.Blocks.BlockDigest.ToBencodex*"></a>
+  <h4 id="Libplanet_Blocks_BlockDigest_ToBencodex" data-uid="Libplanet.Blocks.BlockDigest.ToBencodex">ToBencodex()</h4>
+  <div class="markdown level1 summary"><p>Gets <see cref="!:Bencodex.Types.Dictionary"></see> representation of
+<a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Bencodex.Types.Dictionary ToBencodex()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Bencodex.Types.Dictionary</span></td>
+        <td><p><see cref="!:Bencodex.Types.Dictionary"></see> representation of
+<a class="xref" href="Libplanet.Blocks.BlockDigest.html">BlockDigest</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/new/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/apiSpec/new?filename=Libplanet_Blocks_BlockDigest.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.BlockDigest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/planetarium/libplanet/blob/2bb11fbf6eb0da7669903e819bf437baf1fd3bf3/Libplanet/Blocks/BlockDigest.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2019–2020 <a href="https://planetariumhq.com/">Planetarium</a>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
