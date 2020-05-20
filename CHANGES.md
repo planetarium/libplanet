@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.9.2
 -------------
 
-To be released.
+Released on May 20, 2020.
 
  -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.  [[#870]]
 
