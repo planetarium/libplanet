@@ -6,7 +6,7 @@ Version 0.9.2
 
 To be released.
 
- -  Fixed a memory leak bug in Libplanet.RocksDBStore.  [[#870]]
+ -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.  [[#870]]
 
 [#870]: https://github.com/planetarium/libplanet/pull/870
 
