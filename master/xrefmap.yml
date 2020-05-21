@@ -25,12 +25,12 @@ references:
   commentId: T:Libplanet.Action.ActionEvaluation
   fullName: Libplanet.Action.ActionEvaluation
   nameWithType: ActionEvaluation
-- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta)
-  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
-  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
-  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta)
-  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta)
+- uid: Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,Exception)
+  name: ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_Libplanet_Action_IAction_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_Exception_
+  commentId: M:Libplanet.Action.ActionEvaluation.#ctor(Libplanet.Action.IAction,Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta,Exception)
+  fullName: Libplanet.Action.ActionEvaluation.ActionEvaluation(Libplanet.Action.IAction, Libplanet.Action.IActionContext, Libplanet.Action.IAccountStateDelta, Exception)
+  nameWithType: ActionEvaluation.ActionEvaluation(IAction, IActionContext, IAccountStateDelta, Exception)
 - uid: Libplanet.Action.ActionEvaluation.#ctor*
   name: ActionEvaluation
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation__ctor_
@@ -51,6 +51,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.ActionEvaluation.Action
   nameWithType: ActionEvaluation.Action
+- uid: Libplanet.Action.ActionEvaluation.Exception
+  name: Exception
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Exception
+  commentId: P:Libplanet.Action.ActionEvaluation.Exception
+  fullName: Libplanet.Action.ActionEvaluation.Exception
+  nameWithType: ActionEvaluation.Exception
+- uid: Libplanet.Action.ActionEvaluation.Exception*
+  name: Exception
+  href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_Exception_
+  commentId: Overload:Libplanet.Action.ActionEvaluation.Exception
+  isSpec: "True"
+  fullName: Libplanet.Action.ActionEvaluation.Exception
+  nameWithType: ActionEvaluation.Exception
 - uid: Libplanet.Action.ActionEvaluation.InputContext
   name: InputContext
   href: api/Libplanet.Action.ActionEvaluation.html#Libplanet_Action_ActionEvaluation_InputContext
@@ -225,6 +238,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAction.Render
   nameWithType: IAction.Render
+- uid: Libplanet.Action.IAction.RenderError(Libplanet.Action.IActionContext,Exception)
+  name: RenderError(IActionContext, Exception)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_RenderError_Libplanet_Action_IActionContext_Exception_
+  commentId: M:Libplanet.Action.IAction.RenderError(Libplanet.Action.IActionContext,Exception)
+  fullName: Libplanet.Action.IAction.RenderError(Libplanet.Action.IActionContext, Exception)
+  nameWithType: IAction.RenderError(IActionContext, Exception)
+- uid: Libplanet.Action.IAction.RenderError*
+  name: RenderError
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_RenderError_
+  commentId: Overload:Libplanet.Action.IAction.RenderError
+  isSpec: "True"
+  fullName: Libplanet.Action.IAction.RenderError
+  nameWithType: IAction.RenderError
 - uid: Libplanet.Action.IAction.Unrender(Libplanet.Action.IActionContext,Libplanet.Action.IAccountStateDelta)
   name: Unrender(IActionContext, IAccountStateDelta)
   href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_Unrender_Libplanet_Action_IActionContext_Libplanet_Action_IAccountStateDelta_
@@ -238,6 +264,19 @@ references:
   isSpec: "True"
   fullName: Libplanet.Action.IAction.Unrender
   nameWithType: IAction.Unrender
+- uid: Libplanet.Action.IAction.UnrenderError(Libplanet.Action.IActionContext,Exception)
+  name: UnrenderError(IActionContext, Exception)
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_UnrenderError_Libplanet_Action_IActionContext_Exception_
+  commentId: M:Libplanet.Action.IAction.UnrenderError(Libplanet.Action.IActionContext,Exception)
+  fullName: Libplanet.Action.IAction.UnrenderError(Libplanet.Action.IActionContext, Exception)
+  nameWithType: IAction.UnrenderError(IActionContext, Exception)
+- uid: Libplanet.Action.IAction.UnrenderError*
+  name: UnrenderError
+  href: api/Libplanet.Action.IAction.html#Libplanet_Action_IAction_UnrenderError_
+  commentId: Overload:Libplanet.Action.IAction.UnrenderError
+  isSpec: "True"
+  fullName: Libplanet.Action.IAction.UnrenderError
+  nameWithType: IAction.UnrenderError
 - uid: Libplanet.Action.IActionContext
   name: IActionContext
   href: api/Libplanet.Action.IActionContext.html
@@ -547,6 +586,23 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Render
   nameWithType: PolymorphicAction<T>.Render
   nameWithType.vb: PolymorphicAction(Of T).Render
+- uid: Libplanet.Action.PolymorphicAction`1.RenderError(Libplanet.Action.IActionContext,Exception)
+  name: RenderError(IActionContext, Exception)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_RenderError_Libplanet_Action_IActionContext_Exception_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.RenderError(Libplanet.Action.IActionContext,Exception)
+  fullName: Libplanet.Action.PolymorphicAction<T>.RenderError(Libplanet.Action.IActionContext, Exception)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).RenderError(Libplanet.Action.IActionContext, Exception)
+  nameWithType: PolymorphicAction<T>.RenderError(IActionContext, Exception)
+  nameWithType.vb: PolymorphicAction(Of T).RenderError(IActionContext, Exception)
+- uid: Libplanet.Action.PolymorphicAction`1.RenderError*
+  name: RenderError
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_RenderError_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.RenderError
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.RenderError
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).RenderError
+  nameWithType: PolymorphicAction<T>.RenderError
+  nameWithType.vb: PolymorphicAction(Of T).RenderError
 - uid: Libplanet.Action.PolymorphicAction`1.ToString
   name: ToString()
   href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_ToString
@@ -581,6 +637,23 @@ references:
   fullName.vb: Libplanet.Action.PolymorphicAction(Of T).Unrender
   nameWithType: PolymorphicAction<T>.Unrender
   nameWithType.vb: PolymorphicAction(Of T).Unrender
+- uid: Libplanet.Action.PolymorphicAction`1.UnrenderError(Libplanet.Action.IActionContext,Exception)
+  name: UnrenderError(IActionContext, Exception)
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_UnrenderError_Libplanet_Action_IActionContext_Exception_
+  commentId: M:Libplanet.Action.PolymorphicAction`1.UnrenderError(Libplanet.Action.IActionContext,Exception)
+  fullName: Libplanet.Action.PolymorphicAction<T>.UnrenderError(Libplanet.Action.IActionContext, Exception)
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).UnrenderError(Libplanet.Action.IActionContext, Exception)
+  nameWithType: PolymorphicAction<T>.UnrenderError(IActionContext, Exception)
+  nameWithType.vb: PolymorphicAction(Of T).UnrenderError(IActionContext, Exception)
+- uid: Libplanet.Action.PolymorphicAction`1.UnrenderError*
+  name: UnrenderError
+  href: api/Libplanet.Action.PolymorphicAction-1.html#Libplanet_Action_PolymorphicAction_1_UnrenderError_
+  commentId: Overload:Libplanet.Action.PolymorphicAction`1.UnrenderError
+  isSpec: "True"
+  fullName: Libplanet.Action.PolymorphicAction<T>.UnrenderError
+  fullName.vb: Libplanet.Action.PolymorphicAction(Of T).UnrenderError
+  nameWithType: PolymorphicAction<T>.UnrenderError
+  nameWithType.vb: PolymorphicAction(Of T).UnrenderError
 - uid: Libplanet.Action.RandomExtensions
   name: RandomExtensions
   href: api/Libplanet.Action.RandomExtensions.html

@@ -65,16 +65,25 @@
 <h2 id="version-0100">Version 0.10.0</h2>
 <p>To be released.</p>
 <h3 id="backward-incompatible-api-changes">Backward-incompatible API changes</h3>
+<ul>
+<li>Added <code>IAction.RenderError()</code> and <code>IAction.UnrenderError()</code> methods.
+[<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
+</ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>TurnClient.BindProxies()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/756">#756</a>, <a href="https://github.com/planetarium/libplanet/pull/868">#868</a>]</li>
+<li>Added <code>ActionEvaluation.Exception</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, [<a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
 <li>Improved performance of <code>Swarm&lt;T&gt;</code> by multiplexing response and
 broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/858">#858</a>, <a href="https://github.com/planetarium/libplanet/pull/859">#859</a>]</li>
+<li><code>Transaction&lt;T&gt;.Create()</code>, <code>Transaction&lt;T&gt;.EvaluateActions()</code> and
+<code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> no longer throw
+<code>UnexpectedlyTerminatedActionException</code> directly. Instead, it records
+an exception to <code>ActionEvalution</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>
