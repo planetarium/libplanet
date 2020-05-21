@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -90,6 +91,14 @@ namespace Libplanet.Tests.Common.Action
                 Context = context,
                 NextStates = nextStates,
             });
+        }
+
+        public void RenderError(IActionContext context, Exception exception)
+        {
+        }
+
+        public void UnrenderError(IActionContext context, Exception exception)
+        {
         }
     }
 }

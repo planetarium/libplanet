@@ -189,6 +189,14 @@ namespace Libplanet.Tests.Common.Action
             });
         }
 
+        public void RenderError(IActionContext context, Exception exception)
+        {
+        }
+
+        public void UnrenderError(IActionContext context, Exception exception)
+        {
+        }
+
         public void LoadPlainValue(IValue plainValue)
         {
             LoadPlainValue((Bencodex.Types.Dictionary)plainValue);

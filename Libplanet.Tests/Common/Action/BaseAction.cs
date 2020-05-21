@@ -1,3 +1,4 @@
+using System;
 using Bencodex.Types;
 using Libplanet.Action;
 
@@ -22,5 +23,13 @@ namespace Libplanet.Tests.Common.Action
         }
 
         public abstract void LoadPlainValue(IValue plainValue);
+
+        public virtual void RenderError(IActionContext context, Exception exception)
+        {
+        }
+
+        public virtual void UnrenderError(IActionContext context, Exception exception)
+        {
+        }
     }
 }

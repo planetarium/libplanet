@@ -877,7 +877,14 @@ namespace Libplanet.Blockchain
 
             foreach (var evaluation in evaluations)
             {
-                evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                if (evaluation.Exception is null)
+                {
+                    evaluation.Action.Render(evaluation.InputContext, evaluation.OutputStates);
+                }
+                else
+                {
+                    evaluation.Action.RenderError(evaluation.InputContext, evaluation.Exception);
+                }
             }
         }
 
@@ -1235,10 +1242,20 @@ namespace Libplanet.Blockchain
                     foreach (var evaluation in evaluations)
                     {
                         _logger.Debug("Unrender action {action}", evaluation.Action);
-                        evaluation.Action.Unrender(
-                            evaluation.InputContext,
-                            evaluation.OutputStates
-                        );
+                        if (evaluation.Exception is null)
+                        {
+                            evaluation.Action.Unrender(
+                                evaluation.InputContext,
+                                evaluation.OutputStates
+                            );
+                        }
+                        else
+                        {
+                            evaluation.Action.UnrenderError(
+                                evaluation.InputContext,
+                                evaluation.Exception
+                            );
+                        }
                     }
                 }
 

@@ -24,15 +24,19 @@ namespace Libplanet.Action
         /// evaluate <paramref name="action"/>.</param>
         /// <param name="outputStates">The result states that
         /// <paramref name="action"/> makes.</param>
+        /// <param name="exception">An exception that has risen during evaluating a given
+        /// <paramref name="action"/>.</param>
         public ActionEvaluation(
             IAction action,
             IActionContext inputContext,
-            IAccountStateDelta outputStates
+            IAccountStateDelta outputStates,
+            Exception exception = null
         )
         {
             Action = action;
             InputContext = inputContext;
             OutputStates = outputStates;
+            Exception = exception;
         }
 
         /// <summary>
@@ -52,6 +56,11 @@ namespace Libplanet.Action
         /// The result states that <see cref="Action"/> makes.
         /// </summary>
         public IAccountStateDelta OutputStates { get; }
+
+        /// <summary>
+        /// An exception that had risen during evaluation.
+        /// </summary>
+        public Exception Exception { get; }
 
         /// <summary>
         /// Executes the <paramref name="actions"/> step by step, and emits
@@ -80,11 +89,6 @@ namespace Libplanet.Action
         /// Note that each <see cref="IActionContext.Random"/> object
         /// has a unconsumed state.
         /// </returns>
-        /// <exception cref="UnexpectedlyTerminatedActionException">
-        /// Thrown when one of <paramref name="actions"/> throws some exception.
-        /// The actual exception that an <see cref="IAction"/> threw
-        /// is stored in its <see cref="Exception.InnerException"/> property.
-        /// </exception>
         internal static IEnumerable<ActionEvaluation> EvaluateActionsGradually(
             HashDigest<SHA256> blockHash,
             long blockIndex,
@@ -120,11 +124,11 @@ namespace Libplanet.Action
                 (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0);
 
             IAccountStateDelta states = previousStates;
+            Exception exc = null;
             foreach (IAction action in actions)
             {
-                ActionContext context =
-                    CreateActionContext(states, seed);
-                IAccountStateDelta nextStates;
+                ActionContext context = CreateActionContext(states, seed);
+                IAccountStateDelta nextStates = context.PreviousStates;
                 try
                 {
                     nextStates = action.Execute(context);
@@ -137,7 +141,7 @@ namespace Libplanet.Action
                         msg = $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}) " +
                               "threw an exception during execution.  See also this exception's " +
                               "InnerException property.";
-                        throw new UnexpectedlyTerminatedActionException(
+                        exc = new UnexpectedlyTerminatedActionException(
                             blockHash, blockIndex, txid, action, msg, e
                         );
                     }
@@ -151,21 +155,22 @@ namespace Libplanet.Action
                         "useful to make the action can deal with the case of " +
                         "rehearsal mode.\n" +
                         "See also this exception's InnerException property.";
-                    throw new UnexpectedlyTerminatedActionException(
+                    exc = new UnexpectedlyTerminatedActionException(
                         null, null, null, action, msg, e
                     );
                 }
 
                 // As IActionContext.Random is stateful, we cannot reuse
                 // the context which is once consumed by Execute().
-                ActionContext equivalentContext =
-                    CreateActionContext(states, seed);
+                ActionContext equivalentContext = CreateActionContext(states, seed);
 
                 yield return new ActionEvaluation(
                     action,
                     equivalentContext,
-                    nextStates
+                    nextStates,
+                    exc
                 );
+
                 states = nextStates;
                 unchecked
                 {

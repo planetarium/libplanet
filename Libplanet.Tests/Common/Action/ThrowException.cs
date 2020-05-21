@@ -18,6 +18,10 @@ namespace Libplanet.Tests.Common.Action
 
         public bool ThrowOnRendering { get; set; }
 
+        public Action<IActionContext, Exception> OnRenderError { get; set; }
+
+        public Action<IActionContext, Exception> OnUnrenderError { get; set; }
+
         public IValue PlainValue =>
             new Bencodex.Types.Dictionary(new Dictionary<IKey, IValue>
             {
@@ -62,6 +66,22 @@ namespace Libplanet.Tests.Common.Action
             IActionContext context,
             IAccountStateDelta nextStates)
         {
+        }
+
+        public void RenderError(IActionContext context, Exception exception)
+        {
+            if (!(OnRenderError is null))
+            {
+                OnRenderError(context, exception);
+            }
+        }
+
+        public void UnrenderError(IActionContext context, Exception exception)
+        {
+            if (!(OnUnrenderError is null))
+            {
+                OnUnrenderError(context, exception);
+            }
         }
 
         public class SomeException : Exception

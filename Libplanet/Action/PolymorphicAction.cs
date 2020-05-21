@@ -316,5 +316,13 @@ namespace Libplanet.Action
         /// <inheritdoc/>
         public override string ToString() =>
             $"{nameof(PolymorphicAction<T>)}<{InnerAction.GetType().FullName}>({InnerAction})";
+
+        /// <inheritdoc/>
+        public void RenderError(IActionContext context, Exception exception)
+            => InnerAction.RenderError(context, exception);
+
+        /// <inheritdoc/>
+        public void UnrenderError(IActionContext context, Exception exception)
+            => InnerAction.UnrenderError(context, exception);
     }
 }

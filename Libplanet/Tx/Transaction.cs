@@ -358,19 +358,6 @@ namespace Libplanet.Tx
         /// is passed to <paramref name="privateKey"/> or
         /// or <paramref name="actions"/>.
         /// </exception>
-        /// <exception cref="UnexpectedlyTerminatedActionException">
-        /// Thrown when one of <paramref name="actions"/> throws some
-        /// exception during their rehearsal.
-        /// <para>This exception is thrown probably because the logic of some of
-        /// the <paramref name="actions"/> is not enough generic so that
-        /// it can cover every case including &#x201c;rehearsal mode.&#x201d;
-        /// The <see cref="IActionContext.Rehearsal"/> property also might be
-        /// useful to make the <see cref="IAction"/> can deal with the case of
-        /// rehearsal mode.</para>
-        /// <para>The actual exception that an <see cref="IAction"/> threw
-        /// is stored in its <see cref="Exception.InnerException"/> property.
-        /// </para>
-        /// </exception>
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,
@@ -500,14 +487,6 @@ namespace Libplanet.Tx
         /// Note that each <see cref="IActionContext.Random"/> object has
         /// a unconsumed state.
         /// </returns>
-        /// <exception cref="UnexpectedlyTerminatedActionException">
-        /// Thrown when one of <see cref="Actions"/> throws some
-        /// exception during <paramref name="rehearsal"/> mode.
-        /// The actual exception that an <see cref="IAction"/> threw
-        /// is stored in its <see cref="Exception.InnerException"/> property.
-        /// It is never thrown if the <paramref name="rehearsal"/> option is
-        /// <c>false</c>.
-        /// </exception>
         [Pure]
         public IEnumerable<ActionEvaluation>
         EvaluateActionsGradually(
@@ -553,14 +532,6 @@ namespace Libplanet.Tx
         /// being executed.  Note that it maintains
         /// <see cref="IAccountStateDelta.UpdatedAddresses"/> of the given
         /// <paramref name="previousStates"/> as well.</returns>
-        /// <exception cref="UnexpectedlyTerminatedActionException">
-        /// Thrown when one of <see cref="Actions"/> throws some
-        /// exception during <paramref name="rehearsal"/> mode.
-        /// The actual exception that an <see cref="IAction"/> threw
-        /// is stored in its <see cref="Exception.InnerException"/> property.
-        /// It is never thrown if the <paramref name="rehearsal"/> option is
-        /// <c>false</c>.
-        /// </exception>
         [Pure]
         public IAccountStateDelta EvaluateActions(
             HashDigest<SHA256> blockHash,

@@ -8,18 +8,26 @@ To be released.
 
 ### Backward-incompatible API changes
 
+ -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
+    [[#860], [#875]]
+
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
 ### Added APIs
 
-- Added `TurnClient.BindProxies()` method. [[#756], [#868]]
+ -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
+ -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
 
 ### Behavioral changes
 
  -  Improved performance of `Swarm<T>` by multiplexing response and
     broadcast.  [[#858], [#859]]
+ -  `Transaction<T>.Create()`, `Transaction<T>.EvaluateActions()` and
+    `Transaction<T>.EvaluateActionsGradually()` no longer throw
+    `UnexpectedlyTerminatedActionException` directly. Instead, it records
+    an exception to `ActionEvalution`s.  [[#860], [#875]]
 
 ### Bug fixes
 
@@ -28,7 +36,9 @@ To be released.
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
+[#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
+[#875]: https://github.com/planetarium/libplanet/pull/875
 
 
 Version 0.9.2

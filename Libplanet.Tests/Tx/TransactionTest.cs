@@ -168,27 +168,6 @@ namespace Libplanet.Tests.Tx
         }
 
         [Fact]
-        public void CreateWithActionsThrowingException()
-        {
-            var action = new ThrowException { ThrowOnRehearsal = true };
-            UnexpectedlyTerminatedActionException e =
-                Assert.Throws<UnexpectedlyTerminatedActionException>(() =>
-                    Transaction<ThrowException>.Create(
-                        0,
-                        _fx.PrivateKey1,
-                        new[] { action },
-                        ImmutableHashSet<Address>.Empty,
-                        DateTimeOffset.UtcNow
-                    )
-                );
-            Assert.Null(e.BlockHash);
-            Assert.Null(e.BlockIndex);
-            Assert.Null(e.TxId);
-            Assert.Same(action, e.Action);
-            Assert.IsType<ThrowException.SomeException>(e.InnerException);
-        }
-
-        [Fact]
         public void MakeWithSignature()
         {
             var privateKey = new PrivateKey(
@@ -672,21 +651,15 @@ namespace Libplanet.Tests.Tx
                 DateTimeOffset.UtcNow
             );
             var hash = new HashDigest<SHA256>(GetRandomBytes(HashDigest<SHA256>.Size));
-            UnexpectedlyTerminatedActionException e =
-                Assert.Throws<UnexpectedlyTerminatedActionException>(() =>
-                    tx.EvaluateActions(
-                        blockHash: hash,
-                        blockIndex: 123,
-                        previousStates: new AccountStateDeltaImpl(_ => null),
-                        minerAddress: GenesisMinerAddress,
-                        rehearsal: false
-                    )
-                );
-            Assert.Equal(hash, e.BlockHash);
-            Assert.Equal(123, e.BlockIndex);
-            Assert.Equal(tx.Id, e.TxId);
-            Assert.IsType<ThrowException>(e.Action);
-            Assert.IsType<ThrowException.SomeException>(e.InnerException);
+            var nextStates = tx.EvaluateActions(
+                blockHash: hash,
+                blockIndex: 123,
+                previousStates: new AccountStateDeltaImpl(_ => null),
+                minerAddress: GenesisMinerAddress,
+                rehearsal: false
+            );
+
+            Assert.Empty(nextStates.GetUpdatedStates());
         }
 
         [Fact]
