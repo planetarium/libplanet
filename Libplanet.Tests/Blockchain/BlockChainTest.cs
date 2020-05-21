@@ -69,30 +69,36 @@ namespace Libplanet.Tests.Blockchain
                 Transaction<DumbAction>.Create(
                     0,
                     keys[0],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
                 Transaction<DumbAction>.Create(
                     1,
                     keys[0],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
 
                 // pending txs1
                 Transaction<DumbAction>.Create(
                     1,
                     keys[1],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
                 Transaction<DumbAction>.Create(
                     2,
                     keys[1],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
 
                 // pending txs2
                 Transaction<DumbAction>.Create(
                     0,
                     keys[2],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
                 Transaction<DumbAction>.Create(
                     2,
                     keys[2],
+                    _blockChain.Genesis.Hash,
                     new DumbAction[] { }),
             };
 
@@ -241,6 +247,14 @@ namespace Libplanet.Tests.Blockchain
         [Fact]
         public async void ProcessActions()
         {
+            var genesisBlock = BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
+            var store = new DefaultStore(path: null);
+            var chain = new BlockChain<PolymorphicAction<BaseAction>>(
+                new BlockPolicy<PolymorphicAction<BaseAction>>(),
+                store,
+                genesisBlock
+            );
+
             var actions1 = new List<PolymorphicAction<BaseAction>>
             {
                 new Attack
@@ -265,16 +279,10 @@ namespace Libplanet.Tests.Blockchain
             var tx1 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 0,
                 new PrivateKey(),
+                genesisBlock.Hash,
                 actions1
             );
 
-            var genesisBlock = BlockChain<PolymorphicAction<BaseAction>>.MakeGenesisBlock();
-            var store = new DefaultStore(path: null);
-            var chain = new BlockChain<PolymorphicAction<BaseAction>>(
-                new BlockPolicy<PolymorphicAction<BaseAction>>(),
-                store,
-                genesisBlock
-            );
             chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
@@ -299,6 +307,7 @@ namespace Libplanet.Tests.Blockchain
             var tx2 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 0,
                 new PrivateKey(),
+                genesisBlock.Hash,
                 actions2
             );
 
@@ -312,6 +321,7 @@ namespace Libplanet.Tests.Blockchain
             var tx3 = Transaction<PolymorphicAction<BaseAction>>.Create(
                 0,
                 new PrivateKey(),
+                genesisBlock.Hash,
                 new List<PolymorphicAction<BaseAction>>
                 {
                     new Attack
@@ -1274,7 +1284,7 @@ namespace Libplanet.Tests.Blockchain
                 };
                 Transaction<DumbAction>[] txs =
                 {
-                    Transaction<DumbAction>.Create(0, privateKey, actions),
+                    Transaction<DumbAction>.Create(0, privateKey, chain.Genesis.Hash, actions),
                 };
                 b = TestUtils.MineNext(b, txs);
                 chain.Append(b);
@@ -1534,17 +1544,19 @@ namespace Libplanet.Tests.Blockchain
             long blockIndex = 1;
 
             TestEvaluateAction action = new TestEvaluateAction();
-            var tx1 = Transaction<TestEvaluateAction>.Create(
-                0,
-                fromPrivateKey,
-                new[] { action }
-            );
 
             var store = new DefaultStore(null);
             var chain = TestUtils.MakeBlockChain<TestEvaluateAction>(
                 new BlockPolicy<TestEvaluateAction>(),
                 store
             );
+            var tx1 = Transaction<TestEvaluateAction>.Create(
+                0,
+                fromPrivateKey,
+                chain.Genesis.Hash,
+                new[] { action }
+            );
+
             chain.StageTransaction(tx1);
             await chain.MineBlock(_fx.Address1);
 
@@ -1935,6 +1947,7 @@ namespace Libplanet.Tests.Blockchain
                     Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                         store.GetTxNonce(chainId, signer),
                         privateKey,
+                        chain.Genesis.Hash,
                         new[] { new DumbAction(addresses[j], index.ToString()) }
                     );
                     b = TestUtils.MineNext(

@@ -12,6 +12,8 @@ namespace Libplanet.Tx
 
         public static readonly byte[] SignerKey = { 0x73 }; // 's'
 
+        public static readonly byte[] GenesisHashKey = { 0x67 }; // 'g'
+
         public static readonly byte[] UpdatedAddressesKey = { 0x75 }; // 'u'
 
         public static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
@@ -25,6 +27,7 @@ namespace Libplanet.Tx
         public RawTransaction(
             long nonce,
             ImmutableArray<byte> signer,
+            ImmutableArray<byte> genesisHash,
             ImmutableArray<ImmutableArray<byte>> updatedAddresses,
             ImmutableArray<byte> publicKey,
             string timestamp,
@@ -33,6 +36,7 @@ namespace Libplanet.Tx
             : this(
                 nonce,
                 signer,
+                genesisHash,
                 updatedAddresses,
                 publicKey,
                 timestamp,
@@ -45,6 +49,7 @@ namespace Libplanet.Tx
         public RawTransaction(
             long nonce,
             ImmutableArray<byte> signer,
+            ImmutableArray<byte> genesisHash,
             ImmutableArray<ImmutableArray<byte>> updatedAddresses,
             ImmutableArray<byte> publicKey,
             string timestamp,
@@ -54,6 +59,7 @@ namespace Libplanet.Tx
         {
             Nonce = nonce;
             Signer = signer;
+            GenesisHash = genesisHash;
             UpdatedAddresses = updatedAddresses;
             PublicKey = publicKey;
             Timestamp = timestamp;
@@ -65,6 +71,9 @@ namespace Libplanet.Tx
         {
             Nonce = dict.GetValue<Integer>(NonceKey);
             Signer = dict.GetValue<Binary>(SignerKey).ToImmutableArray();
+            GenesisHash = dict.ContainsKey((Binary)GenesisHashKey)
+                ? dict.GetValue<Binary>(GenesisHashKey).ToImmutableArray()
+                : ImmutableArray<byte>.Empty;
             UpdatedAddresses = dict.GetValue<Bencodex.Types.List>(UpdatedAddressesKey)
                 .Select(value => ((Binary)value).ToImmutableArray()).ToImmutableArray();
             PublicKey = dict.GetValue<Binary>(PublicKeyKey).ToImmutableArray();
@@ -81,6 +90,8 @@ namespace Libplanet.Tx
         public ImmutableArray<byte> Signer { get; }
 
         public ImmutableArray<byte> PublicKey { get; }
+
+        public ImmutableArray<byte> GenesisHash { get; }
 
         public ImmutableArray<ImmutableArray<byte>> UpdatedAddresses { get; }
 
@@ -101,6 +112,7 @@ namespace Libplanet.Tx
             return new RawTransaction(
                 Nonce,
                 Signer,
+                GenesisHash,
                 UpdatedAddresses,
                 PublicKey,
                 Timestamp,
@@ -120,6 +132,11 @@ namespace Libplanet.Tx
                 .Add(PublicKeyKey, PublicKey.ToArray())
                 .Add(TimestampKey, Timestamp)
                 .Add(ActionsKey, Actions);
+
+            if (GenesisHash != ImmutableArray<byte>.Empty)
+            {
+                dict = dict.Add(GenesisHashKey, GenesisHash.ToArray());
+            }
 
             if (Signature != ImmutableArray<byte>.Empty)
             {
@@ -144,6 +161,7 @@ namespace Libplanet.Tx
   {nameof(Nonce)} = {Nonce.ToString(CultureInfo.InvariantCulture)}
   {nameof(Signer)} = {ByteUtil.Hex(Signer.ToArray())}
   {nameof(PublicKey)} = {ByteUtil.Hex(PublicKey.ToArray())}
+  {nameof(GenesisHash)} = {ByteUtil.Hex(GenesisHash.ToArray())}
   {nameof(UpdatedAddresses)} = {updatedAddresses}
   {nameof(Timestamp)} = {Timestamp}
   {nameof(Signature)} = {ByteUtil.Hex(Signature.ToArray())}";

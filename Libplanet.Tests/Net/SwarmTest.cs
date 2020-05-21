@@ -633,6 +633,7 @@ namespace Libplanet.Tests.Net
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 new PrivateKey(),
+                chainB.Genesis.Hash,
                 new DumbAction[0]
             );
             chainB.StageTransaction(tx);
@@ -675,6 +676,7 @@ namespace Libplanet.Tests.Net
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 new PrivateKey(),
+                chainA.Genesis.Hash,
                 new DumbAction[] { }
             );
 
@@ -772,6 +774,7 @@ namespace Libplanet.Tests.Net
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 new PrivateKey(),
+                chainA.Genesis.Hash,
                 new DumbAction[] { }
             );
 
@@ -829,6 +832,7 @@ namespace Libplanet.Tests.Net
             Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                 0,
                 new PrivateKey(),
+                blockChains[size - 1].Genesis.Hash,
                 new DumbAction[] { }
             );
 
@@ -1346,6 +1350,7 @@ namespace Libplanet.Tests.Net
                     Transaction<Sleep>.Create(
                         0,
                         new PrivateKey(),
+                        miner1.BlockChain.Genesis.Hash,
                         actions: new[] { new Sleep() }
                     )
                 );
@@ -1797,6 +1802,7 @@ namespace Libplanet.Tests.Net
                 Transaction<DumbAction> tx = Transaction<DumbAction>.Create(
                     0,
                     new PrivateKey(),
+                    sender1.BlockChain.Genesis.Hash,
                     new DumbAction[] { }
                 );
                 sender1.BlockChain.StageTransaction(tx);
