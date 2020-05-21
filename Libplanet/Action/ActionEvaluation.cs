@@ -24,7 +24,7 @@ namespace Libplanet.Action
         /// evaluate <paramref name="action"/>.</param>
         /// <param name="outputStates">The result states that
         /// <paramref name="action"/> makes.</param>
-        /// <param name="exception">An exception that has raised during evaluating a given
+        /// <param name="exception">An exception that has risen during evaluating a given
         /// <paramref name="action"/>.</param>
         public ActionEvaluation(
             IAction action,

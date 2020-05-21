@@ -8,7 +8,7 @@ To be released.
 
 ### Backward-incompatible API changes
 
- -  Added `IAction.RenderError()` and `IAction.UnrenderError()`.
+ -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
 
 ### Backward-incompatible network protocol changes

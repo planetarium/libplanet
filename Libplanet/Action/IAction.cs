@@ -315,9 +315,9 @@ namespace Libplanet.Action
         void Render(IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
-        /// Does things that should be doen right after this action is
-        /// spread to the network or is &#x201c;confirmed&#x201d; (kind of)
-        /// by each peer node.
+        /// Does the similar things to <see cref="Render(IActionContext, IAccountStateDelta)"/>,
+        /// except that this method is invoked when see cref="Execute(IActionContext)"/> method
+        /// has terminated with an exception.
         /// </summary>
         /// <param name="context">The equivalent context object to
         /// what <see cref="Execute(IActionContext)"/> method had received.
@@ -353,11 +353,11 @@ namespace Libplanet.Action
         void Unrender(IActionContext context, IAccountStateDelta nextStates);
 
         /// <summary>
-        /// Does things that should be undone right after this action is
-        /// invalidated (mostly due to a block which this action has belonged
-        /// to becoming considered a stale).
+        /// Does the similar things to <see cref="Unrender(IActionContext, IAccountStateDelta)"/>,
+        /// except that this method is invoked when see cref="Execute(IActionContext)"/> method
+        /// has terminated with an exception.
         /// <para>This method takes the equivalent arguments to
-        /// <see cref="Render(IActionContext, IAccountStateDelta)"/> method.
+        /// <see cref="RenderError(IActionContext, Exception)"/> method.
         /// </para>
         /// </summary>
         /// <param name="context">The equivalent context object to
