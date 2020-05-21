@@ -13,7 +13,6 @@ using Libplanet.Crypto;
 using Libplanet.Store;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
-using Libplanet.Tests.Tx;
 using Libplanet.Tx;
 using Serilog;
 using Xunit;
@@ -2107,7 +2106,6 @@ namespace Libplanet.Tests.Blockchain
         {
             var storeFixture = new DefaultStoreFixture();
             var policy = new NullPolicy<DumbAction>();
-            var txFixture = new TxFixture();
 
             var timestamp = new DateTimeOffset(2019, 11, 20, 0, 0, 0, TimeSpan.Zero);
             var addresses = ImmutableList<Address>.Empty
