@@ -27,7 +27,7 @@ To be released.
  -  `Transaction<T>.Create()`, `Transaction<T>.EvaluateActions()` and
     `Transaction<T>.EvaluateActionsGradually()` no longer throw
     `UnexpectedlyTerminatedActionException` directly. Instead, it records
-    an exception to `ActionEvalution`s.  [[#860], [#875]]
+    an exception to `ActionEvaluation`s.  [[#860], [#875]]
 
 ### Bug fixes
 
