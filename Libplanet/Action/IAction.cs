@@ -316,7 +316,7 @@ namespace Libplanet.Action
 
         /// <summary>
         /// Does the similar things to <see cref="Render(IActionContext, IAccountStateDelta)"/>,
-        /// except that this method is invoked when see cref="Execute(IActionContext)"/> method
+        /// except that this method is invoked when <see cref="Execute(IActionContext)"/> method
         /// has terminated with an exception.
         /// </summary>
         /// <param name="context">The equivalent context object to
