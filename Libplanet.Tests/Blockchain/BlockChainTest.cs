@@ -222,6 +222,33 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
+        public void StageTransactionWithDifferentGenesis()
+        {
+            Transaction<DumbAction> tx1 = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                _blockChain.Genesis.Hash,
+                new List<DumbAction>());
+            Transaction<DumbAction> tx2 = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                null,
+                new List<DumbAction>());
+            Transaction<DumbAction> tx3 = Transaction<DumbAction>.Create(
+                0,
+                new PrivateKey(),
+                default(HashDigest<SHA256>),
+                new List<DumbAction>());
+
+            _blockChain.StageTransaction(tx1);
+            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+            Assert.Throws<InvalidTxGenesisHashException>(() => _blockChain.StageTransaction(tx2));
+            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+            Assert.Throws<InvalidTxGenesisHashException>(() => _blockChain.StageTransaction(tx3));
+            Assert.Equal(1, _blockChain.GetStagedTransactionIds().Count);
+        }
+
+        [Fact]
         public void UnstageTransaction()
         {
             Transaction<DumbAction>[] txs = new[]
