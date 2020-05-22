@@ -209,6 +209,12 @@ namespace Libplanet.Tests.Blocks
                     new[] { MakeAction(addresses[2], 'C') },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)
                 ),
+                Transaction<DumbAction>.Create(
+                    0,
+                    _fx.TxFixture.PrivateKey3,
+                    new DumbAction[0],
+                    timestamp: DateTimeOffset.MinValue.AddSeconds(3)
+                ),
             };
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
             var pairs = blockIdx1
