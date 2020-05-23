@@ -2098,7 +2098,7 @@ namespace Libplanet.Net
                 if (_demandBlockHash is null ||
                     _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
                 {
-                    await Task.Delay(100, cancellationToken);
+                    await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
@@ -2141,7 +2141,7 @@ namespace Libplanet.Net
             {
                 if (_demandTxIds.IsEmpty)
                 {
-                    await Task.Delay(100, cancellationToken);
+                    await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
