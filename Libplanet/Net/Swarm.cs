@@ -2123,7 +2123,6 @@ namespace Libplanet.Net
                 catch (TimeoutException)
                 {
                     _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
-                    await Task.Delay(100, cancellationToken);
                 }
                 catch (Exception e)
                 {
