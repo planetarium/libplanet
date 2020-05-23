@@ -28,8 +28,9 @@ To be released.
 
 ### Behavioral changes
 
- -  Improved performance of `Swarm<T>` by multiplexing response and
-    broadcast.  [[#858], [#859]]
+ -  Improved performance of `Swarm<T>`.
+    - Multiplexed response and broadcast.  [[#858], [#859]]
+    - Reduced internal delays.  [[#871], [#879]]
  -  `Transaction<T>.Create()`, `Transaction<T>.EvaluateActions()` and
     `Transaction<T>.EvaluateActionsGradually()` no longer throw
     `UnexpectedlyTerminatedActionException` directly. Instead, it records
@@ -48,8 +49,10 @@ To be released.
 [#859]: https://github.com/planetarium/libplanet/pull/859
 [#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
+[#871]: https://github.com/planetarium/libplanet/issues/871
 [#875]: https://github.com/planetarium/libplanet/pull/875
 [#878]: https://github.com/planetarium/libplanet/pull/878
+[#879]: https://github.com/planetarium/libplanet/pull/879
 
 
 Version 0.9.2
