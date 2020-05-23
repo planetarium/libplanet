@@ -488,18 +488,25 @@ namespace Libplanet.Net
                     Interlocked.Read(ref _requestCount)
                 );
 
-                var reply = (await tcs.Task).ToList();
-                foreach (var msg in reply)
+                if (expectedResponses > 0)
                 {
-                    MessageHistory.Enqueue(msg);
+                    var reply = (await tcs.Task).ToList();
+                    foreach (var msg in reply)
+                    {
+                        MessageHistory.Enqueue(msg);
+                    }
+
+                    const string logMsg =
+                        "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                        "from {PeerAddress}: {ReplyMessages}.";
+                    _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
+
+                    return reply;
                 }
-
-                const string logMsg =
-                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                    "from {PeerAddress}: {ReplyMessages}.";
-                _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
-
-                return reply;
+                else
+                {
+                    return new Message[0];
+                }
             }
             catch (DifferentAppProtocolVersionException e)
             {
