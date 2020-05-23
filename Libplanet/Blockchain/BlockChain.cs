@@ -524,11 +524,13 @@ namespace Libplanet.Blockchain
         {
             if (!transaction.GenesisHash.Equals(Genesis.Hash))
             {
+                var msg = "GenesisHash of the transaction is not compatible " +
+                          "with the BlockChain<T>.Genesis.Hash.";
                 throw new InvalidTxGenesisHashException(
                     transaction.Id,
                     Genesis.Hash,
                     transaction.GenesisHash,
-                    "Genesis of the transaction is invalid.");
+                    msg);
             }
 
             // FIXME it's global chain lock so using it in this method can cause degrading

@@ -11,12 +11,14 @@ To be released.
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
  -  `BlockChain<T>.StageTransaction()` became to throw `InvalidTxGenesisHashException`
-    exception when trying to stage transactions made from blockchain with
+    when it takes a `Transaction<T>` from a heterogeneous `BlockChain<T>` with a
     different genesis block.  [[#796], [#878]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
+
+ -  Added `RawTransaction<T>.GenesisHash` property.  [[#796], [#878]]
 
 ### Added APIs
 
