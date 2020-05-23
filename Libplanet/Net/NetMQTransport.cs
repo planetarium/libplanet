@@ -626,28 +626,32 @@ namespace Libplanet.Net
             (Address? except, Message msg) = e.Queue.Dequeue();
 
             // FIXME Should replace with PUB/SUB model.
-            try
-            {
-                var peers = Protocol.PeersToBroadcast(except).ToList();
-                _logger.Debug($"Broadcasting message [{msg}]");
-                _logger.Debug($"Peers to broadcast : {peers.Count}");
-                Parallel.ForEach(peers, async peer =>
-                {
-                    await SendMessageAsync(peer, msg);
-                });
+            List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
+            _logger.Debug($"Broadcasting message [{msg}]");
+            _logger.Debug($"Peers to broadcast : {peers.Count}");
 
-                _logger.Debug($"[{msg}] broadcasting completed.");
-            }
-            catch (TimeoutException ex)
+            foreach (BoundPeer peer in peers)
             {
-                _logger.Error(ex, $"TimeoutException occurred during {nameof(DoBroadcast)}().");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(
-                    ex,
-                    $"An unexpected exception occurred during {nameof(DoBroadcast)}()."
-                );
+                _ = SendMessageAsync(peer, msg)
+                    .ContinueWith(t =>
+                    {
+                        string fname = nameof(DoBroadcast);
+                        switch (t.Exception?.InnerException)
+                        {
+                            case TimeoutException te:
+                                _logger.Error(
+                                    te,
+                                    $"TimeoutException occurred during {fname}()."
+                                );
+                                break;
+                            case Exception ex:
+                                _logger.Error(
+                                    ex,
+                                    $"An unexpected exception occurred during {fname}()."
+                                );
+                                break;
+                        }
+                    });
             }
         }
 
