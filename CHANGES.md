@@ -29,8 +29,8 @@ To be released.
 ### Behavioral changes
 
  -  Improved performance of `Swarm<T>`.
-    - Multiplexed response and broadcast.  [[#858], [#859]]
-    - Reduced internal delays.  [[#871], [#879]]
+     -  Multiplexed response and broadcast.  [[#858], [#859]]
+     -  Reduced internal delays.  [[#871], [#879]]
  -  `Transaction<T>.Create()`, `Transaction<T>.EvaluateActions()` and
     `Transaction<T>.EvaluateActionsGradually()` no longer throw
     `UnexpectedlyTerminatedActionException` directly. Instead, it records
