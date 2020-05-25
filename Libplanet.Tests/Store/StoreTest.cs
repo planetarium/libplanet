@@ -970,6 +970,7 @@ namespace Libplanet.Tests.Store
                 return Transaction<AtomicityTestAction>.Create(
                     txNonce,
                     key,
+                    null,
                     new[] { action },
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow
@@ -1137,14 +1138,17 @@ namespace Libplanet.Tests.Store
                 Transaction<DumbAction> tx1 = Transaction<DumbAction>.Create(
                     0,
                     privKey,
+                    blocks.Genesis.Hash,
                     new[] { new DumbAction(fx.Address1, "item0") });
                 Transaction<DumbAction> tx2 = Transaction<DumbAction>.Create(
                     1,
                     privKey,
+                    blocks.Genesis.Hash,
                     new[] { new DumbAction(fx.Address1, "item1") });
                 Transaction<DumbAction> tx3 = Transaction<DumbAction>.Create(
                     2,
                     privKey,
+                    blocks.Genesis.Hash,
                     new[] { new DumbAction(fx.Address1, "item2") });
                 blocks.StageTransaction(tx1);
                 var block1 = await blocks.MineBlock(fx.Address2);

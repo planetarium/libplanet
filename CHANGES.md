@@ -10,15 +10,21 @@ To be released.
 
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
+ -  `BlockChain<T>.StageTransaction()` became to throw `InvalidTxGenesisHashException`
+    when it takes a `Transaction<T>` from a heterogeneous `BlockChain<T>` with a
+    different genesis block.  [[#796], [#878]]
 
 ### Backward-incompatible network protocol changes
 
 ### Backward-incompatible storage format changes
 
+ -  Added `RawTransaction<T>.GenesisHash` property.  [[#796], [#878]]
+
 ### Added APIs
 
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
+ -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
 
 ### Behavioral changes
 
@@ -28,17 +34,22 @@ To be released.
     `Transaction<T>.EvaluateActionsGradually()` no longer throw
     `UnexpectedlyTerminatedActionException` directly. Instead, it records
     an exception to `ActionEvaluation`s.  [[#860], [#875]]
+ -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
+ -  `Swarm<T>` became to ignore received transaction with different
+    genesis hash.  [[#796], [#878]]
 
 ### Bug fixes
 
 ### CLI tools
 
 [#756]: https://github.com/planetarium/libplanet/issues/756
+[#796]: https://github.com/planetarium/libplanet/issues/796
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
 [#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
 [#875]: https://github.com/planetarium/libplanet/pull/875
+[#878]: https://github.com/planetarium/libplanet/pull/878
 
 
 Version 0.9.2

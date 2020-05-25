@@ -11,9 +11,8 @@ namespace Libplanet.Tests.Blocks
     {
         public BlockFixture()
         {
-            TxFixture = new TxFixture();
-
             Genesis = TestUtils.MineGenesis<PolymorphicAction<BaseAction>>();
+            TxFixture = new TxFixture(Genesis.Hash);
             Next = TestUtils.MineNext(
                 Genesis,
                 nonce: new byte[] { 0x02, 0x00, 0x00, 0x00 }

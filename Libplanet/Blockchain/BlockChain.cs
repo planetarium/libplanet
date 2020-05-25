@@ -287,6 +287,10 @@ namespace Libplanet.Blockchain
         {
             privateKey = privateKey ?? new PrivateKey();
             actions = actions ?? ImmutableArray<T>.Empty;
+            IEnumerable<Transaction<T>> transactions = new[]
+            {
+                Transaction<T>.Create(0, privateKey, null, actions, timestamp: timestamp),
+            };
 
             return Block<T>.Mine(
                 0,
@@ -294,7 +298,7 @@ namespace Libplanet.Blockchain
                 privateKey.ToAddress(),
                 null,
                 timestamp ?? DateTimeOffset.UtcNow,
-                new[] { Transaction<T>.Create(0, privateKey, actions, timestamp: timestamp), });
+                transactions);
         }
 
         /// <summary>
@@ -518,6 +522,17 @@ namespace Libplanet.Blockchain
         /// <paramref name="transaction"/> is invalid.</exception>
         public void StageTransaction(Transaction<T> transaction)
         {
+            if (!transaction.GenesisHash.Equals(Genesis.Hash))
+            {
+                var msg = "GenesisHash of the transaction is not compatible " +
+                          "with the BlockChain<T>.Genesis.Hash.";
+                throw new InvalidTxGenesisHashException(
+                    transaction.Id,
+                    Genesis.Hash,
+                    transaction.GenesisHash,
+                    msg);
+            }
+
             // FIXME it's global chain lock so using it in this method can cause degrading
             // parallelism of `BlockChain<T>`. we should re-organize locks in `BlockChain<T>`
             _rwlock.EnterWriteLock();
@@ -688,6 +703,7 @@ namespace Libplanet.Blockchain
 
         /// <summary>
         /// Creates a new <see cref="Transaction{T}"/> and stage the transaction.
+        /// Cannot create new transaction if the genesis block does not exist.
         /// </summary>
         /// <param name="privateKey">A <see cref="PrivateKey"/> of the account who creates and
         /// signs a new transaction.</param>
@@ -709,9 +725,11 @@ namespace Libplanet.Blockchain
             timestamp = timestamp ?? DateTimeOffset.UtcNow;
             lock (_txLock)
             {
+                // FIXME: Exception should be documented when the genesis block does not exist.
                 Transaction<T> tx = Transaction<T>.Create(
                     GetNextTxNonce(privateKey.ToAddress()),
                     privateKey,
+                    Genesis.Hash,
                     actions,
                     updatedAddresses,
                     timestamp);

@@ -24,8 +24,9 @@ namespace Libplanet.Benchmarks
         {
             var blocks = new List<Block<DumbAction>>();
             var txs = new List<Transaction<DumbAction>>();
-            Block<DumbAction> block = TestUtils.MineGenesis<DumbAction>();
-            blocks.Add(block);
+            Block<DumbAction> genesis = TestUtils.MineGenesis<DumbAction>();
+            blocks.Add(genesis);
+            Block<DumbAction> block = genesis;
             var key = new PrivateKey();
             long nonce = 0;
             for (int i = 0; i < 500; i++)
@@ -33,7 +34,7 @@ namespace Libplanet.Benchmarks
                 var blockTxs = new List<Transaction<DumbAction>>();
                 for (int j = 0; j < i % 5; j++)
                 {
-                    blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, new DumbAction[0]));
+                    blockTxs.Add(Transaction<DumbAction>.Create(nonce++, key, genesis.Hash, new DumbAction[0]));
                 }
                 block = TestUtils.MineNext(block, blockTxs);
                 blocks.Add(block);

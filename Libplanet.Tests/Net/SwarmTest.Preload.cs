@@ -311,6 +311,7 @@ namespace Libplanet.Tests.Net
                 Transaction<ThrowException> tx = Transaction<ThrowException>.Create(
                     0,
                     new PrivateKey(),
+                    minerSwarm.BlockChain.Genesis.Hash,
                     new[] { action },
                     ImmutableHashSet<Address>.Empty,
                     DateTimeOffset.UtcNow

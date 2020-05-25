@@ -40,7 +40,7 @@ namespace Libplanet.Tx
         /// this constructor is only useful when all details of
         /// a <see cref="Transaction{T}"/> need to be manually adjusted.
         /// For the most cases, the fa&#xe7;ade factory <see
-        /// cref="Create(long, PrivateKey, IEnumerable{T},
+        /// cref="Create(long, PrivateKey, HashDigest{SHA256}?, IEnumerable{T},
         /// IImmutableSet{Address}, DateTimeOffset?)"/> is more useful.</para>
         /// </summary>
         /// <param name="nonce">The number of previous
@@ -56,6 +56,11 @@ namespace Libplanet.Tx
         /// name="signer"/> address <see cref="InvalidTxPublicKeyException"/>
         /// is thrown.  This cannot be <c>null</c>.  This goes to
         /// the <see cref="PublicKey"/> property.</param>
+        /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
+        /// of the genesis which this <see cref="Transaction{T}"/> is made from.
+        /// This can be <c>null</c> iff the transaction is contained
+        /// in the genesis block.
+        /// </param>
         /// <param name="updatedAddresses"><see cref="Address"/>es whose
         /// states affected by <paramref name="actions"/>.  This goes to
         /// the <see cref="UpdatedAddresses"/> property.</param>
@@ -86,6 +91,7 @@ namespace Libplanet.Tx
             long nonce,
             Address signer,
             PublicKey publicKey,
+            HashDigest<SHA256>? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions,
@@ -94,6 +100,7 @@ namespace Libplanet.Tx
                 nonce,
                 signer,
                 publicKey,
+                genesisHash,
                 updatedAddresses,
                 timestamp,
                 actions,
@@ -113,11 +120,15 @@ namespace Libplanet.Tx
         {
         }
 
+#pragma warning disable SA1118 // Parameter spans multiple line
         internal Transaction(RawTransaction rawTx)
             : this(
                 rawTx.Nonce,
                 new Address(rawTx.Signer),
                 new PublicKey(rawTx.PublicKey.ToArray()),
+                rawTx.GenesisHash != ImmutableArray<byte>.Empty
+                    ? new HashDigest<SHA256>(rawTx.GenesisHash.ToArray())
+                    : (HashDigest<SHA256>?)null,
                 rawTx.UpdatedAddresses.Select(
                     a => new Address(a)
                 ).ToImmutableHashSet(),
@@ -128,6 +139,7 @@ namespace Libplanet.Tx
                 rawTx.Actions.Select(ToAction).ToImmutableList(),
                 rawTx.Signature.ToArray(),
                 false)
+#pragma warning restore SA1118 // Parameter spans multiple line
         {
         }
 
@@ -135,6 +147,7 @@ namespace Libplanet.Tx
             long nonce,
             Address signer,
             PublicKey publicKey,
+            HashDigest<SHA256>? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions,
@@ -143,6 +156,7 @@ namespace Libplanet.Tx
         {
             Nonce = nonce;
             Signer = signer;
+            GenesisHash = genesisHash;
             UpdatedAddresses = updatedAddresses ??
                     throw new ArgumentNullException(nameof(updatedAddresses));
             Signature = signature ??
@@ -167,6 +181,7 @@ namespace Libplanet.Tx
             long nonce,
             Address signer,
             PublicKey publicKey,
+            HashDigest<SHA256>? genesisHash,
             IImmutableSet<Address> updatedAddresses,
             DateTimeOffset timestamp,
             IEnumerable<T> actions)
@@ -174,6 +189,7 @@ namespace Libplanet.Tx
                 nonce,
                 signer,
                 publicKey,
+                genesisHash,
                 updatedAddresses,
                 timestamp,
                 actions.ToImmutableList(),
@@ -253,6 +269,14 @@ namespace Libplanet.Tx
         public PublicKey PublicKey { get; }
 
         /// <summary>
+        /// A <see cref="HashDigest{SHA256}"/> value of the genesis which this
+        /// <see cref="Transaction{T}"/> is made from.
+        /// This can be <c>null</c> iff the transaction is contained
+        /// in the genesis block.
+        /// </summary>
+        public HashDigest<SHA256>? GenesisHash { get; }
+
+        /// <summary>
         /// Decodes a <see cref="Transaction{T}"/>'s
         /// <a href="https://bencodex.org/">Bencodex</a> representation.
         /// </summary>
@@ -275,7 +299,7 @@ namespace Libplanet.Tx
 
         /// <summary>
         /// A fa&#xe7;ade factory to create a new <see cref="Transaction{T}"/>.
-        /// Unlike the <see cref="Transaction(long, Address, PublicKey,
+        /// Unlike the <see cref="Transaction(long, Address, PublicKey, HashDigest{SHA256}?,
         /// IImmutableSet{Address}, DateTimeOffset, IEnumerable{T}, byte[])"/>
         /// constructor, it automatically fills the following values from:
         /// <list type="table">
@@ -335,6 +359,11 @@ namespace Libplanet.Tx
         /// the <see cref="Signer"/>, <see cref="PublicKey"/>, and
         /// <see cref="Signature"/> properties, but this in itself is not
         /// included in the transaction.</param>
+        /// <param name="genesisHash">A <see cref="HashDigest{SHA256}"/> value
+        /// of the genesis which this <see cref="Transaction{T}"/> is made from.
+        /// This can be <c>null</c> iff the transaction is contained
+        /// in the genesis block.
+        /// </param>
         /// <param name="actions">A list of <see cref="IAction"/>s.  This
         /// can be empty, but cannot be <c>null</c>.  This goes to
         /// the <see cref="Actions"/> property, and <see cref="IAction"/>s
@@ -361,6 +390,7 @@ namespace Libplanet.Tx
         public static Transaction<T> Create(
             long nonce,
             PrivateKey privateKey,
+            HashDigest<SHA256>? genesisHash,
             IEnumerable<T> actions,
             IImmutableSet<Address> updatedAddresses = null,
             DateTimeOffset? timestamp = null
@@ -386,6 +416,7 @@ namespace Libplanet.Tx
                 nonce,
                 signer,
                 publicKey,
+                genesisHash,
                 updatedAddresses,
                 ts,
                 actionsArray
@@ -397,6 +428,7 @@ namespace Libplanet.Tx
                     nonce,
                     signer,
                     publicKey,
+                    genesisHash,
                     updatedAddresses,
                     ts,
                     actionsArray
@@ -415,6 +447,7 @@ namespace Libplanet.Tx
                         nonce,
                         signer,
                         publicKey,
+                        genesisHash,
                         updatedAddresses,
                         ts,
                         actionsArray
@@ -427,6 +460,7 @@ namespace Libplanet.Tx
                 nonce,
                 signer,
                 publicKey,
+                genesisHash,
                 updatedAddresses,
                 ts,
                 actionsArray,
@@ -618,9 +652,12 @@ namespace Libplanet.Tx
 
         internal RawTransaction ToRawTransaction(bool includeSign)
         {
+            ImmutableArray<byte> genesisHash =
+                GenesisHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
             var rawTx = new RawTransaction(
                 nonce: Nonce,
                 signer: Signer.ByteArray,
+                genesisHash: genesisHash,
                 updatedAddresses: UpdatedAddresses.Select(a =>
                     a.ByteArray).ToImmutableArray(),
                 publicKey: PublicKey.Format(false).ToImmutableArray(),

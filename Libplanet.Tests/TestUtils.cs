@@ -263,6 +263,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             var tx = Transaction<T>.Create(
                 0,
                 privateKey,
+                null,
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
             var genesisBlock = new Block<T>(

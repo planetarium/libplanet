@@ -150,6 +150,7 @@ namespace Libplanet.Tests.Store
             return Transaction<DumbAction>.Create(
                 nonce,
                 privateKey,
+                GenesisBlock.Hash,
                 actions ?? new DumbAction[0],
                 updatedAddresses,
                 timestamp
