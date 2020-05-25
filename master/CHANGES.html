@@ -68,13 +68,20 @@
 <ul>
 <li>Added <code>IAction.RenderError()</code> and <code>IAction.UnrenderError()</code> methods.
 [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
+<li><code>BlockChain&lt;T&gt;.StageTransaction()</code> became to throw <code>InvalidTxGenesisHashException</code>
+when it takes a <code>Transaction&lt;T&gt;</code> from a heterogeneous <code>BlockChain&lt;T&gt;</code> with a
+different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
+<ul>
+<li>Added <code>RawTransaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+</ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
 <li>Added <code>TurnClient.BindProxies()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/756">#756</a>, <a href="https://github.com/planetarium/libplanet/pull/868">#868</a>]</li>
 <li>Added <code>ActionEvaluation.Exception</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, [<a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]]</li>
+<li>Added <code>InvalidTxGenesisHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -84,6 +91,9 @@ broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/858">#858<
 <code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> no longer throw
 <code>UnexpectedlyTerminatedActionException</code> directly. Instead, it records
 an exception to <code>ActionEvaluation</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
+<li>Added <code>Transaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to ignore received transaction with different
+genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <h3 id="cli-tools">CLI tools</h3>

@@ -8363,6 +8363,54 @@ references:
   isSpec: "True"
   fullName: Libplanet.Tx.InvalidTxException.TxId
   nameWithType: InvalidTxException.TxId
+- uid: Libplanet.Tx.InvalidTxGenesisHashException
+  name: InvalidTxGenesisHashException
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html
+  commentId: T:Libplanet.Tx.InvalidTxGenesisHashException
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException
+  nameWithType: InvalidTxGenesisHashException
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.HashDigest{SHA256},System.Nullable{Libplanet.HashDigest{SHA256}},System.String)
+  name: InvalidTxGenesisHashException(TxId, HashDigest<SHA256>, Nullable<HashDigest<SHA256>>, String)
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException__ctor_Libplanet_Tx_TxId_Libplanet_HashDigest_SHA256__System_Nullable_Libplanet_HashDigest_SHA256___System_String_
+  commentId: M:Libplanet.Tx.InvalidTxGenesisHashException.#ctor(Libplanet.Tx.TxId,Libplanet.HashDigest{SHA256},System.Nullable{Libplanet.HashDigest{SHA256}},System.String)
+  name.vb: InvalidTxGenesisHashException(TxId, HashDigest(Of SHA256), Nullable(Of HashDigest(Of SHA256)), String)
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.HashDigest<SHA256>, System.Nullable<Libplanet.HashDigest<SHA256>>, System.String)
+  fullName.vb: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException(Libplanet.Tx.TxId, Libplanet.HashDigest(Of SHA256), System.Nullable(Of Libplanet.HashDigest(Of SHA256)), System.String)
+  nameWithType: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, HashDigest<SHA256>, Nullable<HashDigest<SHA256>>, String)
+  nameWithType.vb: InvalidTxGenesisHashException.InvalidTxGenesisHashException(TxId, HashDigest(Of SHA256), Nullable(Of HashDigest(Of SHA256)), String)
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.#ctor*
+  name: InvalidTxGenesisHashException
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException__ctor_
+  commentId: Overload:Libplanet.Tx.InvalidTxGenesisHashException.#ctor
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.InvalidTxGenesisHashException
+  nameWithType: InvalidTxGenesisHashException.InvalidTxGenesisHashException
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash
+  name: ExpectedGenesisHash
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException_ExpectedGenesisHash
+  commentId: P:Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash
+  nameWithType: InvalidTxGenesisHashException.ExpectedGenesisHash
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash*
+  name: ExpectedGenesisHash
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException_ExpectedGenesisHash_
+  commentId: Overload:Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.ExpectedGenesisHash
+  nameWithType: InvalidTxGenesisHashException.ExpectedGenesisHash
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash
+  name: ImproperGenesisHash
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException_ImproperGenesisHash
+  commentId: P:Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash
+  nameWithType: InvalidTxGenesisHashException.ImproperGenesisHash
+- uid: Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash*
+  name: ImproperGenesisHash
+  href: api/Libplanet.Tx.InvalidTxGenesisHashException.html#Libplanet_Tx_InvalidTxGenesisHashException_ImproperGenesisHash_
+  commentId: Overload:Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.InvalidTxGenesisHashException.ImproperGenesisHash
+  nameWithType: InvalidTxGenesisHashException.ImproperGenesisHash
 - uid: Libplanet.Tx.InvalidTxIdException
   name: InvalidTxIdException
   href: api/Libplanet.Tx.InvalidTxIdException.html
@@ -8530,15 +8578,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
   nameWithType: Transaction<T>.Transaction(Bencodex.Types.Dictionary)
   nameWithType.vb: Transaction(Of T).Transaction(Bencodex.Types.Dictionary)
-- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
-  name: Transaction(Int64, Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
-  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
-  name.vb: Transaction(Int64, Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
-  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet<Libplanet.Address>, DateTimeOffset, IEnumerable<T>, System.Byte[])
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, IImmutableSet(Of Libplanet.Address), DateTimeOffset, IEnumerable(Of T), System.Byte())
-  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
-  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+- uid: Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
+  name: Transaction(Int64, Address, PublicKey, Nullable<HashDigest<SHA256>>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_System_Int64_Libplanet_Address_Libplanet_Crypto_PublicKey_System_Nullable_Libplanet_HashDigest_SHA256___IImmutableSet_Libplanet_Address__DateTimeOffset_IEnumerable__0__System_Byte___
+  commentId: M:Libplanet.Tx.Transaction`1.#ctor(System.Int64,Libplanet.Address,Libplanet.Crypto.PublicKey,System.Nullable{Libplanet.HashDigest{SHA256}},IImmutableSet{Libplanet.Address},DateTimeOffset,IEnumerable{`0},System.Byte[])
+  name.vb: Transaction(Int64, Address, PublicKey, Nullable(Of HashDigest(Of SHA256)), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
+  fullName: Libplanet.Tx.Transaction<T>.Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable<Libplanet.HashDigest<SHA256>>, IImmutableSet<Libplanet.Address>, DateTimeOffset, IEnumerable<T>, System.Byte[])
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Transaction(System.Int64, Libplanet.Address, Libplanet.Crypto.PublicKey, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), IImmutableSet(Of Libplanet.Address), DateTimeOffset, IEnumerable(Of T), System.Byte())
+  nameWithType: Transaction<T>.Transaction(Int64, Address, PublicKey, Nullable<HashDigest<SHA256>>, IImmutableSet<Address>, DateTimeOffset, IEnumerable<T>, Byte[])
+  nameWithType.vb: Transaction(Of T).Transaction(Int64, Address, PublicKey, Nullable(Of HashDigest(Of SHA256)), IImmutableSet(Of Address), DateTimeOffset, IEnumerable(Of T), Byte())
 - uid: Libplanet.Tx.Transaction`1.#ctor*
   name: Transaction
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1__ctor_
@@ -8565,15 +8613,15 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).Actions
   nameWithType: Transaction<T>.Actions
   nameWithType.vb: Transaction(Of T).Actions
-- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name: Create(Int64, PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
-  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
-  name.vb: Create(Int64, PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
-  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
-  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
-  nameWithType: Transaction<T>.Create(Int64, PrivateKey, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
-  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+- uid: Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.HashDigest{SHA256}},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name: Create(Int64, PrivateKey, Nullable<HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_System_Int64_Libplanet_Crypto_PrivateKey_System_Nullable_Libplanet_HashDigest_SHA256___IEnumerable__0__IImmutableSet_Libplanet_Address__System_Nullable_DateTimeOffset__
+  commentId: M:Libplanet.Tx.Transaction`1.Create(System.Int64,Libplanet.Crypto.PrivateKey,System.Nullable{Libplanet.HashDigest{SHA256}},IEnumerable{`0},IImmutableSet{Libplanet.Address},System.Nullable{DateTimeOffset})
+  name.vb: Create(Int64, PrivateKey, Nullable(Of HashDigest(Of SHA256)), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
+  fullName: Libplanet.Tx.Transaction<T>.Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable<Libplanet.HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Libplanet.Address>, System.Nullable<DateTimeOffset>)
+  fullName.vb: Libplanet.Tx.Transaction(Of T).Create(System.Int64, Libplanet.Crypto.PrivateKey, System.Nullable(Of Libplanet.HashDigest(Of SHA256)), IEnumerable(Of T), IImmutableSet(Of Libplanet.Address), System.Nullable(Of DateTimeOffset))
+  nameWithType: Transaction<T>.Create(Int64, PrivateKey, Nullable<HashDigest<SHA256>>, IEnumerable<T>, IImmutableSet<Address>, Nullable<DateTimeOffset>)
+  nameWithType.vb: Transaction(Of T).Create(Int64, PrivateKey, Nullable(Of HashDigest(Of SHA256)), IEnumerable(Of T), IImmutableSet(Of Address), Nullable(Of DateTimeOffset))
 - uid: Libplanet.Tx.Transaction`1.Create*
   name: Create
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Create_
@@ -8663,6 +8711,23 @@ references:
   fullName.vb: Libplanet.Tx.Transaction(Of T).EvaluateActionsGradually
   nameWithType: Transaction<T>.EvaluateActionsGradually
   nameWithType.vb: Transaction(Of T).EvaluateActionsGradually
+- uid: Libplanet.Tx.Transaction`1.GenesisHash
+  name: GenesisHash
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash
+  commentId: P:Libplanet.Tx.Transaction`1.GenesisHash
+  fullName: Libplanet.Tx.Transaction<T>.GenesisHash
+  fullName.vb: Libplanet.Tx.Transaction(Of T).GenesisHash
+  nameWithType: Transaction<T>.GenesisHash
+  nameWithType.vb: Transaction(Of T).GenesisHash
+- uid: Libplanet.Tx.Transaction`1.GenesisHash*
+  name: GenesisHash
+  href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GenesisHash_
+  commentId: Overload:Libplanet.Tx.Transaction`1.GenesisHash
+  isSpec: "True"
+  fullName: Libplanet.Tx.Transaction<T>.GenesisHash
+  fullName.vb: Libplanet.Tx.Transaction(Of T).GenesisHash
+  nameWithType: Transaction<T>.GenesisHash
+  nameWithType.vb: Transaction(Of T).GenesisHash
 - uid: Libplanet.Tx.Transaction`1.GetHashCode
   name: GetHashCode()
   href: api/Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_GetHashCode
