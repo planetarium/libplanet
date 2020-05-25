@@ -627,15 +627,15 @@ namespace Libplanet.Net
 
             // FIXME Should replace with PUB/SUB model.
             List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
-            _logger.Debug($"Broadcasting message [{msg}]");
-            _logger.Debug($"Peers to broadcast : {peers.Count}");
+            _logger.Debug("Broadcasting message: {Message}", msg);
+            _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
             foreach (BoundPeer peer in peers)
             {
                 _ = SendMessageAsync(peer, msg)
                     .ContinueWith(t =>
                     {
-                        string fname = nameof(DoBroadcast);
+                        const string fname = nameof(DoBroadcast);
                         switch (t.Exception?.InnerException)
                         {
                             case TimeoutException te:
