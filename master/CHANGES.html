@@ -85,8 +85,12 @@ different genesis block.  [<a href="https://github.com/planetarium/libplanet/iss
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
-<li>Improved performance of <code>Swarm&lt;T&gt;</code> by multiplexing response and
-broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/858">#858</a>, <a href="https://github.com/planetarium/libplanet/pull/859">#859</a>]</li>
+<li>Improved performance of <code>Swarm&lt;T&gt;</code>.
+<ul>
+<li>Multiplexed response and broadcast.  [<a href="https://github.com/planetarium/libplanet/issues/858">#858</a>, <a href="https://github.com/planetarium/libplanet/pull/859">#859</a>]</li>
+<li>Reduced internal delays.  [<a href="https://github.com/planetarium/libplanet/issues/871">#871</a>, <a href="https://github.com/planetarium/libplanet/pull/879">#879</a>]</li>
+</ul>
+</li>
 <li><code>Transaction&lt;T&gt;.Create()</code>, <code>Transaction&lt;T&gt;.EvaluateActions()</code> and
 <code>Transaction&lt;T&gt;.EvaluateActionsGradually()</code> no longer throw
 <code>UnexpectedlyTerminatedActionException</code> directly. Instead, it records
