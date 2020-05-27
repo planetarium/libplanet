@@ -431,10 +431,8 @@ namespace Libplanet.Net
 
         public Task WaitForRunningAsync() => _runningEvent.Task;
 
-        public async Task SendMessageAsync(BoundPeer peer, Message message)
-        {
-            await SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
-        }
+        public Task SendMessageAsync(BoundPeer peer, Message message)
+            => SendMessageWithReplyAsync(peer, message, TimeSpan.FromSeconds(3), 0);
 
         public async Task<Message> SendMessageWithReplyAsync(
             BoundPeer peer,
@@ -490,18 +488,25 @@ namespace Libplanet.Net
                     Interlocked.Read(ref _requestCount)
                 );
 
-                var reply = (await tcs.Task).ToList();
-                foreach (var msg in reply)
+                if (expectedResponses > 0)
                 {
-                    MessageHistory.Enqueue(msg);
+                    var reply = (await tcs.Task).ToList();
+                    foreach (var msg in reply)
+                    {
+                        MessageHistory.Enqueue(msg);
+                    }
+
+                    const string logMsg =
+                        "Received {ReplyMessageCount} reply messages to {RequestId} " +
+                        "from {PeerAddress}: {ReplyMessages}.";
+                    _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
+
+                    return reply;
                 }
-
-                const string logMsg =
-                    "Received {ReplyMessageCount} reply messages to {RequestId} " +
-                    "from {PeerAddress}: {ReplyMessages}.";
-                _logger.Debug(logMsg, reply.Count, reqId, peer.Address, reply);
-
-                return reply;
+                else
+                {
+                    return new Message[0];
+                }
             }
             catch (DifferentAppProtocolVersionException e)
             {
@@ -621,28 +626,32 @@ namespace Libplanet.Net
             (Address? except, Message msg) = e.Queue.Dequeue();
 
             // FIXME Should replace with PUB/SUB model.
-            try
-            {
-                var peers = Protocol.PeersToBroadcast(except).ToList();
-                _logger.Debug($"Broadcasting message [{msg}]");
-                _logger.Debug($"Peers to broadcast : {peers.Count}");
-                Parallel.ForEach(peers, async peer =>
-                {
-                    await SendMessageAsync(peer, msg);
-                });
+            List<BoundPeer> peers = Protocol.PeersToBroadcast(except).ToList();
+            _logger.Debug("Broadcasting message: {Message}", msg);
+            _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
-                _logger.Debug($"[{msg}] broadcasting completed.");
-            }
-            catch (TimeoutException ex)
+            foreach (BoundPeer peer in peers)
             {
-                _logger.Error(ex, $"TimeoutException occurred during {nameof(DoBroadcast)}().");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(
-                    ex,
-                    $"An unexpected exception occurred during {nameof(DoBroadcast)}()."
-                );
+                _ = SendMessageAsync(peer, msg)
+                    .ContinueWith(t =>
+                    {
+                        const string fname = nameof(DoBroadcast);
+                        switch (t.Exception?.InnerException)
+                        {
+                            case TimeoutException te:
+                                _logger.Error(
+                                    te,
+                                    $"TimeoutException occurred during {fname}()."
+                                );
+                                break;
+                            case Exception ex:
+                                _logger.Error(
+                                    ex,
+                                    $"An unexpected exception occurred during {fname}()."
+                                );
+                                break;
+                        }
+                    });
             }
         }
 
