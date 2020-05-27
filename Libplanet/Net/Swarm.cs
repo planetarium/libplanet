@@ -2098,7 +2098,7 @@ namespace Libplanet.Net
                 if (_demandBlockHash is null ||
                     _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
                 {
-                    await Task.Delay(100, cancellationToken);
+                    await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
@@ -2123,7 +2123,6 @@ namespace Libplanet.Net
                 catch (TimeoutException)
                 {
                     _logger.Debug($"Timeout occurred during {nameof(ProcessFillblock)}");
-                    await Task.Delay(100, cancellationToken);
                 }
                 catch (Exception e)
                 {
@@ -2141,7 +2140,7 @@ namespace Libplanet.Net
             {
                 if (_demandTxIds.IsEmpty)
                 {
-                    await Task.Delay(100, cancellationToken);
+                    await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
