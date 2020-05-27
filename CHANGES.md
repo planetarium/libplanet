@@ -19,6 +19,7 @@ To be released.
 
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
+ -  Added `allowRender` parameter to `BlockChain<T>()` constructor.  [[#883]]
 
 ### Behavioral changes
 
@@ -39,6 +40,7 @@ To be released.
 [#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
 [#875]: https://github.com/planetarium/libplanet/pull/875
+[#883]: https://github.com/planetarium/libplanet/pull/883
 
 
 Version 0.9.3
