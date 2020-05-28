@@ -569,55 +569,57 @@ namespace Libplanet.Net
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
-            try
+            NetMQMessage raw = new NetMQMessage();
+            while (e.Socket.TryReceiveMultipartMessage(ref raw))
             {
-                NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
-
-                if (_cancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                _logger.Verbose(
-                    "A raw message [frame count: {0}] has received.",
-                    raw.FrameCount
-                );
-                Message message = Message.Parse(raw, reply: false);
-                _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
-                MessageHistory.Enqueue(message);
-                if (!(message is Ping))
-                {
-                    ValidateSender(message.Remote);
-                }
-
                 try
                 {
-                    Protocol.ReceiveMessage(message);
-                    ProcessMessageHandler?.Invoke(this, message);
+                    if (_cancellationToken.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
+                    _logger.Verbose(
+                        "A raw message [frame count: {0}] has received.",
+                        raw.FrameCount
+                    );
+                    Message message = Message.Parse(raw, reply: false);
+                    _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+                    MessageHistory.Enqueue(message);
+                    if (!(message is Ping))
+                    {
+                        ValidateSender(message.Remote);
+                    }
+
+                    try
+                    {
+                        Protocol.ReceiveMessage(message);
+                        ProcessMessageHandler?.Invoke(this, message);
+                    }
+                    catch (Exception exc)
+                    {
+                        _logger.Error(
+                            exc,
+                            "Something went wrong during message parsing: {0}",
+                            exc);
+                        throw;
+                    }
                 }
-                catch (Exception exc)
+                catch (DifferentAppProtocolVersionException)
+                {
+                    _logger.Debug("Ignore message from peer with different version.");
+                }
+                catch (InvalidMessageException ex)
+                {
+                    _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {ex}");
+                }
+                catch (Exception ex)
                 {
                     _logger.Error(
-                        exc,
-                        "Something went wrong during message parsing: {0}",
-                        exc);
-                    throw;
+                        ex,
+                        $"An unexpected exception occurred during {nameof(ReceiveMessage)}(): {ex}"
+                    );
                 }
-            }
-            catch (DifferentAppProtocolVersionException)
-            {
-                _logger.Debug("Ignore message from peer with different version.");
-            }
-            catch (InvalidMessageException ex)
-            {
-                _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {ex}");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(
-                    ex,
-                    $"An unexpected exception occurred during {nameof(ReceiveMessage)}(): {ex}"
-                );
             }
         }
 
