@@ -41,7 +41,7 @@ namespace Libplanet.Blockchain
         private readonly ILogger _logger;
 
         /// <summary>
-        /// Defines whether to allow rendering to be performed on this <see cref="BlockChain{T}"/>.
+        /// Defines whether to render actions on this <see cref="BlockChain{T}"/>.
         /// </summary>
         private readonly bool _render;
 
