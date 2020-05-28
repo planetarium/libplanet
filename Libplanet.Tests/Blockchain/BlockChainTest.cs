@@ -331,7 +331,7 @@ namespace Libplanet.Tests.Blockchain
         }
 
         [Fact]
-        public void AllowRender()
+        public void Render()
         {
             DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
             MinerReward.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
