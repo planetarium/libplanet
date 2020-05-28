@@ -344,7 +344,7 @@ namespace Libplanet.Tests.Blockchain
             try
             {
                 var chain = new BlockChain<DumbAction>(
-                    policy, fx.Store, fx.GenesisBlock, allowRender: false);
+                    policy, fx.Store, fx.GenesisBlock, render: false);
                 var actions = new[] { new DumbAction(miner, "foo") };
                 var tx = chain.MakeTransaction(key, actions);
                 Assert.Empty(DumbAction.RenderRecords.Value);
@@ -367,7 +367,7 @@ namespace Libplanet.Tests.Blockchain
 
                 // Render should not work when swapping the chain
                 var newChain = new BlockChain<DumbAction>(
-                    policy, fx.Store, Guid.NewGuid(), fx.GenesisBlock, allowRender: true);
+                    policy, fx.Store, Guid.NewGuid(), fx.GenesisBlock, render: true);
                 chain.Swap(newChain, true);
                 chain.Append(block);
                 Assert.Empty(DumbAction.RenderRecords.Value);

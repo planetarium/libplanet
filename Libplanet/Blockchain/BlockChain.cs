@@ -43,7 +43,7 @@ namespace Libplanet.Blockchain
         /// <summary>
         /// Defines whether to allow rendering to be performed on this <see cref="BlockChain{T}"/>.
         /// </summary>
-        private readonly bool _allowRender;
+        private readonly bool _render;
 
         /// <summary>
         /// All <see cref="Block{T}"/>s in the <see cref="BlockChain{T}"/>
@@ -74,7 +74,7 @@ namespace Libplanet.Blockchain
         /// it checks if the existing genesis block and this argument is the same.
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
-        /// <param name="allowRender">Defines whether to allow rendering to be performed on this
+        /// <param name="render">Defines whether to allow rendering to be performed on this
         /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
@@ -83,14 +83,14 @@ namespace Libplanet.Blockchain
             IBlockPolicy<T> policy,
             IStore store,
             Block<T> genesisBlock,
-            bool allowRender = true
+            bool render = true
             )
             : this(
                 policy,
                 store,
                 store.GetCanonicalChainId() ?? Guid.NewGuid(),
                 genesisBlock,
-                allowRender)
+                render)
         {
         }
 
@@ -99,7 +99,7 @@ namespace Libplanet.Blockchain
             IStore store,
             Guid id,
             Block<T> genesisBlock,
-            bool allowRender = true
+            bool render = true
         )
             : this(
                 policy,
@@ -107,7 +107,7 @@ namespace Libplanet.Blockchain
                 id,
                 genesisBlock,
                 false,
-                allowRender
+                render
             )
         {
         }
@@ -118,7 +118,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            bool allowRender = true
+            bool render = true
         )
         {
             Id = id;
@@ -127,7 +127,7 @@ namespace Libplanet.Blockchain
 
             _blocks = new BlockSet<T>(store);
             _transactions = new TransactionSet<T>(store);
-            _allowRender = allowRender;
+            _render = render;
             _rwlock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _txLock = new object();
 
@@ -858,7 +858,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
 
-            if (_allowRender && renderActions)
+            if (_render && renderActions)
             {
                 RenderBlock(evaluations, block);
             }
@@ -1107,7 +1107,7 @@ namespace Libplanet.Blockchain
             }
 
             var forked = new BlockChain<T>(
-                Policy, Store, Guid.NewGuid(), Genesis, true, _allowRender);
+                Policy, Store, Guid.NewGuid(), Genesis, true, _render);
             Guid forkedId = forked.Id;
             _logger.Debug(
                 "Trying to fork chain at {branchPoint}" +
@@ -1242,7 +1242,7 @@ namespace Libplanet.Blockchain
             _logger.Debug(
                 "Branchpoint is {branchPoint} (at {index})", topmostCommon, topmostCommon?.Index);
 
-            if (_allowRender && render)
+            if (_render && render)
             {
                 _logger.Debug("Unrendering abandoned actions...");
 
@@ -1317,7 +1317,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitWriteLock();
             }
 
-            if (_allowRender && render)
+            if (_render && render)
             {
                 _logger.Debug("Rendering actions in new chain");
 
