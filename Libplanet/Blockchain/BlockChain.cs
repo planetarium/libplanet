@@ -75,7 +75,7 @@ namespace Libplanet.Blockchain
         /// If the <paramref name="store"/> has no genesis block yet this argument will
         /// be used for that.</param>
         /// <param name="allowRender">Defines whether to allow rendering to be performed on this
-        /// <see cref="BlockChain{T}"/>.</param>
+        /// <see cref="BlockChain{T}"/>.  Turned on by default.</param>
         /// <exception cref="InvalidGenesisBlockException">Thrown when the <paramref name="store"/>
         /// has a genesis block and it does not match to what the network expects
         /// (i.e., <paramref name="genesisBlock"/>).</exception>
