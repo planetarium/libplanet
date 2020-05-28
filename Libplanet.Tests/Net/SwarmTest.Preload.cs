@@ -1207,5 +1207,57 @@ namespace Libplanet.Tests.Net
                 .Select(b => (b.Index, b.Hash));
             Assert.Equal(expectedBlocks, demands);
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task GetDemandBlockHashesDuringReorg()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+            Log.Logger.Information("Miner:    {0}", minerSwarm.Address);
+            Log.Logger.Information("Receiver: {0}", receiverSwarm.Address);
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            Block<DumbAction>[] blocks =
+                (await MakeFixtureBlocksForPreloadAsyncCancellationTest()).Item2;
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                minerChain.Append(block);
+            }
+
+            BlockChain<DumbAction> forked = minerChain.Fork(minerChain.Genesis.Hash);
+            while (forked.Count <= minerChain.Count)
+            {
+                await forked.MineBlock(minerSwarm.Address);
+            }
+
+            minerSwarm.FindNextHashesChunkSize = 2;
+            await StartAsync(minerSwarm);
+
+            (BoundPeer, long?)[] peers =
+            {
+                ((BoundPeer)minerSwarm.AsPeer, minerChain.Count - 1),
+            };
+
+            long receivedCount = 0;
+            (long, HashDigest<SHA256>)[] demands = await receiverSwarm.GetDemandBlockHashes(
+                receiverChain,
+                peers,
+                progress: new ActionProgress<PreloadState>(state =>
+                {
+                    if (state is BlockHashDownloadState s &&
+                        s.ReceivedBlockHashCount > minerChain.Count / 2)
+                    {
+                        receivedCount = s.ReceivedBlockHashCount;
+                        minerChain.Swap(forked, render: false);
+                    }
+                }),
+                cancellationToken: CancellationToken.None
+            ).ToArrayAsync();
+
+            Assert.Equal(receivedCount, demands.LongLength);
+        }
     }
 }

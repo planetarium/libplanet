@@ -1055,6 +1055,8 @@ namespace Libplanet.Net
                 i++;
                 long peerIndex = peerHeight ?? -1;
 
+                // FIXME: The following condition should be fixed together when the issue #459 is
+                // fixed.  https://github.com/planetarium/libplanet/issues/459
                 if (peer is null || currentTipIndex >= peerIndex)
                 {
                     continue;
@@ -1066,8 +1068,18 @@ namespace Libplanet.Net
                 try
                 {
                     var downloaded = new List<HashDigest<SHA256>>();
+                    int previousDownloadedCount = -1;
+                    int stagnant = 0;
+                    const int stagnationLimit = 3;
                     while (downloaded.Count < totalBlocksToDownload)
                     {
+                        if (previousDownloadedCount == downloaded.Count &&
+                            ++stagnant > stagnationLimit)
+                        {
+                            break;
+                        }
+
+                        previousDownloadedCount = downloaded.Count;
                         _logger.Verbose(
                             "Request block hashes to {Peer} (height: {PeerHeight}) using " +
                             "the locator {@Locator}... ({CurrentIndex}/{EstimatedTotalCount})",

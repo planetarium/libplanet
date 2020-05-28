@@ -6,6 +6,13 @@ Version 0.9.3
 
 To be released.
 
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that had hanged in a state
+    downloading block hashes and finally unexpectedly terminated when a peer's
+    chain had gotten reorged.   [[#880], [#884]]
+
+[#880]: https://github.com/planetarium/libplanet/issues/880
+[#884]: https://github.com/planetarium/libplanet/pull/884
+
 
 Version 0.9.2
 -------------
