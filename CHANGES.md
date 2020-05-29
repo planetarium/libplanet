@@ -10,6 +10,8 @@ To be released.
 
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
+ -  Added `render` optional parameter to `BlockChain<T>()` constructor.
+    [[#883]]
 
 ### Backward-incompatible network protocol changes
 
@@ -19,7 +21,6 @@ To be released.
 
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
- -  Added `render` optional parameter to `BlockChain<T>()` constructor.  [[#883]]
 
 ### Behavioral changes
 
