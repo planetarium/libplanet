@@ -10,6 +10,8 @@ To be released.
 
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
+ -  Added `render` optional parameter to `BlockChain<T>()` constructor.
+    [[#883]]
 
 ### Backward-incompatible network protocol changes
 
@@ -39,6 +41,7 @@ To be released.
 [#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
 [#875]: https://github.com/planetarium/libplanet/pull/875
+[#883]: https://github.com/planetarium/libplanet/pull/883
 
 
 Version 0.9.3

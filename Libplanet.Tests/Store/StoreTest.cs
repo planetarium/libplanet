@@ -1059,7 +1059,8 @@ namespace Libplanet.Tests.Store
                 new NullPolicy<DumbAction>(),
                 store,
                 Guid.NewGuid(),
-                Fx.GenesisBlock
+                Fx.GenesisBlock,
+                true
             );
 
             store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
