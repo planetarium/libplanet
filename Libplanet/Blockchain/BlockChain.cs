@@ -99,7 +99,7 @@ namespace Libplanet.Blockchain
             IStore store,
             Guid id,
             Block<T> genesisBlock,
-            bool render = true
+            bool render
         )
             : this(
                 policy,
@@ -118,7 +118,7 @@ namespace Libplanet.Blockchain
             Guid id,
             Block<T> genesisBlock,
             bool inFork,
-            bool render = true
+            bool render
         )
         {
             Id = id;

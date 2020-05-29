@@ -1946,7 +1946,8 @@ namespace Libplanet.Tests.Blockchain
                 new NullPolicy<DumbAction>(),
                 store,
                 chainId,
-                _fx.GenesisBlock
+                _fx.GenesisBlock,
+                true
             );
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
