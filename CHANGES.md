@@ -41,12 +41,26 @@ To be released.
 [#875]: https://github.com/planetarium/libplanet/pull/875
 
 
+Version 0.9.3
+-------------
+
+Released on May 29, 2020.
+
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that had hanged in a state
+    downloading block hashes and finally unexpectedly terminated when a peer's
+    chain had gotten reorged.   [[#880], [#884]]
+
+[#880]: https://github.com/planetarium/libplanet/issues/880
+[#884]: https://github.com/planetarium/libplanet/pull/884
+
+
 Version 0.9.2
 -------------
 
 Released on May 20, 2020.
 
- -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.  [[#870]]
+ -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.
+    [[#870]]
 
 [#870]: https://github.com/planetarium/libplanet/pull/870
 
@@ -112,8 +126,8 @@ Released on April 27, 2020.
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
     that receives only one transaction.  [[#820]]
- -  Added `IBlockPolicy.DoesTransactionFollowPolicy()` method which is a method to
-    determine if a transaction follows the block policy.  [[#827]]
+ -  Added `IBlockPolicy.DoesTransactionFollowPolicy()` method which is a method
+    to determine if a transaction follows the block policy.  [[#827]]
 
 ### Backward-incompatible network protocol changes
 
