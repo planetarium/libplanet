@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.9.3
 -------------
 
-To be released.
+Released on May 29, 2020.
 
  -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that had hanged in a state
     downloading block hashes and finally unexpectedly terminated when a peer's
