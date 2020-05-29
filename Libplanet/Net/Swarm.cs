@@ -1038,88 +1038,7 @@ namespace Libplanet.Net
             }
         }
 
-        private void BroadcastBlock(Address? except, Block<T> block)
-        {
-            _logger.Debug("Trying to broadcast blocks...");
-            var message = new BlockHeaderMessage(block.GetBlockHeader());
-            BroadcastMessage(except, message);
-            _logger.Debug("Block broadcasting complete.");
-        }
-
-        private void BroadcastTxs(Address? except, IEnumerable<Transaction<T>> txs)
-        {
-            List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
-            _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
-            BroadcastTxIds(except, txIds);
-        }
-
-        private void BroadcastMessage(Address? except, Message message)
-        {
-            Transport.BroadcastMessage(except, message);
-        }
-
-        private Task<(BoundPeer, Pong)[]> DialToExistingPeers(
-            TimeSpan? dialTimeout,
-            CancellationToken cancellationToken
-        )
-        {
-            IEnumerable<Task<(BoundPeer, Pong)>> tasks = Peers.Select(
-                peer => Transport.SendMessageWithReplyAsync(
-                    peer, new Ping(), dialTimeout, cancellationToken
-                ).ContinueWith<(BoundPeer, Pong)>(
-                    t =>
-                    {
-                        if (t.IsFaulted || t.IsCanceled || !(t.Result is Pong pong))
-                        {
-                            switch (t.Exception?.InnerException)
-                            {
-                                case TimeoutException te:
-                                    _logger.Debug(
-                                        $"TimeoutException occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                case DifferentAppProtocolVersionException dapve:
-                                    _logger.Error(
-                                        dapve,
-                                        $"Protocol Version is different ({peer}).");
-                                    break;
-                                case Exception e:
-                                    _logger.Error(
-                                        e,
-                                        $"An unexpected exception occurred during dial to ({peer})."
-                                    );
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                            // Mark to skip
-                            return (null, null);
-                        }
-                        else
-                        {
-                            return (peer, pong);
-                        }
-                    },
-                    cancellationToken
-                )
-            );
-
-            return Task.WhenAll(tasks).ContinueWith(
-                t =>
-                {
-                    if (t.IsFaulted)
-                    {
-                        throw t.Exception;
-                    }
-
-                    return t.Result.Where(pair => !(pair.Item1 is null)).ToArray();
-                },
-                cancellationToken
-            );
-        }
-
-        private async IAsyncEnumerable<(long, HashDigest<SHA256>)> GetDemandBlockHashes(
+        internal async IAsyncEnumerable<(long, HashDigest<SHA256>)> GetDemandBlockHashes(
             BlockChain<T> blockChain,
             IList<(BoundPeer, long?)> peersWithHeight,
             IProgress<PreloadState> progress,
@@ -1136,6 +1055,8 @@ namespace Libplanet.Net
                 i++;
                 long peerIndex = peerHeight ?? -1;
 
+                // FIXME: The following condition should be fixed together when the issue #459 is
+                // fixed.  https://github.com/planetarium/libplanet/issues/459
                 if (peer is null || currentTipIndex >= peerIndex)
                 {
                     continue;
@@ -1147,8 +1068,18 @@ namespace Libplanet.Net
                 try
                 {
                     var downloaded = new List<HashDigest<SHA256>>();
+                    int previousDownloadedCount = -1;
+                    int stagnant = 0;
+                    const int stagnationLimit = 3;
                     while (downloaded.Count < totalBlocksToDownload)
                     {
+                        if (previousDownloadedCount == downloaded.Count &&
+                            ++stagnant > stagnationLimit)
+                        {
+                            break;
+                        }
+
+                        previousDownloadedCount = downloaded.Count;
                         _logger.Verbose(
                             "Request block hashes to {Peer} (height: {PeerHeight}) using " +
                             "the locator {@Locator}... ({CurrentIndex}/{EstimatedTotalCount})",
@@ -1251,6 +1182,87 @@ namespace Libplanet.Net
                     "retry with another peer...\n";
                 _logger.Debug(error, message, peer, error);
             }
+        }
+
+        private void BroadcastBlock(Address? except, Block<T> block)
+        {
+            _logger.Debug("Trying to broadcast blocks...");
+            var message = new BlockHeaderMessage(block.GetBlockHeader());
+            BroadcastMessage(except, message);
+            _logger.Debug("Block broadcasting complete.");
+        }
+
+        private void BroadcastTxs(Address? except, IEnumerable<Transaction<T>> txs)
+        {
+            List<TxId> txIds = txs.Select(tx => tx.Id).ToList();
+            _logger.Debug("Broadcast {TransactionsNumber} txs...", txIds.Count);
+            BroadcastTxIds(except, txIds);
+        }
+
+        private void BroadcastMessage(Address? except, Message message)
+        {
+            Transport.BroadcastMessage(except, message);
+        }
+
+        private Task<(BoundPeer, Pong)[]> DialToExistingPeers(
+            TimeSpan? dialTimeout,
+            CancellationToken cancellationToken
+        )
+        {
+            IEnumerable<Task<(BoundPeer, Pong)>> tasks = Peers.Select(
+                peer => Transport.SendMessageWithReplyAsync(
+                    peer, new Ping(), dialTimeout, cancellationToken
+                ).ContinueWith<(BoundPeer, Pong)>(
+                    t =>
+                    {
+                        if (t.IsFaulted || t.IsCanceled || !(t.Result is Pong pong))
+                        {
+                            switch (t.Exception?.InnerException)
+                            {
+                                case TimeoutException te:
+                                    _logger.Debug(
+                                        $"TimeoutException occurred during dial to ({peer})."
+                                    );
+                                    break;
+                                case DifferentAppProtocolVersionException dapve:
+                                    _logger.Error(
+                                        dapve,
+                                        $"Protocol Version is different ({peer}).");
+                                    break;
+                                case Exception e:
+                                    _logger.Error(
+                                        e,
+                                        $"An unexpected exception occurred during dial to ({peer})."
+                                    );
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            // Mark to skip
+                            return (null, null);
+                        }
+                        else
+                        {
+                            return (peer, pong);
+                        }
+                    },
+                    cancellationToken
+                )
+            );
+
+            return Task.WhenAll(tasks).ContinueWith(
+                t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        throw t.Exception;
+                    }
+
+                    return t.Result.Where(pair => !(pair.Item1 is null)).ToArray();
+                },
+                cancellationToken
+            );
         }
 
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
