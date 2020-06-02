@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.9.4
 --------------
 
-To be released.
+Released on June 2, 2020.
 
  -  (Libplanet.RocksDBStore) Fixed a bug that  `RocksDBStore.DeleteChainId()`
     method had thrown `KeyNotFoundException` when there's no such chain ID.
