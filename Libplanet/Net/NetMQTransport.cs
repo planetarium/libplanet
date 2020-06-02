@@ -619,13 +619,15 @@ namespace Libplanet.Net
                 }
                 catch (InvalidMessageException ex)
                 {
-                    _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {ex}");
+                    _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {{0}}", ex);
                 }
                 catch (Exception ex)
                 {
+                    const string mname = nameof(ReceiveMessage);
                     _logger.Error(
                         ex,
-                        $"An unexpected exception occurred during {nameof(ReceiveMessage)}(): {ex}"
+                        $"An unexpected exception occurred during {mname}(): {{0}}",
+                        ex
                     );
                 }
             }
