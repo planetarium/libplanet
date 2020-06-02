@@ -74,6 +74,14 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void DeleteChainIdIsIdempotent()
+        {
+            Assert.Empty(Fx.Store.ListChainIds());
+            Fx.Store.DeleteChainId(Guid.NewGuid());
+            Assert.Empty(Fx.Store.ListChainIds());
+        }
+
+        [SkippableFact]
         public void CanonicalChainId()
         {
             Assert.Null(Fx.Store.GetCanonicalChainId());
