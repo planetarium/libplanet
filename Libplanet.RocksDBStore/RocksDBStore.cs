@@ -76,7 +76,7 @@ namespace Libplanet.RocksDBStore
             int statesCacheSize = 10000
         )
         {
-            _logger = Log.ForContext<DefaultStore>();
+            _logger = Log.ForContext<RocksDBStore>();
 
             if (path is null)
             {
@@ -141,11 +141,19 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
-            _lastStateRefCaches.Remove(chainId);
+            try
+            {
+                _lastStateRefCaches.Remove(chainId);
 
-            var cfName = chainId.ToString();
-            _chainDb.DropColumnFamily(cfName);
-            _stateRefDb.DropColumnFamily(cfName);
+                var cfName = chainId.ToString();
+                _chainDb.DropColumnFamily(cfName);
+                _stateRefDb.DropColumnFamily(cfName);
+            }
+            catch (KeyNotFoundException)
+            {
+                // Do nothing according to the specification: DeleteChainId() should be idempotent.
+                _logger.Debug("No such chain ID: {ChainId}.", chainId);
+            }
         }
 
         /// <inheritdoc />
