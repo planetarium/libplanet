@@ -6,6 +6,12 @@ Version 0.9.4
 
 To be released.
 
+ -  (Libplanet.RocksDBStore) Fixed a bug that  `RocksDBStore.DeleteChainId()`
+    method had thrown `KeyNotFoundException` when there's no such chain ID.
+    [[#891]]
+
+[#891]: https://github.com/planetarium/libplanet/pull/891
+
 
 Version 0.9.3
 -------------
