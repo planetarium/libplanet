@@ -50,6 +50,21 @@ To be released.
 [#883]: https://github.com/planetarium/libplanet/pull/890
 
 
+Version 0.9.4
+--------------
+
+Released on June 2, 2020.
+
+ -  (Libplanet.RocksDBStore) Fixed a bug that  `RocksDBStore.DeleteChainId()`
+    method had thrown `KeyNotFoundException` when there's no such chain ID.
+    [[#891]]
+ -  (Libplanet.RocksDBStore) Fixed a bug that `RocksDBStore` had written logs
+    into the incorrect context `DefaultContext`, not `RocksDBStore`
+    the correct one.  [[#891]]
+
+[#891]: https://github.com/planetarium/libplanet/pull/891
+
+
 Version 0.9.3
 -------------
 
