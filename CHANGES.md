@@ -33,15 +33,21 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug that `Swarm<T>` had failed to receive a request from TURN relay
+    connections.  [[#404], [#871], [#890]]
+
 ### CLI tools
 
+[#404]: https://github.com/planetarium/libplanet/issues/404
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
 [#860]: https://github.com/planetarium/libplanet/issues/860
 [#868]: https://github.com/planetarium/libplanet/pull/868
+[#871]: https://github.com/planetarium/libplanet/issues/871
 [#875]: https://github.com/planetarium/libplanet/pull/875
 [#883]: https://github.com/planetarium/libplanet/pull/883
+[#883]: https://github.com/planetarium/libplanet/pull/890
 
 
 Version 0.9.3

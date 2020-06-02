@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -56,6 +57,7 @@ namespace Libplanet.Net
 
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
+        private ConcurrentDictionary<Address, DealerSocket> _dealers;
 
         /// <summary>
         /// The <see cref="EventHandler" /> triggered when the different version of
@@ -155,6 +157,7 @@ namespace Libplanet.Net
                 _logger,
                 tableSize,
                 bucketSize);
+            _dealers = new ConcurrentDictionary<Address, DealerSocket>();
         }
 
         /// <summary>
@@ -315,6 +318,11 @@ namespace Libplanet.Net
                 _replyQueue.Dispose();
                 _router.Dispose();
                 _turnClient?.Dispose();
+
+                foreach (DealerSocket dealer in _dealers.Values)
+                {
+                    dealer.Dispose();
+                }
 
                 Running = false;
             }
@@ -569,55 +577,59 @@ namespace Libplanet.Net
 
         private void ReceiveMessage(object sender, NetMQSocketEventArgs e)
         {
-            try
+            NetMQMessage raw = new NetMQMessage();
+            while (e.Socket.TryReceiveMultipartMessage(ref raw))
             {
-                NetMQMessage raw = e.Socket.ReceiveMultipartMessage();
-
-                if (_cancellationToken.IsCancellationRequested)
-                {
-                    return;
-                }
-
-                _logger.Verbose(
-                    "A raw message [frame count: {0}] has received.",
-                    raw.FrameCount
-                );
-                Message message = Message.Parse(raw, reply: false);
-                _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
-                MessageHistory.Enqueue(message);
-                if (!(message is Ping))
-                {
-                    ValidateSender(message.Remote);
-                }
-
                 try
                 {
-                    Protocol.ReceiveMessage(message);
-                    ProcessMessageHandler?.Invoke(this, message);
+                    if (_cancellationToken.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
+                    _logger.Verbose(
+                        "A raw message [frame count: {0}] has received.",
+                        raw.FrameCount
+                    );
+                    Message message = Message.Parse(raw, reply: false);
+                    _logger.Debug("A message has parsed: {0}, from {1}", message, message.Remote);
+                    MessageHistory.Enqueue(message);
+                    if (!(message is Ping))
+                    {
+                        ValidateSender(message.Remote);
+                    }
+
+                    try
+                    {
+                        Protocol.ReceiveMessage(message);
+                        ProcessMessageHandler?.Invoke(this, message);
+                    }
+                    catch (Exception exc)
+                    {
+                        _logger.Error(
+                            exc,
+                            "Something went wrong during message parsing: {0}",
+                            exc);
+                        throw;
+                    }
                 }
-                catch (Exception exc)
+                catch (DifferentAppProtocolVersionException)
                 {
-                    _logger.Error(
-                        exc,
-                        "Something went wrong during message parsing: {0}",
-                        exc);
-                    throw;
+                    _logger.Debug("Ignore message from peer with different version.");
                 }
-            }
-            catch (DifferentAppProtocolVersionException)
-            {
-                _logger.Debug("Ignore message from peer with different version.");
-            }
-            catch (InvalidMessageException ex)
-            {
-                _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {ex}");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(
-                    ex,
-                    $"An unexpected exception occurred during {nameof(ReceiveMessage)}(): {ex}"
-                );
+                catch (InvalidMessageException ex)
+                {
+                    _logger.Error(ex, $"Could not parse NetMQMessage properly; ignore: {{0}}", ex);
+                }
+                catch (Exception ex)
+                {
+                    const string mname = nameof(ReceiveMessage);
+                    _logger.Error(
+                        ex,
+                        $"An unexpected exception occurred during {mname}(): {{0}}",
+                        ex
+                    );
+                }
             }
         }
 
@@ -630,28 +642,24 @@ namespace Libplanet.Net
             _logger.Debug("Broadcasting message: {Message}", msg);
             _logger.Debug("Peers to broadcast: {PeersCount}", peers.Count);
 
+            NetMQMessage message = msg.ToNetMQMessage(_privateKey, AsPeer);
+
             foreach (BoundPeer peer in peers)
             {
-                _ = SendMessageAsync(peer, msg)
-                    .ContinueWith(t =>
-                    {
-                        const string fname = nameof(DoBroadcast);
-                        switch (t.Exception?.InnerException)
-                        {
-                            case TimeoutException te:
-                                _logger.Error(
-                                    te,
-                                    $"TimeoutException occurred during {fname}()."
-                                );
-                                break;
-                            case Exception ex:
-                                _logger.Error(
-                                    ex,
-                                    $"An unexpected exception occurred during {fname}()."
-                                );
-                                break;
-                        }
-                    });
+                if (!_dealers.TryGetValue(peer.Address, out DealerSocket dealer))
+                {
+                    dealer = new DealerSocket(ToNetMQAddress(peer));
+                    _dealers[peer.Address] = dealer;
+                }
+
+                if (!dealer.TrySendMultipartMessage(TimeSpan.FromSeconds(3), message))
+                {
+                    _logger.Warning(
+                        "Broadcasting timed out. [Peer: {Peer}, Message: {Message}]",
+                        peer,
+                        msg
+                    );
+                }
             }
         }
 
@@ -782,11 +790,6 @@ namespace Libplanet.Net
 
             using var dealer = new DealerSocket(ToNetMQAddress(req.Peer));
 
-            // FIXME 1 min is an arbitrary value.
-            // See also https://github.com/planetarium/libplanet/pull/599 and
-            // https://github.com/planetarium/libplanet/pull/709
-            dealer.Options.Linger = TimeSpan.FromMinutes(1);
-
             _logger.Debug(
                 "Trying to send {Message} to {Peer}...",
                 req.Message,
@@ -840,9 +843,6 @@ namespace Libplanet.Net
             {
                 tcs.TrySetException(te);
             }
-
-            // Delaying dealer disposing to avoid ObjectDisposedException on NetMQPoller
-            await Task.Delay(100, cancellationToken);
 
             _logger.Verbose(
                 "Request {Message}({RequestId}) processed in {TimeSpan}.",
@@ -934,6 +934,17 @@ namespace Libplanet.Net
                     await Task.Delay(period, cancellationToken);
                     await Protocol.RefreshTableAsync(maxAge, cancellationToken);
                     await Protocol.CheckReplacementCacheAsync(cancellationToken);
+
+                    ImmutableHashSet<Address> peerAddresses =
+                        Peers.Select(p => p.Address).ToImmutableHashSet();
+                    foreach (Address address in _dealers.Keys)
+                    {
+                        if (!peerAddresses.Contains(address) &&
+                            _dealers.TryGetValue(address, out DealerSocket removed))
+                        {
+                            removed.Dispose();
+                        }
+                    }
                 }
                 catch (OperationCanceledException e)
                 {

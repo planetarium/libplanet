@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Libplanet.Net;
 using Libplanet.Stun.Messages;
 using Nito.AsyncEx;
 using Serilog;
@@ -225,21 +224,27 @@ namespace Libplanet.Stun
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-#pragma warning disable IDE0067 // We'll dispose of `stream` in proxy task.
-                NetworkStream stream = await AcceptRelayedStreamAsync(cancellationToken);
-#pragma warning restore IDE0067
-
-                // TODO We should expose the interface so that library users
-                // can limit / manage the task.
-                Func<Task> startAsync = async () =>
-                {
-                    using var proxy = new NetworkStreamProxy(stream);
-                    await proxy.StartAsync(IPAddress.Loopback, listenPort);
-                };
-
+                var tcpClient = new TcpClient();
+#pragma warning disable PC001  // API not supported on all platforms
+                tcpClient.Connect(new IPEndPoint(IPAddress.Loopback, listenPort));
+#pragma warning restore PC001
+                NetworkStream localStream = tcpClient.GetStream();
+                NetworkStream turnStream = await AcceptRelayedStreamAsync(cancellationToken);
 #pragma warning disable CS4014
-                Task.Run(startAsync, cancellationToken)
-                    .ContinueWith(_ => stream.Dispose(), cancellationToken);
+
+                const int bufferSize = 8042;
+                Task.WhenAny(
+                    turnStream.CopyToAsync(localStream, bufferSize, cancellationToken),
+                    localStream.CopyToAsync(turnStream, bufferSize, cancellationToken)
+                ).ContinueWith(
+                    t =>
+                    {
+                        turnStream.Dispose();
+                        localStream.Dispose();
+                        tcpClient.Dispose();
+                    },
+                    cancellationToken
+                );
 #pragma warning restore CS4014
             }
         }
