@@ -933,11 +933,11 @@ namespace Libplanet.Net
                     await Protocol.RefreshTableAsync(maxAge, cancellationToken);
                     await Protocol.CheckReplacementCacheAsync(cancellationToken);
 
-                    ImmutableHashSet<Address> peerAddreses =
+                    ImmutableHashSet<Address> peerAddresses =
                         Peers.Select(p => p.Address).ToImmutableHashSet();
                     foreach (Address address in _dealers.Keys)
                     {
-                        if (!peerAddreses.Contains(address) &&
+                        if (!peerAddresses.Contains(address) &&
                             _dealers.TryGetValue(address, out DealerSocket removed))
                         {
                             removed.Dispose();
