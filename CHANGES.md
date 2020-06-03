@@ -10,9 +10,12 @@ To be released.
 
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
- -  `BlockChain<T>.StageTransaction()` became to throw `InvalidTxGenesisHashException`
-    when it takes a `Transaction<T>` from a heterogeneous `BlockChain<T>` with a
-    different genesis block.  [[#796], [#878]]
+ -  `BlockChain<T>.StageTransaction()` became to throw
+    `InvalidTxGenesisHashException` when it takes a `Transaction<T>` from
+    a heterogeneous `BlockChain<T>` with a different genesis block.
+    [[#796], [#878]]
+ -  Added `render` optional parameter to `BlockChain<T>()` constructor.
+    [[#883]]
 
 ### Backward-incompatible network protocol changes
 
@@ -41,8 +44,12 @@ To be released.
 
 ### Bug fixes
 
+ -  Fixed a bug that `Swarm<T>` had failed to receive a request from TURN relay
+    connections.  [[#404], [#871], [#890]]
+
 ### CLI tools
 
+[#404]: https://github.com/planetarium/libplanet/issues/404
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#796]: https://github.com/planetarium/libplanet/issues/796
 [#858]: https://github.com/planetarium/libplanet/issues/858
@@ -53,6 +60,36 @@ To be released.
 [#875]: https://github.com/planetarium/libplanet/pull/875
 [#878]: https://github.com/planetarium/libplanet/pull/878
 [#879]: https://github.com/planetarium/libplanet/pull/879
+[#883]: https://github.com/planetarium/libplanet/pull/883
+[#883]: https://github.com/planetarium/libplanet/pull/890
+
+
+Version 0.9.4
+--------------
+
+Released on June 2, 2020.
+
+ -  (Libplanet.RocksDBStore) Fixed a bug that  `RocksDBStore.DeleteChainId()`
+    method had thrown `KeyNotFoundException` when there's no such chain ID.
+    [[#891]]
+ -  (Libplanet.RocksDBStore) Fixed a bug that `RocksDBStore` had written logs
+    into the incorrect context `DefaultContext`, not `RocksDBStore`
+    the correct one.  [[#891]]
+
+[#891]: https://github.com/planetarium/libplanet/pull/891
+
+
+Version 0.9.3
+-------------
+
+Released on May 29, 2020.
+
+ -  Fixed a `Swarm<T>.PreloadAsync()` method's bug that had hanged in a state
+    downloading block hashes and finally unexpectedly terminated when a peer's
+    chain had gotten reorged.   [[#880], [#884]]
+
+[#880]: https://github.com/planetarium/libplanet/issues/880
+[#884]: https://github.com/planetarium/libplanet/pull/884
 
 
 Version 0.9.2
@@ -60,7 +97,8 @@ Version 0.9.2
 
 Released on May 20, 2020.
 
- -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.  [[#870]]
+ -  (Libplanet.RocksDBStore) Fixed a memory leak bug in `RocksDBStore`.
+    [[#870]]
 
 [#870]: https://github.com/planetarium/libplanet/pull/870
 
@@ -126,8 +164,8 @@ Released on April 27, 2020.
     that receives only one transaction.  [[#820]]
  -  Replaced `BlockChain<T>.UnstageTransactions()` with `.UnstageTransaction()`
     that receives only one transaction.  [[#820]]
- -  Added `IBlockPolicy.DoesTransactionFollowPolicy()` method which is a method to
-    determine if a transaction follows the block policy.  [[#827]]
+ -  Added `IBlockPolicy.DoesTransactionFollowPolicy()` method which is a method
+    to determine if a transaction follows the block policy.  [[#827]]
 
 ### Backward-incompatible network protocol changes
 
