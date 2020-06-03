@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 
@@ -10,6 +13,8 @@ namespace Libplanet.Blocks
     /// </summary>
     public readonly struct BlockHeader
     {
+        internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
+
         private static readonly byte[] IndexKey = { 0x69 }; // 'i'
 
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
@@ -25,6 +30,9 @@ namespace Libplanet.Blocks
         private static readonly byte[] TxHashKey = { 0x78 }; // 'x'
 
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
+
+        private static readonly TimeSpan TimestampThreshold =
+            TimeSpan.FromSeconds(900);
 
         /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance.
@@ -166,6 +174,76 @@ namespace Libplanet.Blocks
             }
 
             return dict;
+        }
+
+        internal void Validate(DateTimeOffset currentTime)
+        {
+            DateTimeOffset ts = DateTimeOffset.ParseExact(
+                Timestamp,
+                TimestampFormat,
+                CultureInfo.InvariantCulture
+            );
+
+            if (currentTime + TimestampThreshold < ts)
+            {
+                throw new InvalidBlockTimestampException(
+                    $"The block #{Index}'s timestamp ({Timestamp}) is " +
+                    $"later than now ({currentTime}, " +
+                    $"threshold: {TimestampThreshold})."
+                );
+            }
+
+            if (Index < 0)
+            {
+                throw new InvalidBlockIndexException(
+                    $"index must be 0 or more, but its index is {Index}."
+                );
+            }
+
+            if (Index == 0)
+            {
+                if (Difficulty != 0)
+                {
+                    throw new InvalidBlockDifficultyException(
+                        "difficulty must be 0 for the genesis block, " +
+                        $"but its difficulty is {Difficulty}."
+                    );
+                }
+
+                if (!PreviousHash.IsEmpty)
+                {
+                    throw new InvalidBlockPreviousHashException(
+                        "previous hash must be empty for the genesis block."
+                    );
+                }
+            }
+            else
+            {
+                if (Difficulty < 1)
+                {
+                    throw new InvalidBlockDifficultyException(
+                        "difficulty must be more than 0 (except of " +
+                        "the genesis block), but its difficulty is " +
+                        $"{Difficulty}."
+                    );
+                }
+
+                if (PreviousHash.IsEmpty)
+                {
+                    throw new InvalidBlockPreviousHashException(
+                        "previous hash must be present except of " +
+                        "the genesis block."
+                    );
+                }
+            }
+
+            if (!new HashDigest<SHA256>(Hash.ToArray()).Satisfies(Difficulty))
+            {
+                throw new InvalidBlockNonceException(
+                    $"hash ({Hash}) with the nonce ({Nonce}) does not " +
+                    $"satisfy its difficulty level {Difficulty}."
+                );
+            }
         }
     }
 }
