@@ -41,6 +41,7 @@ To be released.
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
+ -  `Swarm<T>` became to ignore invalid block header immediately.  [[#898]]
 
 ### Bug fixes
 
@@ -62,6 +63,7 @@ To be released.
 [#879]: https://github.com/planetarium/libplanet/pull/879
 [#883]: https://github.com/planetarium/libplanet/pull/883
 [#883]: https://github.com/planetarium/libplanet/pull/890
+[#898]: https://github.com/planetarium/libplanet/pull/898
 
 
 Version 0.9.4

@@ -1614,6 +1614,20 @@ namespace Libplanet.Net
                 header.Index,
                 Address.ToHex());
 
+            try
+            {
+                header.Validate(DateTimeOffset.UtcNow);
+            }
+            catch (InvalidBlockException ibe)
+            {
+                _logger.Information(
+                    ibe,
+                    "Received header[{Hash}] seems invalid; ignore.",
+                    ByteUtil.Hex(header.Hash)
+                );
+                return;
+            }
+
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
                 // FIXME: this should be changed into total difficulty.
