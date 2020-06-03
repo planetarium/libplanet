@@ -68,9 +68,12 @@
 <ul>
 <li>Added <code>IAction.RenderError()</code> and <code>IAction.UnrenderError()</code> methods.
 [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
-<li><code>BlockChain&lt;T&gt;.StageTransaction()</code> became to throw <code>InvalidTxGenesisHashException</code>
-when it takes a <code>Transaction&lt;T&gt;</code> from a heterogeneous <code>BlockChain&lt;T&gt;</code> with a
-different genesis block.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li><code>BlockChain&lt;T&gt;.StageTransaction()</code> became to throw
+<code>InvalidTxGenesisHashException</code> when it takes a <code>Transaction&lt;T&gt;</code> from
+a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
+[<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li>Added <code>render</code> optional parameter to <code>BlockChain&lt;T&gt;()</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/883">#883</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
@@ -100,11 +103,33 @@ an exception to <code>ActionEvaluation</code>s.  [<a href="https://github.com/pl
 genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
+<ul>
+<li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had failed to receive a request from TURN relay
+connections.  [<a href="https://github.com/planetarium/libplanet/issues/404">#404</a>, <a href="https://github.com/planetarium/libplanet/issues/871">#871</a>, [#890]]</li>
+</ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-094">Version 0.9.4</h2>
+<p>Released on June 2, 2020.</p>
+<ul>
+<li>(Libplanet.RocksDBStore) Fixed a bug that  <code>RocksDBStore.DeleteChainId()</code>
+method had thrown <code>KeyNotFoundException</code> when there's no such chain ID.
+[<a href="https://github.com/planetarium/libplanet/pull/891">#891</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a bug that <code>RocksDBStore</code> had written logs
+into the incorrect context <code>DefaultContext</code>, not <code>RocksDBStore</code>
+the correct one.  [<a href="https://github.com/planetarium/libplanet/pull/891">#891</a>]</li>
+</ul>
+<h2 id="version-093">Version 0.9.3</h2>
+<p>Released on May 29, 2020.</p>
+<ul>
+<li>Fixed a <code>Swarm&lt;T&gt;.PreloadAsync()</code> method's bug that had hanged in a state
+downloading block hashes and finally unexpectedly terminated when a peer's
+chain had gotten reorged.   [<a href="https://github.com/planetarium/libplanet/issues/880">#880</a>, <a href="https://github.com/planetarium/libplanet/pull/884">#884</a>]</li>
+</ul>
 <h2 id="version-092">Version 0.9.2</h2>
 <p>Released on May 20, 2020.</p>
 <ul>
-<li>(Libplanet.RocksDBStore) Fixed a memory leak bug in <code>RocksDBStore</code>.  [<a href="https://github.com/planetarium/libplanet/pull/870">#870</a>]</li>
+<li>(Libplanet.RocksDBStore) Fixed a memory leak bug in <code>RocksDBStore</code>.
+[<a href="https://github.com/planetarium/libplanet/pull/870">#870</a>]</li>
 </ul>
 <h2 id="version-091">Version 0.9.1</h2>
 <p>Released on May 7, 2020.</p>
@@ -161,8 +186,8 @@ parameter to <code>Swarm()</code> constructor.  [<a href="https://github.com/pla
 that receives only one transaction.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
 <li>Replaced <code>BlockChain&lt;T&gt;.UnstageTransactions()</code> with <code>.UnstageTransaction()</code>
 that receives only one transaction.  [<a href="https://github.com/planetarium/libplanet/pull/820">#820</a>]</li>
-<li>Added <code>IBlockPolicy.DoesTransactionFollowPolicy()</code> method which is a method to
-determine if a transaction follows the block policy.  [<a href="https://github.com/planetarium/libplanet/pull/827">#827</a>]</li>
+<li>Added <code>IBlockPolicy.DoesTransactionFollowPolicy()</code> method which is a method
+to determine if a transaction follows the block policy.  [<a href="https://github.com/planetarium/libplanet/pull/827">#827</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes-1">Backward-incompatible network protocol changes</h3>
 <ul>
