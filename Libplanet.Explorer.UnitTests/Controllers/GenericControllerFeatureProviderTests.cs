@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
@@ -50,7 +51,15 @@ namespace Libplanet.Explorer.UnitTests.Controllers
             {
             }
 
+            public void RenderError(IActionContext context, Exception exception)
+            {
+            }
+
             public void Unrender(IActionContext context, IAccountStateDelta nextStates)
+            {
+            }
+
+            public void UnrenderError(IActionContext context, Exception exception)
             {
             }
 
