@@ -74,6 +74,14 @@ namespace Libplanet.Tests.Store
         }
 
         [SkippableFact]
+        public void DeleteChainIdIsIdempotent()
+        {
+            Assert.Empty(Fx.Store.ListChainIds());
+            Fx.Store.DeleteChainId(Guid.NewGuid());
+            Assert.Empty(Fx.Store.ListChainIds());
+        }
+
+        [SkippableFact]
         public void CanonicalChainId()
         {
             Assert.Null(Fx.Store.GetCanonicalChainId());
@@ -1060,7 +1068,8 @@ namespace Libplanet.Tests.Store
                 new NullPolicy<DumbAction>(),
                 store,
                 Guid.NewGuid(),
-                Fx.GenesisBlock
+                Fx.GenesisBlock,
+                true
             );
 
             store.ForkBlockIndexes(blocks.Id, forked.Id, blocks[branchPointIndex].Hash);
