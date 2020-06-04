@@ -423,18 +423,21 @@ namespace Libplanet.Blocks
 
         internal BlockHeader GetBlockHeader()
         {
+            string timestampAsString = Timestamp.ToString(
+                BlockHeader.TimestampFormat,
+                CultureInfo.InvariantCulture
+            );
+            ImmutableArray<byte> previousHashAsArray =
+                PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
                 index: Index,
-#pragma warning disable MEN002 // line is too long
-                timestamp: Timestamp.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture),
-#pragma warning restore MEN002 // line is too long
+                timestamp: timestampAsString,
                 nonce: Nonce.ToByteArray().ToImmutableArray(),
                 miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 difficulty: Difficulty,
-#pragma warning disable MEN002 // line is too long
-                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-#pragma warning restore MEN002 // line is too long
+                previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray()
             );
