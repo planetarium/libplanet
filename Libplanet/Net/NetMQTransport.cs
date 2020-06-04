@@ -659,6 +659,9 @@ namespace Libplanet.Net
                         peer,
                         msg
                     );
+
+                    dealer.Dispose();
+                    _dealers.TryRemove(peer.Address, out _);
                 }
             }
         }
