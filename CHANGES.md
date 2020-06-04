@@ -41,7 +41,7 @@ To be released.
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
- -  `Swarm<T>` became to ignore invalid block header immediately.  [[#898]]
+ -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]
 
 ### Bug fixes
 
