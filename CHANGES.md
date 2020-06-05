@@ -25,6 +25,7 @@ To be released.
 
 ### Added APIs
 
+ -  Added `Currency` struct.  [[#861], [#900]]
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
@@ -58,6 +59,7 @@ To be released.
 [#858]: https://github.com/planetarium/libplanet/issues/858
 [#859]: https://github.com/planetarium/libplanet/pull/859
 [#860]: https://github.com/planetarium/libplanet/issues/860
+[#861]: https://github.com/planetarium/libplanet/issues/861
 [#868]: https://github.com/planetarium/libplanet/pull/868
 [#871]: https://github.com/planetarium/libplanet/issues/871
 [#875]: https://github.com/planetarium/libplanet/pull/875
@@ -66,6 +68,7 @@ To be released.
 [#883]: https://github.com/planetarium/libplanet/pull/883
 [#890]: https://github.com/planetarium/libplanet/pull/890
 [#898]: https://github.com/planetarium/libplanet/pull/898
+[#900]: https://github.com/planetarium/libplanet/pull/900
 [#902]: https://github.com/planetarium/libplanet/pull/902
 
 
