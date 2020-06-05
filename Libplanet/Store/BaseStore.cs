@@ -91,7 +91,7 @@ namespace Libplanet.Store
                     previousHash: prevHash,
                     timestamp: DateTimeOffset.ParseExact(
                         blockDigest.Header.Timestamp,
-                        Block<T>.TimestampFormat,
+                        BlockHeader.TimestampFormat,
                         CultureInfo.InvariantCulture
                     ).ToUniversalTime(),
                     transactions: blockDigest.TxIds

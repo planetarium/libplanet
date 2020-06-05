@@ -19,11 +19,6 @@ namespace Libplanet.Blocks
     public class Block<T>
         where T : IAction, new()
     {
-        internal const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
-        private static readonly TimeSpan TimestampThreshold =
-            TimeSpan.FromSeconds(900);
-
         /// <summary>
         /// Creates a <see cref="Block{T}"/> instance by manually filling all field values.
         /// For a more automated way, see also <see cref="Mine"/> method.
@@ -130,7 +125,7 @@ namespace Libplanet.Blocks
 #pragma warning restore MEN002 // Line is too long
                 DateTimeOffset.ParseExact(
                     rb.Header.Timestamp,
-                    TimestampFormat,
+                    BlockHeader.TimestampFormat,
                     CultureInfo.InvariantCulture).ToUniversalTime(),
                 rb.Transactions
                     .Select(tx => Transaction<T>.Deserialize(tx.ToArray()))
@@ -428,16 +423,21 @@ namespace Libplanet.Blocks
 
         internal BlockHeader GetBlockHeader()
         {
+            string timestampAsString = Timestamp.ToString(
+                BlockHeader.TimestampFormat,
+                CultureInfo.InvariantCulture
+            );
+            ImmutableArray<byte> previousHashAsArray =
+                PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty;
+
             // FIXME: When hash is not assigned, should throw an exception.
             return new BlockHeader(
                 index: Index,
-                timestamp: Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture),
+                timestamp: timestampAsString,
                 nonce: Nonce.ToByteArray().ToImmutableArray(),
                 miner: Miner?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 difficulty: Difficulty,
-#pragma warning disable MEN002 // line is too long
-                previousHash: PreviousHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
-#pragma warning restore MEN002 // line is too long
+                previousHash: previousHashAsArray,
                 txHash: TxHash?.ToByteArray().ToImmutableArray() ?? ImmutableArray<byte>.Empty,
                 hash: Hash.ToByteArray().ToImmutableArray()
             );
@@ -445,66 +445,7 @@ namespace Libplanet.Blocks
 
         internal void Validate(DateTimeOffset currentTime)
         {
-            if (currentTime + TimestampThreshold < Timestamp)
-            {
-                throw new InvalidBlockTimestampException(
-                    $"The block #{Index}'s timestamp ({Timestamp}) is " +
-                    $"later than now ({currentTime}, " +
-                    $"threshold: {TimestampThreshold})."
-                );
-            }
-
-            if (Index < 0)
-            {
-                throw new InvalidBlockIndexException(
-                    $"index must be 0 or more, but its index is {Index}."
-                );
-            }
-
-            if (Index == 0)
-            {
-                if (Difficulty != 0)
-                {
-                    throw new InvalidBlockDifficultyException(
-                        "difficulty must be 0 for the genesis block, " +
-                        $"but its difficulty is {Difficulty}."
-                    );
-                }
-
-                if (PreviousHash != null)
-                {
-                    throw new InvalidBlockPreviousHashException(
-                        "previous hash must be empty for the genesis block."
-                    );
-                }
-            }
-            else
-            {
-                if (Difficulty < 1)
-                {
-                    throw new InvalidBlockDifficultyException(
-                        "difficulty must be more than 0 (except of " +
-                        "the genesis block), but its difficulty is " +
-                        $"{Difficulty}."
-                    );
-                }
-
-                if (PreviousHash == null)
-                {
-                    throw new InvalidBlockPreviousHashException(
-                        "previous hash must be present except of " +
-                        "the genesis block."
-                    );
-                }
-            }
-
-            if (!Hash.Satisfies(Difficulty))
-            {
-                throw new InvalidBlockNonceException(
-                    $"hash ({Hash}) with the nonce ({Nonce}) does not " +
-                    $"satisfy its difficulty level {Difficulty}."
-                );
-            }
+            GetBlockHeader().Validate(currentTime);
 
             foreach (Transaction<T> tx in Transactions)
             {
@@ -527,7 +468,7 @@ namespace Libplanet.Blocks
                 .Add("index", Index)
                 .Add(
                     "timestamp",
-                    Timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
+                    Timestamp.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture))
                 .Add("difficulty", Difficulty)
                 .Add("nonce", Nonce.ToByteArray());
 
