@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "CHANGES.html",
-          "hash": "Q0D0+t9nwwte/DirDDq4Uw=="
+          "hash": "49XHWNtvtW9u27dQqeUX8g=="
         }
       },
       "is_incremental": false,
@@ -309,7 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.Block-1.html",
-          "hash": "CMA4Vbth3PFEfjKfQzlsPQ=="
+          "hash": "y90DAbdeNuGJ7ZPxXa02AA=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Libplanet.Blocks.BlockHeader.html",
-          "hash": "LirxFmhg2MtR14pvkNeqig=="
+          "hash": "0fnIQhrMMN4yJksU7W0Ojw=="
         }
       },
       "is_incremental": false,
@@ -1504,11 +1504,10 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 112,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -1517,10 +1516,11 @@
           "total_file_count": 7,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 112,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
