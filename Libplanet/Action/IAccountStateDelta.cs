@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using Bencodex.Types;
 
 namespace Libplanet.Action
@@ -72,27 +71,5 @@ namespace Libplanet.Action
         /// </remarks>
         [Pure]
         IAccountStateDelta SetState(Address address, IValue state);
-    }
-
-    internal static class AccountStateDeltaExtensions
-    {
-        // TODO: This method should be a part of IAccountStateDelta interface
-        // and the current implementation should be its default implementation
-        // (when C# 8 comes out).  Although the current implementation is
-        // an only way using only generic methods/properties that
-        // the IAccountStateDelta interface exposes, it is quite inefficient
-        // when an implementing class maintains their own dirty dictionary.
-        // (See also AccountStateDeltaImpl.UpdatedStates field.)
-        public static IImmutableDictionary<Address, IValue> GetUpdatedStates(
-            this IAccountStateDelta delta
-        )
-        {
-            return delta.UpdatedAddresses.Select(address =>
-                new KeyValuePair<Address, IValue>(
-                    address,
-                    delta.GetState(address)
-                )
-            ).ToImmutableDictionary();
-        }
     }
 }

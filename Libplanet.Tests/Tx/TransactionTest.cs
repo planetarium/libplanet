@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Crypto;
+using Libplanet.Tests.Action;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
@@ -562,7 +563,7 @@ namespace Libplanet.Tests.Tx
                 var evaluations = tx.EvaluateActionsGradually(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null),
+                    new AccountStateDeltaImpl(address => null, tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal
                 ).ToImmutableArray();
@@ -625,7 +626,7 @@ namespace Libplanet.Tests.Tx
                 IAccountStateDelta delta = tx.EvaluateActions(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null),
+                    new AccountStateDeltaImpl(address => null, tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal
                 );
@@ -667,7 +668,7 @@ namespace Libplanet.Tests.Tx
             var nextStates = tx.EvaluateActions(
                 blockHash: hash,
                 blockIndex: 123,
-                previousStates: new AccountStateDeltaImpl(_ => null),
+                previousStates: new AccountStateDeltaImpl(_ => null, tx.Signer),
                 minerAddress: GenesisMinerAddress,
                 rehearsal: false
             );
