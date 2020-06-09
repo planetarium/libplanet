@@ -42,6 +42,8 @@ To be released.
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]
+ -  `Swarm<T>.PreloadAsync()` became to clean up only temporary chains.
+    [[#902]]
 
 ### Bug fixes
 
@@ -64,6 +66,7 @@ To be released.
 [#883]: https://github.com/planetarium/libplanet/pull/883
 [#890]: https://github.com/planetarium/libplanet/pull/890
 [#898]: https://github.com/planetarium/libplanet/pull/898
+[#902]: https://github.com/planetarium/libplanet/pull/902
 
 
 Version 0.9.4

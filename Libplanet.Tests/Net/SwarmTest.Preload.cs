@@ -1260,5 +1260,41 @@ namespace Libplanet.Tests.Net
 
             Assert.Equal(receivedCount, demands.LongLength);
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PreloadDeleteOnlyTempChain()
+        {
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            receiverChain = receiverChain.Fork(receiverChain.Genesis.Hash);
+            Block<DumbAction>[] blocks =
+                (await MakeFixtureBlocksForPreloadAsyncCancellationTest()).Item2;
+
+            foreach (Block<DumbAction> block in blocks)
+            {
+                minerChain.Append(block);
+            }
+
+            using (Swarm<DumbAction> minerSwarm = CreateSwarm(minerChain))
+            using (Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain))
+            {
+                try
+                {
+                    await StartAsync(minerSwarm);
+                    await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                    await receiverSwarm.PreloadAsync(
+                        trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
+                    );
+                }
+                finally
+                {
+                    await StopAsync(minerSwarm);
+                }
+
+                // Check PreloadAsync() preserves chain that forked before preloading.
+                Assert.Equal(2, receiverChain.Store.ListChainIds().Count());
+            }
+        }
     }
 }

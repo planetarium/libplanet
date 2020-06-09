@@ -490,6 +490,11 @@ namespace Libplanet.Net
                     false);
             Guid wId = workspace.Id;
             IStore wStore = workspace.Store;
+            var chainIds = new HashSet<Guid>
+            {
+                BlockChain.Id,
+                workspace.Id,
+            };
 
             var complete = false;
 
@@ -702,6 +707,7 @@ namespace Libplanet.Net
                     if (bottomBlock.PreviousHash is HashDigest<SHA256> bp)
                     {
                         workspace = workspace.Fork(bp);
+                        chainIds.Add(workspace.Id);
                         try
                         {
                             long verifiedBlockCount = 0;
@@ -811,7 +817,7 @@ namespace Libplanet.Net
                     BlockChain.Swap(workspace, render: false);
                 }
 
-                foreach (Guid chainId in wStore.ListChainIds().ToList())
+                foreach (Guid chainId in chainIds)
                 {
                     if (!chainId.Equals(BlockChain.Id))
                     {
