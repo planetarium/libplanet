@@ -29,6 +29,7 @@ To be released.
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
+ -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
  -  Added `InsufficientBalanceException` class.  [[#861], [#900]]
 
 ### Behavioral changes
