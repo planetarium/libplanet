@@ -891,21 +891,35 @@ namespace Libplanet.Net
                 ips = new[] { peer.PublicIPAddress };
             }
 
-            foreach (IPAddress ip in ips)
+            try
             {
-                var ep = new IPEndPoint(ip, peer.EndPoint.Port);
-                if (IPAddress.IsLoopback(ip))
+                foreach (IPAddress ip in ips)
                 {
-                    // This translation is only used in test case because a
-                    // seed node exposes loopback address as public address to
-                    // other node in test case
-                    ep = await _turnClient.GetMappedAddressAsync(cts.Token);
-                }
+                    var ep = new IPEndPoint(ip, peer.EndPoint.Port);
+                    if (IPAddress.IsLoopback(ip))
+                    {
+                        // This translation is only used in test case because a
+                        // seed node exposes loopback address as public address to
+                        // other node in test case
+                        ep = await _turnClient.GetMappedAddressAsync(cts.Token);
+                    }
 
-                // FIXME Can we really ignore IPv6 case?
-                if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
+                    // FIXME Can we really ignore IPv6 case?
+                    if (ip.AddressFamily.Equals(AddressFamily.InterNetwork))
+                    {
+                        await _turnClient.CreatePermissionAsync(ep, cts.Token);
+                    }
+                }
+            }
+            catch (TaskCanceledException tce)
+            {
+                if (cts.IsCancellationRequested)
                 {
-                    await _turnClient.CreatePermissionAsync(ep, cts.Token);
+                    _logger.Debug($"Timeout occurred during {nameof(CreatePermission)}: {tce}");
+                }
+                else
+                {
+                    throw;
                 }
             }
         }
