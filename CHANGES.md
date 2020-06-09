@@ -26,6 +26,7 @@ To be released.
 ### Added APIs
 
  -  Added `Currency` struct.  [[#861], [#900]]
+ -  Added `AccountBalanceGetter` delegate.  [[#861], [#900]]
  -  Added `TurnClient.BindProxies()` method. [[#756], [#868]]
  -  Added `ActionEvaluation.Exception` property.  [[#860], [[#875]]]
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
