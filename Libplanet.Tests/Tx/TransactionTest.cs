@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -549,9 +550,30 @@ namespace Libplanet.Tests.Tx
             };
             DumbAction[] actions =
             {
-                new DumbAction(addresses[0], "0", recordRandom: true),
-                new DumbAction(addresses[1], "1", recordRandom: true),
-                new DumbAction(addresses[0], "2", recordRandom: true),
+                new DumbAction(
+                    targetAddress: addresses[0],
+                    item: "0",
+                    transferFrom: addresses[0],
+                    transferTo: addresses[1],
+                    transferAmount: 5,
+                    recordRandom: true
+                ),
+                new DumbAction(
+                    targetAddress: addresses[1],
+                    item: "1",
+                    transferFrom: addresses[2],
+                    transferTo: addresses[1],
+                    transferAmount: 10,
+                    recordRandom: true
+                ),
+                new DumbAction(
+                    targetAddress: addresses[0],
+                    item: "2",
+                    transferFrom: addresses[1],
+                    transferTo: addresses[0],
+                    transferAmount: 10,
+                    recordRandom: true
+                ),
                 new DumbAction(addresses[2], "R", true, recordRandom: true),
             };
             Transaction<DumbAction> tx =
@@ -563,7 +585,7 @@ namespace Libplanet.Tests.Tx
                 var evaluations = tx.EvaluateActionsGradually(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null, tx.Signer),
+                    new AccountStateDeltaImpl(address => null, (a, c) => 0, tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal
                 ).ToImmutableArray();
@@ -576,7 +598,17 @@ namespace Libplanet.Tests.Tx
                     new[] { "0,2", "1", null },
                     new[] { "0,2", "1", $"R:{rehearsal}" },
                 };
+                BigInteger[][] expectedBalances =
+                {
+                    new BigInteger[] { -5, 5, 0 },
+                    new BigInteger[] { -5, 15, -10 },
+                    new BigInteger[] { 5, 5, -10 },
+                    new BigInteger[] { 5, 5, -10 },
+                };
 
+                Currency currency = DumbAction.DumbCurrency;
+                IValue[] initStates = new IValue[3];
+                BigInteger[] initBalances = new BigInteger[3];
                 for (int i = 0; i < evaluations.Length; i++)
                 {
                     ActionEvaluation eval = evaluations[i];
@@ -591,18 +623,29 @@ namespace Libplanet.Tests.Tx
                         ),
                         (Integer)eval.InputContext.Random.Next()
                     );
+                    ActionEvaluation prevEval = i > 0 ? evaluations[i - 1] : null;
                     Assert.Equal(
-                        i > 0 ? addresses.Select(
-                            evaluations[i - 1].OutputStates.GetState
-                        ) : new IValue[] { null, null, null },
-                        addresses.Select(
-                            eval.InputContext.PreviousStates.GetState
-                        )
+                        prevEval is null
+                            ? initStates
+                            : addresses.Select(prevEval.OutputStates.GetState),
+                        addresses.Select(eval.InputContext.PreviousStates.GetState)
                     );
                     Assert.Equal(
                         expectedStates[i],
                         addresses.Select(eval.OutputStates.GetState)
                             .Select(x => x is Text t ? t.Value : null)
+                    );
+                    Assert.Equal(
+                        prevEval is null
+                            ? initBalances
+                            : addresses.Select(a => prevEval.OutputStates.GetBalance(a, currency)),
+                        addresses.Select(
+                            a => eval.InputContext.PreviousStates.GetBalance(a, currency)
+                        )
+                    );
+                    Assert.Equal(
+                        expectedBalances[i],
+                        addresses.Select(a => eval.OutputStates.GetBalance(a, currency))
                     );
                 }
 
@@ -626,7 +669,7 @@ namespace Libplanet.Tests.Tx
                 IAccountStateDelta delta = tx.EvaluateActions(
                     default,
                     1,
-                    new AccountStateDeltaImpl(address => null, tx.Signer),
+                    new AccountStateDeltaImpl(address => null, (a, c) => 0, tx.Signer),
                     addresses[0],
                     rehearsal: rehearsal
                 );
@@ -668,7 +711,7 @@ namespace Libplanet.Tests.Tx
             var nextStates = tx.EvaluateActions(
                 blockHash: hash,
                 blockIndex: 123,
-                previousStates: new AccountStateDeltaImpl(_ => null, tx.Signer),
+                previousStates: new AccountStateDeltaImpl(_ => null, (_, __) => 0, tx.Signer),
                 minerAddress: GenesisMinerAddress,
                 rehearsal: false
             );

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
+using Libplanet.Action;
 
 namespace Libplanet
 {
@@ -30,6 +31,7 @@ namespace Libplanet
         /// <remarks>
         /// Unlike <c>null</c>, an empty set means <em>no one</em> can mint the currency.
         /// </remarks>
+        /// <seealso cref="IAccountStateDelta.MintAsset"/>
         public readonly IImmutableSet<Address>? Minters;
 
         /// <summary>

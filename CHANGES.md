@@ -10,6 +10,17 @@ To be released.
 
  -  Added `IAction.RenderError()` and `IAction.UnrenderError()` methods.
     [[#860], [#875]]
+ -  Added methods related fungible asset states to `IAccountStateDelta`:
+    [[#861], [#900]]
+     -  `UpdatedFungibleAssetsAccounts` property
+     -  `MintAsset(Address, Currency, BigInteger)` method
+     -  `TransferAsset(Address, Address, Currency, BigInteger)` method
+     -  `BurnAsset(Address, Currency, BigInteger)` method
+     -  `GetBalance(Address, Currency)` method
+ -  Added `IAccountStateDelta.StateUpdatedAddresses` property in order to
+    distinguish state updates from asset states.  [[#861], [#900]]
+ -  Added an optional parameter `AccountBalanceGetter accountBalanceGetter` to
+    `Block<T>.EvaluateActionsPerTx()` method.  [[#861], [#900]]
  -  `BlockChain<T>.StageTransaction()` became to throw
     `InvalidTxGenesisHashException` when it takes a `Transaction<T>` from
     a heterogeneous `BlockChain<T>` with a different genesis block.
@@ -32,6 +43,7 @@ To be released.
  -  Added `InvalidTxGenesisHashException` class.  [[#796], [#878]]
  -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
  -  Added `InsufficientBalanceException` class.  [[#861], [#900]]
+ -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
 
 ### Behavioral changes
 
@@ -43,6 +55,8 @@ To be released.
     `UnexpectedlyTerminatedActionException` directly. Instead, it records
     an exception to `ActionEvaluation`s.  [[#860], [#875]]
  -  Added `Transaction<T>.GenesisHash` property.  [[#796], [#878]]
+ -  Added `IAccountStateDelta.UpdatedAddresses` property contains
+    asset updates besides state updates.  [[#861], [#900]]
  -  `Swarm<T>` became to ignore received transaction with different
     genesis hash.  [[#796], [#878]]
  -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]
