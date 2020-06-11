@@ -1055,6 +1055,9 @@ namespace Libplanet.Net
                 i++;
                 long peerIndex = peerHeight ?? -1;
 
+                long branchIndex = -1;
+                HashDigest<SHA256> branchPoint = default;
+
                 // FIXME: The following condition should be fixed together when the issue #459 is
                 // fixed.  https://github.com/planetarium/libplanet/issues/459
                 if (peer is null || currentTipIndex >= peerIndex)
@@ -1092,6 +1095,14 @@ namespace Libplanet.Net
 
                         IAsyncEnumerable<Tuple<long, HashDigest<SHA256>>> blockHashes =
                             GetBlockHashes(peer, locator, null, cancellationToken);
+
+                        if (branchIndex == -1 &&
+                            await blockHashes.FirstAsync(cancellationToken) is { } t)
+                        {
+                            t.Deconstruct(out branchIndex, out branchPoint);
+                            totalBlocksToDownload = peerIndex - branchIndex;
+                        }
+
                         await foreach (Tuple<long, HashDigest<SHA256>> pair in blockHashes)
                         {
                             pair.Deconstruct(out long dlIndex, out HashDigest<SHA256> dlHash);
@@ -1102,7 +1113,7 @@ namespace Libplanet.Net
                                 dlHash
                             );
 
-                            if (downloaded.Contains(dlHash) || blockChain.ContainsBlock(dlHash))
+                            if (downloaded.Contains(dlHash) || dlHash.Equals(branchPoint))
                             {
                                 continue;
                             }
