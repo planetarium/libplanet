@@ -68,6 +68,20 @@
 <ul>
 <li>Added <code>IAction.RenderError()</code> and <code>IAction.UnrenderError()</code> methods.
 [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
+<li>Added methods related fungible asset states to <code>IAccountStateDelta</code>:
+[<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]
+<ul>
+<li><code>UpdatedFungibleAssetsAccounts</code> property</li>
+<li><code>MintAsset(Address, Currency, BigInteger)</code> method</li>
+<li><code>TransferAsset(Address, Address, Currency, BigInteger)</code> method</li>
+<li><code>BurnAsset(Address, Currency, BigInteger)</code> method</li>
+<li><code>GetBalance(Address, Currency)</code> method</li>
+</ul>
+</li>
+<li>Added <code>IAccountStateDelta.StateUpdatedAddresses</code> property in order to
+distinguish state updates from asset states.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
+<li>Added an optional parameter <code>AccountBalanceGetter accountBalanceGetter</code> to
+<code>Block&lt;T&gt;.EvaluateActionsPerTx()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li><code>BlockChain&lt;T&gt;.StageTransaction()</code> became to throw
 <code>InvalidTxGenesisHashException</code> when it takes a <code>Transaction&lt;T&gt;</code> from
 a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
@@ -82,9 +96,14 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 </ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
+<li>Added <code>Currency</code> struct.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
+<li>Added <code>AccountBalanceGetter</code> delegate.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li>Added <code>TurnClient.BindProxies()</code> method. [<a href="https://github.com/planetarium/libplanet/issues/756">#756</a>, <a href="https://github.com/planetarium/libplanet/pull/868">#868</a>]</li>
 <li>Added <code>ActionEvaluation.Exception</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, [<a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]]</li>
 <li>Added <code>InvalidTxGenesisHashException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li>Added <code>CurrencyPermissionException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
+<li>Added <code>InsufficientBalanceException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
+<li>Added <code>BlockChain&lt;T&gt;.GetBalance()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -99,6 +118,8 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 <code>UnexpectedlyTerminatedActionException</code> directly. Instead, it records
 an exception to <code>ActionEvaluation</code>s.  [<a href="https://github.com/planetarium/libplanet/issues/860">#860</a>, <a href="https://github.com/planetarium/libplanet/pull/875">#875</a>]</li>
 <li>Added <code>Transaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li>Added <code>IAccountStateDelta.UpdatedAddresses</code> property contains
+asset updates besides state updates.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to ignore received transaction with different
 genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 <li><code>Swarm&lt;T&gt;</code> became to ignore invalid <code>BlockHeader</code>s immediately.  [<a href="https://github.com/planetarium/libplanet/pull/898">#898</a>]</li>

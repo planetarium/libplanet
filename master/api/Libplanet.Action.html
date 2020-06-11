@@ -87,6 +87,14 @@ a single action.</p>
 It also gives an action class a <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html#Libplanet_Action_ActionTypeAttribute_TypeIdentifier">TypeIdentifier</a> for
 serialization and deserialization.</p>
 </section>
+      <h4><a class="xref" href="Libplanet.Action.CurrencyPermissionException.html">CurrencyPermissionException</a></h4>
+      <section><p>The exception that is thrown when a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_TransactionSigner">TransactionSigner</a> has no rights
+to mint a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a> or burn assets of a <a class="xref" href="Libplanet.Action.CurrencyPermissionException.html#Libplanet_Action_CurrencyPermissionException_Currency">Currency</a>.</p>
+</section>
+      <h4><a class="xref" href="Libplanet.Action.InsufficientBalanceException.html">InsufficientBalanceException</a></h4>
+      <section><p>The exception that is thrown when a sender has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to
+transfer or an owner has less <a class="xref" href="Libplanet.Action.InsufficientBalanceException.html#Libplanet_Action_InsufficientBalanceException_Balance">Balance</a> than amount to burn.</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.MissingActionTypeException.html">MissingActionTypeException</a></h4>
       <section><p>The exception that is thrown when an action class without
 <a class="xref" href="Libplanet.Action.ActionTypeAttribute.html">ActionTypeAttribute</a> is tried to used with
@@ -171,6 +179,11 @@ compatible (i.e., disallowed to be casted to each other).</p>
 </section>
     <h3 id="delegates">Delegates
   </h3>
+      <h4><a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a></h4>
+      <section><p>An delegate to provide read-only view of account balances.</p>
+<p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>&apos; balance of the given <code data-dev-comment-type="paramref" class="paramref">currency</code>.
+</p>
+</section>
       <h4><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></h4>
       <section><p>An delegate to provide read-only view of account states.</p>
 <p>Gets an account state of the given

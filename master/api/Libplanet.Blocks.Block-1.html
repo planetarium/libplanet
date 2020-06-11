@@ -553,13 +553,13 @@ representation of a <a class="xref" href="Libplanet.Blocks.Block-1.html">Block&l
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Evaluate(DateTimeOffset%2CLibplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.Evaluate(DateTimeOffset%2CLibplanet.Action.AccountStateGetter%2CLibplanet.Action.AccountBalanceGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L367">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L386">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_Evaluate_" data-uid="Libplanet.Blocks.Block`1.Evaluate*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter)">Evaluate(DateTimeOffset, AccountStateGetter)</h4>
+  <h4 id="Libplanet_Blocks_Block_1_Evaluate_DateTimeOffset_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_" data-uid="Libplanet.Blocks.Block`1.Evaluate(DateTimeOffset,Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)">Evaluate(DateTimeOffset, AccountStateGetter, AccountBalanceGetter)</h4>
   <div class="markdown level1 summary"><p>Executes every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> in the
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> and gets result states of each step of
 every <a class="xref" href="Libplanet.Tx.Transaction-1.html">Transaction&lt;T&gt;</a>.</p>
@@ -572,7 +572,7 @@ for each <a class="xref" href="Libplanet.Action.IAction.html">IAction</a>.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;ActionEvaluation&gt; Evaluate(DateTimeOffset currentTime, AccountStateGetter accountStateGetter)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;ActionEvaluation&gt; Evaluate(DateTimeOffset currentTime, AccountStateGetter accountStateGetter, AccountBalanceGetter accountBalanceGetter)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -594,7 +594,18 @@ time-wise conditions.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a></td>
         <td><span class="parametername">accountStateGetter</span></td>
-        <td><p>The getter of previous states.
+        <td><p>An <a class="xref" href="Libplanet.Action.AccountStateGetter.html">AccountStateGetter</a> delegate to get
+a previous state.  A <code>null</code> value, which is default, means a constant function
+that returns <code>null</code>.
+This affects the execution of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a></td>
+        <td><span class="parametername">accountBalanceGetter</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a> delegate to
+get previous account balance.
+A <code>null</code> value, which is default, means a constant function that returns zero.
 This affects the execution of <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transaction_1_Actions">Actions</a>.</p>
 </td>
       </tr>
@@ -688,13 +699,13 @@ in <a class="xref" href="Libplanet.Tx.Transaction-1.html#Libplanet_Tx_Transactio
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter%2CLibplanet.Action.AccountBalanceGetter)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L297">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L301">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_EvaluateActionsPerTx_" data-uid="Libplanet.Blocks.Block`1.EvaluateActionsPerTx*"></a>
-  <h4 id="Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_" data-uid="Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter)">EvaluateActionsPerTx(AccountStateGetter)</h4>
+  <h4 id="Libplanet_Blocks_Block_1_EvaluateActionsPerTx_Libplanet_Action_AccountStateGetter_Libplanet_Action_AccountBalanceGetter_" data-uid="Libplanet.Blocks.Block`1.EvaluateActionsPerTx(Libplanet.Action.AccountStateGetter,Libplanet.Action.AccountBalanceGetter)">EvaluateActionsPerTx(AccountStateGetter, AccountBalanceGetter)</h4>
   <div class="markdown level1 summary"><p>Executes every <a class="xref" href="Libplanet.Action.IAction.html">IAction</a> in the
 <a class="xref" href="Libplanet.Blocks.Block-1.html#Libplanet_Blocks_Block_1_Transactions">Transactions</a> step by step, and emits a pair of
 a transaction, and an <a class="xref" href="Libplanet.Action.ActionEvaluation.html">ActionEvaluation</a>
@@ -703,7 +714,7 @@ for each step.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Tuple&lt;Transaction&lt;T&gt;, ActionEvaluation&gt;&gt; EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Tuple&lt;Transaction&lt;T&gt;, ActionEvaluation&gt;&gt; EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null, AccountBalanceGetter accountBalanceGetter = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -722,6 +733,14 @@ for each step.</p>
 delegate to get a previous state.
 A <code>null</code> value, which is default, means a constant function
 that returns <code>null</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a></td>
+        <td><span class="parametername">accountBalanceGetter</span></td>
+        <td><p>An <a class="xref" href="Libplanet.Action.AccountBalanceGetter.html">AccountBalanceGetter</a> delegate to
+get previous account balance.
+A <code>null</code> value, which is default, means a constant function that returns zero.</p>
 </td>
       </tr>
     </tbody>
@@ -904,7 +923,7 @@ operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_ToBlockDigest.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.ToBlockDigest%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L410">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L430">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_ToBlockDigest_" data-uid="Libplanet.Blocks.Block`1.ToBlockDigest*"></a>
   <h4 id="Libplanet_Blocks_Block_1_ToBlockDigest" data-uid="Libplanet.Blocks.Block`1.ToBlockDigest">ToBlockDigest()</h4>
@@ -936,7 +955,7 @@ operation should be canceled.</p>
     <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Blocks_Block_1_ToString.md&amp;value=---%0Auid%3A%20Libplanet.Blocks.Block%601.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L419">View Source</a>
+    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Blocks/Block.cs/#L439">View Source</a>
   </span>
   <a id="Libplanet_Blocks_Block_1_ToString_" data-uid="Libplanet.Blocks.Block`1.ToString*"></a>
   <h4 id="Libplanet_Blocks_Block_1_ToString" data-uid="Libplanet.Blocks.Block`1.ToString">ToString()</h4>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Delegate AccountStateGetter
+    <title>Delegate AccountBalanceGetter
    | Libplanet </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Delegate AccountStateGetter
+    <meta name="title" content="Delegate AccountBalanceGetter
    | Libplanet ">
     <meta name="generator" content="docfx 2.48.1.0">
     
@@ -68,24 +68,21 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Libplanet.Action.AccountStateGetter">
+            <article class="content wrap" id="_content" data-uid="Libplanet.Action.AccountBalanceGetter">
   
   
-  <h1 id="Libplanet_Action_AccountStateGetter" data-uid="Libplanet.Action.AccountStateGetter" class="text-break">Delegate AccountStateGetter
+  <h1 id="Libplanet_Action_AccountBalanceGetter" data-uid="Libplanet.Action.AccountBalanceGetter" class="text-break">Delegate AccountBalanceGetter
   </h1>
-  <div class="markdown level0 summary"><p>An delegate to provide read-only view of account states.</p>
-<p>Gets an account state of the given
-<code data-dev-comment-type="paramref" class="paramref">address</code>.</p>
-<p>If the given <code data-dev-comment-type="paramref" class="paramref">address</code> has never been set
-its account status, returns <code>null</code> instead of throwing
-any exception.</p>
+  <div class="markdown level0 summary"><p>An delegate to provide read-only view of account balances.</p>
+<p>Gets <code data-dev-comment-type="paramref" class="paramref">address</code>&apos; balance of the given <code data-dev-comment-type="paramref" class="paramref">currency</code>.
+</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Libplanet.Action.html">Libplanet.Action</a></h6>
   <h6><strong>Assembly</strong>: Libplanet.dll</h6>
-  <h5 id="Libplanet_Action_AccountStateGetter_syntax">Syntax</h5>
+  <h5 id="Libplanet_Action_AccountBalanceGetter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate IValue? AccountStateGetter(Address address);</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate BigInteger AccountBalanceGetter(Address address, Currency currency);</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -100,8 +97,14 @@ any exception.</p>
       <tr>
         <td><a class="xref" href="Libplanet.Address.html">Address</a></td>
         <td><span class="parametername">address</span></td>
-        <td><p>An address of the account to read
-its state.</p>
+        <td><p>An address of the account to query its balance of
+the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Libplanet.Currency.html">Currency</a></td>
+        <td><span class="parametername">currency</span></td>
+        <td><p>The currency type to query <code data-dev-comment-type="paramref" class="paramref">address</code>' balance.</p>
 </td>
       </tr>
     </tbody>
@@ -116,8 +119,8 @@ its state.</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">IValue</span>&gt;</td>
-        <td><p>The account state if exists.  Otherwise <code>null</code>.</p>
+        <td><span class="xref">BigInteger</span></td>
+        <td><p>The <code data-dev-comment-type="paramref" class="paramref">address</code>'s balance of the <code data-dev-comment-type="paramref" class="paramref">currency</code>.</p>
 </td>
       </tr>
     </tbody>
@@ -130,10 +133,10 @@ its state.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_AccountStateGetter.md&amp;value=---%0Auid%3A%20Libplanet.Action.AccountStateGetter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/planetarium/libplanet/new/master/apiSpec/new?filename=Libplanet_Action_AccountBalanceGetter.md&amp;value=---%0Auid%3A%20Libplanet.Action.AccountBalanceGetter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/AccountStateGetter.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/planetarium/libplanet/blob/master/Libplanet/Action/AccountBalanceGetter.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
