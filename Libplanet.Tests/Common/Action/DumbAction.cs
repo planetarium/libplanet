@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using Bencodex.Types;
 using Libplanet.Action;
@@ -15,6 +16,8 @@ namespace Libplanet.Tests.Common.Action
         public static readonly Address RandomRecordsAddress =
             new Address("7811C3fAa0f9Cc41F7971c3d9b031B1095b20AB2");
 
+        public static readonly Currency DumbCurrency = new Currency("DUMB", minters: null);
+
         public DumbAction()
         {
         }
@@ -24,7 +27,8 @@ namespace Libplanet.Tests.Common.Action
             string item,
             bool recordRehearsal = false,
             bool recordRandom = false,
-            bool idempotent = false
+            bool idempotent = false,
+            Tuple<Address, Address, BigInteger> transfer = null
         )
         {
             Idempotent = idempotent;
@@ -32,6 +36,28 @@ namespace Libplanet.Tests.Common.Action
             Item = item;
             RecordRehearsal = recordRehearsal;
             RecordRandom = recordRandom;
+            Transfer = transfer;
+        }
+
+        public DumbAction(
+            Address targetAddress,
+            string item,
+            Address transferFrom,
+            Address transferTo,
+            BigInteger transferAmount,
+            bool recordRehearsal = false,
+            bool recordRandom = false,
+            bool idempotent = false
+        )
+            : this(
+                targetAddress,
+                item,
+                recordRehearsal,
+                recordRandom,
+                idempotent,
+                Tuple.Create(transferFrom, transferTo, transferAmount)
+            )
+        {
         }
 
         public static EventHandler<IAction> RenderEventHandler { get; set; }
@@ -57,6 +83,8 @@ namespace Libplanet.Tests.Common.Action
 
         public bool Idempotent { get; private set; }
 
+        public Tuple<Address, Address, BigInteger> Transfer { get; private set; }
+
         public IValue PlainValue
         {
             get
@@ -77,6 +105,14 @@ namespace Libplanet.Tests.Common.Action
                 if (Idempotent)
                 {
                     plainValue = plainValue.Add("idempotent", Idempotent);
+                }
+
+                if (!(Transfer is null))
+                {
+                    plainValue = plainValue
+                        .Add("transfer_from", Transfer.Item1.ToByteArray())
+                        .Add("transfer_to", Transfer.Item2.ToByteArray())
+                        .Add("transfer_amount", (IValue)new Bencodex.Types.Integer(Transfer.Item3));
                 }
 
                 return plainValue;
@@ -134,7 +170,23 @@ namespace Libplanet.Tests.Common.Action
                 );
             }
 
+            if (Item.Equals("D") && !context.Rehearsal)
+            {
+                Item = Item.ToUpperInvariant();
+            }
+
             IAccountStateDelta nextState = states.SetState(TargetAddress, (Text)items);
+
+            if (!(Transfer is null))
+            {
+                nextState = nextState.TransferAsset(
+                    sender: Transfer.Item1,
+                    recipient: Transfer.Item2,
+                    currency: DumbCurrency,
+                    amount: Transfer.Item3,
+                    allowNegativeBalance: true
+                );
+            }
 
             if (ExecuteRecords.Value is null)
             {
@@ -217,6 +269,20 @@ namespace Libplanet.Tests.Common.Action
             if (plainValue.ContainsKey((Text)"idempotent"))
             {
                 Idempotent = plainValue.GetValue<Boolean>("idempotent");
+            }
+
+            if (plainValue.TryGetValue((Text)"transfer_from", out IValue f) &&
+                f is Binary from &&
+                plainValue.TryGetValue((Text)"transfer_to", out IValue t) &&
+                t is Binary to &&
+                plainValue.TryGetValue((Text)"transfer_amount", out IValue a) &&
+                a is Integer amount)
+            {
+                Transfer = Tuple.Create(
+                    new Address(from.Value),
+                    new Address(to.Value),
+                    amount.Value
+                );
             }
         }
 

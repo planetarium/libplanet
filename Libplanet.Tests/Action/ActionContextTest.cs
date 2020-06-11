@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Numerics;
 using Bencodex.Types;
 using Libplanet.Action;
 using Xunit;
@@ -105,15 +106,35 @@ namespace Libplanet.Tests.Action
             public IImmutableSet<Address> UpdatedAddresses =>
                 ImmutableHashSet<Address>.Empty;
 
-            public IValue GetState(Address address)
-            {
-                return null;
-            }
+            public IImmutableSet<Address> StateUpdatedAddresses =>
+                ImmutableHashSet<Address>.Empty;
 
-            public IAccountStateDelta SetState(Address address, IValue state)
-            {
-                return this;
-            }
+            public IImmutableDictionary<Address, IImmutableSet<Currency>>
+            UpdatedFungibleAssets =>
+                ImmutableDictionary<Address, IImmutableSet<Currency>>.Empty;
+
+            public IValue GetState(Address address) => null;
+
+            public IAccountStateDelta SetState(Address address, IValue state) => this;
+
+            public BigInteger GetBalance(Address address, Currency currency) => 0;
+
+            public IAccountStateDelta MintAsset(
+                Address recipient,
+                Currency currency,
+                BigInteger amount
+            ) => this;
+
+            public IAccountStateDelta TransferAsset(
+                Address sender,
+                Address recipient,
+                Currency currency,
+                BigInteger amount,
+                bool allowNegativeBalance = false
+            ) => this;
+
+            public IAccountStateDelta BurnAsset(Address owner, Currency currency, BigInteger amount)
+                => this;
         }
     }
 }

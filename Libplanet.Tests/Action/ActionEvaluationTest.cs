@@ -18,12 +18,14 @@ namespace Libplanet.Tests.Action
                     address,
                     address,
                     1,
-                    new AccountStateDeltaImpl(_ => null),
+                    new AccountStateDeltaImpl(_ => null, (_, __) => 0, address),
                     123,
                     false
                 ),
                 new AccountStateDeltaImpl(
-                    a => a.Equals(address) ? (Text)"item" : null
+                    a => a.Equals(address) ? (Text)"item" : null,
+                    (_, __) => 0,
+                    address
                 )
             );
             var action = (DumbAction)evaluation.Action;

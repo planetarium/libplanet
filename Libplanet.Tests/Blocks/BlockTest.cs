@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
 using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
+using Libplanet.Tests.Action;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tx;
 using Xunit;
+using Xunit.Abstractions;
 using static Libplanet.Tests.TestUtils;
 
 namespace Libplanet.Tests.Blocks
@@ -19,8 +22,13 @@ namespace Libplanet.Tests.Blocks
     public class BlockTest : IClassFixture<BlockFixture>
     {
         private BlockFixture _fx;
+        private ITestOutputHelper _output;
 
-        public BlockTest(BlockFixture fixture) => _fx = fixture;
+        public BlockTest(BlockFixture fixture, ITestOutputHelper output)
+        {
+            _fx = fixture;
+            _output = output;
+        }
 
         [Fact]
         public void Transactions()
@@ -193,11 +201,20 @@ namespace Libplanet.Tests.Blocks
                 _fx.TxFixture.Address4,
                 _fx.TxFixture.Address5,
             };
-            DumbAction MakeAction(Address address, char identifier) =>
-                new DumbAction(address, identifier.ToString(), false, true);
+
+            DumbAction MakeAction(Address address, char identifier, Address? transferTo = null) =>
+                new DumbAction(
+                    targetAddress: address,
+                    item: identifier.ToString(),
+                    recordRehearsal: false,
+                    recordRandom: true,
+                    transfer: transferTo is Address to
+                        ? Tuple.Create<Address, Address, BigInteger>(address, to, 5)
+                        : null
+                );
 
             Block<DumbAction> genesis = MineGenesis<DumbAction>();
-            Assert.Empty(genesis.EvaluateActionsPerTx(address => null));
+            Assert.Empty(genesis.EvaluateActionsPerTx());
 
             Transaction<DumbAction>[] blockIdx1Txs =
             {
@@ -205,14 +222,18 @@ namespace Libplanet.Tests.Blocks
                     0,
                     _fx.TxFixture.PrivateKey1,
                     _fx.Genesis.Hash,
-                    new[] { MakeAction(addresses[0], 'A'), MakeAction(addresses[1], 'B') },
+                    new[]
+                    {
+                        MakeAction(addresses[0], 'A', addresses[1]),
+                        MakeAction(addresses[1], 'B', addresses[2]),
+                    },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(1)
                 ),
                 Transaction<DumbAction>.Create(
                     0,
                     _fx.TxFixture.PrivateKey2,
                     _fx.Genesis.Hash,
-                    new[] { MakeAction(addresses[2], 'C') },
+                    new[] { MakeAction(addresses[2], 'C', addresses[3]) },
                     timestamp: DateTimeOffset.MinValue.AddSeconds(2)
                 ),
                 Transaction<DumbAction>.Create(
@@ -223,9 +244,15 @@ namespace Libplanet.Tests.Blocks
                     timestamp: DateTimeOffset.MinValue.AddSeconds(4)
                 ),
             };
+            int i = 0;
+            foreach (Transaction<DumbAction> tx in blockIdx1Txs)
+            {
+                _output.WriteLine("{0}[{1}] = {2}", nameof(blockIdx1Txs), i, tx.Id);
+            }
+
             Block<DumbAction> blockIdx1 = MineNext(genesis, blockIdx1Txs, new byte[] { });
             var pairs = blockIdx1
-                .EvaluateActionsPerTx(address => null)
+                .EvaluateActionsPerTx()
                 .ToImmutableArray();
             int randomValue = 0;
             (int, int, string[], Address)[] expectations =
@@ -259,12 +286,12 @@ namespace Libplanet.Tests.Blocks
                         .Select(x => x is Text t ? t.Value : null));
             }
 
-            IImmutableDictionary<Address, IValue> dirty1 = blockIdx1
-                .Evaluate(DateTimeOffset.UtcNow, address => null)
-                .Aggregate(
-                    ImmutableDictionary<Address, IValue>.Empty,
-                    (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
-                );
+            ActionEvaluation[] evals1 = blockIdx1
+                .Evaluate(DateTimeOffset.UtcNow, address => null, (address, currency) => 0)
+                .ToArray();
+            IImmutableDictionary<Address, IValue> dirty1 = evals1.GetDirtyStates();
+            IImmutableDictionary<(Address, Currency), BigInteger> balances1 =
+                evals1.GetDirtyBalances();
             Assert.Equal(
                 new Dictionary<Address, IValue>
                 {
@@ -274,6 +301,16 @@ namespace Libplanet.Tests.Blocks
                     [DumbAction.RandomRecordsAddress] = (Integer)randomValue,
                 }.ToImmutableDictionary(),
                 dirty1
+            );
+            Assert.Equal(
+                new Dictionary<(Address, Currency), BigInteger>
+                {
+                    [(addresses[0], DumbAction.DumbCurrency)] = -5,
+                    [(addresses[1], DumbAction.DumbCurrency)] = 0,
+                    [(addresses[2], DumbAction.DumbCurrency)] = 0,
+                    [(addresses[3], DumbAction.DumbCurrency)] = 5,
+                }.ToImmutableDictionary(),
+                balances1
             );
 
             Transaction<DumbAction>[] blockIdx2Txs =
@@ -301,6 +338,9 @@ namespace Libplanet.Tests.Blocks
                         new DumbAction(
                             addresses[4],
                             "RecordRehearsal",
+                            transferFrom: addresses[0],
+                            transferTo: addresses[4],
+                            transferAmount: 8,
                             recordRehearsal: true,
                             recordRandom: true
                         ),
@@ -308,10 +348,17 @@ namespace Libplanet.Tests.Blocks
                     timestamp: DateTimeOffset.MinValue.AddSeconds(5)
                 ),
             };
+            i = 0;
+            foreach (Transaction<DumbAction> tx in blockIdx2Txs)
+            {
+                _output.WriteLine("{0}[{1}] = {2}", nameof(blockIdx2Txs), i, tx.Id);
+            }
 
             Block<DumbAction> blockIdx2 = MineNext(blockIdx1, blockIdx2Txs, new byte[] { });
             pairs = blockIdx2
-                .EvaluateActionsPerTx(dirty1.GetValueOrDefault)
+                .EvaluateActionsPerTx(
+                    dirty1.GetValueOrDefault,
+                    (a, c) => balances1.GetValueOrDefault((a, c)))
                 .ToImmutableArray();
             expectations = new[]
             {
@@ -337,6 +384,11 @@ namespace Libplanet.Tests.Blocks
                 Assert.Equal(GenesisMinerAddress, eval.InputContext.Miner);
                 Assert.Equal(blockIdx2.Index, eval.InputContext.BlockIndex);
                 Assert.False(eval.InputContext.Rehearsal);
+                Assert.Equal(
+                    expect.Item3,
+                    addresses
+                        .Select(eval.OutputStates.GetState)
+                        .Select(x => x is Text t ? t.Value : null));
                 randomValue = eval.InputContext.Random.Next();
                 Assert.Equal(
                     eval.OutputStates.GetState(
@@ -344,19 +396,16 @@ namespace Libplanet.Tests.Blocks
                     ),
                     (Integer)randomValue
                 );
-                Assert.Equal(
-                    expect.Item3,
-                    addresses
-                        .Select(eval.OutputStates.GetState)
-                        .Select(x => x is Text t ? t.Value : null));
             }
 
-            IImmutableDictionary<Address, IValue> dirty2 = blockIdx2
-                .Evaluate(DateTimeOffset.UtcNow, dirty1.GetValueOrDefault)
-                .Aggregate(
-                    ImmutableDictionary<Address, IValue>.Empty,
-                    (dirty, ev) => dirty.SetItems(ev.OutputStates.GetUpdatedStates())
-                );
+            var evals2 = blockIdx2.Evaluate(
+                DateTimeOffset.UtcNow,
+                dirty1.GetValueOrDefault,
+                (a, c) => balances1.GetValueOrDefault((a, c))
+            ).ToArray();
+            IImmutableDictionary<Address, IValue> dirty2 = evals2.GetDirtyStates();
+            IImmutableDictionary<(Address, Currency), BigInteger> balances2 =
+                evals2.GetDirtyBalances();
             Assert.Equal(
                 new Dictionary<Address, IValue>
                 {
@@ -388,7 +437,7 @@ namespace Libplanet.Tests.Blocks
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxSignatureException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
             );
         }
 
@@ -425,7 +474,7 @@ namespace Libplanet.Tests.Blocks
                 new List<Transaction<DumbAction>> { invalidTx }
             );
             Assert.Throws<InvalidTxPublicKeyException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
             );
         }
 
@@ -470,7 +519,7 @@ namespace Libplanet.Tests.Blocks
                 }
             );
             Assert.Throws<InvalidTxUpdatedAddressesException>(() =>
-                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null)
+                invalidBlock.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0)
             );
         }
 

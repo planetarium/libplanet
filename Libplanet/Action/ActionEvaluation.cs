@@ -138,6 +138,8 @@ namespace Libplanet.Action
                     string msg;
                     if (!rehearsal)
                     {
+                        // FIXME: The below "exc" object seems never used; Hong Minhee believes
+                        // this code's behavior does not follow the intention.
                         msg = $"The action {action} (block #{blockIndex} {blockHash}, tx {txid}) " +
                               "threw an exception during execution.  See also this exception's " +
                               "InnerException property.";
