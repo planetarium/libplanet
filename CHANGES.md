@@ -6,7 +6,7 @@ Version 0.9.5
 
 To be released.
 
- -  Fixed a bug that did not properly receive block hashes after the chain has reorged.
+ -  Fixed a bug that had not properly received block hashes after the chain had reorged.
     [[#880], [#905]]
 
 [#905]: https://github.com/planetarium/libplanet/pull/905
