@@ -69,6 +69,17 @@ To be released.
 [#902]: https://github.com/planetarium/libplanet/pull/902
 
 
+Version 0.9.5
+-------------
+
+Released on June 12, 2020.
+
+ -  Fixed a bug that had not properly received block hashes after the chain had reorged.
+    [[#880], [#905]]
+
+[#905]: https://github.com/planetarium/libplanet/pull/905
+
+
 Version 0.9.4
 --------------
 
