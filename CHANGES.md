@@ -4,7 +4,7 @@ Libplanet changelog
 Version 0.9.5
 -------------
 
-To be released.
+Released on June 12, 2020.
 
  -  Fixed a bug that had not properly received block hashes after the chain had reorged.
     [[#880], [#905]]
