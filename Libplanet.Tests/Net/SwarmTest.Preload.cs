@@ -1209,6 +1209,51 @@ namespace Libplanet.Tests.Net
             Assert.Equal(expectedBlocks, demands);
         }
 
+        [Fact]
+        public async Task PreloadAfterReorg()
+        {
+            Swarm<DumbAction> minerSwarm = _swarms[0];
+            Swarm<DumbAction> receiverSwarm = _swarms[1];
+
+            BlockChain<DumbAction> minerChain = _blockchains[0];
+            BlockChain<DumbAction> receiverChain = _blockchains[1];
+
+            foreach (int i in Enumerable.Range(0, 25))
+            {
+                Block<DumbAction> block = await minerChain.MineBlock(_fx1.Address1);
+                receiverChain.Append(block);
+            }
+
+            var receiverForked = receiverChain.Fork(receiverChain[5].Hash);
+            foreach (int i in Enumerable.Range(0, 20))
+            {
+                await receiverForked.MineBlock(_fx1.Address1);
+            }
+
+            receiverChain.Swap(receiverForked, false);
+
+            foreach (int i in Enumerable.Range(0, 1))
+            {
+                await minerChain.MineBlock(_fx1.Address1);
+            }
+
+            minerSwarm.FindNextHashesChunkSize = 1;
+            try
+            {
+                await StartAsync(minerSwarm);
+                await receiverSwarm.AddPeersAsync(new[] { minerSwarm.AsPeer }, null);
+                await receiverSwarm.PreloadAsync(
+                    trustedStateValidators: new[] { minerSwarm.Address }.ToImmutableHashSet()
+                );
+            }
+            finally
+            {
+                await StopAsync(minerSwarm);
+            }
+
+            Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);
+        }
+
         [Fact(Timeout = Timeout)]
         public async Task GetDemandBlockHashesDuringReorg()
         {
