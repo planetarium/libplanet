@@ -1164,7 +1164,7 @@ namespace Libplanet.Tests.Net
                 canceled = true;
             }
 
-            Assert.True(canceled);
+            Assert.True(canceled || t.IsCompleted);
         }
 
         [Fact(Timeout = Timeout)]
