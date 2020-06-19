@@ -267,11 +267,35 @@ namespace Libplanet.Stun
         private async Task ProcessMessage()
         {
             NetworkStream stream = _control.GetStream();
+            int retryCount = 3;
+
             while (_control.Connected)
             {
                 try
                 {
-                    StunMessage message = await StunMessage.Parse(stream);
+                    StunMessage message;
+                    try
+                    {
+                        message = await StunMessage.Parse(stream);
+                    }
+                    catch (TurnClientException e)
+                    {
+                        if (retryCount > 0)
+                        {
+                            retryCount -= 1;
+                            await Task.Delay(1000);
+                            continue;
+                        }
+
+                        Log.Error("Failed to parse StunMessage. {e}", e);
+                        foreach (var tcs in _responses.Values)
+                        {
+                            tcs.SetCanceled();
+                        }
+
+                        _responses.Clear();
+                        break;
+                    }
 
                     if (message is ConnectionAttempt attempt)
                     {

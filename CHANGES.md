@@ -49,6 +49,7 @@ To be released.
 
  -  Fixed a bug that `Swarm<T>` had failed to receive a request from TURN relay
     connections.  [[#404], [#871], [#890]]
+ -  Fixed a bug where `Swarm<T>` had terminated when disconnected from TURN.  [[#909]]
 
 ### CLI tools
 
@@ -67,6 +68,7 @@ To be released.
 [#890]: https://github.com/planetarium/libplanet/pull/890
 [#898]: https://github.com/planetarium/libplanet/pull/898
 [#902]: https://github.com/planetarium/libplanet/pull/902
+[#909]: https://github.com/planetarium/libplanet/pull/909
 
 
 Version 0.9.5

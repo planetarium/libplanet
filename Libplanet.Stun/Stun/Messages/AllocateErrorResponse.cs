@@ -22,7 +22,7 @@ namespace Libplanet.Stun.Messages
             get
             {
                 ErrorCode attr = GetAttribute<ErrorCode>();
-                return attr.Reason;
+                return attr?.Reason;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Libplanet.Stun.Messages
             get
             {
                 Attributes.Nonce attr = GetAttribute<Attributes.Nonce>();
-                return attr.Value;
+                return attr?.Value;
             }
         }
 
@@ -40,7 +40,7 @@ namespace Libplanet.Stun.Messages
             get
             {
                 Realm attr = GetAttribute<Realm>();
-                return attr.Value;
+                return attr?.Value;
             }
         }
     }
