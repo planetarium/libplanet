@@ -17,6 +17,7 @@ namespace Libplanet.Stun
     {
         public const int TurnDefaultPort = 3478;
         private const int AllocateRetry = 5;
+        private const int StunMessageParseRetry = 3;
         private readonly string _host;
         private readonly int _port;
         private readonly IList<TcpClient> _relayedClients;
@@ -267,11 +268,35 @@ namespace Libplanet.Stun
         private async Task ProcessMessage()
         {
             NetworkStream stream = _control.GetStream();
+            int retry = 0;
+
             while (_control.Connected)
             {
                 try
                 {
-                    StunMessage message = await StunMessage.Parse(stream);
+                    StunMessage message;
+                    try
+                    {
+                        message = await StunMessage.Parse(stream);
+                    }
+                    catch (TurnClientException e)
+                    {
+                        if (retry < StunMessageParseRetry)
+                        {
+                            retry++;
+                            await Task.Delay(1000);
+                            continue;
+                        }
+
+                        Log.Error(e, "Failed to parse StunMessage. {e}", e);
+                        foreach (TaskCompletionSource<StunMessage> tcs in _responses.Values)
+                        {
+                            tcs.TrySetCanceled();
+                        }
+
+                        _responses.Clear();
+                        break;
+                    }
 
                     if (message is ConnectionAttempt attempt)
                     {

@@ -132,11 +132,13 @@ namespace Libplanet.Stun.Messages
                 _ => rv
             };
 
-            if (rv != null)
+            if (rv is null)
             {
-                rv.TransactionId = transactionId;
-                rv.Attributes = attributes;
+                throw new TurnClientException("Parsed result is null.");
             }
+
+            rv.TransactionId = transactionId;
+            rv.Attributes = attributes;
 
             return rv;
         }
