@@ -993,9 +993,9 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Warning(
-                        e,
-                        $"Unexpected exception occurred during {nameof(RefreshTableAsync)}(): {{0}}", e);
+                    var msg = "Unexpected exception occurred during " +
+                        $"{nameof(RefreshTableAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
                 }
             }
         }
@@ -1018,11 +1018,9 @@ namespace Libplanet.Net
                 }
                 catch (Exception e)
                 {
-                    _logger.Warning(
-                        e,
-                        "Unexpected exception occurred during " +
-                        $"{nameof(RebuildConnectionAsync)}(): {{0}}",
-                        e);
+                    var msg = "Unexpected exception occurred during " +
+                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
                 }
             }
         }
