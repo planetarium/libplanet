@@ -287,10 +287,10 @@ namespace Libplanet.Stun
                             continue;
                         }
 
-                        Log.Error("Failed to parse StunMessage. {e}", e);
-                        foreach (var tcs in _responses.Values)
+                        Log.Error(e, "Failed to parse StunMessage. {e}", e);
+                        foreach (TaskCompletionSource<StunMessage> tcs in _responses.Values)
                         {
-                            tcs.SetCanceled();
+                            tcs.TrySetCanceled();
                         }
 
                         _responses.Clear();

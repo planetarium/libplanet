@@ -49,7 +49,7 @@ To be released.
 
  -  Fixed a bug that `Swarm<T>` had failed to receive a request from TURN relay
     connections.  [[#404], [#871], [#890]]
- -  Fixed a bug where `Swarm<T>` had terminated when disconnected from TURN.  [[#909]]
+ -  Fixed a bug where `Swarm<T>` had been terminated when disconnected from TURN.  [[#909]]
 
 ### CLI tools
 
