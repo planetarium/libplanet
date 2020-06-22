@@ -49,7 +49,10 @@ To be released.
 
  -  Fixed a bug that `Swarm<T>` had failed to receive a request from TURN relay
     connections.  [[#404], [#871], [#890]]
- -  Fixed a bug where `Swarm<T>` had been terminated when disconnected from TURN.  [[#909]]
+ -  Fixed a bug where `Swarm<T>` had been terminated and never reconnected when
+    it had been once disconnected from TURN (mostly due to [sleep mode], etc.).
+    [[#909]]
+
 
 ### CLI tools
 
@@ -69,6 +72,7 @@ To be released.
 [#898]: https://github.com/planetarium/libplanet/pull/898
 [#902]: https://github.com/planetarium/libplanet/pull/902
 [#909]: https://github.com/planetarium/libplanet/pull/909
+[sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
 Version 0.9.5

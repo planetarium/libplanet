@@ -913,7 +913,7 @@ namespace Libplanet.Net
 
                 if (!(_turnClient is null))
                 {
-                    _logger.Debug("Trying to re-connect to TURN...");
+                    _logger.Debug("Trying to reconnect to the TURN server...");
 
                     _turnClient.Dispose();
                     _turnCancellationTokenSource.Cancel();
@@ -994,7 +994,8 @@ namespace Libplanet.Net
                 catch (Exception e)
                 {
                     _logger.Warning(
-                        $"Unexpected exception occurred during {nameof(RefreshTableAsync)}() {e}.");
+                        e,
+                        $"Unexpected exception occurred during {nameof(RefreshTableAsync)}(): {{0}}", e);
                 }
             }
         }
@@ -1018,8 +1019,10 @@ namespace Libplanet.Net
                 catch (Exception e)
                 {
                     _logger.Warning(
+                        e,
                         "Unexpected exception occurred during " +
-                        $"{nameof(RebuildConnectionAsync)}() {e}.");
+                        $"{nameof(RebuildConnectionAsync)}(): {{0}}",
+                        e);
                 }
             }
         }
