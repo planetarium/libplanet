@@ -1239,7 +1239,13 @@ namespace Libplanet.Tests.Net
         [FactOnlyTurnAvailable(Timeout = Timeout)]
         public async Task ReconnectToTurn()
         {
-            const int port = 34567;
+            int port;
+            using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+                port = ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+
             Uri turnUrl = FactOnlyTurnAvailableAttribute.TurnUri;
             string username = FactOnlyTurnAvailableAttribute.Username;
             string password = FactOnlyTurnAvailableAttribute.Password;
