@@ -229,7 +229,7 @@ namespace Libplanet.Net
 
             if (_host is null && !(_iceServers is null))
             {
-                await ConnectToTurnClient();
+                await InitializeTurnClient();
             }
 
             _cancellationToken = cancellationToken;
@@ -918,12 +918,12 @@ namespace Libplanet.Net
                     _turnClient.Dispose();
                     _turnCancellationTokenSource.Cancel();
                     await Task.WhenAny(_turnTasks);
-                    await ConnectToTurnClient();
+                    await InitializeTurnClient();
                 }
             }
         }
 
-        private async Task ConnectToTurnClient()
+        private async Task InitializeTurnClient()
         {
             _turnCancellationTokenSource = new CancellationTokenSource();
             _turnClient = await IceServer.CreateTurnClient(_iceServers);
