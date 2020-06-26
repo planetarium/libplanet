@@ -90,6 +90,14 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 [<a href="https://github.com/planetarium/libplanet/pull/883">#883</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
+<ul>
+<li>The message field <code>RecentStates.StateReferences</code> became to
+<code>IImmutableDictionary&lt;string, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt;</code> from
+<code>IImmutableDictionary&lt;Address, IImmutableList&lt;HashDigest&lt;SHA256&gt;&gt;&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/pull/912">#912</a>]</li>
+<li>The existing <code>RecentStates</code> message type (with the type number <code>0x0f</code>) was
+replaced by a new <code>RecentStates</code> message type
+(with the type number <code>0x13</code>).  [<a href="https://github.com/planetarium/libplanet/pull/912">#912</a>]</li>
+</ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
 <li>Added <code>RawTransaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
@@ -133,6 +141,8 @@ connections.  [<a href="https://github.com/planetarium/libplanet/issues/404">#40
 <li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had been terminated and never reconnected when
 it had been once disconnected from TURN (mostly due to <a href="https://en.wikipedia.org/wiki/Sleep_mode">sleep mode</a>, etc.).
 [<a href="https://github.com/planetarium/libplanet/pull/909">#909</a>]</li>
+<li>Fixed a bug in which pre-computed state delivery had failed when a state
+key is not an <code>Address</code> when preloading.  [<a href="https://github.com/planetarium/libplanet/pull/912">#912</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
 <h2 id="version-095">Version 0.9.5</h2>
