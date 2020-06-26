@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,15 +65,21 @@ namespace Libplanet.Tests.Net
             BlockChain<DumbAction> receiverChain = _blockchains[1];
 
             var key = new PrivateKey();
-            var address = key.ToAddress();
+            var address1 = key.ToAddress();
+            var address2 = new PrivateKey().ToAddress();
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "foo") });
+            var action = new DumbAction(
+                address1,
+                "foo",
+                transfer: Tuple.Create<Address, Address, BigInteger>(address1, address2, 10));
+
+            minerChain.MakeTransaction(key, new[] { action });
             await minerChain.MineBlock(_fx1.Address1);
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "bar") });
+            minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "bar") });
             await minerChain.MineBlock(_fx1.Address1);
 
-            minerChain.MakeTransaction(key, new[] { new DumbAction(address, "baz") });
+            minerChain.MakeTransaction(key, new[] { new DumbAction(address1, "baz") });
             await minerChain.MineBlock(_fx1.Address1);
 
             try
@@ -84,7 +91,7 @@ namespace Libplanet.Tests.Net
 
                 await receiverSwarm.PreloadAsync(trustedStateValidators: trustedStateValidators);
                 await receiverSwarm.PreloadAsync();
-                var state = receiverChain.GetState(address);
+                var state = receiverChain.GetState(address1);
 
                 Assert.Equal((Text)"foo,bar,baz", state);
                 Assert.Equal(minerChain.BlockHashes, receiverChain.BlockHashes);

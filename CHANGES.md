@@ -30,6 +30,12 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
+ -  `RecentStates.StateReferences` became to
+    `IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>` from
+    `IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>`.  [[#912]]
+ -  The existing `RecentStates` message type (with the type number `0x0f`) was
+    replaced by a new `RecentStates` message type (with type number `0x13`).  [[#912]]
+
 ### Backward-incompatible storage format changes
 
  -  Added `RawTransaction<T>.GenesisHash` property.  [[#796], [#878]]
@@ -70,7 +76,8 @@ To be released.
  -  Fixed a bug where `Swarm<T>` had been terminated and never reconnected when
     it had been once disconnected from TURN (mostly due to [sleep mode], etc.).
     [[#909]]
-
+ -  Fixed a bug in which pre-computed state delivery had failed when a state
+    key is not an `Address` when preloading.  [[#912]]
 
 ### CLI tools
 
@@ -92,6 +99,7 @@ To be released.
 [#900]: https://github.com/planetarium/libplanet/pull/900
 [#902]: https://github.com/planetarium/libplanet/pull/902
 [#909]: https://github.com/planetarium/libplanet/pull/909
+[#912]: https://github.com/planetarium/libplanet/pull/912
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
