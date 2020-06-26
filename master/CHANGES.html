@@ -130,8 +130,17 @@ genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#7
 <ul>
 <li>Fixed a bug that <code>Swarm&lt;T&gt;</code> had failed to receive a request from TURN relay
 connections.  [<a href="https://github.com/planetarium/libplanet/issues/404">#404</a>, <a href="https://github.com/planetarium/libplanet/issues/871">#871</a>, <a href="https://github.com/planetarium/libplanet/pull/890">#890</a>]</li>
+<li>Fixed a bug where <code>Swarm&lt;T&gt;</code> had been terminated and never reconnected when
+it had been once disconnected from TURN (mostly due to <a href="https://en.wikipedia.org/wiki/Sleep_mode">sleep mode</a>, etc.).
+[<a href="https://github.com/planetarium/libplanet/pull/909">#909</a>]</li>
 </ul>
 <h3 id="cli-tools">CLI tools</h3>
+<h2 id="version-095">Version 0.9.5</h2>
+<p>Released on June 12, 2020.</p>
+<ul>
+<li>Fixed a bug that had not properly received block hashes after the chain had reorged.
+[<a href="https://github.com/planetarium/libplanet/issues/880">#880</a>, <a href="https://github.com/planetarium/libplanet/pull/905">#905</a>]</li>
+</ul>
 <h2 id="version-094">Version 0.9.4</h2>
 <p>Released on June 2, 2020.</p>
 <ul>
