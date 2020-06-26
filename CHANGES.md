@@ -30,11 +30,12 @@ To be released.
 
 ### Backward-incompatible network protocol changes
 
- -  `RecentStates.StateReferences` became to
+ -  The message field `RecentStates.StateReferences` became to
     `IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>` from
     `IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>`.  [[#912]]
  -  The existing `RecentStates` message type (with the type number `0x0f`) was
-    replaced by a new `RecentStates` message type (with type number `0x13`).  [[#912]]
+    replaced by a new `RecentStates` message type
+    (with the type number `0x13`).  [[#912]]
 
 ### Backward-incompatible storage format changes
 
