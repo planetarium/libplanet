@@ -284,6 +284,10 @@ namespace Libplanet.Blocks
         /// delegate to get a previous state.
         /// A <c>null</c> value, which is default, means a constant function
         /// that returns <c>null</c>.</param>
+        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
+        /// get previous account balance.
+        /// A <c>null</c> value, which is default, means a constant function that returns zero.
+        /// </param>
         /// <returns>Enumerates pair of a transaction, and
         /// <see cref="ActionEvaluation"/> for each action.
         /// The order of pairs are the same to
@@ -296,15 +300,22 @@ namespace Libplanet.Blocks
         /// </returns>
         [Pure]
         public
-        IEnumerable<Tuple<Transaction<T>, ActionEvaluation>>
-        EvaluateActionsPerTx(AccountStateGetter accountStateGetter = null)
+        IEnumerable<Tuple<Transaction<T>, ActionEvaluation>> EvaluateActionsPerTx(
+            AccountStateGetter accountStateGetter = null,
+            AccountBalanceGetter accountBalanceGetter = null
+        )
         {
-            IAccountStateDelta delta =
-                new AccountStateDeltaImpl(
-                    accountStateGetter ?? (a => null)
-                );
+            accountStateGetter ??= a => null;
+            accountBalanceGetter ??= (a, c) => 0;
+
+            IAccountStateDelta delta;
             foreach (Transaction<T> tx in Transactions)
             {
+                delta = new AccountStateDeltaImpl(
+                    accountStateGetter,
+                    accountBalanceGetter,
+                    tx.Signer
+                );
                 IEnumerable<ActionEvaluation> evaluations =
                     tx.EvaluateActionsGradually(
                         Hash,
@@ -317,7 +328,8 @@ namespace Libplanet.Blocks
                     delta = evaluation.OutputStates;
                 }
 
-                delta = new AccountStateDeltaImpl(delta.GetState);
+                accountStateGetter = delta.GetState;
+                accountBalanceGetter = delta.GetBalance;
             }
         }
 
@@ -333,7 +345,14 @@ namespace Libplanet.Blocks
         /// </summary>
         /// <param name="currentTime">The current time to validate
         /// time-wise conditions.</param>
-        /// <param name="accountStateGetter">The getter of previous states.
+        /// <param name="accountStateGetter">An <see cref="AccountStateGetter"/> delegate to get
+        /// a previous state.  A <c>null</c> value, which is default, means a constant function
+        /// that returns <c>null</c>.
+        /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
+        /// </param>
+        /// <param name="accountBalanceGetter">An <see cref="AccountBalanceGetter"/> delegate to
+        /// get previous account balance.
+        /// A <c>null</c> value, which is default, means a constant function that returns zero.
         /// This affects the execution of <see cref="Transaction{T}.Actions"/>.
         /// </param>
         /// <returns>An <see cref="ActionEvaluation"/> for each
@@ -366,12 +385,13 @@ namespace Libplanet.Blocks
         /// in <see cref="Transaction{T}.UpdatedAddresses"/>.</exception>
         public IEnumerable<ActionEvaluation> Evaluate(
             DateTimeOffset currentTime,
-            AccountStateGetter accountStateGetter
+            AccountStateGetter accountStateGetter,
+            AccountBalanceGetter accountBalanceGetter
         )
         {
             Validate(currentTime);
             Tuple<Transaction<T>, ActionEvaluation>[] txEvaluations =
-                EvaluateActionsPerTx(accountStateGetter).ToArray();
+                EvaluateActionsPerTx(accountStateGetter, accountBalanceGetter).ToArray();
 
             var txUpdatedAddressesPairs = txEvaluations
                     .GroupBy(tuple => tuple.Item1)

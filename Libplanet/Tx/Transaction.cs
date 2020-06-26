@@ -435,7 +435,7 @@ namespace Libplanet.Tx
                 ).EvaluateActions(
                     default(HashDigest<SHA256>),
                     0,
-                    new AccountStateDeltaImpl(_ => null),
+                    new AccountStateDeltaImpl(_ => null, (_, __) => 0, signer),
                     signer,
                     rehearsal: true
                 );

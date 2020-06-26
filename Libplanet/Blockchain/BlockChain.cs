@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -397,94 +398,45 @@ namespace Libplanet.Blockchain
             Address address,
             HashDigest<SHA256>? offset = null,
             bool completeStates = false
+        ) =>
+            GetRawState(ToStateKey(address), offset, completeStates);
+
+        /// <summary>
+        /// Queries <paramref name="address"/>'s balance of the <paramref name="currency"/> in the
+        /// <see cref="BlockChain{T}"/> from <paramref name="offset"/>.
+        /// </summary>
+        /// <param name="address">The owner <see cref="Address"/> to query.</param>
+        /// <param name="currency">The currency type to query.</param>
+        /// <param name="offset">The <see cref="HashDigest{T}"/> of the block to
+        /// start finding the state. It will be the tip of the
+        /// <see cref="BlockChain{T}"/> if it is <c>null</c>.</param>
+        /// <param name="completeStates">When the <see cref="BlockChain{T}"/> instance does not
+        /// contain states dirty of the block which lastly updated states of a requested address,
+        /// this option makes the incomplete states calculated and filled on the fly.
+        /// If this option is turned off (which is default) this method throws
+        /// <see cref="IncompleteBlockStatesException"/> instead for the same situation.
+        /// Just-in-time calculation of states could take a long time so that the overall latency of
+        /// an application may rise.</param>
+        /// <returns>The <paramref name="address"/>'s current balance (or balance as of the given
+        /// <paramref name="offset"/>) of the <paramref name="currency"/>.
+        /// </returns>
+        /// <exception cref="IncompleteBlockStatesException">Thrown when the
+        /// <see cref="BlockChain{T}"/> instance does not contain states dirty of the block which
+        /// lastly updated states of a requested address, because actions in the block have never
+        /// been executed.
+        /// If <paramref name="completeStates"/> option is turned on this exception is not thrown
+        /// and incomplete states are calculated and filled on the fly instead.
+        /// </exception>
+        public BigInteger GetBalance(
+            Address address,
+            Currency currency,
+            HashDigest<SHA256>? offset = null,
+            bool completeStates = false
         )
         {
-            _rwlock.EnterReadLock();
-            try
-            {
-                if (offset == null)
-                {
-                    offset = Store.IndexBlockHash(Id, -1);
-                }
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-
-            if (offset == null)
-            {
-                return null;
-            }
-
-            Block<T> block = this[offset.Value];
-            Tuple<HashDigest<SHA256>, long> stateReference;
-            string stateKey = address.ToHex().ToLowerInvariant();
-
-            _rwlock.EnterReadLock();
-            try
-            {
-                stateReference = Store.LookupStateReference(Id, stateKey, block);
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
-
-            if (stateReference is null)
-            {
-                return null;
-            }
-
-            HashDigest<SHA256> hashValue = stateReference.Item1;
-
-            IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
-            if (blockStates is null)
-            {
-                if (completeStates)
-                {
-                    // Calculates and fills the incomplete states
-                    // on the fly.
-                    foreach (HashDigest<SHA256> hash in BlockHashes)
-                    {
-                        Block<T> b = this[hash];
-                        if (!(Store.GetBlockStates(b.Hash) is null))
-                        {
-                            continue;
-                        }
-
-                        IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(b);
-
-                        _rwlock.EnterWriteLock();
-
-                        try
-                        {
-                            SetStates(b, evaluations, buildStateReferences: false);
-                        }
-                        finally
-                        {
-                            _rwlock.ExitWriteLock();
-                        }
-                    }
-
-                    blockStates = Store.GetBlockStates(hashValue);
-                    if (blockStates is null)
-                    {
-                        throw new NullReferenceException();
-                    }
-                }
-                else
-                {
-                    throw new IncompleteBlockStatesException(hashValue);
-                }
-            }
-
-            if (blockStates.TryGetValue(stateKey, out IValue state))
-            {
-                return state;
-            }
-
-            return null;
+            string key = ToFungibleAssetKey(address, currency);
+            IValue v = GetRawState(key, offset, completeStates);
+            return v is Bencodex.Types.Integer i ? i.Value : 0;
         }
 
         /// <summary>
@@ -955,17 +907,20 @@ namespace Libplanet.Blockchain
         internal IReadOnlyList<ActionEvaluation> EvaluateActions(Block<T> block)
         {
             AccountStateGetter stateGetter;
+            AccountBalanceGetter balanceGetter;
             if (block.PreviousHash is null)
             {
                 stateGetter = _ => null;
+                balanceGetter = (a, c) => 0;
             }
             else
             {
                 stateGetter = a => GetState(a, block.PreviousHash, true);
+                balanceGetter = (a, c) => GetBalance(a, c, block.PreviousHash, true);
             }
 
             ImmutableList<ActionEvaluation> txEvaluations = block
-                .Evaluate(DateTimeOffset.UtcNow, stateGetter)
+                .Evaluate(DateTimeOffset.UtcNow, stateGetter, balanceGetter)
                 .ToImmutableList();
             return Policy.BlockAction is null
                 ? txEvaluations
@@ -996,7 +951,11 @@ namespace Libplanet.Blockchain
 
             if (lastStates is null)
             {
-                lastStates = new AccountStateDeltaImpl(a => GetState(a, block.PreviousHash, true));
+                lastStates = new AccountStateDeltaImpl(
+                    a => GetState(a, block.PreviousHash, true),
+                    (a, c) => GetBalance(a, c, block.PreviousHash, true),
+                    miner
+                );
             }
 
             return ActionEvaluation.EvaluateActionsGradually(
@@ -1369,13 +1328,13 @@ namespace Libplanet.Blockchain
             bool buildStateReferences
         )
         {
-            ImmutableHashSet<string> updatedAddresses =
-                actionEvaluations.Select(
-                    a => a.OutputStates.UpdatedAddresses.Select(ad => ad.ToHex().ToLowerInvariant())
-                ).Aggregate(
-                    ImmutableHashSet<string>.Empty,
-                    (a, b) => a.Union(b)
-                );
+            IImmutableSet<Address> stateUpdatedAddresses = actionEvaluations
+                .SelectMany(a => a.OutputStates.StateUpdatedAddresses)
+                .ToImmutableHashSet();
+            IImmutableSet<(Address, Currency)> updatedFungibleAssets = actionEvaluations
+                .SelectMany(a => a.OutputStates.UpdatedFungibleAssets
+                    .SelectMany(kv => kv.Value.Select(c => (kv.Key, c))))
+                .ToImmutableHashSet();
 
             if (Store.GetBlockStates(block.Hash) is null)
             {
@@ -1384,9 +1343,18 @@ namespace Libplanet.Blockchain
                     ? actionEvaluations[actionEvaluations.Count - 1].OutputStates
                     : null;
                 ImmutableDictionary<string, IValue> totalDelta =
-                    updatedAddresses.ToImmutableDictionary(
-                        a => a,
-                        a => lastStates?.GetState(new Address(a))
+                    stateUpdatedAddresses.ToImmutableDictionary(
+                        ToStateKey,
+                        a => lastStates?.GetState(a)
+                    ).SetItems(
+                        updatedFungibleAssets.Select(pair =>
+                            new KeyValuePair<string, IValue>(
+                                ToFungibleAssetKey(pair),
+                                new Bencodex.Types.Integer(
+                                    lastStates?.GetBalance(pair.Item1, pair.Item2) ?? 0
+                                )
+                            )
+                        )
                     );
 
                 Store.SetBlockStates(blockHash, totalDelta);
@@ -1394,7 +1362,14 @@ namespace Libplanet.Blockchain
 
             if (buildStateReferences)
             {
-                Store.StoreStateReference(Id, updatedAddresses, block.Hash, block.Index);
+                IImmutableSet<string> stateUpdatedKeys = stateUpdatedAddresses
+                    .Select(ToStateKey)
+                    .ToImmutableHashSet();
+                IImmutableSet<string> assetUpdatedKeys = updatedFungibleAssets
+                    .Select(ToFungibleAssetKey)
+                    .ToImmutableHashSet();
+                IImmutableSet<string> updatedKeys = stateUpdatedKeys.Union(assetUpdatedKeys);
+                Store.StoreStateReference(Id, updatedKeys, block.Hash, block.Index);
             }
         }
 
@@ -1437,6 +1412,104 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitUpgradeableReadLock();
             }
         }
+
+        private IValue GetRawState(string key, HashDigest<SHA256>? offset, bool completeStates)
+        {
+            _rwlock.EnterReadLock();
+            try
+            {
+                if (offset == null)
+                {
+                    offset = Store.IndexBlockHash(Id, -1);
+                }
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+
+            if (offset == null)
+            {
+                return null;
+            }
+
+            Block<T> block = this[offset.Value];
+            Tuple<HashDigest<SHA256>, long> stateReference;
+
+            _rwlock.EnterReadLock();
+            try
+            {
+                stateReference = Store.LookupStateReference(Id, key, block);
+            }
+            finally
+            {
+                _rwlock.ExitReadLock();
+            }
+
+            if (stateReference is null)
+            {
+                return null;
+            }
+
+            HashDigest<SHA256> hashValue = stateReference.Item1;
+
+            IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
+            if (blockStates is null)
+            {
+                if (completeStates)
+                {
+                    // Calculates and fills the incomplete states
+                    // on the fly.
+                    foreach (HashDigest<SHA256> hash in BlockHashes)
+                    {
+                        Block<T> b = this[hash];
+                        if (!(Store.GetBlockStates(b.Hash) is null))
+                        {
+                            continue;
+                        }
+
+                        IReadOnlyList<ActionEvaluation> evaluations = EvaluateActions(b);
+
+                        _rwlock.EnterWriteLock();
+
+                        try
+                        {
+                            SetStates(b, evaluations, buildStateReferences: false);
+                        }
+                        finally
+                        {
+                            _rwlock.ExitWriteLock();
+                        }
+                    }
+
+                    blockStates = Store.GetBlockStates(hashValue);
+                    if (blockStates is null)
+                    {
+                        throw new NullReferenceException();
+                    }
+                }
+                else
+                {
+                    throw new IncompleteBlockStatesException(hashValue);
+                }
+            }
+
+            if (blockStates.TryGetValue(key, out IValue state))
+            {
+                return state;
+            }
+
+            return null;
+        }
+
+        private string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
+
+        private string ToFungibleAssetKey(Address address, Currency currency) =>
+            "_" + address.ToHex().ToLowerInvariant() +
+            "_" + ByteUtil.Hex(currency.Hash.ByteArray).ToLowerInvariant();
+
+        private string ToFungibleAssetKey((Address, Currency) pair) =>
+            ToFungibleAssetKey(pair.Item1, pair.Item2);
 
         /// <summary>
         /// Provides data for the <see cref="TipChanged"/> event.

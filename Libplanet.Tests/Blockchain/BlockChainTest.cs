@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Bencodex.Types;
@@ -11,6 +12,7 @@ using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Libplanet.Store;
+using Libplanet.Tests.Action;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
@@ -1990,15 +1992,6 @@ namespace Libplanet.Tests.Blockchain
             var privateKey = new PrivateKey();
             Address signer = privateKey.ToAddress();
 
-            IImmutableDictionary<Address, IValue> GetDirty(
-                IEnumerable<ActionEvaluation> evaluations) =>
-                evaluations.Select(
-                    a => a.OutputStates
-                ).Aggregate(
-                    ImmutableDictionary<Address, IValue>.Empty,
-                    (x, y) => x.SetItems(y.GetUpdatedStates())
-                );
-
             void BuildIndex(Guid id, Block<DumbAction> block)
             {
                 foreach (Transaction<DumbAction> tx in block.Transactions)
@@ -2011,8 +2004,11 @@ namespace Libplanet.Tests.Blockchain
 
             // Build the store has incomplete states
             Block<DumbAction> b = chain.Genesis;
-            IImmutableDictionary<Address, IValue> dirty =
-                GetDirty(b.Evaluate(DateTimeOffset.UtcNow, _ => null));
+            ActionEvaluation[] evals =
+                b.Evaluate(DateTimeOffset.UtcNow, _ => null, (a, c) => 0).ToArray();
+            IImmutableDictionary<Address, IValue> dirty = evals.GetDirtyStates();
+            IImmutableDictionary<(Address, Currency), BigInteger> balances =
+                evals.GetDirtyBalances();
             const int accountsCount = 5;
             Address[] addresses = Enumerable.Repeat<object>(null, accountsCount)
                 .Select(_ => new PrivateKey().ToAddress())
@@ -2032,12 +2028,11 @@ namespace Libplanet.Tests.Blockchain
                         b,
                         new[] { tx },
                         blockInterval: TimeSpan.FromSeconds(10));
-                    dirty = GetDirty(
-                        b.Evaluate(
-                            DateTimeOffset.UtcNow,
-                            dirty.GetValueOrDefault
-                        )
-                    );
+                    dirty = b.Evaluate(
+                        DateTimeOffset.UtcNow,
+                        dirty.GetValueOrDefault,
+                        (a, c) => balances.GetValueOrDefault((a, c))
+                    ).GetDirtyStates();
                     Assert.NotEmpty(dirty);
                     store.PutBlock(b);
                     store.StoreStateReference(
