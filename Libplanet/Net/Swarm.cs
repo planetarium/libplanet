@@ -1352,27 +1352,26 @@ namespace Libplanet.Net
 
                             _logger.Debug("Starts to store state refs received from {Peer}.", peer);
 
-                            var d = new Dictionary<HashDigest<SHA256>, ISet<Address>>();
+                            var d = new Dictionary<HashDigest<SHA256>, ISet<string>>();
                             foreach (var pair in recentStates.StateReferences)
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
-                                IImmutableSet<Address> address = ImmutableHashSet.Create(pair.Key);
+                                IImmutableSet<string> key = ImmutableHashSet.Create(pair.Key);
                                 foreach (HashDigest<SHA256> bHash in pair.Value)
                                 {
                                     if (!d.ContainsKey(bHash))
                                     {
-                                        d[bHash] = new HashSet<Address>();
+                                        d[bHash] = new HashSet<string>();
                                     }
 
-                                    d[bHash].UnionWith(address);
+                                    d[bHash].UnionWith(key);
                                 }
                             }
 
-                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<Address>> pair in d)
+                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<string>> pair in d)
                             {
                                 HashDigest<SHA256> hash = pair.Key;
                                 IImmutableSet<string> stateKeys = pair.Value
-                                    .Select(a => a.ToHex().ToLowerInvariant())
                                     .ToImmutableHashSet();
                                 if (_store.GetBlockIndex(hash) is long index)
                                 {
@@ -1387,10 +1386,7 @@ namespace Libplanet.Net
                             {
                                 cancellationToken.ThrowIfCancellationRequested();
                                 IImmutableDictionary<string, IValue> states =
-                                    pair.Value.ToImmutableDictionary(
-                                        kv => kv.Key.ToHex().ToLowerInvariant(),
-                                        kv => kv.Value
-                                    );
+                                    pair.Value.ToImmutableDictionary();
                                 _store.SetBlockStates(pair.Key, states);
                             }
 
@@ -2015,7 +2011,7 @@ namespace Libplanet.Net
             HashDigest<SHA256>? @base = BlockChain.FindBranchPoint(baseLocator);
             HashDigest<SHA256> target = getRecentStates.TargetBlockHash;
             IImmutableDictionary<HashDigest<SHA256>,
-                IImmutableDictionary<Address, IValue>
+                IImmutableDictionary<string, IValue>
             > blockStates = null;
             IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs = null;
             long nextOffset = -1;
@@ -2084,8 +2080,8 @@ namespace Libplanet.Net
                         .Where(pair => !(pair.Item2 is null))
                         .ToImmutableDictionary(
                             pair => pair.Item1,
-                            pair => (IImmutableDictionary<Address, IValue>)pair.Item2
-                                .ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value)
+                            pair => (IImmutableDictionary<string, IValue>)pair.Item2
+                                .ToImmutableDictionary(kv => kv.Key, kv => kv.Value)
                         );
                 }
                 finally
@@ -2131,7 +2127,7 @@ namespace Libplanet.Net
                 nextOffset,
                 iteration,
                 blockStates,
-                stateRefs.ToImmutableDictionary(kv => new Address(kv.Key), kv => kv.Value))
+                stateRefs.ToImmutableDictionary())
             {
                 Identity = getRecentStates.Identity,
             };

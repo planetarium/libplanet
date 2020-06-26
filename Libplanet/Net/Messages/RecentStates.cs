@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex;
 using Bencodex.Types;
 using NetMQ;
@@ -20,9 +21,9 @@ namespace Libplanet.Net.Messages
             int iteration,
             IImmutableDictionary<
                 HashDigest<SHA256>,
-                IImmutableDictionary<Address, IValue>
+                IImmutableDictionary<string, IValue>
             > blockStates,
-            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateReferences
+            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateReferences
         )
         {
             BlockHash = blockHash;
@@ -73,12 +74,12 @@ namespace Libplanet.Net.Messages
             }
 
             var stateRefs =
-                new Dictionary<Address, IImmutableList<HashDigest<SHA256>>>(accountsCount);
+                new Dictionary<string, IImmutableList<HashDigest<SHA256>>>(accountsCount);
 
             for (int j = 0; j < accountsCount; j++)
             {
                 it.MoveNext();
-                var address = new Address(it.Current.Buffer);
+                var key = Encoding.UTF8.GetString(it.Current.Buffer);
 
                 it.MoveNext();
                 int stateRefsLength = it.Current.ConvertToInt32();
@@ -90,14 +91,14 @@ namespace Libplanet.Net.Messages
                     refs.Add(new HashDigest<SHA256>(it.Current.Buffer));
                 }
 
-                stateRefs[address] = refs.ToImmutableList();
+                stateRefs[key] = refs.ToImmutableList();
             }
 
             it.MoveNext();
             int blocksLength = it.Current.ConvertToInt32();  // This is not height!
 
             var blockStates =
-                new Dictionary<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>(
+                new Dictionary<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>(
                     blocksLength);
 
             for (int j = 0; j < blocksLength; j++)
@@ -108,14 +109,14 @@ namespace Libplanet.Net.Messages
                 it.MoveNext();
                 int statesLength = it.Current.ConvertToInt32();
 
-                var states = new Dictionary<Address, IValue>(statesLength);
+                var states = new Dictionary<string, IValue>(statesLength);
                 for (int k = 0; k < statesLength; k++)
                 {
                     it.MoveNext();
-                    var address = new Address(it.Current.Buffer);
+                    var key = Encoding.UTF8.GetString(it.Current.Buffer);
 
                     it.MoveNext();
-                    states[address] = Decompress(it.Current.Buffer);
+                    states[key] = Decompress(it.Current.Buffer);
                 }
 
                 blockStates[blockHash] = states.ToImmutableDictionary();
@@ -135,7 +136,7 @@ namespace Libplanet.Net.Messages
 
         public IImmutableDictionary<
             HashDigest<SHA256>,
-            IImmutableDictionary<Address, IValue>
+            IImmutableDictionary<string, IValue>
         > BlockStates { get; }
 
         /// <summary>
@@ -143,7 +144,7 @@ namespace Libplanet.Net.Messages
         /// state references in ascending order; the closest to the genesis block
         /// goes first, and the closest to the tip goes last.
         /// </summary>
-        public IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> StateReferences
+        public IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> StateReferences
         {
             get;
         }
@@ -173,8 +174,8 @@ namespace Libplanet.Net.Messages
             |   When Missing = true, this contains -1 and no data frames follow at all.
             +
             | 5. StateReferences [unordered]
-            | | 5.1. Key (20 bytes; account address)
-            | |   The account address of the following state references (5.3).
+            | | 5.1. Key (varying bytes; state key)
+            | |   The state key of the following state references (5.3).
             | +
             | | 5.2. Value.Count (4 bytes; 32-bit integer in big endian)
             | |   The length of the following state references (5.3).
@@ -217,7 +218,7 @@ namespace Libplanet.Net.Messages
 
                 foreach (var pair in StateReferences)
                 {
-                    yield return new NetMQFrame(pair.Key.ToByteArray());
+                    yield return new NetMQFrame(Encoding.UTF8.GetBytes(pair.Key));
 
                     IImmutableList<HashDigest<SHA256>> stateRefs = pair.Value;
                     yield return new NetMQFrame(
@@ -236,13 +237,13 @@ namespace Libplanet.Net.Messages
                 {
                     yield return new NetMQFrame(blockState.Key.ToByteArray());
 
-                    IImmutableDictionary<Address, IValue> states = blockState.Value;
+                    IImmutableDictionary<string, IValue> states = blockState.Value;
                     yield return new NetMQFrame(NetworkOrderBitsConverter.GetBytes(states.Count));
 
-                    foreach (var addressState in states)
+                    foreach (var keyStates in states)
                     {
-                        yield return new NetMQFrame(addressState.Key.ToByteArray());
-                        yield return new NetMQFrame(Compress(addressState.Value));
+                        yield return new NetMQFrame(Encoding.UTF8.GetBytes(keyStates.Key));
+                        yield return new NetMQFrame(Compress(keyStates.Value));
                     }
                 }
             }

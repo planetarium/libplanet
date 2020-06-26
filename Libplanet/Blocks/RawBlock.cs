@@ -21,7 +21,7 @@ namespace Libplanet.Blocks
         public RawBlock(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
-            Transactions = dict.ContainsKey((Binary)TransactionsKey)
+            Transactions = dict.ContainsKey((IKey)(Binary)TransactionsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionsKey)
                     .Select(tx => ((Binary)tx).ToImmutableArray()).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;

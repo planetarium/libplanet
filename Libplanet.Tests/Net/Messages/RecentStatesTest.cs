@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 using Bencodex.Types;
 using Libplanet.Crypto;
 using Libplanet.Net;
@@ -22,7 +23,7 @@ namespace Libplanet.Tests.Net.Messages
         {
             var emptyBlockStates = ImmutableDictionary<
                 HashDigest<SHA256>,
-                IImmutableDictionary<Address, IValue>
+                IImmutableDictionary<string, IValue>
             >.Empty;
             Assert.Throws<ArgumentNullException>(() =>
                 new RecentStates(
@@ -30,7 +31,7 @@ namespace Libplanet.Tests.Net.Messages
                     default,
                     default,
                     null,
-                    ImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>>.Empty
+                    ImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>>.Empty
                 )
             );
             Assert.Throws<ArgumentNullException>(() =>
@@ -57,41 +58,46 @@ namespace Libplanet.Tests.Net.Messages
 
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
             var randomBytesBuffer = new byte[HashDigest<SHA256>.Size];
-            (HashDigest<SHA256>, IImmutableDictionary<Address, IValue>)[] blockStates =
+            (HashDigest<SHA256>, IImmutableDictionary<string, IValue>)[] blockStates =
                 accounts.SelectMany(address =>
                 {
                     rng.GetNonZeroBytes(randomBytesBuffer);
                     var blockHash1 = new HashDigest<SHA256>(randomBytesBuffer);
                     rng.GetNonZeroBytes(randomBytesBuffer);
                     var blockHash2 = new HashDigest<SHA256>(randomBytesBuffer);
-                    IImmutableDictionary<Address, IValue> emptyState =
-                        ImmutableDictionary<Address, IValue>.Empty;
+                    IImmutableDictionary<string, IValue> emptyState =
+                        ImmutableDictionary<string, IValue>.Empty;
                     return new[]
                     {
                         (
                             blockHash1,
-                            emptyState.Add(address, (Text)$"A:{blockHash1}:{address}")
+                            emptyState.Add(
+                                address.ToHex().ToLowerInvariant(),
+                                (Text)$"A:{blockHash1}:{address}")
                         ),
                         (
                             blockHash2,
-                            emptyState.Add(address, (Text)$"B:{blockHash2}:{address}")
+                            emptyState.Add(
+                                address.ToHex().ToLowerInvariant(),
+                                (Text)$"B:{blockHash2}:{address}")
                         ),
                     };
                 }).ToArray();
-            IImmutableDictionary<HashDigest<SHA256>, IImmutableDictionary<Address, IValue>>
+            IImmutableDictionary<HashDigest<SHA256>, IImmutableDictionary<string, IValue>>
                 compressedBlockStates = blockStates.Where(
                     (_, i) => i % 2 == 1
                 ).ToImmutableDictionary(p => p.Item1, p => p.Item2);
             HashDigest<SHA256> blockHash = blockStates.Last().Item1;
 
-            IImmutableDictionary<Address, IImmutableList<HashDigest<SHA256>>> stateRefs =
+            IImmutableDictionary<string, IImmutableList<HashDigest<SHA256>>> stateRefs =
                 accounts.Select(a =>
                 {
                     var states = blockStates
-                        .Where(pair => pair.Item2.ContainsKey(a))
+                        .Where(pair => pair.Item2.ContainsKey(a.ToHex().ToLowerInvariant()))
                         .Select(pair => pair.Item1)
                         .ToImmutableList();
-                    return new KeyValuePair<Address, IImmutableList<HashDigest<SHA256>>>(a, states);
+                    return new KeyValuePair<string, IImmutableList<HashDigest<SHA256>>>(
+                        a.ToHex().ToLowerInvariant(), states);
                 }).ToImmutableDictionary();
 
             RecentStates reply =
@@ -114,19 +120,19 @@ namespace Libplanet.Tests.Net.Messages
             for (int i = 0; i < accountsCount; i++)
             {
                 int offset = stateRefsOffset + 1 + (i * 4);
-                Assert.Equal(Address.Size, msg[offset].BufferSize);
-                Address address = new Address(msg[offset].Buffer);
-                Assert.Contains(address, accounts);
+                Assert.Equal(Address.Size * 2, msg[offset].BufferSize);
+                var key = Encoding.UTF8.GetString(msg[offset].Buffer);
+                Assert.Contains(new Address(key), accounts);
 
                 Assert.Equal(4, msg[offset + 1].BufferSize);
                 Assert.Equal(2, msg[offset + 1].ConvertToInt32());
 
                 Assert.Equal(HashDigest<SHA256>.Size, msg[offset + 2].BufferSize);
-                Assert.Equal(stateRefs[address][0], new HashDigest<SHA256>(msg[offset + 2].Buffer));
+                Assert.Equal(stateRefs[key][0], new HashDigest<SHA256>(msg[offset + 2].Buffer));
                 Assert.Equal(HashDigest<SHA256>.Size, msg[offset + 3].BufferSize);
-                Assert.Equal(stateRefs[address][1], new HashDigest<SHA256>(msg[offset + 3].Buffer));
+                Assert.Equal(stateRefs[key][1], new HashDigest<SHA256>(msg[offset + 3].Buffer));
 
-                accounts.Remove(address);
+                accounts.Remove(new Address(key));
             }
 
             Assert.Empty(accounts);
@@ -141,8 +147,8 @@ namespace Libplanet.Tests.Net.Messages
                 Assert.Contains(hash, compressedBlockStates);
                 Assert.Equal(1, msg[offset + 1].ConvertToInt32());
 
-                var addr = new Address(msg[offset + 2].Buffer);
-                Assert.Equal(compressedBlockStates[hash].Keys.First(), addr);
+                var addr = new Address(Encoding.UTF8.GetString(msg[offset + 2].Buffer));
+                Assert.Equal(new Address(compressedBlockStates[hash].Keys.First()), addr);
 
                 using (var compressed = new MemoryStream(msg[offset + 3].Buffer))
                 using (var df = new DeflateStream(compressed, CompressionMode.Decompress))

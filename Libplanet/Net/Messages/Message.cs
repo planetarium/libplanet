@@ -72,7 +72,7 @@ namespace Libplanet.Net.Messages
             /// A reply to <see cref="GetRecentStates"/>.
             /// Contains the calculated recent states and state references.
             /// </summary>
-            RecentStates = 0x0f,
+            RecentStates = 0x13,
 
             /// <summary>
             /// Message containing a single <see cref="BlockHeader"/>.
