@@ -81,19 +81,19 @@ namespace Libplanet.Blocks
             Difficulty = dict.GetValue<Integer>(DifficultyKey);
             Nonce = dict.GetValue<Binary>(NonceKey).ToImmutableArray();
 
-            Miner = dict.ContainsKey((Binary)MinerKey)
+            Miner = dict.ContainsKey((IKey)(Binary)MinerKey)
                 ? dict.GetValue<Binary>(MinerKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            PreviousHash = dict.ContainsKey((Binary)PreviousHashKey)
+            PreviousHash = dict.ContainsKey((IKey)(Binary)PreviousHashKey)
                 ? dict.GetValue<Binary>(PreviousHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            TxHash = dict.ContainsKey((Binary)TxHashKey)
+            TxHash = dict.ContainsKey((IKey)(Binary)TxHashKey)
                 ? dict.GetValue<Binary>(TxHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
 
-            Hash = dict.ContainsKey((Binary)HashKey)
+            Hash = dict.ContainsKey((IKey)(Binary)HashKey)
                 ? dict.GetValue<Binary>(HashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }

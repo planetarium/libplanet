@@ -39,7 +39,7 @@ namespace Libplanet.Blocks
         public BlockDigest(Bencodex.Types.Dictionary dict)
         {
             Header = new BlockHeader(dict.GetValue<Bencodex.Types.Dictionary>(HeaderKey));
-            TxIds = dict.ContainsKey((Binary)TransactionIdsKey)
+            TxIds = dict.ContainsKey((IKey)(Binary)TransactionIdsKey)
                 ? dict.GetValue<Bencodex.Types.List>(TransactionIdsKey)
                     .Select(txId => ((Binary)txId).ToImmutableArray()).ToImmutableArray()
                 : ImmutableArray<ImmutableArray<byte>>.Empty;

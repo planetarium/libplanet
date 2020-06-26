@@ -71,7 +71,7 @@ namespace Libplanet.Tx
         {
             Nonce = dict.GetValue<Integer>(NonceKey);
             Signer = dict.GetValue<Binary>(SignerKey).ToImmutableArray();
-            GenesisHash = dict.ContainsKey((Binary)GenesisHashKey)
+            GenesisHash = dict.ContainsKey((IKey)(Binary)GenesisHashKey)
                 ? dict.GetValue<Binary>(GenesisHashKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
             UpdatedAddresses = dict.GetValue<Bencodex.Types.List>(UpdatedAddressesKey)
@@ -80,7 +80,7 @@ namespace Libplanet.Tx
             Timestamp = dict.GetValue<Text>(TimestampKey);
             Actions = dict.GetValue<Bencodex.Types.List>(ActionsKey).ToImmutableArray();
 
-            Signature = dict.ContainsKey((Binary)SignatureKey)
+            Signature = dict.ContainsKey((IKey)(Binary)SignatureKey)
                 ? dict.GetValue<Binary>(SignatureKey).ToImmutableArray()
                 : ImmutableArray<byte>.Empty;
         }

@@ -262,11 +262,11 @@ namespace Libplanet.Tests.Common.Action
             TargetAddress = new Address(plainValue.GetValue<Binary>("target_address").Value);
             RecordRehearsal = plainValue.GetValue<Boolean>("record_rehearsal").Value;
             RecordRandom =
-                plainValue.ContainsKey((Text)"record_random") &&
+                plainValue.ContainsKey((IKey)(Text)"record_random") &&
                 plainValue["record_random"] is Boolean r &&
                 r.Value;
 
-            if (plainValue.ContainsKey((Text)"idempotent"))
+            if (plainValue.ContainsKey((IKey)(Text)"idempotent"))
             {
                 Idempotent = plainValue.GetValue<Boolean>("idempotent");
             }
