@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,13 +17,13 @@ using Libplanet.Net;
 using Libplanet.Net.Messages;
 using Libplanet.Net.Protocols;
 using Libplanet.Store;
+using Libplanet.Stun;
 using Libplanet.Tests.Blockchain;
 using Libplanet.Tests.Common.Action;
 using Libplanet.Tests.Store;
 using Libplanet.Tx;
 using NetMQ;
 using NetMQ.Sockets;
-using Nito.AsyncEx;
 using Serilog;
 using Serilog.Events;
 using Xunit;
@@ -1164,7 +1165,7 @@ namespace Libplanet.Tests.Net
                 canceled = true;
             }
 
-            Assert.True(canceled);
+            Assert.True(canceled || t.IsCompleted);
         }
 
         [Fact(Timeout = Timeout)]
@@ -1232,6 +1233,88 @@ namespace Libplanet.Tests.Net
                 seed.Dispose();
                 swarmA.Dispose();
                 swarmB.Dispose();
+            }
+        }
+
+        [FactOnlyTurnAvailable(Timeout = Timeout)]
+        public async Task ReconnectToTurn()
+        {
+            int port;
+            using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(new IPEndPoint(IPAddress.Loopback, 0));
+                port = ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+
+            Uri turnUrl = FactOnlyTurnAvailableAttribute.TurnUri;
+            string username = FactOnlyTurnAvailableAttribute.Username;
+            string password = FactOnlyTurnAvailableAttribute.Password;
+            var proxyUri = new Uri($"turn://{username}:{password}@localhost:{port}/");
+
+            IEnumerable<IceServer> iceServers = new[]
+            {
+                new IceServer(urls: new[] { proxyUri }, username: username, credential: password),
+            };
+
+            var cts = new CancellationTokenSource();
+            var tasks = new List<Task> { TurnProxy(port, turnUrl, cts.Token) };
+
+            var seed = CreateSwarm(_blockchains[0], host: "localhost");
+            var swarmA = CreateSwarm(_blockchains[1], iceServers: iceServers);
+
+            async Task RefreshTableAsync(CancellationToken cancellationToken)
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    await Task.Delay(1000, cancellationToken);
+                    try
+                    {
+                        await swarmA.Protocol.RefreshTableAsync(
+                            TimeSpan.FromSeconds(10), cancellationToken);
+                    }
+                    catch (TurnClientException)
+                    {
+                    }
+                }
+            }
+
+            async Task MineAndBroadcast(CancellationToken cancellationToken)
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    var block = await _blockchains[0].MineBlock(_fx1.Address1);
+                    seed.BroadcastBlock(block);
+                    await Task.Delay(5000, cancellationToken);
+                }
+            }
+
+            try
+            {
+                await StartAsync(seed);
+                await StartAsync(swarmA);
+
+                await swarmA.AddPeersAsync(new[] { seed.AsPeer }, null);
+
+                cts.Cancel();
+                cts = new CancellationTokenSource();
+
+                tasks.Add(TurnProxy(port, turnUrl, cts.Token));
+                tasks.Add(RefreshTableAsync(cts.Token));
+                tasks.Add(MineAndBroadcast(cts.Token));
+
+                await swarmA.BlockReceived.WaitAsync();
+                cts.Cancel();
+                await Task.Delay(1000);
+
+                Assert.Equal(_blockchains[0].Tip, _blockchains[1].Tip);
+            }
+            finally
+            {
+                await StopAsync(seed);
+                await StopAsync(swarmA);
+
+                seed.Dispose();
+                swarmA.Dispose();
             }
         }
 
@@ -1920,6 +2003,60 @@ namespace Libplanet.Tests.Net
                 null,
                 findNeighborsTimeout: TimeSpan.FromSeconds(3),
                 cancellationToken: cancellationToken);
+        }
+
+        private async Task TurnProxy(
+            int port,
+            Uri turnUri,
+            CancellationToken cancellationToken)
+        {
+            var server = new TcpListener(IPAddress.Loopback, port);
+            server.Start();
+            var tasks = new List<Task>();
+            var clients = new List<TcpClient>();
+
+            cancellationToken.Register(() => server.Stop());
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                TcpClient client;
+                try
+                {
+                    client = await server.AcceptTcpClientAsync();
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
+
+                clients.Add(client);
+
+                tasks.Add(Task.Run(
+                    async () =>
+                    {
+                        const int bufferSize = 8192;
+                        NetworkStream stream = client.GetStream();
+
+                        using (TcpClient remoteClient = new TcpClient(turnUri.Host, turnUri.Port))
+                        {
+                            var remoteStream = remoteClient.GetStream();
+                            await await Task.WhenAny(
+                                remoteStream.CopyToAsync(stream, bufferSize, cancellationToken),
+                                stream.CopyToAsync(remoteStream, bufferSize, cancellationToken));
+                        }
+
+                        client.Dispose();
+                    },
+                    cancellationToken));
+            }
+
+            foreach (var client in clients)
+            {
+                client?.Dispose();
+            }
+
+            Log.Debug("TurnProxy is canceled.");
+
+            await Task.WhenAny(tasks);
         }
 
         private class Sleep : IAction

@@ -53,7 +53,9 @@ namespace Libplanet.Net
         private AsyncCollection<MessageRequest> _requests;
         private long _requestCount;
         private CancellationTokenSource _runtimeCancellationTokenSource;
+        private CancellationTokenSource _turnCancellationTokenSource;
         private Task _runtimeProcessor;
+        private List<Task> _turnTasks;
 
         private TaskCompletionSource<object> _runningEvent;
         private CancellationToken _cancellationToken;
@@ -107,6 +109,7 @@ namespace Libplanet.Net
 
             _requests = new AsyncCollection<MessageRequest>();
             _runtimeCancellationTokenSource = new CancellationTokenSource();
+            _turnCancellationTokenSource = new CancellationTokenSource();
             _requestCount = 0;
             _runtimeProcessor = Task.Factory.StartNew(
                 () =>
@@ -213,11 +216,6 @@ namespace Libplanet.Net
             _router = new RouterSocket();
             _router.Options.RouterHandover = true;
 
-            if (_host is null && !(_iceServers is null))
-            {
-                _turnClient = await IceServer.CreateTurnClient(_iceServers);
-            }
-
             if (_listenPort == null)
             {
                 _listenPort = _router.BindRandomPort("tcp://*");
@@ -229,32 +227,18 @@ namespace Libplanet.Net
 
             _logger.Information($"Listen on {_listenPort}");
 
+            if (_host is null && !(_iceServers is null))
+            {
+                await InitializeTurnClient();
+            }
+
             _cancellationToken = cancellationToken;
 
-            if (!(_turnClient is null))
+            if (!_behindNAT)
             {
-                _publicIPAddress = (await _turnClient.GetMappedAddressAsync()).Address;
-                _behindNAT = await _turnClient.IsBehindNAT();
-            }
-
-            if (_behindNAT)
-            {
-                IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
-                    TurnAllocationLifetime
-                );
-                _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
-
-                List<Task> tasks = BindMultipleProxies(_listenPort.Value, 3, _cancellationToken);
-                tasks.Add(RefreshAllocate(_cancellationToken));
-                tasks.Add(RefreshPermissions(_cancellationToken));
-            }
-            else if (_host is null)
-            {
-                _endPoint = new DnsEndPoint(_publicIPAddress.ToString(), _listenPort.Value);
-            }
-            else
-            {
-                _endPoint = new DnsEndPoint(_host, _listenPort.Value);
+                _endPoint = new DnsEndPoint(
+                    _host ?? _publicIPAddress.ToString(),
+                    _listenPort.Value);
             }
 
             _replyQueue = new NetMQQueue<NetMQMessage>();
@@ -434,6 +418,7 @@ namespace Libplanet.Net
         public void Dispose()
         {
             _runtimeCancellationTokenSource.Cancel();
+            _turnCancellationTokenSource.Cancel();
             _runtimeProcessor.Wait();
         }
 
@@ -922,6 +907,44 @@ namespace Libplanet.Net
                     throw;
                 }
             }
+            catch (Exception e) when (e is SocketException || e is ObjectDisposedException)
+            {
+                _logger.Error($"Unexpected error occurred during {nameof(CreatePermission)}: {e}");
+
+                if (!(_turnClient is null))
+                {
+                    _logger.Debug("Trying to reconnect to the TURN server...");
+
+                    _turnClient.Dispose();
+                    _turnCancellationTokenSource.Cancel();
+                    await Task.WhenAny(_turnTasks);
+                    await InitializeTurnClient();
+                }
+            }
+        }
+
+        private async Task InitializeTurnClient()
+        {
+            _turnCancellationTokenSource = new CancellationTokenSource();
+            _turnClient = await IceServer.CreateTurnClient(_iceServers);
+
+            _publicIPAddress = (await _turnClient.GetMappedAddressAsync(_cancellationToken))
+                .Address;
+            _behindNAT = await _turnClient.IsBehindNAT(_cancellationToken);
+
+            if (_behindNAT)
+            {
+                IPEndPoint turnEp = await _turnClient.AllocateRequestAsync(
+                    TurnAllocationLifetime,
+                    _cancellationToken
+                );
+                _endPoint = new DnsEndPoint(turnEp.Address.ToString(), turnEp.Port);
+
+                _turnTasks = BindMultipleProxies(
+                    _listenPort.Value, 3, _turnCancellationTokenSource.Token);
+                _turnTasks.Add(RefreshAllocate(_turnCancellationTokenSource.Token));
+                _turnTasks.Add(RefreshPermissions(_turnCancellationTokenSource.Token));
+            }
         }
 
         // FIXME: This method should be in Swarm<T>
@@ -968,6 +991,12 @@ namespace Libplanet.Net
                     _logger.Warning(e, $"{nameof(RefreshTableAsync)}() is cancelled.");
                     throw;
                 }
+                catch (Exception e)
+                {
+                    var msg = "Unexpected exception occurred during " +
+                        $"{nameof(RefreshTableAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
+                }
             }
         }
 
@@ -986,6 +1015,12 @@ namespace Libplanet.Net
                 {
                     _logger.Warning(e, $"{nameof(RebuildConnectionAsync)}() is cancelled.");
                     throw;
+                }
+                catch (Exception e)
+                {
+                    var msg = "Unexpected exception occurred during " +
+                              $"{nameof(RebuildConnectionAsync)}(): {{0}}";
+                    _logger.Warning(e, msg, e);
                 }
             }
         }
