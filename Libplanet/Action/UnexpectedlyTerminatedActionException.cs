@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using Libplanet.Blockchain.Policies;
 using Libplanet.Blocks;
@@ -46,6 +47,14 @@ namespace Libplanet.Action
             BlockIndex = blockIndex;
             TxId = txid;
             Action = action;
+        }
+
+        private UnexpectedlyTerminatedActionException(
+            SerializationInfo info,
+            StreamingContext context
+        )
+            : base(info, context)
+        {
         }
 
         /// <summary>

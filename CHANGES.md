@@ -79,6 +79,8 @@ To be released.
     [[#909]]
  -  Fixed a bug in which pre-computed state delivery had failed when a state
     key is not an `Address` when preloading.  [[#912]]
+ -  Fixed a bug where `UnexpectedlyTerminatedException` hadn't been serialized
+    with `BinaryFormatter`.  [[#913]]
 
 ### CLI tools
 
@@ -101,6 +103,7 @@ To be released.
 [#902]: https://github.com/planetarium/libplanet/pull/902
 [#909]: https://github.com/planetarium/libplanet/pull/909
 [#912]: https://github.com/planetarium/libplanet/pull/912
+[#913]: https://github.com/planetarium/libplanet/pull/913
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
