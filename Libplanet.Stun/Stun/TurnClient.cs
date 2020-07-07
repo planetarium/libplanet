@@ -255,8 +255,9 @@ namespace Libplanet.Stun
             StunMessage message,
             CancellationToken cancellationToken)
         {
-            _responses[message.TransactionId] =
-                new TaskCompletionSource<StunMessage>(cancellationToken);
+            var tcs = new TaskCompletionSource<StunMessage>();
+            cancellationToken.Register(() => tcs.TrySetCanceled());
+            _responses[message.TransactionId] = tcs;
             var asBytes = message.Encode(this);
             await stream.WriteAsync(
                 asBytes,

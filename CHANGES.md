@@ -81,6 +81,9 @@ To be released.
     key is not an `Address` when preloading.  [[#912]]
  -  Fixed a bug where `UnexpectedlyTerminatedException` hadn't been serialized
     with `BinaryFormatter`.  [[#913]]
+ -  Fixed a bug where `TurnClient` hadn't applied cancellation token to its
+    connections.  [[#916]]
+
 
 ### CLI tools
 
@@ -104,6 +107,7 @@ To be released.
 [#909]: https://github.com/planetarium/libplanet/pull/909
 [#912]: https://github.com/planetarium/libplanet/pull/912
 [#913]: https://github.com/planetarium/libplanet/pull/913
+[#916]: https://github.com/planetarium/libplanet/pull/916
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
