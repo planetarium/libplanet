@@ -213,9 +213,12 @@ namespace Libplanet.Blocks
 
             if (Difficulty > TotalDifficulty)
             {
+                var msg = $"A Block.Difficulty ({Difficulty}) must be less than" +
+                          $"its TotalDifficulty ({TotalDifficulty}).";
                 throw new InvalidBlockTotalDifficultyException(
-                    "total difficulty must be less than its difficulty, " +
-                    $"but it's (difficulty: {Difficulty}, total difficulty: {TotalDifficulty})."
+                    Difficulty,
+                    TotalDifficulty,
+                    msg
                 );
             }
 
@@ -231,9 +234,12 @@ namespace Libplanet.Blocks
 
                 if (TotalDifficulty != 0)
                 {
+                    var msg = "Total difficulty must be 0 for the genesis block, " +
+                              $"but its total difficulty is {TotalDifficulty}.";
                     throw new InvalidBlockTotalDifficultyException(
-                        "total difficulty must be 0 for the genesis block, " +
-                        $"but its total difficulty is {TotalDifficulty}."
+                        Difficulty,
+                        TotalDifficulty,
+                        msg
                     );
                 }
 

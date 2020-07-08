@@ -160,10 +160,13 @@ namespace Libplanet.Blockchain.Policies
 
             if (nextBlock.TotalDifficulty != totalDifficulty)
             {
+                var msg = $"The expected total difficulty of the block #{index} " +
+                          $"is {totalDifficulty}, but its difficulty is " +
+                          $"{nextBlock.TotalDifficulty}'";
                 return new InvalidBlockTotalDifficultyException(
-                    $"the expected total difficulty of the block #{index} " +
-                    $"is {totalDifficulty}, but its difficulty is " +
-                    $"{nextBlock.TotalDifficulty}'");
+                    nextBlock.Difficulty,
+                    nextBlock.TotalDifficulty,
+                    msg);
             }
 
             if (!nextBlock.PreviousHash.Equals(prevHash))
