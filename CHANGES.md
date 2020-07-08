@@ -27,6 +27,10 @@ To be released.
     [[#796], [#878]]
  -  Added `render` optional parameter to `BlockChain<T>()` constructor.
     [[#883]]
+ -  Added `BigInteger`-typed `totalDifficulty` parameter to `Block<T>()`
+    constructor.  [[#666], [#917]]
+ -  Added `BigInteger`-typed `previousTotalDifficulty` parameter to
+    `Block<T>.Mine()` static method.  [[#666], [#917]]
 
 ### Backward-incompatible network protocol changes
 
@@ -36,10 +40,12 @@ To be released.
  -  The existing `RecentStates` message type (with the type number `0x0f`) was
     replaced by a new `RecentStates` message type
     (with the type number `0x13`).  [[#912]]
+ -  Added `BlockHeader.TotalDifficulty` property.  [[#666], [#917]]
 
 ### Backward-incompatible storage format changes
 
  -  Added `RawTransaction<T>.GenesisHash` property.  [[#796], [#878]]
+ -  Added `BlockHeader.TotalDifficulty` property.  [[#666], [#917]]
 
 ### Added APIs
 
@@ -51,6 +57,7 @@ To be released.
  -  Added `CurrencyPermissionException` class.  [[#861], [#900]]
  -  Added `InsufficientBalanceException` class.  [[#861], [#900]]
  -  Added `BlockChain<T>.GetBalance()` method.  [[#861], [#900]]
+ -  Added `Block<T>.TotalDifficulty` property.  [[#666], [#917]]
 
 ### Behavioral changes
 
@@ -69,6 +76,8 @@ To be released.
  -  `Swarm<T>` became to ignore invalid `BlockHeader`s immediately.  [[#898]]
  -  `Swarm<T>.PreloadAsync()` became to clean up only temporary chains.
     [[#902]]
+ -  `BlockPolicy<T>` became to validate `Block<T>.TotalDifficulty` property
+    of a `Block<T>`.  [[#666], [#917]]
 
 ### Bug fixes
 
@@ -88,6 +97,7 @@ To be released.
 ### CLI tools
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
+[#666]: https://github.com/planetarium/libplanet/issues/666
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#796]: https://github.com/planetarium/libplanet/issues/796
 [#858]: https://github.com/planetarium/libplanet/issues/858
@@ -108,6 +118,7 @@ To be released.
 [#912]: https://github.com/planetarium/libplanet/pull/912
 [#913]: https://github.com/planetarium/libplanet/pull/913
 [#916]: https://github.com/planetarium/libplanet/pull/916
+[#917]: https://github.com/planetarium/libplanet/pull/917
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
