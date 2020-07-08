@@ -208,6 +208,25 @@ namespace Libplanet.Tests.Blockchain.Policies
         }
 
         [Fact]
+        public void ValidateNextBlockInvalidTotalDifficulty()
+        {
+            _chain.Append(_validNext);
+
+            var invalidTotalDifficultyBlock = Block<DumbAction>.Mine(
+                2,
+                _policy.GetNextBlockDifficulty(_chain),
+                _validNext.TotalDifficulty - 1,
+                _genesis.Miner.Value,
+                _validNext.Hash,
+                _validNext.Timestamp.AddSeconds(1),
+                _emptyTransaction);
+            Assert.IsType<InvalidBlockTotalDifficultyException>(
+                _policy.ValidateNextBlock(
+                    _chain,
+                    invalidTotalDifficultyBlock));
+        }
+
+        [Fact]
         public void ValidateNextBlockInvalidPreviousHash()
         {
             _chain.Append(_validNext);
