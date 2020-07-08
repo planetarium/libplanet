@@ -141,18 +141,28 @@ namespace Libplanet.RocksDBStore
         /// <inheritdoc/>
         public override void DeleteChainId(Guid chainId)
         {
+            _logger.Debug($"Deleting chainID: {chainId}.");
+            _lastStateRefCaches.Remove(chainId);
+
+            var cfName = chainId.ToString();
             try
             {
-                _lastStateRefCaches.Remove(chainId);
-
-                var cfName = chainId.ToString();
                 _chainDb.DropColumnFamily(cfName);
+            }
+            catch (KeyNotFoundException)
+            {
+                // Do nothing according to the specification: DeleteChainId() should be idempotent.
+                _logger.Debug($"No such chain ID in _chainDb: {cfName}.", cfName);
+            }
+
+            try
+            {
                 _stateRefDb.DropColumnFamily(cfName);
             }
             catch (KeyNotFoundException)
             {
                 // Do nothing according to the specification: DeleteChainId() should be idempotent.
-                _logger.Debug("No such chain ID: {ChainId}.", chainId);
+                _logger.Debug($"No such chain ID in _stateRefDb: {cfName}.", cfName);
             }
         }
 
