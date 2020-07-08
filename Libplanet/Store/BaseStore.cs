@@ -86,6 +86,7 @@ namespace Libplanet.Store
                 return new Block<T>(
                     index: blockDigest.Header.Index,
                     difficulty: blockDigest.Header.Difficulty,
+                    totalDifficulty: blockDigest.Header.TotalDifficulty,
                     nonce: new Nonce(blockDigest.Header.Nonce.ToArray()),
                     miner: new Address(blockDigest.Header.Miner),
                     previousHash: prevHash,

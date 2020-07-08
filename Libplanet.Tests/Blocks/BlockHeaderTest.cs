@@ -21,6 +21,7 @@ namespace Libplanet.Tests.Blocks
             var header = new BlockHeader(
                 index: 0,
                 difficulty: 0,
+                totalDifficulty: 0,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,
@@ -42,6 +43,7 @@ namespace Libplanet.Tests.Blocks
             var header = new BlockHeader(
                 index: _fx.Next.Index,
                 difficulty: long.MaxValue,
+                totalDifficulty: _fx.Genesis.TotalDifficulty + long.MaxValue,
                 nonce: _fx.Next.Nonce.ByteArray,
                 miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
                 hash: _fx.Next.Hash.ByteArray,
@@ -63,6 +65,7 @@ namespace Libplanet.Tests.Blocks
             var header = new BlockHeader(
                 index: -1,
                 difficulty: _fx.Next.Difficulty,
+                totalDifficulty: _fx.Next.TotalDifficulty,
                 nonce: _fx.Next.Nonce.ByteArray,
                 miner: _fx.Next.Miner?.ByteArray ?? ImmutableArray<byte>.Empty,
                 hash: _fx.Next.Hash.ByteArray,
@@ -85,6 +88,7 @@ namespace Libplanet.Tests.Blocks
             var genesisHeader = new BlockHeader(
                 index: 0,
                 difficulty: 1000,
+                totalDifficulty: 1000,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,
@@ -96,9 +100,10 @@ namespace Libplanet.Tests.Blocks
             Assert.Throws<InvalidBlockDifficultyException>(() =>
                 genesisHeader.Validate(DateTimeOffset.UtcNow));
 
-            var header = new BlockHeader(
+            var header1 = new BlockHeader(
                 index: 10,
                 difficulty: 0,
+                totalDifficulty: 1000,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,
@@ -108,7 +113,22 @@ namespace Libplanet.Tests.Blocks
             );
 
             Assert.Throws<InvalidBlockDifficultyException>(() =>
-                genesisHeader.Validate(DateTimeOffset.UtcNow));
+                header1.Validate(DateTimeOffset.UtcNow));
+
+            var header2 = new BlockHeader(
+                index: 10,
+                difficulty: 1000,
+                totalDifficulty: 10,
+                nonce: ImmutableArray<byte>.Empty,
+                previousHash: ImmutableArray<byte>.Empty,
+                txHash: ImmutableArray<byte>.Empty,
+                hash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
+                miner: ImmutableArray<byte>.Empty,
+                timestamp: now.ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture)
+            );
+
+            Assert.Throws<InvalidBlockTotalDifficultyException>(() =>
+                header2.Validate(DateTimeOffset.UtcNow));
         }
 
         [Fact]
@@ -118,6 +138,7 @@ namespace Libplanet.Tests.Blocks
             var genesisHeader = new BlockHeader(
                 index: 0,
                 difficulty: 0,
+                totalDifficulty: 0,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: TestUtils.GetRandomBytes(32).ToImmutableArray(),
                 txHash: ImmutableArray<byte>.Empty,
@@ -132,6 +153,7 @@ namespace Libplanet.Tests.Blocks
             var header = new BlockHeader(
                 index: 10,
                 difficulty: 1000,
+                totalDifficulty: 1500,
                 nonce: ImmutableArray<byte>.Empty,
                 previousHash: ImmutableArray<byte>.Empty,
                 txHash: ImmutableArray<byte>.Empty,

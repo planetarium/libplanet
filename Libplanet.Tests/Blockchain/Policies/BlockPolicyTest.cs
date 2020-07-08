@@ -44,6 +44,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             _validNext = Block<DumbAction>.Mine(
                 1,
                 1024,
+                _genesis.TotalDifficulty,
                 _genesis.Miner.Value,
                 _genesis.Hash,
                 _genesis.Timestamp.AddSeconds(1),
@@ -162,6 +163,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var validNextBlock = Block<DumbAction>.Mine(
                 1,
                 1,
+                _genesis.TotalDifficulty,
                 _genesis.Miner.Value,
                 _genesis.Hash,
                 _genesis.Timestamp.AddDays(1),
@@ -177,6 +179,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidIndexBlock = Block<DumbAction>.Mine(
                 1,
                 1,
+                _genesis.TotalDifficulty,
                 _genesis.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
@@ -193,6 +196,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidDifficultyBlock = Block<DumbAction>.Mine(
                 2,
                 1,
+                _validNext.TotalDifficulty,
                 _genesis.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.AddSeconds(1),
@@ -211,6 +215,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidPreviousHashBlock = Block<DumbAction>.Mine(
                 2,
                 1032,
+                _validNext.TotalDifficulty,
                 _genesis.Miner.Value,
                 new HashDigest<SHA256>(new byte[32]),
                 _validNext.Timestamp.AddSeconds(1),
@@ -229,6 +234,7 @@ namespace Libplanet.Tests.Blockchain.Policies
             var invalidPreviousTimestamp = Block<DumbAction>.Mine(
                 2,
                 1032,
+                _validNext.TotalDifficulty,
                 _genesis.Miner.Value,
                 _validNext.Hash,
                 _validNext.Timestamp.Subtract(TimeSpan.FromSeconds(1)),

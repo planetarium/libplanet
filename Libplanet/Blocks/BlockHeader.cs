@@ -2,6 +2,7 @@ using System;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using Bencodex;
 using Bencodex.Types;
@@ -20,6 +21,8 @@ namespace Libplanet.Blocks
         private static readonly byte[] TimestampKey = { 0x74 }; // 't'
 
         private static readonly byte[] DifficultyKey = { 0x64 }; // 'd'
+
+        private static readonly byte[] TotalDifficultyKey = { 0x54 }; // 'T'
 
         private static readonly byte[] NonceKey = { 0x6e }; // 'n'
 
@@ -47,6 +50,8 @@ namespace Libplanet.Blocks
         /// Goes to the <see cref="Miner"/>.</param>
         /// <param name="difficulty">The mining difficulty that <paramref name="nonce"/>
         /// has to satisfy.  Goes to the <see cref="Difficulty"/>.</param>
+        /// <param name="totalDifficulty">The total mining difficulty until this block.
+        /// See also <see cref="Difficulty"/>.</param>
         /// <param name="previousHash">The previous block's <see cref="Hash"/>.  If it's a genesis
         /// block (i.e., <paramref name="index"/> is 0) this should be <c>null</c>.
         /// Goes to the <see cref="PreviousHash"/>.</param>
@@ -60,6 +65,7 @@ namespace Libplanet.Blocks
             ImmutableArray<byte> nonce,
             ImmutableArray<byte> miner,
             long difficulty,
+            BigInteger totalDifficulty,
             ImmutableArray<byte> previousHash,
             ImmutableArray<byte> txHash,
             ImmutableArray<byte> hash)
@@ -69,6 +75,7 @@ namespace Libplanet.Blocks
             Nonce = nonce;
             Miner = miner;
             Difficulty = difficulty;
+            TotalDifficulty = totalDifficulty;
             PreviousHash = previousHash;
             TxHash = txHash;
             Hash = hash;
@@ -79,6 +86,7 @@ namespace Libplanet.Blocks
             Index = dict.GetValue<Integer>(IndexKey);
             Timestamp = dict.GetValue<Text>(TimestampKey);
             Difficulty = dict.GetValue<Integer>(DifficultyKey);
+            TotalDifficulty = dict.GetValue<Integer>(TotalDifficultyKey);
             Nonce = dict.GetValue<Binary>(NonceKey).ToImmutableArray();
 
             Miner = dict.ContainsKey((IKey)(Binary)MinerKey)
@@ -107,6 +115,8 @@ namespace Libplanet.Blocks
         public ImmutableArray<byte> Miner { get; }
 
         public long Difficulty { get; }
+
+        public BigInteger TotalDifficulty { get; }
 
         public ImmutableArray<byte> PreviousHash { get; }
 
@@ -155,6 +165,7 @@ namespace Libplanet.Blocks
                 .Add(IndexKey, Index)
                 .Add(TimestampKey, Timestamp)
                 .Add(DifficultyKey, Difficulty)
+                .Add(TotalDifficultyKey, (IValue)(Bencodex.Types.Integer)TotalDifficulty)
                 .Add(NonceKey, Nonce.ToArray())
                 .Add(HashKey, Hash.ToArray());
 
@@ -200,6 +211,14 @@ namespace Libplanet.Blocks
                 );
             }
 
+            if (Difficulty > TotalDifficulty)
+            {
+                throw new InvalidBlockTotalDifficultyException(
+                    "total difficulty must be less than its difficulty, " +
+                    $"but it's (difficulty: {Difficulty}, total difficulty: {TotalDifficulty})."
+                );
+            }
+
             if (Index == 0)
             {
                 if (Difficulty != 0)
@@ -207,6 +226,14 @@ namespace Libplanet.Blocks
                     throw new InvalidBlockDifficultyException(
                         "difficulty must be 0 for the genesis block, " +
                         $"but its difficulty is {Difficulty}."
+                    );
+                }
+
+                if (TotalDifficulty != 0)
+                {
+                    throw new InvalidBlockTotalDifficultyException(
+                        "total difficulty must be 0 for the genesis block, " +
+                        $"but its total difficulty is {TotalDifficulty}."
                     );
                 }
 
