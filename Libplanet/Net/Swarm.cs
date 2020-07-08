@@ -45,7 +45,7 @@ namespace Libplanet.Net
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        private (long, BoundPeer, HashDigest<SHA256>)? _demandBlockHash;
+        private (BlockHeader, BoundPeer, HashDigest<SHA256>)? _demandBlockHash;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         static Swarm()
@@ -1642,12 +1642,12 @@ namespace Libplanet.Net
 
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
-                // FIXME: this should be changed into total difficulty.
-                if (header.Index > BlockChain.Tip.Index &&
-                    (_demandBlockHash is null || _demandBlockHash.Value.Item1 < header.Index))
+                if (header.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
+                    (_demandBlockHash is null ||
+                     _demandBlockHash.Value.Item1.TotalDifficulty < header.TotalDifficulty))
                 {
                     _demandBlockHash =
-                        (header.Index, peer, new HashDigest<SHA256>(header.Hash.ToArray()));
+                        (header, peer, new HashDigest<SHA256>(header.Hash.ToArray()));
                 }
                 else
                 {
@@ -2139,13 +2139,13 @@ namespace Libplanet.Net
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
+                    _demandBlockHash.Value.Item1.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
-                (long index, BoundPeer peer, HashDigest<SHA256> blockHash) =
+                (BlockHeader header, BoundPeer peer, HashDigest<SHA256> blockHash) =
                     _demandBlockHash.Value;
                 try
                 {

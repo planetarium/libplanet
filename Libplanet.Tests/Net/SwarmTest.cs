@@ -1335,7 +1335,12 @@ namespace Libplanet.Tests.Net
             await chain1.MineBlock(_fx1.Address1);
             await chain2.MineBlock(_fx1.Address1);
 
-            var block3 = await chain2.MineBlock(_fx1.Address1);
+            // Creates a block that will make chain 2's total difficulty is higher than chain 1's.
+            var block3 = TestUtils.MineNext(
+                chain2.Tip,
+                difficulty: (long)chain1.Tip.TotalDifficulty + 1,
+                blockInterval: TimeSpan.FromMilliseconds(1));
+            chain2.Append(block3);
 
             var swarm1 = CreateSwarm(chain1);
             var swarm2 = CreateSwarm(chain2);
@@ -1416,6 +1421,51 @@ namespace Libplanet.Tests.Net
                 miner1.Dispose();
                 miner2.Dispose();
                 DumbAction.RenderRecords.Value = ImmutableList<RenderRecord>.Empty;
+            }
+        }
+
+        [Fact(Timeout = Timeout)]
+        public async Task ForkByDifficulty()
+        {
+            var policy = new BlockPolicy<DumbAction>(new MinerReward(1));
+            var chain1 = TestUtils.MakeBlockChain(policy, new DefaultStore(null));
+            var chain2 = TestUtils.MakeBlockChain(policy, new DefaultStore(null));
+
+            await chain1.MineBlock(_fx1.Address1);
+            await chain1.MineBlock(_fx1.Address1);
+            long nextDifficulty =
+                (long)chain1.Tip.TotalDifficulty + policy.GetNextBlockDifficulty(chain2);
+            var block = TestUtils.MineNext(
+                chain2.Tip,
+                difficulty: nextDifficulty,
+                blockInterval: TimeSpan.FromMilliseconds(1));
+            chain2.Append(block);
+
+            Assert.True(chain1.Tip.Index > chain2.Tip.Index);
+            Assert.True(chain1.Tip.TotalDifficulty < chain2.Tip.TotalDifficulty);
+
+            var miner1 = CreateSwarm(chain1);
+            var miner2 = CreateSwarm(chain2);
+
+            try
+            {
+                await StartAsync(miner1);
+                await StartAsync(miner2);
+
+                await BootstrapAsync(miner2, miner1.AsPeer);
+
+                miner2.BroadcastBlock(block);
+                await miner1.BlockReceived.WaitAsync();
+
+                Assert.Equal(miner1.BlockChain.Tip, miner2.BlockChain.Tip);
+                Assert.Equal(miner1.BlockChain.Count, miner2.BlockChain.Count);
+            }
+            finally
+            {
+                await StopAsync(miner1);
+                await StopAsync(miner2);
+                miner1.Dispose();
+                miner2.Dispose();
             }
         }
 
