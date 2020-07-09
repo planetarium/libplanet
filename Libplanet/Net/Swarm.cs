@@ -492,7 +492,6 @@ namespace Libplanet.Net
             IStore wStore = workspace.Store;
             var chainIds = new HashSet<Guid>
             {
-                BlockChain.Id,
                 workspace.Id,
             };
 
