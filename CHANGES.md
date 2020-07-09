@@ -31,6 +31,10 @@ To be released.
     constructor.  [[#666], [#917]]
  -  Added `BigInteger`-typed `previousTotalDifficulty` parameter to
     `Block<T>.Mine()` static method.  [[#666], [#917]]
+ -  `Pong()` constructor has changed:  [[459], [#919]]
+     -  Added `Pong()` constructor with no any parameter.
+     -  Removed `Pong(long?)` constructor.
+     -  Added `Pong(long, BigInteger)` constructor.
 
 ### Backward-incompatible network protocol changes
 
@@ -41,6 +45,9 @@ To be released.
     replaced by a new `RecentStates` message type
     (with the type number `0x13`).  [[#912]]
  -  Added `BlockHeader.TotalDifficulty` property.  [[#666], [#917]]
+ -  The existing `Pong` message type (with the type number `0x02`) was
+    replaced by a new `Pong` message type
+    (with the type number `0x14`).  [[#459]. [#919]]
 
 ### Backward-incompatible storage format changes
 
@@ -78,6 +85,10 @@ To be released.
     [[#902]]
  -  `BlockPolicy<T>` became to validate `Block<T>.TotalDifficulty` property
     of a `Block<T>`.  [[#666], [#917]]
+ -  `Swarm<T>` became to preload from peer that has the most difficult chain.
+    [[#459], [#919]]
+ -  `Swarm<T>` became to promote the most difficult chain as a canonical chain
+    instead of the longest chain.  [[#459], [#919]]
 
 ### Bug fixes
 
@@ -97,6 +108,7 @@ To be released.
 ### CLI tools
 
 [#404]: https://github.com/planetarium/libplanet/issues/404
+[#459]: https://github.com/planetarium/libplanet/issues/459
 [#666]: https://github.com/planetarium/libplanet/issues/666
 [#756]: https://github.com/planetarium/libplanet/issues/756
 [#796]: https://github.com/planetarium/libplanet/issues/796
@@ -119,6 +131,7 @@ To be released.
 [#913]: https://github.com/planetarium/libplanet/pull/913
 [#916]: https://github.com/planetarium/libplanet/pull/916
 [#917]: https://github.com/planetarium/libplanet/pull/917
+[#919]: https://github.com/planetarium/libplanet/pull/919
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
