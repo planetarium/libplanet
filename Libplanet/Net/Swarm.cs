@@ -460,18 +460,21 @@ namespace Libplanet.Net
                 BlockChain.Tip.Hash
             );
 
-            var peersWithHeight = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex))
+            var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
+                .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty.Value))
                 .ToList();
 
-            if (!peersWithHeight.Any())
+            if (!peersWithHeightAndDiff.Any())
             {
                 _logger.Information("There is no appropriate peer for preloading.");
                 return;
             }
 
-            peersWithHeight = peersWithHeight.OrderByDescending(p => p.Item2).ToList();
+            var peersWithHeight = peersWithHeightAndDiff
+                .OrderByDescending(p => p.Item3)
+                .Select(p => (p.Item1, p.Item2))
+                .ToList();
 
             PreloadStarted.Set();
 
@@ -1528,7 +1531,9 @@ namespace Libplanet.Net
                     {
                         _logger.Debug($"Ping received.");
 
-                        Pong pong = new Pong(BlockChain.Tip?.Index)
+                        Pong pong = new Pong(
+                            BlockChain.Tip?.Index ?? -1,
+                            BlockChain.Tip?.TotalDifficulty ?? 0)
                         {
                             Identity = ping.Identity,
                         };

@@ -1,13 +1,19 @@
 using System.Collections.Generic;
+using System.Numerics;
 using NetMQ;
 
 namespace Libplanet.Net.Messages
 {
     internal class Pong : Message
     {
-        public Pong(long? tipIndex)
+        public Pong()
+        {
+        }
+
+        public Pong(long tipIndex, BigInteger totalDifficulty)
         {
             TipIndex = tipIndex;
+            TotalDifficulty = totalDifficulty;
         }
 
         public Pong(NetMQFrame[] body)
@@ -18,9 +24,13 @@ namespace Libplanet.Net.Messages
             {
                 TipIndex = null;
             }
+
+            TotalDifficulty = new BigInteger(body[1].ToByteArray());
         }
 
         public long? TipIndex { get; set; }
+
+        public BigInteger? TotalDifficulty { get; set; }
 
         protected override MessageType Type => MessageType.Pong;
 
@@ -30,6 +40,7 @@ namespace Libplanet.Net.Messages
             {
                 yield return new NetMQFrame(
                     NetworkOrderBitsConverter.GetBytes(TipIndex ?? -1));
+                yield return new NetMQFrame((TotalDifficulty ?? 0).ToByteArray());
             }
         }
     }
