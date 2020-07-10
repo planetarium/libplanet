@@ -313,6 +313,7 @@ namespace Libplanet.Blockchain
             return Block<T>.Mine(
                 0,
                 0,
+                0,
                 privateKey.ToAddress(),
                 null,
                 timestamp ?? DateTimeOffset.UtcNow,
@@ -639,6 +640,7 @@ namespace Libplanet.Blockchain
                     () => Block<T>.Mine(
                         index: index,
                         difficulty: difficulty,
+                        previousTotalDifficulty: Tip.TotalDifficulty,
                         miner: miner,
                         previousHash: prevHash,
                         timestamp: currentTime,

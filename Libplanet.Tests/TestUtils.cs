@@ -183,6 +183,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return new Block<T>(
                 index: 0,
                 difficulty: 0,
+                totalDifficulty: 0,
                 nonce: new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),
                 miner: miner ?? GenesisMinerAddress,
                 previousHash: null,
@@ -216,6 +217,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 return Block<T>.Mine(
                     index: index,
                     difficulty: difficulty,
+                    previousTotalDifficulty: previousBlock.TotalDifficulty,
                     miner: miner ?? previousBlock.Miner.Value,
                     previousHash: previousHash,
                     timestamp: timestamp,
@@ -226,6 +228,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
             return new Block<T>(
                 index: index,
                 difficulty: difficulty,
+                totalDifficulty: previousBlock.TotalDifficulty + difficulty,
                 nonce: new Nonce(nonce),
                 miner: miner ?? previousBlock.Miner.Value,
                 previousHash: previousHash,
@@ -267,6 +270,7 @@ Actual:   new byte[{actual.LongLength}] {{ {actualRepr} }}";
                 actions,
                 timestamp: timestamp ?? DateTimeOffset.MinValue);
             var genesisBlock = new Block<T>(
+                0,
                 0,
                 0,
                 new Nonce(new byte[] { 0x01, 0x00, 0x00, 0x00 }),

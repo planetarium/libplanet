@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Security.Cryptography;
 using Libplanet.Action;
 using Libplanet.Blocks;
@@ -134,6 +135,9 @@ namespace Libplanet.Blockchain.Policies
         {
             long index = blocks.Count;
             long difficulty = GetNextBlockDifficulty(blocks);
+            BigInteger totalDifficulty = index >= 1
+                    ? blocks[index - 1].TotalDifficulty + nextBlock.Difficulty
+                    : nextBlock.Difficulty;
 
             Block<T> lastBlock = index >= 1 ? blocks[index - 1] : null;
             HashDigest<SHA256>? prevHash = lastBlock?.Hash;
@@ -152,6 +156,17 @@ namespace Libplanet.Blockchain.Policies
                     $"the expected difficulty of the block #{index} " +
                     $"is {difficulty}, but its difficulty is " +
                     $"{nextBlock.Difficulty}'");
+            }
+
+            if (nextBlock.TotalDifficulty != totalDifficulty)
+            {
+                var msg = $"The expected total difficulty of the block #{index} " +
+                          $"is {totalDifficulty}, but its difficulty is " +
+                          $"{nextBlock.TotalDifficulty}'";
+                return new InvalidBlockTotalDifficultyException(
+                    nextBlock.Difficulty,
+                    nextBlock.TotalDifficulty,
+                    msg);
             }
 
             if (!nextBlock.PreviousHash.Equals(prevHash))
