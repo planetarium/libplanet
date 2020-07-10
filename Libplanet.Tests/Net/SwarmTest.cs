@@ -1236,7 +1236,7 @@ namespace Libplanet.Tests.Net
             }
         }
 
-        [FactOnlyTurnAvailable(Timeout = Timeout)]
+        [FactOnlyTurnAvailable(Timeout = 2 * Timeout)]
         public async Task ReconnectToTurn()
         {
             int port;
