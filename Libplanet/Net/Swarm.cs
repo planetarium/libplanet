@@ -45,7 +45,7 @@ namespace Libplanet.Net
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        private (BlockHeader, BoundPeer, HashDigest<SHA256>)? _demandBlockHash;
+        private BlockHashDemand? _demandBlockHash;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         static Swarm()
@@ -1649,10 +1649,9 @@ namespace Libplanet.Net
             {
                 if (header.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
                     (_demandBlockHash is null ||
-                     _demandBlockHash.Value.Item1.TotalDifficulty < header.TotalDifficulty))
+                     _demandBlockHash.Value.Header.TotalDifficulty < header.TotalDifficulty))
                 {
-                    _demandBlockHash =
-                        (header, peer, new HashDigest<SHA256>(header.Hash.ToArray()));
+                    _demandBlockHash = new BlockHashDemand(header, peer);
                 }
                 else
                 {
@@ -1661,7 +1660,7 @@ namespace Libplanet.Net
                         "(current: {Current}, demand: {Demand}, received: {Received});" +
                         $" {nameof(BlockHeaderMessage)} is ignored.",
                         BlockChain.Tip.Index,
-                        _demandBlockHash?.Item1,
+                        _demandBlockHash?.Header.Index,
                         header.Index);
                 }
             }
@@ -2144,20 +2143,21 @@ namespace Libplanet.Net
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Item1.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
+                    _demandBlockHash.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
-                (BlockHeader header, BoundPeer peer, HashDigest<SHA256> blockHash) =
-                    _demandBlockHash.Value;
+                BoundPeer peer = _demandBlockHash.Value.Peer;
+                var hash = new HashDigest<SHA256>(_demandBlockHash.Value.Header.Hash.ToArray());
+
                 try
                 {
                     await SyncPreviousBlocksAsync(
                         BlockChain,
                         peer,
-                        blockHash,
+                        hash,
                         null,
                         0,
                         true,
