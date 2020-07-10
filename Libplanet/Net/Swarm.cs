@@ -1609,6 +1609,13 @@ namespace Libplanet.Net
             }
         }
 
+        private bool IsDemandNeeded(BlockHeader target)
+        {
+            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
+                   (_demandBlockHash is null ||
+                    _demandBlockHash.Value.Header.TotalDifficulty < target.TotalDifficulty);
+        }
+
         private async Task ProcessBlockHeader(
             BlockHeaderMessage message,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -1647,9 +1654,7 @@ namespace Libplanet.Net
 
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
-                if (header.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
-                    (_demandBlockHash is null ||
-                     _demandBlockHash.Value.Header.TotalDifficulty < header.TotalDifficulty))
+                if (IsDemandNeeded(header))
                 {
                     _demandBlockHash = new BlockHashDemand(header, peer);
                 }
