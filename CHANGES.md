@@ -31,10 +31,6 @@ To be released.
     constructor.  [[#666], [#917]]
  -  Added `BigInteger`-typed `previousTotalDifficulty` parameter to
     `Block<T>.Mine()` static method.  [[#666], [#917]]
- -  `Pong()` constructor has changed:  [[459], [#919]]
-     -  Added `Pong()` constructor with no any parameter.
-     -  Removed `Pong(long?)` constructor.
-     -  Added `Pong(long, BigInteger)` constructor.
 
 ### Backward-incompatible network protocol changes
 
