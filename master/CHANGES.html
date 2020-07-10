@@ -88,6 +88,10 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
 <li>Added <code>render</code> optional parameter to <code>BlockChain&lt;T&gt;()</code> constructor.
 [<a href="https://github.com/planetarium/libplanet/pull/883">#883</a>]</li>
+<li>Added <code>BigInteger</code>-typed <code>totalDifficulty</code> parameter to <code>Block&lt;T&gt;()</code>
+constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
+<li>Added <code>BigInteger</code>-typed <code>previousTotalDifficulty</code> parameter to
+<code>Block&lt;T&gt;.Mine()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -97,10 +101,12 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 <li>The existing <code>RecentStates</code> message type (with the type number <code>0x0f</code>) was
 replaced by a new <code>RecentStates</code> message type
 (with the type number <code>0x13</code>).  [<a href="https://github.com/planetarium/libplanet/pull/912">#912</a>]</li>
+<li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
 <li>Added <code>RawTransaction&lt;T&gt;.GenesisHash</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/796">#796</a>, <a href="https://github.com/planetarium/libplanet/pull/878">#878</a>]</li>
+<li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 </ul>
 <h3 id="added-apis">Added APIs</h3>
 <ul>
@@ -112,6 +118,7 @@ replaced by a new <code>RecentStates</code> message type
 <li>Added <code>CurrencyPermissionException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li>Added <code>InsufficientBalanceException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetBalance()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
+<li>Added <code>Block&lt;T&gt;.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
@@ -133,6 +140,8 @@ genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#7
 <li><code>Swarm&lt;T&gt;</code> became to ignore invalid <code>BlockHeader</code>s immediately.  [<a href="https://github.com/planetarium/libplanet/pull/898">#898</a>]</li>
 <li><code>Swarm&lt;T&gt;.PreloadAsync()</code> became to clean up only temporary chains.
 [<a href="https://github.com/planetarium/libplanet/pull/902">#902</a>]</li>
+<li><code>BlockPolicy&lt;T&gt;</code> became to validate <code>Block&lt;T&gt;.TotalDifficulty</code> property
+of a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
