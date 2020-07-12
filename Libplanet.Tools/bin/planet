@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+"use strict";
+const child_process = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const { BIN_PATH, BIN_NAME, download } = require("../download.js");
+
+const exePath = path.join(BIN_PATH, BIN_NAME);
+
+function runExe() {
+  child_process.spawn(exePath, process.argv.slice(2), { stdio: "inherit" })
+    .on("exit", process.exit);
+}
+
+fs.stat(exePath, (err, stats) => {
+  if (!err && stats.isFile() && stats.size > 64 * 1024) return runExe();
+  return download({ log: console.warn }).then(runExe).catch(console.error);
+});
+
+// vim: ts=2 sw=2 et ft=javascript

@@ -1,0 +1,48 @@
+{
+  "name": "@planetarium/cli",
+  "version": "0.0.0",
+  "private": true,
+  "description": "This CLI app is a collection of utilities for application programmers who create decentralized games powered by Libplanet.",
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "README.md",
+    "bin/planet",
+    "download.js",
+    "install.js"
+  ],
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "unzipper": "^0.10.11"
+  },
+  "scripts": {
+    "install": "node install.js"
+  },
+  "bin": {
+    "planet": "bin/planet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/planetarium/libplanet.git",
+    "directory": "Libplanet.Tools"
+  },
+  "keywords": [
+    "planetarium",
+    "libplanet",
+    "blockchain",
+    "p2p",
+    "game"
+  ],
+  "author": "Planetarium",
+  "license": "LGPL-2.1-or-later",
+  "bugs": {
+    "url": "https://github.com/planetarium/libplanet/labels/tools"
+  },
+  "homepage": "https://github.com/planetarium/libplanet/tree/master/Libplanet.Tools"
+}

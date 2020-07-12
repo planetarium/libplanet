@@ -14,18 +14,33 @@ create decentralized games powered by [Libplanet].
 Installation
 ------------
 
+There are three ways to install the `planet` command.  Pick the most handy
+one for you.
+
+### `npm`
+
+Install as an `npm` package if `npm` is installed on your system:
+
+~~~~ bash
+npm install @planetarium/cli
+~~~~
+
+### .NET Core tool
+
 Install as a [.NET Core tool] if .NET Core SDK is installed on your system:
 
 ~~~~ bash
 dotnet tool install -g Libplanet.Tools
 ~~~~
 
+[.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
+
+### Manual installation
+
 Or you could just download an executable binary for your platform from
 the [releases page]: *planet-\*-{linux,osx,win}-x64.{tar.xz,zip}* files are
 CLI tools.  Linux (x64), macOS (x64), and Windows (x64) are supported.
 Extract the binary to an appropriate directory in your `PATH`.
-
-[.NET Core tool]: https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools
 
 
 Usage
@@ -35,7 +50,14 @@ Usage
 planet --help
 ~~~~
 
-If you installed it using .NET Core SDK *without `-g`/`--global` option*
+If you installed it using `npm` *without `-g`/`--global` option*
+use `npx planet` command instead:
+
+~~~~ bash
+npx planet --help
+~~~~
+
+Or if you installed it using .NET Core SDK *without `-g`/`--global` option*
 use `dotnet planet` command instead:
 
 ~~~~ bash
