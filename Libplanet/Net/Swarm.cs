@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -1293,6 +1294,81 @@ namespace Libplanet.Net
             );
         }
 
+        [Pure]
+        private long SetBlockStatesFromReply(
+            RecentStates recentStates,
+            BlockChain<T> blockChain,
+            Peer peer,
+            IProgress<PreloadState> progress,
+            CancellationToken cancellationToken,
+            int count)
+        {
+            int totalCount = recentStates.Iteration;
+            _logger.Debug(
+                "Received {StateRefCount} state refs and {BlockStateCount} block" +
+                " states.",
+                recentStates.StateReferences.Count,
+                recentStates.BlockStates.Count);
+            ReaderWriterLockSlim rwlock = blockChain._rwlock;
+            rwlock.EnterWriteLock();
+            try
+            {
+                Guid chainId = blockChain.Id;
+
+                _logger.Debug("Starts to store state refs received from {Peer}.", peer);
+
+                var d = new Dictionary<HashDigest<SHA256>, ISet<string>>();
+                foreach (var pair in recentStates.StateReferences)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    IImmutableSet<string> key = ImmutableHashSet.Create(pair.Key);
+                    foreach (HashDigest<SHA256> bHash in pair.Value)
+                    {
+                        if (!d.ContainsKey(bHash))
+                        {
+                            d[bHash] = new HashSet<string>();
+                        }
+
+                        d[bHash].UnionWith(key);
+                    }
+                }
+
+                foreach (KeyValuePair<HashDigest<SHA256>, ISet<string>> pair in d)
+                {
+                    HashDigest<SHA256> hash = pair.Key;
+                    IImmutableSet<string> stateKeys = pair.Value
+                        .ToImmutableHashSet();
+                    if (_store.GetBlockIndex(hash) is long index)
+                    {
+                        _store.StoreStateReference(chainId, stateKeys, hash, index);
+                    }
+                }
+
+                _logger.Debug(
+                    "Starts to store block states received from {Peer}.",
+                    peer);
+                foreach (var pair in recentStates.BlockStates)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    IImmutableDictionary<string, IValue> states =
+                        pair.Value.ToImmutableDictionary();
+                    _store.SetBlockStates(pair.Key, states);
+                }
+
+                progress?.Report(new StateDownloadState()
+                {
+                    TotalIterationCount = totalCount,
+                    ReceivedIterationCount = count,
+                });
+            }
+            finally
+            {
+                rwlock.ExitWriteLock();
+            }
+
+            return recentStates.Offset;
+        }
+
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
             BlockChain<T> blockChain,
             IProgress<PreloadState> progress,
@@ -1342,76 +1418,19 @@ namespace Libplanet.Net
 
                     if (reply is RecentStates recentStates && !recentStates.Missing)
                     {
-                        int totalCount = recentStates.Iteration;
-                        _logger.Debug(
-                            "Received {StateRefCount} state refs and {BlockStateCount} block" +
-                            " states.",
-                            recentStates.StateReferences.Count,
-                            recentStates.BlockStates.Count);
-                        count++;
-
-                        ReaderWriterLockSlim rwlock = blockChain._rwlock;
-                        rwlock.EnterWriteLock();
-                        try
-                        {
-                            Guid chainId = blockChain.Id;
-
-                            _logger.Debug("Starts to store state refs received from {Peer}.", peer);
-
-                            var d = new Dictionary<HashDigest<SHA256>, ISet<string>>();
-                            foreach (var pair in recentStates.StateReferences)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                IImmutableSet<string> key = ImmutableHashSet.Create(pair.Key);
-                                foreach (HashDigest<SHA256> bHash in pair.Value)
-                                {
-                                    if (!d.ContainsKey(bHash))
-                                    {
-                                        d[bHash] = new HashSet<string>();
-                                    }
-
-                                    d[bHash].UnionWith(key);
-                                }
-                            }
-
-                            foreach (KeyValuePair<HashDigest<SHA256>, ISet<string>> pair in d)
-                            {
-                                HashDigest<SHA256> hash = pair.Key;
-                                IImmutableSet<string> stateKeys = pair.Value
-                                    .ToImmutableHashSet();
-                                if (_store.GetBlockIndex(hash) is long index)
-                                {
-                                    _store.StoreStateReference(chainId, stateKeys, hash, index);
-                                }
-                            }
-
-                            _logger.Debug(
-                                "Starts to store block states received from {Peer}.",
-                                peer);
-                            foreach (var pair in recentStates.BlockStates)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-                                IImmutableDictionary<string, IValue> states =
-                                    pair.Value.ToImmutableDictionary();
-                                _store.SetBlockStates(pair.Key, states);
-                            }
-
-                            progress?.Report(new StateDownloadState()
-                            {
-                                TotalIterationCount = totalCount,
-                                ReceivedIterationCount = count,
-                            });
-                        }
-                        finally
-                        {
-                            rwlock.ExitWriteLock();
-                        }
+                        long nextOffset = SetBlockStatesFromReply(
+                            recentStates,
+                            blockChain,
+                            peer,
+                            progress,
+                            cancellationToken,
+                            ++count);
 
                         _logger.Debug(
                             "Stored state refs and block states. {Offset}",
                             offset);
 
-                        offset = recentStates.Offset;
+                        offset = nextOffset;
                     }
                     else
                     {
