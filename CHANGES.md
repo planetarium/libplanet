@@ -44,8 +44,8 @@ To be released.
  -  The existing `Pong` message type (with the type number `0x02`) was
     replaced by a new `Pong` message type
     (with the type number `0x14`).  [[#459]. [#919]]
- -  The `TimestampThreshold` for future block has been changed from 900s to 15s.
-    [[#922], [#925]]
+ -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
+    15 seconds.  [[#922], [#925]]
 
 ### Backward-incompatible storage format changes
 
