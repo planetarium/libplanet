@@ -536,7 +536,7 @@ namespace Libplanet.Tests.Blocks
                 _fx.Genesis.TotalDifficulty,
                 _fx.Next.Miner.Value,
                 _fx.Genesis.Hash,
-                now + TimeSpan.FromSeconds(901),
+                now + TimeSpan.FromSeconds(16),
                 new Transaction<DumbAction>[] { }
             );
 
