@@ -448,7 +448,7 @@ namespace Libplanet.Tests.Net.Protocols
 
             if (message is Ping)
             {
-                ReplyMessage(new Pong((long?)null)
+                ReplyMessage(new Pong
                 {
                     Identity = message.Identity,
                     Remote = AsPeer,

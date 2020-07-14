@@ -1348,5 +1348,51 @@ namespace Libplanet.Tests.Net
                 Assert.Equal(2, receiverChain.Store.ListChainIds().Count());
             }
         }
+
+        [Fact(Timeout = Timeout)]
+        public async Task PreloadFromTheMostDifficultChain()
+        {
+            BlockChain<DumbAction> minerChain1 = _blockchains[0];
+            BlockChain<DumbAction> minerChain2 = _blockchains[1];
+            BlockChain<DumbAction> receiverChain = _blockchains[2];
+
+            await minerChain1.MineBlock(_fx1.Address1);
+            await minerChain1.MineBlock(_fx1.Address1);
+
+            long nextDifficulty = (long)minerChain1.Tip.TotalDifficulty +
+                                  minerChain2.Policy.GetNextBlockDifficulty(minerChain2);
+            var block = TestUtils.MineNext(minerChain2.Tip, difficulty: nextDifficulty);
+            minerChain2.Append(block);
+
+            Assert.True(minerChain1.Count > minerChain2.Count);
+            Assert.True(minerChain1.Tip.TotalDifficulty < minerChain2.Tip.TotalDifficulty);
+
+            using (Swarm<DumbAction> minerSwarm1 = CreateSwarm(minerChain1))
+            using (Swarm<DumbAction> minerSwarm2 = CreateSwarm(minerChain2))
+            using (Swarm<DumbAction> receiverSwarm = CreateSwarm(receiverChain))
+            {
+                try
+                {
+                    await StartAsync(minerSwarm1);
+                    await StartAsync(minerSwarm2);
+                    await receiverSwarm.AddPeersAsync(
+                        new[] { minerSwarm1.AsPeer, minerSwarm2.AsPeer },
+                        null);
+                    await receiverSwarm.PreloadAsync(
+                        trustedStateValidators: new[] { minerSwarm1.Address, minerSwarm2.Address }
+                            .ToImmutableHashSet()
+                    );
+                }
+                finally
+                {
+                    await StopAsync(minerSwarm1);
+                    await StopAsync(minerSwarm2);
+                    await StopAsync(receiverSwarm);
+                }
+
+                Assert.Equal(minerChain2.Count, receiverChain.Count);
+                Assert.Equal(minerChain2.Tip, receiverChain.Tip);
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace Libplanet.Net
         private CancellationTokenSource _workerCancellationTokenSource;
         private CancellationToken _cancellationToken;
 
-        private (long, BoundPeer, HashDigest<SHA256>)? _demandBlockHash;
+        private BlockHashDemand? _demandBlockHash;
         private ConcurrentDictionary<TxId, BoundPeer> _demandTxIds;
 
         static Swarm()
@@ -460,18 +460,21 @@ namespace Libplanet.Net
                 BlockChain.Tip.Hash
             );
 
-            var peersWithHeight = (await DialToExistingPeers(dialTimeout, cancellationToken))
-                .Where(pp => pp.Item2.TipIndex > (initialTip?.Index ?? -1))
-                .Select(pp => (pp.Item1, pp.Item2.TipIndex))
+            var peersWithHeightAndDiff = (await DialToExistingPeers(dialTimeout, cancellationToken))
+                .Where(pp => pp.Item2.TotalDifficulty > (initialTip?.TotalDifficulty ?? 0))
+                .Select(pp => (pp.Item1, pp.Item2.TipIndex, pp.Item2.TotalDifficulty.Value))
                 .ToList();
 
-            if (!peersWithHeight.Any())
+            if (!peersWithHeightAndDiff.Any())
             {
                 _logger.Information("There is no appropriate peer for preloading.");
                 return;
             }
 
-            peersWithHeight = peersWithHeight.OrderByDescending(p => p.Item2).ToList();
+            var peersWithHeight = peersWithHeightAndDiff
+                .OrderByDescending(p => p.Item3)
+                .Select(p => (p.Item1, p.Item2))
+                .ToList();
 
             PreloadStarted.Set();
 
@@ -1528,7 +1531,9 @@ namespace Libplanet.Net
                     {
                         _logger.Debug($"Ping received.");
 
-                        Pong pong = new Pong(BlockChain.Tip?.Index)
+                        Pong pong = new Pong(
+                            BlockChain.Tip?.Index ?? -1,
+                            BlockChain.Tip?.TotalDifficulty ?? 0)
                         {
                             Identity = ping.Identity,
                         };
@@ -1604,6 +1609,13 @@ namespace Libplanet.Net
             }
         }
 
+        private bool IsDemandNeeded(BlockHeader target)
+        {
+            return target.TotalDifficulty > BlockChain.Tip.TotalDifficulty &&
+                   (_demandBlockHash is null ||
+                    _demandBlockHash.Value.Header.TotalDifficulty < target.TotalDifficulty);
+        }
+
         private async Task ProcessBlockHeader(
             BlockHeaderMessage message,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -1642,12 +1654,9 @@ namespace Libplanet.Net
 
             using (await _blockSyncMutex.LockAsync(cancellationToken))
             {
-                // FIXME: this should be changed into total difficulty.
-                if (header.Index > BlockChain.Tip.Index &&
-                    (_demandBlockHash is null || _demandBlockHash.Value.Item1 < header.Index))
+                if (IsDemandNeeded(header))
                 {
-                    _demandBlockHash =
-                        (header.Index, peer, new HashDigest<SHA256>(header.Hash.ToArray()));
+                    _demandBlockHash = new BlockHashDemand(header, peer);
                 }
                 else
                 {
@@ -1656,7 +1665,7 @@ namespace Libplanet.Net
                         "(current: {Current}, demand: {Demand}, received: {Received});" +
                         $" {nameof(BlockHeaderMessage)} is ignored.",
                         BlockChain.Tip.Index,
-                        _demandBlockHash?.Item1,
+                        _demandBlockHash?.Header.Index,
                         header.Index);
                 }
             }
@@ -2139,20 +2148,21 @@ namespace Libplanet.Net
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (_demandBlockHash is null ||
-                    _demandBlockHash.Value.Item1 <= BlockChain.Tip.Index)
+                    _demandBlockHash.Value.Header.TotalDifficulty <= BlockChain.Tip.TotalDifficulty)
                 {
                     await Task.Delay(1, cancellationToken);
                     continue;
                 }
 
-                (long index, BoundPeer peer, HashDigest<SHA256> blockHash) =
-                    _demandBlockHash.Value;
+                BoundPeer peer = _demandBlockHash.Value.Peer;
+                var hash = new HashDigest<SHA256>(_demandBlockHash.Value.Header.Hash.ToArray());
+
                 try
                 {
                     await SyncPreviousBlocksAsync(
                         BlockChain,
                         peer,
-                        blockHash,
+                        hash,
                         null,
                         0,
                         true,
