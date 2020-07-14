@@ -102,6 +102,9 @@ constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#66
 replaced by a new <code>RecentStates</code> message type
 (with the type number <code>0x13</code>).  [<a href="https://github.com/planetarium/libplanet/pull/912">#912</a>]</li>
 <li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
+<li>The existing <code>Pong</code> message type (with the type number <code>0x02</code>) was
+replaced by a new <code>Pong</code> message type
+(with the type number <code>0x14</code>).  [<a href="https://github.com/planetarium/libplanet/issues/459">#459</a>. <a href="https://github.com/planetarium/libplanet/pull/919">#919</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
@@ -142,6 +145,10 @@ genesis hash.  [<a href="https://github.com/planetarium/libplanet/issues/796">#7
 [<a href="https://github.com/planetarium/libplanet/pull/902">#902</a>]</li>
 <li><code>BlockPolicy&lt;T&gt;</code> became to validate <code>Block&lt;T&gt;.TotalDifficulty</code> property
 of a <code>Block&lt;T&gt;</code>.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to preload from peer that has the most difficult chain.
+[<a href="https://github.com/planetarium/libplanet/issues/459">#459</a>, <a href="https://github.com/planetarium/libplanet/pull/919">#919</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to promote the most difficult chain as a canonical chain
+instead of the longest chain.  [<a href="https://github.com/planetarium/libplanet/issues/459">#459</a>, <a href="https://github.com/planetarium/libplanet/pull/919">#919</a>]</li>
 </ul>
 <h3 id="bug-fixes">Bug fixes</h3>
 <ul>
