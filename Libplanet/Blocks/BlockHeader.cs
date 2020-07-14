@@ -35,7 +35,7 @@ namespace Libplanet.Blocks
         private static readonly byte[] HashKey = { 0x68 }; // 'h'
 
         private static readonly TimeSpan TimestampThreshold =
-            TimeSpan.FromSeconds(900);
+            TimeSpan.FromSeconds(15);
 
         /// <summary>
         /// Creates a <see cref="BlockHeader"/> instance.

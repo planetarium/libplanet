@@ -16,7 +16,7 @@ namespace Libplanet.Tests.Blocks
         public void ValidateTimestamp()
         {
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            string future = (now + TimeSpan.FromSeconds(901))
+            string future = (now + TimeSpan.FromSeconds(16))
                 .ToString(BlockHeader.TimestampFormat, CultureInfo.InvariantCulture);
             var header = new BlockHeader(
                 index: 0,

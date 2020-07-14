@@ -44,6 +44,8 @@ To be released.
  -  The existing `Pong` message type (with the type number `0x02`) was
     replaced by a new `Pong` message type
     (with the type number `0x14`).  [[#459]. [#919]]
+ -  The `TimestampThreshold` for future block has been changed from 900s to 15s.
+    [[#922], [#925]]
 
 ### Backward-incompatible storage format changes
 
@@ -128,6 +130,8 @@ To be released.
 [#916]: https://github.com/planetarium/libplanet/pull/916
 [#917]: https://github.com/planetarium/libplanet/pull/917
 [#919]: https://github.com/planetarium/libplanet/pull/919
+[#922]: https://github.com/planetarium/libplanet/issues/922
+[#925]: https://github.com/planetarium/libplanet/pull/925
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
