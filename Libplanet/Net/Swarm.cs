@@ -29,12 +29,9 @@ namespace Libplanet.Net
         where T : IAction, new()
     {
         private const int InitialBlockDownloadWindow = 100;
-        private static readonly TimeSpan MaxTimeout = TimeSpan.FromSeconds(150);
-        private static readonly TimeSpan BlockRecvTimeout = TimeSpan.FromSeconds(15);
-        private static readonly TimeSpan TxRecvTimeout = TimeSpan.FromSeconds(3);
-        private static readonly TimeSpan RecentStateRecvTimeout = TimeSpan.FromSeconds(90);
         private readonly PrivateKey _privateKey;
         private readonly AppProtocolVersion _appProtocolVersion;
+        private readonly SwarmOptions _options;
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
@@ -81,6 +78,7 @@ namespace Libplanet.Net
         /// <param name="trustedAppProtocolVersionSigners"><see cref="PublicKey"/>s of parties
         /// to trust <see cref="AppProtocolVersion"/>s they signed.  To trust any party, pass
         /// <c>null</c>, which is default.</param>
+        /// <param name="options">Options for <see cref="Swarm{T}"/>.</param>
         public Swarm(
             BlockChain<T> blockChain,
             PrivateKey privateKey,
@@ -90,7 +88,8 @@ namespace Libplanet.Net
             int? listenPort = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null)
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions options = null)
             : this(
                 blockChain,
                 privateKey,
@@ -103,7 +102,8 @@ namespace Libplanet.Net
                 null,
                 iceServers,
                 differentAppProtocolVersionEncountered,
-                trustedAppProtocolVersionSigners)
+                trustedAppProtocolVersionSigners,
+                options)
         {
         }
 
@@ -119,7 +119,8 @@ namespace Libplanet.Net
             DateTimeOffset? createdAt = null,
             IEnumerable<IceServer> iceServers = null,
             DifferentAppProtocolVersionEncountered differentAppProtocolVersionEncountered = null,
-            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null)
+            IEnumerable<PublicKey> trustedAppProtocolVersionSigners = null,
+            SwarmOptions swarmOptions = null)
         {
             BlockChain = blockChain ?? throw new ArgumentNullException(nameof(blockChain));
             _store = BlockChain.Store;
@@ -159,6 +160,8 @@ namespace Libplanet.Net
                 differentAppProtocolVersionEncountered,
                 ProcessMessageHandler,
                 _logger);
+
+            _options = swarmOptions ?? new SwarmOptions();
         }
 
         ~Swarm()
@@ -958,10 +961,11 @@ namespace Libplanet.Net
                 yield break;
             }
 
-            TimeSpan blockRecvTimeout = BlockRecvTimeout + TimeSpan.FromSeconds(hashCount);
-            if (blockRecvTimeout > MaxTimeout)
+            TimeSpan blockRecvTimeout = _options.BlockRecvTimeout
+                                        + TimeSpan.FromSeconds(hashCount);
+            if (blockRecvTimeout > _options.MaxTimeout)
             {
-                blockRecvTimeout = MaxTimeout;
+                blockRecvTimeout = _options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1019,10 +1023,10 @@ namespace Libplanet.Net
 
             _logger.Debug("Required tx count: {Count}.", txCount);
 
-            var txRecvTimeout = TxRecvTimeout + TimeSpan.FromSeconds(txCount);
-            if (txRecvTimeout > MaxTimeout)
+            var txRecvTimeout = _options.TxRecvTimeout + TimeSpan.FromSeconds(txCount);
+            if (txRecvTimeout > _options.MaxTimeout)
             {
-                txRecvTimeout = MaxTimeout;
+                txRecvTimeout = _options.MaxTimeout;
             }
 
             IEnumerable<Message> replies = await Transport.SendMessageWithReplyAsync(
@@ -1321,7 +1325,7 @@ namespace Libplanet.Net
                         reply = await Transport.SendMessageWithReplyAsync(
                             peer,
                             request,
-                            timeout: RecentStateRecvTimeout,
+                            timeout: _options.RecentStateRecvTimeout,
                             cancellationToken: cancellationToken
                         );
 
