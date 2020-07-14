@@ -19,21 +19,13 @@ if [ "$NUGET_API_KEY" = "" ]; then
   exit 1
 fi
 
-# Publish a package only if the repository is upstream (planetarium/libplanet)
-# and the branch is for releases (master or *-maintenance or 9c-*).
-# shellcheck disable=SC2235
-if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && [[ \
-    "$GITHUB_REF" = refs/tags/* || \
-    "$GITHUB_REF" = refs/heads/master || \
-    "$GITHUB_REF" = refs/heads/*-maintenance || \
-    "$GITHUB_REF" = refs/heads/9c-* \
-  ]]; then
+if [ "$publish_package" = "" ]; then
   function dotnet-nuget {
-    dotnet nuget "$@"
+    echo "DRY-RUN: dotnet nuget" "$@"
   }
 else
   function dotnet-nuget {
-    echo "DRY-RUN: dotnet nuget" "$@"
+    dotnet nuget "$@"
   }
 fi
 

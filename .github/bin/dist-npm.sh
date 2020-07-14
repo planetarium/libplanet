@@ -12,16 +12,8 @@ if [ "$NODE_AUTH_TOKEN" = "" ]; then
   exit 1
 fi
 
-# Publish a package only if the repository is upstream (planetarium/libplanet)
-# and the branch is for releases (master or *-maintenance or 9c-*).
-# shellcheck disable=SC2235
-if [ "$GITHUB_REPOSITORY" = "planetarium/libplanet" ] && [[ \
-    "$GITHUB_REF" = refs/tags/* || \
-    "$GITHUB_REF" = refs/heads/master || \
-    "$GITHUB_REF" = refs/heads/*-maintenance || \
-    "$GITHUB_REF" = refs/heads/9c-* \
-  ]]; then
-  dry_run=
+if [ "$publish_package" = "" ]; then
+  dry_run=--dry-run
 else
   dry_run=--dry-run
 fi
