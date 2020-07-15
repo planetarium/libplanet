@@ -5752,15 +5752,15 @@ references:
   fullName.vb: Libplanet.Net.Swarm(Of T)
   nameWithType: Swarm<T>
   nameWithType.vb: Swarm(Of T)
-- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey})
-  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>)
-  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_IEnumerable_Libplanet_Crypto_PublicKey__
-  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey})
-  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey))
-  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable<Libplanet.Crypto.PublicKey>)
-  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable(Of Libplanet.Crypto.PublicKey))
-  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>)
-  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey))
+- uid: Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey},Libplanet.Net.SwarmOptions)
+  name: Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>, SwarmOptions)
+  href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_Libplanet_Blockchain_BlockChain__0__Libplanet_Crypto_PrivateKey_Libplanet_Net_AppProtocolVersion_System_Int32_System_String_System_Nullable_System_Int32__IEnumerable_Libplanet_Net_IceServer__Libplanet_Net_DifferentAppProtocolVersionEncountered_IEnumerable_Libplanet_Crypto_PublicKey__Libplanet_Net_SwarmOptions_
+  commentId: M:Libplanet.Net.Swarm`1.#ctor(Libplanet.Blockchain.BlockChain{`0},Libplanet.Crypto.PrivateKey,Libplanet.Net.AppProtocolVersion,System.Int32,System.String,System.Nullable{System.Int32},IEnumerable{Libplanet.Net.IceServer},Libplanet.Net.DifferentAppProtocolVersionEncountered,IEnumerable{Libplanet.Crypto.PublicKey},Libplanet.Net.SwarmOptions)
+  name.vb: Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey), SwarmOptions)
+  fullName: Libplanet.Net.Swarm<T>.Swarm(Libplanet.Blockchain.BlockChain<T>, Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable<System.Int32>, IEnumerable<Libplanet.Net.IceServer>, Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable<Libplanet.Crypto.PublicKey>, Libplanet.Net.SwarmOptions)
+  fullName.vb: Libplanet.Net.Swarm(Of T).Swarm(Libplanet.Blockchain.BlockChain(Of T), Libplanet.Crypto.PrivateKey, Libplanet.Net.AppProtocolVersion, System.Int32, System.String, System.Nullable(Of System.Int32), IEnumerable(Of Libplanet.Net.IceServer), Libplanet.Net.DifferentAppProtocolVersionEncountered, IEnumerable(Of Libplanet.Crypto.PublicKey), Libplanet.Net.SwarmOptions)
+  nameWithType: Swarm<T>.Swarm(BlockChain<T>, PrivateKey, AppProtocolVersion, Int32, String, Nullable<Int32>, IEnumerable<IceServer>, DifferentAppProtocolVersionEncountered, IEnumerable<PublicKey>, SwarmOptions)
+  nameWithType.vb: Swarm(Of T).Swarm(BlockChain(Of T), PrivateKey, AppProtocolVersion, Int32, String, Nullable(Of Int32), IEnumerable(Of IceServer), DifferentAppProtocolVersionEncountered, IEnumerable(Of PublicKey), SwarmOptions)
 - uid: Libplanet.Net.Swarm`1.#ctor*
   name: Swarm
   href: api/Libplanet.Net.Swarm-1.html#Libplanet_Net_Swarm_1__ctor_
@@ -6195,6 +6195,64 @@ references:
   isSpec: "True"
   fullName: Libplanet.Net.SwarmException.SwarmException
   nameWithType: SwarmException.SwarmException
+- uid: Libplanet.Net.SwarmOptions
+  name: SwarmOptions
+  href: api/Libplanet.Net.SwarmOptions.html
+  commentId: T:Libplanet.Net.SwarmOptions
+  fullName: Libplanet.Net.SwarmOptions
+  nameWithType: SwarmOptions
+- uid: Libplanet.Net.SwarmOptions.BlockRecvTimeout
+  name: BlockRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockRecvTimeout
+  commentId: P:Libplanet.Net.SwarmOptions.BlockRecvTimeout
+  fullName: Libplanet.Net.SwarmOptions.BlockRecvTimeout
+  nameWithType: SwarmOptions.BlockRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.BlockRecvTimeout*
+  name: BlockRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_BlockRecvTimeout_
+  commentId: Overload:Libplanet.Net.SwarmOptions.BlockRecvTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.BlockRecvTimeout
+  nameWithType: SwarmOptions.BlockRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.MaxTimeout
+  name: MaxTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout
+  commentId: P:Libplanet.Net.SwarmOptions.MaxTimeout
+  fullName: Libplanet.Net.SwarmOptions.MaxTimeout
+  nameWithType: SwarmOptions.MaxTimeout
+- uid: Libplanet.Net.SwarmOptions.MaxTimeout*
+  name: MaxTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_MaxTimeout_
+  commentId: Overload:Libplanet.Net.SwarmOptions.MaxTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.MaxTimeout
+  nameWithType: SwarmOptions.MaxTimeout
+- uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
+  name: RecentStateRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout
+  commentId: P:Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
+  fullName: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
+  nameWithType: SwarmOptions.RecentStateRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout*
+  name: RecentStateRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_RecentStateRecvTimeout_
+  commentId: Overload:Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.RecentStateRecvTimeout
+  nameWithType: SwarmOptions.RecentStateRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.TxRecvTimeout
+  name: TxRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout
+  commentId: P:Libplanet.Net.SwarmOptions.TxRecvTimeout
+  fullName: Libplanet.Net.SwarmOptions.TxRecvTimeout
+  nameWithType: SwarmOptions.TxRecvTimeout
+- uid: Libplanet.Net.SwarmOptions.TxRecvTimeout*
+  name: TxRecvTimeout
+  href: api/Libplanet.Net.SwarmOptions.html#Libplanet_Net_SwarmOptions_TxRecvTimeout_
+  commentId: Overload:Libplanet.Net.SwarmOptions.TxRecvTimeout
+  isSpec: "True"
+  fullName: Libplanet.Net.SwarmOptions.TxRecvTimeout
+  nameWithType: SwarmOptions.TxRecvTimeout
 - uid: Libplanet.Nonce
   name: Nonce
   href: api/Libplanet.Nonce.html

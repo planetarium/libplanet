@@ -92,6 +92,8 @@ a heterogeneous <code>BlockChain&lt;T&gt;</code> with a different genesis block.
 constructor.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 <li>Added <code>BigInteger</code>-typed <code>previousTotalDifficulty</code> parameter to
 <code>Block&lt;T&gt;.Mine()</code> static method.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
+<li>Added <code>options</code> optional parameter to <code>Swarm&lt;T&gt;()</code> constructor.
+[<a href="https://github.com/planetarium/libplanet/pull/926">#926</a>]</li>
 </ul>
 <h3 id="backward-incompatible-network-protocol-changes">Backward-incompatible network protocol changes</h3>
 <ul>
@@ -124,6 +126,7 @@ replaced by a new <code>Pong</code> message type
 <li>Added <code>InsufficientBalanceException</code> class.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li>Added <code>BlockChain&lt;T&gt;.GetBalance()</code> method.  [<a href="https://github.com/planetarium/libplanet/issues/861">#861</a>, <a href="https://github.com/planetarium/libplanet/pull/900">#900</a>]</li>
 <li>Added <code>Block&lt;T&gt;.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
+<li>Added <code>SwarmOptions</code> class.  [<a href="https://github.com/planetarium/libplanet/pull/926">#926</a>]</li>
 </ul>
 <h3 id="behavioral-changes">Behavioral changes</h3>
 <ul>
