@@ -36,6 +36,14 @@ for project in "${executables[@]}"; do
     popd
     rm -rf "$output_dir"
   done
+
+  if [[ -f "./$project/package.json" ]]; then
+    pushd "./$project/"
+    jq --arg v "$version" 'del(.private) | .version = $v' package.json \
+      > .package.json.tmp
+    mv .package.json.tmp package.json
+    popd
+  fi
 done
 
 for project in "${projects[@]}"; do

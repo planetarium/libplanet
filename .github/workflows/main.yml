@@ -24,6 +24,10 @@ jobs:
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.100
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        scope: '@planetarium'
     - run: .github/bin/dist-version.ps1
       shell: pwsh
     - run: .github/bin/dist-release-note.sh CHANGES.md obj/release_note.txt
@@ -52,6 +56,13 @@ jobs:
       run: .github/bin/dist-nuget.sh
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    - if: >-
+        github.event_name != 'pull_request' &&
+        startsWith(github.ref, 'refs/tags/') &&
+        env.NODE_AUTH_TOKEN != ''
+      run: .github/bin/dist-npm.sh
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
   docs:
     if: github.event_name != 'schedule' || github.repository == 'planetarium/libplanet'
