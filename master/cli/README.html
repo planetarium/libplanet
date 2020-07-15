@@ -62,14 +62,23 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="planet-libplanet-cli-tools"><code>planet</code>: Libplanet CLI Tools</h1>
 
-<p><a href="https://www.nuget.org/packages/Libplanet.Tools/"><img src="https://img.shields.io/nuget/v/Libplanet.Tools.svg?style=flat" alt="NuGet"></a>
+<p><a href="https://www.npmjs.com/package/@planetarium/cli"><img src="https://img.shields.io/npm/v/@planetarium/cli" alt="npm"></a>
+<a href="https://www.nuget.org/packages/Libplanet.Tools/"><img src="https://img.shields.io/nuget/v/Libplanet.Tools.svg?style=flat" alt="NuGet"></a>
 <a href="https://www.nuget.org/packages/Libplanet.Tools/"><img src="https://img.shields.io/nuget/vpre/Libplanet.Tools.svg?style=flat" alt="NuGet (prerelease)"></a></p>
 <p>This CLI app is a collection of utilities for application programmers who
 create decentralized games powered by <a href="https://libplanet.io/">Libplanet</a>.</p>
 <h2 id="installation">Installation</h2>
+<p>There are three ways to install the <code>planet</code> command.  Pick the most handy
+one for you.</p>
+<h3 id="npm-npm"><code>npm</code> <a href="https://www.npmjs.com/package/@planetarium/cli"><img src="https://img.shields.io/npm/v/@planetarium/cli" alt="npm"></a></h3>
+<p>Install as an <code>npm</code> package if <code>npm</code> is installed on your system:</p>
+<pre><code class="lang-bash">npm install @planetarium/cli
+</code></pre>
+<h3 id="net-core-tool-nuget">.NET Core tool <a href="https://www.nuget.org/packages/Libplanet.Tools/"><img src="https://img.shields.io/nuget/v/Libplanet.Tools.svg?style=flat" alt="NuGet"></a></h3>
 <p>Install as a <a href="https://docs.microsoft.com/en-us/dotnet/core/tools/global-tools">.NET Core tool</a> if .NET Core SDK is installed on your system:</p>
 <pre><code class="lang-bash">dotnet tool install -g Libplanet.Tools
 </code></pre>
+<h3 id="manual-installation-github-releases">Manual installation <a href="https://github.com/planetarium/libplanet/releases"><img src="https://img.shields.io/github/v/release/planetarium/libplanet?sort=semver" alt="GitHub Releases"></a></h3>
 <p>Or you could just download an executable binary for your platform from
 the <a href="https://github.com/planetarium/libplanet/releases">releases page</a>: <em>planet-*-{linux,osx,win}-x64.{tar.xz,zip}</em> files are
 CLI tools.  Linux (x64), macOS (x64), and Windows (x64) are supported.
@@ -77,7 +86,11 @@ Extract the binary to an appropriate directory in your <code>PATH</code>.</p>
 <h2 id="usage">Usage</h2>
 <pre><code class="lang-bash">planet --help
 </code></pre>
-<p>If you installed it using .NET Core SDK <em>without <code>-g</code>/<code>--global</code> option</em>
+<p>If you installed it using <code>npm</code> <em>without <code>-g</code>/<code>--global</code> option</em>
+use <code>npx planet</code> command instead:</p>
+<pre><code class="lang-bash">npx planet --help
+</code></pre>
+<p>Or if you installed it using .NET Core SDK <em>without <code>-g</code>/<code>--global</code> option</em>
 use <code>dotnet planet</code> command instead:</p>
 <pre><code class="lang-bash">dotnet planet --help
 </code></pre>
