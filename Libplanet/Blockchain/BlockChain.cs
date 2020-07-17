@@ -1420,7 +1420,7 @@ namespace Libplanet.Blockchain
             _rwlock.EnterReadLock();
             try
             {
-                if (offset == null)
+                if (offset is null)
                 {
                     offset = Store.IndexBlockHash(Id, -1);
                 }
@@ -1430,7 +1430,7 @@ namespace Libplanet.Blockchain
                 _rwlock.ExitReadLock();
             }
 
-            if (offset == null)
+            if (offset is null)
             {
                 return null;
             }
@@ -1438,28 +1438,25 @@ namespace Libplanet.Blockchain
             Block<T> block = this[offset.Value];
             Tuple<HashDigest<SHA256>, long> stateReference;
 
-            _rwlock.EnterReadLock();
+            _rwlock.EnterUpgradeableReadLock();
             try
             {
                 stateReference = Store.LookupStateReference(Id, key, block);
-            }
-            finally
-            {
-                _rwlock.ExitReadLock();
-            }
 
-            if (stateReference is null)
-            {
-                return null;
-            }
-
-            HashDigest<SHA256> hashValue = stateReference.Item1;
-
-            IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
-            if (blockStates is null)
-            {
-                if (completeStates)
+                if (stateReference is null)
                 {
+                    return null;
+                }
+
+                HashDigest<SHA256> hashValue = stateReference.Item1;
+                IImmutableDictionary<string, IValue> blockStates = Store.GetBlockStates(hashValue);
+                if (blockStates is null)
+                {
+                    if (!completeStates)
+                    {
+                        throw new IncompleteBlockStatesException(hashValue);
+                    }
+
                     // Calculates and fills the incomplete states
                     // on the fly.
                     foreach (HashDigest<SHA256> hash in BlockHashes)
@@ -1490,18 +1487,18 @@ namespace Libplanet.Blockchain
                         throw new NullReferenceException();
                     }
                 }
-                else
+
+                if (blockStates.TryGetValue(key, out IValue state))
                 {
-                    throw new IncompleteBlockStatesException(hashValue);
+                    return state;
                 }
-            }
 
-            if (blockStates.TryGetValue(key, out IValue state))
+                return null;
+            }
+            finally
             {
-                return state;
+                _rwlock.ExitUpgradeableReadLock();
             }
-
-            return null;
         }
 
         private string ToStateKey(Address address) => address.ToHex().ToLowerInvariant();
