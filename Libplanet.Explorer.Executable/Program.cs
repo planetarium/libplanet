@@ -119,29 +119,34 @@ namespace Libplanet.Explorer.Executable
         private static IStore LoadStore(Options options)
         {
             bool readOnlyMode = options.Seeds is null;
-            IStore store;
+            IStore innerStore;
             switch (options.StoreType)
             {
                 case "rocksdb":
-                    store = new RocksDBStore.RocksDBStore(options.StorePath);
+                    innerStore = new RocksDBStore.RocksDBStore(options.StorePath);
                     break;
                 default:
-                    store = new DefaultStore(
+                    innerStore = new DefaultStore(
                         options.StorePath,
                         flush: false,
                         readOnly: readOnlyMode);
                     break;
             }
 
+            IStore store;
             if (options.Seeds.Any())
             {
-                // Warp up store.
+                // Wrap up store.
                 store = new RichStore(
-                    store,
+                    innerStore,
                     path: options.StorePath,
                     flush: false,
                     readOnly: readOnlyMode
                 );
+            }
+            else
+            {
+                store = innerStore;
             }
 
             return store;
