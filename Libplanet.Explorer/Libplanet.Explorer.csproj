@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>7.2</LangVersion>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Libplanet.Explorer</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>NU1701</NoWarn>
@@ -27,7 +27,7 @@
     </PackageReference>
     <PackageReference Include="GraphQL" Version="2.4.0" />
     <PackageReference Include="Libplanet" Version="0.10.0-dev.20200626124654" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.3" AllowExplicitVersion="true" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 
   <ItemGroup>
