@@ -136,7 +136,7 @@ namespace Libplanet.Explorer.Executable
             IStore store;
             if (options.Seeds.Any())
             {
-                // Wrap up store.
+                // Wrap up store to use more useful features.
                 store = new RichStore(
                     innerStore,
                     path: options.StorePath,
@@ -146,6 +146,8 @@ namespace Libplanet.Explorer.Executable
             }
             else
             {
+                // If there were no given seeds,
+                // use the store directly.
                 store = innerStore;
             }
 
