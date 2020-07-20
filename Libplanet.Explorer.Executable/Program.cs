@@ -41,26 +41,7 @@ namespace Libplanet.Explorer.Executable
                 .WriteTo.Console();
             Log.Logger = loggerConfig.CreateLogger();
 
-            bool readOnlyMode = options.Seeds is null;
-
-            // Initialized DefaultStore.
-            IStore store = new DefaultStore(
-                path: options.StorePath,
-                flush: false,
-                readOnly: readOnlyMode
-            );
-
-            if (options.Seeds.Any())
-            {
-                // Warp up store.
-                store = new RichStore(
-                    store,
-                    path: options.StorePath,
-                    flush: false,
-                    readOnly: readOnlyMode
-                );
-            }
-
+            IStore store = LoadStore(options);
             IBlockPolicy<AppAgnosticAction> policy = new BlockPolicy<AppAgnosticAction>(
                 null,
                 blockIntervalMilliseconds: options.BlockIntervalMilliseconds,
@@ -133,6 +114,37 @@ namespace Libplanet.Explorer.Executable
                         .ContinueWith(_ => NetMQConfig.Cleanup(false));
                 }
             }
+        }
+
+        private static IStore LoadStore(Options options)
+        {
+            bool readOnlyMode = options.Seeds is null;
+            IStore store;
+            switch (options.StoreType)
+            {
+                case "rocksdb":
+                    store = new RocksDBStore.RocksDBStore(options.StorePath);
+                    break;
+                default:
+                    store = new DefaultStore(
+                        options.StorePath,
+                        flush: false,
+                        readOnly: readOnlyMode);
+                    break;
+            }
+
+            if (options.Seeds.Any())
+            {
+                // Warp up store.
+                store = new RichStore(
+                    store,
+                    path: options.StorePath,
+                    flush: false,
+                    readOnly: readOnlyMode
+                );
+            }
+
+            return store;
         }
 
         private static async Task StartSwarmAsync(
