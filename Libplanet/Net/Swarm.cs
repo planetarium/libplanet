@@ -36,6 +36,7 @@ namespace Libplanet.Net
 
         private readonly AsyncLock _blockSyncMutex;
         private readonly AsyncLock _runningMutex;
+        private readonly AsyncLock _stateOffsetMutex;
 
         private readonly ILogger _logger;
         private readonly IStore _store;
@@ -139,6 +140,7 @@ namespace Libplanet.Net
 
             _blockSyncMutex = new AsyncLock();
             _runningMutex = new AsyncLock();
+            _stateOffsetMutex = new AsyncLock();
 
             _appProtocolVersion = appProtocolVersion;
             TrustedAppProtocolVersionSigners =
@@ -770,7 +772,7 @@ namespace Libplanet.Net
 
                 // FIXME: It is not guaranteed that states will be reported in order.
                 // see issue #436, #430
-                long? receivedStateHeight = await SyncRecentStatesFromTrustedPeersAsync(
+                long? receivedStateHeight = await RecentStateFromTrustedPeersAsync(
                     workspace,
                     progress,
                     trustedPeersWithTip.ToImmutableList(),
@@ -1367,6 +1369,105 @@ namespace Libplanet.Net
             }
 
             return recentStates.Offset;
+        }
+
+        private async Task<long?> RecentStateFromTrustedPeersAsync(
+            BlockChain<T> blockChain,
+            IProgress<PreloadState> progress,
+            IReadOnlyList<(BoundPeer, HashDigest<SHA256>)> trustedPeersWithTip,
+            BlockLocator baseLocator,
+            CancellationToken cancellationToken)
+        {
+            _logger.Debug(
+                "Starts to find a peer to request recent states (candidates: {0} trusted peers).",
+                trustedPeersWithTip.Count);
+            var tasks = new List<Task>();
+            long offset = 0;
+            int count = 0;
+            List<long> topIndexList = new List<long>();
+
+            async Task GetStateTask(HashDigest<SHA256> blockHash, BoundPeer peer)
+            {
+                topIndexList.Add(blockChain[blockHash].Index);
+                while (!cancellationToken.IsCancellationRequested && offset != -1)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    long currentOffset = 0;
+                    using (await _stateOffsetMutex.LockAsync(cancellationToken))
+                    {
+                        currentOffset = offset;
+                    }
+
+                    var request = new GetRecentStates(baseLocator, blockHash, currentOffset);
+                    _logger.Debug(
+                        "Requests recent states to a peer ({Peer}) {Offset}.",
+                        peer,
+                        offset);
+                    Message reply;
+                    try
+                    {
+                        reply = await Transport.SendMessageWithReplyAsync(
+                            peer,
+                            request,
+                            timeout: _options.RecentStateRecvTimeout,
+                            cancellationToken: cancellationToken);
+
+                        _logger.Debug("Received recent states from a peer ({Peer}).", peer);
+                    }
+                    catch (TimeoutException e)
+                    {
+                        _logger.Error(
+                            "Failed to receive recent states from a peer ({Peer}): " + e, peer);
+                        break;
+                    }
+
+                    if (reply is RecentStates recentStates && !recentStates.Missing)
+                    {
+                        _logger.Debug(
+                            "Stored state refs and block states. {Offset}",
+                            currentOffset);
+
+                        currentOffset = SetBlockStatesFromReply(
+                            recentStates,
+                            blockChain,
+                            peer,
+                            progress,
+                            cancellationToken,
+                            ++count);
+
+                        using (await this._stateOffsetMutex.LockAsync(cancellationToken))
+                        {
+                            if (currentOffset == -1 || offset < currentOffset)
+                            {
+                                offset = currentOffset;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _logger.Debug(
+                            "A message received from {Peer} is not a RecentStates but {Reply}.",
+                            peer,
+                            reply);
+                        break;
+                    }
+                }
+            }
+
+            foreach ((BoundPeer peer, var blockHash) in trustedPeersWithTip)
+            {
+                tasks.Add(GetStateTask(blockHash, peer));
+            }
+
+            await Task.WhenAll(tasks.ToArray());
+
+            if (offset == -1)
+            {
+                _logger.Debug("Received states from trusted peers.");
+                return topIndexList.Max();
+            }
+
+            return null;
         }
 
         private async Task<long?> SyncRecentStatesFromTrustedPeersAsync(
