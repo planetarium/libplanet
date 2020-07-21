@@ -5,7 +5,10 @@ namespace Libplanet.Crypto
     /// <summary>
     /// Cryptography backend interface.
     /// </summary>
-    public interface ICryptoBackend
+    /// <typeparam name="T">A <see cref="HashAlgorithm"/> which corresponds to a digest.</typeparam>
+    /// <seealso cref="HashAlgorithm"/>
+    public interface ICryptoBackend<T>
+        where T : HashAlgorithm
     {
         /// <summary>
         /// Creates a signature from <paramref name="messageHash"/> with the corresponding
@@ -19,7 +22,7 @@ namespace Libplanet.Crypto
         /// <returns> Created a signature from <paramref name="messageHash"/> with the corresponding
         /// <paramref name="privateKey"/>.
         /// </returns>
-        byte[] Sign(HashDigest<SHA256> messageHash, PrivateKey privateKey);
+        byte[] Sign(HashDigest<T> messageHash, PrivateKey privateKey);
 
         /// <summary>
         /// Verifies whether a <paramref name="signature"/> was created from
@@ -33,7 +36,7 @@ namespace Libplanet.Crypto
         /// from the <paramref name="messageHash"/> with the corresponding
         /// <see cref="PrivateKey"/>. Otherwise <c>false</c>.</returns>
         bool Verify(
-            HashDigest<SHA256> messageHash,
+            HashDigest<T> messageHash,
             byte[] signature,
             PublicKey publicKey);
     }
