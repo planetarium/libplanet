@@ -21,7 +21,7 @@ namespace Libplanet.Net.Messages
             /// <summary>
             /// A reply to <see cref="Ping"/>.
             /// </summary>
-            Pong = 0x15,
+            Pong = 0x14,
 
             /// <summary>
             /// Request to query block hashes.
