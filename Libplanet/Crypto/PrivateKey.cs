@@ -39,6 +39,8 @@ namespace Libplanet.Crypto
     [Equals]
     public class PrivateKey
     {
+        private PublicKey _publicKey;
+
         /// <summary>
         /// Generates a new unique <see cref="PrivateKey"/> instance.
         /// It can be analogous to creating a new account in a degree.
@@ -79,16 +81,20 @@ namespace Libplanet.Crypto
         /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this private key.
         /// </summary>
-        [Pure]
         [IgnoreDuringEquals]
         public PublicKey PublicKey
         {
             get
             {
-                ECDomainParameters ecParams = GetECParameters();
-                ECPoint q = ecParams.G.Multiply(KeyParam.D);
-                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
-                return new PublicKey(kp);
+                if (_publicKey is null)
+                {
+                    ECDomainParameters ecParams = GetECParameters();
+                    ECPoint q = ecParams.G.Multiply(KeyParam.D);
+                    var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
+                    _publicKey = new PublicKey(kp);
+                }
+
+                return _publicKey;
             }
         }
 
