@@ -45,12 +45,11 @@ To be released.
  -  Added `BlockHeader.TotalDifficulty` property.  [[#666], [#917]]
  -  The existing `Pong` message type (with the type number `0x02`) was
     replaced by a new `Pong` message type
-    (with the type number `0x15`).  [[#459], [#919], [#920], [#930]]
+    (with the type number `0x14`).  [[#459], [#919], [#920], [#930]]
  -  The `TimestampThreshold` between `Block<T>`s was changed from 15 minutes to
     15 seconds.  [[#922], [#925]]
- -  Added new message types:
-     -  Added `GetChainStatus` message.  [[#920], [#930]]
-     -  Added `ChainStatus` message.  [[#920], [#930]]
+ -  `Swarm<T>` became to have two more message types: `GetChainStatus` (`0x20`)
+     and `ChainStatus` (`0x21`).  [[#920], [#930]]
 
 ### Backward-incompatible storage format changes
 
