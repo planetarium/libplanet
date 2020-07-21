@@ -106,9 +106,11 @@ replaced by a new <code>RecentStates</code> message type
 <li>Added <code>BlockHeader.TotalDifficulty</code> property.  [<a href="https://github.com/planetarium/libplanet/issues/666">#666</a>, <a href="https://github.com/planetarium/libplanet/pull/917">#917</a>]</li>
 <li>The existing <code>Pong</code> message type (with the type number <code>0x02</code>) was
 replaced by a new <code>Pong</code> message type
-(with the type number <code>0x14</code>).  [<a href="https://github.com/planetarium/libplanet/issues/459">#459</a>. <a href="https://github.com/planetarium/libplanet/pull/919">#919</a>]</li>
+(with the type number <code>0x14</code>).  [<a href="https://github.com/planetarium/libplanet/issues/459">#459</a>, <a href="https://github.com/planetarium/libplanet/pull/919">#919</a>, <a href="https://github.com/planetarium/libplanet/issues/920">#920</a>, <a href="https://github.com/planetarium/libplanet/pull/930">#930</a>]</li>
 <li>The <code>TimestampThreshold</code> between <code>Block&lt;T&gt;</code>s was changed from 15 minutes to
 15 seconds.  [<a href="https://github.com/planetarium/libplanet/issues/922">#922</a>, <a href="https://github.com/planetarium/libplanet/pull/925">#925</a>]</li>
+<li><code>Swarm&lt;T&gt;</code> became to have two more message types: <code>GetChainStatus</code> (<code>0x20</code>)
+and <code>ChainStatus</code> (<code>0x21</code>).  [<a href="https://github.com/planetarium/libplanet/issues/920">#920</a>, <a href="https://github.com/planetarium/libplanet/pull/930">#930</a>]</li>
 </ul>
 <h3 id="backward-incompatible-storage-format-changes">Backward-incompatible storage format changes</h3>
 <ul>
