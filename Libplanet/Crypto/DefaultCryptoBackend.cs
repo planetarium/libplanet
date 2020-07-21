@@ -1,12 +1,38 @@
 using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Signers;
+using Org.BouncyCastle.Math;
 
 namespace Libplanet.Crypto
 {
     public class DefaultCryptoBackend : ICryptoBackend
     {
+        public byte[] Sign(HashDigest<SHA256> messageHash, PrivateKey privateKey)
+        {
+            var h = new Sha256Digest();
+            var kCalculator = new HMacDsaKCalculator(h);
+            var signer = new ECDsaSigner(kCalculator);
+            signer.Init(true, privateKey.KeyParam);
+            BigInteger[] rs = signer.GenerateSignature(messageHash.ToByteArray());
+            var r = rs[0];
+            var s = rs[1];
+
+            BigInteger otherS = privateKey.KeyParam.Parameters.N.Subtract(s);
+            if (s.CompareTo(otherS) == 1)
+            {
+                s = otherS;
+            }
+
+            var bos = new MemoryStream(72);
+            var seq = new DerSequenceGenerator(bos);
+            seq.AddObject(new DerInteger(r));
+            seq.AddObject(new DerInteger(s));
+            seq.Close();
+            return bos.ToArray();
+        }
+
         public bool Verify(
             HashDigest<SHA256> messageHash,
             byte[] signature,

@@ -8,6 +8,20 @@ namespace Libplanet.Crypto
     public interface ICryptoBackend
     {
         /// <summary>
+        /// Creates a signature from <paramref name="messageHash"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// </summary>
+        /// <param name="messageHash">A 32 bytes message hash digest hashed with SHA256 to sign.
+        /// </param>
+        /// <param name="privateKey"><see cref="PrivateKey"/> to sign
+        /// <paramref name="messageHash"/>.
+        /// </param>
+        /// <returns> Created a signature from <paramref name="messageHash"/> with the corresponding
+        /// <paramref name="privateKey"/>.
+        /// </returns>
+        byte[] Sign(HashDigest<SHA256> messageHash, PrivateKey privateKey);
+
+        /// <summary>
         /// Verifies whether a <paramref name="signature"/> was created from
         /// a <paramref name="messageHash"/> with the corresponding <see cref="PrivateKey"/>.
         /// </summary>

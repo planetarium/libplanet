@@ -33,6 +33,8 @@ To be released.
     `Block<T>.Mine()` static method.  [[#666], [#917]]
  -  Added `options` optional parameter to `Swarm<T>()` constructor.
     [[#926]]
+ -  Added `Sign(HashDigest<SHA256>, PrivateKey)` method to `ICryptoBackend`
+    interface.  [[#932]]
 
 ### Backward-incompatible network protocol changes
 
@@ -141,6 +143,7 @@ To be released.
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
 [#930]: https://github.com/planetarium/libplanet/pull/930
+[#932]: https://github.com/planetarium/libplanet/pull/932
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
