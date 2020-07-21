@@ -1,17 +1,16 @@
 using System;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
-using Org.BouncyCastle.Asn1;
+using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.Sec;
 using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Security;
+using ECPoint = Org.BouncyCastle.Math.EC.ECPoint;
 
 namespace Libplanet.Crypto
 {
@@ -40,7 +39,7 @@ namespace Libplanet.Crypto
     [Equals]
     public class PrivateKey
     {
-        private readonly ECPrivateKeyParameters keyParam;
+        private PublicKey _publicKey;
 
         /// <summary>
         /// Generates a new unique <see cref="PrivateKey"/> instance.
@@ -75,23 +74,27 @@ namespace Libplanet.Crypto
 
         private PrivateKey(ECPrivateKeyParameters keyParam)
         {
-            this.keyParam = keyParam;
+            KeyParam = keyParam;
         }
 
         /// <summary>
         /// The corresponding <see cref="Libplanet.Crypto.PublicKey"/> of
         /// this private key.
         /// </summary>
-        [Pure]
         [IgnoreDuringEquals]
         public PublicKey PublicKey
         {
             get
             {
-                ECDomainParameters ecParams = GetECParameters();
-                ECPoint q = ecParams.G.Multiply(this.keyParam.D);
-                var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
-                return new PublicKey(kp);
+                if (_publicKey is null)
+                {
+                    ECDomainParameters ecParams = GetECParameters();
+                    ECPoint q = ecParams.G.Multiply(KeyParam.D);
+                    var kp = new ECPublicKeyParameters("ECDSA", q, ecParams);
+                    _publicKey = new PublicKey(kp);
+                }
+
+                return _publicKey;
             }
         }
 
@@ -116,7 +119,9 @@ namespace Libplanet.Crypto
         /// </remarks>
         /// <seealso cref="PrivateKey(byte[])"/>
         [Pure]
-        public byte[] ByteArray => keyParam.D.ToByteArrayUnsigned();
+        public byte[] ByteArray => KeyParam.D.ToByteArrayUnsigned();
+
+        internal ECPrivateKeyParameters KeyParam { get; }
 
         public static bool operator ==(PrivateKey left, PrivateKey right) =>
             Operator.Weave(left, right);
@@ -163,25 +168,7 @@ namespace Libplanet.Crypto
             h.DoFinal(hashed, 0);
             h.Reset();
 
-            var kCalculator = new HMacDsaKCalculator(h);
-            var signer = new ECDsaSigner(kCalculator);
-            signer.Init(true, keyParam);
-            BigInteger[] rs = signer.GenerateSignature(hashed);
-            var r = rs[0];
-            var s = rs[1];
-
-            BigInteger otherS = keyParam.Parameters.N.Subtract(s);
-            if (s.CompareTo(otherS) == 1)
-            {
-                s = otherS;
-            }
-
-            var bos = new MemoryStream(72);
-            var seq = new DerSequenceGenerator(bos);
-            seq.AddObject(new DerInteger(r));
-            seq.AddObject(new DerInteger(s));
-            seq.Close();
-            return bos.ToArray();
+            return CryptoConfig.CryptoBackend.Sign(new HashDigest<SHA256>(hashed), this);
         }
 
         /// <summary>
@@ -287,7 +274,7 @@ namespace Libplanet.Crypto
 
         private ECPoint CalculatePoint(ECPublicKeyParameters pubKeyParams)
         {
-            ECDomainParameters dp = keyParam.Parameters;
+            ECDomainParameters dp = KeyParam.Parameters;
             if (!dp.Equals(pubKeyParams.Parameters))
             {
                 throw new InvalidOperationException(
@@ -295,7 +282,7 @@ namespace Libplanet.Crypto
                 );
             }
 
-            BigInteger d = keyParam.D;
+            BigInteger d = KeyParam.D;
 
             ECPoint q = dp.Curve.DecodePoint(pubKeyParams.Q.GetEncoded(true));
             if (q.IsInfinity)

@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace Libplanet.Crypto
 {
     /// <summary>
@@ -5,14 +7,14 @@ namespace Libplanet.Crypto
     /// </summary>
     public static class CryptoConfig
     {
-        private static ICryptoBackend _cryptoBackend;
+        private static ICryptoBackend<SHA256> _cryptoBackend;
 
         /// <summary>
         /// Global cryptography backend to sign and verify messages.
         /// </summary>
-        public static ICryptoBackend CryptoBackend
+        public static ICryptoBackend<SHA256> CryptoBackend
         {
-            get => _cryptoBackend ?? (_cryptoBackend = new DefaultCryptoBackend());
+            get => _cryptoBackend ??= new DefaultCryptoBackend<SHA256>();
             set => _cryptoBackend = value;
         }
     }

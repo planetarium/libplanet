@@ -33,6 +33,12 @@ To be released.
     `Block<T>.Mine()` static method.  [[#666], [#917]]
  -  Added `options` optional parameter to `Swarm<T>()` constructor.
     [[#926]]
+ -  `ICryptoBackend` became to `ICryptoBackend<T>`.  [[#932]]
+ -  `ICryptoBackend.Verify(HashDigest<SHA256>, byte[], PublicKey)` became to
+    `ICryptoBackend<T>.Verify(HashDigest<T>, byte[], PublicKey)` [[#932]]
+ -  Added `ICryptoBackend<T>.Sign(HashDigest<T>, PrivateKey)` method.
+    [[#932]]
+ -  `DefaultCryptoBackend` became to `DefaultCryptoBackend<T>`.  [[#932]]
 
 ### Backward-incompatible network protocol changes
 
@@ -141,6 +147,7 @@ To be released.
 [#925]: https://github.com/planetarium/libplanet/pull/925
 [#926]: https://github.com/planetarium/libplanet/pull/926
 [#930]: https://github.com/planetarium/libplanet/pull/930
+[#932]: https://github.com/planetarium/libplanet/pull/932
 [sleep mode]: https://en.wikipedia.org/wiki/Sleep_mode
 
 
