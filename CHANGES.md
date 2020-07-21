@@ -33,8 +33,8 @@ To be released.
     `Block<T>.Mine()` static method.  [[#666], [#917]]
  -  Added `options` optional parameter to `Swarm<T>()` constructor.
     [[#926]]
- -  Added `Sign(HashDigest<SHA256>, PrivateKey)` method to `ICryptoBackend`
-    interface.  [[#932]]
+ -  Added `ICryptoBackend.Sign(HashDigest<SHA256>, PrivateKey)` method.
+    [[#932]]
 
 ### Backward-incompatible network protocol changes
 
